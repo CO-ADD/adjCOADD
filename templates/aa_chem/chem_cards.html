@@ -1,0 +1,22 @@
+{% for comp in mylist %}
+
+<div class="col border border-warning">
+  <div class="card bg-transparent my-2">
+    <div class="card-body d-flex flex-column align-items-start">
+      <h5 class="bi bi-tag fw-bold lead fs-4">{{comp.drug_name}}</h5>
+      <p class="lead fs-5 text-dark">ChemdbID: {{comp.drug_name}}</p>
+      <p class="fw-bold lead fs-5 text-success">
+        <!-- Identification of average molecular weight {{comp.amw}} -->
+      </p>
+      <!--prettier-ignore-->
+      {%load static%}
+
+      <img class=" card-img-bottom" src="{%static 'images/'%}{{comp.id}}.png" />
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------- -->
+
+  <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+</div>
+{%endfor%}

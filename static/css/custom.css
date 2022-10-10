@@ -1,0 +1,70 @@
+@import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
+body {
+  font-family: "Oswald", sans-serif !important;
+  letter-spacing: 1px;
+}
+/* div,
+nav,
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+p,
+input,
+label,
+form,
+img {
+  border: 2px solid rgb(116, 108, 108) !important;
+} */
+/* .overlay { */
+  /* background-image: url('../css/coaddbg01.png'); */
+  /* background-position: 0px 100px; */
+  /* background-color: rgb(45, 163, 163); */
+  /* background-size: cover; */
+  /* color: #dedede; */
+/* } */
+nav{
+  height: 20em!important;
+  
+}
+/* =============================Drag to resize sidebar start ===================================== */
+#resizer {
+  flex-basis: 10px;
+  position: relative;
+  z-index: 2;
+  cursor: col-resize;
+  /* background: #333642; */
+  margin-right: 3px;
+  margin-left: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#sidebar {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-width: 200px;
+}
+
+.mol-container {
+  width: 60%;
+  height: 400px;
+  position: relative;
+}
+.main {
+  flex-basis: 0;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* =============================Drag to resize sidebar end ===================================== */
+.card-img-bottom-custom {
+  
+  object-fit: cover;
+}
+footer{
+  border: 2px solid wheat;
+  bottom: 0 !important;
+}

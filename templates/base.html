@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title%}mysite{%endblock%}</title>
+    <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="{% static 'css/favicon-16x16.png' %}"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css"
+  />
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+  <!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script> -->
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'css/custom.css' %}"
+  />
+
+    <style>
+      body {
+        /* background-color: rgb(28, 156, 179); */
+        color: whitesmoke;
+      }
+      .responsive-width {
+        margin: 2% 20%;
+      }
+      .navbar {
+        height: 80px !important;
+      }
+
+      @media only screen and (max-width: 1000px) {
+        .responsive-width {
+          margin: 2% 15%;
+        }
+      }
+
+      @media only screen and (max-width: 920px) {
+        .responsive-width {
+          margin: 2% 10%;
+        }
+      }
+
+      @media only screen and (max-width: 865px) {
+        .responsive-width {
+          margin: 2% 5%;
+        }
+      }
+
+      @media only screen and (max-width: 820px) {
+        .responsive-width {
+          margin: 2% 2%;
+        }
+      }
+
+      @media only screen and (max-width: 576px) {
+        .responsive-width {
+          margin: 2% 0%;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="d-flex flex-column h-100 overlay">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light py-5">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{%url 'index'%}">Home</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active text-secondary"
+                aria-current="page"
+                href="#"
+                >screening data</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-secondary" href="#">organisms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-secondary" href="#">download</a>
+            </li>
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+
+              <a class="nav-link active" href="{%url 'userprofile' user.id%}"
+                >Profile</a
+              >
+              <a class="nav-link active" href="{%url 'logout'%}">Log Out</a>
+
+              {%else%}
+
+              <a class="nav-link active" href="{%url 'login'%}">Log In</a>
+              {%endif%}
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-secondary" href="{%url 'usermanage' %}"
+                >GroupManagement</a
+              >
+             
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+   <!-- Footer -->
+<footer class="footer bg-dark text-white mt-auto">
+  <!-- Grid container -->
+  <div class="d-flex justify-content-around gx-5 border ">
+    <!-- Section: Social media -->
+    <div class="d-flex justify-content-between m-auto`">
+      <!-- Facebook -->
+      <div>
+
+        <a class="bi bi-facebook" href="#!"
+        ></a>
+        
+      </div>
+      <!-- Twitter -->
+      <a class="bi bi-twitter" href="#!" 
+        ></a>
+
+      <!-- youtube -->
+      <a class="bi bi-youtube" href="#!" role="button"
+        ></a>
+
+      <!-- Linkedin -->
+      <a class="bi bi-linkedin" href="#!" role="button"
+        ></a>
+
+    </div>
+    <!-- Section: Social media -->
+
+    <!-- Section: Form -->
+    <div class="">
+      <form action="">
+        <!--Grid row-->
+        <div class="row d-flex justify-content-center">
+          <!--Grid column-->
+          <div class="col-auto">
+            <p class="pt-2">
+              <strong>Sign up for our newsletter</strong>
+            </p>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-md-5 col-12">
+            <!-- Email input -->
+            <div class="form-outline form-white mb-4">
+              <input type="email" id="form5Example21" class="form-control" />
+              <label class="form-label" for="form5Example21">Email address</label>
+            </div>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-auto">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-outline-light mb-4">
+              Subscribe
+            </button>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </form>
+    </div>
+    <!-- Section: Form -->
+
+    <!-- Section: Text -->
+    <div class="">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
+        repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
+        eum harum corrupti dicta, aliquam sequi voluptate quas.
+      </p>
+    </div>
+    <!-- Section: Text -->
+
+    <!-- Section: Links -->
+    <div class="">
+      <!--Grid row-->
+      <div class="row">
+        <!--Grid column-->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+         
+          </ul>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+       
+          </ul>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+           
+          </ul>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Links</h5>
+
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Link 1</a>
+            </li>
+      
+          </ul>
+        </div>
+        <!--Grid column-->
+      </div>
+      <!--Grid row-->
+    </div>
+    <!-- Section: Links -->
+  </div>
+  <!-- Grid container -->
+
+</footer>
+<!-- Footer -->
+  </body>
+</html>

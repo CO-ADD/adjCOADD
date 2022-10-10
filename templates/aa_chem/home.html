@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+{% block content %}
+<div class="row vh-70" style="background-image:url('../static/css/coaddbg01.png') ; background-size: cover; ">
+  <!-- <div class="col"> -->
+    <div
+      class="card bg-transparent text-light border border-0"
+      style="width: 50%; height: 40%; margin-top: 15%"
+    >
+      <div
+        class="card-body d-flex flex-column align-items-center justify-content-center"
+      >
+        <h1 class="card-title text-center" style="font-size: 4rem">
+          Open-access <br />
+          Antimicrobial Screening <br />Database
+        </h1>
+        <p class="card-text">
+          Helping Chemists Discovery New Antibiotics to Fight Drug-Resistance
+          Infection
+        </p>
+        <div class="d-flex flex-wrap w-100 justify-content-between">
+          <a
+            href="{%url 'home'%}"
+            class="btn btn-lg w-50 bg-warning text-light"
+            >explore<i class="bi bi-chevron-right"></i
+          ></a>
+        
+          <a
+            href="#"
+            class="btn btn-lg w-50 border border-2 text-light"
+            >download<i class="bi bi-download"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
+</div>
+
+{%endblock%}

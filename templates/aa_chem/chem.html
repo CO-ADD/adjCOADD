@@ -1,0 +1,97 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="position-relative w-100 vh-100">
+  <div class="row bg-transparent"><h1>Screening data</h1></div>
+  <div class="d-flex flex-row bg-light h-75 justify-content-between">
+    <div id="sidebar" class="text-secondary" style="overflow: scroll">
+      <form class="text-dark" action="{% url 'dataimport' %}" method="POST">
+        {%csrf_token%}
+        <label class="form-label mt-3"
+          >Import .sdf file <br />by enter full file path<br />
+          multiple files seperated directly by ","</label
+        >
+        <input class="form-control-sm" name="fdata" type="text" />
+        <input
+          class="btn btn-outline-secondary my-2"
+          class="form-control-sm"
+          type="submit"
+          value="Import..."
+        />
+      </form>
+      <hr />
+      <h4 id="item-1">Item 1</h4>
+     
+      <h5 id="item-1-1">Item 1-1</h5>
+      <p>...</p>
+      <h5 id="item-1-2">Item 1-2</h5>
+      <p>...</p>
+      <h4 id="item-2">Item 2</h4>
+      <p>...</p>
+    </div>
+    <div id="resizer"></div>
+    <div class="main d-flex flex-column border border-dark ">
+      <div class="d-flex flex-row">
+        <form action="" method="POST">
+          {%csrf_token%}
+          <input type="submit" value="True" name="list" />
+          <input type="submit" value="True" name="card" />
+        </form>
+      </div>
+      <div class="pagination">
+        <span class="step-links m-auto text-dark">
+          {% if mylist.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ mylist.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+            Page {{ mylist.number }} of {{ mylist.paginator.num_pages }}
+          </span>
+
+          {% if mylist.has_next %}
+          <a href="?page={{ mylist.next_page_number }}">next</a>
+          <a href="?page={{ mylist.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      <div class="row d-flex flex-wrap  ">
+        {% if card_view is True %}
+        <!--prettier-ignore-->
+        {%include "aa_chem/chem_cards.html"%}
+        {%else%}
+        <!--prettier-ignore-->
+        {%include "aa_chem/chem_list.html"%} 
+        {%endif%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const resizer = document.querySelector("#resizer");
+  const sidebar = document.querySelector("#sidebar");
+
+  resizer.addEventListener("mousedown", (event) => {
+    document.addEventListener("mousemove", resize, false);
+    document.addEventListener(
+      "mouseup",
+      () => {
+        document.removeEventListener("mousemove", resize, false);
+      },
+      false
+    );
+  });
+
+  function resize(e) {
+    var sdsize = Math.min(800, e.x);
+    const size = `${sdsize}px`;
+    sidebar.style.flexBasis = size;
+  }
+</script>
+
+<!--prettier-ignore-->
+{% endblock%}
