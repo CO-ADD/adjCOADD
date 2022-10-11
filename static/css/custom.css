@@ -1,8 +1,17 @@
 @import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
+
+:root {
+  --orange: #FF6E00;
+  --grey: #625E5D;
+  --teal: #2C7A84;
+}
+
 body {
   font-family: "Oswald", sans-serif !important;
   letter-spacing: 1px;
+  background-color: var(--teal, teal);
 }
+
 /* div,
 nav,
 h1,
@@ -18,17 +27,20 @@ form,
 img {
   border: 2px solid rgb(116, 108, 108) !important;
 } */
-/* .overlay { */
-  /* background-image: url('../css/coaddbg01.png'); */
-  /* background-position: 0px 100px; */
-  /* background-color: rgb(45, 163, 163); */
-  /* background-size: cover; */
-  /* color: #dedede; */
-/* } */
-nav{
-  height: 20em!important;
-  
+.overlay {
+
+  background-color: var(--teal, teal);
+
 }
+
+nav {
+  height: 20em !important;
+
+}
+
+
+
+
 /* =============================Drag to resize sidebar start ===================================== */
 #resizer {
   flex-basis: 10px;
@@ -41,6 +53,7 @@ nav{
   padding: 0;
   box-sizing: border-box;
 }
+
 #sidebar {
   position: relative;
   margin: 0;
@@ -53,6 +66,7 @@ nav{
   height: 400px;
   position: relative;
 }
+
 .main {
   flex-basis: 0;
   flex-grow: 1;
@@ -60,11 +74,80 @@ nav{
 }
 
 /* =============================Drag to resize sidebar end ===================================== */
-.card-img-bottom-custom {
-  
-  object-fit: cover;
-}
-footer{
+
+
+footer {
   border: 2px solid wheat;
   bottom: 0 !important;
+}
+
+/* =========================================================== */
+/* .thumbnail {
+  margin-bottom: 20px;
+  padding: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+} */
+
+/* .component.list-group-item {
+  float: none;
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+
+.component.list-group-item:nth-of-type(odd):hover,
+.component.list-group-item:hover {
+  background: #428bca;
+}
+
+.component.list-group-item .list-group-image {
+  margin-right: 10px;
+}
+
+.component.list-group-item .thumbnail {
+  margin-bottom: 0px;
+}
+
+.component.list-group-item .caption {
+  padding: 9px 9px 0px 9px;
+}
+
+.component.list-group-item:nth-of-type(odd) {
+  background: #eeeeee;
+}
+
+.component.list-group-item:before,
+.component.list-group-item:after {
+  display: table;
+  content: " ";
+}
+
+.component.list-group-item img {
+  float: left;
+}
+
+.component.list-group-item:after {
+  clear: both;
+}
+
+.list-group-item-text {
+  margin: 0 0 11px;
+} */
+
+.list-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.grid-view {
+  display: flex;
+  flex-direction: colum;
+}
+
+.card-img-bottom {
+  /* width: 100%; */
+  height: 20vw;
+  object-fit: cover;
 }

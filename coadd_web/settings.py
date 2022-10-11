@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -160,8 +160,8 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 
 AUTH_USER_MODEL = 'app.User'
 
-LOGIN_REDIRECT_URL='/'
-LOGOUT_REDIRECT_URL='/'
+LOGIN_REDIRECT_URL='/home'
+LOGOUT_REDIRECT_URL='/accounts/login'
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
@@ -189,6 +189,7 @@ AUTH_LDAP_CONNECTION_OPTIONS = {
 
 }
 
+AUTH_LDAP_ALWAYS_UPDATE_USER=False
  
 
 AUTH_LDAP_USER_ATTR_MAP = {

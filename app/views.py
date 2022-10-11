@@ -24,7 +24,7 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-@permission_required('app.change_groupfilter')
+# @permission_required('app.change_groupfilter')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'app/userprofile.html', {'currentUser': current_user})
@@ -39,6 +39,9 @@ class GroupListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.all()
+        context["objects2"]=User.objects.all()
+        print(context["objects"])
+        print(context["objects2"])
         return context
 
 class GroupCreateView(SuperUserRequiredMixin, CreateView):

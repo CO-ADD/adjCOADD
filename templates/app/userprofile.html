@@ -3,7 +3,7 @@
 {% block title%} mysite{% endblock %}
 {% block content %}
 
-<div class="d-flex flex-column g-4 m-2">
+<div class="d-flex flex-column g-4 m-2 vh-100">
 
     <div class="card d-flex m-auto">
 
@@ -24,13 +24,13 @@
                 <small>
                     <!---staff, admin switch-->
                     (logged in as staff)
-                
+
                     (logged in as admin)
                     <a class="btn btn-outline-primary btn-small" href="">collection</a>
-                   
+
                 </small>
             </h5>
-            <h5 class="card-title">UserGroup:{{user.groups}}</h5>
+            <h5 class="card-title">UserGroup:{{user.groups.all}}</h5>
             {%if user.first_name and user.last_name%}
             <h5 class="card-title">Name: {{user.first_name}} &nbsp; {{user.last_name}}</h5>
             {%endif%}
@@ -72,12 +72,10 @@
 
                     <a class="card-link " href="#" class="card-link"><small>View and
                             Modify</small> </a> |
-                    <a class="card-link " href="#"
-                        class="card-link"><small>Delete</small></a>
-                    
+                    <a class="card-link " href="#" class="card-link"><small>Delete</small></a>
+
                     {%if post.set_public%}
-                    <a class="card-link active" href="#"
-                        class="card-link"><small>Draft</small></a>
+                    <a class="card-link active" href="#" class="card-link"><small>Draft</small></a>
                     {%else%}
                     <a href="#" class="card-link"><small>Public</small></a>
                     {%endif%}

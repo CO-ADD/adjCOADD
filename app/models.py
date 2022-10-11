@@ -18,11 +18,15 @@ class User(AbstractUser):
     avatar = models.ImageField(null=True, upload_to='media')
     createddate=models.DateTimeField(null=True,verbose_name = "Created on", auto_now_add=True, editable=False)
 
-    # def get_short_name(self):
-    #     # Returns the short name for the user.
-    #     fStr = self.first_name
-    #     iStr =fStr[0]
-    #     return f"{iStr}.{self.last_name})"
+    def get_short_name(self):
+        # Returns the short name for the user.
+        fStr = self.first_name
+        try:
+            iStr =fStr[0]
+            return f"{iStr}.{self.last_name}"
+        except Exception as err:
+            print (err)
+            return
 
     # def get_username(self):
     #     # Returns the short name for the user.

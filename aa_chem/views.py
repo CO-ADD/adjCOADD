@@ -33,8 +33,22 @@ def molecule_to_png(mol, file_name, width=1000, height=1000):
     cairosvg.svg2png(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
 
 # Create your views here.
-
+# @login_required
 def home(req):
+
+    # search function
+    if req.method=='POST':
+        search =req.POST.get('search')
+        field=req.POST.get('field')
+        if field=='drug_name':
+            result=Drugbank.objects.filter(drug_name__contains=search)
+        elif field=='status':
+            result=Drugbank.objects.filter(status__contains=search)
+        else:
+            result=Drugbank.objects.filter(drug_id__contains=search)
+            print(result)
+    else:
+        result=Drugbank.objects.all()
  
     # comp_all=[comp for comp in Drugbank.objects.annotate(amw=AMW('drug_mol'))]
     comp_all=[comp for comp in Drugbank.objects.annotate(smiles=MOL_TO_SMILES('drug_mol'))]
@@ -45,22 +59,15 @@ def home(req):
         m=Chem.MolFromSmiles(comp.smiles)
         molecule_to_png(m, comp.id)
     
-    
-    card_view=True
-    list_view=False
-    if req.method=='POST':
-        card_view=req.POST.get('card')
-        list_view=req.POST.get('list')
-        print(card_view, list_view)
 
-    paginator1 = Paginator(comp_all, 4) #3 elements per page.
-    page_number1 = req.GET.get('page')
-    comp_all = paginator1.get_page(page_number1)
+    paginator = Paginator(comp_all, 2) #3 elements per page.
+    page_number = req.GET.get('page')
+    comp_all = paginator.get_page(page_number)
 
    
     context={
         'mylist':comp_all,
-        'card_view':card_view
+       
        
     }
   
