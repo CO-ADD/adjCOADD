@@ -96,20 +96,20 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=appuser,public'},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD':'orgdb',
-        'HOST': 'imb-coadd-db.imb.uq.edu.au',
+        'OPTIONS':{'options': '-c search_path=app,public'},
+        'NAME': 'postgres',
+        'USER': 'postgres', #os.environ.get('db_user'),
+        'PASSWORD':'',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
     'drugs_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'OPTIONS':{'options': '-c search_path=aa_chem,public'},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
-        'HOST': 'imb-coadd-db.imb.uq.edu.au',
+        'NAME': 'postgres',
+        'USER': 'postgres', #os.environ.get('db_user'),
+        'PASSWORD': 'J.Zhong',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     }
 }
@@ -160,7 +160,7 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 
 AUTH_USER_MODEL = 'app.User'
 
-LOGIN_REDIRECT_URL='/home'
+LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/accounts/login'
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [

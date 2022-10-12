@@ -33,7 +33,7 @@ def molecule_to_png(mol, file_name, width=1000, height=1000):
     cairosvg.svg2png(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
 
 # Create your views here.
-# @login_required
+@login_required
 def home(req):
 
     # search function

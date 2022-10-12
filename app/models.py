@@ -18,6 +18,13 @@ class User(AbstractUser):
     avatar = models.ImageField(null=True, upload_to='media')
     createddate=models.DateTimeField(null=True,verbose_name = "Created on", auto_now_add=True, editable=False)
 
+
+    # def save(self, instance):
+    #     user=User.objects.get(username=instance.username)
+    #     my_groups = ', '.join(map(str, user.groups.all()))
+    #     if user.is_superuser==False and my_groups=="":
+    #         return
+
     def get_short_name(self):
         # Returns the short name for the user.
         fStr = self.first_name

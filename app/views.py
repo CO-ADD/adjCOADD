@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Groupfilter
+from aa_chem.models import Drugbank
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
@@ -8,6 +9,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.urls import reverse_lazy
 from .forms import GroupCreate 
+from django.contrib.auth import logout
 # Create your views here.
 # def check_admin(user):
 #    return user.is_superuser
@@ -16,8 +18,17 @@ from .forms import GroupCreate
 # def my_view(request): 
 
 def index(req):
-    
-    return render(req, 'aa_chem/home.html')
+
+    objects= Drugbank.objects.all()
+    if req.user.is_authenticated:
+
+        user=User.objects.get(username=req.user.username)
+        my_groups = ', '.join(map(str, user.groups.all()))
+        if user.is_superuser==False and my_groups=="":
+            logout(req)
+            user.delete()
+            return redirect("/")
+    return render(req, 'aa_chem/home.html', {'objects': objects})
 
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
@@ -25,6 +36,7 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user.is_superuser
 
 # @permission_required('app.change_groupfilter')
+@login_required
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'app/userprofile.html', {'currentUser': current_user})
