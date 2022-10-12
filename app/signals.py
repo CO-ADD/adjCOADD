@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 @receiver(populate_user, sender=LDAPBackend)
 def ldap_auth_handler(user, ldap_user, **kwargs):
     """
-        Create user from ldap_user, assign to groups based the user email
+        Create user from ldap_user, assign to groups based the user username
     """
    
    
