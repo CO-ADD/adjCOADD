@@ -65,13 +65,18 @@ rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
    (s) delete public schema, migrate, add public, migrate again.
 
 
-2.(i) File "/home/jzhong/.local/lib/python3.10/site-packages/rdkit/Chem/Draw/__init__.py", line 14, in <module>
+2. (i) File "/home/jzhong/.local/lib/python3.10/site-packages/rdkit/Chem/Draw/__init__.py", line 14, in <module>
     from rdkit.Chem.Draw import rdMolDraw2D
     ImportError: libXrender.so.1: cannot open shared object file: No such file or directory
 
   (s)fixed it by installing libXrender:
 
       sudo apt-get install libxrender1
+
+3. Recommanded steps for multi schemas migrate:
+   step 1 run  ```manage.py migrate <yourapp> --database <wanted database name>```
+   step 2 run  ```manage.py migrate```
+
 
 ## User Guide section
 

@@ -24,7 +24,7 @@ from aa_chem import views
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', index, name="index"),
-    path('home/', views.home, name="home"),
+    path('compounds/', views.home, name="compounds"),
     path('usermanagement/', GroupListView.as_view(), name="usermanage"),
     path('usermanagement_create/', GroupCreateView.as_view(), name="createGroup"),
     path('usermanagement_update/<int:pk>', GroupUpdateView.as_view(), name="updateGroup"),

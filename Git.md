@@ -7,7 +7,7 @@ This document includes two parts: using Git as code version control locally and 
 ## Collabrating with remote project on github.						
 1. using ```git clone the repo url``` for the first time. And after that every time using ```git pull origin main``` or ```git pull origin master``` before doing any job.						
 						
-2. before doing you job leave the main/master branch check into another branch using ```git checkout -b <branchname>```						
+2. before doing you job leave the main/master branch check into another branch using ```git switch -c <newbranchname>``` or ```git switch <branchname>```						
 						
 3. after your work, still in the same branch push to remote github with ```git push origin <branchname>```					
 						
@@ -49,4 +49,6 @@ use ```git checkout -- <file>...``` to discard changes in working directory
 the same like 6S
 
 8. check repo state using ```git status```
+
+9. switch different branches use ```git switch -c <newbranchname>``` or ```git switch <branchname>```
 10. create an empty repo in github, add the remote url to git using ```git remote add origin <REMOTE_URL>``` then push your project to it with ``` git push origin main```.

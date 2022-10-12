@@ -9,7 +9,35 @@
 body {
   font-family: "Oswald", sans-serif !important;
   letter-spacing: 1px;
-  background-color: var(--teal, teal);
+  color: var(--grey, teal);
+
+}
+
+.nav-item a {
+  color: var(--teal, teal);
+  border-bottom: 2px solid transparent;
+}
+
+.nav-item a:hover {
+  color: var(--orange, orange);
+
+  border-bottom: 2px solid var(--orange, orange);
+  transition: 0.5s ease-in;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.banner {
+  color: var(--teal, teal);
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px;
+  border-top: solid #d2d2d2 1px;
+  border-bottom: solid #d2d2d2 1px;
+  flex-wrap: wrap;
+  background-color: white;
 }
 
 /* div,
@@ -27,19 +55,59 @@ form,
 img {
   border: 2px solid rgb(116, 108, 108) !important;
 } */
-.overlay {
 
+
+.landp-img-01,
+.landp-img-02,
+.landp-img-03 {
+  height: 8rem;
+  width: 8rem;
+  border: 3px solid var(--orange, orange);
+
+  border-radius: 50%;
+  margin: 1rem;
+  color: white;
+  font-weight: bolder;
+}
+
+.landp-img-01 {
+  animation: fadeIn 1s;
+  background-color: var(--orange, orange);
+}
+
+.landp-img-02 {
+  background-color: (--teal, teal);
+  animation: fadeIn 1.5s;
+}
+
+.landp-img-03 {
+  animation: fadeIn 2s;
+  background-color: var(--orange, orange);
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.landp-img-01:hover,
+
+.landp-img-03:hover {
   background-color: var(--teal, teal);
-
+  transition: 0.5s ease-in;
+  color: var(--orange, orange);
 }
 
-nav {
-  height: 20em !important;
-
+.landp-img-02:hover {
+  color: white;
+  background-color: var(--orange, orange);
+  transition: 0.5s ease-in;
 }
-
-
-
 
 /* =============================Drag to resize sidebar start ===================================== */
 #resizer {
