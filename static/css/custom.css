@@ -13,15 +13,26 @@ body {
 
 }
 
-.nav-item a {
-  color: var(--teal, teal);
-  border-bottom: 2px solid transparent;
+#top-alert {
+  width: 100%;
+  background-color: black;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+
 }
 
-.nav-item a:hover {
-  color: var(--orange, orange);
+.navbar-brand,
+.nav-link {
+  color: white !important;
+  border: 2px solid transparent;
+}
 
-  border-bottom: 2px solid var(--orange, orange);
+.navbar-brand:hover,
+.nav-item a:hover {
+  /* color: var(--orange, orange); */
+  border: 2px solid white;
+  /* box-shadow: 0px -5px 10px 0px white; */
   transition: 0.5s ease-in;
 }
 
@@ -29,40 +40,55 @@ main {
   flex: 1 0 auto;
 }
 
-.banner {
+.info {
   color: var(--teal, teal);
   font-weight: bold;
   font-size: 1rem;
+  height: 20rem;
   padding: 10px;
-  border-top: solid #d2d2d2 1px;
-  border-bottom: solid #d2d2d2 1px;
   flex-wrap: wrap;
-  background-color: white;
+  background-color: rgb(248, 241, 241);
 }
 
-/* div,
-nav,
-h1,
-h2,
-h3,
-h4,
-h5,
-a,
-p,
-input,
-label,
-form,
-img {
-  border: 2px solid rgb(116, 108, 108) !important;
-} */
+.btn {
+  border: 2px solid var(--orange, orange);
+  color: var(--teal);
+}
 
+.btn:hover {
+  color: white;
+  background-color: var(--orange, orange);
+  transition: 0.5s ease-out;
+}
+
+.btn2 {
+  width: 6rem;
+  background-color: var(--orange);
+  color: white;
+}
+
+.btn2:hover {
+  border: 2px solid white;
+}
+
+
+.home-banner {
+  border-radius: 10% 25% 15% 25%;
+
+}
+
+.navbar-light {
+  background-color: var(--teal);
+  opacity: 0.8;
+  color: white;
+}
 
 .landp-img-01,
 .landp-img-02,
 .landp-img-03 {
   height: 8rem;
   width: 8rem;
-  border: 3px solid var(--orange, orange);
+
 
   border-radius: 50%;
   margin: 1rem;
@@ -76,7 +102,7 @@ img {
 }
 
 .landp-img-02 {
-  background-color: (--teal, teal);
+  background-color: var(--teal, teal);
   animation: fadeIn 1.5s;
 }
 
@@ -96,18 +122,13 @@ img {
 }
 
 .landp-img-01:hover,
-
+.landp-img-02:hover,
 .landp-img-03:hover {
-  background-color: var(--teal, teal);
-  transition: 0.5s ease-in;
-  color: var(--orange, orange);
+  transform: scale(1.1);
+  transition: 0.3s ease-in;
+  color: white;
 }
 
-.landp-img-02:hover {
-  color: white;
-  background-color: var(--orange, orange);
-  transition: 0.5s ease-in;
-}
 
 /* =============================Drag to resize sidebar start ===================================== */
 #resizer {
@@ -146,63 +167,13 @@ img {
 
 footer {
   border: 2px solid wheat;
+  background-color: var(--grey);
+  color: white;
   bottom: 0 !important;
 }
 
 /* =========================================================== */
-/* .thumbnail {
-  margin-bottom: 20px;
-  padding: 0px;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  border-radius: 0px;
-} */
 
-/* .component.list-group-item {
-  float: none;
-  width: 100%;
-  background-color: #fff;
-  margin-bottom: 10px;
-}
-
-.component.list-group-item:nth-of-type(odd):hover,
-.component.list-group-item:hover {
-  background: #428bca;
-}
-
-.component.list-group-item .list-group-image {
-  margin-right: 10px;
-}
-
-.component.list-group-item .thumbnail {
-  margin-bottom: 0px;
-}
-
-.component.list-group-item .caption {
-  padding: 9px 9px 0px 9px;
-}
-
-.component.list-group-item:nth-of-type(odd) {
-  background: #eeeeee;
-}
-
-.component.list-group-item:before,
-.component.list-group-item:after {
-  display: table;
-  content: " ";
-}
-
-.component.list-group-item img {
-  float: left;
-}
-
-.component.list-group-item:after {
-  clear: both;
-}
-
-.list-group-item-text {
-  margin: 0 0 11px;
-} */
 
 .list-view {
   display: flex;
@@ -219,3 +190,28 @@ footer {
   height: 20vw;
   object-fit: cover;
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  border: 3px solid black;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+
+/* .tooltip:hover .tooltiptext {
+  visibility: visible;
+} */

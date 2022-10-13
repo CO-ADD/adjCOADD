@@ -62,10 +62,37 @@
 </head>
 
 <body>
+  <div id="top-alert">
+    <a class="text-light" href=""><i class="bi bi-house"></i></a>
+    <a class="text-light" href=""><i class="bi bi-info"></i>about us</a>
+    <a class="text-light" href=""><i class="bi bi-git"></i>github</a>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+  </div>
+
+  <script>
+    $(".btn-close-white").click(function () { $('#top-alert').toggle() })
+  </script>
+
   <nav class="navbar navbar-expand-lg navbar-light py-2">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{%url 'index'%}"><img style="width: 30%;" src="{% static '/css/logo-fullsize.png'%}"
-          alt="CoADD Logo"></a>
+      <div class="d-flex flex-column ">
+
+        <a class="navbar-brand " href="{%url 'index'%}"><img style="width: 100%;"
+            src="{% static '/css/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo"></a>
+        <ul class="navbar-nav justify-content-around">
+          <li class="nav-item "><a class="nav-link active" href="">home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="">contact</a></li>
+          <li class="nav-item"><a class="nav-link active" href="">portal</a></li>
+        </ul>
+      </div>
+      <form class="d-flex  flex-grow-1 mx-5 ">
+        <div class="input-group mb-0 mx-5">
+          <input type="text" class="form-control" placeholder="Search">
+          <button class="btn btn-outline-secondary btn2" type="button" id="button-addon2"><i
+              class="bi bi-search"></i></button>
+        </div>
+      </form>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -73,14 +100,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ms-auto fs-5">
+
           <li class="nav-item">
-            <form class="d-flex mx-2">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{%url 'compounds'%}">screening data</a>
+            <a class="nav-link active" aria-current="page" href="{%url 'compounds'%}">screening
+              data</a>
           </li>
           <li class="nav-item">
             <a class="nav-link " href="#">organisms</a>
@@ -113,138 +136,58 @@
   </main>
 
   <!-- Footer -->
-  <footer class="footer bg-dark text-white mt-auto">
-    <!-- Grid container -->
-    <div class="d-flex justify-content-around gx-5 border ">
-      <!-- Section: Social media -->
-      <div class="d-flex justify-content-between m-auto`">
-        <!-- Facebook -->
+  <footer>
+    <div class="p-grid">
+      <div class="p-col-3"><img id="j_idt70"
+          src="/javax.faces.resource/images/logo-white-transparent.png.xhtml?ln=WEB-INF" alt="" />
         <div>
-
-          <a class="bi bi-facebook" href="#!"></a>
-
+          <span>Community for Open Antimicrobial Drug Discovery</span>
         </div>
-        <!-- Twitter -->
-        <a class="bi bi-twitter" href="#!"></a>
-
-        <!-- youtube -->
-        <a class="bi bi-youtube" href="#!" role="button"></a>
-
-        <!-- Linkedin -->
-        <a class="bi bi-linkedin" href="#!" role="button"></a>
-
       </div>
-      <!-- Section: Social media -->
-
-      <!-- Section: Form -->
-      <div class="">
-        <form action="">
-          <!--Grid row-->
-          <div class="row d-flex justify-content-center">
-            <!--Grid column-->
-            <div class="col-auto">
-              <p class="pt-2">
-                <strong>Sign up for our newsletter</strong>
-              </p>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-5 col-12">
-              <!-- Email input -->
-              <div class="form-outline form-white mb-4">
-                <input type="email" id="form5Example21" class="form-control" />
-                <label class="form-label" for="form5Example21">Email address</label>
-              </div>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-auto">
-              <!-- Submit button -->
-              <button type="submit" class="btn btn-outline-light mb-4">
-                Subscribe
-              </button>
-            </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
-        </form>
+      <div class="p-col-2" style="text-align: center">
+        <a href="https://wellcome.ac.uk/" class="wellcome-logo"><img id="j_idt72"
+            src="/javax.faces.resource/images/wellcome-logo-white.png.xhtml?ln=WEB-INF" alt="wellcome Trust" />
+        </a>
       </div>
-      <!-- Section: Form -->
-
-      <!-- Section: Text -->
-      <div class="">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-          repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
-          eum harum corrupti dicta, aliquam sequi voluptate quas.
-        </p>
+      <div class="p-col-2" style="text-align: center">
+        <a href="https://imb.uq.edu.au/" class="uq-logo"><img id="j_idt74"
+            src="/javax.faces.resource/images/uq-logo-white.png.xhtml?ln=WEB-INF" alt="IMB@UQ" />
+        </a>
       </div>
-      <!-- Section: Text -->
-
-      <!-- Section: Links -->
-      <div class="">
-        <!--Grid row-->
-        <div class="row">
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-
-            </ul>
+      <div class="p-col-3" style="text-align: center">
+        <ul class="landing-menu" style="padding-top: 0px">
+          <li class="address"><a
+              href="https://www.google.com/maps/place/Institute+for+Molecular+Bioscience/@-27.4981446,153.0076114,17z/data=!3m1!4b1!4m5!3m4!1s0x6b915083e57a72a5:0xc5bf340cb2bae14e!8m2!3d-27.4981446!4d153.0098001">306
+              Carmody Rd, The University of Queensland, St. Lucia, QLD, 4072,
+              Australia</a></li>
+          <li class="phone">Phone: <a href="tel:+61-7-334-62389">(+61) 7-334-62389</a></li>
+          <li class="email">Email: <a
+              href="mailto:info@co-add.org?subject=Enquiry%20from%20db.co-add.org">info@co-add.org</a></li>
+        </ul>
+      </div>
+      <div class="p-col-2 social-icons">
+        <div class="p-grid">
+          <div class="p-col">
+            <a href="https://www.facebook.com/coadd/"> <i class="fa fa-facebook-official" aria-hidden="true"></i>
+            </a>
           </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-
-            </ul>
+          <div class="p-col">
+            <a href="https://twitter.com/COADD_news"> <i class="fa fa-twitter-square" aria-hidden="true"></i>
+            </a>
           </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-
-            </ul>
+          <div class="p-col">
+            <a href="https://www.youtube.com/channel/UCHssRlhe-7pp3bOzNRT0ZpA">
+              <i class="fa fa-youtube-square" aria-hidden="true"></i>
+            </a>
           </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase">Links</h5>
-
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#!" class="text-white">Link 1</a>
-              </li>
-
-            </ul>
+          <div class="p-col">
+            <a href="https://www.linkedin.com/company/community-for-open-antimicrobial-drug-discovery-co-add-">
+              <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+            </a>
           </div>
-          <!--Grid column-->
         </div>
-        <!--Grid row-->
       </div>
-      <!-- Section: Links -->
     </div>
-    <!-- Grid container -->
-
   </footer>
   <!-- Footer -->
 </body>

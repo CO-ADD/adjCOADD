@@ -94,24 +94,46 @@ DATABASES = {
     # },
 
 
-    'default': {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'OPTIONS':{'options': '-c search_path=app,public'},
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres', #os.environ.get('db_user'),
+    #     'PASSWORD':'',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # },
+    # 'drugs_db': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'OPTIONS':{'options': '-c search_path=aa_chem,public'},
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres', #os.environ.get('db_user'),
+    #     'PASSWORD': 'J.Zhong',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # }
+
+
+ 'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=app,public'},
-        'NAME': 'postgres',
-        'USER': 'postgres', #os.environ.get('db_user'),
-        'PASSWORD':'',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'OPTIONS':{'options': '-c search_path=userapp,public'},
+        'NAME': 'multi_schema',
+        'USER': 'tester', #os.environ.get('db_user'),
+        'PASSWORD':os.environ.get('db_password', 'password'),
+        'HOST': 'Localhost',
         'PORT': '5432',
     },
     'drugs_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=aa_chem,public'},
-        'NAME': 'postgres',
-        'USER': 'postgres', #os.environ.get('db_user'),
-        'PASSWORD': 'J.Zhong',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'OPTIONS':{'options': '-c search_path=chem_bank,public'},
+        'NAME': 'multi_schema',
+        'USER': 'tester', #os.environ.get('db_user'),
+        'PASSWORD': os.environ.get('db_password','password'),
+        'HOST': 'Localhost',
         'PORT': '5432',
     }
+
+
 }
 
 DATABASE_ROUTERS = ['aa_chem.dbRouter.DrugsRouter']
