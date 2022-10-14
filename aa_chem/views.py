@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.core import management
 from django.shortcuts import HttpResponse, render, redirect
 from django_rdkit.models import * 
-from aa_chem.models import Drugbank
+from aa_chem.models import Drugbank,Taxonomy
 from rdkit import Chem
 from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem import Draw
@@ -16,6 +16,37 @@ from rdkit.Chem.Draw import rdMolDraw2D
 from IPython.display import SVG
 import cairosvg
 import py3Dmol
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
+
+
+
+class TaxoCreateView(CreateView):
+    model=Taxonomy
+    fields='__all__'
+    template_name = 'aa_chem/taxoCreate.html'
+    success_url = reverse_lazy('compounds')
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+        return context
+
+class TaxoListView(ListView):
+    model=Taxonomy
+    paginate_by = 24
+    fields='__all__'
+    template_name = 'aa_chem/taxoList.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+        
+        print(context["objects"])
+        
+        return context
+
 
 
 def molecule_to_png(mol, file_name, width=1000, height=1000):
@@ -98,15 +129,15 @@ def importCSV(req):
 @permission_required('importdata')
 def exportCSV(req):
     response=HttpResponse(content_type='text/csv')
-    print(req.body)
+   
     writer=csv.writer(response)
-    writer.writerow(['id', 'drug_name','drug_mol'])
-    query=Drugbank.objects.all()
-    comp_list=[comp for comp in query.annotate(smiles=MOL_TO_SMILES('drug_mol'))]
+    writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"])#['id', 'drug_name','drug_mol']
+    query=Taxonomy.objects.all()
+    comp_list=[comp for comp in query]
 
     for comp in comp_list:
-        writer.writerow([comp.id, comp.drug_name, comp.smiles])
+        writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"]) #[comp.id, comp.drug_name, comp.smiles]
 
-    response['Content-Disposition']='attachment; filename="drugs.csv"'
+    response['Content-Disposition']='attachment; filename="Taxo_export.csv"'
     return response
    

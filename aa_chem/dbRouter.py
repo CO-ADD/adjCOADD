@@ -1,6 +1,6 @@
-from .models import Drugbank
+from .models import Drugbank, AuditModel, Taxonomy, Genes, Organisms
 
-Route_list=[Drugbank, ]
+Route_list=[Drugbank, AuditModel, Taxonomy, Genes, Organisms]
 class DrugsRouter:
     """
     A router to control all database operations on models in the

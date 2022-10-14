@@ -35,6 +35,8 @@ urlpatterns = [
     path('exportData/', views.exportCSV, name="dataexport"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('user-profile/<int:id>/', userprofile, name='userprofile'),
+    path('compounds/create', views.TaxoCreateView.as_view(), name="taxo_create"),
+    path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list")
 ]
 
 if settings.DEBUG:

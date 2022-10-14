@@ -1,0 +1,117 @@
+DICT_TABLE,DICT_FIELD,DICT_VALUE,DICT_VALUE_TYPE,DICT_ORDER,DICT_DESCRIPTION,STATUS,ACREATEDBY,ACREATEDDATE,AMODIFIEDBY,AMODIFIEDDATE
+ANTIMICROBIOLS,DRUG_TYPE,Combination,String,,Combination of Drugs,,ORGDB,15-Oct-18,ORGDB,12-Nov-18
+ANTIMICROBIOLS,DRUG_TYPE,Prodrug,String,,Administrated as Pro-Drug,,ORGDB,15-Oct-18,ORGDB,12-Nov-18
+BREAKPOINTS,BP_TYPE,MIC,String,,Minimum Inhibitory Concentration (in ug/mL),,ORGDB,15-Oct-18,ORGDB,12-Nov-18
+BREAKPOINTS,BP_TYPE,ZONE,String,,Zone of Inhibition (in mm),,ORGDB,15-Oct-18,ORGDB,12-Nov-18
+BREAKPOINTS,BP_SOURCE,CLSI,String,,CLSI Guidline,,ORGDB,15-Oct-18,,
+BREAKPOINTS,BP_SOURCE,EUCAST,String,,EUCAST Guideline,,ORGDB,15-Oct-18,,
+APPLICATION_USER,ROLE,Group-Cooper,String,3,Cooper Group member,,CASTDB,30-Nov-18,CASTDB,31-May-18
+ORGANISM,SCREEN_PANEL,CO-ADD Std,String,1,CO-ADD Standard Panel (PS HC),,ORGDB,12-Dec-18,ORGDB,12-Dec-18
+ORGANISM,SCREEN_PANEL,CO-ADD Ext FG,String,2,CO-ADD Extended Fungal Panel (HV),,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,CO-ADD Ext Ser,String,5,CO-ADD Extended Panel for Serum reversal (HV),,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,Membrane Deficient GN,String,6,"Membrane Deficient G-ve Panel, incl Backgrounds ",,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,Antibiogram GN,String,91,Antibiogram Panel for G-ve,,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,Antibiogram GP,String,92,Antibiogram Panel for G+ve,,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,Antibiogram FG,String,90,Antibiogram Panel for Fungi,,ORGDB,12-Dec-18,ORGDB,13-Dec-18
+GENE,EXPRESSION,Constitutive,String,,Transcribed continually,,ORGDB,17-Jan-19,,
+GENE,EXPRESSION,Facultative,String,,Transcribed on demand,,ORGDB,17-Jan-19,,
+GENE,EXPRESSION,Induced,String,,Transcribed on response,,ORGDB,17-Jan-19,,
+GENE,EXPRESSION,Housekeeping,String,,Essential,,ORGDB,17-Jan-19,,
+APPLICATION_USER,ROLE,Admin,String,,Administrator,,ORGDB,27-Oct-17,,
+APPLICATION_USER,ROLE,ReadOnly,String,,Read-Only access,,ORGDB,27-Oct-17,,
+APPLICATION_USER,ROLE,WriteRead,String,,Write and Read access,,ORGDB,27-Oct-17,,
+ORGANISM,ORGANISM_CLASS,Mycobacteria,String,,Mycobacteria,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,ORGANISM_CLASS,Gram-Negative,String,,Gram-Negative Bacteria,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,ORGANISM_CLASS,Gram-Positive,String,,Gram-Positive Bacteria,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,ORGANISM_CLASS,Fungi,String,,Fungi,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,ORGANISM_CLASS,Mammalian,String,,Mammalian Cells,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,OXYGEN_PREF,Aerobic Microaerophiles,String,,"Requires oxygen for growth, but only at low concentration",,ORGDB,27-Oct-17,,
+ORGANISM,OXYGEN_PREF,Aerobic Obligate,String,,Requires oxygen for growth,,ORGDB,27-Oct-17,,
+ORGANISM,OXYGEN_PREF,Anaerobic Aerotolerant,String,,"Only Anaerobic respiration or Fermentation, but oxygen tolerant",,ORGDB,27-Oct-17,,
+ORGANISM,OXYGEN_PREF,Anaerobic Facultative,String,,"Both Aerobic respiration, or Fermentation or Anaerobic respiration ",,ORGDB,27-Oct-17,,
+ORGANISM,OXYGEN_PREF,Anaerobic Obligate ,String,,"Only Anaerobic respiration or Fermentation, and killed by oxygen ",,ORGDB,27-Oct-17,,
+ORGANISM,OXYGEN_PREF,Aerobic,String,,Grows best in presence of oxygen,,ORGDB,27-Oct-17,,
+ORGANISM,PATHOGEN,Pathogen,String,,Pathogenic Organism,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,PATHOGEN,Non-pathogen,String,,Non-pathogenic Organism,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,RISK_GROUP,RG1,String,,Risk Group 1,,ORGDB,27-Oct-17,,
+ORGANISM,RISK_GROUP,RG2,String,,Risk Group 2,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Clinical Isolate,String,,Strain isolated from patients,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Control,String,,Control strain,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Luminescent,String,,"Luminescent strain, usually by GMO",,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Mutant,String,,Organism with mutations,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Mutant GMO,String,,Organism with genetically manipulated mutations,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Mutant Induced,String,,Organism with induced mutations ,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Resistant,String,,Drug-Resistant,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Resistant MDR,String,,Multi Drug-Resistant,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Resistant XDR,String,,Extreme Drug-Resistant,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Type,String,,Type strain,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Avirulent,String,,Not virulent strain,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Serial passage,String,,Serial passage isolate,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Cancerous,String,,Cancerous or immortalized cell line,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,STRAIN_TYPE,Non-Cancerous,String,,Non cancerous cell line,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,STRAIN_TYPE,Primary cells,String,,Primary cells,,ORGDB,27-Oct-17,,
+ORGANISM,STRAIN_TYPE,Stable Transfected,String,,Stable transfected cell line,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,STRAIN_TYPE,Transfected,String,,Transfected cell line,,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM_MEDIA,CULTURE_TYPE,Growth Broth,String,1,,,ORGDB,27-Oct-17,ORGDB,23-Nov-18
+ORGANISM_MEDIA,CULTURE_TYPE,Growth Agar,String,0,,,ORGDB,27-Oct-17,ORGDB,23-Nov-18
+ORGANISM_MEDIA,CULTURE_TYPE,Glycerol Stock,String,3,,,ORGDB,27-Oct-17,ORGDB,23-Nov-18
+ORGANISM_MEDIA,CULTURE_TYPE,Growth Media,String,2,,,ORGDB,27-Oct-17,ORGDB,23-Nov-18
+ORGANISM_MEDIA,MEDIA_USE,Recommended,String,,,,ORGDB,27-Oct-17,,
+ORGANISM_MEDIA,MEDIA_USE,Inhouse,String,,,,ORGDB,27-Oct-17,,
+ORGANISM_MEDIA,MEDIA_USE,Freezing,String,,,,ORGDB,27-Oct-17,,
+ORGANISM_MEDIA,MEDIA_USE,GlycerolStock,String,,,,ORGDB,27-Oct-17,,
+ORGANISM_STOCK,STOCK_TYPE,Master,String,,Master Stock (Original),,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM_STOCK,STOCK_TYPE,Stock,String,,Stock (from Master),,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM_STOCK,STOCK_TYPE,HighUse,String,,High Usage Stock (from Stock),,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM_STOCK,STOCK_TYPE,LowPassage,String,,Low Passage Stock (from Master),,ORGDB,27-Oct-17,ORGDB,12-Nov-18
+ORGANISM,BIOL_APPROVAL,GMO,String,,NLRD for Genetically manipulated organism,,ORGDB,27-Oct-17,,
+ORGANISM,BIOL_APPROVAL,MDR,String,,IBC for multi/extreme-drug resistant organism,,ORGDB,27-Oct-17,,
+ORGANISM,BIOL_APPROVAL,SP,String,,IBC for organism with special precaution,,ORGDB,27-Oct-17,,
+ORGANISM,LAB_RESTRICTION,PC2.1,String,1,IMB 7.230 (Low Risk),,ORGDB,10-Jan-19,ORGDB,17-Jan-19
+ORGANISM,LAB_RESTRICTION,PC2.2,String,2,IMB 1.106 (Medium Risk),,ORGDB,10-Jan-19,ORGDB,17-Jan-19
+ORGANISM,LAB_RESTRICTION,PC2.3,String,3,IMB 1.108; IMB 6.027 (High Risk),,ORGDB,10-Jan-19,ORGDB,17-Jan-19
+ORGANISM,LAB_RESTRICTION,PC2.4,String,4,SCMB 76.353 (Fungal Lab),,ORGDB,17-Jan-19,ORGDB,17-Jan-19
+ORGANISM,LAB_RESTRICTION,PC2.0,String,0,IMB 7.???  (CellBiol Lab),,ORGDB,17-Jan-19,ORGDB,17-Jan-19
+ORGANISM,LAB_RESTRICTION,PC3,String,5,SCMB N.West  (PC3 TB Lab),,ORGDB,17-Jan-19,ORGDB,17-Jan-19
+ORGANISM_STOCK,STOCK_TYPE,Master_LN2,String,,Master Stock in liquid N2 (Original),,ORGDB,6-Sep-18,ORGDB,12-Nov-18
+MIC,BP_SOURCE,EUCAST-F,String,,EUCAST by Family,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_SOURCE,EUCAST-G,String,,EUCAST by Genus,,ORGDB,20-Dec-18,,
+MIC,BP_SOURCE,EUCAST-S,String,,EUCAST by Specie,,ORGDB,20-Dec-18,,
+MIC,BP_SOURCE,CLSI-F,String,,CSLI by Familiy,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_SOURCE,CLSI-G,String,,CSLI by Genus,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_SOURCE,CLSI-S,String,,CLSI by Specie,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_PROFILE,S,String,,Sensitive,,ORGDB,20-Dec-18,,
+MIC,BP_PROFILE,R,String,,Resistant,,ORGDB,20-Dec-18,,
+MIC,BP_PROFILE,I,String,,Intermediate,,ORGDB,20-Dec-18,,
+MIC,BP_PROFILE,S*,String,,Sensitive - test concentration too low,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_PROFILE,R*,String,,Resistant - test concentration too high ,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+MIC,BP_PROFILE,(S),String,,Sensitive - wrong combination ratio,,ORGDB,20-Dec-18,,
+MIC,BP_PROFILE,(R),String,,Resistant - wrong combination ratio,,ORGDB,20-Dec-18,,
+GENERAL,CONC_UNIT,uM,String,,,,ORGDB,20-Dec-18,,
+GENERAL,CONC_UNIT,mM,String,,,,ORGDB,20-Dec-18,,
+GENERAL,CONC_UNIT,ug/mL,String,,,,ORGDB,20-Dec-18,,
+GENERAL,CONC_UNIT,mg/mL,String,,,,ORGDB,20-Dec-18,,
+GENERAL,PLATE_SIZE,96w,String,,,,ORGDB,20-Dec-18,,
+GENERAL,PLATE_SIZE,384w,String,,,,ORGDB,20-Dec-18,,
+GENERAL,DR_PREFIX,<=,String,,,,ORGDB,20-Dec-18,,
+GENERAL,DR_PREFIX,>,String,,,,ORGDB,20-Dec-18,,
+GENERAL,DR_PREFIX,=,String,,,,ORGDB,20-Dec-18,,
+GENERAL,PLATE_MATERIAL,PS,String,,Polystyrene plates,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+GENERAL,PLATE_MATERIAL,PP,,,Polypropylene plates,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+GENERAL,PLATE_MATERIAL,NBS-PS,,,Non-Binding Surface Polystyrene plates,,ORGDB,20-Dec-18,ORGDB,20-Dec-18
+ORGANISM,SCREEN_PANEL,Eurofins Thigh,,,Eurofins Thigh infection model,,ORGDB,6-Aug-20,,
+ORGANISM,SCREEN_PANEL,Eurofins UTI,,,Eurofins UTI infection model,,ORGDB,6-Aug-20,,
+ORGANISM,SCREEN_PANEL,Eurofins Lung,,,Eurofins Lung infection model,,ORGDB,6-Aug-20,,
+ORGANISM,SCREEN_PANEL,Eurofins Peritonitis,,,Eurofins Peritonitis infection model,,ORGDB,6-Aug-20,,
+ORGANISM,SCREEN_PANEL,Eurofins Systemic,,,Eurofins Systemic infection model,,ORGDB,6-Aug-20,,
+ORGANISM,SCREEN_PANEL,Eurofins Vulvovaginal,,,Eurofins Vulvovaginal infection model,,ORGDB,6-Aug-20,,
+ORGANISM_MEDIA,CULTURE_TYPE,Freezing Media,String,4,,,ORGDB,23-Nov-18,,
+ORGANISM,SCREEN_PANEL,CO-ADD Ext GN,String,3,CO-ADD Extended G-ve Panel (HV),,ORGDB,13-Dec-18,,
+ORGANISM,SCREEN_PANEL,CO-ADD Ext GP,String,4,CO-ADD Extended G+ve Panel (HV),,ORGDB,13-Dec-18,,
+ORGANISM,SCREEN_PANEL,Acinetobacter Ext,String,10,Acinetobacter Panel,,ORGDB,13-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,COLOP Std,String,20,COLOP Standard G-ve Panel,,ORGDB,13-Dec-18,ORGDB,13-Dec-18
+ORGANISM,SCREEN_PANEL,VANCO Std,String,24,VANCO Standard G+ve Panel,,ORGDB,13-Dec-18,ORGDB,13-Dec-18
+ANTIMICROBIOLS,SCREEN_PANEL,CO-ADD Ctrl,String,1,CO-ADD Standard Panel (PS HC),,ORGDB,14-Dec-18,,
+ANTIMICROBIOLS,SCREEN_PANEL,Antibiogram Ctrl GN,,92,,,ORGDB,14-Dec-18,ORGDB,14-Dec-18
+ANTIMICROBIOLS,SCREEN_PANEL,Antibiogram Ctrl GP,,93,,,ORGDB,14-Dec-18,ORGDB,14-Dec-18
+ORGANISM,SCREEN_PANEL,Eurofins in vitro,,,Eurofins in vitro assays,,ORGDB,27-Jun-22,,

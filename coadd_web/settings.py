@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_rdkit',
+    "sequences.apps.SequencesConfig",
     'app',
     'aa_chem',
  
@@ -116,8 +117,8 @@ DATABASES = {
 
  'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=userapp,public'},
-        'NAME': 'multi_schema',
+        'OPTIONS':{'options': '-c search_path=app,public'},
+        'NAME': 'orgdb_test',
         'USER': 'tester', #os.environ.get('db_user'),
         'PASSWORD':os.environ.get('db_password', 'password'),
         'HOST': 'Localhost',
@@ -125,8 +126,8 @@ DATABASES = {
     },
     'drugs_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=chem_bank,public'},
-        'NAME': 'multi_schema',
+        'OPTIONS':{'options': '-c search_path=aa_chem,public'},
+        'NAME': 'orgdb_test',
         'USER': 'tester', #os.environ.get('db_user'),
         'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',

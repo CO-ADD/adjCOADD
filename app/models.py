@@ -1,4 +1,3 @@
-from django.db import models
 
 # Create your models here.
 from django.db import models
@@ -64,22 +63,25 @@ class Groupfilter(Group):
 # Application Models - General for any/most applications
 #
 
-from django.db import models
 
 class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 
     """
-    astatus = models.IntegerField(verbose_name = "Status", default = 0, index = True, editable=False)
-    acreated_at = models.DateTimeField(auto_now_add=True, verbose_name = "Created at",editable=False)
-    aupdated_at = models.DateTimeField(auto_now=True, blank=True, verbose_name = "Updated at",editable=False)
-    adeleted_at = models.DateTimeField(blank=True, verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(User, verbose_name = "Created by",editable=False)
-    aupdated_by = models.ForeignKey(User, blank=True, verbose_name = "Updated by",editable=False)
-    adeleted_by = models.ForeignKey(User, blank=True, verbose_name = "Deleted by",editable=False)
+    astatus = models.IntegerField(verbose_name = "Status", default = 0,  editable=False)   #index = True,
+    acreated_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name = "Created at",editable=False)
+    aupdated_at = models.DateTimeField(auto_now=True, null=True, verbose_name = "Updated at",editable=False)
+    adeleted_at = models.DateTimeField(null=True, verbose_name = "Deleted at",editable=False)
+    acreated_by = models.ForeignKey(User,blank=True, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created', editable=False, on_delete=models.CASCADE) #%(class)s_
+    aupdated_by = models.ForeignKey(User, blank=True,  null=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False, on_delete=models.CASCADE)
+    adeleted_by = models.ForeignKey(User, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
+        indexes = [
+            models.Index(fields=['astatus']),
+            
+        ]
     
     def delete(self,**kwargs):
         self.astatus = -9
@@ -100,12 +102,12 @@ class ApplicationDictionary(AuditModel):
     dict_field = models.CharField(max_length=15,  verbose_name = "Dict Field")
     dict_value = models.CharField(max_length=50, verbose_name = "Dict Value")
     dict_value_type = models.CharField(max_length=20, verbose_name = "Dict Value Type")
-    dict_order = models.IntegerField(verbose_name = "Dict Value Order")
+    dict_order = models.IntegerField(verbose_name = "Dict Value Order", null=True, blank=True)
     dict_desc = models.CharField(max_length=120, blank=True, verbose_name = "Dict Value Description")
 
     class Meta:
         db_table = 'application_dictionary'
-        unique_together = (('dict_type', 'dict_value'),)
+        unique_together = (('dict_value_type', 'dict_value'),)
 
     def __str__(self) -> str:
         return f"{self.dict_value} ({self.dict_table}.{self.dict_field})"
@@ -116,7 +118,7 @@ class ApplicationLog(models.Model):
     log_proc = models.CharField(max_length=50, blank=True, editable=False)
     log_type = models.CharField(max_length=15, blank=True, editable=False)
     log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
-    log_user = models.ForeignKey(User, editable=False)
+    log_user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
     log_object = models.CharField(max_length=15, blank=True, editable=False)
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)

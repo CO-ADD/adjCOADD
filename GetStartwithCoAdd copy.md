@@ -77,6 +77,8 @@ rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
    step 1 run  ```manage.py migrate <yourapp> --database <wanted database name>```
    step 2 run  ```manage.py migrate```
 
+4. Error: migrations.exceptions.InvalidBasesError...This can happen if you are inheriting ....
+   check if wrongly deleted directory "migrations", if it is, solve it by creating a migrations directory at the root of your app and adding an empty __init__.py file might resolve your issue.  
 
 ## User Guide section
 

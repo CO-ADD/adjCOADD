@@ -1,6 +1,6 @@
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
-
+from app.models import User
 # Create your models here.
 
 class Drugbank(models.Model):
@@ -38,23 +38,27 @@ class Drugbank(models.Model):
 #
 
 from typing import Sequence
-from django.db import models
+# from django.db import models
 from model_utils import Choices
 
 class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 
     """
-    astatus = models.IntegerField(verbose_name = "Status", default = 0, index = True, editable=False)
-    acreated_at = models.DateTimeField(auto_now_add=True, verbose_name = "Created at",editable=False)
-    aupdated_at = models.DateTimeField(auto_now=True, blank=True, verbose_name = "Updated at",editable=False)
-    adeleted_at = models.DateTimeField(blank=True, verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(User, verbose_name = "Created by",editable=False)
-    aupdated_by = models.ForeignKey(User, blank=True, verbose_name = "Updated by",editable=False)
-    adeleted_by = models.ForeignKey(User, blank=True, verbose_name = "Deleted by",editable=False)
+    astatus = models.IntegerField(verbose_name = "Status", default = 0, editable=False) #, index = True
+    acreated_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name = "Created at",editable=False)
+    aupdated_at = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name = "Updated at",editable=False)
+    adeleted_at = models.DateTimeField(blank=True, null=True, verbose_name = "Deleted at",editable=False)
+    acreated_by = models.ForeignKey(User,blank=True, null=True,editable=False, verbose_name = "Created by", related_name='%(class)s_requests_created', on_delete=models.CASCADE) #
+    aupdated_by = models.ForeignKey(User, blank=True, null=True,editable=False, verbose_name = "Updated by", related_name='%(class)s_requests_updated',on_delete=models.CASCADE) #
+    adeleted_by = models.ForeignKey(User, blank=True, null=True,editable=False, verbose_name = "Deleted by", related_name='%(class)s_requests_deleted',on_delete=models.CASCADE) #
 
     class Meta:
         abstract = True
+        indexes = [
+            models.Index(fields=['astatus']),
+            
+        ]
     
     def delete(self,**kwargs):
         self.astatus = -9
@@ -87,20 +91,20 @@ class Taxonomy(AuditModel):
     """
 
     Divisions = Choices(
-        ('ROD',_('Rodents')), 
-        ('BCT',_('Bacteria')),
-        ('MAM',_('Mammals')),
-        ('PLN',_('Plants and Fungi')),
-        ('PRI',_('Primates')),
+        ('ROD', ('Rodents')), 
+        ('BCT', ('Bacteria')),
+        ('MAM', ('Mammals')),
+        ('PLN', ('Plants and Fungi')),
+        ('PRI', ('Primates')),
     )
 
     Classes = Choices(
-        ('GN',_('Gram-Negative')), 
-        ('GP',_('Gram-Positive')),
-        ('MB',_('Mycobacteria')),
-        ('FG',_('Fungi')),
-        ('PL',_('Plant')),
-        ('MA',_('Mammalian')),
+        ('GN', ('Gram-Negative')), 
+        ('GP', ('Gram-Positive')),
+        ('MB', ('Mycobacteria')),
+        ('FG', ('Fungi')),
+        ('PL', ('Plant')),
+        ('MA', ('Mammalian')),
     )
 
     Organism_Name = models.CharField(unique=True, max_length=150, verbose_name = "Specie")
@@ -108,16 +112,16 @@ class Taxonomy(AuditModel):
     Code = models.CharField(blank=True, max_length=12, verbose_name = "Code")
     Class = models.CharField(blank=True, max_length=50, verbose_name = "Class",choices=Classes)
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID")
-    Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID")
+    Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID", default=468123)
     Tax_Rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    Division = models.CharField(blank=True, max_length=25, verbose_name = "Division",choices=Divisions)
-    Lineage = models.CharField(blank=True, max_length=1024, verbose_name = "Lineage")
-    """
-    # Optional for Linage as Array 
-    #  using LineageArray = Lineage.split('; ')
+    Division = models.CharField(blank=True, max_length=25, verbose_name = "Division", choices=Divisions)
+    Division_CODE = models.CharField(blank=True, max_length=25, verbose_name = "Division_code",default='PLN')
+    
+    #Lineage = models.CharField(blank=True, max_length=1024, verbose_name = "Lineage")
+    
 
-    Lineage = models.ArrayField( models.CharField(max_length=25, blank=True),size = 15) 
-    """
+    Lineage = ArrayField( models.CharField(max_length=25, blank=True),size = 15) 
+   
     
     class Meta:
         db_table = 'strain_taxonomy'
@@ -133,7 +137,7 @@ class Genes(AuditModel):
 #-------------------------------------------------------------------------------------------------
 """
 Sequence numbers https://pypi.org/project/django-sequences/
-
+"""
 from sequences import Sequence
 
 GN_Sequence=Sequence("Gram-Negative")
@@ -141,7 +145,7 @@ GP_Sequence=Sequence("Gram-Positive")
 MB_Sequence=Sequence("Mycobacteria")
 FG_Sequence=Sequence("Fungi")
 MA_Sequence=Sequence("Mammalian")
-"""
+
 class Organisms(AuditModel):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
@@ -149,17 +153,17 @@ class Organisms(AuditModel):
     """
 
     RiskGroups = Choices(
-        ('RG1',_('Risk Group 1')),
-        ('RG2',_('Risk Group 2')),
+        ('RG1', ('Risk Group 1')),
+        ('RG2', ('Risk Group 2')),
     )
 
     PathogenGroups = Choices(
-        ('PAT',_('Pathogen')),
-        ('NOP',_('Non-Pathogen')),
+        ('PAT', ('Pathogen')),
+        ('NOP', ('Non-Pathogen')),
     )
 
     Organism_ID = models.CharField(unique=True, max_length=15, verbose_name = "OrgID")
-    Organism_Name = models.ForeignKey(Taxonomy, blank=True, verbose_name = "Organism Name",on_delete=models.DO_NOTHING)
+    Organism_Name = models.ForeignKey(Taxonomy, blank=True, verbose_name = "Organism Name",on_delete=models.DO_NOTHING) #models do nothing?
     Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description")
     # Organism_Class= models.CharField(blank=True, max_length=50, verbose_name = "Organism Class") ... in Taxonomy.Organism_Class
 
@@ -174,7 +178,9 @@ class Organisms(AuditModel):
     Sequence_Link = models.CharField(blank=True, max_length=120, verbose_name = "Sequence Link")
     Geno_Type = models.CharField(blank=True, max_length=512, verbose_name = "GenoType")
 
-    Screen_Type = 
+    Screen_Type = ArrayField(
+        models.CharField(max_length=1000, blank=True, null=True), size=20, null=True, blank=True
+    )
 
     """
     # Optional for Strain_Type as Array based on multi-selectable
@@ -205,9 +211,11 @@ class Organisms(AuditModel):
     def __str__(self) -> str:
         return f"{self.OrgID} ({self.Strain_Code})"
 
-    def save(self, *args, **kwargs):
-        if ~self.pk: #Object does not exists
-            if self.
-             self.acreated_by = user
-        self.save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     org_id_pre=Sequence(self.Organism_Name)
+    #     print(self.Organism_Name)
+    #     if not self.Organism_ID: #Object does not exists
+    #         self.Organism_ID=self.Organism_Name+str(org_id_pre.get_nex_value())
+    #         # self.acreated_by = user
+    #     super().save(*args, **kwargs)
 
