@@ -383,3 +383,5 @@ dmypy.json
 
 #images
 /static/images
+
+#csv
