@@ -140,18 +140,19 @@ def home(req):
     if req.method=='POST':
         search =req.POST.get('search')
         field=req.POST.get('field')
-        if field=='drug_name':
-            result=Drugbank.objects.filter(drug_name__contains=search)
-        elif field=='status':
-            result=Drugbank.objects.filter(status__contains=search)
-        else:
-            result=Drugbank.objects.filter(drug_id__contains=search)
-            print(result)
+        if field=='Organism_Name':
+            result=Taxonomy.objects.filter(Organism_Name__contains=search)
+        # elif field=='status':
+        #     result=Taxonomy.objects.filter(status__contains=search)
+        # else:
+        #     result=Taxonomy.objects.filter(drug_id__contains=search)
+        #     print(result)
     else:
-        result=Drugbank.objects.all()
+        result=Taxonomy.objects.all()
 
 
-    objects_all=Taxonomy.objects.all()
+    # objects_all=Taxonomy.objects.all()
+    objects_all=result
     p=Paginator(objects_all, 24)
     page_number = req.GET.get('page')
     page_obj=p.get_page(page_number)
