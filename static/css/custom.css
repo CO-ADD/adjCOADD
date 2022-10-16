@@ -1,16 +1,15 @@
 @import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
 
 :root {
-  --orange: #FF6E00;
-  --grey: #625E5D;
-  --teal: #2C7A84;
+  --orange: #ff6e00;
+  --grey: #625e5d;
+  --teal: #2c7a84;
 }
 
 body {
   font-family: "Oswald", sans-serif !important;
   letter-spacing: 1px;
   color: var(--grey, teal);
-
 }
 
 #top-alert {
@@ -19,7 +18,6 @@ body {
   height: 35px;
   display: flex;
   justify-content: space-between;
-
 }
 
 .navbar-brand,
@@ -71,10 +69,8 @@ main {
   border: 2px solid white;
 }
 
-
 .home-banner {
   border-radius: 10% 25% 15% 25%;
-
 }
 
 .navbar-light {
@@ -88,7 +84,6 @@ main {
 .landp-img-03 {
   height: 8rem;
   width: 8rem;
-
 
   border-radius: 50%;
   margin: 1rem;
@@ -129,7 +124,6 @@ main {
   color: white;
 }
 
-
 /* =============================Drag to resize sidebar start ===================================== */
 #resizer {
   flex-basis: 10px;
@@ -164,7 +158,6 @@ main {
 
 /* =============================Drag to resize sidebar end ===================================== */
 
-
 footer {
   border: 2px solid wheat;
   background-color: var(--grey);
@@ -173,7 +166,6 @@ footer {
 }
 
 /* =========================================================== */
-
 
 .list-view {
   display: flex;
@@ -198,7 +190,6 @@ footer {
 }
 
 .tooltip .tooltiptext {
-
   width: 120px;
   background-color: black;
   color: #fff;
@@ -211,7 +202,19 @@ footer {
   z-index: 1;
 }
 
-
 /* .tooltip:hover .tooltiptext {
   visibility: visible;
 } */
+
+.all_comps {
+  background-color: #ddd3d0;
+}
+.compounds {
+  box-shadow: 0 8px 6px -6px var(--grey);
+}
+.compounds:hover {
+  border: 3px solid white;
+  /* box-shadow: 5px 10px rgb(199, 188, 188); */
+  transition: 0.2s ease-out;
+  box-shadow: 0px 5px 12px 0px var(--grey), 0px -5px 12px 0px var(--grey);
+}
