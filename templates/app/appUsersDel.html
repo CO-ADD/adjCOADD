@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <form
+      id="updateGroupForm"
+      method="POST"
+      class="post-form"
+      name="update-group"
+      action="/usermanagement_delete/{{object.id}}"
+    >
+      <!--prettier-ignore-->
+      {% csrf_token %}
+
+      <p>Are you sure you want to delete "{{ object }}"?</p>
+
+      <input type="submit" value="Confirm" />
+    </form>
+  </div>
+</div>

@@ -218,3 +218,6 @@ footer {
   transition: 0.2s ease-out;
   box-shadow: 0px 5px 12px 0px var(--grey), 0px -5px 12px 0px var(--grey);
 }
+.card-link {
+  cursor: pointer !important;
+}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Groupfilter
+from .models import User, Groupfilter,ApplicationUser
 from aa_chem.models import Drugbank
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.urls import reverse_lazy
 from .forms import GroupCreate 
 from django.contrib.auth import logout
+from django.contrib.auth.models import Permission
 # Create your views here.
 # def check_admin(user):
 #    return user.is_superuser
@@ -39,9 +40,22 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 @login_required
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
-    return render(req, 'app/userprofile.html', {'currentUser': current_user})
+    permissions = Permission.objects.filter(user=current_user)
+    return render(req, 'app/userprofile.html', {'currentUser': current_user, 'perm':permissions})
 
 
+class UserListView(LoginRequiredMixin, ListView):
+    model=ApplicationUser
+    fields='__all__'
+    template_name = 'app/appUsers.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+       
+        print(context["objects"])
+       
+        return context
 
 class GroupListView(LoginRequiredMixin, ListView):
     model=Groupfilter

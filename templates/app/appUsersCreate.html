@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <form
+      id="createGroupForm"
+      method="POST"
+      class="post-form"
+      name="create-group"
+      action="/usermanagement_create/"
+    >
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title">Create Group</h4>
+      </div>
+       
+      {{ form.as_p }}
+    <div class="modal-footer">
+
+      <input type="submit" class="btn btn-success m-auto" value="Add" />
+    </div>
+    </form>
+  </div>
+</div>

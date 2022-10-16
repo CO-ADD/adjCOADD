@@ -48,20 +48,19 @@
         </tr>
       </thead>
       <tbody>
-        {% for group in objects %}
+        {% for user in objects %}
         <tr>
-          <th scope="row">{{group.id}}</th>
-          <td>{{group.name}}</td>
-          <td>{{group.description}}</td>
+          <th scope="row">UQ: {{user.user_id}}</th>
+          <td>{{user.first_name}}</td>
+          <td>{{user.department}}</td>
           <td>
             <ul>
-              {%for user in group.user_set.all%}
-              {{user.username}}
-              {%endfor%}
+              permissions
+              {{user.user_permissions.all}}
             </ul>
           </td>
           <td>
-            <div id="{{group.id}}">
+            <div id="{{user.id}}">
               <a class="btn btn-success btn-sm">Update</a>
             </div>
 
@@ -70,10 +69,10 @@
             <script>
 
               $(document).ready(function () {
-                btn = "#" + "{{group.id}}"
+                btn = "#" + "{{user.id}}"
                 let my_modal = $('#groupUpdateModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'updateGroup' group.id %}", function () {
+                  my_modal.load("{% url 'updateGroup' user.id %}", function () {
                     my_modal.modal("show");
                   });
                 });
@@ -84,7 +83,7 @@
           </td>
           <td>
 
-            <div id="d{{group.id}}">
+            <div id="d{{user.id}}">
               <a class="btn btn-success btn-sm">delete</a>
             </div>
 
@@ -93,11 +92,11 @@
             <script>
 
               $(document).ready(function () {
-                btn = "#d" + "{{group.id}}"
+                btn = "#d" + "{{user.id}}"
                 console.log(btn)
                 let my_modal = $('#groupDelModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'deleteGroup' group.id %}", function () {
+                  my_modal.load("{% url 'deleteGroup' user.id %}", function () {
                     my_modal.modal("show");
 
                   });

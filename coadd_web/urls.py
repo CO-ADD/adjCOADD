@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, GroupListView, GroupCreateView, GroupUpdateView, GroupDeleteView
+from app.views import index, userprofile, GroupListView, GroupCreateView, GroupUpdateView, GroupDeleteView, UserListView
 from aa_chem import views
 
 urlpatterns = [
@@ -29,6 +29,8 @@ urlpatterns = [
     path('usermanagement_create/', GroupCreateView.as_view(), name="createGroup"),
     path('usermanagement_update/<int:pk>', GroupUpdateView.as_view(), name="updateGroup"),
     path('usermanagement_delete/<int:pk>', GroupDeleteView.as_view(), name="deleteGroup"),
+    path('userslist/', UserListView.as_view(), name="userslist"),
+
     path('accounts/', include('django.contrib.auth.urls')),
   
     path('importData/', views.importCSV, name="dataimport"),
@@ -39,7 +41,8 @@ urlpatterns = [
     path('compounds/createOrg', views.OrgCreateView.as_view(), name="org_create"),
     path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
     path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
-    path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table")
+    path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
+    path('compounds/taxo/<int:pk>', views.TaxoUpdateView.as_view(), name="taxo_update"),
 ]
 
 if settings.DEBUG:

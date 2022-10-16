@@ -45,7 +45,7 @@ class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 
     """
-    astatus = models.IntegerField(verbose_name = "Status", default = 0, editable=False) #, index = True
+    astatus = models.IntegerField(verbose_name = "Status", default = 0, editable=False, db_index=True) #, index = True
     acreated_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name = "Created at",editable=False)
     aupdated_at = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name = "Updated at",editable=False)
     adeleted_at = models.DateTimeField(blank=True, null=True, verbose_name = "Deleted at",editable=False)
@@ -162,22 +162,22 @@ class Organisms(AuditModel):
         ('NOP', ('Non-Pathogen')),
     )
 
-    Organism_ID = models.CharField(unique=True, blank=True, max_length=15, verbose_name = "OrgID") #must be blank for automatic generate a new one
+    Organism_ID = models.CharField(unique=True, blank=True, max_length=100, verbose_name = "OrgID") #must be blank for automatic generate a new one
     Organism_Name_set= models.ForeignKey(Taxonomy, verbose_name = "Organism Name Set",on_delete=models.DO_NOTHING) #models do nothing?
     Organism_Name=models.CharField(unique=True,blank=True, max_length=312, verbose_name = "Organism Name", editable=False)
-    Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", default="NotFoundValue")
+    Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", default="--")
     # Organism_Class= models.CharField(blank=True, max_length=50, verbose_name = "Organism Class") ... in Taxonomy.Organism_Class
 
-    Strain_ID= models.CharField(blank=True, max_length=250, verbose_name = "Strain ID", default="NotFoundValue")
-    Strain_Code= models.CharField(blank=True, max_length=500, verbose_name = "Strain Code", default="NotFoundValue")
-    Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="NotFoundValue")
-    Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="NotFoundValue")
-    Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="NotFoundValue")
-    Strain_Type= models.CharField(blank=True, max_length=250, verbose_name = "Strain Types", default="NotFoundValue")
+    Strain_ID= models.CharField(blank=True, max_length=250, verbose_name = "Strain ID", default="--")
+    Strain_Code= models.CharField(blank=True, max_length=500, verbose_name = "Strain Code", default="--")
+    Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="--")
+    Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="--")
+    Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="--")
+    Strain_Type= models.CharField(blank=True, max_length=250, verbose_name = "Strain Types", default="--")
 
-    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="NotFoundValue")
-    Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="NotFoundValue")
-    Geno_Type = models.CharField(blank=True, max_length=512, verbose_name = "GenoType", default="NotFoundValue")
+    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--")
+    Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--")
+    Geno_Type = models.CharField(blank=True, max_length=512, verbose_name = "GenoType", default="--")
 
     Screen_Type = ArrayField(
         models.CharField(max_length=1000, blank=True, null=True), size=20, null=True, blank=True
@@ -191,15 +191,15 @@ class Organisms(AuditModel):
 
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0)
 
-    Risk_Group = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=RiskGroups, default="NotFoundValue")
-    Pathogen = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=PathogenGroups, default="NotFoundValue")
+    Risk_Group = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=RiskGroups, default="--")
+    Pathogen = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=PathogenGroups, default="--")
 
-    Import_Permit = models.CharField(blank=True,max_length=500, verbose_name = "Import Permit", default="NotFoundValue")
-    Biol_Approval = models.CharField(blank=True, max_length=500, verbose_name = "Biological Approval", default="NotFoundValue")
-    Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="NotFoundValue")
-    Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="NotFoundValue")
-    MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="NotFoundValue")
-    MTA_Status = models.CharField(blank=True, max_length=500, verbose_name = "MTA Status", default="NotFoundValue")
+    Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--")
+    Biol_Approval = models.CharField(blank=True, max_length=450, verbose_name = "Biological Approval", default="--")
+    Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--")
+    Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--")
+    MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="--")
+    MTA_Status = models.CharField(blank=True, max_length=500, verbose_name = "MTA Status", default="--")
 
     Oxygen_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Oxygen Preference")
     Atmosphere_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Atmosphere Preference")
@@ -218,7 +218,7 @@ class Organisms(AuditModel):
             org_id_pre=Sequence(self.Organism_Name_set.Class)
 
             num=next(org_id_pre)
-            self.Organism_ID=self.Organism_Name_set.Class+'_'+'000'+str(num)
+            self.Organism_ID=self.Organism_Name_set.Class+'_'+str(num).zfill(4)
             # print(self.Organism_ID)
             # self.acreated_by = user
         if not self.Organism_Name:

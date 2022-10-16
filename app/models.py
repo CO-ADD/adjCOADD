@@ -68,7 +68,7 @@ class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 
     """
-    astatus = models.IntegerField(verbose_name = "Status", default = 0,  editable=False)   #index = True,
+    astatus = models.IntegerField(verbose_name = "Status", default = 0,  editable=False, db_index=True)   #index = True,
     acreated_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name = "Created at",editable=False)
     aupdated_at = models.DateTimeField(auto_now=True, null=True, verbose_name = "Updated at",editable=False)
     adeleted_at = models.DateTimeField(null=True, verbose_name = "Deleted at",editable=False)
@@ -144,6 +144,7 @@ class ApplicationUser(AuditModel):
 
     class Meta:
         db_table = 'application_user'
+        permissions = (('update', 'change data'),)
 
     def __str__(self) -> str:
         return f"{self.first_name}.{self.last_name} ({self.user_id})"

@@ -51,6 +51,12 @@ class TaxoCreateView(CreateView):
         context["objects"]=self.model.objects.all()
         return context
 
+class TaxoUpdateView(UpdateView):
+    model=Taxonomy
+    fields='__all__'
+    template_name = 'aa_chem/taxoUpdate.html'
+    success_url = reverse_lazy('compounds')
+
 
 class OrgCreateView(CreateView):
     model=Organisms
