@@ -41,6 +41,7 @@ urlpatterns = [
     path('compounds/createOrg', views.OrgCreateView.as_view(), name="org_create"),
     path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
     path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
+    path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
     path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
     path('compounds/taxo/<int:pk>', views.TaxoUpdateView.as_view(), name="taxo_update"),
 ]

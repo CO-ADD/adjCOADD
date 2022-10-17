@@ -1,125 +1,128 @@
-<div id="body">
-    <form class="text-dark" action="{% url 'dataimport' %}" method="POST">
-        {%csrf_token%}
-        <label class="form-label mt-3"
-          >Import .sdf file by enter full file path
-          multiple files seperated directly by ","</label
-        >
-        <input class="form-control-sm" name="fdata" type="text" disabled/>
-        <input
-          class="btn btn-outline-secondary my-2"
-          class="form-control-sm"
-          type="submit"
-          value="Import..."
-        disabled/>
-      </form>
+<div id="tabs">
+  <ul class="nav nav-tabs" id="prodTabs">
+    <li class="active"><a href="#tab_basic">Tableoview</a></li>
+    <br>
+    <li><a href="#tab_images" data-url="{%url 'taxo_list_view'%}">Listview</a></li>
 
-    <div class="pagination" style="float:right">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-        
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-        
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href='#' onclick="showLoaderOnClick('{{page_obj.paginator.num_pages}}')">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-<div id="createTaxo">
-    
-    <a class="btn m-auto" >Create New Taxo 
-      <i class="bi bi-plus"></i>
-    </a>
-  </div>
+  </ul>
+  <div class="tab-content">
+    <div id="tab_basic" class="tab-pane active">
+      <div id="body">
+        <form class="text-dark" action="{% url 'dataimport' %}" method="POST">
+          {%csrf_token%}
+          <label class="form-label mt-3">Import .sdf file by enter full file path
+            multiple files seperated directly by ","</label>
+          <input class="form-control-sm" name="fdata" type="text" disabled />
+          <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Import..."
+            disabled />
+        </form>
 
-  <div id="createTaxoModal" class="modal fade" role="dialog">
-  </div>
-  <script>
+        <div class="pagination" style="float:right">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
 
-    $(document).ready(function () {
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
 
-      let my_modal = $("#createTaxoModal");
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href='#' onclick="showLoaderOnClick('{{page_obj.paginator.num_pages}}')">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+        <div id="createTaxo">
 
-      $("#createTaxo a").click(function () {
-        my_modal.load("{%url 'taxo_create'%}", function () {
-          my_modal.modal("show"); // Open Modal
+          <a class="btn m-auto">Create New Taxo
+            <i class="bi bi-plus"></i>
+          </a>
+        </div>
 
-        });
-      });
-    });
+        <div id="createTaxoModal" class="modal fade" role="dialog">
+        </div>
+        <script>
 
-  </script>
-    <a id="taxo-list" href="#">List View</a>
-    <div class="row d-flex flex-wrap">
-        {% for taxo in page_obj %}
-        
-        <div id="comps-taxo" class="col-md-3">
+          $(document).ready(function () {
+
+            let my_modal = $("#createTaxoModal");
+
+            $("#createTaxo a").click(function () {
+              my_modal.load("{%url 'taxo_create'%}", function () {
+                my_modal.modal("show"); // Open Modal
+
+              });
+            });
+          });
+
+        </script>
+        <a id="taxo-list" href="#">List View</a>
+        <div class="row d-flex flex-wrap">
+          {% for taxo in page_obj %}
+
+          <div id="comps-taxo" class="col-md-3">
             <div class="card bg-transparent my-2 compounds">
-            {%load static%}
+              {%load static%}
 
-            <img class="card-img m-auto" src="{%static 'images/'%}{{taxo.id}}.svg" alt="Structure" />
-            <p class="lead fs-4 m-auto"> ID: {{taxo.Tax_ID}}</p>
-            <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
-            <div id="{{taxo.id}}" style="margin: auto">
-                  <a class="card-link">Update</a>
-                </div>
-    
-                <div id="taxoUpdateModal" class="modal fade" role="dialog">
-                </div>
-            <p>
-                <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{taxo.id}}"
+              <img class="card-img m-auto" src="{%static 'images/'%}{{taxo.id}}.svg" alt="Structure" />
+              <p class="lead fs-4 m-auto"> ID: {{taxo.Tax_ID}}</p>
+              <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
+              <div id="{{taxo.id}}" style="margin: auto">
+                <a class="card-link">Update</a>
+              </div>
+
+              <div id="taxoUpdateModal" class="modal fade" role="dialog">
+              </div>
+              <p>
+              <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{taxo.id}}"
                 aria-expanded="false" aria-controls="{{taxo.id}}">
                 <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+              </div>
+
+              </p>
+              <div class="collapse" id="collapse{{taxo.id}}">
+
+                <div class="card-body d-flex flex-column align-items-start">
+
+                  <p class="lead fs-5 text-dark">Tax_ID: {{taxo.Tax_ID}}}</p>
+                  <p class="fw-bold lead fs-5 text-success">
+                    {{taxo.Lineage}}
+
+                    {%for item in taxo.Lineage%}
+                    <li>{{item}}</li>
+                    {%endfor%}
+                  </p>
+
+                  <p>Division_CODE:
+                    {{taxo.Division_CODE}}
+                  </p>
+                  <ul>
+                    <li>
+                      {{taxo.Other_Names}}
+                    </li>
+                    <li>
+                      {{taxo.Code}}
+                    </li>
+                    <li>
+                      {{taxo.Class}}
+                    </li>
+
+                    <li>
+                      {{taxo.Tax_Rank}}
+                    </li>
+                    <li>
+                      {{taxo.Division}}
+                    </li>
+                  </ul>
+                  <!--prettier-ignore-->
+
+                </div>
+              </div>
             </div>
 
-            </p>
-            <div class="collapse" id="collapse{{taxo.id}}">
-                
-                <div class="card-body d-flex flex-column align-items-start">
-                    
-                    <p class="lead fs-5 text-dark">Tax_ID: {{taxo.Tax_ID}}}</p>
-                    <p class="fw-bold lead fs-5 text-success">
-                        {{taxo.Lineage}}
-                        
-                        {%for item in taxo.Lineage%}
-                        <li>{{item}}</li>
-                        {%endfor%}
-                    </p>
-                    
-                    <p>Division_CODE:
-                        {{taxo.Division_CODE}}
-                    </p>
-                    <ul>
-                        <li>
-                            {{taxo.Other_Names}}
-                        </li>
-                        <li>
-                            {{taxo.Code}}
-                        </li>
-                        <li>
-                            {{taxo.Class}}
-                        </li>
-                        
-                        <li>
-                            {{taxo.Tax_Rank}}
-                        </li>
-                        <li>
-                            {{taxo.Division}}
-                        </li>
-                    </ul>
-                    <!--prettier-ignore-->
-                    
-                </div>
-            </div>
-        </div>
-        
-        <!-- ------------------------------------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------------------------------------- -->
             <script>
 
               $(document).ready(function () {
@@ -133,39 +136,63 @@
               });
 
             </script>
-        <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+          </div>
+          {%endfor%}
+
+
+        </div>
+        <hr>
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <div id="tab_images" class="tab-pane active">
+
+      </div>
+
     </div>
-    {%endfor%}
-    
-    
-</div>
-<hr>
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-        
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-        
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-         <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-</div>
-<script>
-    function showLoaderOnClick(url) {
-      showLoader();
-      window.location=url;
-  }
-function showLoader(){
-      $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
-  }
+    <script>
+      //the reason for the odd-looking selector is to listen for the click event
+      // on links that don't even exist yet - i.e. are loaded from the server.
+      $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
+        e.preventDefault();
+        var url = $(this).attr("data-url");
+
+        if (typeof url !== "undefined") {
+          var pane = $(this), href = this.hash;
+
+          // ajax load from data-url
+          $(href).load(url, function (result) {
+            pane.tab('show');
+          });
+        } else {
+          $(this).tab('show');
+        }
+      });
     </script>
 
-
+  </div>
+  <script>
+    function showLoaderOnClick(url) {
+      showLoader();
+      window.location = url;
+    }
+    function showLoader() {
+      $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+    }
+  </script>

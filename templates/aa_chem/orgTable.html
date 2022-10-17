@@ -8,26 +8,15 @@
         <div class="card-body">
           {%load static%}
 
-          <img
-            class="card-img m-auto"
-            src="{%static 'images/'%}{{comp.id}}.png"
-            alt="Structure"
-          />
+          <img class="card-img m-auto" src="{%static 'images/'%}{{object.id}}.svg" alt="Structure" />
           <p class="lead fs-4 m-auto">ID: {{object.ID}}</p>
           <h5 class="bi bi-tag fw-bold lead fs-4 m-auto">
             Name: {{object.Organism_Name}}
           </h5>
 
-          <div
-            class="text-center"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapse{{taxo.id}}"
-            aria-expanded="false"
-            aria-controls="{{taxo.id}}"
-          >
-            <i class="bi bi-chevron-bar-down"></i
-            ><i class="bi bi-chevron-bar-up"></i>
+          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{taxo.id}}"
+            aria-expanded="false" aria-controls="{{taxo.id}}">
+            <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
           </div>
 
           <div class="collapse" id="collapse{{taxo.id}}">

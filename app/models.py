@@ -10,12 +10,13 @@ from django.urls import reverse
 
 
 class User(AbstractUser):
+    role=models.CharField(max_length=250, null=True)
    
-    uq_id = models.IntegerField(null=True)
-    organisation = models.CharField(max_length=250, null=True)
-    department = models.CharField(max_length=250, null=True)
-    avatar = models.ImageField(null=True, upload_to='media')
-    createddate=models.DateTimeField(null=True,verbose_name = "Created on", auto_now_add=True, editable=False)
+    # uq_id = models.IntegerField(null=True)
+    # organisation = models.CharField(max_length=250, null=True)
+    # department = models.CharField(max_length=250, null=True)
+    # avatar = models.ImageField(null=True, upload_to='media')
+    # createddate=models.DateTimeField(null=True,verbose_name = "Created on", auto_now_add=True, editable=False)
 
 
     # def save(self, instance):
@@ -24,25 +25,25 @@ class User(AbstractUser):
     #     if user.is_superuser==False and my_groups=="":
     #         return
 
-    def get_short_name(self):
-        # Returns the short name for the user.
-        fStr = self.first_name
-        try:
-            iStr =fStr[0]
-            return f"{iStr}.{self.last_name}"
-        except Exception as err:
-            print (err)
-            return
+    # def get_short_name(self):
+    #     # Returns the short name for the user.
+    #     fStr = self.first_name
+    #     try:
+    #         iStr =fStr[0]
+    #         return f"{iStr}.{self.last_name}"
+    #     except Exception as err:
+    #         print (err)
+    #         return
 
     # def get_username(self):
     #     # Returns the short name for the user.
     #     return f"{self.id})"
 
-    def __str__(self):
-        return f"{self.username} ({self.email})"
+    # def __str__(self):
+    #     return f"{self.username} ({self.email})"
 
-    def is_admin(user):
-        return user.groups.filter(name='admin').exists()
+    # def is_admin(user):
+    #     return user.groups.filter(name='admin').exists()
    
 class Groupfilter(Group):
     filtername= models.CharField(max_length=250, null=True, unique=True)

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Groupfilter,ApplicationUser
-from aa_chem.models import Drugbank
+from aa_chem.models import Drugbank, Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
@@ -19,13 +19,13 @@ from django.contrib.auth.models import Permission
 # def my_view(request): 
 
 def index(req):
-
-    objects= Drugbank.objects.all()
+    
+    objects= Taxonomy.objects.all()
     if req.user.is_authenticated:
 
         user=User.objects.get(username=req.user.username)
-        my_groups = ', '.join(map(str, user.groups.all()))
-        if user.is_superuser==False and my_groups=="":
+        
+        if user.role=="":
             logout(req)
             user.delete()
             return redirect("/")
