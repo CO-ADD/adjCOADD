@@ -18,18 +18,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, GroupListView, GroupCreateView, GroupUpdateView, GroupDeleteView, UserListView
+from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView
 from aa_chem import views
 
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', index, name="index"),
     path('compounds/', views.home, name="compounds"),
-    path('usermanagement/', GroupListView.as_view(), name="usermanage"),
-    path('usermanagement_create/', GroupCreateView.as_view(), name="createGroup"),
-    path('usermanagement_update/<int:pk>', GroupUpdateView.as_view(), name="updateGroup"),
-    path('usermanagement_delete/<int:pk>', GroupDeleteView.as_view(), name="deleteGroup"),
-    path('userslist/', UserListView.as_view(), name="userslist"),
+    path('usermanagement/', AppUserListView.as_view(), name="usermanage"),
+    path('usermanagement_create/', AppUserCreateView.as_view(), name="createAppUser"),
+    path('usermanagement_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
+    path('usermanagement_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
+    path('userslist/', AppUserListView.as_view(), name="userslist"),
 
     path('accounts/', include('django.contrib.auth.urls')),
   

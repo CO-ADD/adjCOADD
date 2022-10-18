@@ -1,6 +1,6 @@
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
-from app.models import User
+from app.models import AuditModel
 # Create your models here.
 
 class Drugbank(models.Model):
@@ -41,38 +41,7 @@ from typing import Sequence
 # from django.db import models
 from model_utils import Choices
 
-class AuditModel(models.Model):
-    """
-    An abstract base class model that provides audit informations 
-    """
-    astatus = models.IntegerField(verbose_name = "Status", default = 0, editable=False, db_index=True) #, index = True
-    acreated_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name = "Created at",editable=False)
-    aupdated_at = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name = "Updated at",editable=False)
-    adeleted_at = models.DateTimeField(blank=True, null=True, verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(User,blank=True, null=True,editable=False, verbose_name = "Created by", related_name='%(class)s_requests_created', on_delete=models.CASCADE) #
-    aupdated_by = models.ForeignKey(User, blank=True, null=True,editable=False, verbose_name = "Updated by", related_name='%(class)s_requests_updated',on_delete=models.CASCADE) #
-    adeleted_by = models.ForeignKey(User, blank=True, null=True,editable=False, verbose_name = "Deleted by", related_name='%(class)s_requests_deleted',on_delete=models.CASCADE) #
 
-    class Meta:
-        abstract = True
-        indexes = [
-            models.Index(fields=['astatus']),
-            
-        ]
-    
-    def delete(self,**kwargs):
-        self.astatus = -9
-        self.adeleted_at = timezone.now()
-        self.adeleted_by = kwargs.get("user")
-        self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
-    
-    def save(self, *args, **kwargs):
-        user = kwargs.get("user")
-        if self.pk: #Object already exists
-            self.aupdated_by = user
-        else:
-            self.acreated_by = user
-        super(AuditModel,self).save(*args, **kwargs)
 
 
 #-------------------------------------------------------------------------------------------------
@@ -168,9 +137,7 @@ class Organisms(AuditModel):
     )
 
     Organism_ID = models.CharField(unique=True, blank=True, max_length=100, verbose_name = "OrgID") #must be blank for automatic generate a new one
-    Organism_Class_set= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Class Set", on_delete=models.DO_NOTHING ) #models do nothing?
-    
-    Organism_Name=models.CharField(unique=False, blank=True, max_length=312, verbose_name = "Organism Name", editable=False)
+    Organism_Name= models.ForeignKey(Taxonomy, null=True, blank=True, to_field='Organism_Name', verbose_name = "Organism Class Set", on_delete=models.DO_NOTHING ) #models do nothing?
     Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", default="--", null=True)
     # Organism_Class_set= models.CharField(blank=True, max_length=500, verbose_name = "Organism Class") #... in Taxonomy.Organism_Class
 
@@ -227,11 +194,5 @@ class Organisms(AuditModel):
             self.Organism_ID=self.Organism_Class_set.Class+'_'+str(num).zfill(4)
             print(self.Organism_ID)
             # self.acreated_by = user
-        if not self.Organism_Name:
-            self.Organism_Name=self.Organism_Class_set.Organism_Name
-        super().save(*args, **kwargs)
 
-    # def disable_triggers(self):
-    #     with connection.cursor() as cursor:
-    #         cursor.execute('ALTER TABLE "aa_chem.strain_organisms" DISABLE TRIGGER ALL;')
 

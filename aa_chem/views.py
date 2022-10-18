@@ -84,19 +84,6 @@ def home(req):
         molecule_to_svg(m, object_.id)
             
  
-    # comp_all=[comp for comp in Drugbank.objects.annotate(amw=AMW('drug_mol'))]
-    # comp_all=[comp for comp in Drugbank.objects.annotate(smiles=MOL_TO_SMILES('drug_mol'))]
-
-   ##!!will move this function to dataimport  
-    # for comp in comp_all:
-        
-    #     m=Chem.MolFromSmiles(comp.smiles)
-    #     molecule_to_svg(m, comp.id)
-    
-
-    # paginator = Paginator(comp_all, 2) #3 elements per page.
-    # page_number = req.GET.get('page')
-    # comp_all = paginator.get_page(page_number)
 
    
     context={
@@ -167,10 +154,6 @@ class OrgCreateView(CreateView):
     template_name = 'aa_chem/orgCreate.html'
     success_url = reverse_lazy('compounds')
 
-    # def get_context_data(self, **kwargs):
-    #     context=super().get_context_data(**kwargs)
-    #     context["objects"]=self.model.objects.all()
-    #     return context
 
 
 class OrgListView(ListView):
@@ -208,47 +191,15 @@ class OrgListView(ListView):
             
         return context
 
-class OrgTableView(ListView):
-    model=Organisms
-    paginate_by = 24
-    fields='__all__'
+class OrgTableView(OrgListView):
+  
     template_name = 'aa_chem/orgTable.html'
 
-    def get_context_data(self, **kwargs):
-        for filename in os.listdir("static/images"):
-                file_path=os.path.join("static/images", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
-
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        objects_all=[object_ for object_ in context["objects"]]
-        p=Paginator(objects_all, 24)
-        
-        for object_ in p.get_page(self.request.GET.get('page')):
-       
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
-
-            if object_.id%2==0:
-                m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-            else:
-                m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-            molecule_to_svg(m, object_.id)
-            
-        return context
+   
 
 
 
 # ==============================Function View===========================================================#
-
-
-
 
 
 # @staff_member_required

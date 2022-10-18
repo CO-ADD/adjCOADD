@@ -19,13 +19,15 @@ class Command(BaseCommand):
                 # print(row)
                 taxID=int('0'+row[22])
                 screen_panel=row[26].split(';')
+                organism_fkey=Taxonomy.objects.filter(Organism_Name=row[1])
+                print(organism_fkey[0])
                 try:
-                    obj, created=Organisms.objects.get_or_create(Organism_ID=row[0], Organism_Name=row[1], Organism_Desc=row[2], Strain_ID=row[3], 
+                    obj, created=Organisms.objects.get_or_create(Organism_ID=row[0], Organism_Class_set=organism_fkey[0], Organism_Name=row[1], Organism_Desc=row[2], Strain_ID=row[3], 
                                     Strain_Code=row[5], Strain_Desc=row[6], Strain_Notes=row[7], 
                                     Strain_Tissue=row[25], Strain_Type=row[4], Sequence=row[28], Sequence_Link=row[29], Geno_Type=row[33],
                                     Screen_Type=screen_panel, 
                                     Tax_ID =taxID,Risk_Group=row[9], Pathogen =row[10],Import_Permit =row[12],Biol_Approval =row[23],Special_Precaution =row[24],Lab_Restriction =row[27],MTA_Document =row[31],
-                                    MTA_Status =row[32],Oxygen_Pref =row[13],Atmosphere_Pref =row[14],Nutrient_Pref =row[15],Biofilm_Pref =row[16], )
+                                    MTA_Status =row[32],Oxygen_Pref =row[13],Atmosphere_Pref ='containSpecialCHA',Nutrient_Pref =row[15],Biofilm_Pref =row[16], )
                 
                 except Exception as err:
                     print(err)

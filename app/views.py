@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Groupfilter,ApplicationUser
+from .models import User, ApplicationUser
 from aa_chem.models import Drugbank, Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
@@ -25,7 +25,7 @@ def index(req):
 
         user=User.objects.get(username=req.user.username)
         
-        if user.role=="":
+        if user.role=='delete':
             logout(req)
             user.delete()
             return redirect("/")
@@ -44,7 +44,7 @@ def userprofile(req, id):
     return render(req, 'app/userprofile.html', {'currentUser': current_user, 'perm':permissions})
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class AppUserListView(LoginRequiredMixin, ListView):
     model=ApplicationUser
     fields='__all__'
     template_name = 'app/appUsers.html'
@@ -57,24 +57,13 @@ class UserListView(LoginRequiredMixin, ListView):
        
         return context
 
-class GroupListView(LoginRequiredMixin, ListView):
-    model=Groupfilter
-    fields='__all__'
-    template_name = 'app/groups.html'
 
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        context["objects2"]=User.objects.all()
-        print(context["objects"])
-        print(context["objects2"])
-        return context
 
-class GroupCreateView(SuperUserRequiredMixin, CreateView):
-    model=Groupfilter
+class AppUserCreateView(SuperUserRequiredMixin, CreateView):
+    model=ApplicationUser
     # fields='__all__'
     form_class=GroupCreate
-    template_name = 'app/groupsCreate.html'
+    template_name = 'app/appUsersCreate.html'
     success_url = reverse_lazy('usermanage')
 
     def get_context_data(self, **kwargs):
@@ -83,13 +72,13 @@ class GroupCreateView(SuperUserRequiredMixin, CreateView):
         return context
 
 
-class GroupUpdateView(SuperUserRequiredMixin, UpdateView):
-    model=Groupfilter
+class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
+    model=ApplicationUser
     fields='__all__'
-    template_name = 'app/groupsUpdate.html'
+    template_name = 'app/appUsersUpdate.html'
     success_url = reverse_lazy('usermanage')
 
-class GroupDeleteView(SuperUserRequiredMixin, DeleteView):
-    model=Groupfilter
-    template_name='app/groupsDelete.html'
+class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
+    model=ApplicationUser
+    template_name='app/appUsersDel.html'
     success_url = reverse_lazy('usermanage')

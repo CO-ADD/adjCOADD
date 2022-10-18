@@ -1,11 +1,11 @@
 
 from django import forms
-from .models import Groupfilter, User
+from .models import  ApplicationUser
 
 
 class GroupCreate(forms.ModelForm):
     class Meta:
-        model = Groupfilter
+        model = ApplicationUser
        
         fields='__all__'
         widgets = {

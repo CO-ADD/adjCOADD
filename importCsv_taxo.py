@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         path=input("enter the path directory")
         with open(os.path.join(settings.BASE_DIR / path)) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
+            csv_reader = csv.reader(csv_file, delimiter=';')
             next(csv_reader) #advance past the header
             
             #Taxonomy.objects.all().delete()

@@ -6,22 +6,22 @@
 <!-- Include -->
 <div class="container vh-100">
 
-  <div id="createGroup">
+  <div id="createAppUser">
     <a style="float:right" class="btn btn-success btn-sm">
       <i class="bi bi-plus"></i>
-      <span>Add New Group</span>
+      <span>Add New AppUser</span>
     </a>
   </div>
 
-  <div id="createGroupModal" class="modal fade" role="dialog">
+  <div id="createAppUserModal" class="modal fade" role="dialog">
   </div>
   <script>
 
     $(document).ready(function () {
 
-      let my_modal = $("#createGroupModal");
+      let my_modal = $("#createAppUserModal");
 
-      $("#createGroup a").click(function () {
+      $("#createAppUser a").click(function () {
         my_modal.load("/usermanagement_create/", function () {
           my_modal.modal("show"); // Open Modal
 
@@ -42,7 +42,7 @@
           <th scope="col">description</th>
           <!-- <th scope="col">set members</th> -->
 
-          <th scope="col">actually members</th>
+          <th scope="col">user role</th>
           <th scope="col">update</th>
           <th scope="col">delete</th>
         </tr>
@@ -55,8 +55,8 @@
           <td>{{user.department}}</td>
           <td>
             <ul>
-              permissions
-              {{user.user_permissions.all}}
+
+              {{user.permissions}}
             </ul>
           </td>
           <td>
@@ -64,15 +64,15 @@
               <a class="btn btn-success btn-sm">Update</a>
             </div>
 
-            <div id="groupUpdateModal" class="modal fade" role="dialog">
+            <div id="AppUserUpdateModal" class="modal fade" role="dialog">
             </div>
             <script>
 
               $(document).ready(function () {
                 btn = "#" + "{{user.id}}"
-                let my_modal = $('#groupUpdateModal');
+                let my_modal = $('#AppUserUpdateModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'updateGroup' user.id %}", function () {
+                  my_modal.load("{% url 'updateAppUser' user.id %}", function () {
                     my_modal.modal("show");
                   });
                 });
@@ -87,16 +87,16 @@
               <a class="btn btn-success btn-sm">delete</a>
             </div>
 
-            <div id="groupDelModal" class="modal fade" role="dialog">
+            <div id="AppUserDelModal" class="modal fade" role="dialog">
             </div>
             <script>
 
               $(document).ready(function () {
                 btn = "#d" + "{{user.id}}"
                 console.log(btn)
-                let my_modal = $('#groupDelModal');
+                let my_modal = $('#AppUserDelModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'deleteGroup' user.id %}", function () {
+                  my_modal.load("{% url 'deleteAppUser' user.id %}", function () {
                     my_modal.modal("show");
 
                   });

@@ -1,15 +1,10 @@
 <div class="modal-dialog">
   <div class="modal-content">
-    <form
-      id="updateGroupForm"
-      method="POST"
-      class="post-form"
-      name="update-group"
-      action="/usermanagement_update/{{object.id}}"
-    >
+    <form id="updateAppUserForm" method="POST" class="post-form" name="update-AppUser"
+      action="/usermanagement_update/{{object.id}}">
       {% csrf_token %}
       <div class="modal-header">
-        <h4 class="modal-title">Update Group</h4>
+        <h4 class="modal-title">Update AppUser</h4>
       </div>
 
       {{ form.as_p }}

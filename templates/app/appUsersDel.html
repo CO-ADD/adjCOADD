@@ -1,12 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content">
-    <form
-      id="updateGroupForm"
-      method="POST"
-      class="post-form"
-      name="update-group"
-      action="/usermanagement_delete/{{object.id}}"
-    >
+    <form id="updateAppUserForm" method="POST" class="post-form" name="update-AppUser"
+      action="/usermanagement_delete/{{object.id}}">
       <!--prettier-ignore-->
       {% csrf_token %}
 

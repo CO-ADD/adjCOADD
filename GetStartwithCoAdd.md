@@ -97,6 +97,24 @@ rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
 
    (s)This happens when wrongly deleted some user and records. To solve it, - have to clear this table records from DB, - run migrate app(contains this table) zero, - then again, run migrate app.
 
+
+6. (i) implement signal function to class Audit  and let each model inherit this function
+
+   (i) clear up html files, .py files...
+
+   (i) creating new org takes long time (200k Taxo Foreign Key)
+
+   (i) test remote server DB
+
+
+   (i) audit model including Foreign key User in aa_chem app result in migrating User models to the same schema
+       plan: using django entry_log. create a new app for audit purpose
+
+   (i) sequence short name 
+
+   (i) double check indexes setting, in django db_index
+
+
 ## User Guide section
 
 ### Get start
