@@ -1,12 +1,12 @@
-from .models import Drugbank, Taxonomy, Genes, Organisms#, Dictionaries
+from .models import Taxo#, Dictionaries
 
-Route_list=[Drugbank,Taxonomy, Genes, Organisms]#, Dictionaries
+Route_list=[Taxo]#,Dictionaries
 class DrugsRouter:
     """
     A router to control all database operations on models in the
     applications.
     """
-    route_app_labels={'aa_chem'}
+    route_app_labels={'test_sch'}
    
 
     def db_for_read(self, model, **hints):
@@ -14,7 +14,7 @@ class DrugsRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db'
+            return 'test_chem'
         return None
 
     def db_for_write(self, model, **hints):
@@ -22,7 +22,7 @@ class DrugsRouter:
         Attempts to write auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db'
+            return 'test_chem'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -43,5 +43,5 @@ class DrugsRouter:
         'auth_db' database.
         """
         if app_label in self.route_app_labels:
-            return db == 'drugs_db'
+            return db == 'test_chem'
         return None

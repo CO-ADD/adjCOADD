@@ -1,7 +1,18 @@
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
-from app.models import AuditModel
+from app.models import AuditModel, Dictionaries
+from sequences import Sequence
+from model_utils import Choices
+
+
 # Create your models here.
+
+
+
+
+
+
+
 
 class Drugbank(models.Model):
     
@@ -31,25 +42,9 @@ class Drugbank(models.Model):
         managed = True
         db_table = 'drugbank'
 
-
-
-#
-# Organism/Strain Models
-#
-
-from typing import Sequence
-# from django.db import models
-from model_utils import Choices
-
-
-
-
 #-------------------------------------------------------------------------------------------------
 
-
-
-
-class Taxonomy(AuditModel):
+class Taxonomy(models.Model):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
 
@@ -62,48 +57,29 @@ class Taxonomy(AuditModel):
         Division_Code   ROD, BCT, MAM, PLN, PRI
 
     """
+    Choice_Dictionaries = {
+        'Division':'Organism_Division',
+        'Class':'Organism_Class',
+    }
 
-    Divisions = Choices(
-        ('ROD', ('Rodents')), 
-        ('BCT', ('Bacteria')),
-        ('MAM', ('Mammals')),
-        ('PLN', ('Plants and Fungi')),
-        ('PRI', ('Primates')),
-    )
-
-    Classes = Choices(
-        ('GN', ('Gram-Negative')), 
-        ('GP', ('Gram-Positive')),
-        ('MB', ('Mycobacteria')),
-        ('FG', ('Fungi')),
-        ('PL', ('Plant')),
-        ('MA', ('Mammalian')),
-    )
-
-    Organism_Name = models.CharField(unique=True, max_length=150, verbose_name = "Specie")
+    Organism_Name = models.CharField(primary_key=True, unique=True, max_length=150, verbose_name = "Specie")
     Other_Names = models.CharField(blank=True, max_length=250, verbose_name = "Other Names")
     Code = models.CharField(blank=True, max_length=12, verbose_name = "Code")
-    Class = models.CharField(blank=True, max_length=50, verbose_name = "Class",choices=Classes)
-   
+    Class = models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID")
-    Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID", default=468123) #empty from no.207668 
+    Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
     Tax_Rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    Division = models.CharField(blank=True, max_length=25, verbose_name = "Division", choices=Divisions)
-    Division_CODE = models.CharField(blank=True, max_length=25, verbose_name = "Division_code",default='PLN')
-    
-    #Lineage = models.CharField(blank=True, max_length=1024, verbose_name = "Lineage")
-    
-
-    Lineage = ArrayField( models.CharField(max_length=25, blank=True),size = 15) 
-   
-    
-    class Meta:
-        db_table = 'strain_taxonomy'
+    Division= models.CharField(max_length=150, blank=True, null=True)
+    # Division = models.ForeignKey(app.Dictionaries, blank=True, verbose_name = "Division", related_name='%(class)s_requests_Div',on_delete=models.DO_NOTHING)
+    Lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 15)
+    # Division_CODE = models.CharField(blank=True, max_length=25, verbose_name = "Division_code",default='PLN')
 
     def __str__(self) -> str:
         return f"{self.Organism_Name}"
 
-class Genes(AuditModel):
+
+class Genes(models.Model):
+    pass
     """
     List of different bacterial genes  of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     """
@@ -111,7 +87,7 @@ class Genes(AuditModel):
 #-------------------------------------------------------------------------------------------------
 """
 Sequence numbers https://pypi.org/project/django-sequences/
-"""
+
 from sequences import Sequence
 
 GN_Sequence=Sequence("Gram-Negative")
@@ -119,68 +95,52 @@ GP_Sequence=Sequence("Gram-Positive")
 MB_Sequence=Sequence("Mycobacteria")
 FG_Sequence=Sequence("Fungi")
 MA_Sequence=Sequence("Mammalian")
+"""
 
-class Organisms(AuditModel):
+class Organisms(models.Model):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
     """
 
-    RiskGroups = Choices(
-        ('RG1', ('Risk Group 1')),
-        ('RG2', ('Risk Group 2')),
-    )
+    Choice_Dictionaries = {
+        'Risk_Group':'Risk_Group',
+        'Pathogen_Group':'Pathogen_Group',
+        'Bio_Approval':'Bio_Approval',
+        'Oxygen_Pref':'Oxygen_Preference',
+        'MTA_Status':'License_Status',
+        'Strain_Type':'Strain_Type',
+    }
 
-    PathogenGroups = Choices(
-        ('PAT', ('Pathogen')),
-        ('NOP', ('Non-Pathogen')),
-    )
-
-    Organism_ID = models.CharField(unique=True, blank=True, max_length=100, verbose_name = "OrgID") #must be blank for automatic generate a new one
-    Organism_Name= models.ForeignKey(Taxonomy, null=True, blank=True, to_field='Organism_Name', verbose_name = "Organism Class Set", on_delete=models.DO_NOTHING ) #models do nothing?
+    Organism_ID = models.CharField(primary_key=True, unique=True, blank=True, max_length=100, verbose_name = "Organism ID") #be blank for automatic generate a new one?
+    Organism_Name= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Name", on_delete=models.DO_NOTHING ) #models do nothing?
     Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", default="--", null=True)
-    # Organism_Class_set= models.CharField(blank=True, max_length=500, verbose_name = "Organism Class") #... in Taxonomy.Organism_Class
-
     Strain_ID= models.CharField(blank=True, max_length=250, verbose_name = "Strain ID", null=True)
     Strain_Code= models.CharField(blank=True, max_length=500, verbose_name = "Strain Code", default="--", null=True)
     Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="--",null=True)
     Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="--",null=True)
     Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="--", null=True)
-    Strain_Type= models.CharField(blank=True, max_length=250, verbose_name = "Strain Types", default="--",null=True)
+    Strain_Type= models.ManyToManyField(Dictionaries) 
 
     Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--")
     Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
-    Geno_Type = models.CharField(blank=True, max_length=512, verbose_name = "GenoType", default="--",null=True)
-
-    Screen_Type = ArrayField(
-        models.CharField(max_length=1000, blank=True, null=True), size=20, null=True, blank=True
-    )
-
-    """
-    # Optional for Strain_Type as Array based on multi-selectable
-    #  using LineageArray = Strain_Type.split('; ')
-    Strain_Type = models.ArrayField( models.CharField(max_length=10, blank=True),size = 15) 
-    """
 
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0, null=True)
 
-    Risk_Group = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=RiskGroups, null=True)
-    Pathogen = models.CharField(blank=True, max_length=500, verbose_name = "Risk Group",choices=PathogenGroups, null=True)
+    Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING)   # Dictionaries[Dictionary_ID = "Risk_Group"]
+    Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
 
     Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--", null=True)
-    Biol_Approval = models.CharField(blank=True, max_length=450, verbose_name = "Biological Approval", default="--", null=True)
+    Biol_Approval = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Biological Approval",related_name='%(class)s_requests_BA', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Bio_Approval"]
     Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
     Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
     MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="--",null=True)
-    MTA_Status = models.CharField(blank=True, max_length=500, verbose_name = "MTA Status", default="--", null=True)
+    MTA_Status = models.ForeignKey(Dictionaries,blank=True, verbose_name = "MTA Status",related_name='%(class)s_requests_MTA', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "License_Status"]
 
-    Oxygen_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Oxygen Preference", null=True)
+    Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]
     Atmosphere_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Atmosphere Preference", null=True)
     Nutrient_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Nutirent Preference", null=True)
     Biofilm_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Biofilm Preference",null=True)
-
-    class Meta:
-        db_table = 'strain_organisms'
 
     def __str__(self) -> str:
         return f"{self.Organism_ID} ({self.Strain_Code})"
@@ -188,11 +148,15 @@ class Organisms(AuditModel):
     def save(self, *args, **kwargs):
         
         if not self.Organism_ID: #Object does not exists
-            org_id_pre=Sequence(self.Organism_Class_set.Class)
-
-            num=next(org_id_pre)
-            self.Organism_ID=self.Organism_Class_set.Class+'_'+str(num).zfill(4)
-            print(self.Organism_ID)
-            # self.acreated_by = user
+            num=Sequence(self.Organism_Name.Class.Dict_Value)
+            try:
+                
+                num=next(num)
+                self.Organism_ID=self.Organism_Name.Class.Dict_Value+'_'+str(num).zfill(4)
+            except Exception as err:
+                print(err)
+                self.Organism_ID='__'+'_'.zfill(4)
+            super().save(*args, **kwargs)
+           
 
 

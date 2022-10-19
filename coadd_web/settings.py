@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "sequences.apps.SequencesConfig",
     'app',
     'aa_chem',
+    'test_sch',
  
 ]
 
@@ -117,7 +118,7 @@ DATABASES = {
 
  'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=app,public'},
+        # 'OPTIONS':{'options': '-c search_path=app,public'},
         'NAME': 'orgdb',
         'USER': 'tester', #os.environ.get('db_user'),
         'PASSWORD':os.environ.get('db_password', 'password'),
@@ -132,12 +133,22 @@ DATABASES = {
         'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
         'PORT': '5432',
+    },
+      'test_chem': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'OPTIONS':{'options': '-c search_path=a_chem,public'},
+        'NAME': 'orgdb',
+        'USER': 'tester', #os.environ.get('db_user'),
+        'PASSWORD': os.environ.get('db_password','password'),
+        'HOST': 'Localhost',
+        'PORT': '5432',
     }
+
 
 
 }
 
-DATABASE_ROUTERS = ['aa_chem.dbRouter.DrugsRouter']
+DATABASE_ROUTERS = ['aa_chem.dbRouter.DrugsRouter','test_sch.dbRouter.DrugsRouter']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
