@@ -40,7 +40,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('user-profile/<int:id>/', userprofile, name='userprofile'),
     path('compounds/createTaxo', views.TaxoCreateView.as_view(), name="taxo_create"),
-    path('compounds/createOrg', views.OrgCreateView.as_view(), name="org_create"),
+    path('compounds/createOrg', views.newOrgnisms, name="org_create"),
     path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
     path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
     path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),

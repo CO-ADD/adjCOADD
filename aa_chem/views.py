@@ -21,6 +21,7 @@ import py3Dmol
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
+from .forms import CreateNewOrgForm
 
 # ======================================Util Func. (To SVG)=====================================================#
 
@@ -87,7 +88,8 @@ def home(req):
 
    
     context={
-        'page_obj':page_obj,   
+        'page_obj':page_obj,
+        'chose':Taxonomy.Choice_Dictionaries   
        
     }
   
@@ -138,6 +140,7 @@ class TaxoCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
+    
         context["objects"]=self.model.objects.all()
         return context
 
@@ -148,12 +151,30 @@ class TaxoUpdateView(UpdateView):
     success_url = reverse_lazy('compounds')
 
 # ===============================================================OrgView==============================================#
-class OrgCreateView(CreateView):
-    model=Organisms
-    fields='__all__'
-    template_name = 'aa_chem/orgCreate.html'
-    success_url = reverse_lazy('compounds')
+# class OrgCreateView(CreateView):
+#     model=Organisms
+#     form_class=CreateNewOrgForm
+#     template_name = 'aa_chem/orgCreate2.html'
+#     success_url = reverse_lazy('compounds')
 
+def newOrgnisms(req):
+    myChoices = {
+        ('rm','Resistant MDR'),
+        ('ci','Clinical Isolate'),
+        ('rx','Resistant XDR'),
+    }
+    if req.method=='POST':
+        form=CreateNewOrgForm(myChoices, req.POST)
+        if form.is_valid():
+            instance=form.save()
+            instance.save()
+            print('saved!')
+            return redirect("/")
+        else:
+            print('error!')
+    else:
+        form=CreateNewOrgForm(myChoices)
+    return render(req, 'aa_chem/orgCreate2.html', {'form':form})
 
 
 class OrgListView(ListView):

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'multiselectfield',
+   
     'django_rdkit',
     "sequences.apps.SequencesConfig",
     'app',
@@ -100,7 +100,7 @@ DATABASES = {
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=app,public'},
+    #     # 'OPTIONS':{'options': '-c search_path=app,public'},
     #     'NAME': 'postgres',
     #     'USER': 'postgres', #os.environ.get('db_user'),
     #     'PASSWORD':'',
@@ -117,8 +117,18 @@ DATABASES = {
     #     'PORT': '5432',
     # }
 
+    # 'test_sch': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'OPTIONS':{'options': '-c search_path=test_schema,public'},
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres', #os.environ.get('db_user'),
+    #     'PASSWORD': 'J.Zhong',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # }
 
- 'default': {
+
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'OPTIONS':{'options': '-c search_path=app,public'},
         'NAME': 'orgdb',

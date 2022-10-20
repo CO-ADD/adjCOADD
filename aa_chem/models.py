@@ -95,18 +95,14 @@ class Taxonomy(AuditModel):
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID")
     Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
     Tax_Rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    Division= ChoiceArrayField(models.CharField(max_length=150,choices=Choice_Dictionaries), default=list)
-    # Division = models.ForeignKey(app.Dictionaries, blank=True, verbose_name = "Division", related_name='%(class)s_requests_Div',on_delete=models.DO_NOTHING)
+    # Division= ChoiceArrayField(models.CharField(max_length=150,choices=Choice_Dictionaries), default=list)
+    Division = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Division", related_name='%(class)s_requests_Div',on_delete=models.DO_NOTHING)
     Lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 15)
 
     def __str__(self) -> str:
         return f"{self.Organism_Name}"
 
     def save(self, *args, **kwargs):
-        print("workingon")
-        Unit1=str(self.Unit1)
-        Unit2=str(self.Unit2)
-        Unit3=str(self.Unit3)
 
         super().save(*args, **kwargs)
 
@@ -151,8 +147,8 @@ class Organisms(AuditModel):
     
     Choice_Dictionaries = {
         (Unit1,'Resistant MDR'),
-        (Unit2 ,'Clinical Isolate'),
-        (Unit3 ,'Resistant XDR'),
+        (Unit2,'Clinical Isolate'),
+        (Unit3,'Resistant XDR'),
     }
 
     Organism_ID = models.CharField(primary_key=True, unique=True, blank=True, max_length=100, verbose_name = "Organism ID") #be blank for automatic generate a new one?
@@ -163,8 +159,9 @@ class Organisms(AuditModel):
     Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="--",null=True)
     Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="--",null=True)
     Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="--", null=True)
-    Strain_Type= ChoiceArrayField(models.CharField(max_length=150,choices=Choice_Dictionaries), default=list)
-
+    # Strain_Type= models.CharField(max_length=10, choices=Choice_Dictionaries)
+    Strain_Type= models.CharField(max_length=150,choices=Choice_Dictionaries)
+    # Strain_Type=models.ManyToManyField(Dictionaries)
     Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--")
     Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
 

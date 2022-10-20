@@ -1,0 +1,13 @@
+
+<form id="createGroupForm" method="POST" class="post-form" name="create">
+  {% csrf_token %}
+
+  <h4 class="modal-title">Create Organism</h4>
+  </div>
+
+  {{ form.as_p }}
+
+
+  <input type="submit" class="btn btn-success m-auto" value="Add" />
+  </div>
+</form>
