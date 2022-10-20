@@ -14,7 +14,7 @@ class DrugsRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'test_chem'
+            return 'test_sch'
         return None
 
     def db_for_write(self, model, **hints):
@@ -22,7 +22,7 @@ class DrugsRouter:
         Attempts to write auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'test_chem'
+            return 'test_sch'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -43,5 +43,5 @@ class DrugsRouter:
         'auth_db' database.
         """
         if app_label in self.route_app_labels:
-            return db == 'test_chem'
+            return db == 'test_sch'
         return None

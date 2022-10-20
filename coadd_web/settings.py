@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'multiselectfield',
     'django_rdkit',
     "sequences.apps.SequencesConfig",
     'app',
     'aa_chem',
     'test_sch',
+
  
 ]
 
@@ -134,9 +136,9 @@ DATABASES = {
         'HOST': 'Localhost',
         'PORT': '5432',
     },
-      'test_chem': {
+      'test_sch': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=a_chem,public'},
+        'OPTIONS':{'options': '-c search_path=test_sch,public'},
         'NAME': 'orgdb',
         'USER': 'tester', #os.environ.get('db_user'),
         'PASSWORD': os.environ.get('db_password','password'),
@@ -188,11 +190,11 @@ STATICFILES_DIRS=[BASE_DIR/"static",]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
+AUTH_USER_MODEL = 'app.ApplicationUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-AUTH_USER_MODEL = 'app.User'
 
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/accounts/login'

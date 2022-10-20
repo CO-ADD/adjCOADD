@@ -1,13 +1,13 @@
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
-from app.models import Dictionaries
+from app.models import AuditModel, Dictionaries
 
 from sequences import Sequence
 from model_utils import Choices
 
 
 
-class Taxo(models.Model):
+class Taxo(AuditModel):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
 

@@ -1,21 +1,38 @@
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
-from app.models import AuditModel, Dictionaries
+from app.models import AuditModel, Dictionaries, ChoiceArrayField#, Choice_Dictionaries
 from sequences import Sequence
 from model_utils import Choices
 
+# from multiselectfield import MultiSelectField
+
+# MY_CHOICES = (('item_key1', 'Item title 1.1'),
+#               ('item_key2', 'Item title 1.2'),
+#               ('item_key3', 'Item title 1.3'),
+#               ('item_key4', 'Item title 1.4'),
+#               ('item_key5', 'Item title 1.5'))
 
 # Create your models here.
 
+#-------------------------------------------------------------------------------------------------
+class Choices_multi(AuditModel):
+    Unit1= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+    Unit2= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+    Unit3= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+#-------------------------------------------------------------------------------------------------
+# Unit1='a'
+# Unit2='b'
+# Unit3='c'
 
+# Choice_Dictionaries = {
+#         (Choices_multi.Unit1,'Unit1'),
+#         (Choices_multi.Unit1,'Unit2'),
+#         (Choices_multi.Unit1,'Unit3'),
+#     }
 
-
-
-
-
-
+#-------------------------------------------------------------------------------------------------
 class Drugbank(models.Model):
-    
+#-------------------------------------------------------------------------------------------------    
     status = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     modified_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -44,7 +61,7 @@ class Drugbank(models.Model):
 
 #-------------------------------------------------------------------------------------------------
 
-class Taxonomy(models.Model):
+class Taxonomy(AuditModel):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
 
@@ -56,10 +73,19 @@ class Taxonomy(models.Model):
         Division        Rodents, Bacteria, Mammals, Plants and Fungi, Primates
         Division_Code   ROD, BCT, MAM, PLN, PRI
 
-    """
+    # """
+#-------------------------------------------------------------------------------------------------
+    # Unit1= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+    # Unit2= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+    # Unit3= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
+    Unit1='PF'
+    Unit2='F'
+    Unit3='P'
+    
     Choice_Dictionaries = {
-        'Division':'Organism_Division',
-        'Class':'Organism_Class',
+        (Unit1,'Plants and Fungi'),
+        (Unit2 ,'Fungi'),
+        (Unit3 ,'Plants'),
     }
 
     Organism_Name = models.CharField(primary_key=True, unique=True, max_length=150, verbose_name = "Specie")
@@ -69,16 +95,22 @@ class Taxonomy(models.Model):
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID")
     Parent_Tax_ID = models.IntegerField(verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
     Tax_Rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    Division= models.CharField(max_length=150, blank=True, null=True)
+    Division= ChoiceArrayField(models.CharField(max_length=150,choices=Choice_Dictionaries), default=list)
     # Division = models.ForeignKey(app.Dictionaries, blank=True, verbose_name = "Division", related_name='%(class)s_requests_Div',on_delete=models.DO_NOTHING)
     Lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 15)
-    # Division_CODE = models.CharField(blank=True, max_length=25, verbose_name = "Division_code",default='PLN')
 
     def __str__(self) -> str:
         return f"{self.Organism_Name}"
 
+    def save(self, *args, **kwargs):
+        print("workingon")
+        Unit1=str(self.Unit1)
+        Unit2=str(self.Unit2)
+        Unit3=str(self.Unit3)
 
-class Genes(models.Model):
+        super().save(*args, **kwargs)
+
+class Genes(AuditModel):
     pass
     """
     List of different bacterial genes  of Organisms/Bacterias/Fungi/Cells in Isolate Collection
@@ -95,21 +127,32 @@ GP_Sequence=Sequence("Gram-Positive")
 MB_Sequence=Sequence("Mycobacteria")
 FG_Sequence=Sequence("Fungi")
 MA_Sequence=Sequence("Mammalian")
-"""
 
-class Organisms(models.Model):
+"""
+#-------------------------------------------------------------------------------------------------
+class Organisms(AuditModel):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
     """
+#-------------------------------------------------------------------------------------------------
+    # Choice_Dictionaries = {
+    #     'Risk_Group':'Risk_Group',
+    #     'Pathogen_Group':'Pathogen_Group',
+    #     'Bio_Approval':'Bio_Approval',
+    #     'Oxygen_Pref':'Oxygen_Preference',
+    #     'MTA_Status':'License_Status',
+    #     'Strain_Type':'Strain_Type',
+    # }
 
+    Unit1='RM'
+    Unit2='CI'
+    Unit3='RX'
+    
     Choice_Dictionaries = {
-        'Risk_Group':'Risk_Group',
-        'Pathogen_Group':'Pathogen_Group',
-        'Bio_Approval':'Bio_Approval',
-        'Oxygen_Pref':'Oxygen_Preference',
-        'MTA_Status':'License_Status',
-        'Strain_Type':'Strain_Type',
+        (Unit1,'Resistant MDR'),
+        (Unit2 ,'Clinical Isolate'),
+        (Unit3 ,'Resistant XDR'),
     }
 
     Organism_ID = models.CharField(primary_key=True, unique=True, blank=True, max_length=100, verbose_name = "Organism ID") #be blank for automatic generate a new one?
@@ -120,7 +163,7 @@ class Organisms(models.Model):
     Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="--",null=True)
     Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="--",null=True)
     Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="--", null=True)
-    Strain_Type= models.ManyToManyField(Dictionaries) 
+    Strain_Type= ChoiceArrayField(models.CharField(max_length=150,choices=Choice_Dictionaries), default=list)
 
     Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--")
     Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
@@ -146,7 +189,7 @@ class Organisms(models.Model):
         return f"{self.Organism_ID} ({self.Strain_Code})"
 
     def save(self, *args, **kwargs):
-        
+       
         if not self.Organism_ID: #Object does not exists
             num=Sequence(self.Organism_Name.Class.Dict_Value)
             try:

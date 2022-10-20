@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView
+from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
 from aa_chem import views
 
 urlpatterns = [
@@ -30,7 +30,9 @@ urlpatterns = [
     path('usermanagement_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
     path('usermanagement_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('userslist/', AppUserListView.as_view(), name="userslist"),
-
+    
+    path('dict/', DictionariesView.as_view(), name='dict_view' ),
+    path('dict/create', DictCreateView.as_view(), name='dict_create' ),
     path('accounts/', include('django.contrib.auth.urls')),
   
     path('importData/', views.importCSV, name="dataimport"),
@@ -43,7 +45,8 @@ urlpatterns = [
     path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
     path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
     path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
-    path('compounds/taxo/<int:pk>', views.TaxoUpdateView.as_view(), name="taxo_update"),
+    path('compounds/taxo/<str:Organism_Name>', views.TaxoUpdateView.as_view(), name="taxo_update"),
+    
 ]
 
 if settings.DEBUG:

@@ -16,13 +16,8 @@
       <form role="search" method="POST" class="form-group mx-5">
         {%csrf_token%}
         <div class="input-group input-group-sm">
-          <input
-            type="text"
-            name="search"
-            class="text-dark my-1"
-            placeholder="Search for "
-            aria-describedby="inputGroup-sizing-sm"
-          />
+          <input type="text" name="search" class="text-dark my-1" placeholder="Search for "
+            aria-describedby="inputGroup-sizing-sm" />
           <button type="submit" class="btn btn-outline-warning btn-sm my-1">
             <i class="bi bi-search"> IN</i>
           </button>
@@ -45,7 +40,8 @@
       <h4>Org</h4>
       <li><a href="{%url 'org_create'%}">Create New Org</a></li>
       <li><a href="{%url 'org_list'%}">List Org</a></li>
-      <p>...</p>
+      <p><a href="{%url 'dict_view'%}">Dict_Value</a></p>
+
       <p>...</p>
     </div>
     <div id="resizer"></div>

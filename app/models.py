@@ -8,9 +8,31 @@ from django import forms
 # Create your models here.
 
 
+#-------------------------------------------------------------------------------------------------
+class ApplicationUser(AbstractUser):
+#-------------------------------------------------------------------------------------------------
+    user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
+    title_name = models.CharField(max_length=15, blank=True)        # Dr
+    # firstname = models.CharField(max_length=50, blank=True)        # Johannes
+    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg
+    short_name = models.CharField(max_length=55, blank=True)        # J.Zuegg
+    initials = models.CharField(max_length=5, blank=True)           # JZG
+    organisation = models.CharField(max_length=250, blank=True)     # University of Queensland
+    department = models.CharField(max_length=250, blank=True)       # Institute for Molecular Bioscience
+    group = models.CharField(max_length=50, blank=True,)             # Blaskovich
+    phone = models.CharField(max_length=25, blank=True)             # +61 7 344 62994
+    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au
+    permissions = models.CharField(max_length=250, blank=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
+    session_id = models.CharField(max_length=250, blank=True)       # not sure if Django has SessionID's
+    is_appuser=models.BooleanField(default=True)
 
-class User(AbstractUser):
-    role=models.CharField(max_length=250, null=True)
+    class Meta:
+        db_table = 'applicationuser'
+        # permissions = (('update', 'change data'),)
+
+    def __str__(self) -> str:
+        return f"{self.first_name}.{self.last_name} ({self.user_id})"
+
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
@@ -28,9 +50,9 @@ class AuditModel(models.Model):
     acreated_at = models.DateTimeField(auto_now_add=True, null=True,verbose_name = "Created at",editable=False)
     aupdated_at = models.DateTimeField(auto_now=True, null=True,blank=True, verbose_name = "Updated at",editable=False)
     adeleted_at = models.DateTimeField(blank=True, null=True,verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(User, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
-    aupdated_by = models.ForeignKey(User, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
-    adeleted_by = models.ForeignKey(User, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
+    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
+    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
+    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
 
     class Meta:
         abstract = True
@@ -50,9 +72,7 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(*args, **kwargs)
 
 
-
-
-
+#-------------------------------------------------------------------------------------------------
 class ChoiceArrayField(ArrayField):
     """
     A field that allows us to store an array of choices.
@@ -66,7 +86,7 @@ class ChoiceArrayField(ArrayField):
                                                     choices=(...,)),
                                    default=[...])
     """
-
+#-------------------------------------------------------------------------------------------------
     def formfield(self, **kwargs):
         defaults = {
             'form_class': forms.MultipleChoiceField,
@@ -79,38 +99,20 @@ class ChoiceArrayField(ArrayField):
         return super(ArrayField, self).formfield(**defaults)
 
 
-
-
-
-
-
-
-
-
-
-
-
 #-------------------------------------------------------------------------------------------------
 class Dictionaries(AuditModel):
+#-------------------------------------------------------------------------------------------------
 
-    FLAG_CHOICES = (
-    ('defect', 'Defect'),
-    ('enhancement', 'Enhancement'),
-)
-# #-------------------------------------------------------------------------------------------------
+
     Dictionary_ID = models.CharField(max_length=30, db_index=True, verbose_name = "Dictionary", )
     Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class", )
-    Dict_Value = ChoiceArrayField(models.CharField(max_length=510, choices=FLAG_CHOICES), default=list)  #models.CharField(max_length=50, verbose_name = "Value",  )
+    Dict_Value = ArrayField(models.CharField(max_length=150, null=True, blank=True,),  default=list, blank=True)  #models.CharField(max_length=50, verbose_name = "Value",  )
     Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
     Dict_Value_Type = models.CharField(max_length=20, verbose_name = "Type")
     Dict_View_Order = models.IntegerField(verbose_name = "View Order", null=True)
 
     def __str__(self) -> str:
-        return f"{self.Dict_Value} ({self.Dictionary_ID})"
-
-
-
-
+        return str(self.Dict_Value[0])
 
 
 
@@ -124,31 +126,8 @@ class ApplicationLog(models.Model):
     log_proc = models.CharField(max_length=50, blank=True, editable=False)
     log_type = models.CharField(max_length=15, blank=True, editable=False)
     log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
-    log_user = models.ForeignKey(User, editable=False, on_delete=models.DO_NOTHING)
+    log_user = models.ForeignKey(ApplicationUser, editable=False, on_delete=models.DO_NOTHING)
     log_object = models.CharField(max_length=15, blank=True, editable=False)
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
-
-class ApplicationUser(AuditModel):
-    user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
-    title_name = models.CharField(max_length=15, blank=True)        # Dr
-    first_name = models.CharField(max_length=50, blank=True)        # Johannes
-    last_name = models.CharField(max_length=50, blank=True)         # Zuegg
-    short_name = models.CharField(max_length=55, blank=True)        # J.Zuegg
-    initials = models.CharField(max_length=5, blank=True)           # JZG
-    organisation = models.CharField(max_length=250, blank=True)     # University of Queensland
-    department = models.CharField(max_length=250, blank=True)       # Institute for Molecular Bioscience
-    group = models.CharField(max_length=50, blank=True)             # Blaskovich
-    phone = models.CharField(max_length=25, blank=True)             # +61 7 344 62994
-    email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au
-    permissions = models.CharField(max_length=250, blank=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
-    session_id = models.CharField(max_length=250, blank=True)       # not sure if Django has SessionID's
-
-    class Meta:
-        db_table = 'application_user'
-        permissions = (('update', 'change data'),)
-
-    def __str__(self) -> str:
-        return f"{self.first_name}.{self.last_name} ({self.user_id})"
-  

@@ -1,6 +1,6 @@
 from django.dispatch import receiver
 from django_auth_ldap.backend import populate_user, LDAPBackend
-from .models import User, ApplicationUser
+from .models import ApplicationUser
 from django.shortcuts import get_object_or_404
 from django.db.models.signals import pre_save
 
@@ -29,7 +29,7 @@ def ldap_auth_handler(user, ldap_user, **kwargs):
             print (err)
   
     else:
-        user.role='delete'
+        user.is_appuser=False
 
     return    
 

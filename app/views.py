@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, ApplicationUser
+from .models import ApplicationUser, Dictionaries
 from aa_chem.models import Drugbank, Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
@@ -23,9 +23,9 @@ def index(req):
     objects= Taxonomy.objects.all()
     if req.user.is_authenticated:
 
-        user=User.objects.get(username=req.user.username)
+        user=ApplicationUser.objects.get(username=req.user.username)
         
-        if user.role=='delete':
+        if user.is_appuser==False:
             logout(req)
             user.delete()
             return redirect("/")
@@ -82,3 +82,27 @@ class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
     model=ApplicationUser
     template_name='app/appUsersDel.html'
     success_url = reverse_lazy('usermanage')
+
+
+
+class DictionariesView(ListView):
+    model=Dictionaries
+    fields="__all__"
+    template_name='app/dictList.html'
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+       
+        print(context["objects"])
+       
+        return context
+
+class DictCreateView(CreateView):
+    model=Dictionaries
+    fields='__all__'
+    # form_class=GroupCreate
+    template_name = 'app/dictCreate.html'
+    success_url = reverse_lazy('dict_view')
+
+    
