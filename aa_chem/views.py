@@ -9,6 +9,7 @@ from django.core import management
 from django.shortcuts import HttpResponse, render, redirect
 from django_rdkit.models import * 
 from aa_chem.models import Drugbank,Taxonomy, Organisms
+from app.models import Dictionaries
 from rdkit import Chem
 from rdkit.Chem.Draw import IPythonConsole
 from rdkit.Chem import Draw
@@ -22,7 +23,8 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from .forms import CreateNewOrgForm
-
+from model_utils import Choices
+from django.forms import modelform_factory
 # ======================================Util Func. (To SVG)=====================================================#
 
 def molecule_to_svg(mol, file_name, width=500, height=500):
@@ -156,25 +158,33 @@ class TaxoUpdateView(UpdateView):
 #     form_class=CreateNewOrgForm
 #     template_name = 'aa_chem/orgCreate2.html'
 #     success_url = reverse_lazy('compounds')
-
+OrgForm=modelform_factory(Organisms, exclude=["Strain_Type"])
 def newOrgnisms(req):
-    myChoices = {
-        ('rm','Resistant MDR'),
-        ('ci','Clinical Isolate'),
-        ('rx','Resistant XDR'),
-    }
+    org_strain=Dictionaries.objects.filter(Dictionary_ID='Units_Concentration')
+    strains=str(org_strain[0])
+    strain_test=strains.split(" ")[0].split(',')
+    print(strain_test)
+    a=strain_test[0]
+    b=strain_test[0]
+    c=strain_test[0]
+
     if req.method=='POST':
-        form=CreateNewOrgForm(myChoices, req.POST)
-        if form.is_valid():
-            instance=form.save()
-            instance.save()
-            print('saved!')
-            return redirect("/")
-        else:
-            print('error!')
+        form=OrgForm(req.POST)
+        strain=req.POST.get('strain')
+        try:
+            print('iam trying')
+            if form.is_valid():
+                instance=form.save()
+                # instance.save()
+                instance.Strain_Type=str(strain)
+                instance.save(update_fields=['Strain_Type'])
+                print('saved!')
+                return redirect("/")
+        except Exception as err:
+            print(err)
     else:
-        form=CreateNewOrgForm(myChoices)
-    return render(req, 'aa_chem/orgCreate2.html', {'form':form})
+        form=OrgForm()
+    return render(req, 'aa_chem/orgCreate2.html', {'form':form, 'a':a, 'b':b, 'c':c})
 
 
 class OrgListView(ListView):

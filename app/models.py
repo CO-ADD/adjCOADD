@@ -112,7 +112,7 @@ class Dictionaries(AuditModel):
     Dict_View_Order = models.IntegerField(verbose_name = "View Order", null=True)
 
     def __str__(self) -> str:
-        return str(self.Dict_Value[0])
+        return f"{self.Dict_Value}"
 
 
 
