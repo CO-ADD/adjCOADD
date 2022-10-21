@@ -48,7 +48,7 @@ from django.shortcuts import get_object_or_404
 
 # # Create your views here.
 # @login_required
-# def home(req):
+# def home(req): 
 #     for filename in os.listdir("static/images"):
 #                 file_path=os.path.join("static/images", filename)
 #                 try:
