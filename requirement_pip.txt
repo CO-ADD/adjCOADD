@@ -1,0 +1,62 @@
+asgiref==3.5.2
+asttokens==2.0.8
+backcall==0.2.0
+cairocffi==1.4.0
+CairoSVG==2.5.2
+certifi==2022.9.24
+cffi==1.15.1
+contourpy @ file:///home/conda/feedstock_root/build_artifacts/contourpy_1662135113970/work
+cssselect2==0.7.0
+cx-Oracle==8.3.0
+cycler @ file:///home/conda/feedstock_root/build_artifacts/cycler_1635519461629/work
+decorator==5.1.1
+defusedxml==0.7.1
+Django==4.1.2
+django-auth-ldap==4.1.0
+django-extensions==3.2.1
+django-model-utils==4.2.0
+django-multiselectfield==0.1.12
+django-rdkit @ git+https://github.com/rdkit/django-rdkit.git@cd1d69af3fb024dae1c98c939cde07f6a0583751
+django-sequences==2.7
+executing==1.1.0
+fonttools @ file:///home/conda/feedstock_root/build_artifacts/fonttools_1664574241722/work
+greenlet @ file:///home/conda/feedstock_root/build_artifacts/greenlet_1661444073798/work
+ipython==8.5.0
+jedi==0.18.1
+kiwisolver @ file:///home/conda/feedstock_root/build_artifacts/kiwisolver_1657953096987/work
+matplotlib @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-suite_1663358907330/work
+matplotlib-inline==0.1.6
+munkres==1.1.4
+numpy==1.23.3
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1637239678211/work
+pandas==1.5.0
+parso==0.8.3
+pexpect==4.8.0
+pickleshare==0.7.5
+Pillow==9.2.0
+prompt-toolkit==3.0.31
+psycopg2==2.9.3
+ptyprocess==0.7.0
+pure-eval==0.2.2
+py3Dmol==1.8.1
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycairo==1.21.0
+pycparser==2.21
+Pygments==2.13.0
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1652235407899/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
+python-ldap==3.4.3
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1664798238822/work
+rdkit==2022.3.5
+reportlab==3.5.68
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+SQLAlchemy @ file:///home/conda/feedstock_root/build_artifacts/sqlalchemy_1662536011596/work
+sqlparse==0.4.3
+stack-data==0.5.1
+tinycss2==1.1.1
+traitlets==5.4.0
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1656706066251/work
+unicodedata2 @ file:///home/conda/feedstock_root/build_artifacts/unicodedata2_1649111910890/work
+wcwidth==0.2.5
+webencodings==0.5.1

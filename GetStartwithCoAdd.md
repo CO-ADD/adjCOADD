@@ -50,6 +50,11 @@ Install all the following packages in the conda environment.
    pip install ipython  
    pip install CairoSVG
 
+10. django-sequences 2.7
+
+11. pip install django-model-utils
+
+
 ### Module Introduction
 
 (used techniques, connections, codes etc..)
