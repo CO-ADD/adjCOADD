@@ -1,4 +1,3 @@
-
 <form id="createGroupForm" method="POST" class="post-form" name="create">
   {% csrf_token %}
 
@@ -6,15 +5,22 @@
   </div>
 
   {{ form.as_p }}
-  
-   <select class="form-select" multiple aria-label="multiple select example" name="strain" id="straintype">
-  <option selected>Open this select menu</option>
-                    <option value={{a}}>t</option>
-                    <option value={{b}} >c</option>
-                    <option value={{c}}>p</option>
-                </select>
-  
 
-  <input type="submit" class="btn btn-success m-auto" value="Add" />
+  <select class="form-select" multiple aria-label="multiple select example" name="strain" id="straintype">
+    <option selected>Open this select menu</option>
+    <option value="{{a}}">{{a}}</option>
+    <option value="{{b}}">{{b}}</option>
+    <option value="{{c}}">{{c}}</option>
+  </select>
+
+  <select class="form-select" multiple aria-label="multiple select example" name="risk" id="straintype">
+    <option selected>Open this select menu</option>
+    {%for obj in risks%}
+    <option value="{{obj.Dict_Value}}">{{obj.Dict_Value}}</option>
+    {%endfor%}
+  </select>
+
+
+  <input type="submit" class="btn btn-success m-auto" value="Add" name="note" />
   </div>
 </form>

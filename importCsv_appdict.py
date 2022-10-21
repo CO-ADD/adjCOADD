@@ -3,7 +3,7 @@ import csv
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from aa_chem.models import Taxonomy, Organisms
-from app.models import ApplicationDictionary
+from app.models import Dictionaries
 
 class Command(BaseCommand):
    
@@ -16,9 +16,8 @@ class Command(BaseCommand):
             
             
             for row in csv_reader:
-                int_order=int('0'+row[4])
+                int_order=int('0'+row[5])
+                dict_v=row[2].split(",")
                 # print(row)
-                obj, created=ApplicationDictionary.objects.get_or_create(dict_table=row[0], dict_field=row[1], dict_value=row[2], dict_value_type =row[3],dict_order =int_order, dict_desc=row[5])
-
-
+                obj, created=Dictionaries.objects.get_or_create(Dictionary_ID=row[0], Dictionary_Class=row[1], Dict_Value=dict_v, Dict_Desc =row[3], Dict_Value_Type =row[4], Dict_View_Order =int_order)
 

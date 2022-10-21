@@ -13,15 +13,15 @@ class ApplicationUser(AbstractUser):
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
     title_name = models.CharField(max_length=15, blank=True)        # Dr
-    # firstname = models.CharField(max_length=50, blank=True)        # Johannes
-    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg
+    # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
+    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
     short_name = models.CharField(max_length=55, blank=True)        # J.Zuegg
     initials = models.CharField(max_length=5, blank=True)           # JZG
     organisation = models.CharField(max_length=250, blank=True)     # University of Queensland
     department = models.CharField(max_length=250, blank=True)       # Institute for Molecular Bioscience
     group = models.CharField(max_length=50, blank=True,)             # Blaskovich
     phone = models.CharField(max_length=25, blank=True)             # +61 7 344 62994
-    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au
+    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au    this field existed in AbstractUser
     permissions = models.CharField(max_length=250, blank=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
     session_id = models.CharField(max_length=250, blank=True)       # not sure if Django has SessionID's
     is_appuser=models.BooleanField(default=True)
@@ -131,3 +131,11 @@ class ApplicationLog(models.Model):
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
+
+class Mytest2(models.Model):
+    
+    tag=models.CharField(max_length=155, default='default') 
+    date=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.tag

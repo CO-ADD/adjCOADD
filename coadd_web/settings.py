@@ -130,7 +130,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'OPTIONS':{'options': '-c search_path=app,public'},
+        # 'OPTIONS':{'options': '-c search_path=app'},
         'NAME': 'orgdb',
         'USER': 'tester', #os.environ.get('db_user'),
         'PASSWORD':os.environ.get('db_password', 'password'),

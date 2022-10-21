@@ -15,7 +15,7 @@ from model_utils import Choices
 # Create your models here.
 
 #-------------------------------------------------------------------------------------------------
-class Choices_multi(AuditModel):
+class Choices_multi(models.Model):
     Unit1= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
     Unit2= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
     Unit3= models.ForeignKey(Dictionaries, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
@@ -61,7 +61,7 @@ class Drugbank(models.Model):
 
 #-------------------------------------------------------------------------------------------------
 
-class Taxonomy(AuditModel):
+class Taxonomy(models.Model):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
 
@@ -106,7 +106,7 @@ class Taxonomy(AuditModel):
 
         super().save(*args, **kwargs)
 
-class Genes(AuditModel):
+class Genes(models.Model):
     pass
     """
     List of different bacterial genes  of Organisms/Bacterias/Fungi/Cells in Isolate Collection
@@ -126,7 +126,7 @@ MA_Sequence=Sequence("Mammalian")
 
 """
 #-------------------------------------------------------------------------------------------------
-class Organisms(AuditModel):
+class Organisms(models.Model):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
@@ -162,22 +162,22 @@ class Organisms(AuditModel):
     Strain_Type= models.CharField(max_length=150, null=True, blank=True)
     # Strain_Type=ChoiceArrayField(models.CharField(max_length=150,choices=[]), default=list)
     # Strain_Type=models.ManyToManyField(Dictionaries)
-    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--")
+    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--",null=True)
     Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
 
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0, null=True)
 
-    Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING)   # Dictionaries[Dictionary_ID = "Risk_Group"]
-    Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
+    Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING, null=True)   # Dictionaries[Dictionary_ID = "Risk_Group"]
+    Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
 
     Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--", null=True)
-    Biol_Approval = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Biological Approval",related_name='%(class)s_requests_BA', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Bio_Approval"]
+    Biol_Approval = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Biological Approval",related_name='%(class)s_requests_BA', on_delete=models.DO_NOTHING,null=True) # Dictionaries[Dictionary_ID = "Bio_Approval"]
     Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
     Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
     MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="--",null=True)
-    MTA_Status = models.ForeignKey(Dictionaries,blank=True, verbose_name = "MTA Status",related_name='%(class)s_requests_MTA', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "License_Status"]
+    MTA_Status = models.ForeignKey(Dictionaries,blank=True, verbose_name = "MTA Status",related_name='%(class)s_requests_MTA', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "License_Status"]
 
-    Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]
+    Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]
     Atmosphere_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Atmosphere Preference", null=True)
     Nutrient_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Nutirent Preference", null=True)
     Biofilm_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Biofilm Preference",null=True)
@@ -188,15 +188,22 @@ class Organisms(AuditModel):
     def save(self, *args, **kwargs):
        
         if not self.Organism_ID: #Object does not exists
-            num=Sequence(self.Organism_Name.Class.Dict_Value)
+            num=Sequence(str(self.Organism_Name.Class.Dict_Value))
             try:
                 
                 num=next(num)
-                self.Organism_ID=self.Organism_Name.Class.Dict_Value+'_'+str(num).zfill(4)
+                self.Organism_ID=str(self.Organism_Name.Class.Dict_Value)+'_'+str(num).zfill(4)
             except Exception as err:
                 print(err)
                 self.Organism_ID='__'+'_'.zfill(4)
             super().save(*args, **kwargs)
            
+class Mytest(models.Model):
+    
+    tag=models.CharField(max_length=155, default='default') 
+    date=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.tag
 
 
