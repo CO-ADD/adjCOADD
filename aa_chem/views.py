@@ -1,97 +1,72 @@
 # import re
 # import csv
 # import os
+import ast
 # from os.path import exists
 # from django.contrib.admin.views.decorators import staff_member_required
 # from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-# from django.core.paginator import Paginator
+from django.core.paginator import Paginator
 # from django.core import management
-import ast
 from django.shortcuts import HttpResponse, render, redirect
 # from django_rdkit.models import * 
 from aa_chem.models import Mytest, Organisms, Taxonomy #Drugbank,,Organisms,
 # import aa_chem.models
 from app.models import Dictionaries, Mytest2
-# from rdkit import Chem
-# from rdkit.Chem.Draw import IPythonConsole
-# from rdkit.Chem import Draw
-# from rdkit import RDConfig
-# from rdkit.Chem import rdDepictor
-# from rdkit.Chem.Draw import rdMolDraw2D
-# from IPython.display import SVG
-# import cairosvg
-# import py3Dmol
-# from django.views.generic.edit import UpdateView, CreateView, DeleteView
-# from django.views.generic import ListView
-# from django.urls import reverse_lazy
+from app.utils import molecule_to_svg, clearIMGfolder
+from rdkit import Chem
+
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
 # # from .forms import CreateNewOrgForm
 # from model_utils import Choices
 # from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
-# ======================================Util Func. (To SVG)=====================================================#
+from django.http import JsonResponse
 
-# def molecule_to_svg(mol, file_name, width=500, height=500):
-#     """Save substance structure as Png"""
 
-#     # Define full path name
-#     full_path = f"static/images/{file_name}.svg"
 
-#     # Render high resolution molecule
-#     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
-#     drawer.DrawMolecule(mol)
-#     drawer.FinishDrawing()
-
-#     # Export to png
-#     cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
 
 # # =======================================Taxo View=============================================================================#
 
 # # Create your views here.
 # @login_required
-# def home(req): 
-#     for filename in os.listdir("static/images"):
-#                 file_path=os.path.join("static/images", filename)
-#                 try:
-#                     os.unlink(file_path)
-#                     print("removed!")
-#                 except Exception as err:
-#                     print(err)
-#     # search function
-#     if req.method=='POST':
-#         search =req.POST.get('search')
-#         field=req.POST.get('field')
-#         if field=='Organism_Name':
-#             result=Taxonomy.objects.filter(Organism_Name__contains=search)
-#         # elif field=='status':
-#         #     result=Taxonomy.objects.filter(status__contains=search)
-#         # else:
-#         #     result=Taxonomy.objects.filter(drug_id__contains=search)
-#         #     print(result)
-#     else:
-#         result=Taxonomy.objects.all()
+def home(req): 
+    clearIMGfolder()
+    # search function
+    if req.method=='POST':
+        search =req.POST.get('search')
+        field=req.POST.get('field')
+        if field=='Organism_Name':
+            result=Taxonomy.objects.filter(Organism_Name__contains=search)
+        # elif field=='status':
+        #     result=Taxonomy.objects.filter(status__contains=search)
+        # else:
+        #     result=Taxonomy.objects.filter(drug_id__contains=search)
+        #     print(result)
+    else:
+        result=Taxonomy.objects.all()
         
-#     objects_all=result
-#     p=Paginator(objects_all, 24)
-#     page_number = req.GET.get('page')
-#     page_obj=p.get_page(page_number)
-#     for object_ in page_obj:
+    objects_all=result
+    p=Paginator(objects_all, 24)
+    page_number = req.GET.get('page')
+    page_obj=p.get_page(page_number)
+    for object_ in page_obj:
        
-#             # if exists(f"static/images/{object_.id}.png"):
-#             #     print("file exists")
-#             #     return context
-#             # else:
-
-   
-#         m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-#         molecule_to_svg(m, object_.Organism_Name)
+            # if exists(f"static/images/{object_.id}.png"):
+            #     print("file exists")
+            #     return context
+            # else:
+        m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+        molecule_to_svg(m, object_.Organism_Name)
     
-#     context={
-#         'page_obj':page_obj,
-#         'chose':Taxonomy.Choice_Dictionaries   
+    context={
+        'page_obj':page_obj,
+        'chose':Taxonomy.Choice_Dictionaries   
        
-#     }
+    }
   
-#     return render(req, 'aa_chem/chem.html', context)
+    return render(req, 'aa_chem/chem.html', context)
 
 
 
@@ -125,17 +100,17 @@ from django.shortcuts import get_object_or_404
 
 
 
-# class TaxoCreateView(CreateView):
-#     model=Taxonomy
-#     fields='__all__'
-#     template_name = 'aa_chem/taxoCreate.html'
-#     success_url = reverse_lazy('compounds')
+class TaxoCreateView(CreateView):
+    model=Taxonomy
+    fields='__all__'
+    template_name = 'aa_chem/taxoCreate.html'
+    success_url = reverse_lazy('compounds')
 
-#     def get_context_data(self, **kwargs):
-#         context=super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
     
-#         context["objects"]=self.model.objects.all()
-#         return context
+        context["objects"]=self.model.objects.all()
+        return context
 
 # class TaxoUpdateView(UpdateView):
 #     model=Taxonomy
@@ -162,27 +137,51 @@ def home2(req):
         
     return render(req, 'aa_chem/home2.html') 
 
+# ============================Create new Organism======================================================#
+# =============================1. Ajax Call search Taxo=============================================#
 
+def searchTaxo(req):
+    if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+        res=None
+        taxo=req.POST.get('inputtext')
+        # print(taxo)
+        qs=Taxonomy.objects.filter(Organism_Name__icontains=taxo)
+        if len(qs)>0 and len(taxo)>0:
+            data=[]
+            for i in qs:
+                item={
+                    'name':i.Organism_Name,
+                }
+                data.append(item)
+            res=data
+        else:
+            res='No games found...'
+        
+        return JsonResponse({'data':res})
+    return JsonResponse({})
 
+# =============================2. Create New Organism based Taxonomoy==============================#
 # OrgForm=modelform_factory(Organisms, exclude=["Strain_Type"])
 def newOrgnisms(req):
+   
     risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
-    newTaxo=get_object_or_404(Taxonomy, Organism_Name='testSpeice')
-    # org_strain=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    # strains=str(org_strain[0])
-    # strain_test=strains.split(" ")[0].split(',')
-    # print(strain_test)
-    a="strain_test[0]"
-    b="strain_test[0]"
-    c="strain_test[0]"
-    print(a)
-
+    org_strain=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
+    strains=str(org_strain[0]).replace("[","").replace("]","").replace('\'','')
+    strain_test=strains.split(',')
+    print(strain_test)
+    a=strain_test[0]
+    b=strain_test[1]
+    
     if req.method=='POST':
+        setTaxo=req.POST.get('setTaxo')
+        print("setTaxo is type of ")
+        print(setTaxo)
+        newTaxo=get_object_or_404(Taxonomy, Organism_Name=setTaxo)
         # form=OrgForm(req.POST)
         strain=req.POST.get('strain')
         riskgroup=req.POST.get('risk')
         riskgroup=ast.literal_eval(riskgroup)
-        print(f'{riskgroup} type is: {type(riskgroup)}')
+        # print(f'{riskgroup} type is: {type(riskgroup)}')
         try:
             riskg=get_object_or_404(Dictionaries, Dict_Value=riskgroup)
         except Exception as err:
@@ -193,7 +192,7 @@ def newOrgnisms(req):
         try:
             newobj=Organisms.objects.create(Organism_Name=newTaxo, Strain_Type=strain, Risk_Group=riskg)
             newobj.save()
-            print('iam trying')
+            print('saved!')
             return redirect("/home2")
             # if form.is_valid():
             #     instance=form.save()
@@ -208,9 +207,9 @@ def newOrgnisms(req):
             print(err)
     # else:
         # form=OrgForm()
-    return render(req, 'aa_chem/orgCreate2.html', { 'a':a, 'b':b, 'c':c, 'risks':risk}) #'form':form,
+    return render(req, 'aa_chem/orgCreate2.html', { 'a':a, 'b':b, 'risks':risk}) #'form':form,
 
-
+# ==============================List View ===============================================================
 # class OrgListView(ListView):
 #     model=Organisms
 #     paginate_by = 24
@@ -274,20 +273,20 @@ def newOrgnisms(req):
    
 #     return redirect(req.META['HTTP_REFERER'])
 
-    
+#======================================================Export Data Views Function==================================================#  
 # # @user_passes_test(lambda u: u.is_admin)
 # @permission_required('importdata')
-# def exportCSV(req):
-#     response=HttpResponse(content_type='text/csv')
+def exportCSV(req):
+    response=HttpResponse(content_type='text/csv')
    
-#     writer=csv.writer(response)
-#     writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"])#['id', 'drug_name','drug_mol']
-#     query=Taxonomy.objects.all()
-#     comp_list=[comp for comp in query]
+    writer=csv.writer(response)
+    writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"])#['id', 'drug_name','drug_mol']
+    query=Taxonomy.objects.all()
+    comp_list=[comp for comp in query]
 
-#     for comp in comp_list:
-#         writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"]) #[comp.id, comp.drug_name, comp.smiles]
+    for comp in comp_list:
+        writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"]) #[comp.id, comp.drug_name, comp.smiles]
 
-#     response['Content-Disposition']='attachment; filename="Taxo_export.csv"'
-#     return response
+    response['Content-Disposition']='attachment; filename="Taxo_export.csv"'
+    return response
    

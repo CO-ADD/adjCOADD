@@ -15,7 +15,7 @@
 
    (s)
    step 1 run `manage.py migrate <yourapp> --database <wanted database name>`
-   step 2 run `manage.py migrate` (can be delete, after switch app to public schema!!!)
+   step 2 run `manage.py migrate` (can be deleted, after switch app to public schema!!!)
 
 4. (i)Error: migrations.exceptions.InvalidBasesError...This can happen if you are inheriting ....
 

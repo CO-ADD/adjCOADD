@@ -113,20 +113,11 @@ class Genes(models.Model):
     """
 
 #-------------------------------------------------------------------------------------------------
-"""
-Sequence numbers https://pypi.org/project/django-sequences/
 
-from sequences import Sequence
 
-GN_Sequence=Sequence("Gram-Negative")
-GP_Sequence=Sequence("Gram-Positive")
-MB_Sequence=Sequence("Mycobacteria")
-FG_Sequence=Sequence("Fungi")
-MA_Sequence=Sequence("Mammalian")
 
-"""
 #-------------------------------------------------------------------------------------------------
-class Organisms(models.Model):
+class Organisms(AuditModel):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
