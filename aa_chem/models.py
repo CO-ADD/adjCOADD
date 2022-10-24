@@ -159,7 +159,8 @@ class Organisms(AuditModel):
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0, null=True)
     Risk_Group = models.CharField(blank=True, null=True, max_length=50)
     # Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING, null=True)   # Dictionaries[Dictionary_ID = "Risk_Group"]
-    Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
+    Pathogen = models.CharField(blank=True, null=True, max_length=50)
+    # Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
 
     Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--", null=True)
     Biol_Approval = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Biological Approval",related_name='%(class)s_requests_BA', on_delete=models.DO_NOTHING,null=True) # Dictionaries[Dictionary_ID = "Bio_Approval"]

@@ -138,26 +138,29 @@ def searchTaxo(req):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-# =============================2. Create New Organism based Taxonomy==============================#
+# =============================2. Create New Organism based Taxonomy====================================================================================================#
+def querysetToChoiseList_Dictionaries(model_name, field_name):
+    options=model_name.objects.filter(Dictionary_ID=field_name).values('Dict_Value', 'Dict_Desc')
+    choices=[tuple(d.values()) for d in options]
+    return choices
+
 
 def newOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
     Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
-    Oxygen_Pref_choices=(('Aerobic', 'Grows best in presence of oxygen'),('Aerobic Microaerophiles', 'Requires oxygen for growth, but only at low concentration'))
-    Risk_Group_choices=(('RG1', 'Risk Group 1'), ('RG2', 'Risk Group 2'))
-    # ===================Dictionary Foreign Key===================
-    # risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
-    # pathogen=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    # biolAppr =Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    # mat=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    # oxyPref=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    # ===================Dictionary Foreign Key===================
+    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Oxygen_Preference') #[tuple(d.values()) for d in Oxygen_Pref_options]
+    print(Oxygen_Pref_choices)
+    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Risk_Group')
+    # MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, '')
+    # Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, '')
+    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Pathogen_Group')
+    print(Pathogen_Group_choices)
 
     # Retreive Values for each column========================
     if req.method=='POST':
-        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, req.POST)
+        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST)
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
         Strain_Type_list=req.POST.getlist('Strain_Type')
@@ -174,7 +177,7 @@ def newOrgnisms(req):
         except Exception as err:
             print(err)
     else:
-        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices)
+        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices)
  
     return render(req, 'aa_chem/createForm/Organism.html', { 'Strain_Type':Strain_Type, 'form':form}) #'form':form,
 
