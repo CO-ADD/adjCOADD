@@ -32,25 +32,25 @@ urlpatterns = [
     # path('usermanagement_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('userslist/', AppUserListView.as_view(), name="userslist"),
     
-    # path('dict/', DictionariesView.as_view(), name='dict_view' ),
+    path('dict/', DictionariesView.as_view(), name='dict_view' ),
     # path('dict/create', DictCreateView.as_view(), name='dict_create' ),
     # path('accounts/', include('django.contrib.auth.urls')),
   
-    # path('importData/', views.importCSV, name="dataimport"),
+  
     path('exportData/', views.exportCSV, name="dataexport"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('user-profile/<int:id>/', userprofile, name='userprofile'),
     path('compounds/createOrg/', views.newOrgnisms, name="org_create"),
    
     path('compounds/searchOrg/', views.searchTaxo, name="org_search"),
-    # path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
+    path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
     path('compounds/createTaxo/', views.TaxoCreateView.as_view(), name="taxo_create"),
     path('compounds/import_Taxo/', views.import_excel_taxo, name="importTaxo"),
     path('compounds/import_dict/', views.import_excel_dict, name="importDict"),
-    # path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
-    # path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
+    path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
+    path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
     # path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
-    # path('compounds/taxo/<str:Organism_Name>', views.TaxoUpdateView.as_view(), name="taxo_update"),
+    path('compounds/taxo/<str:Organism_Name>', views.TaxoUpdateView.as_view(), name="taxo_update"),
     
 ]
 

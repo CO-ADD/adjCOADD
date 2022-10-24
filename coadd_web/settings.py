@@ -202,6 +202,7 @@ STATICFILES_DIRS=[BASE_DIR/"static",]
 
 AUTH_USER_MODEL = 'app.ApplicationUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 

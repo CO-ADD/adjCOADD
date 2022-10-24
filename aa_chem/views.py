@@ -60,32 +60,32 @@ def home(req):
 
 
 
-# class TaxoListView(ListView):
-#     model=Taxonomy
-#     paginate_by = 24
-#     fields='__all__'
-#     template_name = 'aa_chem/taxoListview.html'
+class TaxoListView(ListView):
+    model=Taxonomy
+    paginate_by = 24
+    fields='__all__'
+    template_name = 'aa_chem/taxoListview.html'
 
-#     def get_context_data(self, **kwargs):
-#         for filename in os.listdir("static/images"):
-#                 file_path=os.path.join("static/images", filename)
-#                 try:
-#                     os.unlink(file_path)
-#                     print("removed!")
-#                 except Exception as err:
-#                     print(err)
+    def get_context_data(self, **kwargs):
+        for filename in os.listdir("static/images"):
+                file_path=os.path.join("static/images", filename)
+                try:
+                    os.unlink(file_path)
+                    print("removed!")
+                except Exception as err:
+                    print(err)
 
-#         context=super().get_context_data(**kwargs)
-#         context["objects"]=self.model.objects.all()
-#         objects_all=[object_ for object_ in context["objects"]]
-#         p=Paginator(objects_all, 24)
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+        objects_all=[object_ for object_ in context["objects"]]
+        p=Paginator(objects_all, 24)
         
-#         for object_ in p.get_page(self.request.GET.get('page')):
+        for object_ in p.get_page(self.request.GET.get('page')):
 
-#             m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-#             molecule_to_svg(m, object_.Organism_Name)
+            m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+            molecule_to_svg(m, object_.Organism_Name)
             
-#         return context
+        return context
 
 
 
@@ -101,11 +101,11 @@ class TaxoCreateView(CreateView):
         context["objects"]=self.model.objects.all()
         return context
 
-# class TaxoUpdateView(UpdateView):
-#     model=Taxonomy
-#     fields='__all__'
-#     template_name = 'aa_chem/taxoUpdate.html'
-#     success_url = reverse_lazy('compounds')
+class TaxoUpdateView(UpdateView):
+    model=Taxonomy
+    fields='__all__'
+    template_name = 'aa_chem/taxoUpdate.html'
+    success_url = reverse_lazy('compounds')
 
 # # ===============================================================OrgView==============================================#
 # # class OrgCreateView(CreateView):
@@ -150,7 +150,7 @@ def searchTaxo(req):
     return JsonResponse({})
 
 # =============================2. Create New Organism based Taxonomy==============================#
-# OrgForm=modelform_factory(Organisms, exclude=["Strain_Type"])
+
 def newOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
@@ -188,7 +188,7 @@ def newOrgnisms(req):
         setTaxo=req.POST.get('setTaxo')
         newTaxo=get_object_or_404(Taxonomy, Organism_Name=setTaxo)
         strain=req.POST.getlist('strain')
-        print(strain)
+        print(type(strain))
 
         riskgroup=req.POST.get('risk')
         try:
@@ -217,40 +217,40 @@ def newOrgnisms(req):
 
 
 # ==============================List View ===============================================================
-# class OrgListView(ListView):
-#     model=Organisms
-#     paginate_by = 24
-#     fields='__all__'
-#     template_name = 'aa_chem/orgList.html'
+class OrgListView(ListView):
+    model=Organisms
+    paginate_by = 24
+    fields='__all__'
+    template_name = 'aa_chem/orgList.html'
     
-#     def get_context_data(self, **kwargs):
-#         for filename in os.listdir("static/images"):
-#                 file_path=os.path.join("static/images", filename)
-#                 try:
-#                     os.unlink(file_path)
-#                     print("removed!")
-#                 except Exception as err:
-#                     print(err)
+    def get_context_data(self, **kwargs):
+        for filename in os.listdir("static/images"):
+                file_path=os.path.join("static/images", filename)
+                try:
+                    os.unlink(file_path)
+                    print("removed!")
+                except Exception as err:
+                    print(err)
 
-#         context=super().get_context_data(**kwargs)
-#         context["objects"]=self.model.objects.all()
-#         objects_all=[object_ for object_ in context["objects"]]
-#         p=Paginator(objects_all, 24)
+        context=super().get_context_data(**kwargs)
+        context["objects"]=self.model.objects.all()
+        objects_all=[object_ for object_ in context["objects"]]
+        p=Paginator(objects_all, 24)
         
-#         for object_ in p.get_page(self.request.GET.get('page')):
+        for object_ in p.get_page(self.request.GET.get('page')):
        
-#             # if exists(f"static/images/{object_.id}.png"):
-#             #     print("file exists")
-#             #     return context
-#             # else:
+            # if exists(f"static/images/{object_.id}.png"):
+            #     print("file exists")
+            #     return context
+            # else:
 
-#             if object_.id%2==0:
-#                 m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-#             else:
-#                 m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-#             molecule_to_svg(m, object_.id)
+            if object_.id%2==0:
+                m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+            else:
+                m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
+            molecule_to_svg(m, object_.id)
             
-#         return context
+        return context
 
 # class OrgTableView(OrgListView):
   

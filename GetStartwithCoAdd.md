@@ -37,8 +37,7 @@ Install all the following packages in the conda environment.
 1. conda install -c conda-forge django
 2. prerequistion for python-ldap
 3. pip install python-ldap
-4. pip install django-ldap(remove)
-   pip install django-auth-ldap
+4. pip install django-auth-ldap
 5. pip install rdkit-pypi
 6. pip install git+https://github.com/rdkit/django-rdkit.git
 7. sudo apt-get install postgresql postgresql-contrib
