@@ -17,7 +17,7 @@ from rdkit import Chem
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
-# # from .forms import CreateNewOrgForm
+from .forms import CreateNewOrgForm
 # from model_utils import Choices
 # from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
@@ -155,10 +155,10 @@ def newOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    strain_type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
+    Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
 
     # ===================Dictionary Foreign Key===================
-    risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
+    # risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
     # pathogen=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
     # biolAppr =Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
     # mat=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
@@ -185,30 +185,26 @@ def newOrgnisms(req):
 
     # Retreive Values for each column========================
     if req.method=='POST':
-        setTaxo=req.POST.get('setTaxo')
-        newTaxo=get_object_or_404(Taxonomy, Organism_Name=setTaxo)
-        strain=req.POST.getlist('strain')
-        print(type(strain))
-
-        riskgroup=req.POST.get('risk')
+        form=CreateNewOrgForm(req.POST)
+        Organism_Name=req.POST.get('Organism_Name')
+        Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+        Strain_Type_list=req.POST.getlist('Strain_Type')
+       
         try:
-            riskg=get_object_or_404(Dictionaries, Dict_Value=riskgroup)
-            
-        except Exception as err:
-            print(err)
-            riskg=None
-        
-
-        try:
-            newobj=Organisms.objects.create(Organism_Name=newTaxo, Strain_Type=strain, Risk_Group=riskg)
-            newobj.save()
-            print('saved!')
-            return redirect("/")
+            if form.is_valid():
+                instance=form.save(commit=False)
+                instance.Strain_Type=Strain_Type_list
+                instance.Organism_Name=Organism_Name_fk
+                instance.save()
+                print("saved")
+                return redirect("/")
         
         except Exception as err:
             print(err)
+    else:
+        form=CreateNewOrgForm()
  
-    return render(req, 'aa_chem/orgCreate2.html', { 'strains':strain_type, 'risks':risk}) #'form':form,
+    return render(req, 'aa_chem/orgCreate2.html', { 'Strain_Type':Strain_Type, 'form':form}) #'form':form,
 
 
 

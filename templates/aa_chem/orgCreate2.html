@@ -16,26 +16,17 @@
       <div id="results-box" class="results-card"></div>
     </div>
     <!-- ===================================================================================== -->
-    <form id="createGroupForm" method="POST" class="post-form" name="create">
+    <form method="POST" class="post-form" name="create">
       {% csrf_token %}
-
-      <input type="text" id="taxo-name" name="setTaxo" style="display: none;">
+      {{form}}
+      <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
       <label for="">Strain Type</label>
-      <select class="form-select" multiple aria-label="multiple select example" name="strain" id="straintype">
+      <select class="form-select" multiple aria-label="multiple select example" name="Strain_Type" id="straintype">
         <option selected>Open this select menu</option>
-        {%for obj in strains%}
+        {% for obj in Strain_Type %}
         <option value="{{obj.Dict_Value}}">{{obj.Dict_Value}}</option>
         {%endfor%}
       </select>
-
-      <label for="">Risk Group</label>
-      <select class="form-select" aria-label="select example" name="risk">
-        <option selected>Open this select menu</option>
-        {%for obj in risks%}
-        <option value="{{obj.Dict_Value}}">{{obj.Dict_Value}}</option>
-        {%endfor%}
-      </select>
-
 
       <input type="submit" class="btn m-auto mt-5" value="Add" name="note" />
 
