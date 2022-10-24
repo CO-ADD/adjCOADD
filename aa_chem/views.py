@@ -1,7 +1,6 @@
 # import re
 # import csv
-# import os
-import ast
+import os
 # from os.path import exists
 # from django.contrib.admin.views.decorators import staff_member_required
 # from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
@@ -39,11 +38,6 @@ def home(req):
         field=req.POST.get('field')
         if field=='Organism_Name':
             result=Taxonomy.objects.filter(Organism_Name__contains=search)
-        # elif field=='status':
-        #     result=Taxonomy.objects.filter(status__contains=search)
-        # else:
-        #     result=Taxonomy.objects.filter(drug_id__contains=search)
-        #     print(result)
     else:
         result=Taxonomy.objects.all()
         
@@ -52,11 +46,6 @@ def home(req):
     page_number = req.GET.get('page')
     page_obj=p.get_page(page_number)
     for object_ in page_obj:
-       
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
         m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
         molecule_to_svg(m, object_.Organism_Name)
     
@@ -160,54 +149,72 @@ def searchTaxo(req):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-# =============================2. Create New Organism based Taxonomoy==============================#
+# =============================2. Create New Organism based Taxonomy==============================#
 # OrgForm=modelform_factory(Organisms, exclude=["Strain_Type"])
 def newOrgnisms(req):
-   
+    '''
+    Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
+    '''
+    strain_type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
+
+    # ===================Dictionary Foreign Key===================
     risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
-    org_strain=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
-    strains=str(org_strain[0]).replace("[","").replace("]","").replace('\'','')
-    strain_test=strains.split(',')
-    print(strain_test)
-    a=strain_test[0]
-    b=strain_test[1]
-    
+    # pathogen=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
+    # biolAppr =Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
+    # mat=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
+    # oxyPref=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
+    # ===================Dictionary Foreign Key===================
+
+    #=====================normal fields==========================
+    # Organism_Desc= models.CharField
+    # Strain_ID= models.CharField
+    # Strain_Code= models.CharField
+    # Strain_Desc= models.CharField
+    # Strain_Notes= models.CharField
+    # Strain_Tissue= models.CharField    
+    # Sequence = models.CharField
+    # Sequence_Link = models.CharField
+    # Tax_ID = models.IntegerField
+    # Import_Permit = models.CharField
+    # Special_Precaution = models.CharField
+    # Lab_Restriction = models.CharField
+    # MTA_Document = models.CharField
+    # Atmosphere_Pref = models.CharField
+    # Nutrient_Pref = models.CharFiel
+    # Biofilm_Pref = models.CharField
+
+    # Retreive Values for each column========================
     if req.method=='POST':
         setTaxo=req.POST.get('setTaxo')
-        print("setTaxo is type of ")
-        print(setTaxo)
         newTaxo=get_object_or_404(Taxonomy, Organism_Name=setTaxo)
-        # form=OrgForm(req.POST)
-        strain=req.POST.get('strain')
+        strain=req.POST.getlist('strain')
+        print(strain)
+
         riskgroup=req.POST.get('risk')
-        riskgroup=ast.literal_eval(riskgroup)
-        # print(f'{riskgroup} type is: {type(riskgroup)}')
         try:
             riskg=get_object_or_404(Dictionaries, Dict_Value=riskgroup)
+            
         except Exception as err:
             print(err)
-            riskg=get_object_or_404(Dictionaries, pk=2)
-        print(riskg.Dict_Value)
+            riskg=None
+        
 
         try:
             newobj=Organisms.objects.create(Organism_Name=newTaxo, Strain_Type=strain, Risk_Group=riskg)
             newobj.save()
             print('saved!')
-            return redirect("/home2")
-            # if form.is_valid():
-            #     instance=form.save()
-            #     instance.save()
-            #     obj=Organisms.objects.filter(Organism_Name='testSpeice')[0]
-            #     obj.Strain_Type=strain
-            #     obj.save(update_fields=['Strain_Type'])
-            #     print(f'{obj.Strain_Type} saved')
-                
-            #     return redirect("org_create")
+            return redirect("/")
+        
         except Exception as err:
             print(err)
-    # else:
-        # form=OrgForm()
-    return render(req, 'aa_chem/orgCreate2.html', { 'a':a, 'b':b, 'risks':risk}) #'form':form,
+ 
+    return render(req, 'aa_chem/orgCreate2.html', { 'strains':strain_type, 'risks':risk}) #'form':form,
+
+
+
+
+
+
 
 # ==============================List View ===============================================================
 # class OrgListView(ListView):
@@ -253,25 +260,69 @@ def newOrgnisms(req):
 
 
 
-# # ==============================Function View===========================================================#
+# # ==============================Import Excel files===========================================================#
+import pandas as pd
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
+def import_excel_taxo(req):
+    print('importing....')
+    try:
+        if req.method=='POST' and req.FILES['myfile']:
+            myfile=req.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            uploaded_file_url=fs.url(filename)
+            excel_file=uploaded_file_url
+            print(excel_file)
+            exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
+            print(type(exmpexceldata))
+            dbframe=exmpexceldata
+            for dbframe in dbframe.itertuples():
+                class_fkey=Dictionaries.objects.filter(Dict_Desc=dbframe.ORGANISM_CLASS)
+                print(class_fkey)
+                division_fkey=Dictionaries.objects.filter(Dict_Desc=dbframe.DIVISION)
+                linea=dbframe.LINEAGE.split(",")
+                print(division_fkey)
+                # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
+                obj, created=Taxonomy.objects.get_or_create(Organism_Name=dbframe.ORGANISM_NAME, Other_Names=dbframe.ORGANISM_NAME_OTHER, Code=dbframe.ORGANISM_CODE, 
+                    Class=class_fkey[0], Tax_ID=dbframe.TAX_ID,Parent_Tax_ID=dbframe.PARENT_TAX_ID, 
+                    Tax_Rank=dbframe.TAX_RANK, Division=division_fkey[0], Lineage=linea
+                    )
+                print(type(obj))
+                # obj.save()
+            
+            return render(req, 'aa_chem/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
+    except Exception as err:
+        print(err)
+    return render(req, 'aa_chem/importexcel_taxo.html', {})
 
-# # @staff_member_required
-# # @user_passes_test(lambda u: u.is_staff)
-# @permission_required('app.change_groupfilter')
-# # @login_required
-# def importCSV(req):  
-
-#     if req.method=='POST':
-#         try:
-#             fdata=[req.POST.get('fdata'),]
-#             management.call_command('processCsvmultiple', fpath=fdata)
-#             print("done!")
-#             print(req.body)
-#         except Exception as err:
-#             print(err)
-   
-#     return redirect(req.META['HTTP_REFERER'])
+def import_excel_dict(req):
+    print('importing....')
+    try:
+        if req.method=='POST' and req.FILES['myfile']:
+            myfile=req.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            uploaded_file_url=fs.url(filename)
+            excel_file=uploaded_file_url
+            print(excel_file)
+            exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
+            print(type(exmpexceldata))
+            dbframe=exmpexceldata
+            for dbframe in dbframe.itertuples():
+                print("iam here")             
+                # int_order=int(0+dbframe.Dict_View_Order)
+                # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
+                obj, created=Dictionaries.objects.get_or_create(Dictionary_ID=dbframe.Dictionary_ID, Dictionary_Class=dbframe.Dictionary_Class, Dict_Value=dbframe.Dict_Value, Dict_Desc =dbframe.Dict_Desc, Dict_Value_Type =dbframe.Dict_Value_Type, Dict_View_Order =dbframe.Dict_View_Order
+                    )
+                print(type(obj))
+                # obj.save()
+            
+            return render(req, 'aa_chem/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
+    except Exception as err:
+        print(err)
+    return render(req, 'aa_chem/importexcel_dict.html', {})
 
 #======================================================Export Data Views Function==================================================#  
 # # @user_passes_test(lambda u: u.is_admin)

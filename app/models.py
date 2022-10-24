@@ -106,7 +106,7 @@ class Dictionaries(AuditModel):
 
     Dictionary_ID = models.CharField(max_length=30, db_index=True, verbose_name = "Dictionary", )
     Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class", )
-    Dict_Value = ArrayField(models.CharField(max_length=150, null=True, blank=True,),  default=list, blank=True)  #models.CharField(max_length=50, verbose_name = "Value",  )
+    Dict_Value =models.CharField(max_length=50, verbose_name = "Value",  ) # ArrayField(models.CharField(max_length=150, null=True, blank=True,),  default=list, blank=True)  #
     Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
     Dict_Value_Type = models.CharField(max_length=20, verbose_name = "Type")
     Dict_View_Order = models.IntegerField(verbose_name = "View Order", null=True)

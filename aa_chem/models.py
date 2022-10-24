@@ -61,7 +61,7 @@ class Drugbank(models.Model):
 
 #-------------------------------------------------------------------------------------------------
 
-class Taxonomy(models.Model):
+class Taxonomy(AuditModel):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
 

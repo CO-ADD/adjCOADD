@@ -1,0 +1,129 @@
+﻿Dictionary_ID,Dictionary_Class,Dict_Value,Dict_Desc,Dict_Value_Type,Dict_View_Order
+Units_Concentration,General,M,Molar,String,0
+Units_Concentration,General,mM,,String,0
+Units_Concentration,General,uM,,String,0
+Units_Concentration,General,mg/mL,,String,0
+Units_Concentration,General,ug/mL,,String,0
+Units_Concentration,General,pct,Percentage,String,0
+Units_Amount,General,mg,,String,1
+Units_Amount,General,g,Gram,String,2
+Units_Volume,General,nL,,String,1
+Units_Volume,General,uL,,String,2
+Units_Volume,General,mL,,String,3
+Units_Volume,General,L,Litre,String,4
+Centration_Type,Chemistry,FB,Concentration by Free Base ,String,2
+Centration_Type,Chemistry,SALT,Concentration including Salt,String,1
+Audit_Status,Audit,-9,Deleted,Integer,5
+Audit_Status,Audit,-1,Invalid,Integer,4
+Audit_Status,Audit,0,Undefined,Integer,1
+Audit_Status,Audit,1,Valid,Integer,2
+Audit_Status,Audit,2,Confirmed,Integer,3
+Risk_Group,Organism,RG1,Risk Group 1,String,1
+Risk_Group,Organism,RG2,Risk Group 2,String,2
+Pathogen_Group,Organism,PATH,Pathogen,String,1
+Pathogen_Group,Organism,NONP,Non-Pathogen,String,2
+Organism_Class,Organism,GN,Gram-Negative,String,1
+Organism_Class,Organism,GP,Gram-Positive,String,2
+Organism_Class,Organism,MB,Mycobacteria,String,3
+Organism_Class,Organism,FG,Fungi,String,4
+Organism_Class,Organism,PL,Plant,String,6
+Organism_Class,Organism,MA,Mammalian,String,5
+Organism_Division,Organism,ROD,Rodents,String,4
+Organism_Division,Organism,BCT,Bacteria,String,1
+Organism_Division,Organism,MAM,Mammals,String,3
+Organism_Division,Organism,PLN,Plants and Fungi,String,2
+Organism_Division,Organism,PRI,Primates,String,5
+Lab_Restriction,Organism,PC2.0,IMB PC2 Lab,String,1
+Lab_Restriction,Organism,PC2.1,IMB 7.230 (Low Risk),String,2
+Lab_Restriction,Organism,PC2.2,IMB 1.106 (Medium Risk),String,3
+Lab_Restriction,Organism,PC2.3,IMB 6.027 (High Risk),String,4
+Lab_Restriction,Organism,PC2.4,IMB 1.106 (Fungal Lab),String,5
+Lab_Restriction,Organism,PC3,IMB 1.108 (PC3),String,6
+Oxygen_Preference,Organism,Aerobic,Grows best in presence of oxygen,String,1
+Oxygen_Preference,Organism,Aerobic Microaerophiles,"Requires oxygen for growth, but only at low concentration",String,2
+Oxygen_Preference,Organism,Aerobic Obligate,Requires oxygen for growth,String,3
+Oxygen_Preference,Organism,Anaerobic Aerotolerant,"Only Anaerobic respiration or Fermentation, but oxygen tolerant",String,5
+Oxygen_Preference,Organism,Anaerobic Facultative,"Both Aerobic respiration, or Fermentation or Anaerobic respiration ",String,4
+Oxygen_Preference,Organism,Anaerobic Obligate ,"Only Anaerobic respiration or Fermentation, and killed by oxygen ",String,6
+Strain_Type,Organism,Avirulent,Not virulent strain,String,7
+Strain_Type,Organism,Cancerous,Cancerous or immortalized cell line,String,21
+Strain_Type,Organism,Clinical Isolate,Strain isolated from patients,String,6
+Strain_Type,Organism,Control,Control strain,String,2
+Strain_Type,Organism,Luminescent,"Luminescent strain, usually by GMO",String,11
+Strain_Type,Organism,Mutant,Organism with mutations,String,8
+Strain_Type,Organism,Mutant GMO,Organism with genetically manipulated mutations,String,9
+Strain_Type,Organism,Mutant Induced,Organism with induced mutations ,String,10
+Strain_Type,Organism,Non-Cancerous,Non cancerous cell line,String,20
+Strain_Type,Organism,Primary cells,Primary cells,String,22
+Strain_Type,Organism,Resistant,Drug-Resistant,String,3
+Strain_Type,Organism,Resistant MDR,Multi Drug-Resistant,String,4
+Strain_Type,Organism,Resistant XDR,Extreme Drug-Resistant,String,5
+Strain_Type,Organism,Serial passage,Serial passage isolate,String,23
+Strain_Type,Organism,Stable Transfected,Stable transfected cell line,String,25
+Strain_Type,Organism,Transfected,Transfected cell line,String,24
+Strain_Type,Organism,Type,Type strain,String,1
+Media_Use,Organism,Freezing,Media used for Freezing,String,4
+Media_Use,Organism,GlycerolStock,Media used for GlycerolStock,String,3
+Media_Use,Organism,Inhouse,Inhouse used growth media,String,2
+Media_Use,Organism,Recommended,Recommanded growth media,String,1
+Stock_Type,Organism,HighUse,High Usage Stock (from Stock),String,4
+Stock_Type,Organism,LowPassage,Low Passage Stock (from Master),String,5
+Stock_Type,Organism,Master,Master Stock (from Original),String,1
+Stock_Type,Organism,Master_LN2,Master Stock in liquid N2 (from Original),String,2
+Stock_Type,Organism,Stock,Stock (from Master),String,3
+Biol_Approval,Organism,GMO,NLRD for Genetically manipulated organism,String,4
+Biol_Approval,Organism,MDR,IBC for multi/extreme-drug resistant organism,String,3
+Biol_Approval,Organism,SP,IBC for organism with special precaution,String,2
+Biol_Approval,Organism,None,No approval required,String,1
+Plate_Material,Labware,NBS-PS,Non-Binding Surface Polystyrene plates,String,2
+Plate_Material,Labware,PP,Polypropylene plates,String,4
+Plate_Material,Labware,PS,Polystyrene plates,String,1
+Plate_Material,Labware,TC-PS,Tissue culture Polystyrene plates,String,3
+Plate_Material,Labware,TC-PP,Tissue culture Polypropylene plates,String,5
+Plate_Size,Labware,24,24-well plates 4x6 with 500-3000 uL,Integer,1
+Plate_Size,Labware,48,48-well plates 6x8 with 500-1500 uL,Integer,2
+Plate_Size,Labware,96,96-well plates 8x12 with 100-300 uL,Integer,3
+Plate_Size,Labware,384,384-well plates 16x24 with 30-100 uL,Integer,4
+Plate_Size,Labware,1536,1536-well plates 32x48 with 5-15 uL,Integer,5
+Plate_Size,Labware,3456,3456-well plates 48x72 with 1-5 uL,Integer,6
+Labware_Type,Labware,Plate,Microtitre plates,String,0
+Labware_Type,Labware,Rack,Racks of tubes,String,0
+Labware_Type,Labware,Box,Box of vial containers,String,3
+Container_Type,Labware,Tube,Polypropylene tube (with barcode),String,2
+Container_Type,Labware,Plate,Microtitre plate,String,1
+Container_Type,Labware,Vial,Vial (eppendorf or glass),String,3
+Well_Color,Labware,Clear,Clear,String,0
+Well_Color,Labware,Black,Black,String,0
+Well_Color,Labware,White,White,String,0
+Well_Shape,Labware,Flat,Flat bottom,String,0
+Well_Shape,Labware,U-Shape,U-shaped bottom,String,0
+Well_Shape,Labware,V-Shape,V-shaped bottom,String,0
+Well_Shape,Labware,Round,Round shaped bottom,String,0
+Plate_Type,Plate,Stock,Stockplate used for Storage,String,1
+Plate_Type,Plate,Master,Masterplate used for Storage and Stamping TestPlates,String,2
+Plate_Type,Plate,Mother,Motherplate used for Stamping TestPlates,String,3
+Plate_Type,Plate,Test,Testplate used for assays only,String,4
+Data_Quality,Assay,Rejected,Invalid datapoint - Rejected by quality control (-3),String,0
+Data_Quality,Assay,Failed,Invalid datapoint - Failed by assay performance (-2),String,0
+Data_Quality,Assay,Invalid,Invalid datapoint (-1),String,0
+Data_Quality,Assay,Undefined,Undefined quality (0),String,0
+Data_Quality,Assay,Valid,Valid datapoint (1),String,0
+Data_Quality,Assay,Outlier,Valid datapoint - Outlier (2),String,0
+Quality_Status,General,Invalid,Entry is invalid (-1),String,2
+Quality_Status,General,Undefined,Entry has undefined quality (0),String,0
+Quality_Status,General,Valid,Entry is valid (1),String,1
+Quality_Status,General,Rejected,Entry has been rejected (-3),String,3
+Pub_Status,General,Internal,Internal only publication,String,1
+Pub_Status,General,Collaborator,Publication to collaborator only,String,2
+Pub_Status,General,Public,Publication to the Public,String,3
+Pub_Status,General,Public_Ltd,Publication to the Public with Limitation,String,4
+Process_Status,General,Raw,Raw or draft data,String,1
+Process_Status,General,Processed,Processed data,String,2
+Process_Status,General,Analysed,Analysed data,String,3
+Process_Status,General,Reviewed,Reviewed data,String,4
+Process_Status,General,Rejected,Rejected or failed data,String,5
+Process_Status,General,Validated,Validated data,String,6
+License_Status,Document,AC,License for academic research only,String,0
+License_Status,Document,LTD,License limited to Collaborator,String,0
+License_Status,Document,COM,License for academic and contract research,String,0
+License_Status,Document,PUB,No restriction on use and distribution,String,0
