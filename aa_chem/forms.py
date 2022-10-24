@@ -3,17 +3,19 @@ from django import forms
 from django.forms import ModelForm
 
 
-
 class CreateNewOrgForm(ModelForm):
-    
-    # Strain_Type=forms.MultipleChoiceField()
+    Oxygen_Pref=forms.ChoiceField()
+    Risk_Group=forms.ChoiceField()
    
-    # def __init__(self, list_test, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.testList=list_test
+   
+    def __init__(self, choice1, choice2, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Oxygen_Pref_choices=choice1
+        self.Risk_Group_choices=choice2
         
     #     # self.fields['Strain_Type'].widget = forms.CheckboxSelectMultiple(choices=self.testList)
-    #     self.fields['Strain_Type'].choices=self.testList
+        self.fields['Oxygen_Pref'].choices=self.Oxygen_Pref_choices
+        self.fields['Risk_Group'].choices=self.Risk_Group_choices
 
     class Meta:
         model=Organisms

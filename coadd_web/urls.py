@@ -19,39 +19,38 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
-from aa_chem import views
+from aa_chem.views import home,exportCSV, import_excel_taxo,import_excel_dict, searchTaxo,newOrgnisms, TaxoListView,TaxoCreateView,TaxoUpdateView, OrgListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path('home2/', views.home2, name="home2"),
-    path('compounds/', views.home, name="compounds"),
-    # path('usermanagement/', AppUserListView.as_view(), name="usermanage"),
-    # path('usermanagement_create/', AppUserCreateView.as_view(), name="createAppUser"),
-    # path('usermanagement_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
-    # path('usermanagement_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
-    path('userslist/', AppUserListView.as_view(), name="userslist"),
-    
-    path('dict/', DictionariesView.as_view(), name='dict_view' ),
-    # path('dict/create', DictCreateView.as_view(), name='dict_create' ),
-    # path('accounts/', include('django.contrib.auth.urls')),
-  
-  
-    path('exportData/', views.exportCSV, name="dataexport"),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('user-profile/<int:id>/', userprofile, name='userprofile'),
-    path('compounds/createOrg/', views.newOrgnisms, name="org_create"),
-   
-    path('compounds/searchOrg/', views.searchTaxo, name="org_search"),
-    path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
-    path('compounds/createTaxo/', views.TaxoCreateView.as_view(), name="taxo_create"),
-    path('compounds/import_Taxo/', views.import_excel_taxo, name="importTaxo"),
-    path('compounds/import_dict/', views.import_excel_dict, name="importDict"),
-    path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
-    path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
+
+    #========================appusers URL==========================================================================
+    path('accounts/', include('django.contrib.auth.urls')),  
+    path('app/user_list/', AppUserListView.as_view(), name="userslist"),
+    path('app/user_create/', AppUserCreateView.as_view(), name="createAppUser"),
+    path('app/user_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
+    path('app/user_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
+    path('app/dict/', DictionariesView.as_view(), name='dict_view' ),
+    # path('app/dict/create', DictCreateView.as_view(), name='dict_create' ),
+
+    #========================OrgDB model views URL====View, Create, Updata, Delete=================================
+    path('aa_chem/', home, name="compounds"),
+    path('aa_chem/taxo', TaxoListView.as_view(), name="taxo_list"),
+    path('aa_chem/taxoListview', TaxoListView.as_view(), name="taxo_list_view"),
+    path('aa_chem/organism', OrgListView.as_view(), name="org_list"),
     # path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
-    path('compounds/taxo/<str:Organism_Name>', views.TaxoUpdateView.as_view(), name="taxo_update"),
-    
+
+    path('aa_chem/searchOrg/', searchTaxo, name="org_search"),
+    path('aa_chem/createOrg/', newOrgnisms, name="org_create"),
+    path('aa_chem/createTaxo/', TaxoCreateView.as_view(), name="taxo_create"),
+
+    path('aa_chem/taxo/<str:Organism_Name>', TaxoUpdateView.as_view(), name="taxo_update"),
+
+    #========================Data Export/Import===================================================================
+    path('aa_chem/exportData/', exportCSV, name="dataexport"),
+    path('aa_chem/import_Taxonomy/', import_excel_taxo, name="importTaxo"),
+    path('aa_chem/import_dictionary/', import_excel_dict, name="importDict"),
 ]
 
 if settings.DEBUG:

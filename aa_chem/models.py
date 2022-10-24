@@ -157,8 +157,8 @@ class Organisms(AuditModel):
     Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
 
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0, null=True)
-
-    Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING, null=True)   # Dictionaries[Dictionary_ID = "Risk_Group"]
+    Risk_Group = models.CharField(blank=True, null=True, max_length=50)
+    # Risk_Group = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Risk Group",related_name='%(class)s_requests_RG', on_delete=models.DO_NOTHING, null=True)   # Dictionaries[Dictionary_ID = "Risk_Group"]
     Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
 
     Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--", null=True)
@@ -167,8 +167,8 @@ class Organisms(AuditModel):
     Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
     MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="--",null=True)
     MTA_Status = models.ForeignKey(Dictionaries,blank=True, verbose_name = "MTA Status",related_name='%(class)s_requests_MTA', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "License_Status"]
-
-    Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]
+    Oxygen_Pref = models.CharField(blank=True, null=True, max_length=250)
+    # Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]
     Atmosphere_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Atmosphere Preference", null=True)
     Nutrient_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Nutirent Preference", null=True)
     Biofilm_Pref = models.CharField(blank=True, max_length=500, verbose_name = "Biofilm Preference",null=True)

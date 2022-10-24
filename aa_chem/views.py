@@ -114,17 +114,6 @@ class TaxoUpdateView(UpdateView):
 # #     template_name = 'aa_chem/orgCreate2.html'
 # #     success_url = reverse_lazy('compounds')
 
-def home2(req):
-    if req.method=='POST':
-        #a) Add Note form
-        tag=req.POST.get("note_tag")
-            
-        note_new= Mytest.objects.create(tag=tag)
-        note_new.save()
-        print('save')
-        return redirect("/")
-        
-    return render(req, 'aa_chem/home2.html') 
 
 # ============================Create new Organism======================================================#
 # =============================1. Ajax Call search Taxo=============================================#
@@ -156,7 +145,8 @@ def newOrgnisms(req):
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
     Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
-
+    Oxygen_Pref_choices=(('Aerobic', 'Grows best in presence of oxygen'),('Aerobic Microaerophiles', 'Requires oxygen for growth, but only at low concentration'))
+    Risk_Group_choices=(('RG1', 'Risk Group 1'), ('RG2', 'Risk Group 2'))
     # ===================Dictionary Foreign Key===================
     # risk=Dictionaries.objects.filter(Dictionary_ID='Risk_Group')
     # pathogen=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
@@ -165,27 +155,9 @@ def newOrgnisms(req):
     # oxyPref=Dictionaries.objects.filter(Dictionary_ID='unit_conversion')
     # ===================Dictionary Foreign Key===================
 
-    #=====================normal fields==========================
-    # Organism_Desc= models.CharField
-    # Strain_ID= models.CharField
-    # Strain_Code= models.CharField
-    # Strain_Desc= models.CharField
-    # Strain_Notes= models.CharField
-    # Strain_Tissue= models.CharField    
-    # Sequence = models.CharField
-    # Sequence_Link = models.CharField
-    # Tax_ID = models.IntegerField
-    # Import_Permit = models.CharField
-    # Special_Precaution = models.CharField
-    # Lab_Restriction = models.CharField
-    # MTA_Document = models.CharField
-    # Atmosphere_Pref = models.CharField
-    # Nutrient_Pref = models.CharFiel
-    # Biofilm_Pref = models.CharField
-
     # Retreive Values for each column========================
     if req.method=='POST':
-        form=CreateNewOrgForm(req.POST)
+        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, req.POST)
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
         Strain_Type_list=req.POST.getlist('Strain_Type')
@@ -202,13 +174,9 @@ def newOrgnisms(req):
         except Exception as err:
             print(err)
     else:
-        form=CreateNewOrgForm()
+        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices)
  
-    return render(req, 'aa_chem/orgCreate2.html', { 'Strain_Type':Strain_Type, 'form':form}) #'form':form,
-
-
-
-
+    return render(req, 'aa_chem/createForm/Organism.html', { 'Strain_Type':Strain_Type, 'form':form}) #'form':form,
 
 
 

@@ -18,7 +18,7 @@
     <!-- ===================================================================================== -->
     <form method="POST" class="post-form" name="create">
       {% csrf_token %}
-      {{form}}
+      {{form.as_p}}
       <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
       <label for="">Strain Type</label>
       <select class="form-select" multiple aria-label="multiple select example" name="Strain_Type" id="straintype">
