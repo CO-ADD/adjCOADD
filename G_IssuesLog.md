@@ -47,3 +47,21 @@
 7. Error: (fields.E304) Reverse accessor'Group.user_set' for 'app.ApplicationUser.groups' clashes Reverse accessor clashes with reverse accessor for 'app.User.groups' 
 Hint: add or change a related_name argument to the definition for 'app.ApplicationUser.groups' or 'app.User.groups'.
 (Error happens during inherite class and with foreignkey)
+
+
+8. (i)Cannot DELETE or UPDATE with on_delete=models.DO_NOTHING
+   (s) Change to PROTECT
+
+#### on_delete for Foreignkey change to on_delete=models.PROTECT.
+CASCADE
+Cascade emulates the SQL constraint of ON DELETE CASCADE. Whenever the referenced object (post) is deleted, the objects referencing it (comments) are deleted as well. 
+
+PROTECT argument of the ForeignKey on_delete option prevents the referenced object from being deleted if it already has an object referencing it in the database. Put simply, Django will prevent a post from deletion if it already has comments. we tried deleting this POST that already has a comment, it will raise PROTECTEDERROR, remove the comment firstly then remove the post.
+
+SET_NULL argument of the ForeignKey on_delete option is only available to you when you have set the null option on the ForeignKey field to True. When you use this argument, and, in our case, delete a post, it is going to leave the comments in the database without deleting it.
+
+SET_DEFAULT
+This argument on the ForeignKey on_delete option requires you to set a default value when defining the relationship. When you delete a post that has comments, the comments are automatically assigned to a default post you had set when creating the model.
+
+DO_NOTHING
+As the name implies, it does nothing when a referenced object is deleted. This is essentially discouraged because it defeats the purpose of an RDBMS. <b> HERE I CANNOT DELETE OR UPDATE any recorder!</b>
