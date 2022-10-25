@@ -2,11 +2,11 @@
 <!--prettier-ignore-->
 {% block title%} mysite{% endblock %}
 {% block content %}
+
 <div class="row vh-100">
   <div class="card mx-5 mt-3">
-    <h4 class="my-0">Create Organism</h4>
-
-    <!-- ================================================================================== -->
+    <h4 class="my-0">Update Organism</h4>
+    <!-- <p>{{Organism_Name}}</p> -->
     <div class="my-0">
       <label>Organism Name</label>
       <form id="search-form" autocomplete="off">
@@ -17,24 +17,20 @@
     </div>
     <!-- ===================================================================================== -->
     <hr>
-    <form method="POST" class="post-form" name="create">
+    <form id="OrganismUpdateForm" method="POST" class="post-form" name="create">
       {% csrf_token %}
       {{form.as_p}}
       <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
-      <label for="">Strain Type</label>
-      <select class="form-select" multiple aria-label="multiple select example" name="Strain_Type" id="straintype">
-        <option selected>Open this select menu</option>
-        {% for obj in Strain_Type %}
-        <option value="{{obj.Dict_Value}}">{{obj.Dict_Value}}</option>
-        {%endfor%}
-      </select>
-
-      <input type="submit" class="btn m-auto mt-5" value="Add" name="note" />
+      <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
 
     </form>
   </div>
 
 </div>
+
+
+
+
 
 <script>
   const delay_by_in_ms = 7000
@@ -117,7 +113,5 @@
 
   })
 
-
 </script>
-
 {%endblock%}

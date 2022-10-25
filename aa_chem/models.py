@@ -117,20 +117,13 @@ class Genes(models.Model):
 
 
 #-------------------------------------------------------------------------------------------------
-class Organisms(AuditModel):
+class Organisms(models.Model):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
     """
 #-------------------------------------------------------------------------------------------------
-    # Choice_Dictionaries = {
-    #     'Risk_Group':'Risk_Group',
-    #     'Pathogen_Group':'Pathogen_Group',
-    #     'Bio_Approval':'Bio_Approval',
-    #     'Oxygen_Pref':'Oxygen_Preference',
-    #     'MTA_Status':'License_Status',
-    #     'Strain_Type':'Strain_Type',
-    # }
+
 
     Unit1='RM'
     Unit2='CI'

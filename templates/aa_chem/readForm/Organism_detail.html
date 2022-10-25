@@ -1,0 +1,87 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="col-md-8 vh-80 m-auto">
+
+
+    <p class="m-atuo">
+
+
+        <a href="{%url 'organism_update' Organism.Organism_ID %}">Update</a>
+    </p>
+    <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
+    <div class="card">
+
+        <div class="card-header">
+            Organism Taxonomy {{Organism.Organism_Name}}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Organism Name</th>
+                            <th scope="col">{{Organism.Organism_Name}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"> Organism Class</th>
+                            <td> empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Code</th>
+                            <td>empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Name other</th>
+                            <td colspan="2">empty</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Organism Name</th>
+                            <th scope="col">{{Organism.Organism_Name}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"> Organism Class</th>
+                            <td> empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Code</th>
+                            <td>empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Name other</th>
+                            <td colspan="2">empty</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

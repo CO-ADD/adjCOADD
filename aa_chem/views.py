@@ -16,8 +16,9 @@ from rdkit import Chem
 
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from .forms import CreateNewOrgForm
+from .forms import CreateNewOrgForm, UpdateNewOrgForm
 # from model_utils import Choices
 # from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
@@ -139,17 +140,34 @@ def searchTaxo(req):
     return JsonResponse({})
 
 # =============================2. Create New Organism based Taxonomy====================================================================================================#
+    Choice_Dictionaries = {
+        'Risk_Group':'Risk_Group',
+        'Pathogen_Group':'Pathogen_Group',
+        'Bio_Approval':'Bio_Approval',
+        'Oxygen_Pref':'Oxygen_Preference',
+        'MTA_Status':'License_Status',
+        'Strain_Type':'Strain_Type',
+    }
+# =======================================================================================================================================================================
+
 def querysetToChoiseList_Dictionaries(model_name, field_name):
     options=model_name.objects.filter(Dictionary_ID=field_name).values('Dict_Value', 'Dict_Desc')
     choices=[tuple(d.values()) for d in options]
     return choices
 
+Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Strain_Type')
+Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Oxygen_Preference') #[tuple(d.values()) for d in Oxygen_Pref_options]
+Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Risk_Group')
 
-def newOrgnisms(req):
+Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Pathogen_Group')
+
+# ================================================================================================================================================================
+def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
+    # Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Strain_Type')
     Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Oxygen_Preference') #[tuple(d.values()) for d in Oxygen_Pref_options]
     print(Oxygen_Pref_choices)
     Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Risk_Group')
@@ -160,7 +178,7 @@ def newOrgnisms(req):
 
     # Retreive Values for each column========================
     if req.method=='POST':
-        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST)
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST)
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
         Strain_Type_list=req.POST.getlist('Strain_Type')
@@ -168,7 +186,6 @@ def newOrgnisms(req):
         try:
             if form.is_valid():
                 instance=form.save(commit=False)
-                instance.Strain_Type=Strain_Type_list
                 instance.Organism_Name=Organism_Name_fk
                 instance.save()
                 print("saved")
@@ -177,18 +194,58 @@ def newOrgnisms(req):
         except Exception as err:
             print(err)
     else:
-        form=CreateNewOrgForm(Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices)
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices)
  
-    return render(req, 'aa_chem/createForm/Organism.html', { 'Strain_Type':Strain_Type, 'form':form}) #'form':form,
+    return render(req, 'aa_chem/createForm/Organism.html', { 'form':form})
 
 
+#=======================================================================================================================================================
+
+def organismDetail(req, Organism_ID):
+    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    context={'Organism': obj}
+    return render(req, "aa_chem/readForm/Organism_detail.html", context)
+
+
+
+def updateOrganism(req, Organism_ID):
+    context={}
+    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices,instance=obj)
+    if req.method=='POST':
+        Organism_Name=req.POST.get('Organism_Name')
+        Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+        obj.delete()
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST, instance=obj)    
+        if form.is_valid():
+            instance=form.save(commit=False)
+            instance.Organism_Name=Organism_Name_fk
+            instance.save()
+            print('save updated')
+            return redirect("/")
+    
+    context["form"]=form
+    # context['Organisms_Name']=obj.Organism_Name
+    return render(req, "aa_chem/updateForm/Organism.html", context)
+
+def deleteOrganism(req, Organism_ID):
+    
+    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    # if req.method=='POST':
+    #     obj.delete()
+    #     print("deleted!")
+    #     return redirect("/")
+    # context={'obj':obj}
+    obj.delete()
+    return redirect("/")
+    # return render(req, "aa_chem/deleteForm/Organism_del.html", context)
 
 # ==============================List View ===============================================================
 class OrgListView(ListView):
     model=Organisms
     paginate_by = 24
     fields='__all__'
-    template_name = 'aa_chem/orgList.html'
+    template_name = 'aa_chem/readForm/Organism_list.html'
     
     def get_context_data(self, **kwargs):
         for filename in os.listdir("static/images"):
@@ -211,17 +268,16 @@ class OrgListView(ListView):
             #     return context
             # else:
 
-            if object_.id%2==0:
-                m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-            else:
-                m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-            molecule_to_svg(m, object_.id)
+            
+            m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+        
+            molecule_to_svg(m, object_.Organism_ID)
             
         return context
 
-# class OrgTableView(OrgListView):
+class OrgCardView(OrgListView):
   
-#     template_name = 'aa_chem/orgTable.html'
+    template_name = 'aa_chem/readForm/Organism_card.html'
 
    
 

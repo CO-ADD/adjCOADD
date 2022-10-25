@@ -19,7 +19,8 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
-from aa_chem.views import home,exportCSV, import_excel_taxo,import_excel_dict, searchTaxo,newOrgnisms, TaxoListView,TaxoCreateView,TaxoUpdateView, OrgListView
+from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchTaxo, createOrgnisms, organismDetail,
+                        updateOrganism, TaxoListView,TaxoCreateView,TaxoUpdateView, OrgListView, OrgCardView, deleteOrganism)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,15 +39,19 @@ urlpatterns = [
     path('aa_chem/', home, name="compounds"),
     path('aa_chem/taxo', TaxoListView.as_view(), name="taxo_list"),
     path('aa_chem/taxoListview', TaxoListView.as_view(), name="taxo_list_view"),
-    path('aa_chem/organism', OrgListView.as_view(), name="org_list"),
-    # path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
+    path('aa_chem/organism_list', OrgListView.as_view(), name="org_list"),
+    path('aa_chem/organism_card', OrgCardView.as_view(), name="org_card"),
+    path('aa_chem/organism/<str:Organism_ID>', organismDetail, name="org_detail"),
+    
 
     path('aa_chem/searchOrg/', searchTaxo, name="org_search"),
-    path('aa_chem/createOrg/', newOrgnisms, name="org_create"),
+    path('aa_chem/createOrg/', createOrgnisms, name="org_create"),
     path('aa_chem/createTaxo/', TaxoCreateView.as_view(), name="taxo_create"),
 
     path('aa_chem/taxo/<str:Organism_Name>', TaxoUpdateView.as_view(), name="taxo_update"),
+    path('aa_chem/updateOrg/<str:Organism_ID>', updateOrganism, name="organism_update"),
 
+    path('aa_chem/deleteOrg/<str:Organism_ID>', deleteOrganism, name="organism_delete"),
     #========================Data Export/Import===================================================================
     path('aa_chem/exportData/', exportCSV, name="dataexport"),
     path('aa_chem/import_Taxonomy/', import_excel_taxo, name="importTaxo"),

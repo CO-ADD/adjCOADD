@@ -3,9 +3,9 @@
 
 <div id="tabs">
     <ul class="nav nav-tabs" id="prodTabs">
-        <li class="active"><a href="#tab_basic">orgview</a></li>
-        <br>
-        <li><a href="#tab_images" data-url="{%url 'org_table'%}">Tableview</a></li>
+        <li class="active"><a href="#tab_basic">orgview </a></li>
+        <hr>
+        <li><a href="#tab_images" data-url="{%url 'org_card'%}">Tableview </a></li>
 
     </ul>
     <div class="tab-content">
@@ -25,7 +25,14 @@
                             {%load static%}
                             <img style="height:300px;" src="{%static 'images/'%}{{object.id}}.svg" alt="Structure" />
                         </div>
-                        <p class="lead fs-4 m-auto"> ID: {{object.Organism_ID}}</p>
+                        <p class="lead fs-4 m-auto"> <a
+                                href="{%url 'org_detail' object.Organism_ID %}">{{object.Organism_Name}}</a> <br> ID:
+                            {{object.Organism_ID}} | <a href="{%url 'organism_update' object.Organism_ID %}">Update</a>
+                        </p>
+
+
+
+                        <p><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></p>
                         <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{object.Risk_Group}}</h5>
                         <p>
                         <div class="text-center" type="button" data-bs-toggle="collapse"

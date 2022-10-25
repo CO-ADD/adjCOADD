@@ -59,7 +59,7 @@ class AuditModel(models.Model):
     
     def delete(self,**kwargs):
         self.astatus = -9
-        self.adeleted_at = timezone.now()
+        # self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
         self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
     
