@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django import forms
+from django.utils import timezone
 # Create your models here.
 
 
@@ -50,53 +51,32 @@ class AuditModel(models.Model):
     acreated_at = models.DateTimeField(auto_now_add=True, null=True,verbose_name = "Created at",editable=False)
     aupdated_at = models.DateTimeField(auto_now=True, null=True,blank=True, verbose_name = "Updated at",editable=False)
     adeleted_at = models.DateTimeField(blank=True, null=True,verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.PROTECT)
-    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.PROTECT)
-    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.PROTECT)
+    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
+    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
+    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
 
     class Meta:
         abstract = True
     
-    def delete(self,**kwargs):
-        self.astatus = -9
-        # self.adeleted_at = timezone.now()
-        self.adeleted_by = kwargs.get("user")
-        self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
+    # def delete(self,**kwargs):
+    #     pass
+    #     self.astatus = -9
+    #     self.adeleted_at = timezone.now()
+    #     self.adeleted_by = kwargs.get("user")
+    #     self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
     
-    def save(self, *args, **kwargs):
-        user = kwargs.get("user")
-        if self.pk: #Object already exists
-            self.aupdated_by = user
-        else:
-            self.acreated_by = user
-        super(AuditModel,self).save(*args, **kwargs)
+    # def save(self,  *args, **kwargs):
+    #     pass
+        # self.request.user = get_current_logged_in_user()
+        # self.user=current_user()
+        # if self.pk: #Object already exists
+        # self.aupdated_by = request.user
+        # else:
+        # self.acreated_by = request.user
+        # super.save( *args, **kwargs)
 
 
 #-------------------------------------------------------------------------------------------------
-class ChoiceArrayField(ArrayField):
-    """
-    A field that allows us to store an array of choices.
-    
-    Uses Django 1.9's postgres ArrayField
-    and a MultipleChoiceField for its formfield.
-    
-    Usage:
-        
-        choices = ChoiceArrayField(models.CharField(max_length=...,
-                                                    choices=(...,)),
-                                   default=[...])
-    """
-#-------------------------------------------------------------------------------------------------
-    def formfield(self, **kwargs):
-        defaults = {
-            'form_class': forms.MultipleChoiceField,
-            'choices': self.base_field.choices,
-        }
-        defaults.update(kwargs)
-        # Skip our parent's formfield implementation completely as we don't
-        # care for it.
-        # pylint:disable=bad-super-call
-        return super(ArrayField, self).formfield(**defaults)
 
 
 #-------------------------------------------------------------------------------------------------
@@ -104,12 +84,11 @@ class Dictionaries(AuditModel):
 #-------------------------------------------------------------------------------------------------
 
 
-    Dictionary_ID = models.CharField(max_length=30, db_index=True, verbose_name = "Dictionary", )
-    Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class", )
-    Dict_Value =models.CharField(max_length=50, verbose_name = "Value",  ) # ArrayField(models.CharField(max_length=150, null=True, blank=True,),  default=list, blank=True)  #
+    
+    Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class")
+    Dict_Value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
-    Dict_Value_Type = models.CharField(max_length=20, verbose_name = "Type")
-    Dict_View_Order = models.IntegerField(verbose_name = "View Order", null=True)
+   
 
     def __str__(self) -> str:
         return f"{self.Dict_Value}.{self.Dict_Desc}"
@@ -127,11 +106,3 @@ class ApplicationLog(models.Model):
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
-
-class Mytest2(models.Model):
-    
-    tag=models.CharField(max_length=155, default='default') 
-    date=models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.tag

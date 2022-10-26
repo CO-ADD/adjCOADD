@@ -68,14 +68,34 @@
 
               <img class="card-img m-auto" src="{%static 'images/'%}{{taxo.Organism_Name}}.svg" alt="Structure" />
               <p class="lead fs-4 m-auto"> ID: {{taxo.Division}}</p>
-              Choise:{{chose}}
+              <a href="{%url 'taxonomy_delete' taxo.Organism_Name %}">Delete</a>
+              <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a>
               <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
-              <div id="{{taxo.Organism_Name}}" style="margin: auto">
+              <div id="{{taxo.Organism_Name}}">
                 <a class="card-link">Update</a>
               </div>
 
               <div id="taxoUpdateModal" class="modal fade" role="dialog">
               </div>
+              <script>
+
+                $(document).ready(function () {
+
+                  btn = "#" + "{{taxo.Organism_Name}}"
+                  let my_modal = $('#taxoUpdateModal');
+
+                  console.log(btn)
+                  $(`${btn} a`).click(function () {
+
+                    my_modal.load("{% url 'taxo_update' taxo.Organism_Name %}", function () {
+                      my_modal.modal("show");
+                    });
+                  });
+                });
+
+              </script>
+
+
               <p>
               <div class="text-center" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapse{{taxo.Organism_Name}}" aria-expanded="false"
@@ -125,19 +145,7 @@
             </div>
 
             <!-- ------------------------------------------------------------------------------------------------------- -->
-            <script>
 
-              $(document).ready(function () {
-                btn = "#" + "{{taxo.Organism_Name}}"
-                let my_modal = $('#taxoUpdateModal');
-                $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'taxo_update' taxo.Organism_Name %}", function () {
-                    my_modal.modal("show");
-                  });
-                });
-              });
-
-            </script>
             <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
           </div>
           {%endfor%}

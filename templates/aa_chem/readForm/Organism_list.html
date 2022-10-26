@@ -33,7 +33,12 @@
 
 
                         <p><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></p>
-                        <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{object.Risk_Group}}</h5>
+                        <h5 class="bi bi-tag fw-bold lead fs-4 m-auto">additional information</h5>
+                        <ul>
+                            <li>Created by: {{object.acreated_by}}</li>
+                            <li>Created at:{{object.acreated_at}}</li>
+                            <li>Updated at: {{object.aupdated_at}}</li>
+                        </ul>
                         <p>
                         <div class="text-center" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{taxo.id}}" aria-expanded="false" aria-controls="{{taxo.id}}">

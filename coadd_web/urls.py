@@ -20,7 +20,7 @@ from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
 from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchTaxo, createOrgnisms, organismDetail,
-                        updateOrganism, TaxoListView,TaxoCreateView,TaxoUpdateView, OrgListView, OrgCardView, deleteOrganism)
+                        updateOrganism, TaxoListView,TaxoCreateView,TaxoUpdateView,deleteTaxonomy, OrgListView, OrgCardView, deleteOrganism)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -52,6 +52,7 @@ urlpatterns = [
     path('aa_chem/updateOrg/<str:Organism_ID>', updateOrganism, name="organism_update"),
 
     path('aa_chem/deleteOrg/<str:Organism_ID>', deleteOrganism, name="organism_delete"),
+    path('aa_chem/deleteTaxo/<str:Organism_Name>', deleteTaxonomy, name="taxonomy_delete"),
     #========================Data Export/Import===================================================================
     path('aa_chem/exportData/', exportCSV, name="dataexport"),
     path('aa_chem/import_Taxonomy/', import_excel_taxo, name="importTaxo"),

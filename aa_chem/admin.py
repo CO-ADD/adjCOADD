@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import  Mytest,Organisms, Taxonomy
+from .models import  Organisms, Taxonomy
 # Register your models here.
 
 # class OrganismsAdmin(admin.ModelAdmin):    
@@ -27,5 +27,5 @@ from .models import  Mytest,Organisms, Taxonomy
 
 admin.site.register(Organisms)
 admin.site.register(Taxonomy)
-admin.site.register(Mytest)
+
 

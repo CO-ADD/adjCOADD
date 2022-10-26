@@ -1,12 +1,6 @@
 <div class="modal-dialog">
   <div class="modal-content">
-    <form
-      id="updateTaxoForm"
-      method="POST"
-      class="post-form"
-      name="update-taxo"
-      action="{% url 'taxo_update' object.id %}"
-    >
+    <form id="updateTaxoForm" method="POST" class="post-form" name="update-taxo">
       {% csrf_token %}
       <div class="modal-header">
         <h4 class="modal-title">Update Taxo</h4>

@@ -10,6 +10,8 @@
    (s)fixed it by installing libXrender:
 
    sudo apt-get install libxrender1
+   
+   or install Cairo / GTK (or both)
 
 3. (i)Recommanded steps for multi schemas migrate:
 

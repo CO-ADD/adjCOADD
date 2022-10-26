@@ -8,23 +8,22 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('test_sch', '0001_initial'),
+        ('app', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='taxo',
+            model_name='dictionaries',
             name='acreated_by',
             field=models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_requests_created', to=settings.AUTH_USER_MODEL, verbose_name='Created by'),
         ),
         migrations.AlterField(
-            model_name='taxo',
+            model_name='dictionaries',
             name='adeleted_by',
             field=models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_requests_deleted', to=settings.AUTH_USER_MODEL, verbose_name='Deleted by'),
         ),
         migrations.AlterField(
-            model_name='taxo',
+            model_name='dictionaries',
             name='aupdated_by',
             field=models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_requests_updated', to=settings.AUTH_USER_MODEL, verbose_name='Updated by'),
         ),

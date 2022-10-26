@@ -6,7 +6,7 @@ from rdkit.Chem.Draw import rdMolDraw2D
 from rdkit.Chem.Draw import IPythonConsole
 from IPython.display import SVG
 import cairosvg
-import py3Dmol
+# import py3Dmol
 import os
 
 
@@ -36,3 +36,15 @@ def clearIMGfolder():
                     print("removed!")
                 except Exception as err:
                     print(err)
+
+
+
+
+def querysetToChoiseList_Dictionaries(model_name, field_name):
+    options=model_name.objects.filter(Dictionary_Class=field_name).values('Dict_Value', 'Dict_Desc')
+    if options:
+
+        choices=[tuple(d.values()) for d in options]
+    else:
+        choices=(('--', 'empty'),)
+    return choices

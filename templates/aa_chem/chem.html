@@ -36,17 +36,19 @@
       <ul>
         <li><a href="{%url 'taxo_create'%}">Create New Taxo</a></li>
         <li><a href="{%url 'taxo_list'%}">List Taxo</a></li>
+        <li><a href="{%url 'importTaxo'%}">import Taxonomy</a></li>
       </ul>
       <h4>Org</h4>
       <li><a href="{%url 'org_create'%}">Create New Org</a></li>
       <li><a href="{%url 'org_list'%}">List Org</a></li>
       <p><a href="{%url 'dict_view'%}">Dict_Value</a></p>
+      <p><a href="{%url 'importDict'%}">Import Dictionary</a></p>
 
       <p>...</p>
     </div>
     <div id="resizer"></div>
     <div class="main d-flex flex-column">
-      {%include "aa_chem/readForm/Taxonomy_list.html"%}
+      {%include "aa_chem/readForm/Taxonomy_card.html"%}
     </div>
   </div>
 </div>

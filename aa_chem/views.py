@@ -1,17 +1,14 @@
-# import re
-# import csv
 import os
-# from os.path import exists
 # from django.contrib.admin.views.decorators import staff_member_required
 # from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.core.paginator import Paginator
 # from django.core import management
 from django.shortcuts import HttpResponse, render, redirect
 # from django_rdkit.models import * 
-from aa_chem.models import Mytest, Organisms, Taxonomy #Drugbank,,Organisms,
+from aa_chem.models import  Organisms, Taxonomy #Drugbank,,Organisms,
 # import aa_chem.models
-from app.models import Dictionaries, Mytest2
-from app.utils import molecule_to_svg, clearIMGfolder
+from app.models import Dictionaries
+from app.utils import molecule_to_svg, clearIMGfolder, querysetToChoiseList_Dictionaries
 from rdkit import Chem
 
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
@@ -19,7 +16,6 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from .forms import CreateNewOrgForm, UpdateNewOrgForm
-# from model_utils import Choices
 # from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -93,7 +89,7 @@ class TaxoListView(ListView):
 class TaxoCreateView(CreateView):
     model=Taxonomy
     fields='__all__'
-    template_name = 'aa_chem/taxoCreate.html'
+    template_name = 'aa_chem/createForm/Taxonomy.html'
     success_url = reverse_lazy('compounds')
 
     def get_context_data(self, **kwargs):
@@ -104,9 +100,23 @@ class TaxoCreateView(CreateView):
 
 class TaxoUpdateView(UpdateView):
     model=Taxonomy
+    slug_field='Organism_Name'
+    slug_url_kwarg="Organism_Name"
     fields='__all__'
-    template_name = 'aa_chem/taxoUpdate.html'
+    template_name = 'aa_chem/readForm/Taxonomy.html'
     success_url = reverse_lazy('compounds')
+
+
+def deleteTaxonomy(req, Organism_Name):
+    print('deleting view')
+    obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+    try:
+        print(obj.Organism_Name)
+        obj.delete()
+        print("deleted")
+    except Exception as err:
+        print(err)
+    return redirect("/")
 
 # # ===============================================================OrgView==============================================#
 # # class OrgCreateView(CreateView):
@@ -134,13 +144,13 @@ def searchTaxo(req):
                 data.append(item)
             res=data
         else:
-            res='No games found...'
+            res='No organism found...'
         
         return JsonResponse({'data':res})
     return JsonResponse({})
 
 # =============================2. Create New Organism based Taxonomy====================================================================================================#
-    Choice_Dictionaries = {
+Choice_Dictionaries = {
         'Risk_Group':'Risk_Group',
         'Pathogen_Group':'Pathogen_Group',
         'Bio_Approval':'Bio_Approval',
@@ -150,51 +160,49 @@ def searchTaxo(req):
     }
 # =======================================================================================================================================================================
 
-def querysetToChoiseList_Dictionaries(model_name, field_name):
-    options=model_name.objects.filter(Dictionary_ID=field_name).values('Dict_Value', 'Dict_Desc')
-    choices=[tuple(d.values()) for d in options]
-    return choices
 
-Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Strain_Type')
-Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Oxygen_Preference') #[tuple(d.values()) for d in Oxygen_Pref_options]
-Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Risk_Group')
 
-Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Pathogen_Group')
+
 
 # ================================================================================================================================================================
 def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    # Strain_Type=Dictionaries.objects.filter(Dictionary_ID='Strain_Type') #===multi choice
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Strain_Type')
-    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Oxygen_Preference') #[tuple(d.values()) for d in Oxygen_Pref_options]
-    print(Oxygen_Pref_choices)
-    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Risk_Group')
-    # MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, '')
-    # Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, '')
-    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, 'Pathogen_Group')
-    print(Pathogen_Group_choices)
+
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Strain_Type'])
+    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Oxygen_Pref']) 
+    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Risk_Group'])
+    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['MTA_Status'])
+    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Bio_Approval'])
+    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Pathogen_Group'])
+   
 
     # Retreive Values for each column========================
     if req.method=='POST':
-        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST)
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, req.POST)
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+        print(Organism_Name_fk)
         Strain_Type_list=req.POST.getlist('Strain_Type')
        
         try:
+            print("start try...")
             if form.is_valid():
+                print('form is k')
                 instance=form.save(commit=False)
                 instance.Organism_Name=Organism_Name_fk
+                print('form is here')
                 instance.save()
                 print("saved")
                 return redirect("/")
+            else:
+                print(form.errors)
         
         except Exception as err:
             print(err)
     else:
-        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices)
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices)
  
     return render(req, 'aa_chem/createForm/Organism.html', { 'form':form})
 
@@ -209,14 +217,21 @@ def organismDetail(req, Organism_ID):
 
 
 def updateOrganism(req, Organism_ID):
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Strain_Type'])
+    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Oxygen_Pref']) 
+    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Risk_Group'])
+    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['MTA_Status'])
+    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Bio_Approval'])
+    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Pathogen_Group'])
+
     context={}
     obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
-    form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices,instance=obj)
+    form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, instance=obj)
     if req.method=='POST':
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
         obj.delete()
-        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, req.POST, instance=obj)    
+        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, req.POST, instance=obj)    
         if form.is_valid():
             instance=form.save(commit=False)
             instance.Organism_Name=Organism_Name_fk
@@ -231,12 +246,12 @@ def updateOrganism(req, Organism_ID):
 def deleteOrganism(req, Organism_ID):
     
     obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
-    # if req.method=='POST':
-    #     obj.delete()
-    #     print("deleted!")
-    #     return redirect("/")
-    # context={'obj':obj}
-    obj.delete()
+    try:
+        print(obj.Organism_Name)
+        obj.delete()
+        print("deleted")
+    except Exception as err:
+        print(err)
     return redirect("/")
     # return render(req, "aa_chem/deleteForm/Organism_del.html", context)
 
@@ -302,23 +317,33 @@ def import_excel_taxo(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():
-                class_fkey=Dictionaries.objects.filter(Dict_Desc=dbframe.ORGANISM_CLASS)
+                class_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
+                if class_fkey:
+                    class_fkey=class_fkey[0]
+                else:
+                    class_fkey=None
                 print(class_fkey)
-                division_fkey=Dictionaries.objects.filter(Dict_Desc=dbframe.DIVISION)
-                linea=dbframe.LINEAGE.split(",")
+                division_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.DIVISION)
+                if division_fkey:
+                    division_fkey=division_fkey[0]
+                else:
+                    division_fkey=None
+                linea=str(dbframe.LINEAGE).split(";")
                 print(division_fkey)
                 # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
-                obj, created=Taxonomy.objects.get_or_create(Organism_Name=dbframe.ORGANISM_NAME, Other_Names=dbframe.ORGANISM_NAME_OTHER, Code=dbframe.ORGANISM_CODE, 
-                    Class=class_fkey[0], Tax_ID=dbframe.TAX_ID,Parent_Tax_ID=dbframe.PARENT_TAX_ID, 
-                    Tax_Rank=dbframe.TAX_RANK, Division=division_fkey[0], Lineage=linea
-                    )
-                print(type(obj))
+                try:
+                    obj, created=Taxonomy.objects.get_or_create(Organism_Name=dbframe.ORGANISM_NAME, Other_Names=dbframe.ORGANISM_NAME_OTHER, Code=dbframe.ORGANISM_CODE, 
+                        Class=class_fkey, Tax_ID=dbframe.TAX_ID, Parent_Tax_ID=dbframe.PARENT_TAX_ID, 
+                        Tax_Rank=dbframe.TAX_RANK, Division=division_fkey, Lineage=linea
+                        )
+                except Exception as err:
+                    print(err)
                 # obj.save()
             
-            return render(req, 'aa_chem/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
-    return render(req, 'aa_chem/importexcel_taxo.html', {})
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {})
 
 def import_excel_dict(req):
     print('importing....')
@@ -337,15 +362,14 @@ def import_excel_dict(req):
                 print("iam here")             
                 # int_order=int(0+dbframe.Dict_View_Order)
                 # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
-                obj, created=Dictionaries.objects.get_or_create(Dictionary_ID=dbframe.Dictionary_ID, Dictionary_Class=dbframe.Dictionary_Class, Dict_Value=dbframe.Dict_Value, Dict_Desc =dbframe.Dict_Desc, Dict_Value_Type =dbframe.Dict_Value_Type, Dict_View_Order =dbframe.Dict_View_Order
-                    )
+                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name)
                 print(type(obj))
                 # obj.save()
             
-            return render(req, 'aa_chem/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
-    return render(req, 'aa_chem/importexcel_dict.html', {})
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {})
 
 #======================================================Export Data Views Function==================================================#  
 # # @user_passes_test(lambda u: u.is_admin)

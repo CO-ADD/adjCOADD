@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     'app',
     'aa_chem',
     'test_sch',
-
- 
 ]
 
 MIDDLEWARE = [
@@ -132,8 +130,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'OPTIONS':{'options': '-c search_path=app'},
         'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD':os.environ.get('db_password', 'password'),
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD':os.environ.get('db_password', 'password'),
         'HOST': 'Localhost',
         'PORT': '5432',
     },
@@ -141,8 +139,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'OPTIONS':{'options': '-c search_path=aa_chem,public'},
         'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD': os.environ.get('db_password','password'),
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
         'PORT': '5432',
     },
@@ -150,12 +148,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'OPTIONS':{'options': '-c search_path=test_sch,public'},
         'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD': os.environ.get('db_password','password'),
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
         'PORT': '5432',
     }
 
+   
 
 
 }

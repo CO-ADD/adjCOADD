@@ -8,22 +8,23 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_alter_dictionaries_acreated_by_and_more'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('test_sch', '0002_alter_taxo_acreated_by_alter_taxo_adeleted_by_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dictionaries',
+            model_name='taxo',
             name='acreated_by',
             field=models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_requests_created', to=settings.AUTH_USER_MODEL, verbose_name='Created by'),
         ),
         migrations.AlterField(
-            model_name='dictionaries',
+            model_name='taxo',
             name='adeleted_by',
             field=models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_requests_deleted', to=settings.AUTH_USER_MODEL, verbose_name='Deleted by'),
         ),
         migrations.AlterField(
-            model_name='dictionaries',
+            model_name='taxo',
             name='aupdated_by',
             field=models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_requests_updated', to=settings.AUTH_USER_MODEL, verbose_name='Updated by'),
         ),

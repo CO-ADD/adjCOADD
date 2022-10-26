@@ -8,7 +8,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display=("username","email","is_staff")
 
 class DictAdmin(admin.ModelAdmin):
-    list_display=("id","Dictionary_ID")
+    pass
     
 
 admin.site.register(ApplicationUser, UserAdmin)

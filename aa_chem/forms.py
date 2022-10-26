@@ -8,20 +8,22 @@ class CreateNewOrgForm(ModelForm):
     Oxygen_Pref=forms.ChoiceField()
     Risk_Group=forms.ChoiceField()
     Pathogen=forms.ChoiceField()
+    MTA_Status = forms.ChoiceField()
+    Biol_Approval = forms.ChoiceField()
     # Organism_Name=forms.ModelChoiceField(queryset=Paginator(Taxonomy.objects.all(), 10) )
    
    
-    def __init__(self, strain_type_choice, choice1, choice2, choice3, *args, **kwargs):
+    def __init__(self, strain_type_choice, choice1, choice2, choice3, choice4, choice5, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.testList=strain_type_choice
-        self.Oxygen_Pref_choices=choice1
-        self.Risk_Group_choices=choice2
-        self.Pathogen_choices=choice3
-        
         self.fields['Strain_Type'].widget = forms.CheckboxSelectMultiple(choices=self.testList)
-        self.fields['Oxygen_Pref'].choices=self.Oxygen_Pref_choices
-        self.fields['Risk_Group'].choices=self.Risk_Group_choices
-        self.fields['Pathogen'].choices=self.Pathogen_choices
+        
+        self.fields['Oxygen_Pref'].choices=choice1
+        self.fields['Risk_Group'].choices=choice2
+        self.fields['Pathogen'].choices=choice3
+        self.fields['MTA_Status'].choices=choice4
+        self.fields['Biol_Approval'].choices=choice5
+
 
     class Meta:
         model=Organisms
