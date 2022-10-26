@@ -19,6 +19,7 @@ from .forms import CreateNewOrgForm, UpdateNewOrgForm
 # from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.contrib import messages
 
 
 
@@ -34,9 +35,9 @@ def home(req):
         search =req.POST.get('search')
         field=req.POST.get('field')
         if field=='Organism_Name':
-            result=Taxonomy.objects.filter(Organism_Name__contains=search)
+            result=Taxonomy.objects.filter(astatus=1, Organism_Name__contains=search)
     else:
-        result=Taxonomy.objects.all()
+        result=Taxonomy.objects.filter(astatus=1)
         
     objects_all=result
     p=Paginator(objects_all, 24)
@@ -56,7 +57,6 @@ def home(req):
 
 
 
-
 class TaxoListView(ListView):
     model=Taxonomy
     paginate_by = 24
@@ -73,7 +73,7 @@ class TaxoListView(ListView):
                     print(err)
 
         context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
+        context["objects"]=self.model.objects.filter(astatus=1)
         objects_all=[object_ for object_ in context["objects"]]
         p=Paginator(objects_all, 24)
         
@@ -83,7 +83,6 @@ class TaxoListView(ListView):
             molecule_to_svg(m, object_.Organism_Name)
             
         return context
-
 
 
 class TaxoCreateView(CreateView):
@@ -134,12 +133,19 @@ def searchTaxo(req):
         res=None
         taxo=req.POST.get('inputtext')
         # print(taxo)
-        qs=Taxonomy.objects.filter(Organism_Name__icontains=taxo)
+        qs=Taxonomy.objects.filter(Organism_Name__contains=taxo)
+      
         if len(qs)>0 and len(taxo)>0:
             data=[]
             for i in qs:
+                if i.Class:
+                    Class=i.Class.Dict_Value
+                else:
+                    Class='noClass by Import or ...'
+                
                 item={
                     'name':i.Organism_Name,
+                    'class': Class,
                 }
                 data.append(item)
             res=data
@@ -150,19 +156,8 @@ def searchTaxo(req):
     return JsonResponse({})
 
 # =============================2. Create New Organism based Taxonomy====================================================================================================#
-Choice_Dictionaries = {
-        'Risk_Group':'Risk_Group',
-        'Pathogen_Group':'Pathogen_Group',
-        'Bio_Approval':'Bio_Approval',
-        'Oxygen_Pref':'Oxygen_Preference',
-        'MTA_Status':'License_Status',
-        'Strain_Type':'Strain_Type',
-    }
+
 # =======================================================================================================================================================================
-
-
-
-
 
 # ================================================================================================================================================================
 def createOrgnisms(req):
@@ -170,37 +165,37 @@ def createOrgnisms(req):
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
 
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Strain_Type'])
-    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Oxygen_Pref']) 
-    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Risk_Group'])
-    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['MTA_Status'])
-    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Bio_Approval'])
-    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Pathogen_Group'])
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Oxygen_Pref']) 
+    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Risk_Group'])
+    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['MTA_Status'])
+    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Bio_Approval'])
+    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Pathogen_Group'])
    
 
     # Retreive Values for each column========================
     if req.method=='POST':
         form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, req.POST)
         Organism_Name=req.POST.get('Organism_Name')
-        Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
-        print(Organism_Name_fk)
+        Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)       
         Strain_Type_list=req.POST.getlist('Strain_Type')
        
         try:
-            print("start try...")
+            print("start to try")
             if form.is_valid():
-                print('form is k')
+                print("form is valid")   
                 instance=form.save(commit=False)
-                instance.Organism_Name=Organism_Name_fk
-                print('form is here')
+                instance.Organism_Name=Organism_Name_fk                
                 instance.save()
                 print("saved")
                 return redirect("/")
             else:
                 print(form.errors)
+                return redirect("/")
         
         except Exception as err:
             print(err)
+            return redirect("/")
     else:
         form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices)
  
@@ -217,29 +212,41 @@ def organismDetail(req, Organism_ID):
 
 
 def updateOrganism(req, Organism_ID):
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Strain_Type'])
-    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Oxygen_Pref']) 
-    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Risk_Group'])
-    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['MTA_Status'])
-    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Bio_Approval'])
-    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Choice_Dictionaries['Pathogen_Group'])
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+    Oxygen_Pref_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Oxygen_Pref']) 
+    Risk_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Risk_Group'])
+    MTA_Status_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['MTA_Status'])
+    Biological_Approval_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Bio_Approval'])
+    Pathogen_Group_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Pathogen_Group'])
+
 
     context={}
     obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    if obj.Organism_Name.Class:
+        Organism_Class=obj.Organism_Name.Class.Dict_Value
+    else:
+        Organism_Class="No Class"
     form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, instance=obj)
     if req.method=='POST':
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
-        obj.delete()
-        form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, req.POST, instance=obj)    
-        if form.is_valid():
-            instance=form.save(commit=False)
-            instance.Organism_Name=Organism_Name_fk
-            instance.save()
-            print('save updated')
-            return redirect("/")
+        if Organism_Name_fk.Class and obj.Organism_Name.Class:
+
+            if Organism_Name_fk.Class.Dict_Value != obj.Organism_Name.Class.Dict_Value:
+                messages.warning(req, 'Organism cannot update to different Class!')
+                return redirect(req.META['HTTP_REFERER'])
+            else:
+                form=CreateNewOrgForm(Strain_Type_choices, Oxygen_Pref_choices, Risk_Group_choices, Pathogen_Group_choices, MTA_Status_choices, Biological_Approval_choices, req.POST, instance=obj)    
+                if form.is_valid():
+                    instance=form.save(commit=False)
+                    instance.Organism_Name=Organism_Name_fk
+                    instance.save()
+                    print('save updated')
+                    return redirect("/")
     
     context["form"]=form
+    context["object"]=obj.Organism_Name
+    context["Class"]=Organism_Class
     # context['Organisms_Name']=obj.Organism_Name
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
@@ -278,12 +285,6 @@ class OrgListView(ListView):
         
         for object_ in p.get_page(self.request.GET.get('page')):
        
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
-
-            
             m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
         
             molecule_to_svg(m, object_.Organism_ID)

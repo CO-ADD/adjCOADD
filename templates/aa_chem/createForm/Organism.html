@@ -8,7 +8,7 @@
 
     <!-- ================================================================================== -->
     <div class="my-0">
-      <label>Organism Name</label>
+      <label>Organism Name | Class Name</label>
       <form id="search-form" autocomplete="off">
         {% csrf_token %}
         <input type="text" id="search-input" placeholder="search Toxonomy" class="form-control">
@@ -37,7 +37,7 @@
 </div>
 
 <script>
-  const delay_by_in_ms = 1000
+  const delay_by_in_ms = 700
   let scheduled_function = false
   const searchForm = document.getElementById("search-form")
   const searchInput = document.getElementById("search-input")
@@ -63,15 +63,16 @@
             var block = document.createElement('button');
             block.setAttribute('id', i);
             block.setAttribute('class', 'resultslist');
-            block.innerText = data[i]['name']
+            block.innerText = data[i]['name'] + ' | ' + data[i]['class']
             resultsBox.appendChild(block);
             block.addEventListener('click', function () {
               // alert(this.id)
+              let Texonomy = this.innerText.split(" | ")
               console.log("working")
-              searchInput.value = this.innerText
+              searchInput.value = Texonomy[0]
               var setTaxo = document.getElementById("taxo-name")
-              setTaxo.value = this.innerText
-              console.log("finish")
+              setTaxo.value = Texonomy[0]
+
               resultsBox.innerHTML = ""
               resultsBox.classList.remove('scrollbar')
             })

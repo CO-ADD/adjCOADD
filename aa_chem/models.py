@@ -98,17 +98,15 @@ class Organisms(AuditModel):
     
     """
 #-------------------------------------------------------------------------------------------------
-
-
-    Unit1='RM'
-    Unit2='CI'
-    Unit3='RX'
-    
     Choice_Dictionaries = {
-        (Unit1,'Resistant MDR'),
-        (Unit2,'Clinical Isolate'),
-        (Unit3,'Resistant XDR'),
+        'Risk_Group':'Risk_Group',
+        'Pathogen_Group':'Pathogen_Group',
+        'Bio_Approval':'Bio_Approval',
+        'Oxygen_Pref':'Oxygen_Preference',
+        'MTA_Status':'License_Status',
+        'Strain_Type':'Strain_Type',
     }
+
 
     Organism_ID = models.CharField(primary_key=True, unique=True, blank=True, max_length=100, verbose_name = "Organism ID") #be blank for automatic generate a new one?
     Organism_Name= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
@@ -157,7 +155,11 @@ class Organisms(AuditModel):
                 self.Organism_ID=str(self.Organism_Name.Class.Dict_Value)+'_'+str(num).zfill(4)
             except Exception as err:
                 print(err)
-                self.Organism_ID='__'+'_'.zfill(4)
+                num=Sequence('noClass')
+                num=next(num)
+                self.Organism_ID='noClass'+str(num).zfill(4)
+            super().save(*args, **kwargs)
+        else:
             super().save(*args, **kwargs)
            
 

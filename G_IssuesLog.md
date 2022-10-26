@@ -37,14 +37,8 @@
    (i) creating new org takes long time (200k Taxo Foreign Key)
 
    (i) test remote server DB
-
-
-   (i) audit model including Foreign key User in aa_chem app result in migrating User models to the same schema
-       plan: using django entry_log. create a new app for audit purpose
-
-   (i) sequence short name 
-
-   (i) double check indexes setting, in django db_index
+   (i) templates in the individual apps
+   (i) choice: value with explain text upon choosing, after choosing only pich up value. refer OrgDB input. 
 
 7. Error: (fields.E304) Reverse accessor'Group.user_set' for 'app.ApplicationUser.groups' clashes Reverse accessor clashes with reverse accessor for 'app.User.groups' 
 Hint: add or change a related_name argument to the definition for 'app.ApplicationUser.groups' or 'app.User.groups'.
@@ -67,3 +61,5 @@ This argument on the ForeignKey on_delete option requires you to set a default v
 
 DO_NOTHING
 As the name implies, it does nothing when a referenced object is deleted. This is essentially discouraged because it defeats the purpose of an RDBMS. <b> HERE I CANNOT DELETE OR UPDATE any recorder!</b>
+
+

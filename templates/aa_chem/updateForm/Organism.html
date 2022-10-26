@@ -5,16 +5,24 @@
 
 <div class="row vh-100">
   <div class="card mx-5 mt-3">
-    <h4 class="my-0">Update Organism</h4>
+    <h4 class="my-0">Update Organism: {{object}}</h4>
+    <h5>Class: {{Class}}</h5>
     <!-- <p>{{Organism_Name}}</p> -->
     <div class="my-0">
-      <label>Organism Name</label>
+      <label>Organism Name | Class Name</label>
       <form id="search-form" autocomplete="off">
         {% csrf_token %}
         <input type="text" id="search-input" placeholder="search Toxonomy" class="form-control">
       </form>
       <div id="results-box" class="results-card"></div>
     </div>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <!-- ===================================================================================== -->
     <hr>
     <form id="OrganismUpdateForm" method="POST" class="post-form" name="create">
@@ -59,15 +67,17 @@
             var block = document.createElement('button');
             block.setAttribute('id', i);
             block.setAttribute('class', 'resultslist');
-            block.innerText = data[i]['name']
+            block.innerText = data[i]['name'] + ' | ' + data[i]['class']
             resultsBox.appendChild(block);
             block.addEventListener('click', function () {
               // alert(this.id)
               console.log("working")
-              searchInput.value = this.innerText
+              let Texonomy = this.innerText.split(" | ")
+
+              searchInput.value = Texonomy[0]
               var setTaxo = document.getElementById("taxo-name")
-              setTaxo.value = this.innerText
-              console.log("finish")
+              setTaxo.value = Texonomy[0]
+
               resultsBox.innerHTML = ""
               resultsBox.classList.remove('scrollbar')
             })
