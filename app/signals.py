@@ -1,8 +1,11 @@
 from django.dispatch import receiver
 from django_auth_ldap.backend import populate_user, LDAPBackend
 from .models import ApplicationUser
+from aa_chem.models import Organisms, Taxonomy
 from django.shortcuts import get_object_or_404
 from django.db.models.signals import pre_save
+
+
 
 @receiver(populate_user, sender=LDAPBackend)
 def ldap_auth_handler(user, ldap_user, **kwargs):
@@ -35,5 +38,8 @@ def ldap_auth_handler(user, ldap_user, **kwargs):
 
 
 
-# def pre_save(sender, instance, created, **kwargs):
-    
+
+
+
+
+

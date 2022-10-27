@@ -2,38 +2,51 @@
 <!--prettier-ignore-->
 {% block title%} mysite{% endblock %}
 {% block content %}
-<div class="row vh-100">
-  <div class="card mx-5 mt-3">
-    <h4 class="my-0">Create Organism</h4>
+<div class="row ">
+  <div class="col-md-6 m-auto">
 
-    <!-- ================================================================================== -->
-    <div class="my-0">
-      <label>Organism Name | Class Name</label>
-      <form id="search-form" autocomplete="off">
+    <div class="card mt-3 text-left" width='300px'>
+      <h4 class="my-0">Create Organism</h4>
+
+      <!-- ================================================================================== -->
+      <div class="my-0">
+        <label>Organism Name | Class Name</label>
+        <form id="search-form" autocomplete="off">
+          {% csrf_token %}
+          <input type="text" id="search-input" placeholder="search Toxonomy" class="form-control">
+        </form>
+        <div id="results-box" class="results-card"></div>
+      </div>
+      <!-- ===================================================================================== -->
+      <hr>
+      <form method="POST" class="post-form" name="create">
         {% csrf_token %}
-        <input type="text" id="search-input" placeholder="search Toxonomy" class="form-control">
+        {{form.as_p}}
+        <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
+        <label for="">Strain Type</label>
+        <div class="dropdown">
+          <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Select Strain Type
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+            <select class="form-select" multiple aria-label="multiple select example " name="Strain_Type"
+              id="straintype">
+              <!-- <option selected>Open this select menu</option> -->
+              {% for obj in Strain_Type %}
+              <option value="{{obj}}">{{obj}}</option>
+              {%endfor%}
+            </select>
+          </div>
+          <hr>
+          <input type="submit" class="btn m-auto mt-5" value="Add" name="note" />
+
       </form>
-      <div id="results-box" class="results-card"></div>
     </div>
-    <!-- ===================================================================================== -->
-    <hr>
-    <form method="POST" class="post-form" name="create">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
-      <label for="">Strain Type</label>
-      <select class="form-select" multiple aria-label="multiple select example" name="Strain_Type" id="straintype">
-        <option selected>Open this select menu</option>
-        {% for obj in Strain_Type %}
-        <option value="{{obj.Dict_Value}}">{{obj.Dict_Value}}</option>
-        {%endfor%}
-      </select>
 
-      <input type="submit" class="btn m-auto mt-5" value="Add" name="note" />
-
-    </form>
   </div>
-
 </div>
 
 <script>

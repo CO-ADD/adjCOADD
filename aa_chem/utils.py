@@ -26,7 +26,7 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
     cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
 
 
-#============================================================================================================#
+#=================================================Clear IMGFolder===========================================================#
 
 def clearIMGfolder():
     for filename in os.listdir("static/images"):
@@ -37,7 +37,35 @@ def clearIMGfolder():
                 except Exception as err:
                     print(err)
 
+#===================== A Example =================================================================================#
+# def home(req): 
+#     clearIMGfolder()
+#     # search function
+#     if req.method=='POST':
+#         search =req.POST.get('search')
+#         field=req.POST.get('field')
+#         if field=='Organism_Name':
+#             result=Taxonomy.objects.filter(astatus=1, Organism_Name__contains=search)
+#     else:
+#         result=Taxonomy.objects.filter(astatus=1)
+        
+#     objects_all=result
+#     p=Paginator(objects_all, 24)
+#     page_number = req.GET.get('page')
+#     page_obj=p.get_page(page_number)
+#     for object_ in page_obj:
+#         m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+#         molecule_to_svg(m, object_.Organism_Name)
+    
+#     context={
+#         'page_obj':page_obj,
+#         'chose':Taxonomy.Choice_Dictionaries   
+       
+#     }
+  
+#     return render(req, 'aa_chem/chem.html', context)
 
+# ===================================Dictionary query convert to choice Tuples========================================================================#
 
 
 def querysetToChoiseList_Dictionaries(model_name, field_name):

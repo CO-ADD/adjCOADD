@@ -1,9 +1,9 @@
 @import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
 
 :root {
-  --orange: #ff6e00;
+  --teal: #ff6e00;
   --grey: #625e5d;
-  --teal: #2c7a84;
+  --orange: #2c7a84;
 }
 
 body {

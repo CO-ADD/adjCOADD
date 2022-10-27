@@ -110,17 +110,17 @@ class Organisms(AuditModel):
 
     Organism_ID = models.CharField(primary_key=True, unique=True, blank=True, max_length=100, verbose_name = "Organism ID") #be blank for automatic generate a new one?
     Organism_Name= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
-    Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", default="--", null=True)
+    Organism_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Organism Description", null=True)
     Strain_ID= models.CharField(blank=True, max_length=250, verbose_name = "Strain ID", null=True)
-    Strain_Code= models.CharField(blank=True, max_length=500, verbose_name = "Strain Code", default="--", null=True)
-    Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", default="--",null=True)
-    Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", default="--",null=True)
-    Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue", default="--", null=True)
+    Strain_Code= models.CharField(blank=True, max_length=500, verbose_name = "Strain Code",  null=True)
+    Strain_Desc= models.CharField(blank=True, max_length=512, verbose_name = "Strain Description", null=True)
+    Strain_Notes= models.CharField(blank=True, max_length=512, verbose_name = "Strain Notes", null=True)
+    Strain_Tissue= models.CharField(blank=True, max_length=220, verbose_name = "Strain Tissue",  null=True)
     # Strain_Type= models.CharField(max_length=150, null=True, blank=True)
     Strain_Type=ArrayField(models.CharField(max_length=150, null=True, blank=True), size=20, null=True, blank=True)
     # Strain_Type=models.ManyToManyField(Dictionaries)
-    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", default="--",null=True)
-    Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", default="--",null=True)
+    Sequence = models.CharField(blank=True, max_length=512, verbose_name = "Sequence", null=True)
+    Sequence_Link = models.CharField(blank=True, max_length=1000, verbose_name = "Sequence Link", null=True)
 
     Tax_ID = models.IntegerField(verbose_name = "NCBI Tax ID", default=0, null=True)
     Risk_Group = models.CharField(blank=True, null=True, max_length=50)
@@ -128,11 +128,11 @@ class Organisms(AuditModel):
     Pathogen = models.CharField(blank=True, null=True, max_length=50)
     # Pathogen = models.ForeignKey(Dictionaries, blank=True, verbose_name = "Pathogen Group",related_name='%(class)s_requests_PT', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Pathogen_Group"]
 
-    Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit", default="--", null=True)
+    Import_Permit = models.CharField(blank=True, max_length=500, verbose_name = "Import Permit",  null=True)
     Biol_Approval = models.CharField(blank=True, max_length=220, verbose_name = "Biological Approval", null=True) # Dictionaries[Dictionary_ID = "Bio_Approval"]
-    Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
-    Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution", default="--", null=True)
-    MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", default="--",null=True)
+    Special_Precaution = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution",  null=True)
+    Lab_Restriction = models.CharField(blank=True, max_length=512, verbose_name = "Special Precaution",  null=True)
+    MTA_Document = models.CharField(blank=True, max_length=500, verbose_name = "MTA Document", null=True)
     MTA_Status = models.CharField(blank=True, max_length=220,verbose_name = "MTA Status", null=True) # Dictionaries[Dictionary_ID = "License_Status"]
     Oxygen_Pref = models.CharField(blank=True, null=True, max_length=250)
     # Oxygen_Pref = models.ForeignKey(Dictionaries,blank=True, verbose_name = "Oxygen Preference",related_name='%(class)s_requests_OP', on_delete=models.DO_NOTHING, null=True) # Dictionaries[Dictionary_ID = "Oxygen_Preference"]

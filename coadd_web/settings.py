@@ -41,13 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-   
+    'django.contrib.staticfiles',   
     'django_rdkit',
     "sequences.apps.SequencesConfig",
-    'app',
-    'aa_chem',
-    'test_sch',
+    'app.apps.AppConfig',
+    'aa_chem.apps.AaChemConfig',
+    'test_sch.apps.TestSchConfig',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +64,10 @@ ROOT_URLCONF = 'coadd_web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'templates'],
+        'DIRS': [
+            BASE_DIR/'templates',
+        #    BASE_DIR/,
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,16 +87,7 @@ WSGI_APPLICATION = 'coadd_web.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     # 'OPTIONS':{'options': '-c search_path=public'},
-    #     'NAME': 'postgres',
-    #     'USER': 'J.Zhong', #os.environ.get('db_user'),
-    #     'PASSWORD':'J.Zhong',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-
+    
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',

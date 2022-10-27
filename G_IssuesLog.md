@@ -45,7 +45,7 @@ Hint: add or change a related_name argument to the definition for 'app.Applicati
 (Error happens during inherite class and with foreignkey)
 
 
-8. (i)Cannot DELETE or UPDATE with on_delete=models.DO_NOTHING
+8. (i) Cannot DELETE or UPDATE with on_delete=models.DO_NOTHING
    (s) Change to PROTECT
 
 #### on_delete for Foreignkey change to on_delete=models.PROTECT.
@@ -61,5 +61,11 @@ This argument on the ForeignKey on_delete option requires you to set a default v
 
 DO_NOTHING
 As the name implies, it does nothing when a referenced object is deleted. This is essentially discouraged because it defeats the purpose of an RDBMS. <b> HERE I CANNOT DELETE OR UPDATE any recorder!</b>
+
+9. (i)Difficulty in AuditModel to retrieve logged or request user information
+(s) in the view funtion: create, update and delete to set the value, e.g. instance.acreate_by=request.user 
+
+10. (i) exception: python manage.py runserver exception in thread django-main-thread typeerror issubclass() arg 1 must be a class app_config_class
+     (s) settings.py - installed_Apps=[...'app',...] change to [...'app.apps.AppConfig',...]
 
 

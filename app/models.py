@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django import forms
 from django.utils import timezone
+import logging
 # Create your models here.
 
 
@@ -29,7 +30,7 @@ class ApplicationUser(AbstractUser):
 
     class Meta:
         db_table = 'applicationuser'
-        # permissions = (('update', 'change data'),)
+      
 
     def __str__(self) -> str:
         return f"{self.first_name}.{self.last_name} ({self.user_id})"
@@ -58,23 +59,21 @@ class AuditModel(models.Model):
     class Meta:
         abstract = True
     
-    # def delete(self,**kwargs):
-    #     pass
-    #     self.astatus = -9
-    #     self.adeleted_at = timezone.now()
-    #     self.adeleted_by = kwargs.get("user")
-    #     self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
-    
-    # def save(self,  *args, **kwargs):
-    #     pass
-        # self.request.user = get_current_logged_in_user()
-        # self.user=current_user()
-        # if self.pk: #Object already exists
-        # self.aupdated_by = request.user
-        # else:
-        # self.acreated_by = request.user
-        # super.save( *args, **kwargs)
+    def delete(self,**kwargs):
+        self.astatus = -9
+        self.adeleted_at = timezone.now()
+        self.adeleted_by = kwargs.get("user")
+        print(self.adeleted_by)
+        self.save()
 
+    def save(self, *args, **kwargs):
+        user = kwargs.get("user")
+        print(user)
+        if self._state.adding: 	#Createing
+            self.acreated_by = user
+        else:					#Updateing
+            self.aupdated_by = user
+        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 
@@ -106,3 +105,27 @@ class ApplicationLog(models.Model):
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
+
+#=========================Not used...==============
+class ChoiceArrayField(ArrayField):
+    """
+    A field that allows us to store an array of choices.
+    
+    Uses Django 1.9's postgres ArrayField
+    and a MultipleChoiceField for its formfield.
+    
+    Usage:
+        
+        choices = ChoiceArrayField(models.CharField(max_length=...,
+                                                    choices=(...,)),
+                                   default=[...])
+    """
+#-------------------------------------------------------------------------------------------------
+    def formfield(self, **kwargs):
+        defaults = {
+            'form_class': forms.MultipleChoiceField,
+            'choices': self.base_field.choices,
+        }
+        defaults.update(kwargs)
+  
+        return super(ArrayField, self).formfield(**defaults)
