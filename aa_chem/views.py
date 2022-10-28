@@ -82,16 +82,16 @@ def TaxoCreate(req):
 # ====================================================Update===========================================
 class TaxoUpdateView(UpdateView):
     model=Taxonomy
-    slug_field='Organism_Name'
-    slug_url_kwarg="Organism_Name"
+    # slug_field='Organism_Name'
+    # slug_url_kwarg="Organism_Name"
     fields='__all__'
     template_name = 'aa_chem/readForm/Taxonomy.html'
     success_url = reverse_lazy('compounds')
 
 # ====================================================Delete===========================================
-def deleteTaxonomy(req, Organism_Name):
+def deleteTaxonomy(req, pk):
     print('deleting view')
-    obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+    obj=get_object_or_404(Taxonomy, Organism_Name=pk)
     try:
         print(obj.Organism_Name)
         obj.delete()
@@ -137,10 +137,9 @@ def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) #
-
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) #   
     if req.method=='POST':
-        form=CreateNewOrgForm(Strain_Type_choices, req.POST)
+        form=CreateNewOrgForm(Strain_Type_choices,  req.POST,)
         Organism_Name=req.POST.get('Organism_Name')
         Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)       
         Strain_Type_list=req.POST.getlist('Strain_Type')
@@ -150,42 +149,36 @@ def createOrgnisms(req):
             if form.is_valid():
                 print("form is valid")   
                 instance=form.save(commit=False)
-                instance.Organism_Name=Organism_Name_fk
-                # instance.acreated_by=req.user  
-                print("start check.....") 
-                # appuser=req.user    
-                print(f'{req.user}is appuser')
-                     
-                instance.save()
+                instance.Organism_Name=Organism_Name_fk     
+                instance.save(req.user)
                 print("saved")
                 return redirect("/")
             else:
-                print("something wrong")
-                print(form.errors)
+                print(f'something wrong...{form.errors}')
                 return redirect("/")
         
         except Exception as err:
-            print(err)
+            print(f'form is valid but error is {err}')
             return redirect("/")
     else:
-        form=CreateNewOrgForm(Strain_Type_choices)
+        form=CreateNewOrgForm(Strain_Type_choices,)
  
     return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, 'Strain_Type':Strain_Type_choices})
 
 
 #=======================================================================================================================================================
 
-def organismDetail(req, Organism_ID):
-    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+def organismDetail(req, pk):
+    obj=get_object_or_404(Organisms, Organism_ID=pk)
     context={'Organism': obj}
     return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
 
 
-def updateOrganism(req, Organism_ID):
+def updateOrganism(req, pk):
     Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
     context={}
-    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    obj=get_object_or_404(Organisms, Organism_ID=pk)
     form=UpdateNewOrgForm(Strain_Type_choices, instance=obj)
 
     if obj.Organism_Name.Class:
@@ -221,10 +214,10 @@ def updateOrganism(req, Organism_ID):
    
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
-def deleteOrganism(req, Organism_ID):
+def deleteOrganism(req, pk):
     print(f"{req.user} is {type(req.user)} type")
     
-    obj=get_object_or_404(Organisms, Organism_ID=Organism_ID)
+    obj=get_object_or_404(Organisms, Organism_ID=pk)
     try:
         print(obj.Organism_Name)
         obj.delete()

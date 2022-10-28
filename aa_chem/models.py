@@ -25,8 +25,7 @@ class Drugbank(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.drug_id:
-            self.drug_id='us'+str(Drugbank.objects.count()+1)  #drug_id is usXXXXX meaning...
-            
+            self.drug_id='us'+str(Drugbank.objects.count()+1)  #drug_id is usXXXXX meaning...           
         super().save(*args, **kwargs)
 
 

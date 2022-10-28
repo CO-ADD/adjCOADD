@@ -41,18 +41,18 @@ urlpatterns = [
     path('aa_chem/taxoListview', TaxoListView.as_view(), name="taxo_list_view"),
     path('aa_chem/organism_list', OrgListView.as_view(), name="org_list"),
     path('aa_chem/organism_card', OrgCardView.as_view(), name="org_card"),
-    path('aa_chem/organism/<str:Organism_ID>', organismDetail, name="org_detail"),
+    path('aa_chem/organism/<str:pk>', organismDetail, name="org_detail"),
     
 
     path('aa_chem/searchOrg/', searchTaxo, name="org_search"),
     path('aa_chem/createOrg/', createOrgnisms, name="org_create"),
     path('aa_chem/createTaxo/', TaxoCreate, name="taxo_create"),
 
-    path('aa_chem/taxo/<str:Organism_Name>', TaxoUpdateView.as_view(), name="taxo_update"),
-    path('aa_chem/updateOrg/<str:Organism_ID>', updateOrganism, name="organism_update"),
+    path('aa_chem/taxo/<str:pk>', TaxoUpdateView.as_view(), name="taxo_update"),
+    path('aa_chem/updateOrg/<str:pk>', updateOrganism, name="organism_update"),
 
-    path('aa_chem/deleteOrg/<str:Organism_ID>', deleteOrganism, name="organism_delete"),
-    path('aa_chem/deleteTaxo/<str:Organism_Name>', deleteTaxonomy, name="taxonomy_delete"),
+    path('aa_chem/deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
+    path('aa_chem/deleteTaxo/<str:pk>', deleteTaxonomy, name="taxonomy_delete"),
     #========================Data Export/Import===================================================================
     path('aa_chem/exportData/', exportCSV, name="dataexport"),
     path('aa_chem/import_Taxonomy/', import_excel_taxo, name="importTaxo"),

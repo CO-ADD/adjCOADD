@@ -66,13 +66,12 @@ class AuditModel(models.Model):
         print(self.adeleted_by)
         self.save()
 
-    def save(self, *args, **kwargs):
-        user = kwargs.get("user")
-        print(user)
+    def save(self, user, *args, **kwargs):
+        self.user=user
         if self._state.adding: 	#Createing
-            self.acreated_by = user
+            self.acreated_by = self.user
         else:					#Updateing
-            self.aupdated_by = user
+            self.aupdated_by = self.user
         super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
