@@ -13,10 +13,10 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 
-from aa_chem.models import  Organisms, Taxonomy 
+from aa_chem.models import  Organisms, Taxonomy
 from aa_chem.utils import  querysetToChoiseList_Dictionaries
 from app.models import Dictionaries
-from .forms import CreateNewOrgForm, UpdateNewOrgForm, TaxonomyCreateForm
+from .forms import CreateNewOrgForm, UpdateNewOrgForm, TaxonomyForm
 
 
 
@@ -65,14 +65,14 @@ class TaxoListView(ListView):
 
 # ====================================================Create===========================================
 def TaxoCreate(req):
-    form=TaxonomyCreateForm
+    form=TaxonomyForm
     if req.method=='POST':
         form=TaxonomyCreateForm(req.POST)
         if form.is_valid():
             print("form is valid")   
             instance=form.save(commit=False)
             instance.acreated_by=req.user               
-            instance.save()
+            instance.save(req.user)
             print("saved")
             return redirect("/")
         else:
@@ -80,13 +80,20 @@ def TaxoCreate(req):
     return render(req, 'aa_chem/createForm/Taxonomy.html', {'form':form})
     
 # ====================================================Update===========================================
-class TaxoUpdateView(UpdateView):
-    model=Taxonomy
-    # slug_field='Organism_Name'
-    # slug_url_kwarg="Organism_Name"
-    fields='__all__'
-    template_name = 'aa_chem/readForm/Taxonomy.html'
-    success_url = reverse_lazy('compounds')
+def TaxoUpdate(req, pk):
+    obj=get_object_or_404(Taxonomy, Organism_Name=pk)
+    form=TaxonomyForm(instance=obj)
+    if req.method=='POST':
+        form=TaxonomyForm(req.POST, instance=obj)
+        if form.is_valid():
+            print("form is valid")   
+            instance=form.save(commit=False)        
+            instance.save(req.user)
+            print("saved")
+            return redirect("/")
+        else:
+            print(form.errors)
+    return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form})
 
 # ====================================================Delete===========================================
 def deleteTaxonomy(req, pk):
@@ -202,7 +209,7 @@ def updateOrganism(req, pk):
         if form.is_valid():
                 instance=form.save(commit=False)
                 instance.Organism_Name=Organism_Name_fk
-                instance.save()
+                instance.save(req.user)
                 print('save updated')
                 return redirect("/")
     

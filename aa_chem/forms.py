@@ -52,10 +52,11 @@ class UpdateNewOrgForm(CreateNewOrgForm):
 
 
 #========================================Taxonomy Form================================================================
-class TaxonomyCreateForm(forms.ModelForm):
+class TaxonomyForm(forms.ModelForm):
     class Meta:
         model =Taxonomy
         fields='__all__'
+
     
     
     
