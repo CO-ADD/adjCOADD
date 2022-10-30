@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
+from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
 from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchTaxo, createOrgnisms, organismDetail,
                         updateOrganism, TaxoListView,TaxoCreate,TaxoUpdate,deleteTaxonomy, OrgListView, OrgCardView, deleteOrganism)
 
@@ -33,7 +33,7 @@ urlpatterns = [
     path('app/user_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
     path('app/user_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('app/dict/', DictionariesView.as_view(), name='dict_view' ),
-    # path('app/dict/create', DictCreateView.as_view(), name='dict_create' ),
+    path('app/dict/create', DictCreate, name='dict_create' ),
 
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('aa_chem/', home, name="compounds"),

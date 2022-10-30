@@ -68,7 +68,22 @@ As the name implies, it does nothing when a referenced object is deleted. This i
 10. (i) exception: python manage.py runserver exception in thread django-main-thread typeerror issubclass() arg 1 must be a class app_config_class
      (s) settings.py - installed_Apps=[...'app',...] change to [...'app.apps.AppConfig',...]
 
-11. using dictionary type parameter **kwargs to pass information req.user to Audit Model def save(...) failed...alternatively used regular parameter.
-<b>reason ...not found </b>
+11. using dictionary type parameter **kwargs to pass information req.user to Audit Model def save(...) failed...alternatively used regular function argument.
+<b>reason ...not found </b> 
+failed Tests are listed in the following:
+```
+.save({'user':request.user}) #or user={'user':request.user,} then .save(**user)
+
+```
+in class view or in the form view
+```
+def get(self, request, *args, **kwargs):
+    form=self.form_class(initial=self.initial)
+    kwargs['user']=request.user
+    return render(request, self.template_name, {'form':form} )
+
+def __init__() or def save()...
+```
+
 
 

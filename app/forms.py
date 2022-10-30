@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import  ApplicationUser
+from .models import  ApplicationUser, Dictionaries
 
 
 class GroupCreate(forms.ModelForm):
@@ -15,3 +15,11 @@ class GroupCreate(forms.ModelForm):
                 'placeholder': 'Say something...'
             }),
         }
+
+
+# #=======================================Dictionary Form===========================================================
+class Dictionary_form(forms.ModelForm):
+
+    class Meta:
+        model=Dictionaries
+        fields="__all__"

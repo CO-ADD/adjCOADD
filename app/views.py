@@ -7,8 +7,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from django.urls import reverse_lazy
-from .forms import GroupCreate 
+from django.urls import reverse_lazy, reverse
+from .forms import GroupCreate, Dictionary_form
 from django.contrib.auth import logout
 from django.contrib.auth.models import Permission
 # Create your views here.
@@ -98,11 +98,12 @@ class DictionariesView(ListView):
        
         return context
 
-class DictCreateView(CreateView):
-    model=Dictionaries
-    fields='__all__'
-    # form_class=GroupCreate
-    template_name = 'app/dictCreate.html'
-    success_url = reverse_lazy('dict_view')
-
-    
+def DictCreate(req):
+    form=Dictionary_form()
+    if req.method=='POST':
+        form=Dictionary_form(req.POST)
+        if form.is_valid:
+            instance=form.save(commit=False)
+            instance.save(req.user)
+            return redirect("dict_view")
+    return render(req, 'app/dictCreate.html', {'form': form})

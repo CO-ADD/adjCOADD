@@ -10,70 +10,14 @@
     <h1>Screening data</h1>
   </div>
   <div class="d-flex flex-row bg-light justify-content-between">
-    <div id="sidebar" class="text-secondary" style="overflow: scroll">
-      <hr />
-      <h4 id="item-1">Search</h4>
-      <form role="search" method="POST" class="form-group mx-5">
-        {%csrf_token%}
-        <div class="input-group input-group-sm">
-          <input type="text" name="search" class="text-dark my-1" placeholder="Search for "
-            aria-describedby="inputGroup-sizing-sm" />
-          <button type="submit" class="btn btn-outline-warning btn-sm my-1">
-            <i class="bi bi-search"> IN</i>
-          </button>
-          <select class="rounded my-1" name="field" id="floatingSelectGrid">
-            <option value="Organism_Name" selected>Organism_Name</option>
-            <option value="--" disabled>--</option>
-            <option value="--" disabled>--</option>
-          </select>
-        </div>
-      </form>
-
-      <hr />
-
-      <hr />
-      <h4>Taxo</h4>
-      <ul>
-        <li><a href="{%url 'taxo_create'%}">Create New Taxo</a></li>
-        <li><a href="{%url 'taxo_list'%}">List Taxo</a></li>
-        <li><a href="{%url 'importTaxo'%}">import Taxonomy</a></li>
-      </ul>
-      <h4>Org</h4>
-      <li><a href="{%url 'org_create'%}">Create New Org</a></li>
-      <li><a href="{%url 'org_list'%}">List Org</a></li>
-      <p><a href="{%url 'dict_view'%}">Dict_Value</a></p>
-      <p><a href="{%url 'importDict'%}">Import Dictionary</a></p>
-
-      <p>...</p>
-    </div>
-    <div id="resizer"></div>
+    {%include "aa_chem/sidebar.html"%}
     <div class="main d-flex flex-column">
       {%include "aa_chem/readForm/Taxonomy_card.html"%}
     </div>
   </div>
 </div>
 
-<script>
-  const resizer = document.querySelector("#resizer");
-  const sidebar = document.querySelector("#sidebar");
 
-  resizer.addEventListener("mousedown", (event) => {
-    document.addEventListener("mousemove", resize, false);
-    document.addEventListener(
-      "mouseup",
-      () => {
-        document.removeEventListener("mousemove", resize, false);
-      },
-      false
-    );
-  });
-
-  function resize(e) {
-    var sdsize = Math.min(800, e.x);
-    const size = `${sdsize}px`;
-    sidebar.style.flexBasis = size;
-  }
-</script>
 
 <!--prettier-ignore-->
 {% endblock%}

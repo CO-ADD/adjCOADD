@@ -8,7 +8,9 @@ class UserAdmin(admin.ModelAdmin):
     list_display=("username","email","is_staff")
 
 class DictAdmin(admin.ModelAdmin):
-    pass
+    def save(self, request, *args, **kwargs):
+        kwargs['user']=request.user
+        super().save(*args, **kwargs)
     
 
 admin.site.register(ApplicationUser, UserAdmin)

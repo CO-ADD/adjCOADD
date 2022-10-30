@@ -1,3 +1,4 @@
+<li><a href="{%url 'importTaxo'%}">import Taxonomy</a></li>
 <div id="tabs">
   <ul class="nav nav-tabs" id="prodTabs">
     <li class="active"><a href="#tab_basic">Tableoview</a></li>
@@ -8,29 +9,22 @@
   <div class="tab-content">
     <div id="tab_basic" class="tab-pane active">
       <div id="body">
-        <form class="text-dark" action="#" method="POST">
-          {%csrf_token%}
-          <label class="form-label mt-3">Import .sdf file by enter full file path
-            multiple files seperated directly by ","</label>
-          <input class="form-control-sm" name="fdata" type="text" disabled />
-          <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Import..."
-            disabled />
-        </form>
+
 
         <div class="pagination" style="float:right">
           <span class="step-links">
-            {% if page_obj.has_previous %}
+            {% if pag_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
             {% endif %}
 
             <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
             </span>
 
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href='#' onclick="showLoaderOnClick('{{page_obj.paginator.num_pages}}')">last &raquo;</a>
+            {% if pag_obj.has_next %}
+            <a href="?page={{ pag_obj.next_page_number }}">next</a>
+            <a href='#' onclick="showLoaderOnClick('{{pag_obj.paginator.num_pages}}')">last &raquo;</a>
             {% endif %}
           </span>
         </div>
@@ -60,7 +54,7 @@
         </script>
         <a id="taxo-list" href="#">List View</a>
         <div class="row d-flex flex-wrap">
-          {% for taxo in page_obj %}
+          {% for taxo in pag_obj %}
 
           <div id="comps-taxo" class="col-md-3">
             <div class="card bg-transparent my-2 compounds">
@@ -155,18 +149,18 @@
         <hr>
         <div class="pagination">
           <span class="step-links">
-            {% if page_obj.has_previous %}
+            {% if pag_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
             {% endif %}
 
             <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
             </span>
 
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% if pag_obj.has_next %}
+            <a href="?page={{ pag_obj.next_page_number }}">next</a>
+            <a href="?page={{ pag_obj.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
           </span>
         </div>

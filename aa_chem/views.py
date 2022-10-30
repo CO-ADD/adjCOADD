@@ -12,11 +12,11 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
-
 from aa_chem.models import  Organisms, Taxonomy
 from aa_chem.utils import  querysetToChoiseList_Dictionaries
 from app.models import Dictionaries
-from .forms import CreateNewOrgForm, UpdateNewOrgForm, TaxonomyForm
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
+from coadd_web.settings import Strain_Type_choices
 
 
 
@@ -35,15 +35,13 @@ def home(req):
     else:
         result=Taxonomy.objects.filter(astatus__gte=0)
         
-    objects_all=result
-    p=Paginator(objects_all, 24)
-    page_number = req.GET.get('page')
-    page_obj=p.get_page(page_number)
+    objects=result
+    p=Paginator(objects, 24)
+    pag_num = req.GET.get('page')
+    pag_obj=p.get_page(pag_num)
     
     context={
-        'page_obj':page_obj,
-        'chose':Taxonomy.Choice_Dictionaries   
-       
+        'pag_obj':pag_obj,       
     }
   
     return render(req, 'aa_chem/chem.html', context)
@@ -59,19 +57,19 @@ class TaxoListView(ListView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.filter(astatus__gte=0)
-        objects_all=[object_ for object_ in context["objects"]]
-        p=Paginator(objects_all, 24)        
+        objects=[object_ for object_ in context["objects"]]
+        p=Paginator(objects, 24)        
         return context
 
 # ====================================================Create===========================================
 def TaxoCreate(req):
-    form=TaxonomyForm
+    form=Taxonomy_form
     if req.method=='POST':
-        form=TaxonomyCreateForm(req.POST)
+        form=Taxonomy_form(req.POST)
         if form.is_valid():
             print("form is valid")   
             instance=form.save(commit=False)
-            instance.acreated_by=req.user               
+            # instance.acreated_by=req.user               
             instance.save(req.user)
             print("saved")
             return redirect("/")
@@ -81,10 +79,10 @@ def TaxoCreate(req):
     
 # ====================================================Update===========================================
 def TaxoUpdate(req, pk):
-    obj=get_object_or_404(Taxonomy, Organism_Name=pk)
-    form=TaxonomyForm(instance=obj)
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    form=Taxonomy_form(instance=object_)
     if req.method=='POST':
-        form=TaxonomyForm(req.POST, instance=obj)
+        form=Taxonomy_form(req.POST, instance=object_)
         if form.is_valid():
             print("form is valid")   
             instance=form.save(commit=False)        
@@ -98,10 +96,10 @@ def TaxoUpdate(req, pk):
 # ====================================================Delete===========================================
 def deleteTaxonomy(req, pk):
     print('deleting view')
-    obj=get_object_or_404(Taxonomy, Organism_Name=pk)
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     try:
-        print(obj.Organism_Name)
-        obj.delete()
+        print(object_.Organism_Name)
+        object_.delete()
         print("deleted")
     except Exception as err:
         print(err)
@@ -144,31 +142,33 @@ def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) #   
+    # Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) #   
     if req.method=='POST':
-        form=CreateNewOrgForm(Strain_Type_choices,  req.POST,)
-        Organism_Name=req.POST.get('Organism_Name')
-        Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)       
+        form=CreateOrganism_form(Strain_Type_choices,  req.POST,)
         Strain_Type_list=req.POST.getlist('Strain_Type')
-       
+        
         try:
-            print("start to try")
             if form.is_valid():
-                print("form is valid")   
+                print("form is valid")  
+                Organism_Name=req.POST.get('Organism_Name')
+                Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+                form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
-                instance.Organism_Name=Organism_Name_fk     
+                # kwargs={}
+                # kwargs['user']=req.user
+                # instance.save(**kwargs)
                 instance.save(req.user)
                 print("saved")
-                return redirect("/")
+                return redirect("org_list")
             else:
                 print(f'something wrong...{form.errors}')
-                return redirect("/")
-        
+                return redirect(req.META['HTTP_REFERER'])      
         except Exception as err:
-            print(f'form is valid but error is {err}')
-            return redirect("/")
+            print(f'error is {form.errors} with {err}')
+            return redirect(req.META['HTTP_REFERER'])
+
     else:
-        form=CreateNewOrgForm(Strain_Type_choices,)
+        form=CreateOrganism_form(Strain_Type_choices,)
  
     return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, 'Strain_Type':Strain_Type_choices})
 
@@ -176,46 +176,51 @@ def createOrgnisms(req):
 #=======================================================================================================================================================
 
 def organismDetail(req, pk):
-    obj=get_object_or_404(Organisms, Organism_ID=pk)
-    context={'Organism': obj}
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    context={'Organism': object_}
     return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
 
 
 def updateOrganism(req, pk):
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
-    context={}
-    obj=get_object_or_404(Organisms, Organism_ID=pk)
-    form=UpdateNewOrgForm(Strain_Type_choices, instance=obj)
-
-    if obj.Organism_Name.Class:
-        Organism_Class=obj.Organism_Name.Class.Dict_Value
+    # Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    original_Organism_Name=object_.Organism_Name
+    original_class=object_.Organism_Name.Class.Dict_Value
+    form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+    #This can be minimized when all organism have classes... 
+    if object_.Organism_Name.Class:
+        Organism_Class=object_.Organism_Name.Class.Dict_Value
     else:
         Organism_Class="No Class"
 
     if req.method=='POST':
-        # Update Organism_Name============================
-        Organism_Name=req.POST.get('Organism_Name') 
-        if Organism_Name:
-            Organism_Name_fk=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
-        else:
-            Organism_Name_fk=obj.Organism_Name
-        if Organism_Name_fk.Class and obj.Organism_Name.Class:
-            if Organism_Name_fk.Class.Dict_Value != obj.Organism_Name.Class.Dict_Value:
-                messages.warning(req, 'Organism cannot update to different Class!')
-                return redirect(req.META['HTTP_REFERER'])
-        #Update other information    
-        form=CreateNewOrgForm(Strain_Type_choices, req.POST, instance=obj)    
-        if form.is_valid():
-                instance=form.save(commit=False)
-                instance.Organism_Name=Organism_Name_fk
-                instance.save(req.user)
-                print('save updated')
-                return redirect("/")
+        form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=object_)     
+        try:
+            if form.is_valid():
+                    # If Update Organism_Name============================                
+                    if  req.POST.get('Organism_Name'):
+                        Organism_Name=req.POST.get('Organism_Name')
+                        print(f'http Request Organism_name is {Organism_Name}')  
+                        form.clean_organismName(Organism_Name, original_class)
+                        instance=form.save(commit=False)
+                    else:
+                        form.clean_organismName(original_Organism_Name, original_class)
+                        instance=form.save(commit=False)
+                        instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
+                    # kwargs={}
+                    # kwargs['user']=req.user
+                    # instance.save(**kwargs)
+                    instance.save(req.user)
+                    print('save updated')
+                    return redirect("org_list")
+        except Exception as err:
+            messages.warning(req, err)
+            return redirect(req.META['HTTP_REFERER'])
     
     context={
         "form":form,
-        "object":obj.Organism_Name,
+        "Organism":object_.Organism_Name,
         "Class":Organism_Class
     }
    
@@ -223,16 +228,16 @@ def updateOrganism(req, pk):
 
 def deleteOrganism(req, pk):
     print(f"{req.user} is {type(req.user)} type")
-    
-    obj=get_object_or_404(Organisms, Organism_ID=pk)
-    try:
-        print(obj.Organism_Name)
-        obj.delete()
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    try:      
+        object_.delete(**kwargs)
         print("deleted")
     except Exception as err:
         print(err)
     return redirect("/")
-    # return render(req, "aa_chem/deleteForm/Organism_del.html", context)
+    
 
 # ==============================List View ===============================================================
 class OrgListView(ListView):
@@ -245,13 +250,13 @@ class OrgListView(ListView):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.filter(astatus__gte=0)  # will set astatus filter
         
-        objects_all=[object_ for object_ in context["objects"]]
+        objects=[object_ for object_ in context["objects"]]
         
-        p=Paginator(objects_all, 24)
-        page_number = self.request.GET.get('page')
-        page_obj=p.get_page(page_number)
-        context["objects"]  = objects_all
-        context["page_obj"]=page_obj
+        p=Paginator(objects, 24)
+        pag_num = self.request.GET.get('page')
+        pag_obj=p.get_page(pag_num)
+        context["objects"]  = objects
+        context["pag_obj"]=pag_obj
         
         return context
 
@@ -259,10 +264,7 @@ class OrgCardView(OrgListView):
   
     template_name = 'aa_chem/readForm/Organism_card.html'
 
-   
-
-
-
+  
 # # ==============================Import Excel files===========================================================#
 import pandas as pd
 from django.conf import settings

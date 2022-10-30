@@ -64,7 +64,7 @@ class AuditModel(models.Model):
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
         print(self.adeleted_by)
-        self.save()
+        self.save(self.adeleted_by)
 
     def save(self, user, *args, **kwargs):
         self.user=user

@@ -121,8 +121,8 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'OPTIONS':{'options': '-c search_path=app'},
-        'NAME': 'orgdb',
+        'OPTIONS':{'options': '-c search_path=app'},
+        'NAME': 'multi_schema',
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD':os.environ.get('db_password', 'password'),
         'HOST': 'Localhost',
@@ -130,8 +130,8 @@ DATABASES = {
     },
     'drugs_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=aa_chem,public'},
-        'NAME': 'orgdb',
+        'OPTIONS':{'options': '-c search_path=aa_chem,app'},
+        'NAME': 'multi_schema',
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
@@ -139,8 +139,8 @@ DATABASES = {
     },
       'test_sch': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=test_sch,public'},
-        'NAME': 'orgdb',
+        'OPTIONS':{'options': '-c search_path=test_sch,app'},
+        'NAME': 'multi_schema',
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
@@ -246,3 +246,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "department": "ou",
 
 }
+# from aa_chem.models import Organisms
+# from app.models import Dictionaries
+# from aa_chem.utils import querysetToChoiseList_Dictionaries 
+Strain_Type_choices=(("a", "testa"),("b","testb"),("c", "testc"))#querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
