@@ -250,22 +250,22 @@ def createOrgnisms(req):  # function name refer to [namerules](#application-leve
 
 4. multi_schema set up in postgresql:
 ```
-testschema=# create schema extensions;
+testschema=# create schema app;
 CREATE SCHEMA
 testschema=# create schema aa_chem;
 CREATE SCHEMA
 testschema=# create schema test_sch;
 CREATE SCHEMA
-testschema=# grant usage on schema extensions to public;
+testschema=# grant usage on schema app to public;
 GRANT
-testschema=# grant execute on all functions in schema extensions to public;
+testschema=# grant execute on all functions in schema app to public;
 GRANT
-testschema=# alter default privileges in schema extensions
+testschema=# alter default privileges in schema app
 testschema-# grant execute on functions to public;
 ALTER DEFAULT PRIVILEGES
-testschema=# alter default privileges in schema extensions
+testschema=# alter default privileges in schema app
 testschema-# grant usage on types to public;
 ALTER DEFAULT PRIVILEGES
-testschema=# create extension if not exists rdkit schema extensions;
+testschema=# create extension if not exists rdkit schema app;
 CREATE EXTENSION
 ```

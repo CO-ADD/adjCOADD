@@ -246,6 +246,9 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "department": "ou",
 
 }
+
+
+# ===============================================================
 # from aa_chem.models import Organisms
 # from app.models import Dictionaries
 # from aa_chem.utils import querysetToChoiseList_Dictionaries 

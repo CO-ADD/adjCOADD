@@ -2,7 +2,7 @@ import os
 from rdkit import Chem
 
 # from django.contrib.admin.views.decorators import staff_member_required
-# from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 # from django.forms import modelform_factory
@@ -23,7 +23,7 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # Taxonomy Card View in Chem Homepage===============Read=================================================
-# @login_required
+@login_required
 def home(req): 
    
     # search function
@@ -63,14 +63,15 @@ class TaxoListView(ListView):
 
 # ====================================================Create===========================================
 def TaxoCreate(req):
+    kwargs={}
+    kwargs['user']=req.user 
     form=Taxonomy_form
     if req.method=='POST':
         form=Taxonomy_form(req.POST)
         if form.is_valid():
             print("form is valid")   
             instance=form.save(commit=False)
-            # instance.acreated_by=req.user               
-            instance.save(req.user)
+            instance.save(**kwargs)
             print("saved")
             return redirect("/")
         else:
@@ -80,13 +81,15 @@ def TaxoCreate(req):
 # ====================================================Update===========================================
 def TaxoUpdate(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    kwargs={}
+    kwargs['user']=req.user 
     form=Taxonomy_form(instance=object_)
     if req.method=='POST':
         form=Taxonomy_form(req.POST, instance=object_)
         if form.is_valid():
             print("form is valid")   
             instance=form.save(commit=False)        
-            instance.save(req.user)
+            instance.save(**kwargs)
             print("saved")
             return redirect("/")
         else:
@@ -94,12 +97,15 @@ def TaxoUpdate(req, pk):
     return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form})
 
 # ====================================================Delete===========================================
+# @user_passes_test(lambda u: u.is_superuser)
 def deleteTaxonomy(req, pk):
+    kwargs={}
+    kwargs['user']=req.user 
     print('deleting view')
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     try:
         print(object_.Organism_Name)
-        object_.delete()
+        object_.delete(**kwargs)
         print("deleted")
     except Exception as err:
         print(err)
@@ -224,6 +230,8 @@ def updateOrganism(req, pk):
    
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
+
+# @user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user

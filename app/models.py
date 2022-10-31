@@ -14,18 +14,18 @@ import logging
 class ApplicationUser(AbstractUser):
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
-    title_name = models.CharField(max_length=15, blank=True)        # Dr
+    title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
     # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
     # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
-    short_name = models.CharField(max_length=55, blank=True)        # J.Zuegg
-    initials = models.CharField(max_length=5, blank=True)           # JZG
-    organisation = models.CharField(max_length=250, blank=True)     # University of Queensland
-    department = models.CharField(max_length=250, blank=True)       # Institute for Molecular Bioscience
-    group = models.CharField(max_length=50, blank=True,)             # Blaskovich
-    phone = models.CharField(max_length=25, blank=True)             # +61 7 344 62994
+    short_name = models.CharField(max_length=55, blank=True, null=True)        # J.Zuegg
+    initials = models.CharField(max_length=5, blank=True, null=True)           # JZG
+    organisation = models.CharField(max_length=250, blank=True, null=True)     # University of Queensland
+    department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
+    group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
+    phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
     # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au    this field existed in AbstractUser
-    permissions = models.CharField(max_length=250, blank=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
-    session_id = models.CharField(max_length=250, blank=True)       # not sure if Django has SessionID's
+    permissions = models.CharField(max_length=250, blank=True, null=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
+    session_id = models.CharField(max_length=250, blank=True, null=True)       # not sure if Django has SessionID's
     is_appuser=models.BooleanField(default=True)
 
     class Meta:
@@ -64,14 +64,14 @@ class AuditModel(models.Model):
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
         print(self.adeleted_by)
-        self.save(self.adeleted_by)
+        self.save()
 
-    def save(self, user, *args, **kwargs):
-        self.user=user
+    def save(self, *args, **kwargs):
+        user=kwargs.pop("user")
         if self._state.adding: 	#Createing
-            self.acreated_by = self.user
+            self.acreated_by = user
         else:					#Updateing
-            self.aupdated_by = self.user
+            self.aupdated_by = user
         super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------

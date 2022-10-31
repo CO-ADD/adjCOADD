@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.urls import reverse_lazy, reverse
-from .forms import GroupCreate, Dictionary_form
+from .forms import CreateApplicationUser_form, Dictionary_form
 from django.contrib.auth import logout
 from django.contrib.auth.models import Permission
 # Create your views here.
@@ -24,6 +24,7 @@ def index(req):
     if req.user.is_authenticated:
 
         user=ApplicationUser.objects.get(username=req.user.username)
+        print(user.username)
         
         if user.is_appuser==False:
             logout(req)
@@ -62,9 +63,9 @@ class AppUserListView(LoginRequiredMixin, ListView):
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
     # fields='__all__'
-    form_class=GroupCreate
+    form_class=CreateApplicationUser_form
     template_name = 'app/appUsersCreate.html'
-    success_url = reverse_lazy('usermanage')
+    success_url = reverse_lazy('userslist')
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -76,12 +77,12 @@ class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
     fields='__all__'
     template_name = 'app/appUsersUpdate.html'
-    success_url = reverse_lazy('usermanage')
+    success_url = reverse_lazy('userslist')
 
 class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
     model=ApplicationUser
     template_name='app/appUsersDel.html'
-    success_url = reverse_lazy('usermanage')
+    success_url = reverse_lazy('userslist')
 
 
 

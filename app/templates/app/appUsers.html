@@ -22,7 +22,7 @@
       let my_modal = $("#createAppUserModal");
 
       $("#createAppUser a").click(function () {
-        my_modal.load("/usermanagement_create/", function () {
+        my_modal.load("{%url 'createAppUser' %}", function () {
           my_modal.modal("show"); // Open Modal
 
         });
