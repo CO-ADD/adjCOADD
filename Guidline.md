@@ -1,8 +1,9 @@
 # Coadd Coding Guidline
-(Version 0.0)
+
 Coding guideline is to ensure the code is consistent, minimize the erros and help maintain easlily, which provides guidance for building a project and functionalities structure, naming rules and coding reuseable code blocks in different section. 
 Also provids certain constructions explaination in the last section.
-## pre-requisites
+
+## Prerequisites
 ### Documents:
 - Django Documents for name convention
 - GetStartedWithCoadd: Computer setting, Environment setting
@@ -13,7 +14,7 @@ Also provids certain constructions explaination in the last section.
 
 ## Section 1. Project Directories 
 The Directory includs project level and application level, displayed as the following:
-### Project level
+### 1 Project level
 ```
 Django Project Root
 ├── aa_django-core(application level refer below...)
@@ -27,7 +28,8 @@ Django Project Root
 ├── readme.md
 └── requirements.txt
 ```
-### Application level
+
+### 2 Application level
 ```
 Django Project Root
 ├── django-core
@@ -61,7 +63,8 @@ Django Project Root
 │   ├── views.py
 ...(maybe more)
 ```
-### In database Postgres
+
+### 3 In database Postgres
 ```
 Database name(projectname)
 ├── app schema (for django migration project level info(extension, session, contenttype...); django-app-utilities)
@@ -92,8 +95,10 @@ in Django Settings.py the code is presented like the following:
         ...
     }
 ```
+
 ## Section 2. Naming Rules
-### variable Name
+
+### 1 Variable Name
 - General Variables:
     - context: variable collection will be send to html template in render
     - i or item  : item in iterable collection
@@ -103,16 +108,17 @@ in Django Settings.py the code is presented like the following:
     - qs  : queryset
     - req : request
     - _fk: indicate Foreign Key type
-    - _list, _tul, _dict...: variable is list, tulpe and dictionary... type
+    - _list, _tul, _dict...: variable is list, tuple and dictionary... type
     
 - Special variables will be commented in Functions and Classes
-### project level naming
+
+### 2 Project level naming
 A project name start with a_, therefore the core file name will be with "a_..." positioned on the first line under project root. For applications' name following the below: 
 - utility application (for admin management, functions sharing...purpose)starts with "a"
 - django applications start with "d"
 other django files and files following django and python name convention: templates, static, uploads...
 
-### application level naming
+### 3 Application level naming
 Applications' module name following django and python name convention: admin.py, models.py, utils.py ....
 In coding process following the below rules:
 - Model naming: 
@@ -158,6 +164,8 @@ class CreateOrganism_form(ModelForm):
     ...
     Bio_Approval = forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     
+    Organism_Name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
+
    # programs for get value from Models and Views
    
     def __init__(self, Strain_Type_choices,  *args, **kwargs):      
@@ -171,9 +179,9 @@ class CreateOrganism_form(ModelForm):
         Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
         print(Organism.Class.Dict_Value)
         
-        self.fields['Organism_Name']=Organism
+        self.fields['Organism_Name'].queryset=Organism
         print(f'Thisis from def get_object: {self.fields["Organism_Name"]}')
-        # return self.fields['Organism_Name']
+       
 
     # inheriting model fields       
     class Meta:
@@ -191,6 +199,9 @@ def createOrgnisms(req):  # function name refer to [namerules](#application-leve
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary.   
     '''
     #define function variables directly here if possible
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) # 
+    kwargs={}
+    kwargs['user']=req.user 
     ...
 
     if req.method=='POST':
@@ -203,15 +214,15 @@ def createOrgnisms(req):  # function name refer to [namerules](#application-leve
                 Organism_Name=req.POST.get('Organism_Name')
                 form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
-                instance.save(req.user)
+                instance.save(**kwargs)
                 print("saved")
-                return redirect("/")
+                return redirect("org_list")
             else:
                 print(f'something wrong...{form.errors}')     #debug print
-                return redirect("/")       
+                return redirect(req.META['HTTP_REFERER'])  
         except Exception as err:
             print(f'error is {form.errors} with {err}')
-            return redirect("/")
+            return redirect(req.META['HTTP_REFERER'])  
 
     else:
         form=CreateOrganism_form(Strain_Type_choices,)

@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-light py-2">
+    <div class="container-fluid">
+        <div class="d-flex flex-column">
+
+            <a class="navbar-brand" href="{%url 'index'%}">
+                {%load static%}
+                <img style="width: 100%" src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
+                    alt="CoADD Logo" /></a>
+            <ul class="navbar-nav justify-content-around">
+                <li class="nav-item">
+                    <a class="nav-link active" href="">home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="">contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="">portal</a>
+                </li>
+            </ul>
+        </div>
+        <form class="d-flex flex-grow-1 mx-5">
+            <div class="input-group mb-0 mx-5">
+                <input type="text" class="form-control" placeholder="Search" />
+                <button class="btn btn-outline-secondary btn2" type="button" id="button-addon2">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto fs-5">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{%url 'compounds'%}">screening data</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'dataexport'%}">download</a>
+                </li>
+                <li class="nav-item d-flex">
+                    {% if user.is_authenticated %}
+
+
+                    <a class="nav-link active" href="{%url 'logout'%}">Log Out</a>
+                    <a class="nav-link active" href="{%url 'userslist' %}">UsersList</a>
+                    <a class="nav-link active" href="{%url 'dict_view'%}">Dictionary</a>
+
+                    {%else%}
+
+                    <a class="nav-link active" href="{%url 'login'%}">Log In</a>
+                    {%endif%}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

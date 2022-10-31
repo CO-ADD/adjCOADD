@@ -41,7 +41,7 @@ class CreateOrganism_form(ModelForm):
         
         self.fields['Organism_Name'].queryset=Organism
         print(f'Thisis from def get_object: {self.fields["Organism_Name"]}')
-        # return self.fields['Organism_Name']
+       
 
             
     class Meta:

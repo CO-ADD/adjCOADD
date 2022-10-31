@@ -16,7 +16,7 @@ from aa_chem.models import  Organisms, Taxonomy
 from aa_chem.utils import  querysetToChoiseList_Dictionaries
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
-from coadd_web.settings import Strain_Type_choices
+# from coadd_web.settings import Strain_Type_choices
 
 
 
@@ -114,7 +114,6 @@ def searchTaxo(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
         res=None
         taxo=req.POST.get('inputtext')
-        # print(taxo)
         qs=Taxonomy.objects.filter(Organism_Name__istartswith=taxo)
       
         if len(qs)>0 and len(taxo)>0:
@@ -142,7 +141,9 @@ def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    # Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) #   
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) # 
+    kwargs={}
+    kwargs['user']=req.user 
     if req.method=='POST':
         form=CreateOrganism_form(Strain_Type_choices,  req.POST,)
         Strain_Type_list=req.POST.getlist('Strain_Type')
@@ -154,10 +155,7 @@ def createOrgnisms(req):
                 Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
                 form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
-                # kwargs={}
-                # kwargs['user']=req.user
-                # instance.save(**kwargs)
-                instance.save(req.user)
+                instance.save(**kwargs)
                 print("saved")
                 return redirect("org_list")
             else:
@@ -183,11 +181,14 @@ def organismDetail(req, pk):
 
 
 def updateOrganism(req, pk):
-    # Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     original_Organism_Name=object_.Organism_Name
     original_class=object_.Organism_Name.Class.Dict_Value
     form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+
+    kwargs={}
+    kwargs['user']=req.user
     #This can be minimized when all organism have classes... 
     if object_.Organism_Name.Class:
         Organism_Class=object_.Organism_Name.Class.Dict_Value
@@ -208,10 +209,7 @@ def updateOrganism(req, pk):
                         form.clean_organismName(original_Organism_Name, original_class)
                         instance=form.save(commit=False)
                         instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
-                    # kwargs={}
-                    # kwargs['user']=req.user
-                    # instance.save(**kwargs)
-                    instance.save(req.user)
+                    instance.save(**kwargs)
                     print('save updated')
                     return redirect("org_list")
         except Exception as err:
@@ -227,7 +225,6 @@ def updateOrganism(req, pk):
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
 def deleteOrganism(req, pk):
-    print(f"{req.user} is {type(req.user)} type")
     kwargs={}
     kwargs['user']=req.user
     object_=get_object_or_404(Organisms, Organism_ID=pk)

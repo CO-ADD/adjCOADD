@@ -23,22 +23,23 @@
 
                         <div class="col-md-12 compounds">
                             <div class="card bg-transparent my-2 flex-row">
-                                <div class="card-img ml-2 border border-5" style="width:400px">
+                                <!-- <div class="card-img ml-2 border border-5" style="width:400px">
 
                                     {%load static%}
                                     <img style="height:300px;" src="{%static 'images/'%}{{object.id}}.svg"
                                         alt="Structure" />
-                                </div>
-                                <p class="lead fs-4 m-auto"> <a
-                                        href="{%url 'org_detail' object.Organism_ID %}">{{object.Organism_Name}}</a>
+                                </div> -->
+                                <p class="lead fs-4 m-auto"> {{object.Organism_Name}}
                                     <br> ID:
-                                    {{object.Organism_ID}} | <a
-                                        href="{%url 'organism_update' object.Organism_ID %}">Update</a>
+                                    {{object.Organism_ID}}
+
                                 </p>
 
-
-
-                                <p><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></p>
+                                <ul>
+                                    <li><a href="{%url 'organism_update' object.Organism_ID %}">Update</a></li>
+                                    <li><a href="{%url 'org_detail' object.Organism_ID %}">Details</a></li>
+                                    <li><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></li>
+                                </ul>
                                 <h5 class="bi bi-tag fw-bold lead fs-4 m-auto">additional information</h5>
                                 <ul>
                                     <li>Created by: {{object.acreated_by}}</li>
@@ -47,13 +48,13 @@
                                 </ul>
                                 <p>
                                 <div class="text-center" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse{{taxo.id}}" aria-expanded="false"
-                                    aria-controls="{{taxo.id}}">
+                                    data-bs-target="#collapse{{object.id}}" aria-expanded="false"
+                                    aria-controls="{{object.id}}">
                                     <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
                                 </div>
 
                                 </p>
-                                <div class="collapse" id="collapse{{taxo.id}}">
+                                <div class="collapse" id="collapse{{object.id}}">
 
                                     <div class="card-body d-flex flex-column align-items-start">
 
