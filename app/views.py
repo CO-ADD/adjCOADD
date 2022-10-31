@@ -24,7 +24,7 @@ def index(req):
     if req.user.is_authenticated:
 
         user=ApplicationUser.objects.get(username=req.user.username)
-        print(user.username)
+        # print(user.username)
         
         if user.is_appuser==False:
             logout(req)

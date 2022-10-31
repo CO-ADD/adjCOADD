@@ -63,15 +63,17 @@ class AuditModel(models.Model):
         self.astatus = -9
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
-        print(self.adeleted_by)
+        print(f"deleted by {self.adeleted_by}")
         self.save()
 
     def save(self, *args, **kwargs):
-        user=kwargs.pop("user")
+        user=kwargs.get("user")
         if self._state.adding: 	#Createing
             self.acreated_by = user
+            kwargs.pop("user")
         else:					#Updateing
             self.aupdated_by = user
+            kwargs.pop("user")
         super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
