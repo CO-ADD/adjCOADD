@@ -3,12 +3,13 @@
         <div class="d-flex flex-column">
 
             <a class="navbar-brand" href="{%url 'index'%}">
-                {%load static%}
+                <!-- {%load static%}
                 <img style="width: 100%" src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
-                    alt="CoADD Logo" /></a>
+                    alt="CoADD Logo" /> -->
+            </a>
             <ul class="navbar-nav justify-content-around">
                 <li class="nav-item">
-                    <a class="nav-link active" href="">home</a>
+                    <a class="nav-link active" href="{%url 'index'%}">home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="">contact</a>

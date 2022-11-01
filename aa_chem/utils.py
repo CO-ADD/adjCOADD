@@ -77,3 +77,33 @@ def querysetToChoiseList_Dictionaries(model_name, field_name):
         choices=(('--', 'empty'),)
     return choices
 
+
+
+#=====================================Search Engine 1===============================================================
+
+# def searchTaxo(req):
+#     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+#         res=None
+#         taxo=req.POST.get('inputtext')
+#         qs=Taxonomy.objects.filter(Organism_Name__istartswith=taxo)
+      
+#         if len(qs)>0 and len(taxo)>0:
+#             data=[]
+#             for i in qs:
+#                 if i.Class:
+#                     Class=i.Class.Dict_Value
+#                 else:
+#                     Class='noClass by Import or ...'
+                
+#                 item={
+#                     'name':i.Organism_Name,
+#                     'class': Class,
+#                 }
+#                 data.append(item)
+#             res=data
+#         else:
+#             res='No organism found...'
+        
+#         return JsonResponse({'data':res})
+#     return JsonResponse({})
+

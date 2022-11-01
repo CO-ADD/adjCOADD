@@ -6,23 +6,13 @@
   <div class="col-md-6 m-auto">
 
     <div class="card mt-3 text-left" width='300px'>
-      <h4 class="my-0">Create Organism</h4>
-
-      <!-- ================================================================================== -->
-      <div class="my-0">
-        <label>Organism Name | Class Name</label>
-        <form id="search-form" autocomplete="off">
-          {% csrf_token %}
-          <input type="text" id="search-input" placeholder="search Toxonomy" class="form-control">
-        </form>
-        <div id="results-box" class="results-card"></div>
-      </div>
+      {% include 'utils/searchbar_01.html' %}
       <!-- ===================================================================================== -->
       <hr>
       <form method="POST" class="post-form" name="create">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="text" id="taxo-name" name="Organism_Name" style="display: none;">
+        <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
         <label for="">Strain Type</label>
         <div class="dropdown">
           <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -48,90 +38,5 @@
 
   </div>
 </div>
-
-<script>
-  const delay_by_in_ms = 700
-  let scheduled_function = false
-  const searchForm = document.getElementById("search-form")
-  const searchInput = document.getElementById("search-input")
-  const resultsBox = document.getElementById("results-box")
-
-  const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value
-
-  const sendSearchData = (inputtext) => {
-    $.ajax({
-      type: 'POST',
-      url: '{%url "org_search"%}',
-      data: {
-        'csrfmiddlewaretoken': csrf,
-        'inputtext': inputtext,
-      },
-      success: (res) => {
-        console.log(res)
-        const data = res.data
-        resultsBox.classList.add('scrollbar')
-        if (Array.isArray(data) && searchInput.value.length > 0) {
-          resultsBox.classList.add("scrollbar")
-          for (var i = 0; i < data.length; i++) {
-            var block = document.createElement('button');
-            block.setAttribute('id', i);
-            block.setAttribute('class', 'resultslist');
-            block.innerText = data[i]['name'] + ' | ' + data[i]['class']
-            resultsBox.appendChild(block);
-            block.addEventListener('click', function () {
-              // alert(this.id)
-              let Texonomy = this.innerText.split(" | ")
-              console.log("working")
-              searchInput.value = Texonomy[0]
-              var setTaxo = document.getElementById("taxo-name")
-              setTaxo.value = Texonomy[0]
-
-              resultsBox.innerHTML = ""
-              resultsBox.classList.remove('scrollbar')
-            })
-
-          }
-
-
-        } else {
-          if (searchInput.value.length > 0) {
-            resultsBox.innerHTML = `<b>${data}</b>`
-          } else {
-            resultsBox.classList.add('not-visible')
-
-          }
-        }
-      },
-      error: (err) => {
-        console.log(err)
-      }
-
-    })
-  }
-
-  const myFunc = (val) => {
-    console.log(val)
-    searchInput.value = val
-    var setTaxo = document.getElementById("taxo-name")
-    setTaxo.value = val
-    resultsBox.innerHTML = ''
-
-  }
-  searchInput.addEventListener('keyup', e => {
-    resultsBox.innerHTML = ''
-    if (resultsBox.classList.contains('not-visible')) {
-      resultsBox.classList.remove('not-visible')
-    }
-    if (scheduled_function) {
-      clearTimeout(scheduled_function)
-    }
-
-    scheduled_function = setTimeout(function () { sendSearchData(e.target.value); }, delay_by_in_ms);
-    // sendSearchData(e.target.value)
-
-  })
-
-
-</script>
 
 {%endblock%}

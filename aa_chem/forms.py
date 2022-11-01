@@ -41,6 +41,7 @@ class CreateOrganism_form(ModelForm):
         
         self.fields['Organism_Name'].queryset=Organism
         print(f'Thisis from def get_object: {self.fields["Organism_Name"]}')
+        return self.fields['Organism_Name']
        
 
             
@@ -54,7 +55,11 @@ class UpdateOrganism_form(CreateOrganism_form):
     def clean_organismName(self, Organism_Name, original_class):
         print("start clean...")
         newOrganism=get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
-        newOrganism_class=newOrganism.Class.Dict_Value  
+        try:
+            newOrganism_class=newOrganism.Class.Dict_Value
+        except Exception as err:
+            print(err)
+            newOrganism_class=" "   
         print(newOrganism_class, original_class)
         if original_class != newOrganism_class:
             raise ValidationError("New Organism has different Class, which is not allowed!")

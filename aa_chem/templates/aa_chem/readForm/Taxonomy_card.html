@@ -58,9 +58,7 @@
 
           <div id="comps-taxo" class="col-md-3">
             <div class="card bg-transparent my-2 compounds">
-              {%load static%}
 
-              <img class="card-img m-auto" src="{%static 'images/'%}{{taxo.Organism_Name}}.svg" alt="Structure" />
               <p class="lead fs-4 m-auto"> ID: {{taxo.Division}}</p>
               <a href="{%url 'taxonomy_delete' taxo.Organism_Name %}">Delete</a>
               <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a>

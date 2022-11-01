@@ -125,6 +125,7 @@ DATABASES = {
         'NAME': 'multi_schema',
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD':os.environ.get('db_password', 'password'),
+       
         'HOST': 'Localhost',
         'PORT': '5432',
     },
@@ -132,6 +133,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'OPTIONS':{'options': '-c search_path=aa_chem,app'},
         'NAME': 'multi_schema',
+        'TEST': {
+            'NAME': 'mytestdatabase2',
+        },
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
@@ -141,6 +145,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'OPTIONS':{'options': '-c search_path=test_sch,app'},
         'NAME': 'multi_schema',
+        
         # 'USER': 'postgres', #os.environ.get('db_user'),
         # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',

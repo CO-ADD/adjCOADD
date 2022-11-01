@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="d-flex flex-row bg-light justify-content-between">
+<div class="d-flex flex-row bg-light justify-content-between vh-100">
     {%include "aa_chem/sidebar.html"%}
     <div class="main d-flex flex-column">
         <a href="{%url 'org_create'%}" style="float: right;"> Create New Org</a>
@@ -44,6 +44,7 @@
                                 <ul>
                                     <li>Created by: {{object.acreated_by}}</li>
                                     <li>Created at:{{object.acreated_at}}</li>
+                                    <li>Updated at: {{object.aupdated_by}}</li>
                                     <li>Updated at: {{object.aupdated_at}}</li>
                                 </ul>
                                 <p>

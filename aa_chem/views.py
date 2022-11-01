@@ -5,6 +5,7 @@ from rdkit import Chem
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db import transaction, IntegrityError
 # from django.forms import modelform_factory
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
@@ -114,15 +115,15 @@ def deleteTaxonomy(req, pk):
 # # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
 
 # ====================================================CREATE==========================================#
-    # =========================Step1. Ajax Call search Taxonomy(FK)=================#
+    # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
-def searchTaxo(req):
+def searchbar_01(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
         res=None
-        taxo=req.POST.get('inputtext')
-        qs=Taxonomy.objects.filter(Organism_Name__istartswith=taxo)
+        searchInput=req.POST.get('inputtext')
+        qs=Taxonomy.objects.filter(Organism_Name__istartswith=searchInput)
       
-        if len(qs)>0 and len(taxo)>0:
+        if len(qs)>0 and len(searchInput)>0:
             data=[]
             for i in qs:
                 if i.Class:
@@ -157,13 +158,19 @@ def createOrgnisms(req):
         try:
             if form.is_valid():
                 print("form is valid")  
-                Organism_Name=req.POST.get('Organism_Name')
+                Organism_Name=req.POST.get('searchbar_01')
                 Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
                 form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
-                instance.save(**kwargs)
-                print("saved")
-                return redirect("org_list")
+                try:
+                    with transaction.atomic():
+                        instance.save(**kwargs)
+                        print("saved")
+                        return redirect("org_list")
+
+                except IntegrityError as err:
+                        messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                        return redirect(req.META['HTTP_REFERER'])                
             else:
                 print(f'something wrong...{form.errors}')
                 return redirect(req.META['HTTP_REFERER'])      
@@ -185,12 +192,11 @@ def organismDetail(req, pk):
     return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
 
-
+# @transaction.atomic(using='drugs_db')
 def updateOrganism(req, pk):
     Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     original_Organism_Name=object_.Organism_Name
-    original_class=object_.Organism_Name.Class.Dict_Value
     form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
 
     kwargs={}
@@ -198,13 +204,17 @@ def updateOrganism(req, pk):
     #This can be minimized when all organism have classes... 
     if object_.Organism_Name.Class:
         Organism_Class=object_.Organism_Name.Class.Dict_Value
+        original_class=Organism_Class
     else:
         Organism_Class="No Class"
+        original_class="No Class"
 
     if req.method=='POST':
-        form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=object_)     
         try:
-            if form.is_valid():
+            with transaction.atomic(using='drugs_db'):
+                obj = Organisms.objects.select_for_update().get(Organism_ID=pk) 
+                form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=obj)     
+                if form.is_valid():               
                     # If Update Organism_Name============================                
                     if  req.POST.get('Organism_Name'):
                         Organism_Name=req.POST.get('Organism_Name')
@@ -212,15 +222,19 @@ def updateOrganism(req, pk):
                         form.clean_organismName(Organism_Name, original_class)
                         instance=form.save(commit=False)
                     else:
-                        form.clean_organismName(original_Organism_Name, original_class)
+                        form.get_object(original_Organism_Name)
                         instance=form.save(commit=False)
                         instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
+            
                     instance.save(**kwargs)
                     print('save updated')
-                    return redirect("org_list")
+                    return redirect("org_list")        
+                else:
+                    messages.warning(req, f"Form not Valid!{form.errors}")
+                    return redirect(req.META['HTTP_REFERER'])
         except Exception as err:
             messages.warning(req, err)
-            return redirect(req.META['HTTP_REFERER'])
+            return redirect(req.META['HTTP_REFERER']) 
     
     context={
         "form":form,

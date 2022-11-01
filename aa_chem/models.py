@@ -3,6 +3,7 @@ from sequences import Sequence
 from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
 from app.models import AuditModel, Dictionaries
+from django.db import transaction, IntegrityError
 
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------

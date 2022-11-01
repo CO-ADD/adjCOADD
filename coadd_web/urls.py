@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
-from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchTaxo, createOrgnisms, organismDetail,
+from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchbar_01, createOrgnisms, organismDetail,
                         updateOrganism, TaxoListView,TaxoCreate,TaxoUpdate,deleteTaxonomy, OrgListView, OrgCardView, deleteOrganism)
 
 urlpatterns = [
@@ -44,7 +44,7 @@ urlpatterns = [
     path('aa_chem/organism/<str:pk>', organismDetail, name="org_detail"),
     
 
-    path('aa_chem/searchOrg/', searchTaxo, name="org_search"),
+    path('aa_chem/searchbar_01/', searchbar_01, name="searchbar_01"),
     path('aa_chem/createOrg/', createOrgnisms, name="org_create"),
     path('aa_chem/createTaxo/', TaxoCreate, name="taxo_create"),
 

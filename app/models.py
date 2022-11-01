@@ -33,7 +33,7 @@ class ApplicationUser(AbstractUser):
       
 
     def __str__(self) -> str:
-        return f"{self.first_name}.{self.last_name} ({self.user_id})"
+        return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
 
 #-------------------------------------------------------------------------------------------------
@@ -64,16 +64,16 @@ class AuditModel(models.Model):
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
         print(f"deleted by {self.adeleted_by}")
-        self.save()
+        self.save(**kwargs)
 
     def save(self, *args, **kwargs):
         user=kwargs.get("user")
+        print(user)
         if self._state.adding: 	#Createing
             self.acreated_by = user
-            kwargs.pop("user")
         else:					#Updateing
             self.aupdated_by = user
-            kwargs.pop("user")
+        kwargs.pop("user")
         super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
@@ -82,14 +82,11 @@ class AuditModel(models.Model):
 #-------------------------------------------------------------------------------------------------
 class Dictionaries(AuditModel):
 #-------------------------------------------------------------------------------------------------
-
-
     
     Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class")
     Dict_Value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
    
-
     def __str__(self) -> str:
         return f"{self.Dict_Value}.{self.Dict_Desc}"
 
