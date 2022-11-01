@@ -9,8 +9,31 @@
 
     <p class="m-atuo">
 
+    <div id="{{Organism.Organism_ID}}">
+        <a class="btn btn-success btn-sm">Update</a>
+    </div>
 
-        <a href="{%url 'organism_update' Organism.Organism_ID %}">Update</a>
+    <div id="OrganismUpdateModal" class="modal fade" role="dialog">
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            btn = "#" + "{{Organism.Organism_ID}}"
+            let my_modal = $('#OrganismUpdateModal');
+            $(`${btn} a`).click(function () {
+                my_modal.load("{% url 'organism_update' Organism.Organism_ID %}", function () {
+                    my_modal.modal("show");
+                });
+            });
+        });
+
+    </script>
+
+
+
+
+
+    <a href="{%url 'organism_update' Organism.Organism_ID %}">Update</a>
     </p>
     <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
     <div class="card">

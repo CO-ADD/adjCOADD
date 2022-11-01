@@ -159,11 +159,13 @@ def createOrgnisms(req):
             if form.is_valid():
                 print("form is valid")  
                 Organism_Name=req.POST.get('searchbar_01')
+                print(f"request.Post.get {Organism_Name}")
                 Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
                 form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
                 try:
                     with transaction.atomic():
+                        instance.Organism_Name=Organism
                         instance.save(**kwargs)
                         print("saved")
                         return redirect("org_list")
@@ -216,8 +218,8 @@ def updateOrganism(req, pk):
                 form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=obj)     
                 if form.is_valid():               
                     # If Update Organism_Name============================                
-                    if  req.POST.get('Organism_Name'):
-                        Organism_Name=req.POST.get('Organism_Name')
+                    if  req.POST.get('searchbar_01'):
+                        Organism_Name=req.POST.get('searchbar_01')
                         print(f'http Request Organism_name is {Organism_Name}')  
                         form.clean_organismName(Organism_Name, original_class)
                         instance=form.save(commit=False)
@@ -238,7 +240,7 @@ def updateOrganism(req, pk):
     
     context={
         "form":form,
-        "Organism":object_.Organism_Name,
+        "Organism":object_,
         "Class":Organism_Class
     }
    
