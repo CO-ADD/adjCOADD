@@ -60,6 +60,7 @@ class AuditModel(models.Model):
         abstract = True
     
     def delete(self,**kwargs):
+        print('this is delete function from Audit model class')
         self.astatus = -9
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
@@ -67,6 +68,7 @@ class AuditModel(models.Model):
         self.save(**kwargs)
 
     def save(self, *args, **kwargs):
+        print('this is save function from Audit model class')
         user=kwargs.get("user")
         print(user)
         if self._state.adding: 	#Createing

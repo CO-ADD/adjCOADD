@@ -19,8 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
-from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, searchbar_01, createOrgnisms, organismDetail,
+from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, createOrgnisms, organismDetail,
                         updateOrganism, TaxoListView,TaxoCreate,TaxoUpdate,deleteTaxonomy, OrgListView, OrgCardView, deleteOrganism)
+from aa_chem.utils import searchbar_01
+import aa_chem.urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,27 +39,8 @@ urlpatterns = [
     path('app/dict/create', DictCreate, name='dict_create' ),
 
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
-    path('aa_chem/', home, name="compounds"),
-    path('aa_chem/taxo', TaxoListView.as_view(), name="taxo_list"),
-    path('aa_chem/taxoListview', TaxoListView.as_view(), name="taxo_list_view"),
-    path('aa_chem/organism_list', OrgListView.as_view(), name="org_list"),
-    path('aa_chem/organism_card', OrgCardView.as_view(), name="org_card"),
-    path('aa_chem/organism/<str:pk>', organismDetail, name="org_detail"),
-    
-
-    path('aa_chem/searchbar_01/', searchbar_01, name="searchbar_01"),
-    path('aa_chem/createOrg/', createOrgnisms, name="org_create"),
-    path('aa_chem/createTaxo/', TaxoCreate, name="taxo_create"),
-
-    path('aa_chem/taxo/<str:pk>', TaxoUpdate, name="taxo_update"),
-    path('aa_chem/updateOrg/<str:pk>', updateOrganism, name="organism_update"),
-
-    path('aa_chem/deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
-    path('aa_chem/deleteTaxo/<str:pk>', deleteTaxonomy, name="taxonomy_delete"),
-    #========================Data Export/Import===================================================================
-    path('aa_chem/exportData/', exportCSV, name="dataexport"),
-    path('aa_chem/import_Taxonomy/', import_excel_taxo, name="importTaxo"),
-    path('aa_chem/import_dictionary/', import_excel_dict, name="importDict"),
+    path('aa_chem/', include('aa_chem.urls')),
+   
 ]
 
 if settings.DEBUG:

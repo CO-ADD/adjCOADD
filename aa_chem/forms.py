@@ -59,15 +59,16 @@ class UpdateOrganism_form(CreateOrganism_form):
         try:
             newOrganism_class=newOrganism.Class.Dict_Value
         except Exception as err:
-            print(err)
+            print(f'{newOrganism,Organism_Name} has error: {err}')
             newOrganism_class=" "   
         print(newOrganism_class, original_class)
         if original_class != newOrganism_class:
             raise ValidationError("New Organism has different Class, which is not allowed!")
         
-        self.fields['Organism_Name']=newOrganism
+        else:
+            self.fields['Organism_Name']=newOrganism
         # print(self.fields['Organism_Name'])
-        # return self.fields['Organism_Name']
+            return self.fields['Organism_Name']
         
     
     class Meta:

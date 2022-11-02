@@ -37,6 +37,7 @@
 
         <div id="createTaxoModal" class="modal fade" role="dialog">
         </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script>
 
           $(document).ready(function () {
@@ -61,7 +62,7 @@
 
               <p class="lead fs-4 m-auto"> ID: {{taxo.Division}}</p>
               <a href="{%url 'taxonomy_delete' taxo.Organism_Name %}">Delete</a>
-              <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a>
+              <!-- <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a> -->
               <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
               <div id="{{taxo.Organism_Name}}">
                 <a class="card-link">Update</a>

@@ -129,6 +129,7 @@ class Organisms(AuditModel):
         return f"{self.Organism_ID} ({self.Strain_Code})"
 
     def save(self, *args, **kwargs):
+        print('this is save function from model class')
        
         if not self.Organism_ID: #Object does not exists
             try:

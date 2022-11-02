@@ -1,14 +1,15 @@
+import os
 from rdkit.Chem import Draw
 from rdkit import RDConfig
 from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
-
 from rdkit.Chem.Draw import IPythonConsole
 from IPython.display import SVG
 import cairosvg
 # import py3Dmol
-import os
-
+from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+from aa_chem.models import  Organisms, Taxonomy
+from django.http import JsonResponse
 
 # ======================================Util Func. (To SVG)=====================================================#
 def molecule_to_svg(mol, file_name, width=500, height=500):
@@ -79,31 +80,45 @@ def querysetToChoiseList_Dictionaries(model_name, field_name):
 
 
 
-#=====================================Search Engine 1===============================================================
+#=====================================Searchbar_01===============================================================
 
-# def searchTaxo(req):
-#     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
-#         res=None
-#         taxo=req.POST.get('inputtext')
-#         qs=Taxonomy.objects.filter(Organism_Name__istartswith=taxo)
+def searchbar_01(req):
+    if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+        res=None
+        searchInput=req.POST.get('inputtext')
+        qs=Taxonomy.objects.filter(Organism_Name__istartswith=searchInput)
       
-#         if len(qs)>0 and len(taxo)>0:
-#             data=[]
-#             for i in qs:
-#                 if i.Class:
-#                     Class=i.Class.Dict_Value
-#                 else:
-#                     Class='noClass by Import or ...'
+        if len(qs)>0 and len(searchInput)>0:
+            data=[]
+            for i in qs:
+                if i.Class:
+                    Class=i.Class.Dict_Value
+                else:
+                    Class='noClass by Import or ...'
                 
-#                 item={
-#                     'name':i.Organism_Name,
-#                     'class': Class,
-#                 }
-#                 data.append(item)
-#             res=data
-#         else:
-#             res='No organism found...'
+                item={
+                    'name':i.Organism_Name,
+                    'class': Class,
+                }
+                data.append(item)
+            res=data
+        else:
+            res='No organism found...'
         
-#         return JsonResponse({'data':res})
-#     return JsonResponse({})
+        return JsonResponse({'data':res})
+    return JsonResponse({})
 
+
+#==================================searchbar_02======================================
+def searchbar_02(req, model, model_field):
+    variable_column=model_field
+    search_type='contains'
+    filter_search=variable_column+'__'+search_type
+    if req.method=='POST':
+        search =req.POST.get('search')
+        field=req.POST.get('field')
+        if field==model_field:
+            result=model.objects.filter(astatus__gte=0, **{filter_search:search})
+    else:
+        result=model.objects.filter(astatus__gte=0)
+    return result

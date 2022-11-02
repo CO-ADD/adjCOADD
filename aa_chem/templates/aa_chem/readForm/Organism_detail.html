@@ -13,9 +13,10 @@
         <a class="btn btn-success btn-sm">Update</a>
     </div>
 
-    <div id="OrganismUpdateModal" class="modal fade" role="dialog">
+    <div id="OrganismUpdateModal" class="modal fade " role="dialog">
     </div>
     <script>
+        // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
 
         $(document).ready(function () {
             btn = "#" + "{{Organism.Organism_ID}}"
@@ -25,15 +26,22 @@
                     my_modal.modal("show");
                 });
             });
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("formErrors", true);
+                $('#OrganismUpdateModal').modal('show');
+            }
         });
 
     </script>
+    <!-- <th:block th:if="${formErrors}">
+        <script>
+            $(document).ready(function () {
+                $('#OrganismUpdateModal').modal('show');
+            })
+        </script>
+    </th:block> -->
 
-
-
-
-
-    <a href="{%url 'organism_update' Organism.Organism_ID %}">Update</a>
     </p>
     <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
     <div class="card">

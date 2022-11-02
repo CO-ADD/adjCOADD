@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from aa_chem.models import  Organisms, Taxonomy
-from aa_chem.utils import  querysetToChoiseList_Dictionaries
+from aa_chem.utils import  querysetToChoiseList_Dictionaries, searchbar_02
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # from coadd_web.settings import Strain_Type_choices
@@ -24,19 +24,15 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # Taxonomy Card View in Chem Homepage===============Read=================================================
+
+
+
 @login_required
 def home(req): 
-   
-    # search function
-    if req.method=='POST':
-        search =req.POST.get('search')
-        field=req.POST.get('field')
-        if field=='Organism_Name':
-            result=Taxonomy.objects.filter(astatus__gte=0, Organism_Name__contains=search)
-    else:
-        result=Taxonomy.objects.filter(astatus__gte=0)
-        
-    objects=result
+    req=req
+    model=Taxonomy
+    model_field='Organism_Name'   
+    objects=searchbar_02(req, model, model_field)
     p=Paginator(objects, 24)
     pag_num = req.GET.get('page')
     pag_obj=p.get_page(pag_num)
@@ -57,9 +53,7 @@ class TaxoListView(ListView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.filter(astatus__gte=0)
-        objects=[object_ for object_ in context["objects"]]
-        p=Paginator(objects, 24)        
+        context["objects"]=self.model.objects.filter(astatus__gte=0)      
         return context
 
 # ====================================================Create===========================================
@@ -95,7 +89,7 @@ def TaxoUpdate(req, pk):
             return redirect("/")
         else:
             print(form.errors)
-    return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form})
+    return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
 # @user_passes_test(lambda u: u.is_superuser)
@@ -212,30 +206,37 @@ def updateOrganism(req, pk):
         original_class="No Class"
 
     if req.method=='POST':
+        
         try:
             with transaction.atomic(using='drugs_db'):
                 obj = Organisms.objects.select_for_update().get(Organism_ID=pk) 
                 form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=obj)     
+                if  req.POST.get('searchbar_01'):
+                    Organism_Name=req.POST.get('searchbar_01')
+                    print(f'http Request Organism_name is {Organism_Name}')
+
+                    form.clean_organismName(Organism_Name, original_class)
+                   
+                else:
+                    form.get_object(original_Organism_Name)
+                        
                 if form.is_valid():               
-                    # If Update Organism_Name============================                
-                    if  req.POST.get('searchbar_01'):
-                        Organism_Name=req.POST.get('searchbar_01')
-                        print(f'http Request Organism_name is {Organism_Name}')  
-                        form.clean_organismName(Organism_Name, original_class)
-                        instance=form.save(commit=False)
-                    else:
-                        form.get_object(original_Organism_Name)
-                        instance=form.save(commit=False)
-                        instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
-            
+                    # If Update Organism_Name============================   
+                    print("form is valid")             
+                    instance=form.save(commit=False)
+                    instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
+              
                     instance.save(**kwargs)
                     print('save updated')
-                    return redirect("org_list")        
+                    return redirect("org_list")
+                   
+                        # return redirect(req.META['HTTP_REFERER'])
+
                 else:
                     messages.warning(req, f"Form not Valid!{form.errors}")
-                    return redirect(req.META['HTTP_REFERER'])
+                   
         except Exception as err:
-            messages.warning(req, err)
+            messages.warning(req, f'{err} is the exception error')
             return redirect(req.META['HTTP_REFERER']) 
     
     context={
