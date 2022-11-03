@@ -1,258 +1,365 @@
-import re
-import csv
 import os
-from os.path import exists
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from django.core.paginator import Paginator
-from django.core import management
-from django.shortcuts import HttpResponse, render, redirect
-from django_rdkit.models import * 
-from aa_chem.models import Drugbank,Taxonomy, Organisms
-from app.models import Dictionaries
 from rdkit import Chem
-from rdkit.Chem.Draw import IPythonConsole
-from rdkit.Chem import Draw
-from rdkit import RDConfig
-from rdkit.Chem import rdDepictor
-from rdkit.Chem.Draw import rdMolDraw2D
-from IPython.display import SVG
-import cairosvg
-import py3Dmol
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic import ListView
+from django_filters.views import FilterView
+
+# from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import transaction, IntegrityError
+# from django.forms import modelform_factory
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
-from .forms import CreateNewOrgForm
-from model_utils import Choices
-from django.forms import modelform_factory
-# ======================================Util Func. (To SVG)=====================================================#
-
-def molecule_to_svg(mol, file_name, width=500, height=500):
-    """Save substance structure as Png"""
-
-    # Define full path name
-    full_path = f"static/images/{file_name}.svg"
-
-    # Render high resolution molecule
-    drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
-    drawer.DrawMolecule(mol)
-    drawer.FinishDrawing()
-
-    # Export to png
-    cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
-
-# =======================================Taxo View=============================================================================#
-
-# Create your views here.
-@login_required
-def home(req):
-    for filename in os.listdir("static/images"):
-                file_path=os.path.join("static/images", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
-    # search function
-    if req.method=='POST':
-        search =req.POST.get('search')
-        field=req.POST.get('field')
-        if field=='Organism_Name':
-            result=Taxonomy.objects.filter(Organism_Name__contains=search)
-        # elif field=='status':
-        #     result=Taxonomy.objects.filter(status__contains=search)
-        # else:
-        #     result=Taxonomy.objects.filter(drug_id__contains=search)
-        #     print(result)
-    else:
-        result=Taxonomy.objects.all()
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic.detail import DetailView
+from django.views.generic import ListView
+from aa_chem.models import  Organisms, Taxonomy
+from aa_chem.utils import  querysetToChoiseList_Dictionaries, searchbar_02, MySearchbar02, MySearchbar03
+from app.models import Dictionaries
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
+# from coadd_web.settings import Strain_Type_choices
 
 
-    # objects_all=Taxonomy.objects.all()
-    objects_all=result
-    p=Paginator(objects_all, 24)
-    page_number = req.GET.get('page')
-    page_obj=p.get_page(page_number)
-    for object_ in page_obj:
-       
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
 
-        # if object_.id%2==0:
-        m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-        # else:
-            # m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-        molecule_to_svg(m, object_.Organism_Name)
-            
- 
 
-   
+# # =======================================Taxonomy Read Create Update Delete View=============================================================================#
+
+# Taxonomy Card View in Chem Homepage===============Read=================================================
+def get_objects(req, model, model_field):
+    req=req
+    model=model
+    model_field=model_field 
+    objects=searchbar_02(req, model, model_field)
+    p=Paginator(objects, 24)
+    pag_num = req.GET.get('page')
+    pag_obj=p.get_page(pag_num)
+    
     context={
-        'page_obj':page_obj,
-        'chose':Taxonomy.Choice_Dictionaries   
-       
+        'pag_obj':pag_obj,       
     }
-  
+    return context    
+
+
+
+@login_required
+def home(req): 
+    context={}
+    search_filter=MySearchbar02(req.GET, queryset=Taxonomy.objects.all())
+    context['filter']=search_filter
+    p=Paginator(search_filter.qs, 24)
+    page_num=req.GET.get('page')
+    page_obj=p.get_page(page_num)
+
+    context['page_obj']=page_obj
     return render(req, 'aa_chem/chem.html', context)
 
+
+# ==========List View================================Read===========================================
 class TaxoListView(ListView):
     model=Taxonomy
     paginate_by = 24
     fields='__all__'
-    template_name = 'aa_chem/taxoListview.html'
-
-    def get_context_data(self, **kwargs):
-        for filename in os.listdir("static/images"):
-                file_path=os.path.join("static/images", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
-
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        objects_all=[object_ for object_ in context["objects"]]
-        p=Paginator(objects_all, 24)
-        
-        for object_ in p.get_page(self.request.GET.get('page')):
-       
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
-
-            # if object_.id%2==0:
-            m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-            # else:
-                # m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-            molecule_to_svg(m, object_.Organism_Name)
-            
-        return context
-
-
-
-class TaxoCreateView(CreateView):
-    model=Taxonomy
-    fields='__all__'
-    template_name = 'aa_chem/taxoCreate.html'
-    success_url = reverse_lazy('compounds')
+    template_name = 'aa_chem/readForm/Taxonomy_list.html'
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-    
-        context["objects"]=self.model.objects.all()
+        context["objects"]=self.model.objects.filter(astatus__gte=0)      
         return context
 
-class TaxoUpdateView(UpdateView):
-    model=Taxonomy
-    fields='__all__'
-    template_name = 'aa_chem/taxoUpdate.html'
-    success_url = reverse_lazy('compounds')
-
-# ===============================================================OrgView==============================================#
-# class OrgCreateView(CreateView):
-#     model=Organisms
-#     form_class=CreateNewOrgForm
-#     template_name = 'aa_chem/orgCreate2.html'
-#     success_url = reverse_lazy('compounds')
-OrgForm=modelform_factory(Organisms, exclude=["Strain_Type"])
-def newOrgnisms(req):
-    org_strain=Dictionaries.objects.filter(Dictionary_ID='Units_Concentration')
-    strains=str(org_strain[0])
-    strain_test=strains.split(" ")[0].split(',')
-    print(strain_test)
-    a=strain_test[0]
-    b=strain_test[0]
-    c=strain_test[0]
-
+# ====================================================Create===========================================
+def TaxoCreate(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Taxonomy_form
     if req.method=='POST':
-        form=OrgForm(req.POST)
-        strain=req.POST.get('strain')
+        form=Taxonomy_form(req.POST)
+        if form.is_valid():
+            print("form is valid")   
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            print("saved")
+            return redirect("/")
+        else:
+            print(form.errors)
+    return render(req, 'aa_chem/createForm/Taxonomy.html', {'form':form})
+    
+# ====================================================Update===========================================
+def TaxoUpdate(req, pk):
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Taxonomy_form(instance=object_)
+    if req.method=='POST':
+        form=Taxonomy_form(req.POST, instance=object_)
+        if form.is_valid():
+            print("form is valid")   
+            instance=form.save(commit=False)        
+            instance.save(**kwargs)
+            print("saved")
+            return redirect("/")
+        else:
+            print(form.errors)
+    return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form, 'object':object_})
+
+# ====================================================Delete===========================================
+# @user_passes_test(lambda u: u.is_superuser)
+def deleteTaxonomy(req, pk):
+    kwargs={}
+    kwargs['user']=req.user 
+    print('deleting view')
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    try:
+        print(object_.Organism_Name)
+        object_.delete(**kwargs)
+        print("deleted")
+    except Exception as err:
+        print(err)
+    return redirect("/")
+
+# # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
+
+# ====================================================CREATE==========================================#
+    # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
+
+    #  ===================refer to utils.py function searchbar_01==========================================
+
+    # =============================step 2. Create new record by form===================#
+def createOrgnisms(req):
+    '''
+    Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
+    '''
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) # 
+    kwargs={}
+    kwargs['user']=req.user 
+    if req.method=='POST':
+        form=CreateOrganism_form(Strain_Type_choices,  req.POST,)
+        Strain_Type_list=req.POST.getlist('Strain_Type')
+        
         try:
-            print('iam trying')
             if form.is_valid():
-                instance=form.save()
-                # instance.save()
-                instance.Strain_Type=str(strain)
-                instance.save(update_fields=['Strain_Type'])
-                print('saved!')
-                return redirect("/")
-        except Exception as err:
-            print(err)
-    else:
-        form=OrgForm()
-    return render(req, 'aa_chem/orgCreate2.html', {'form':form, 'a':a, 'b':b, 'c':c})
-
-
-class OrgListView(ListView):
-    model=Organisms
-    paginate_by = 24
-    fields='__all__'
-    template_name = 'aa_chem/orgList.html'
-    
-    def get_context_data(self, **kwargs):
-        for filename in os.listdir("static/images"):
-                file_path=os.path.join("static/images", filename)
+                print("form is valid")  
+                Organism_Name=req.POST.get('searchbar_01')
+                print(f"request.Post.get {Organism_Name}")
+                Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+                form.get_object(Organism_Name) 
+                instance=form.save(commit=False)
+                print(f'instance.Organism_Name is {instance.Organism_Name} ')
                 try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
+                    with transaction.atomic():
+                        instance.Organism_Name=Organism
+                        instance.save(**kwargs)
+                        print("saved")
+                        return redirect("org_list")
 
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        objects_all=[object_ for object_ in context["objects"]]
-        p=Paginator(objects_all, 24)
-        
-        for object_ in p.get_page(self.request.GET.get('page')):
-       
-            # if exists(f"static/images/{object_.id}.png"):
-            #     print("file exists")
-            #     return context
-            # else:
-
-            if object_.id%2==0:
-                m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
+                except IntegrityError as err:
+                        messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                        return redirect(req.META['HTTP_REFERER'])                
             else:
-                m=Chem.MolFromSmiles('CCCC[C@@H]1NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]cn2)NC(=O)[C@H](N)Cc2ccccc2)C(C)C)CCC(=O)NCCCC[C@@H](C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](C)C(=O)N[C@@H](Cc2c[nH]cn2)C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@H](C(=O)N[C@H](C(=O)C(N)=O)[C@@H](C)CC)[C@@H](C)CC)NC(=O)[C@H](C)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](C)NC1=O')
-            molecule_to_svg(m, object_.id)
-            
-        return context
+                print(f'something wrong...{form.errors}')
+                return redirect(req.META['HTTP_REFERER'])      
+        except Exception as err:
+            print(f'error is {form.errors} with {err}')
+            return redirect(req.META['HTTP_REFERER'])
 
-class OrgTableView(OrgListView):
-  
-    template_name = 'aa_chem/orgTable.html'
-
-   
-
-
-
-# ==============================Function View===========================================================#
+    else:
+        form=CreateOrganism_form(Strain_Type_choices,)
+ 
+    return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, 'Strain_Type':Strain_Type_choices})
 
 
-# @staff_member_required
-# @user_passes_test(lambda u: u.is_staff)
-@permission_required('app.change_groupfilter')
-# @login_required
-def importCSV(req):  
+#===============================================================Organism detail========================================================================================
+
+def detailOrganism(req, pk):
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    context={'Organism': object_}
+    return render(req, "aa_chem/readForm/Organism_detail.html", context)
+
+#======================================================================Update Organism=================================================================================
+
+# @transaction.atomic(using='drugs_db')
+def updateOrganism(req, pk):
+    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    original_Organism_Name=object_.Organism_Name
+    
+
+    kwargs={}
+    kwargs['user']=req.user
+    #This can be minimized when all organism have classes... 
+    if object_.Organism_Name.Class:
+        Organism_Class=object_.Organism_Name.Class.Dict_Value
+        original_class=Organism_Class
+    else:
+        Organism_Class="No Class"
+        original_class="No Class"
 
     if req.method=='POST':
+        
         try:
-            fdata=[req.POST.get('fdata'),]
-            management.call_command('processCsvmultiple', fpath=fdata)
-            print("done!")
-            print(req.body)
-        except Exception as err:
-            print(err)
-   
-    return redirect(req.META['HTTP_REFERER'])
+            with transaction.atomic(using='drugs_db'):
+                obj = Organisms.objects.select_for_update().get(Organism_ID=pk) 
+                form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=obj)     
+                if  req.POST.get('searchbar_01'):
+                    Organism_Name=req.POST.get('searchbar_01')
+                    print(f'http Request Organism_name is {Organism_Name}')
 
+                    form.clean_organismName(Organism_Name, original_class)
+                   
+                else:
+                    form.get_object(original_Organism_Name)
+                        
+                if form.is_valid():               
+                    # If Update Organism_Name============================   
+                    print("form is valid")             
+                    instance=form.save(commit=False)
+                    instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
+              
+                    instance.save(**kwargs)
+                    print('save updated')
+                   
+                    return redirect(req.META['HTTP_REFERER'])
+
+                else:
+                    messages.warning(req, f"Form not Valid!{form.errors}")
+                    return HttpResponse(status=204)
+                   
+        except Exception as err:
+            messages.warning(req, f'{err} is the exception error')
+            return redirect(req.META['HTTP_REFERER']) 
     
-# @user_passes_test(lambda u: u.is_admin)
-@permission_required('importdata')
+
+    else:
+        form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+
+    context={
+        "form":form,
+        "Organism":object_,
+        "Class":Organism_Class
+    }
+   
+    return render(req, "aa_chem/updateForm/Organism.html", context)
+
+# ==============================Delete  ===============================================================
+# @user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
+def deleteOrganism(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    try:      
+        object_.delete(**kwargs)
+        print("deleted")
+    except Exception as err:
+        print(err)
+    return redirect("/")
+    
+
+# ==============================List View ===============================================================
+class OrganismListView(ListView):
+    model=Organisms  
+    template_name = 'aa_chem/readForm/Organism_list.html' 
+    paginate_by=3
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
+        return context
+
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        return MySearchbar03(self.request.GET, queryset=queryset).qs
+
+class OrganismCardView(ListView):
+    model=Organisms   
+    template_name = 'aa_chem/readForm/Organism_card.html'
+    paginate_by=3
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
+        return context
+
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        return MySearchbar03(self.request.GET, queryset=queryset).qs
+
+  
+# # ==============================Import Excel files===========================================================#
+import pandas as pd
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+def import_excel_taxo(req):
+    print('importing....')
+    try:
+        if req.method=='POST' and req.FILES['myfile']:
+            myfile=req.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            uploaded_file_url=fs.url(filename)
+            excel_file=uploaded_file_url
+            print(excel_file)
+            exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
+            print(type(exmpexceldata))
+            dbframe=exmpexceldata
+            for dbframe in dbframe.itertuples():
+                class_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
+                if class_fkey:
+                    class_fkey=class_fkey[0]
+                else:
+                    class_fkey=None
+                print(class_fkey)
+                division_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.DIVISION)
+                if division_fkey:
+                    division_fkey=division_fkey[0]
+                else:
+                    division_fkey=None
+                linea=str(dbframe.LINEAGE).split(";")
+                print(division_fkey)
+                # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
+                try:
+                    obj, created=Taxonomy.objects.get_or_create(Organism_Name=dbframe.ORGANISM_NAME, Other_Names=dbframe.ORGANISM_NAME_OTHER, Code=dbframe.ORGANISM_CODE, 
+                        Class=class_fkey, Tax_ID=dbframe.TAX_ID, Parent_Tax_ID=dbframe.PARENT_TAX_ID, 
+                        Tax_Rank=dbframe.TAX_RANK, Division=division_fkey, Lineage=linea
+                        )
+                except Exception as err:
+                    print(err)
+                # obj.save()
+            
+            return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
+    except Exception as err:
+        print(err)
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {})
+#=======================================================================================================
+
+def import_excel_dict(req):
+    print('importing....')
+    try:
+        if req.method=='POST' and req.FILES['myfile']:
+            myfile=req.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            uploaded_file_url=fs.url(filename)
+            excel_file=uploaded_file_url
+            print(excel_file)
+            exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
+            print(type(exmpexceldata))
+            dbframe=exmpexceldata
+            for dbframe in dbframe.itertuples():
+                print("iam here")             
+                # int_order=int(0+dbframe.Dict_View_Order)
+                # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
+                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name)
+                print(type(obj))
+                # obj.save()
+            
+            return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
+    except Exception as err:
+        print(err)
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {})
+
+#======================================================Export Data Views Function==================================================#  
+# # @user_passes_test(lambda u: u.is_admin)
+# @permission_required('importdata')
 def exportCSV(req):
     response=HttpResponse(content_type='text/csv')
    

@@ -1,17 +1,18 @@
 
 from django import forms
-from .models import  ApplicationUser
+from .models import  ApplicationUser, Dictionaries
 
 
-class GroupCreate(forms.ModelForm):
+class ApplicationUser_form(forms.ModelForm):
     class Meta:
-        model = ApplicationUser
-       
-        fields='__all__'
-        widgets = {
-            'text': forms.TextInput(attrs={
-                'id': 'post-text', 
-                'required': True, 
-                'placeholder': 'Say something...'
-            }),
-        }
+        model = ApplicationUser      
+        fields= ['user_id', 'permissions', 'is_appuser']
+        
+
+
+# #=======================================Dictionary Form===========================================================
+class Dictionary_form(forms.ModelForm):
+
+    class Meta:
+        model=Dictionaries
+        fields="__all__"

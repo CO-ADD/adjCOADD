@@ -1,0 +1,48 @@
+<div id="sidebar" class="text-secondary" style="overflow: scroll">
+    <hr />
+    <h4 id="item-1">Search</h4>
+    <form method="get" class="form-group mx-5">
+        {{filter.form.as_p}}
+        <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Filter" />
+    </form>
+
+    <hr />
+    <form class="text-dark" action="#" method="POST">
+        {%csrf_token%}
+        <label class="form-label mt-3">Import .sdf file by enter full file path
+            multiple files seperated directly by ","</label>
+        <input class="form-control-sm" name="fdata" type="text" disabled />
+        <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Import..."
+            disabled />
+    </form>
+    <hr />
+
+
+
+
+
+    <p>...</p>
+</div>
+<div id="resizer"></div>
+
+<script>
+    const resizer = document.querySelector("#resizer");
+    const sidebar = document.querySelector("#sidebar");
+
+    resizer.addEventListener("mousedown", (event) => {
+        document.addEventListener("mousemove", resize, false);
+        document.addEventListener(
+            "mouseup",
+            () => {
+                document.removeEventListener("mousemove", resize, false);
+            },
+            false
+        );
+    });
+
+    function resize(e) {
+        var sdsize = Math.min(800, e.x);
+        const size = `${sdsize}px`;
+        sidebar.style.flexBasis = size;
+    }
+</script>

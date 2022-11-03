@@ -41,15 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-   
+    'django.contrib.staticfiles',   
     'django_rdkit',
+    'django_filters',
     "sequences.apps.SequencesConfig",
-    'app',
-    'aa_chem',
-    'test_sch',
-
- 
+    'app.apps.AppConfig',
+    'aa_chem.apps.AaChemConfig',
+    'test_sch.apps.TestSchConfig',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +65,10 @@ ROOT_URLCONF = 'coadd_web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'templates'],
+        'DIRS': [
+            BASE_DIR/'templates',
+        #    BASE_DIR/,
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,16 +88,7 @@ WSGI_APPLICATION = 'coadd_web.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     # 'OPTIONS':{'options': '-c search_path=public'},
-    #     'NAME': 'postgres',
-    #     'USER': 'J.Zhong', #os.environ.get('db_user'),
-    #     'PASSWORD':'J.Zhong',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-
+    
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -130,32 +122,38 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'OPTIONS':{'options': '-c search_path=app,public'},
-        'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD':os.environ.get('db_password', 'password'),
+        'OPTIONS':{'options': '-c search_path=app'},
+        'NAME': 'multi_schema',
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD':os.environ.get('db_password', 'password'),
+       
         'HOST': 'Localhost',
         'PORT': '5432',
     },
     'drugs_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=aa_chem,public'},
-        'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD': os.environ.get('db_password','password'),
+        'OPTIONS':{'options': '-c search_path=aa_chem,app'},
+        'NAME': 'multi_schema',
+        'TEST': {
+            'NAME': 'mytestdatabase2',
+        },
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
         'PORT': '5432',
     },
       'test_sch': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=test_sch,public'},
-        'NAME': 'orgdb',
-        'USER': 'tester', #os.environ.get('db_user'),
-        'PASSWORD': os.environ.get('db_password','password'),
+        'OPTIONS':{'options': '-c search_path=test_sch,app'},
+        'NAME': 'multi_schema',
+        
+        # 'USER': 'postgres', #os.environ.get('db_user'),
+        # 'PASSWORD': os.environ.get('db_password','password'),
         'HOST': 'Localhost',
         'PORT': '5432',
     }
 
+   
 
 
 }
@@ -202,6 +200,7 @@ STATICFILES_DIRS=[BASE_DIR/"static",]
 
 AUTH_USER_MODEL = 'app.ApplicationUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
@@ -253,3 +252,10 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "department": "ou",
 
 }
+
+
+# ===============================================================
+# from aa_chem.models import Organisms
+# from app.models import Dictionaries
+# from aa_chem.utils import querysetToChoiseList_Dictionaries 
+Strain_Type_choices=(("a", "testa"),("b","testb"),("c", "testc"))#querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])

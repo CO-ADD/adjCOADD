@@ -1,0 +1,19 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="row vh-100">
+      <div class="card mx-5 mt-3">
+        <h4 class="my-0">Update Organism: {{object.Organism_Name}}</h4>
+        <hr>
+        <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
+          action="{%url 'taxo_update' object.Organism_Name %}">
+          {% csrf_token %}
+          {{form.as_p}}
+          <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
+
+        </form>
+        <a href="{% url 'taxo_list_view' %}">cancel</a>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="col-md-8 vh-80 m-auto">
+
+
+    <p class="m-atuo">
+
+    <div id="{{Organism.Organism_ID}}">
+        <a class="btn btn-success btn-sm">Update</a>
+    </div>
+
+    <div id="OrganismUpdateModal" class="modal fade " role="dialog">
+    </div>
+    <script>
+        // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
+
+        $(document).ready(function () {
+            btn = "#" + "{{Organism.Organism_ID}}"
+            let my_modal = $('#OrganismUpdateModal');
+            $(`${btn} a`).click(function () {
+                my_modal.load("{% url 'organism_update' Organism.Organism_ID %}", function () {
+                    my_modal.modal("show");
+                });
+            });
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("formErrors", true);
+                $('#OrganismUpdateModal').modal('show');
+            }
+        });
+
+    </script>
+    <!-- <th:block th:if="${formErrors}">
+        <script>
+            $(document).ready(function () {
+                $('#OrganismUpdateModal').modal('show');
+            })
+        </script>
+    </th:block> -->
+
+    </p>
+    <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
+    <div class="card">
+
+        <div class="card-header">
+            Organism Taxonomy {{Organism.Organism_Name}}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Organism Name</th>
+                            <th scope="col">{{Organism.Organism_Name}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"> Organism Class</th>
+                            <td> empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Code</th>
+                            <td>empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Strain_Type</th>
+                            <td colspan="2">{{Organism.Strain_Type}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Organism Name</th>
+                            <th scope="col">{{Organism.Organism_Name}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"> Organism Class</th>
+                            <td> empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Code</th>
+                            <td>empty</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Organism Name other</th>
+                            <td colspan="2">empty</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

@@ -18,35 +18,26 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreateView
-from aa_chem import views
+from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
+import aa_chem.urls
+
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path('compounds/', views.home, name="compounds"),
-    path('usermanagement/', AppUserListView.as_view(), name="usermanage"),
-    path('usermanagement_create/', AppUserCreateView.as_view(), name="createAppUser"),
-    path('usermanagement_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
-    path('usermanagement_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
-    path('userslist/', AppUserListView.as_view(), name="userslist"),
-    
-    path('dict/', DictionariesView.as_view(), name='dict_view' ),
-    path('dict/create', DictCreateView.as_view(), name='dict_create' ),
-    path('accounts/', include('django.contrib.auth.urls')),
-  
-    path('importData/', views.importCSV, name="dataimport"),
-    path('exportData/', views.exportCSV, name="dataexport"),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('user-profile/<int:id>/', userprofile, name='userprofile'),
-    path('compounds/createTaxo', views.TaxoCreateView.as_view(), name="taxo_create"),
-    path('compounds/createOrg', views.newOrgnisms, name="org_create"),
-    path('compounds/organism', views.OrgListView.as_view(), name="org_list"),
-    path('compounds/taxo', views.TaxoListView.as_view(), name="taxo_list"),
-    path('compounds/taxoListview', views.TaxoListView.as_view(), name="taxo_list_view"),
-    path('compounds/orgTable', views.OrgTableView.as_view(), name="org_table"),
-    path('compounds/taxo/<str:Organism_Name>', views.TaxoUpdateView.as_view(), name="taxo_update"),
-    
+
+    #========================appusers URL==========================================================================
+    path('accounts/', include('django.contrib.auth.urls')),  
+    path('app/user_list/', AppUserListView.as_view(), name="userslist"),
+    path('app/user_create/', AppUserCreateView.as_view(), name="createAppUser"),
+    path('app/user_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
+    path('app/user_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
+    path('app/dict/', DictionariesView.as_view(), name='dict_view' ),
+    path('app/dict/create', DictCreate, name='dict_create' ),
+
+    #========================OrgDB model views URL====View, Create, Updata, Delete=================================
+    path('aa_chem/', include('aa_chem.urls')),
+   
 ]
 
 if settings.DEBUG:

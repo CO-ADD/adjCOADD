@@ -37,8 +37,7 @@ Install all the following packages in the conda environment.
 1. conda install -c conda-forge django
 2. prerequistion for python-ldap
 3. pip install python-ldap
-4. pip install django-ldap(remove)
-   pip install django-auth-ldap
+4. pip install django-auth-ldap
 5. pip install rdkit-pypi
 6. pip install git+https://github.com/rdkit/django-rdkit.git
 7. sudo apt-get install postgresql postgresql-contrib
@@ -50,7 +49,21 @@ Install all the following packages in the conda environment.
    pip install ipython  
    pip install CairoSVG
 
+10. django-sequences 2.7
+
+11. pip install django-model-utils
+
+
 ### Module Introduction
+#### Project and Applications:
+project name: coadd_web contains  project setting, developing&deploying needed files and urls for all urls.
+Applications:
+1. aa_chem--for all chemical componds model
+   contains:...
+2. app-- for utility service and users model
+   contains:...
+
+ 
 
 (used techniques, connections, codes etc..)
 
@@ -60,9 +73,9 @@ Authentication backend authenticates against an LDAP service.
 To realize this include 3 steps:
 
 1. configuration in settings.py :
-2. customize django build-in User Model
-3. import signals to sub-app. Building signal model assign user to designed groups with groups' permissions
-4. create a group management model, which only superusers are able to modify.
+2. customize django build-in AbstractUser Model to Applicationuser Model 
+3. import signals to sub-app. Building signal model to assign user with permissions(appuser, read, write, admin )
+4. superusers are able to modify users and permissions
 
 #### Data visualization
 

@@ -10,12 +10,14 @@
    (s)fixed it by installing libXrender:
 
    sudo apt-get install libxrender1
+   
+   or install Cairo / GTK (or both)
 
 3. (i)Recommanded steps for multi schemas migrate:
 
    (s)
    step 1 run `manage.py migrate <yourapp> --database <wanted database name>`
-   step 2 run `manage.py migrate` (can be delete, after switch app to public schema!!!)
+   step 2 run `manage.py migrate` (can be deleted, after switch app to public schema!!!)
 
 4. (i)Error: migrations.exceptions.InvalidBasesError...This can happen if you are inheriting ....
 
@@ -35,15 +37,53 @@
    (i) creating new org takes long time (200k Taxo Foreign Key)
 
    (i) test remote server DB
-
-
-   (i) audit model including Foreign key User in aa_chem app result in migrating User models to the same schema
-       plan: using django entry_log. create a new app for audit purpose
-
-   (i) sequence short name 
-
-   (i) double check indexes setting, in django db_index
+   (i) templates in the individual apps
+   (i) choice: value with explain text upon choosing, after choosing only pich up value. refer OrgDB input. 
 
 7. Error: (fields.E304) Reverse accessor'Group.user_set' for 'app.ApplicationUser.groups' clashes Reverse accessor clashes with reverse accessor for 'app.User.groups' 
 Hint: add or change a related_name argument to the definition for 'app.ApplicationUser.groups' or 'app.User.groups'.
 (Error happens during inherite class and with foreignkey)
+
+
+8. (i) Cannot DELETE or UPDATE with on_delete=models.DO_NOTHING
+   (s) Change to PROTECT
+
+#### on_delete for Foreignkey change to on_delete=models.PROTECT.
+CASCADE
+Cascade emulates the SQL constraint of ON DELETE CASCADE. Whenever the referenced object (post) is deleted, the objects referencing it (comments) are deleted as well. 
+
+PROTECT argument of the ForeignKey on_delete option prevents the referenced object from being deleted if it already has an object referencing it in the database. Put simply, Django will prevent a post from deletion if it already has comments. we tried deleting this POST that already has a comment, it will raise PROTECTEDERROR, remove the comment firstly then remove the post.
+
+SET_NULL argument of the ForeignKey on_delete option is only available to you when you have set the null option on the ForeignKey field to True. When you use this argument, and, in our case, delete a post, it is going to leave the comments in the database without deleting it.
+
+SET_DEFAULT
+This argument on the ForeignKey on_delete option requires you to set a default value when defining the relationship. When you delete a post that has comments, the comments are automatically assigned to a default post you had set when creating the model.
+
+DO_NOTHING
+As the name implies, it does nothing when a referenced object is deleted. This is essentially discouraged because it defeats the purpose of an RDBMS. <b> HERE I CANNOT DELETE OR UPDATE any recorder!</b>
+
+9. (i)Difficulty in AuditModel to retrieve logged or request user information
+(s) in the view funtion: create, update and delete to set the value, e.g. instance.acreate_by=request.user 
+
+10. (i) exception: python manage.py runserver exception in thread django-main-thread typeerror issubclass() arg 1 must be a class app_config_class
+     (s) settings.py - installed_Apps=[...'app',...] change to [...'app.apps.AppConfig',...]
+
+11. using dictionary type parameter **kwargs to pass information req.user to Audit Model def save(...) failed...alternatively used regular function argument.
+<b>reason ...not found </b> 
+failed Tests are listed in the following:
+```
+.save({'user':request.user}) #or user={'user':request.user,} then .save(**user)
+
+```
+in class view or in the form view
+```
+def get(self, request, *args, **kwargs):
+    form=self.form_class(initial=self.initial)
+    kwargs['user']=request.user
+    return render(request, self.template_name, {'form':form} )
+
+def __init__() or def save()...
+```
+(s) user={'user':request.user,} is placed before if condition code block, then .save(**user). This way works.
+
+

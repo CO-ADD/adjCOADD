@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django import forms
+from django.utils import timezone
+import logging
 # Create your models here.
 
 
@@ -12,26 +14,26 @@ from django import forms
 class ApplicationUser(AbstractUser):
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
-    title_name = models.CharField(max_length=15, blank=True)        # Dr
-    # firstname = models.CharField(max_length=50, blank=True)        # Johannes
-    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg
-    short_name = models.CharField(max_length=55, blank=True)        # J.Zuegg
-    initials = models.CharField(max_length=5, blank=True)           # JZG
-    organisation = models.CharField(max_length=250, blank=True)     # University of Queensland
-    department = models.CharField(max_length=250, blank=True)       # Institute for Molecular Bioscience
-    group = models.CharField(max_length=50, blank=True,)             # Blaskovich
-    phone = models.CharField(max_length=25, blank=True)             # +61 7 344 62994
-    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au
-    permissions = models.CharField(max_length=250, blank=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
-    session_id = models.CharField(max_length=250, blank=True)       # not sure if Django has SessionID's
+    title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
+    # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
+    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
+    short_name = models.CharField(max_length=55, blank=True, null=True)        # J.Zuegg
+    initials = models.CharField(max_length=5, blank=True, null=True)           # JZG
+    organisation = models.CharField(max_length=250, blank=True, null=True)     # University of Queensland
+    department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
+    group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
+    phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
+    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au    this field existed in AbstractUser
+    permissions = models.CharField(max_length=250, blank=True, null=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
+    session_id = models.CharField(max_length=250, blank=True, null=True)       # not sure if Django has SessionID's
     is_appuser=models.BooleanField(default=True)
 
     class Meta:
         db_table = 'applicationuser'
-        # permissions = (('update', 'change data'),)
+      
 
     def __str__(self) -> str:
-        return f"{self.first_name}.{self.last_name} ({self.user_id})"
+        return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
 
 #-------------------------------------------------------------------------------------------------
@@ -58,21 +60,53 @@ class AuditModel(models.Model):
         abstract = True
     
     def delete(self,**kwargs):
+        print('this is delete function from Audit model class')
         self.astatus = -9
         self.adeleted_at = timezone.now()
         self.adeleted_by = kwargs.get("user")
-        self.save(updated_fields = ['adeleted_at','adeleted_by','astatus'])
-    
+        print(f"deleted by {self.adeleted_by}")
+        self.save(**kwargs)
+
     def save(self, *args, **kwargs):
-        user = kwargs.get("user")
-        if self.pk: #Object already exists
-            self.aupdated_by = user
-        else:
+        print('this is save function from Audit model class')
+        user=kwargs.get("user")
+        print(user)
+        if self._state.adding: 	#Createing
             self.acreated_by = user
-        super(AuditModel,self).save(*args, **kwargs)
+        else:					#Updateing
+            self.aupdated_by = user
+        kwargs.pop("user")
+        super().save(*args, **kwargs)
+
+#-------------------------------------------------------------------------------------------------
 
 
 #-------------------------------------------------------------------------------------------------
+class Dictionaries(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    
+    Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class")
+    Dict_Value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
+    Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
+   
+    def __str__(self) -> str:
+        return f"{self.Dict_Value}.{self.Dict_Desc}"
+
+
+#-------------------------------------------------------------------------------------------------
+class ApplicationLog(models.Model):
+#-------------------------------------------------------------------------------------------------
+    log_code = models.CharField(max_length=15, blank=True, editable=False)
+    log_proc = models.CharField(max_length=50, blank=True, editable=False)
+    log_type = models.CharField(max_length=15, blank=True, editable=False)
+    log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
+    log_user = models.ForeignKey(ApplicationUser, editable=False, on_delete=models.DO_NOTHING)
+    log_object = models.CharField(max_length=15, blank=True, editable=False)
+    log_desc = models.CharField(max_length=1024, blank=True, editable=False)
+    log_status = models.CharField(max_length=15, blank=True, editable=False)
+
+
+#=========================Not used...==============
 class ChoiceArrayField(ArrayField):
     """
     A field that allows us to store an array of choices.
@@ -93,41 +127,5 @@ class ChoiceArrayField(ArrayField):
             'choices': self.base_field.choices,
         }
         defaults.update(kwargs)
-        # Skip our parent's formfield implementation completely as we don't
-        # care for it.
-        # pylint:disable=bad-super-call
+  
         return super(ArrayField, self).formfield(**defaults)
-
-
-#-------------------------------------------------------------------------------------------------
-class Dictionaries(AuditModel):
-#-------------------------------------------------------------------------------------------------
-
-
-    Dictionary_ID = models.CharField(max_length=30, db_index=True, verbose_name = "Dictionary", )
-    Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class", )
-    Dict_Value = ArrayField(models.CharField(max_length=150, null=True, blank=True,),  default=list, blank=True)  #models.CharField(max_length=50, verbose_name = "Value",  )
-    Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
-    Dict_Value_Type = models.CharField(max_length=20, verbose_name = "Type")
-    Dict_View_Order = models.IntegerField(verbose_name = "View Order", null=True)
-
-    def __str__(self) -> str:
-        return f"{self.Dict_Value}"
-
-
-
-
-
-
-#-------------------------------------------------------------------------------------------------
-class ApplicationLog(models.Model):
-#-------------------------------------------------------------------------------------------------
-    log_code = models.CharField(max_length=15, blank=True, editable=False)
-    log_proc = models.CharField(max_length=50, blank=True, editable=False)
-    log_type = models.CharField(max_length=15, blank=True, editable=False)
-    log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
-    log_user = models.ForeignKey(ApplicationUser, editable=False, on_delete=models.DO_NOTHING)
-    log_object = models.CharField(max_length=15, blank=True, editable=False)
-    log_desc = models.CharField(max_length=1024, blank=True, editable=False)
-    log_status = models.CharField(max_length=15, blank=True, editable=False)
-

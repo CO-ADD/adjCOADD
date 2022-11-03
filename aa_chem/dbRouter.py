@@ -1,4 +1,4 @@
-from .models import Drugbank, Taxonomy, Genes, Organisms#, Dictionaries
+from .models import Drugbank, Taxonomy, Genes, Organisms #, Dictionaries
 
 Route_list=[Drugbank,Taxonomy, Genes, Organisms]#, Dictionaries
 class DrugsRouter:
