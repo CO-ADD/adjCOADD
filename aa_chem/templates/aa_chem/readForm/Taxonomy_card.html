@@ -10,24 +10,7 @@
     <div id="tab_basic" class="tab-pane active">
       <div id="body">
 
-
-        <div class="pagination" style="float:right">
-          <span class="step-links">
-            {% if pag_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current">
-              Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
-            </span>
-
-            {% if pag_obj.has_next %}
-            <a href="?page={{ pag_obj.next_page_number }}">next</a>
-            <a href='#' onclick="showLoaderOnClick('{{pag_obj.paginator.num_pages}}')">last &raquo;</a>
-            {% endif %}
-          </span>
-        </div>
+        {% include 'utils/pagination.html'%}
         <div id="createTaxo">
 
           <a class="btn m-auto">Create New Taxo
@@ -55,7 +38,7 @@
         </script>
         <a id="taxo-list" href="#">List View</a>
         <div class="row d-flex flex-wrap">
-          {% for taxo in pag_obj %}
+          {% for taxo in page_obj %}
 
           <div id="comps-taxo" class="col-md-3">
             <div class="card bg-transparent my-2 compounds">
@@ -146,56 +129,39 @@
 
         </div>
         <hr>
-        <div class="pagination">
-          <span class="step-links">
-            {% if pag_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
-            {% endif %}
+        {% include 'utils/pagination.html'%}
+        <div id="tab_images" class="tab-pane active">
 
-            <span class="current">
-              Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
-            </span>
-
-            {% if pag_obj.has_next %}
-            <a href="?page={{ pag_obj.next_page_number }}">next</a>
-            <a href="?page={{ pag_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-          </span>
         </div>
-      </div>
-      <div id="tab_images" class="tab-pane active">
 
       </div>
+      <script>
+        //the reason for the odd-looking selector is to listen for the click event
+        // on links that don't even exist yet - i.e. are loaded from the server.
+        $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
+          e.preventDefault();
+          var url = $(this).attr("data-url");
+
+          if (typeof url !== "undefined") {
+            var pane = $(this), href = this.hash;
+
+            // ajax load from data-url
+            $(href).load(url, function (result) {
+              pane.tab('show');
+            });
+          } else {
+            $(this).tab('show');
+          }
+        });
+      </script>
 
     </div>
     <script>
-      //the reason for the odd-looking selector is to listen for the click event
-      // on links that don't even exist yet - i.e. are loaded from the server.
-      $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
-        e.preventDefault();
-        var url = $(this).attr("data-url");
-
-        if (typeof url !== "undefined") {
-          var pane = $(this), href = this.hash;
-
-          // ajax load from data-url
-          $(href).load(url, function (result) {
-            pane.tab('show');
-          });
-        } else {
-          $(this).tab('show');
-        }
-      });
+      function showLoaderOnClick(url) {
+        showLoader();
+        window.location = url;
+      }
+      function showLoader() {
+        $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+      }
     </script>
-
-  </div>
-  <script>
-    function showLoaderOnClick(url) {
-      showLoader();
-      window.location = url;
-    }
-    function showLoader() {
-      $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
-    }
-  </script>

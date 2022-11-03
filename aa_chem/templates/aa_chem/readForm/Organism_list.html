@@ -41,12 +41,15 @@
             <div class="tab-content">
                 <div id="tab_basic" class="tab-pane active">
 
-
+                    <form method="GET" action="" id="searchform">
+                        <input class="searchfield" id="searchbox" name="q" type="text" value="{{ request.GET.q }}"
+                            placeholder="Search..." />
+                    </form>
 
                     <h2>Organism</h2>
 
                     <div class="row d-flex flex-wrap all_comp">
-                        {% for object in pag_obj %}
+                        {% for object in object_list %}
 
                         <div class="col-md-12 compounds">
                             <div class="card bg-transparent my-2 flex-row">
@@ -100,9 +103,9 @@
                         {%endfor%}
 
 
+                        {% include 'utils/pagination.html'%}
                     </div>
                     <hr>
-                    {% include 'utils/pagination.html'%}
 
 
                 </div>
@@ -114,7 +117,7 @@
                 //the reason for the odd-looking selector is to listen for the click event
                 // on links that don't even exist yet - i.e. are loaded from the server.
                 $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
-                    e.preventDefault();
+                    // e.preventDefault();
                     var url = $(this).attr("data-url");
 
                     if (typeof url !== "undefined") {

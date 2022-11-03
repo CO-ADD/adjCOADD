@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.urls import reverse_lazy, reverse
-from .forms import CreateApplicationUser_form, Dictionary_form
+from .forms import ApplicationUser_form, Dictionary_form
 from django.contrib.auth import logout
 from django.contrib.auth.models import Permission
 # Create your views here.
@@ -62,8 +62,7 @@ class AppUserListView(LoginRequiredMixin, ListView):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    # fields='__all__'
-    form_class=CreateApplicationUser_form
+    fields=['user_id', 'permissions', 'is_appuser']
     template_name = 'app/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
@@ -75,7 +74,7 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
 
 class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
-    fields='__all__'
+    fields=['user_id', 'permissions', 'is_appuser']
     template_name = 'app/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
 

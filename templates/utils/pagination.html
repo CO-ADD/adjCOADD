@@ -1,17 +1,21 @@
 <div class="pagination">
     <span class="step-links">
-        {% if pag_obj.has_previous %}
+        {% if page_obj.has_previous %}
         <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
+        <a
+            href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
         </span>
 
-        {% if pag_obj.has_next %}
-        <a href="?page={{ pag_obj.next_page_number }}">next</a>
-        <a href="?page={{ pag_obj.paginator.num_pages }}">last &raquo;</a>
+        {% if page_obj.has_next %}
+        <a
+            href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">next</a>
+        <a
+            href="?page={{ page_obj.paginator.num_pages }}{% for key,value in request.GET.items %}{% ifnotequal key 'page' %}&{{ key }}={{ value }}{% endifnotequal %}{% endfor %}">last
+            &raquo;</a>
         {% endif %}
     </span>
 </div>

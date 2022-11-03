@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',   
     'django_rdkit',
+    'django_filters',
     "sequences.apps.SequencesConfig",
     'app.apps.AppConfig',
     'aa_chem.apps.AaChemConfig',

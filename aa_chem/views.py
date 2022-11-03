@@ -1,10 +1,11 @@
 import os
 from rdkit import Chem
+from django_filters.views import FilterView
 
 # from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib import messages
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
 # from django.forms import modelform_factory
 from django.http import JsonResponse
@@ -14,24 +15,21 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from aa_chem.models import  Organisms, Taxonomy
-from aa_chem.utils import  querysetToChoiseList_Dictionaries, searchbar_02
+from aa_chem.utils import  querysetToChoiseList_Dictionaries, searchbar_02, MySearchbar02, MySearchbar03
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # from coadd_web.settings import Strain_Type_choices
 
 
 
+
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # Taxonomy Card View in Chem Homepage===============Read=================================================
-
-
-
-@login_required
-def home(req): 
+def get_objects(req, model, model_field):
     req=req
-    model=Taxonomy
-    model_field='Organism_Name'   
+    model=model
+    model_field=model_field 
     objects=searchbar_02(req, model, model_field)
     p=Paginator(objects, 24)
     pag_num = req.GET.get('page')
@@ -40,7 +38,20 @@ def home(req):
     context={
         'pag_obj':pag_obj,       
     }
-  
+    return context    
+
+
+
+@login_required
+def home(req): 
+    context={}
+    search_filter=MySearchbar02(req.GET, queryset=Taxonomy.objects.all())
+    context['filter']=search_filter
+    p=Paginator(search_filter.qs, 24)
+    page_num=req.GET.get('page')
+    page_obj=p.get_page(page_num)
+
+    context['page_obj']=page_obj
     return render(req, 'aa_chem/chem.html', context)
 
 
@@ -111,31 +122,7 @@ def deleteTaxonomy(req, pk):
 # ====================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
-def searchbar_01(req):
-    if req.headers.get('x-requested-with') == 'XMLHttpRequest':
-        res=None
-        searchInput=req.POST.get('inputtext')
-        qs=Taxonomy.objects.filter(Organism_Name__istartswith=searchInput)
-      
-        if len(qs)>0 and len(searchInput)>0:
-            data=[]
-            for i in qs:
-                if i.Class:
-                    Class=i.Class.Dict_Value
-                else:
-                    Class='noClass by Import or ...'
-                
-                item={
-                    'name':i.Organism_Name,
-                    'class': Class,
-                }
-                data.append(item)
-            res=data
-        else:
-            res='No organism found...'
-        
-        return JsonResponse({'data':res})
-    return JsonResponse({})
+    #  ===================refer to utils.py function searchbar_01==========================================
 
     # =============================step 2. Create new record by form===================#
 def createOrgnisms(req):
@@ -157,6 +144,7 @@ def createOrgnisms(req):
                 Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
                 form.get_object(Organism_Name) 
                 instance=form.save(commit=False)
+                print(f'instance.Organism_Name is {instance.Organism_Name} ')
                 try:
                     with transaction.atomic():
                         instance.Organism_Name=Organism
@@ -180,20 +168,21 @@ def createOrgnisms(req):
     return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, 'Strain_Type':Strain_Type_choices})
 
 
-#=======================================================================================================================================================
+#===============================================================Organism detail========================================================================================
 
-def organismDetail(req, pk):
+def detailOrganism(req, pk):
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     context={'Organism': object_}
     return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
+#======================================================================Update Organism=================================================================================
 
 # @transaction.atomic(using='drugs_db')
 def updateOrganism(req, pk):
     Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     original_Organism_Name=object_.Organism_Name
-    form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+    
 
     kwargs={}
     kwargs['user']=req.user
@@ -228,17 +217,21 @@ def updateOrganism(req, pk):
               
                     instance.save(**kwargs)
                     print('save updated')
-                    return redirect("org_list")
                    
-                        # return redirect(req.META['HTTP_REFERER'])
+                    return redirect(req.META['HTTP_REFERER'])
 
                 else:
                     messages.warning(req, f"Form not Valid!{form.errors}")
+                    return HttpResponse(status=204)
                    
         except Exception as err:
             messages.warning(req, f'{err} is the exception error')
             return redirect(req.META['HTTP_REFERER']) 
     
+
+    else:
+        form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+
     context={
         "form":form,
         "Organism":object_,
@@ -247,7 +240,7 @@ def updateOrganism(req, pk):
    
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
-
+# ==============================Delete  ===============================================================
 # @user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
 def deleteOrganism(req, pk):
     kwargs={}
@@ -262,29 +255,32 @@ def deleteOrganism(req, pk):
     
 
 # ==============================List View ===============================================================
-class OrgListView(ListView):
-    model=Organisms
-    fields='__all__'
-    template_name = 'aa_chem/readForm/Organism_list.html'
-    
-    def get_context_data(self, **kwargs):
+class OrganismListView(ListView):
+    model=Organisms  
+    template_name = 'aa_chem/readForm/Organism_list.html' 
+    paginate_by=3
 
+    def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.filter(astatus__gte=0)  # will set astatus filter
-        
-        objects=[object_ for object_ in context["objects"]]
-        
-        p=Paginator(objects, 24)
-        pag_num = self.request.GET.get('page')
-        pag_obj=p.get_page(pag_num)
-        context["objects"]  = objects
-        context["pag_obj"]=pag_obj
-        
+        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
         return context
 
-class OrgCardView(OrgListView):
-  
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        return MySearchbar03(self.request.GET, queryset=queryset).qs
+
+class OrganismCardView(ListView):
+    model=Organisms   
     template_name = 'aa_chem/readForm/Organism_card.html'
+    paginate_by=3
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
+        return context
+
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        return MySearchbar03(self.request.GET, queryset=queryset).qs
 
   
 # # ==============================Import Excel files===========================================================#

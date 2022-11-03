@@ -1,7 +1,7 @@
 <h2>Organism Table</h2>
 <div class="contain-fluid">
   <div class="row d-flex flex-wrap">
-    {% for object in pag_obj %}
+    {% for object in page_obj %}
 
     <div class="col-md-4 vh-80">
       <div class="card bg-transparent my-2">
@@ -30,21 +30,5 @@
     {%endfor%}
   </div>
   <hr />
-  <div class="pagination">
-    <span class="step-links">
-      {% if pag_obj.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-      <a href="?page={{ pag_obj.previous_page_number }}">previous</a>
-      {% endif %}
-
-      <span class="current">
-        Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}.
-      </span>
-
-      {% if pag_obj.has_next %}
-      <a href="?page={{ pag_obj.next_page_number }}">next</a>
-      <a href="?page={{ pag_obj.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-    </span>
-  </div>
+  {% include 'utils/pagination.html'%}
 </div>

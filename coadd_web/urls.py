@@ -19,9 +19,6 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
-from aa_chem.views import  (home, exportCSV, import_excel_taxo,import_excel_dict, createOrgnisms, organismDetail,
-                        updateOrganism, TaxoListView,TaxoCreate,TaxoUpdate,deleteTaxonomy, OrgListView, OrgCardView, deleteOrganism)
-from aa_chem.utils import searchbar_01
 import aa_chem.urls
 
 

@@ -1,4 +1,5 @@
 import os
+import django_filters
 from rdkit.Chem import Draw
 from rdkit import RDConfig
 from rdkit.Chem import rdDepictor
@@ -8,8 +9,11 @@ from IPython.display import SVG
 import cairosvg
 # import py3Dmol
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from aa_chem.models import  Organisms, Taxonomy
 from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from aa_chem.models import  Organisms, Taxonomy
+
 
 # ======================================Util Func. (To SVG)=====================================================#
 def molecule_to_svg(mol, file_name, width=500, height=500):
@@ -114,11 +118,39 @@ def searchbar_02(req, model, model_field):
     variable_column=model_field
     search_type='contains'
     filter_search=variable_column+'__'+search_type
+    # gt=None
     if req.method=='POST':
-        search =req.POST.get('search')
+        qs =req.POST.get('search')
+        # gt=qs.strip()
         field=req.POST.get('field')
         if field==model_field:
-            result=model.objects.filter(astatus__gte=0, **{filter_search:search})
+            result=model.objects.filter(astatus__gte=0, **{filter_search:qs})
+        
     else:
         result=model.objects.filter(astatus__gte=0)
+    
     return result
+
+
+
+
+
+class MySearchbar02(django_filters.FilterSet):
+    Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model=Taxonomy
+        fields=['Organism_Name']
+
+    @property
+    def qs(self):
+        parent = super().qs
+
+        return parent.filter(astatus__gte=0)
+
+
+class MySearchbar03(MySearchbar02):
+    Organism_Name = django_filters.CharFilter(field_name='Organism_Name__Organism_Name', lookup_expr='icontains')
+    class Meta:
+        model=Organisms
+        fields=[]
+

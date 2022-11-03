@@ -258,3 +258,9 @@ footer {
 .notdisplay {
   display: none;
 }
+
+#id_Strain_Type {
+  display: block;
+  height: 200px !important;
+  overflow: scroll;
+}

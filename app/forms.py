@@ -3,7 +3,7 @@ from django import forms
 from .models import  ApplicationUser, Dictionaries
 
 
-class CreateApplicationUser_form(forms.ModelForm):
+class ApplicationUser_form(forms.ModelForm):
     class Meta:
         model = ApplicationUser      
         fields= ['user_id', 'permissions', 'is_appuser']

@@ -28,6 +28,7 @@ class CreateOrganism_form(ModelForm):
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         self.strainTypeChoices= Strain_Type_choices
         self.fields['Strain_Type'].widget = forms.CheckboxSelectMultiple(choices=self.strainTypeChoices)
+        self.fields['Strain_Type'].widget.attrs.update({'class': 'special'})
         self.fields['Oxygen_Pref'].choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Oxygen_Pref'])
         self.fields['Risk_Group'].choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Risk_Group'])
         self.fields['Pathogen_Group'].choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Pathogen_Group'])
@@ -36,15 +37,23 @@ class CreateOrganism_form(ModelForm):
         
     
     def get_object(self, Organism_Name):
-        Organism =Taxonomy.objects.filter(Organism_Name=Organism_Name) #get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+        Organism =get_object_or_404(Taxonomy, Organism_Name=Organism_Name) #Taxonomy.objects.filter(Organism_Name=Organism_Name) #
         # print(Organism.Class.Dict_Value)
         
-        self.fields['Organism_Name'].queryset=Organism
+        self.fields['Organism_Name']=Organism
         print(f'Thisis from def get_object: {self.fields["Organism_Name"]}')
-        print(self.fields['Organism_Name'].queryset)
-        # return self.fields['Organism_Name']
+        # print(self.fields['Organism_Name'].queryset)
+        return self.fields['Organism_Name']
        
-
+    # def save(self, Organism_Name):
+    #     data=self.cleaned_data
+    #     Organism =Taxonomy.objects.filter(Organism_Name=Organism_Name) #get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
+    #     # print(Organism.Class.Dict_Value)
+        
+    #     self.fields['Organism_Name']=Organism[0]
+    #     print(f'Thisis from def get_object: {self.fields["Organism_Name"]}')
+    #     instance=Organism(Organism_Name=data['Organism_Name'])
+    #     instance.save(commit=False)
             
     class Meta:
         model=Organisms
