@@ -3,6 +3,7 @@ from .models import ApplicationUser, Dictionaries
 from aa_chem.models import Drugbank, Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.admin.views.decorators import staff_member_required
@@ -19,8 +20,6 @@ from django.contrib.auth.models import Permission
 # def my_view(request): 
 
 def index(req):
-    
-    objects= Taxonomy.objects.all()
     if req.user.is_authenticated:
 
         user=ApplicationUser.objects.get(username=req.user.username)
@@ -29,8 +28,9 @@ def index(req):
         if user.is_appuser==False:
             logout(req)
             user.delete()
+            messages.warning(req, 'User not authorized, please contact Admin!')
             return redirect("/")
-    return render(req, 'aa_chem/home.html', {'objects': objects})
+    return render(req, 'aa_chem/home.html')
 
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
@@ -78,6 +78,20 @@ class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     template_name = 'app/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
 
+    def form_valid(self, form):
+
+        if form.instance.permissions=='staff':
+            form.instance.is_staff=True
+            
+        if form.instance.permissions=='admin':
+            form.instance.is_staff=True
+            form.instance.is_superuser=True
+        
+        return super().form_valid(form)
+
+       
+
+
 class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
     model=ApplicationUser
     template_name='app/appUsersDel.html'
@@ -85,7 +99,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
 
 
 
-class DictionariesView(ListView):
+class DictionariesView(LoginRequiredMixin, ListView):
     model=Dictionaries
     fields="__all__"
     template_name='app/dictList.html'
@@ -98,6 +112,7 @@ class DictionariesView(ListView):
        
         return context
 
+@login_required
 def DictCreate(req):
     form=Dictionary_form()
     if req.method=='POST':
