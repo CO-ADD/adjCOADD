@@ -39,6 +39,7 @@
 
             </ul>
             <div class="tab-content">
+
                 <div id="tab_basic" class="tab-pane active">
 
                     <form method="GET" action="" id="searchform">
@@ -103,7 +104,7 @@
                         {%endfor%}
 
 
-                        {% include 'utils/pagination.html'%}
+
                     </div>
                     <hr>
 
@@ -112,12 +113,12 @@
                 <div id="tab_images" class="tab-pane active"></div>
 
             </div>
-
+            {% include 'utils/pagination.html'%}
             <script>
                 //the reason for the odd-looking selector is to listen for the click event
                 // on links that don't even exist yet - i.e. are loaded from the server.
                 $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
-                    // e.preventDefault();
+                    e.preventDefault();
                     var url = $(this).attr("data-url");
 
                     if (typeof url !== "undefined") {

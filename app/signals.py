@@ -16,26 +16,29 @@ def ldap_auth_handler(user, ldap_user, **kwargs):
     user_is_admin=False
     user_is_appuser=True
 
-    # user.save()
     print("it starts")
-    appuser= ApplicationUser.objects.filter(user_id=user.username)
-    print (appuser)
-    if appuser:
+    if ApplicationUser.objects.filter(user_id=user.username):
+        print("it start....")
+        appuser=ApplicationUser.objects.filter(user_id=user.username)[0]
+        print((ApplicationUser.objects.filter(user_id=user.username)))
+        
         try:
             if appuser.permissions=='staff':
                 user_is_staff=True
-                user_permissions=='staff'
+                print(user_is_staff)
+                user.permissions=='staff'
             elif appuser.permissions=='admin':
                 user_is_staff=True
-                user_is_admin=True
+                user_is_superuser=True
             else:
                 user_is_staff=False
-                user_is_admin=False           
+                user_is_superuser=False           
                
         except Exception as err:
             print (err)
   
     else:
+        print("Not Appuser")
         user_is_appuser=False
     
     # user.save()
@@ -50,6 +53,7 @@ def ldap_auth_handler(user, ldap_user, **kwargs):
         print(err)
     print(f'{user.username} is appuser {user.is_appuser}')
     
+    user.save()
     return    
 
 

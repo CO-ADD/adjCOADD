@@ -1,167 +1,189 @@
-<li><a href="{%url 'importTaxo'%}">import Taxonomy</a></li>
-<div id="tabs">
-  <ul class="nav nav-tabs" id="prodTabs">
-    <li class="active"><a href="#tab_basic">Tableoview</a></li>
-    <br>
-    <li><a href="#tab_images" data-url="{%url 'taxo_list_view'%}">Listview</a></li>
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
 
-  </ul>
-  <div class="tab-content">
-    <div id="tab_basic" class="tab-pane active">
-      <div id="body">
+<div class="position-relative w-100 bg-transparent">
+  <div class="row bg-transparent">
+    <h1>Screening data</h1>
+  </div>
+  <div class="d-flex flex-row bg-light justify-content-between">
+    {%include "utils/sidebar.html"%}
+    <div class="main d-flex flex-column">
+      <li><a href="{%url 'importTaxo'%}">import Taxonomy</a></li>
+      <div id="tabs">
+        <ul class="nav nav-tabs" id="prodTabs">
+          <li class="active"><a href="#tab_basic">Tableoview</a></li>
+          <br>
+          <li><a href="#tab_images" data-url="{%url 'taxo_list'%}">Listview</a></li>
 
-        {% include 'utils/pagination.html'%}
-        <div id="createTaxo">
+        </ul>
+        <div class="tab-content">
+          <div id="tab_basic" class="tab-pane active">
+            <div id="body">
 
-          <a class="btn m-auto">Create New Taxo
-            <i class="bi bi-plus"></i>
-          </a>
-        </div>
+              {% include 'utils/pagination.html'%}
+              <div id="createTaxo">
 
-        <div id="createTaxoModal" class="modal fade" role="dialog">
-        </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script>
-
-          $(document).ready(function () {
-
-            let my_modal = $("#createTaxoModal");
-
-            $("#createTaxo a").click(function () {
-              my_modal.load("{%url 'taxo_create'%}", function () {
-                my_modal.modal("show"); // Open Modal
-
-              });
-            });
-          });
-
-        </script>
-        <a id="taxo-list" href="#">List View</a>
-        <div class="row d-flex flex-wrap">
-          {% for taxo in page_obj %}
-
-          <div id="comps-taxo" class="col-md-3">
-            <div class="card bg-transparent my-2 compounds">
-
-              <p class="lead fs-4 m-auto"> ID: {{taxo.Division}}</p>
-              <a href="{%url 'taxonomy_delete' taxo.Organism_Name %}">Delete</a>
-              <!-- <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a> -->
-              <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
-              <div id="{{taxo.Organism_Name}}">
-                <a class="card-link">Update</a>
+                <a class="btn m-auto">Create New Taxo
+                  <i class="bi bi-plus"></i>
+                </a>
               </div>
 
-              <div id="taxoUpdateModal" class="modal fade" role="dialog">
+              <div id="createTaxoModal" class="modal fade" role="dialog">
               </div>
+              <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
               <script>
 
                 $(document).ready(function () {
 
-                  btn = "#" + "{{taxo.Organism_Name}}"
-                  let my_modal = $('#taxoUpdateModal');
+                  let my_modal = $("#createTaxoModal");
 
-                  console.log(btn)
-                  $(`${btn} a`).click(function () {
+                  $("#createTaxo a").click(function () {
+                    my_modal.load("{%url 'taxo_create'%}", function () {
+                      my_modal.modal("show"); // Open Modal
 
-                    my_modal.load("{% url 'taxo_update' taxo.Organism_Name %}", function () {
-                      my_modal.modal("show");
                     });
                   });
                 });
 
               </script>
+              <a id="taxo-list" href="#">List View</a>
+              <div class="row d-flex flex-wrap">
+                {% for taxo in page_obj %}
+
+                <div id="comps-taxo" class="col-md-3">
+                  <div class="card bg-transparent my-2 compounds">
+
+                    <p class="lead fs-4 m-auto"> ID: {{taxo.Division}}</p>
+                    <a href="{%url 'taxonomy_delete' taxo.Organism_Name %}">Delete</a>
+                    <!-- <a href="{%url 'taxo_update' taxo.Organism_Name %}">Update</a> -->
+                    <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.Organism_Name}}</h5>
+                    <div id="{{taxo.Organism_Name}}">
+                      <a class="card-link">Update</a>
+                    </div>
+
+                    <div id="taxoUpdateModal" class="modal fade" role="dialog">
+                    </div>
+                    <script>
+
+                      $(document).ready(function () {
+
+                        btn = "#" + "{{taxo.Organism_Name}}"
+                        let my_modal = $('#taxoUpdateModal');
+
+                        console.log(btn)
+                        $(`${btn} a`).click(function () {
+
+                          my_modal.load("{% url 'taxo_update' taxo.Organism_Name %}", function () {
+                            my_modal.modal("show");
+                          });
+                        });
+                      });
+
+                    </script>
 
 
-              <p>
-              <div class="text-center" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse{{taxo.Organism_Name}}" aria-expanded="false"
-                aria-controls="{{taxo.Organism_Name}}">
-                <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
-              </div>
+                    <p>
+                    <div class="text-center" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse{{taxo.Organism_Name}}" aria-expanded="false"
+                      aria-controls="{{taxo.Organism_Name}}">
+                      <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+                    </div>
 
-              </p>
-              <div class="collapse" id="collapse{{taxo.Organism_Name}}">
+                    </p>
+                    <div class="collapse" id="collapse{{taxo.Organism_Name}}">
 
-                <div class="card-body d-flex flex-column align-items-start">
+                      <div class="card-body d-flex flex-column align-items-start">
 
-                  <p class="lead fs-5 text-dark">Tax_ID: {{taxo.Tax_ID}}}</p>
-                  <p class="fw-bold lead fs-5 text-success">
-                    {{taxo.Lineage}}
+                        <p class="lead fs-5 text-dark">Tax_ID: {{taxo.Tax_ID}}}</p>
+                        <p class="fw-bold lead fs-5 text-success">
+                          {{taxo.Lineage}}
 
-                    {%for item in taxo.Lineage%}
-                    <li>{{item}}</li>
-                    {%endfor%}
-                  </p>
+                          {%for item in taxo.Lineage%}
+                          <li>{{item}}</li>
+                          {%endfor%}
+                        </p>
 
-                  <p>Division_CODE:
-                    {{taxo.Division_CODE}}
-                  </p>
-                  <ul>
-                    <li>
-                      {{taxo.Other_Names}}
-                    </li>
-                    <li>
-                      {{taxo.Division}}
-                    </li>
-                    <li>
-                      {{taxo.Class}}
-                    </li>
+                        <p>Division_CODE:
+                          {{taxo.Division_CODE}}
+                        </p>
+                        <ul>
+                          <li>
+                            {{taxo.Other_Names}}
+                          </li>
+                          <li>
+                            {{taxo.Division}}
+                          </li>
+                          <li>
+                            {{taxo.Class}}
+                          </li>
 
-                    <li>
-                      {{taxo.Tax_Rank}}
-                    </li>
-                    <li>
-                      {{taxo.Division}}
-                    </li>
-                  </ul>
-                  <!--prettier-ignore-->
+                          <li>
+                            {{taxo.Tax_Rank}}
+                          </li>
+                          <li>
+                            {{taxo.Division}}
+                          </li>
+                        </ul>
+                        <!--prettier-ignore-->
 
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ------------------------------------------------------------------------------------------------------- -->
+
+                  <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
                 </div>
+                {%endfor%}
+
+
               </div>
+              <hr>
+              {% include 'utils/pagination.html'%}
+              <div id="tab_images" class="tab-pane active">
+
+              </div>
+
             </div>
+            <script>
+              //the reason for the odd-looking selector is to listen for the click event
+              // on links that don't even exist yet - i.e. are loaded from the server.
+              $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
+                e.preventDefault();
+                var url = $(this).attr("data-url");
 
-            <!-- ------------------------------------------------------------------------------------------------------- -->
+                if (typeof url !== "undefined") {
+                  var pane = $(this), href = this.hash;
 
-            <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+                  // ajax load from data-url
+                  $(href).load(url, function (result) {
+                    pane.tab('show');
+                  });
+                } else {
+                  $(this).tab('show');
+                }
+              });
+            </script>
+
           </div>
-          {%endfor%}
-
-
+          <script>
+            function showLoaderOnClick(url) {
+              showLoader();
+              window.location = url;
+            }
+            function showLoader() {
+              $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+            }
+          </script>
         </div>
-        <hr>
-        {% include 'utils/pagination.html'%}
-        <div id="tab_images" class="tab-pane active">
-
-        </div>
-
       </div>
-      <script>
-        //the reason for the odd-looking selector is to listen for the click event
-        // on links that don't even exist yet - i.e. are loaded from the server.
-        $('#tabs').on('click', '.tablink,#prodTabs a', function (e) {
-          e.preventDefault();
-          var url = $(this).attr("data-url");
-
-          if (typeof url !== "undefined") {
-            var pane = $(this), href = this.hash;
-
-            // ajax load from data-url
-            $(href).load(url, function (result) {
-              pane.tab('show');
-            });
-          } else {
-            $(this).tab('show');
-          }
-        });
-      </script>
-
     </div>
-    <script>
-      function showLoaderOnClick(url) {
-        showLoader();
-        window.location = url;
-      }
-      function showLoader() {
-        $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
-      }
-    </script>
+
+
+
+    <!--prettier-ignore-->
+    {% endblock%}

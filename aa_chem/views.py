@@ -2,73 +2,50 @@ import os
 from rdkit import Chem
 from django_filters.views import FilterView
 
-# from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
-# from django.forms import modelform_factory
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
+
 from aa_chem.models import  Organisms, Taxonomy
-from aa_chem.utils import  querysetToChoiseList_Dictionaries, searchbar_02, MySearchbar02, MySearchbar03
+from aa_chem.utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
-# from coadd_web.settings import Strain_Type_choices
-
-
+from django.core.exceptions import ValidationError
 
 
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # Taxonomy Card View in Chem Homepage===============Read=================================================
-def get_objects(req, model, model_field):
-    req=req
-    model=model
-    model_field=model_field 
-    objects=searchbar_02(req, model, model_field)
-    p=Paginator(objects, 24)
-    pag_num = req.GET.get('page')
-    pag_obj=p.get_page(pag_num)
-    
-    context={
-        'pag_obj':pag_obj,       
-    }
-    return context    
-
-
-
-@login_required
-def home(req): 
-    context={}
-    search_filter=MySearchbar02(req.GET, queryset=Taxonomy.objects.all())
-    context['filter']=search_filter
-    p=Paginator(search_filter.qs, 24)
-    page_num=req.GET.get('page')
-    page_obj=p.get_page(page_num)
-
-    context['page_obj']=page_obj
-    return render(req, 'aa_chem/chem.html', context)
-
-
-# ==========List View================================Read===========================================
-class TaxoListView(ListView):
-    model=Taxonomy
-    paginate_by = 24
-    fields='__all__'
-    template_name = 'aa_chem/readForm/Taxonomy_list.html'
+class TaxonomyCardView(LoginRequiredMixin, ListView):
+    model=Taxonomy  
+    template_name = 'aa_chem/readForm/Taxonomy_card.html' 
+    paginate_by=24
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.filter(astatus__gte=0)      
+        context['filter']=MySearchbar02(self.request.GET, queryset=self.get_queryset())
         return context
 
+    def get_queryset(self):
+        qs=super().get_queryset()
+        return MySearchbar02(self.request.GET, queryset=qs).qs
+
+# ==========List View================================Read===========================================
+class TaxonomyListView(TaxonomyCardView):
+    template_name = 'aa_chem/readForm/Taxonomy_list.html'
+
 # ====================================================Create===========================================
-def TaxoCreate(req):
+@login_required
+@user_passes_test(lambda u: u.is_staff) 
+def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
     form=Taxonomy_form
@@ -85,7 +62,9 @@ def TaxoCreate(req):
     return render(req, 'aa_chem/createForm/Taxonomy.html', {'form':form})
     
 # ====================================================Update===========================================
-def TaxoUpdate(req, pk):
+@login_required
+@user_passes_test(lambda u: u.is_staff) 
+def updateTaxonomy(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     kwargs={}
     kwargs['user']=req.user 
@@ -103,7 +82,7 @@ def TaxoUpdate(req, pk):
     return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-# @user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser)
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
@@ -119,35 +98,33 @@ def deleteTaxonomy(req, pk):
 
 # # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
 
-# ====================================================CREATE==========================================#
+# ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
     #  ===================refer to utils.py function searchbar_01==========================================
 
     # =============================step 2. Create new record by form===================#
+@login_required
+@user_passes_test(lambda u: u.is_staff) 
 def createOrgnisms(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']) # 
+    
     kwargs={}
     kwargs['user']=req.user 
     if req.method=='POST':
-        form=CreateOrganism_form(Strain_Type_choices,  req.POST,)
+        Organism_Name=req.POST.get('searchbar_01')
         Strain_Type_list=req.POST.getlist('Strain_Type')
+        form=CreateOrganism_form(Organism_Name, req.POST)
+        print(f"request.Post.get {Organism_Name}")     
         
         try:
             if form.is_valid():
                 print("form is valid")  
-                Organism_Name=req.POST.get('searchbar_01')
-                print(f"request.Post.get {Organism_Name}")
-                Organism = get_object_or_404(Taxonomy, Organism_Name=Organism_Name)
-                form.get_object(Organism_Name) 
-                instance=form.save(commit=False)
-                print(f'instance.Organism_Name is {instance.Organism_Name} ')
                 try:
                     with transaction.atomic():
-                        instance.Organism_Name=Organism
+                        instance=form.save(commit=False)                  
                         instance.save(**kwargs)
                         print("saved")
                         return redirect("org_list")
@@ -163,85 +140,74 @@ def createOrgnisms(req):
             return redirect(req.META['HTTP_REFERER'])
 
     else:
-        form=CreateOrganism_form(Strain_Type_choices,)
- 
-    return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, 'Strain_Type':Strain_Type_choices})
+        form=CreateOrganism_form()
+    return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, }) 
 
 
-#===============================================================Organism detail========================================================================================
-
+#=====================================================================Organism detail========================================================================================
+@login_required
 def detailOrganism(req, pk):
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     context={'Organism': object_}
     return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================
-
-# @transaction.atomic(using='drugs_db')
+@login_required
+@user_passes_test(lambda u: u.is_staff) 
 def updateOrganism(req, pk):
-    Strain_Type_choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
     object_=get_object_or_404(Organisms, Organism_ID=pk)
-    original_Organism_Name=object_.Organism_Name
-    
-
     kwargs={}
     kwargs['user']=req.user
-    #This can be minimized when all organism have classes... 
+    #This can be minimized when all organism have classes... ----------------
     if object_.Organism_Name.Class:
-        Organism_Class=object_.Organism_Name.Class.Dict_Value
-        original_class=Organism_Class
+        Organism_Class_str=object_.Organism_Name.Class.Dict_Value
     else:
-        Organism_Class="No Class"
-        original_class="No Class"
-
+        Organism_Class_str="No Class"
+    #-------------------------------------------------------------------------
     if req.method=='POST':
-        
+
         try:
-            with transaction.atomic(using='drugs_db'):
-                obj = Organisms.objects.select_for_update().get(Organism_ID=pk) 
-                form=UpdateOrganism_form(Strain_Type_choices, req.POST, instance=obj)     
+            with transaction.atomic(using='drugs_db'):        # testing!
+                obj = Organisms.objects.select_for_update().get(Organism_ID=pk)
+                #------------------------If update Organism Name-----------------------------------
                 if  req.POST.get('searchbar_01'):
-                    Organism_Name=req.POST.get('searchbar_01')
-                    print(f'http Request Organism_name is {Organism_Name}')
-
-                    form.clean_organismName(Organism_Name, original_class)
-                   
+                    Organism_Name_str=req.POST.get('searchbar_01')
+                    Organism_new_obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name_str)
+                    form=UpdateOrganism_form(Organism_Name, req.POST, instance=obj)
+                    print('form created')
+                    #-----------------------Not allow to update name in different class--------
+                    if Organism_new_obj.Class.Dict_Value and Organism_new_obj.Class.Dict_Value != Organism_Class_str:
+                        raise ValidationError('Not the same Class')
+                    #-----------------------Not allow to update name in different class--------
+                #------------------------If update Organism Name-----------------------------------
                 else:
-                    form.get_object(original_Organism_Name)
-                        
-                if form.is_valid():               
-                    # If Update Organism_Name============================   
-                    print("form is valid")             
-                    instance=form.save(commit=False)
-                    instance.Organism_Name=get_object_or_404(Taxonomy, Organism_Name=original_Organism_Name)  # here is a bug need to fix! 
-              
-                    instance.save(**kwargs)
-                    print('save updated')
-                   
-                    return redirect(req.META['HTTP_REFERER'])
-
-                else:
-                    messages.warning(req, f"Form not Valid!{form.errors}")
-                    return HttpResponse(status=204)
+                    form=UpdateOrganism_form(object_.Organism_Name.Organism_Name, req.POST, instance=obj) 
+                try:
+                    if form.is_valid():                  
+                        instance=form.save(commit=False)
+                        instance.save(**kwargs)
+                        print('save updated')                 
+                        return redirect(req.META['HTTP_REFERER'])
+                except Exception as err:
+                    print(err)
                    
         except Exception as err:
-            messages.warning(req, f'{err} is the exception error')
-            return redirect(req.META['HTTP_REFERER']) 
-    
-
+            messages.warning(req, f'Update failed due to {err} error')
+            return redirect(req.META['HTTP_REFERER'])
+  
     else:
-        form=UpdateOrganism_form(Strain_Type_choices, instance=object_)
+        form=UpdateOrganism_form(instance=object_)
 
     context={
         "form":form,
         "Organism":object_,
-        "Class":Organism_Class
+        "Class":Organism_Class_str
     }
    
     return render(req, "aa_chem/updateForm/Organism.html", context)
 
 # ==============================Delete  ===============================================================
-# @user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
+@user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -255,7 +221,7 @@ def deleteOrganism(req, pk):
     
 
 # ==============================List View ===============================================================
-class OrganismListView(ListView):
+class OrganismListView(LoginRequiredMixin, ListView):
     model=Organisms  
     template_name = 'aa_chem/readForm/Organism_list.html' 
     paginate_by=3
@@ -269,25 +235,18 @@ class OrganismListView(ListView):
         queryset=super().get_queryset()
         return MySearchbar03(self.request.GET, queryset=queryset).qs
 
-class OrganismCardView(ListView):
-    model=Organisms   
-    template_name = 'aa_chem/readForm/Organism_card.html'
-    paginate_by=3
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
-        return context
+class OrganismCardView(OrganismListView):
 
-    def get_queryset(self):
-        queryset=super().get_queryset()
-        return MySearchbar03(self.request.GET, queryset=queryset).qs
+    template_name = 'aa_chem/readForm/Organism_card.html'
+  
+    
 
   
 # # ==============================Import Excel files===========================================================#
 import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+@login_required
 def import_excel_taxo(req):
     print('importing....')
     try:
@@ -330,7 +289,7 @@ def import_excel_taxo(req):
         print(err)
     return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {})
 #=======================================================================================================
-
+@login_required
 def import_excel_dict(req):
     print('importing....')
     try:
@@ -360,6 +319,7 @@ def import_excel_dict(req):
 #======================================================Export Data Views Function==================================================#  
 # # @user_passes_test(lambda u: u.is_admin)
 # @permission_required('importdata')
+@login_required
 def exportCSV(req):
     response=HttpResponse(content_type='text/csv')
    

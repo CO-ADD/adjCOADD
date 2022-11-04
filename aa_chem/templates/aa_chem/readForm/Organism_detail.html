@@ -15,6 +15,7 @@
 
     <div id="OrganismUpdateModal" class="modal fade " role="dialog">
     </div>
+
     <script>
         // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
 
@@ -27,13 +28,25 @@
                 });
             });
 
-            if (bindingResult.hasErrors()) {
-                model.addAttribute("formErrors", true);
-                $('#OrganismUpdateModal').modal('show');
+
+            if (document.formHasErrors) {
+                my_modal.modal('show');
             }
+
+
         });
 
     </script>
+    {% if form_error %}
+    <script>
+        $(document).ready(function () {
+
+            let my_modal = $('#OrganismUpdateModal');
+            my_modal.modal("show");
+        })
+    </script>
+    {% endif %}
+
     <!-- <th:block th:if="${formErrors}">
         <script>
             $(document).ready(function () {
@@ -45,7 +58,9 @@
     </p>
     <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
     <div class="card">
-
+        <b>
+            {%include 'utils/message.html'%}
+        </b>
         <div class="card-header">
             Organism Taxonomy {{Organism.Organism_Name}}
         </div>
@@ -64,17 +79,18 @@
                     <tbody>
                         <tr>
                             <th scope="row"> Organism Class</th>
-                            <td> empty</td>
+                            <td> {{Organism.Organism_Name.Class.Dict_Value}}
+                            </td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Organism Code</th>
-                            <td>empty</td>
+                            <th scope="row">Organism Desc</th>
+                            <td>{{Organism.Organism_Desc}}</td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Strain_Type</th>
-                            <td colspan="2">{{Organism.Strain_Type}}</td>
+                            <th scope="row">Risk Group</th>
+                            <td colspan="2">{{Organism.Risk_Group}}</td>
 
                         </tr>
                     </tbody>
@@ -86,25 +102,25 @@
 
                     <thead>
                         <tr>
-                            <th scope="col">Organism Name</th>
-                            <th scope="col">{{Organism.Organism_Name}}</th>
+                            <th scope="col">Strain ID</th>
+                            <th scope="col">{{Organism.Strain_ID}}</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"> Organism Class</th>
-                            <td> empty</td>
+                            <th scope="row"> Strain_Type</th>
+                            <td> {{Organism.Strain_Type}}</td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Organism Code</th>
-                            <td>empty</td>
+                            <th scope="row">Strain Code</th>
+                            <td>{{Organism.Strain_Code}}</td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Organism Name other</th>
-                            <td colspan="2">empty</td>
+                            <th scope="row">Strain Desc</th>
+                            <td colspan="2">{{Organism.Strain_Desc}}</td>
 
                         </tr>
                     </tbody>

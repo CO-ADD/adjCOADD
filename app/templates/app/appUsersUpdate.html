@@ -1,7 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <form id="updateAppUserForm" method="POST" class="post-form" name="update-AppUser"
-      action="/usermanagement_update/{{object.id}}">
+      action="{% url 'updateAppUser' object.id%}">
       {% csrf_token %}
       <div class="modal-header">
         <h4 class="modal-title">Update AppUser</h4>

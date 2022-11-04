@@ -12,6 +12,7 @@ import logging
 
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):
+    
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
     title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr

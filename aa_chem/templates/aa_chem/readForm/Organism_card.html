@@ -1,7 +1,7 @@
 <h2>Organism Table</h2>
 <div class="contain-fluid">
   <div class="row d-flex flex-wrap">
-    {% for object in page_obj %}
+    {% for object in object_list %}
 
     <div class="col-md-4 vh-80">
       <div class="card bg-transparent my-2">
@@ -30,5 +30,5 @@
     {%endfor%}
   </div>
   <hr />
-  {% include 'utils/pagination.html'%}
+  <!-- {% include 'utils/pagination.html'%} -->
 </div>

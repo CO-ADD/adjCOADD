@@ -37,10 +37,10 @@
     <table class="table table-hover bg-light">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">name</th>
+
+          <th scope="col">username</th>
           <th scope="col">description</th>
-          <!-- <th scope="col">set members</th> -->
+          <th scope="col">email</th>
 
           <th scope="col">user role</th>
           <th scope="col">update</th>
@@ -50,13 +50,14 @@
       <tbody>
         {% for user in objects %}
         <tr>
-          <th scope="row">UQ: {{user.user_id}}</th>
-          <td>{{user.first_name}}</td>
+          <th scope="row">{{user.username}}</th>
           <td>{{user.department}}</td>
+          <td>{{user.email}}</td>
           <td>
             <ul>
+              <li>Is superuser:{{user.is_superuser}} </li>
+              <li>Is staff:{{user.is_staff}} </li>
 
-              {{user.permissions}}
             </ul>
           </td>
           <td>

@@ -20,7 +20,7 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
     """Save substance structure as SVG"""
 
     # Define full path name
-    full_path = f"static/images/{file_name}.svg"
+    file_path = f"static/images/{file_name}.svg"
 
     # Render high resolution molecule
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
@@ -28,7 +28,7 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
     drawer.FinishDrawing()
 
     # Export to png
-    cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=full_path)
+    cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=file_path)
 
 
 #=================================================Clear IMGFolder===========================================================#
@@ -114,27 +114,27 @@ def searchbar_01(req):
 
 
 #==================================searchbar_02======================================
-def searchbar_02(req, model, model_field):
-    variable_column=model_field
-    search_type='contains'
-    filter_search=variable_column+'__'+search_type
-    # gt=None
-    if req.method=='POST':
-        qs =req.POST.get('search')
-        # gt=qs.strip()
-        field=req.POST.get('field')
-        if field==model_field:
-            result=model.objects.filter(astatus__gte=0, **{filter_search:qs})
+# def searchbar_02(req, model, model_field):
+#     variable_column=model_field
+#     search_type='contains'
+#     filter_search=variable_column+'__'+search_type
+#     # gt=None
+#     if req.method=='POST':
+#         qs =req.POST.get('search')
+#         # gt=qs.strip()
+#         field=req.POST.get('field')
+#         if field==model_field:
+#             result=model.objects.filter(astatus__gte=0, **{filter_search:qs})
         
-    else:
-        result=model.objects.filter(astatus__gte=0)
+#     else:
+#         result=model.objects.filter(astatus__gte=0)
     
-    return result
+#     return result
 
 
 
 
-
+#==================================searchbar_02======================================
 class MySearchbar02(django_filters.FilterSet):
     Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
     class Meta:
