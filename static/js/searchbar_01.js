@@ -1,0 +1,81 @@
+const delay_by_in_ms = 500
+let scheduled_function = false
+const searchForm = document.getElementById("search-form")
+const searchInput = document.getElementById("search-input")
+const resultsBox = document.getElementById("results-box")
+
+const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value
+
+const sendSearchData = (inputtext) => {
+    $.ajax({
+        type: 'POST',
+        url: 'searchbar_01/',
+        data: {
+            'csrfmiddlewaretoken': csrf,
+            'inputtext': inputtext,
+        },
+        success: (res) => {
+            console.log(res)
+            const data = res.data
+            resultsBox.classList.add('scrollbar')
+            if (Array.isArray(data) && searchInput.value.length > 0) {
+                resultsBox.classList.add("scrollbar")
+                for (var i = 0; i < data.length; i++) {
+                    var block = document.createElement('button');
+                    block.setAttribute('id', i);
+                    block.setAttribute('class', 'resultslist');
+                    block.innerText = data[i]['name'] + ' | ' + data[i]['class']
+                    resultsBox.appendChild(block);
+                    block.addEventListener('click', function () {
+                        // alert(this.id)
+                        let Texonomy = this.innerText.split(" | ")
+                        console.log("working")
+                        searchInput.value = Texonomy[0]
+                        var setTaxo = document.getElementById("taxo-name")
+                        setTaxo.value = Texonomy[0]
+                        console.log(setTaxo.value)
+
+                        resultsBox.innerHTML = ""
+                        resultsBox.classList.remove('scrollbar')
+                    })
+
+                }
+
+
+            } else {
+                if (searchInput.value.length > 0) {
+                    resultsBox.innerHTML = `<b>${data}</b>`
+                } else {
+                    resultsBox.classList.add('not-visible')
+
+                }
+            }
+        },
+        error: (err) => {
+            console.log(err)
+        }
+
+    })
+}
+
+const myFunc = (val) => {
+    console.log(val)
+    searchInput.value = val
+    var setTaxo = document.getElementById("taxo-name")
+    setTaxo.value = val
+    resultsBox.innerHTML = ''
+
+}
+searchInput.addEventListener('keyup', e => {
+    resultsBox.innerHTML = ''
+    if (resultsBox.classList.contains('not-visible')) {
+        resultsBox.classList.remove('not-visible')
+    }
+    if (scheduled_function) {
+        clearTimeout(scheduled_function)
+    }
+
+    scheduled_function = setTimeout(function () { sendSearchData(e.target.value); }, delay_by_in_ms);
+    // sendSearchData(e.target.value)
+
+})

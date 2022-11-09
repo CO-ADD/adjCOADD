@@ -259,3 +259,6 @@ AUTH_LDAP_USER_ATTR_MAP = {
 # from app.models import Dictionaries
 # from aa_chem.utils import querysetToChoiseList_Dictionaries 
 Strain_Type_choices=(("a", "testa"),("b","testb"),("c", "testc"))#querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
+
+# Security Setting
+CSRF_COOKIE_SECURE=True

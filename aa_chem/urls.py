@@ -2,8 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from aa_chem.views import  (exportCSV, import_excel_taxo,import_excel_dict, createOrgnisms, detailOrganism,
-                        updateOrganism, TaxonomyCardView,TaxonomyListView, createTaxonomy,updateTaxonomy, deleteTaxonomy, OrganismListView, OrganismCardView, deleteOrganism)
+from aa_chem.views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organisms, createOrgnisms, detailOrganism,
+                        updateOrganism, TaxonomyCardView,TaxonomyListView, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
+                        detailChangeOrganism, OrganismListView,OrganismCardView, deleteOrganism)
 from aa_chem.utils import searchbar_01
 
 
@@ -21,11 +22,14 @@ urlpatterns = [
 
     path('taxo/<str:pk>', updateTaxonomy, name="taxo_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
+    path('updateOrgdetail/', detailChangeOrganism, name="organism_updatedetail"),
+
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
     path('deleteTaxo/<str:pk>', deleteTaxonomy, name="taxonomy_delete"),
     #=======================Data Export/Import===================================================================
     path('exportData/', exportCSV, name="dataexport"),
+    path('import_organisms/', import_excel_organisms, name="importOrg"),
     path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),
     path('import_dictionary/', import_excel_dict, name="importDict"),
 ]

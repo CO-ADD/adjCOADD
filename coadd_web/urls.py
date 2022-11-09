@@ -18,8 +18,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from app.views import index, userprofile, AppUserListView, AppUserCreateView, AppUserUpdateView, AppUserDeleteView, AppUserListView, DictionariesView,DictCreate
+from app.views import index
 import aa_chem.urls
+import app.urls
 
 
 urlpatterns = [
@@ -28,13 +29,7 @@ urlpatterns = [
 
     #========================appusers URL==========================================================================
     path('accounts/', include('django.contrib.auth.urls')),  
-    path('app/user_list/', AppUserListView.as_view(), name="userslist"),
-    path('app/user_create/', AppUserCreateView.as_view(), name="createAppUser"),
-    path('app/user_update/<int:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),
-    path('app/user_delete/<int:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
-    path('app/dict/', DictionariesView.as_view(), name='dict_view' ),
-    path('app/dict/create', DictCreate, name='dict_create' ),
-
+    path('app/', include('app.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('aa_chem/', include('aa_chem.urls')),
    

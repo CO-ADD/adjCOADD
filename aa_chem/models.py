@@ -94,6 +94,7 @@ class Organisms(AuditModel):
         'Oxygen_Pref':'Oxygen_Preference',
         'MTA_Status':'License_Status',
         'Strain_Type':'Strain_Type',
+        'Organism_Class':'Organism_Class',
     }
 
 

@@ -145,16 +145,16 @@ button,
   min-width: 200px;
 }
 
-.mol-container {
+/* .mol-container {
   width: 60%;
   height: 400px;
   position: relative;
-}
+} */
 
 .main {
   flex-basis: 0;
   flex-grow: 1;
-  min-width: 0;
+  min-width: 60%;
 }
 
 /* =============================Drag to resize sidebar end ===================================== */
@@ -231,8 +231,24 @@ footer {
   display: flex;
   flex-direction: column;
   max-height: 300px;
-
   width: 50%;
+  box-shadow: 0 8px 8px 0 var(--grey);
+  transition: 0.5s;
+}
+
+.editablechoices {
+  position: relative;
+}
+
+.results-select {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 5px;
+  flex-direction: column;
+  max-height: 300px;
+  z-index: 10;
+  width: 100%;
   box-shadow: 0 8px 8px 0 var(--grey);
   transition: 0.5s;
 }
@@ -249,6 +265,10 @@ footer {
 
 .not-visible {
   display: none;
+}
+
+.visible {
+  display: block;
 }
 
 .scrollbar {

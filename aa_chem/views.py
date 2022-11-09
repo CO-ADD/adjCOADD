@@ -5,25 +5,26 @@ from django_filters.views import FilterView
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
 from aa_chem.models import  Organisms, Taxonomy
 from aa_chem.utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
-from django.core.exceptions import ValidationError
 
 
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
-# Taxonomy Card View in Chem Homepage===============Read=================================================
+# =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
 class TaxonomyCardView(LoginRequiredMixin, ListView):
     model=Taxonomy  
     template_name = 'aa_chem/readForm/Taxonomy_card.html' 
@@ -43,7 +44,7 @@ class TaxonomyListView(TaxonomyCardView):
     template_name = 'aa_chem/readForm/Taxonomy_list.html'
 
 # ====================================================Create===========================================
-@login_required
+@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff) 
 def createTaxonomy(req):
     kwargs={}
@@ -58,11 +59,12 @@ def createTaxonomy(req):
             print("saved")
             return redirect("/")
         else:
-            print(form.errors)
-    return render(req, 'aa_chem/createForm/Taxonomy.html', {'form':form})
+            messages.error(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])      
+    return render(req, 'aa_chem/createForm/Taxonomy_c.html', {'form':form})
     
 # ====================================================Update===========================================
-@login_required
+@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff) 
 def updateTaxonomy(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
@@ -79,10 +81,10 @@ def updateTaxonomy(req, pk):
             return redirect("/")
         else:
             print(form.errors)
-    return render(req, 'aa_chem/updateForm/Taxonomy.html', {'form':form, 'object':object_})
+    return render(req, 'aa_chem/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
@@ -97,7 +99,34 @@ def deleteTaxonomy(req, pk):
     return redirect("/")
 
 # # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
+# ==============================List View ===============================================================
+class OrganismListView(LoginRequiredMixin, ListView):
+    model=Organisms  
+    template_name = 'aa_chem/readForm/Organism_list.html'
+    paginate_by=3
 
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        try:
+            context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
+            context['request']=self.request
+        except Exception as err:
+            print(err)
+            context['filter']=(" ",)
+        return context
+
+    def get_queryset(self):
+        try:
+            queryset=super().get_queryset()
+        except Exception as err:
+            print(err)
+            queryset=("", )
+        return MySearchbar03(self.request.GET, queryset=queryset).qs
+
+
+class OrganismCardView(OrganismListView):
+
+    template_name = 'aa_chem/readForm/Organism_card.html'
 # ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
@@ -141,15 +170,44 @@ def createOrgnisms(req):
 
     else:
         form=CreateOrganism_form()
-    return render(req, 'aa_chem/createForm/Organism.html', { 'form':form, }) 
+    return render(req, 'aa_chem/createForm/Organism_c.html', { 'form':form, }) 
 
 
 #=====================================================================Organism detail========================================================================================
 @login_required
 def detailOrganism(req, pk):
     object_=get_object_or_404(Organisms, Organism_ID=pk)
-    context={'Organism': object_}
-    return render(req, "aa_chem/readForm/Organism_detail.html", context)
+    Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
+    Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") # 
+
+    return render(req, "aa_chem/readForm/Organism_detail.html", {"Organism":object_, "Strain_Type_options":Strain_Type_choices, "Risk_Group_choice":Risk_Group_choice})
+
+@user_passes_test(lambda u: u.is_staff) 
+@csrf_protect
+def detailChangeOrganism(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    id=req.POST.get('id', '')
+    object_=get_object_or_404(Organisms, Organism_ID=id)
+    value=req.POST.get('value','')
+    type_value=req.POST.get('type', '')
+
+    if type_value=='MTA_status':
+        object_.MTA_Status=value
+    if type_value=='MTA_Document':
+        object_.MTA_Document=value
+    if type_value=='Strain_Type':
+        try:
+            value=value.split(",")
+            object_.Strain_Type=[i for i in value]
+        except Exception as err:
+             print("something wroing")
+    
+    if type_value=='Risk_Group':
+        object_.Risk_Group=value
+
+    object_.save(**kwargs)
+    return JsonResponse({"success": "updated!"})
 
 #======================================================================Update Organism=================================================================================
 @login_required
@@ -204,10 +262,10 @@ def updateOrganism(req, pk):
         "Class":Organism_Class_str
     }
    
-    return render(req, "aa_chem/updateForm/Organism.html", context)
+    return render(req, "aa_chem/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.is_superuser) #login_url='/redirect/to/somewhere'
+@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -217,28 +275,7 @@ def deleteOrganism(req, pk):
         print("deleted")
     except Exception as err:
         print(err)
-    return redirect("/")
-    
-
-# ==============================List View ===============================================================
-class OrganismListView(LoginRequiredMixin, ListView):
-    model=Organisms  
-    template_name = 'aa_chem/readForm/Organism_list.html' 
-    paginate_by=3
-
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context['filter']=MySearchbar03(self.request.GET, queryset=self.get_queryset())
-        return context
-
-    def get_queryset(self):
-        queryset=super().get_queryset()
-        return MySearchbar03(self.request.GET, queryset=queryset).qs
-
-class OrganismCardView(OrganismListView):
-
-    template_name = 'aa_chem/readForm/Organism_card.html'
-  
+    return redirect("org_list")
     
 
   
@@ -287,7 +324,7 @@ def import_excel_taxo(req):
             return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
-    return render(req, 'aa_chem/createForm/importDataForm/importexcel_taxo.html', {})
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
 def import_excel_dict(req):
@@ -303,18 +340,53 @@ def import_excel_dict(req):
             exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
             print(type(exmpexceldata))
             dbframe=exmpexceldata
-            for dbframe in dbframe.itertuples():
-                print("iam here")             
-                # int_order=int(0+dbframe.Dict_View_Order)
-                # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
-                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name)
+            for dbframe in dbframe.itertuples():                   
+                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
                 print(type(obj))
-                # obj.save()
-            
+          
             return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
+        print(f'import failed because {err}')
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel.html', {})
+
+
+
+#==================================================================import Organisms================================================
+@login_required
+def import_excel_organisms(req):
+    print('importing....')
+    try:
+        if req.method=='POST' and req.FILES['myfile']:
+            myfile=req.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            uploaded_file_url=fs.url(filename)
+            excel_file=uploaded_file_url
+            print(excel_file)
+            exmpexceldata=pd.read_csv("."+excel_file,skiprows=10, encoding='utf-8')
+            print(type(exmpexceldata))
+            dbframe=exmpexceldata
+            for dbframe in dbframe.itertuples():
+                taxID=int('0'+row[22])
+                screen_panel=row[26].split(';')
+                organism_fkey=Taxonomy.objects.filter(Organism_Name=row[1])
+                print(organism_fkey[0])   
+                try:
+                    obj, created=Organisms.objects.get_or_create(Organism_ID=row[0], Organism_Class_set=organism_fkey[0], Organism_Name=row[1], Organism_Desc=row[2], Strain_ID=row[3], 
+                                    Strain_Code=row[5], Strain_Desc=row[6], Strain_Notes=row[7], 
+                                    Strain_Tissue=row[25], Strain_Type=row[4], Sequence=row[28], Sequence_Link=row[29], Geno_Type=row[33],
+                                    Screen_Type=screen_panel, 
+                                    Tax_ID =taxID,Risk_Group=row[9], Pathogen =row[10],Import_Permit =row[12],Biol_Approval =row[23],Special_Precaution =row[24],Lab_Restriction =row[27],MTA_Document =row[31],
+                                    MTA_Status =row[32],Oxygen_Pref =row[13],Atmosphere_Pref ='containSpecialCHA', Nutrient_Pref =row[15],Biofilm_Pref =row[16], )
+                except Exception as err:
+                    print(err)
+                # obj.save()
+            
+            return render(req, 'aa_chem/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
+    except Exception as err:
         print(err)
-    return render(req, 'aa_chem/createForm/importDataForm/importexcel_dict.html', {})
+    return render(req, 'aa_chem/createForm/importDataForm/importexcel.html', {})
+
 
 #======================================================Export Data Views Function==================================================#  
 # # @user_passes_test(lambda u: u.is_admin)

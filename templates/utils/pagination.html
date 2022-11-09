@@ -3,6 +3,7 @@
     <span class="step-links">
         {% if page_obj.has_previous %}
         <a href="{% my_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
+        <a href="{% my_url 2 'page' request.GET.urlencode %}">&laquo; 2</a>
         <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
         {% endif %}
 

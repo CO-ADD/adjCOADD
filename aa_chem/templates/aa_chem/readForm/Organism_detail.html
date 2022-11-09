@@ -47,13 +47,6 @@
     </script>
     {% endif %}
 
-    <!-- <th:block th:if="${formErrors}">
-        <script>
-            $(document).ready(function () {
-                $('#OrganismUpdateModal').modal('show');
-            })
-        </script>
-    </th:block> -->
 
     </p>
     <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
@@ -65,7 +58,7 @@
             Organism Taxonomy {{Organism.Organism_Name}}
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
 
                 <table class="table">
 
@@ -90,17 +83,27 @@
                         </tr>
                         <tr>
                             <th scope="row">Risk Group</th>
-                            <td colspan="2">{{Organism.Risk_Group}}</td>
+                            <td class="editablechoices" data-id="{{Organism.pk}}" data-type="Risk_Group">
+                                {{Organism.Risk_Group}}
+
+                                <select class="results-select" aria-label="select example " name="Risk_Group"
+                                    id="Risk_Group">
+                                    {% for obj in Risk_Group_choice %}
+                                    <option value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    {%endfor%}
+                                </select>
+
+                            </td>
 
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
 
                 <table class="table">
 
-                    <thead>
+                    <thead>Editable Table Choice Select
                         <tr>
                             <th scope="col">Strain ID</th>
                             <th scope="col">{{Organism.Strain_ID}}</th>
@@ -110,7 +113,17 @@
                     <tbody>
                         <tr>
                             <th scope="row"> Strain_Type</th>
-                            <td> {{Organism.Strain_Type}}</td>
+                            <td class="editablechoices" data-id="{{Organism.pk}}" data-type="Strain_Type">
+                                {{Organism.Strain_Type}}
+
+                                <select id="results-box" class="results-select" multiple
+                                    aria-label="multiple select example " name="Strain_Type" id="straintype">
+                                    {% for obj in Strain_Type_options %}
+                                    <option value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    {%endfor%}
+                                </select>
+
+                            </td>
 
                         </tr>
                         <tr>
@@ -127,6 +140,43 @@
                 </table>
             </div>
         </div>
+        <div>
+            Editable Table Text Input
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">MTA_status</th>
+                        <th scope="col">MTA_document</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="editable" data-id="{{Organism.pk}}" data-type="MTA_status">{{Organism.MTA_Status}}
+                        </td>
+                        <td class="editable" data-id="{{Organism.pk}}" data-type="MTA_document">
+                            {{Organism.MTA_Document}}</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+            {% load static %}
+            <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+            <script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
+
+        </div>
+
+
+
+        {% load static %}
+        <script src="{% static 'js/js_utils/getCookie.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/js_utils/ajax_update.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/editableTablechoices.js' %}" type="text/javascript"></script>
+
+
+
     </div>
 
 </div>
