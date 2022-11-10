@@ -52,6 +52,7 @@ Install all the following packages in the conda environment.
 10. django-sequences 2.7
 
 11. pip install django-model-utils
+12. pip install django-filter
 
 
 ### Module Introduction

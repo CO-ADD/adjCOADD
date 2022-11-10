@@ -42,26 +42,29 @@
             <div class="row d-flex flex-wrap all_comp">
                 {% for object in object_list%}
                 <!-- object_list -->
-                <div class="col-md-8 bg-transparent my-2 mx-auto d-flex border border-3">
+                <div class="col-md-10 bg-transparent my-2 mx-auto d-flex border border-3">
                     <!-- <div class="card bg-transparent my-2 flex-row"> -->
 
-                    <p class="lead fs-4 m-auto"> {{object.Organism_Name}}
-                        <br> ID:
-                        {{object.Organism_ID}}
+                    <p class="i bi-tag fw-bold lead fs-5 m-auto"> {{object.Organism_Name}} <br><span
+                            class="fw-light fs-6">
+                            (ID:
+                            {{object.Organism_ID}} )</span>
 
                     </p>
 
-                    <ul>
+                    <ul class="m-auto">
 
-                        <li><a href="{%url 'org_detail' object.Organism_ID %}">Details</a></li>
-                        <li><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></li>
+                        <li><a class="m-auto" href="{%url 'org_detail' object.Organism_ID %}">Details</a></li>
+                        <li><a class="m-auto" href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></li>
                     </ul>
-                    <h5 class="bi bi-tag fw-bold lead fs-4 m-auto">additional information</h5>
-                    <ul>
+                    <p class="fw-lighter fs-6 m-auto"></p>
+                    <ul class="fw-lighter fs-6 m-auto">
                         <li>Created by: {{object.acreated_by}}</li>
                         <li>Created at:{{object.acreated_at}}</li>
+                        {%if object.aupdated_by%}
                         <li>Updated at: {{object.aupdated_by}}</li>
                         <li>Updated at: {{object.aupdated_at}}</li>
+                        {%endif%}
                     </ul>
                     <p>
                     <div class="text-center" type="button" data-bs-toggle="collapse"

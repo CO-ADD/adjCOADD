@@ -90,7 +90,7 @@ class Organisms(AuditModel):
     Choice_Dictionaries = {
         'Risk_Group':'Risk_Group',
         'Pathogen_Group':'Pathogen_Group',
-        'Bio_Approval':'Bio_Approval',
+        'Bio_Approval':'Biol_Approval',
         'Oxygen_Pref':'Oxygen_Preference',
         'MTA_Status':'License_Status',
         'Strain_Type':'Strain_Type',

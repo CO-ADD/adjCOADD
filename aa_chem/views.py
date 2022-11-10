@@ -173,14 +173,26 @@ def createOrgnisms(req):
     return render(req, 'aa_chem/createForm/Organism_c.html', { 'form':form, }) 
 
 
-#=====================================================================Organism detail========================================================================================
+#=========================================Organism detail table with updating in detail table========================================================================================
 @login_required
 def detailOrganism(req, pk):
+    context={}
     object_=get_object_or_404(Organisms, Organism_ID=pk)
     Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
-    Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") # 
+    Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") #
+    Oxygen_Pref_choice=Dictionaries.objects.filter(Dictionary_Class="Oxygen_Preference")
+    Pathogen_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Pathogen_Group")
+    MTA_Status_choice=Dictionaries.objects.filter(Dictionary_Class="License_Status") 
+    Bio_Approval_choice=Dictionaries.objects.filter(Dictionary_Class="Biol_Approval") 
+    context["Organism"]=object_
+    context["Strain_Type_options"]=Strain_Type_choices
+    context["Risk_Group_choice"]=Risk_Group_choice
+    context["Oxygen_Pref_choice"]=Oxygen_Pref_choice
+    context["Pathogen_Group_choice"]=Pathogen_Group_choice
+    context["MTA_Status_choice"]=MTA_Status_choice
+    context["Bio_Approval_choice"]=Bio_Approval_choice
 
-    return render(req, "aa_chem/readForm/Organism_detail.html", {"Organism":object_, "Strain_Type_options":Strain_Type_choices, "Risk_Group_choice":Risk_Group_choice})
+    return render(req, "aa_chem/readForm/Organism_detail.html", context)
 
 @user_passes_test(lambda u: u.is_staff) 
 @csrf_protect
@@ -192,10 +204,6 @@ def detailChangeOrganism(req):
     value=req.POST.get('value','')
     type_value=req.POST.get('type', '')
 
-    if type_value=='MTA_status':
-        object_.MTA_Status=value
-    if type_value=='MTA_Document':
-        object_.MTA_Document=value
     if type_value=='Strain_Type':
         try:
             value=value.split(",")
@@ -203,10 +211,14 @@ def detailChangeOrganism(req):
         except Exception as err:
              print("something wroing")
     
-    if type_value=='Risk_Group':
-        object_.Risk_Group=value
-
-    object_.save(**kwargs)
+        object_.save(**kwargs)
+    else:
+        try:
+            fields={type_value: value}
+            object_=Organisms(pk=id, **fields)
+            object_.save(**kwargs)
+        except Exception as err:
+            print(err)
     return JsonResponse({"success": "updated!"})
 
 #======================================================================Update Organism=================================================================================
@@ -363,21 +375,21 @@ def import_excel_organisms(req):
             uploaded_file_url=fs.url(filename)
             excel_file=uploaded_file_url
             print(excel_file)
-            exmpexceldata=pd.read_csv("."+excel_file,skiprows=10, encoding='utf-8')
-            print(type(exmpexceldata))
+            exmpexceldata=pd.read_csv("."+excel_file, )
+            print(exmpexceldata.itertuples)
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():
-                taxID=int('0'+row[22])
-                screen_panel=row[26].split(';')
-                organism_fkey=Taxonomy.objects.filter(Organism_Name=row[1])
+                taxID=int('0'+dbframe[22])
+                screen_panel=dbframe[26].split(';')
+                organism_fkey=Taxonomy.objects.filter(Organism_Name=dbframe[1])
                 print(organism_fkey[0])   
                 try:
-                    obj, created=Organisms.objects.get_or_create(Organism_ID=row[0], Organism_Class_set=organism_fkey[0], Organism_Name=row[1], Organism_Desc=row[2], Strain_ID=row[3], 
-                                    Strain_Code=row[5], Strain_Desc=row[6], Strain_Notes=row[7], 
-                                    Strain_Tissue=row[25], Strain_Type=row[4], Sequence=row[28], Sequence_Link=row[29], Geno_Type=row[33],
+                    obj, created=Organisms.objects.get_or_create(Organism_ID=dbframe[0], Organism_Class_set=organism_fkey[0], Organism_Name=dbframe[1], Organism_Desc=dbframe[2], Strain_ID=dbframe[3], 
+                                    Strain_Code=dbframe[5], Strain_Desc=dbframe[6], Strain_Notes=dbframe[7], 
+                                    Strain_Tissue=dbframe[25], Strain_Type=dbframe[4], Sequence=dbframe[28], Sequence_Link=dbframe[29], Geno_Type=dbframe[33],
                                     Screen_Type=screen_panel, 
-                                    Tax_ID =taxID,Risk_Group=row[9], Pathogen =row[10],Import_Permit =row[12],Biol_Approval =row[23],Special_Precaution =row[24],Lab_Restriction =row[27],MTA_Document =row[31],
-                                    MTA_Status =row[32],Oxygen_Pref =row[13],Atmosphere_Pref ='containSpecialCHA', Nutrient_Pref =row[15],Biofilm_Pref =row[16], )
+                                    Tax_ID =taxID,Risk_Group=dbframe[9], Pathogen =dbframe[10],Import_Permit =dbframe[12],Biol_Approval =dbframe[23],Special_Precaution =dbframe[24],Lab_Restriction =dbframe[27],MTA_Document =dbframe[31],
+                                    MTA_Status =dbframe[32],Oxygen_Pref =dbframe[13],Atmosphere_Pref ='containSpecialCHA', Nutrient_Pref =dbframe[15],Biofilm_Pref =dbframe[16], )
                 except Exception as err:
                     print(err)
                 # obj.save()

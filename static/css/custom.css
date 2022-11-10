@@ -7,9 +7,10 @@
 }
 
 body {
-  font-family: "Oswald", sans-serif !important;
-  letter-spacing: 1px;
+  font-family: sans-serif !important;
+  letter-spacing: 0px;
   color: var(--grey, teal);
+  font-size: small;
 }
 
 #top-alert {
@@ -226,6 +227,10 @@ footer {
   cursor: pointer !important;
 }
 
+/* ===============================================table==================================== */
+.table {
+  background-color: white;
+}
 
 .results-card {
   display: flex;
@@ -236,15 +241,16 @@ footer {
   transition: 0.5s;
 }
 
-.editablechoices {
+
+.tdclass {
   position: relative;
 }
 
 .results-select {
   display: none;
   position: absolute;
-  top: 50px;
-  left: 5px;
+  top: 30px;
+  left: 0px;
   flex-direction: column;
   max-height: 300px;
   z-index: 10;
@@ -283,4 +289,49 @@ footer {
   display: block;
   height: 200px !important;
   overflow: scroll;
+}
+
+.btnok {
+  border: none;
+  background-color: #ff6e00;
+  color: white;
+
+}
+
+.btnok:hover {
+  border: 2px solid #ff6e00;
+}
+
+td button {
+  border: none;
+  background-color: white;
+  color: var(--teal);
+  margin: 5px 2px 5px 2px;
+
+}
+
+td .btncancel {
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+td .btnsave {
+  position: absolute;
+  top: 0;
+  right: 0px;
+}
+
+td button:hover {
+  color: white;
+  background-color: #ff6e00;
+}
+
+td select option:hover,
+td:hover {
+  background-color: #ff6e00;
+}
+
+th {
+  width: 30% !important;
 }

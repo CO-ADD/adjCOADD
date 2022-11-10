@@ -4,7 +4,7 @@
 {% block title%} mysite{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
-<div class="col-md-8 vh-80 m-auto">
+<div class=" mx-2 border border-2">
 
 
     <p class="m-atuo">
@@ -50,7 +50,7 @@
 
     </p>
     <p><a href="{% url 'organism_delete' Organism.Organism_ID %}">Delete</a></p>
-    <div class="card">
+    <div class="card m-4">
         <b>
             {%include 'utils/message.html'%}
         </b>
@@ -58,68 +58,163 @@
             Organism Taxonomy {{Organism.Organism_Name}}
         </div>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4 table-responsive-sm">
 
-                <table class="table">
+                <table class="table table-bordered m-2">
 
                     <thead>
                         <tr>
-                            <th scope="col">Organism Name</th>
-                            <th scope="col">{{Organism.Organism_Name}}</th>
+                            <th scope="col" class="table-light">ID</th>
+                            <th scope="col" class="table-light">{{Organism.Organism_ID}}</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"> Organism Class</th>
+                            <th scope="row" class="table-light"> Name</th>
+                            <td><a href="">{{Organism.Organism_Name}}</a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light"> Class (change to editetable)</th>
                             <td> {{Organism.Organism_Name.Class.Dict_Value}}
                             </td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Organism Desc</th>
-                            <td>{{Organism.Organism_Desc}}</td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">Risk Group</th>
-                            <td class="editablechoices" data-id="{{Organism.pk}}" data-type="Risk_Group">
+                            <th scope="row" class="table-light">Risk Group</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="Risk_Group">
                                 {{Organism.Risk_Group}}
 
                                 <select class="results-select" aria-label="select example " name="Risk_Group"
                                     id="Risk_Group">
                                     {% for obj in Risk_Group_choice %}
-                                    <option value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj}}</option>
                                     {%endfor%}
                                 </select>
 
                             </td>
 
                         </tr>
+
+                        <tr>
+                            <th scope="row" class="table-light">Pathogen</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="Pathogen_Group">
+                                {{Organism.Pathogen_Group}}
+
+                                <select class="results-select" name="Pathogen_Group" id="Pathogen_Group">
+                                    {% for obj in Pathogen_Group_choice %}
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    {%endfor%}
+                                </select>
+
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Panels (chnage to editable)</th>
+                            <td data-id="{{Organism.pk}}" data-type="Panels">
+                                {{Organism.Panels}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Lab Restriction</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Lab_Restriction">
+                                {{Organism.Lab_Restriction}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Biol Approval</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="Bio_Approval">
+                                {{Organism.Bio_Approval}}
+
+                                <select class="results-select" name="Bio_Approval" id="Bio_Approval">
+                                    {% for obj in Bio_Approval_choice %}
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    {%endfor%}
+                                </select>
+
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Import Permit</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Import_Permit">
+                                {{Organism.Import_Permit}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">MTA Document</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="MTA_Document">
+                                {{Organism.MTA_Document}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">MTA Status</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="MTA_Status">
+                                {{Organism.MTA_Status}}
+
+                                <select class="results-select" name="MTA_Status" id="MTA_Status">
+                                    {% for obj in MTA_Status_choice %}
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    {%endfor%}
+                                </select>
+                            </td>
+
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-5">
 
-                <table class="table">
+            <div class="col-md-4 table-responsive-sm">
 
-                    <thead>Editable Table Choice Select
+                <table class="table table-bordered m-2">
+
+                    <tbody>
+
                         <tr>
-                            <th scope="col">Strain ID</th>
-                            <th scope="col">{{Organism.Strain_ID}}</th>
+                            <td colspan="2" class="table-light">Strain </td>
 
                         </tr>
-                    </thead>
-                    <tbody>
+
                         <tr>
-                            <th scope="row"> Strain_Type</th>
-                            <td class="editablechoices" data-id="{{Organism.pk}}" data-type="Strain_Type">
+                            <th scope="row" class="table-light">Strain ID</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Strain_ID">{{Organism.Strain_ID}}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Strain Code</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Strain_Code">
+                                {{Organism.Strain_Code}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Strain Description</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Strain_Desc">
+                                {{Organism.Strain_Desc}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Strain Notes</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Strain_Notes">
+                                {{Organism.Strain_Notes}}</td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row" class="table-light"> Strain_Type</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="Strain_Type">
                                 {{Organism.Strain_Type}}
 
                                 <select id="results-box" class="results-select" multiple
                                     aria-label="multiple select example " name="Strain_Type" id="straintype">
                                     {% for obj in Strain_Type_options %}
-                                    <option value="{{obj.Dict_Value}}">{{obj}}</option>
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj}}</option>
                                     {%endfor%}
                                 </select>
 
@@ -127,55 +222,145 @@
 
                         </tr>
                         <tr>
-                            <th scope="row">Strain Code</th>
-                            <td>{{Organism.Strain_Code}}</td>
+                            <th scope="row" class="table-light">Gen Type (change)</th>
+                            <td data-id="{{Organism.pk}}" data-type="Gen_Type">{{Organism.Gen_Type}}
+                            </td>
 
                         </tr>
                         <tr>
-                            <th scope="row">Strain Desc</th>
-                            <td colspan="2">{{Organism.Strain_Desc}}</td>
+                            <th scope="row" class="table-light">Sequence</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Sequence">{{Organism.Sequence}}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Sequence Link</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Sequence_Link">
+                                {{Organism.Sequence_Link}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Sequence MLST (change)</th>
+                            <td data-id="{{Organism.pk}}" data-type="Sequence_ML_ST">
+                                {{Organism.Sequence_ML_ST}}</td>
 
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <div class="col-md-3 table-responsive-sm">
+
+                <table class="table table-bordered m-2">
+                    <tbody>
+
+
+                        <tr>
+                            <th scope="col" colspan="2" class="table-light">Preference</th>
+
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row" class="table-light">Oxygen Pref</th>
+                            <td class="editablechoices tdclass" data-id="{{Organism.pk}}" data-type="Oxygen_Pref">
+                                {{Organism.Oxygen_Pref}}
+
+
+                                <select class="results-select" aria-label="select example " name="Oxygen_Pref"
+                                    id="Oxygen_Pref">
+                                    {% for obj in Oxygen_Pref_choice %}
+                                    <option class="option-select" value="{{obj.Dict_Value}}">{{obj.Dict_Value}}
+                                        <br><small> {{obj.Dict_Desc}}<small>
+                                    </option>
+                                    {%endfor%}
+                                </select>
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Atmosphere Pref</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Atmosphere_Pref">
+                                {{Organism.Atmosphere_Pref}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Nutrient Pref</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Nutrient_Pref">
+                                {{Organism.Nutrient_Pref}}</td>
+
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Biofilm Pref</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Biofilm_Pref">
+                                {{Organism.Biofilm_Pref}}</td>
+
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Biologist (change)</th>
+                            <td data-id="{{Organism.pk}}" data-type="Biologist">
+                                {{Organism.Biologist}}</td>
+
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Tax ID</th>
+                            <td class="editable" data-id="{{Organism.pk}}" data-type="Tax_ID">
+                                {{Organism.Tax_ID}}</td>
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div>
-            Editable Table Text Input
-            <table class="table">
 
-                <thead>
-                    <tr>
-                        <th scope="col">MTA_status</th>
-                        <th scope="col">MTA_document</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="editable" data-id="{{Organism.pk}}" data-type="MTA_status">{{Organism.MTA_Status}}
-                        </td>
-                        <td class="editable" data-id="{{Organism.pk}}" data-type="MTA_document">
-                            {{Organism.MTA_Document}}</td>
-
-                    </tr>
-
-                </tbody>
-            </table>
-            {% load static %}
-            <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-            <script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
-
-        </div>
 
 
 
         {% load static %}
+        <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+        <script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/js_utils/getCookie.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/js_utils/ajax_update.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/editableTablechoices.js' %}" type="text/javascript"></script>
 
 
+        <script>
+            $(document).ready(function () {
+                $("body").click(function (e) {
+                    console.log($(e.target).parent())
+                    // if ($("button").length !== 0 && $(e.target).parent("td").length == 0 && $(e.target).parent("td.editablechoices").length === 0) {
+                    //     $("select").removeClass("visible")
+                    //     $("button").remove();
+                    //     $("input").remove();
+                    //     var td_collection = $("td")
+                    //     $("td").each(function () {
+                    //         if (!$(this).hasClass("editable") || !$(this).hasClass("editablechoices")) {
+                    //             if ($(this).find("select") === 1) {
+                    //                 $(this).addClass("editablechoices")
+                    //             } else {
+                    //                 $(this).addClass("editable")
+                    //             }
+                    //         }
+                    //     })
+
+                    //     // window.location.reload()
+                    // }
+                });
+                var i = 0;
+                $('td').each(function () {
+                    i++;
+                    var newID = 'menu' + i;
+                    $(this).attr('id', newID);
+                    $(this).val(i);
+                });
+
+            })
+        </script>
 
     </div>
 
