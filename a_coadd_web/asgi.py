@@ -1,5 +1,5 @@
 """
-ASGI config for coadd_web project.
+ASGI config for a_coadd_web project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coadd_web.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'a_coadd_web.settings')
 
 application = get_asgi_application()

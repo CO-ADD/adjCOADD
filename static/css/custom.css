@@ -13,6 +13,10 @@ body {
   font-size: small;
 }
 
+.body-content {
+  margin-top: 150px;
+}
+
 #top-alert {
   width: 100%;
   background-color: black;
@@ -132,7 +136,7 @@ button,
   position: relative;
   z-index: 2;
   cursor: col-resize;
-  /* background: #333642; */
+  background: #333642;
   margin-right: 3px;
   margin-left: 0;
   padding: 0;
@@ -270,7 +274,7 @@ footer {
 }
 
 .not-visible {
-  display: none;
+  display: none !important;
 }
 
 .visible {
@@ -334,4 +338,33 @@ td:hover {
 
 th {
   width: 30% !important;
+}
+
+
+
+
+nav.navbar.shrink {
+  height: 45px;
+}
+
+nav.shrink a {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 15px;
+}
+
+nav.shrink .brand ul {
+  display: none;
+}
+
+nav.shrink .brand .navbar-brand {
+  max-width: 100px;
+}
+
+nav.shrink .navbar-toggle {
+  padding: 4px 5px;
+}
+
+.toLeft {
+  left: 0 !important;
 }

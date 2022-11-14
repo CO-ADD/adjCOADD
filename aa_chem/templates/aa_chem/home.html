@@ -14,12 +14,8 @@
 
   <div class="card-body d-flex flex-column align-items-center mt-0 gap-2">
     {%load static%}
-    <img
-      class="card-img-top"
-      style="width: 40rem"
-      src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png' %}"
-      alt=""
-    />
+    <img class="card-img-top" style="width: 40rem"
+      src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png' %}" alt="" />
     <h1 class="card-title" style="color: var(--orange)">
       Open-access Antimicrobial Screening Database
     </h1>
@@ -32,39 +28,18 @@
   <!-- </div> -->
 </div>
 <div class="d-flex justify-content-center">
-  <a
-    class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-    href="{%url 'taxo_card' %}"
-  >
-    <br />
-    Taxonomy
+  <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'taxo_card' %}">
+    TAXONOMY
   </a>
 
-  <a
-    class="landp-img-02 d-flex align-items-center justify-content-center h4 lead"
-    href="{%url 'org_list' %}"
-  >
-    Organisms
+  <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_list' %}">
+    ORGANISMS
   </a>
 
-  <a
-    class="landp-img-02 d-flex align-items-center justify-content-center h4 lead"
-    href="#"
-  >
-    Gene
+  <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="#">
+    GENE
   </a>
-  <a
-    class="landp-img-03 d-flex align-items-center justify-content-center h4 lead"
-    href="{%url 'dict_view' %}"
-  >
-    Dictionary
-  </a>
-  <a
-    class="landp-img-03 d-flex align-items-center justify-content-center h4 lead"
-    href="{%url 'userslist' %}"
-  >
-    Application UsersList
-  </a>
+
 </div>
 
 {%endblock%}

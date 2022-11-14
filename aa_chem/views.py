@@ -17,7 +17,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 
 from aa_chem.models import  Organisms, Taxonomy
-from aa_chem.utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03
+from aa_chem.utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03, MySearchbar04
 from app.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
@@ -32,12 +32,12 @@ class TaxonomyCardView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context['filter']=MySearchbar02(self.request.GET, queryset=self.get_queryset())
+        context['filter']=MySearchbar04(self.request.GET, queryset=self.get_queryset())
         return context
 
     def get_queryset(self):
         qs=super().get_queryset()
-        return MySearchbar02(self.request.GET, queryset=qs).qs
+        return MySearchbar04(self.request.GET, queryset=qs).qs
 
 # ==========List View================================Read===========================================
 class TaxonomyListView(TaxonomyCardView):
@@ -63,7 +63,7 @@ def createTaxonomy(req):
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'aa_chem/createForm/Taxonomy_c.html', {'form':form})
     
-# ====================================================Update===========================================
+# ====================================================Update in Form===========================================
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff) 
 def updateTaxonomy(req, pk):
@@ -98,6 +98,8 @@ def deleteTaxonomy(req, pk):
         print(err)
     return redirect("/")
 
+    
+
 # # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
 # ==============================List View ===============================================================
 class OrganismListView(LoginRequiredMixin, ListView):
@@ -127,6 +129,15 @@ class OrganismListView(LoginRequiredMixin, ListView):
 class OrganismCardView(OrganismListView):
 
     template_name = 'aa_chem/readForm/Organism_card.html'
+
+
+
+@login_required
+def detailTaxonomy(req, pk):
+    context={}
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)    
+    context["Taxonomy"]=object_
+    return render(req, "aa_chem/readForm/Taxonomy_detail.html", context)
 # ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
@@ -178,13 +189,15 @@ def createOrgnisms(req):
 def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organisms, Organism_ID=pk)
+    form=UpdateOrganism_form(instance=object_)
     Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
     Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") #
     Oxygen_Pref_choice=Dictionaries.objects.filter(Dictionary_Class="Oxygen_Preference")
     Pathogen_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Pathogen_Group")
     MTA_Status_choice=Dictionaries.objects.filter(Dictionary_Class="License_Status") 
     Bio_Approval_choice=Dictionaries.objects.filter(Dictionary_Class="Biol_Approval") 
-    context["Organism"]=object_
+    context["object"]=object_
+    context["form"]=form
     context["Strain_Type_options"]=Strain_Type_choices
     context["Risk_Group_choice"]=Risk_Group_choice
     context["Oxygen_Pref_choice"]=Oxygen_Pref_choice
@@ -208,17 +221,20 @@ def detailChangeOrganism(req):
         try:
             value=value.split(",")
             object_.Strain_Type=[i for i in value]
+            object_.save(**kwargs)
         except Exception as err:
              print("something wroing")
     
-        object_.save(**kwargs)
     else:
         try:
             fields={type_value: value}
-            object_=Organisms(pk=id, **fields)
+            print(fields)
+            Organisms.objects.filter(pk=id).update(**fields)
+            object_=get_object_or_404(Organisms, Organism_ID=id)
             object_.save(**kwargs)
         except Exception as err:
             print(err)
+   
     return JsonResponse({"success": "updated!"})
 
 #======================================================================Update Organism=================================================================================

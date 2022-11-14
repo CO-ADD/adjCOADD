@@ -158,3 +158,11 @@ class MySearchbar03(MySearchbar02):
        
     def my_custom_filter(self, queryset, name, value):
         return queryset.filter(Strain_Type__overlap=value)
+
+
+class MySearchbar04(MySearchbar02):
+    Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
+    Lineage = django_filters.MultipleChoiceFilter(choices="")
+    class Meta:
+        model=Taxonomy
+        fields=['Organism_Name', 'Code', 'Class', 'Tax_ID', 'Parent_Tax_ID', 'Tax_Rank', 'Division', 'Lineage']

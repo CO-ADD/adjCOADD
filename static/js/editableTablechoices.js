@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    console.log("loading choiceseditable....")
+    // console.log("loading choiceseditable....")
 
 
     $(document).on("dblclick", ".editablechoices", function () {
@@ -11,16 +11,20 @@ $(document).ready(function () {
         input += "<button class='btnsave' class='form-control'><i class='bi bi-check'></i></button>";
         // input += selectbox
         if ($(this).find("button").length === 0) {
-            console.log($(this).find("button"))
+            // console.log($(this).find("button"))
 
             $(this).append(input);
         }
         $(this).removeClass("editablechoices")
     });
 
-    $("select").on("click", function () {
+    $(".option-select").on("click", function () {
+        var sel = $(this).parent("select")
+        var td = sel.parent("td")
         if (!$(this).hasClass('selected')) {
             $(this).addClass('selected')
+            console.log("option clicked")
+            // td.html(sel.val())
         }
 
     });
@@ -31,7 +35,7 @@ $(document).ready(function () {
         td.find("select").removeClass("visible")
 
         $(this).remove();
-        $(".btnsave").remove();
+        td.find(".btnsave").remove();
         // td.html(value)
         td.addClass("editablechoices");
         // window.location.reload()
@@ -42,14 +46,16 @@ $(document).ready(function () {
         td.find("select").removeClass("visible")
         // $(".btncancel").remove();
         var value = td.find("select").val()
-        console.log(typeof ('value'))
+        // console.log(typeof ('value'))
         if (typeof (value) === 'object') {
             value = Object.values(value).toString()
         }
-        sendToServer(td.data("id"), value, td.data("type"))
         $(this).remove();
+        // td.find(".btncancle").remove();
+        td.html(value)
         td.addClass("editablechoices");
-        // window.location.reload()
+        sendToServer(td.data("id"), value, td.data("type"))
+        window.location.reload()
 
     });
 

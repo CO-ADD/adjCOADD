@@ -13,7 +13,7 @@ import logging
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):
     
-    choices_permission=(('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
+    choices_permission=(('general user', 'general user| general user can read record'), ('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
     title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
@@ -37,6 +37,9 @@ class ApplicationUser(AbstractUser):
     def __str__(self) -> str:
         return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
+    def save(self, *args, **kwargs):
+        self.username=self.user_id
+        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
@@ -107,6 +110,8 @@ class ApplicationLog(models.Model):
     log_object = models.CharField(max_length=15, blank=True, editable=False)
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
+
+
 
 
 #=========================Not used...==============

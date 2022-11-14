@@ -3,9 +3,17 @@
 <div class="d-flex flex-row bg-light justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <div class="main d-flex flex-column">
-    <a href="{%url 'org_card'%}" class="switch">Grid</a>
-    <a href="{%url 'org_list'%}" class="switch">List</a>
-    <a href="{%url 'importOrg'%}">import organisms</a>
+    <div class="d-flex flex-wrap justify-content-between">
+      <a href="{%url 'importOrg'%}" class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-up"></i>import
+        organisms</a>
+      <div>
+
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
+        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
+      </div>
+    </div>
+    <hr>
+
     <div id="createOrganism">
 
       <a class="btn m-auto" style="float:right;">Create New Organism
@@ -68,7 +76,7 @@
     </div>
     {% load static %}
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-    <script>
+    <!-- <script>
       $(document).ready(() => {
         console.log("loading document")
         $('a.switch').click(function () {
@@ -78,6 +86,6 @@
         });
       })
 
-    </script>
+    </script> -->
 
     {%endblock%}
