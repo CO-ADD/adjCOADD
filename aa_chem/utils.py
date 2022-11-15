@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from aa_chem.models import  Organisms, Taxonomy
+from app.models import Dictionaries
 
 
 # ======================================Util Func. (To SVG)=====================================================#
@@ -144,13 +145,24 @@ class MySearchbar02(django_filters.FilterSet):
     @property
     def qs(self):
         parent = super().qs
-
         return parent.filter(astatus__gte=0)
 
 
 class MySearchbar03(MySearchbar02):
     Organism_Name = django_filters.CharFilter(field_name='Organism_Name__Organism_Name', lookup_expr='icontains')
+    Organism_Class=django_filters.ChoiceFilter(field_name='Organism_Name__Class__Dict_Value', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Organism_Class']))
+    Strain_Type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type']))
     class Meta:
         model=Organisms
-        fields=[]
+        fields=['Organism_ID', 'Strain_Code', 'Strain_ID', 'Strain_Desc', 'Strain_Notes', 'Strain_Type', 'MTA_Document', ]
+       
+    def my_custom_filter(self, queryset, name, value):
+        return queryset.filter(Strain_Type__overlap=value)
 
+
+class MySearchbar04(MySearchbar02):
+    Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
+    Lineage = django_filters.MultipleChoiceFilter(choices="")
+    class Meta:
+        model=Taxonomy
+        fields=['Organism_Name', 'Code', 'Class', 'Tax_ID', 'Parent_Tax_ID', 'Tax_Rank', 'Division', 'Lineage']

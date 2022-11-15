@@ -15,7 +15,9 @@
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   {%load static%}
   <script src="{% static 'js/htmx.min.js' %}"></script>
@@ -61,22 +63,8 @@
 </head>
 
 <body>
-  <div id="top-alert">
-    <a class="text-light" href=""><i class="bi bi-house"></i></a>
-    <a class="text-light" href=""><i class="bi bi-info"></i>about us</a>
-    <a class="text-light" href=""><i class="bi bi-git"></i>github</a>
-    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
-  </div>
-
-  <script>
-    $(".btn-close-white").click(function () {
-      $("#top-alert").toggle();
-    });
-  </script>
-
-
   {%include "utils/navbar.html"%}
-  <main>{% block content %} {% endblock %}</main>
+  <main class="body-content">{% block content %} {% endblock %}</main>
 
   <!-- Footer -->
 

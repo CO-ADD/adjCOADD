@@ -1,48 +1,29 @@
 <div id="sidebar" class="text-secondary" style="overflow: scroll">
     <hr />
     <h4 id="item-1">Search</h4>
-    <form method="get" class="form-group mx-5">
+    <form id="django-filter-siderbar" method="get" class="form-group mx-5">
         {{filter.form.as_p}}
-        <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Filter" />
+        <input class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
+
+        <button class="form-control-sm" type="reset" onclick="myfun()">Reset</button>
     </form>
 
-    <hr />
-    <form class="text-dark" action="#" method="POST">
-        {%csrf_token%}
-        <label class="form-label mt-3">Import .sdf file by enter full file path
-            multiple files seperated directly by ","</label>
-        <input class="form-control-sm" name="fdata" type="text" disabled />
-        <input class="btn btn-outline-secondary my-2" class="form-control-sm" type="submit" value="Import..."
-            disabled />
-    </form>
-    <hr />
 
-
-
-
-
-    <p>...</p>
 </div>
 <div id="resizer"></div>
+{%load static%}
+<script src="{%static 'js/resizebar.js'%}"></script>
 
 <script>
-    const resizer = document.querySelector("#resizer");
-    const sidebar = document.querySelector("#sidebar");
+    function myfun() {
 
-    resizer.addEventListener("mousedown", (event) => {
-        document.addEventListener("mousemove", resize, false);
-        document.addEventListener(
-            "mouseup",
-            () => {
-                document.removeEventListener("mousemove", resize, false);
-            },
-            false
-        );
-    });
-
-    function resize(e) {
-        var sdsize = Math.min(800, e.x);
-        const size = `${sdsize}px`;
-        sidebar.style.flexBasis = size;
+        console.log("button clicked")
+        form = document.getElementById("django-filter-siderbar")
+        // input_arr.forEach(item => { item.value = null; console.log("clear") })
+        // form_input = form.querySelectorAll('p input')
+        form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
+        form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
+        //   this.parentElement.submit();
+        form.submit();
     }
 </script>

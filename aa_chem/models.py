@@ -90,10 +90,11 @@ class Organisms(AuditModel):
     Choice_Dictionaries = {
         'Risk_Group':'Risk_Group',
         'Pathogen_Group':'Pathogen_Group',
-        'Bio_Approval':'Bio_Approval',
+        'Bio_Approval':'Biol_Approval',
         'Oxygen_Pref':'Oxygen_Preference',
         'MTA_Status':'License_Status',
         'Strain_Type':'Strain_Type',
+        'Organism_Class':'Organism_Class',
     }
 
 
@@ -145,6 +146,10 @@ class Organisms(AuditModel):
             super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
+
+    def __iter__(self):
+        for field in self._meta.fields:
+            yield (field.verbose_name, field.value_to_string(self))
     
 
 

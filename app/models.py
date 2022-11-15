@@ -13,6 +13,7 @@ import logging
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):
     
+    choices_permission=(('general user', 'general user| general user can read record'), ('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
 #-------------------------------------------------------------------------------------------------
     user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
     title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
@@ -25,7 +26,7 @@ class ApplicationUser(AbstractUser):
     group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
     phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
     # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au    this field existed in AbstractUser
-    permissions = models.CharField(max_length=250, blank=True, null=True)      # application permissions .. ReadOnly, ReadWrite, Admin ..
+    permissions = models.CharField(max_length=250, null=True, choices=choices_permission, default=None)      # application permissions .. ReadOnly, ReadWrite, Admin ..
     session_id = models.CharField(max_length=250, blank=True, null=True)       # not sure if Django has SessionID's
     is_appuser=models.BooleanField(default=True)
 
@@ -36,6 +37,9 @@ class ApplicationUser(AbstractUser):
     def __str__(self) -> str:
         return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
+    def save(self, *args, **kwargs):
+        self.username=self.user_id
+        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
@@ -72,11 +76,12 @@ class AuditModel(models.Model):
         print('this is save function from Audit model class')
         user=kwargs.get("user")
         print(user)
-        if self._state.adding: 	#Createing
-            self.acreated_by = user
+        if not self.acreated_by: 	#Createing
+            self.acreated_by = user       
         else:					#Updateing
             self.aupdated_by = user
-        kwargs.pop("user")
+        if kwargs.get("user"):
+            kwargs.pop("user")
         super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
@@ -105,6 +110,8 @@ class ApplicationLog(models.Model):
     log_object = models.CharField(max_length=15, blank=True, editable=False)
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
+
+
 
 
 #=========================Not used...==============

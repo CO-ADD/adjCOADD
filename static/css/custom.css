@@ -7,9 +7,14 @@
 }
 
 body {
-  font-family: "Oswald", sans-serif !important;
-  letter-spacing: 1px;
+  font-family: sans-serif !important;
+  letter-spacing: 0px;
   color: var(--grey, teal);
+  font-size: small;
+}
+
+.body-content {
+  margin-top: 150px;
 }
 
 #top-alert {
@@ -131,7 +136,7 @@ button,
   position: relative;
   z-index: 2;
   cursor: col-resize;
-  /* background: #333642; */
+  background: #333642;
   margin-right: 3px;
   margin-left: 0;
   padding: 0;
@@ -145,16 +150,16 @@ button,
   min-width: 200px;
 }
 
-.mol-container {
+/* .mol-container {
   width: 60%;
   height: 400px;
   position: relative;
-}
+} */
 
 .main {
   flex-basis: 0;
   flex-grow: 1;
-  min-width: 0;
+  min-width: 60%;
 }
 
 /* =============================Drag to resize sidebar end ===================================== */
@@ -226,13 +231,34 @@ footer {
   cursor: pointer !important;
 }
 
+/* ===============================================table==================================== */
+.table {
+  background-color: white;
+}
 
 .results-card {
   display: flex;
   flex-direction: column;
   max-height: 300px;
-
   width: 50%;
+  box-shadow: 0 8px 8px 0 var(--grey);
+  transition: 0.5s;
+}
+
+
+.tdclass {
+  position: relative;
+}
+
+.results-select {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  flex-direction: column;
+  max-height: 300px;
+  z-index: 10;
+  width: 100%;
   box-shadow: 0 8px 8px 0 var(--grey);
   transition: 0.5s;
 }
@@ -248,7 +274,11 @@ footer {
 }
 
 .not-visible {
-  display: none;
+  display: none !important;
+}
+
+.visible {
+  display: block;
 }
 
 .scrollbar {
@@ -263,4 +293,78 @@ footer {
   display: block;
   height: 200px !important;
   overflow: scroll;
+}
+
+.btnok {
+  border: none;
+  background-color: #ff6e00;
+  color: white;
+
+}
+
+.btnok:hover {
+  border: 2px solid #ff6e00;
+}
+
+td button {
+  border: none;
+  background-color: white;
+  color: var(--teal);
+  margin: 5px 2px 5px 2px;
+
+}
+
+td .btncancel {
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+td .btnsave {
+  position: absolute;
+  top: 0;
+  right: 0px;
+}
+
+td button:hover {
+  color: white;
+  background-color: #ff6e00;
+}
+
+td select option:hover,
+td:hover {
+  background-color: #ff6e00;
+}
+
+th {
+  width: 30% !important;
+}
+
+
+
+
+nav.navbar.shrink {
+  height: 45px;
+}
+
+nav.shrink a {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 15px;
+}
+
+nav.shrink .brand ul {
+  display: none;
+}
+
+nav.shrink .brand .navbar-brand {
+  max-width: 100px;
+}
+
+nav.shrink .navbar-toggle {
+  padding: 4px 5px;
+}
+
+.toLeft {
+  left: 0 !important;
 }

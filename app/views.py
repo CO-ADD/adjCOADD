@@ -19,6 +19,8 @@ from django.contrib.auth.models import Permission
 # @user_passes_test(check_admin)
 # def my_view(request): 
 
+
+# =================================Login into Home Page==================================
 def index(req):
     if req.user.is_authenticated:
 
@@ -32,13 +34,16 @@ def index(req):
             return redirect("/")
     return render(req, 'aa_chem/home.html')
 
+
+
+# =========================Application Users View========================================
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
     def test_func(self):
         return self.request.user.is_superuser
 
 # @permission_required('app.change_groupfilter')
-@login_required
+@login_required(login_url='/login/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     permissions = Permission.objects.filter(user=current_user)
@@ -57,8 +62,6 @@ class AppUserListView(LoginRequiredMixin, ListView):
         print(context["objects"])
        
         return context
-
-
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
@@ -82,6 +85,7 @@ class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
 
         if form.instance.permissions=='staff':
             form.instance.is_staff=True
+            form.instance.is_superuser=False
             
         if form.instance.permissions=='admin':
             form.instance.is_staff=True
@@ -89,15 +93,12 @@ class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
         
         return super().form_valid(form)
 
-       
-
-
 class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
     model=ApplicationUser
     template_name='app/appUsersDel.html'
     success_url = reverse_lazy('userslist')
 
-
+# =====================================Dictionaries View==========================
 
 class DictionariesView(LoginRequiredMixin, ListView):
     model=Dictionaries
@@ -106,19 +107,41 @@ class DictionariesView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-       
-        print(context["objects"])
-       
+        context["objects"]=self.model.objects.filter(astatus__gte=0)
         return context
-
-@login_required
-def DictCreate(req):
+# 
+@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
+def createDictionary(req):
+    kwargs={}
+    kwargs['user']=req.user
     form=Dictionary_form()
+    form_error=False
     if req.method=='POST':
         form=Dictionary_form(req.POST)
-        if form.is_valid:
-            instance=form.save(commit=False)
-            instance.save(req.user)
+        try:
+            if form.is_valid:
+                print("form is valid")
+                instance=form.save(commit=False)
+                instance.save(**kwargs)
+                return redirect("dict_view")
+        except Exception as err:
+        # else:
+            form_error=True    
+            messages.error(req, form.errors)
             return redirect("dict_view")
-    return render(req, 'app/dictCreate.html', {'form': form})
+    
+    return render(req, 'app/dictCreate.html', {'form': form, 'form_error':form_error})
+
+@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
+def deleteDictionary(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    context={}
+    object_=get_object_or_404(Dictionaries, Dict_Value=pk)
+    context['object']=object_
+    if req.method=="POST":      
+        object_.delete(**kwargs)
+        print("deleted")
+        return redirect(req.META['HTTP_REFERER'])
+    
+    return render(req, 'app/dictionary_del.html', context)

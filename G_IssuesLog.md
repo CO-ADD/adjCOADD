@@ -84,6 +84,15 @@ def get(self, request, *args, **kwargs):
 
 def __init__() or def save()...
 ```
-(s) user={'user':request.user,} is placed before if condition code block, then .save(**user). This way works.
+(s) kwargs={}, kwargs["user"]=req.user
+
+
+12. Git: "Corrupt loose object"
+(s)rm -fr .git
+git init
+git remote add origin [your-git-remote-url]
+git fetch
+git reset --mixed origin/master
+git branch --set-upstream-to=origin/master master 
 
 

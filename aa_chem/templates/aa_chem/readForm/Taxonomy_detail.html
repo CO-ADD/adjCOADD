@@ -1,0 +1,143 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class=" mx-2 border border-2">
+
+
+    <div>
+
+        <a class="btn btn-sm btn-outline-secondary" href="{%url 'taxo_card' %}"><i class="bi bi-view-list"></i><i
+                class="bi bi-arrow-bar-left"></i></a>
+    </div>
+    <p class="m-atuo">
+    <div id="{{Taxonomy.Organism_Name}}">
+        <a class="btn btn-success btn-sm">Update</a>
+    </div>
+
+    <div id="OrganismUpdateModal" class="modal fade " role="dialog">
+    </div>
+
+    <script>
+        // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
+
+        $(document).ready(function () {
+            btn = "#" + "{{Taxonomy.Organism_Name}}"
+            let my_modal = $('#TaxonomyUpdateModal');
+            $(`${btn} a`).click(function () {
+                my_modal.load("{% url 'taxonomy_update' Taxonomy.Organism_Name %}", function () {
+                    my_modal.modal("show");
+                });
+            });
+
+
+            if (document.formHasErrors) {
+                my_modal.modal('show');
+            }
+
+
+        });
+
+    </script>
+    {% if form_error %}
+    <script>
+        $(document).ready(function () {
+
+            let my_modal = $('#TaxonomyUpdateModal');
+            my_modal.modal("show");
+        })
+    </script>
+    {% endif %}
+
+
+    </p>
+    <p><a href="{% url 'taxonomy_delete' Taxonomy.Organism_Name %}">Delete</a></p>
+    <div class="card m-4">
+        <b>
+            {%include 'utils/message.html'%}
+        </b>
+        <div class="card-header">
+            Organism Taxonomy {{Taxonomy.Organism_Name}}
+        </div>
+        <div class="row">
+            <div class="col-md-4 table-responsive-sm">
+
+                <table class="table table-bordered m-2">
+
+                    <thead>
+                        <tr>
+                            <th scope="col" class="table-light">ID</th>
+                            <th scope="col" class="table-light">{{Taxonomy.Organism_Name}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="table-light"> Name</th>
+                            <td><a href="">{{Taxonomy.Other_Names}}</a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light"> Class</th>
+                            <td> {{Taxonomy.Class}}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Tax_ID</th>
+                            <td class="" data-id="{{Taxonomy.pk}}" data-type="Tax_ID">
+                                {{Taxonomy.Tax_ID} (integer)
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <th scope="row" class="table-light">Parent_Tax_ID</th>
+                            <td class="" data-id="{{Taxonomy.pk}}" data-type="Parent_Tax_ID">
+                                {{Taxonomy.Parent_Tax_ID}} (integer)
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Tax_Rank</th>
+                            <td class="editable" data-id="{{Taxonomy.pk}}" data-type="Tax_Rank">
+                                {{Taxonomy.Tax_Rank}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Division</th>
+                            <td class="editable" data-id="{{Taxonomy.pk}}" data-type="Division">
+                                {{Taxonomy.Division}}</td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row" class="table-light">Lineage</th>
+                            <td class="" data-id="{{Taxonomy.pk}}" data-type="Lineage">
+                                (Taxonomy.Lineage)
+                                {% for obj in Taxonomy.Lineage %}
+                                <p>* {{obj}} </p>
+                                {%endfor%}
+                                </select>
+
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}
