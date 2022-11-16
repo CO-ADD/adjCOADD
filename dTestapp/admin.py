@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Taxo
+from .models import Drugbank
 # Register your models here.
 
 
-class TaxoAdmin(admin.ModelAdmin):
+class DrugbankAdmin(admin.ModelAdmin):
     pass
-admin.site.register(Taxo, TaxoAdmin)
+admin.site.register(Drugbank, DrugbankAdmin)

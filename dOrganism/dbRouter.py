@@ -1,6 +1,6 @@
-from .models import Drugbank, Taxonomy, Genes, Organisms #, Dictionaries
+from .models import  Taxonomy, Genes, Organisms #, Dictionaries
 
-Route_list=[Drugbank,Taxonomy, Genes, Organisms]#, Dictionaries
+Route_list=[Taxonomy, Genes, Organisms]#, Dictionaries
 class DrugsRouter:
     """
     A router to control all database operations on models in the
