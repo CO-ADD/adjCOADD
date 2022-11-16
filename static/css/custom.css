@@ -1,0 +1,370 @@
+@import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
+
+:root {
+  --teal: #ff6e00;
+  --grey: #625e5d;
+  --orange: #2c7a84;
+}
+
+body {
+  font-family: sans-serif !important;
+  letter-spacing: 0px;
+  color: var(--grey, teal);
+  font-size: small;
+}
+
+.body-content {
+  margin-top: 150px;
+}
+
+#top-alert {
+  width: 100%;
+  background-color: black;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-brand,
+.nav-link {
+  color: white !important;
+  border: 2px solid transparent;
+}
+
+.navbar-brand:hover,
+.nav-item a:hover {
+  /* color: var(--orange, orange); */
+  border: 2px solid white;
+  /* box-shadow: 0px -5px 10px 0px white; */
+  transition: 0.5s ease-in;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.info {
+  color: var(--teal, teal);
+  font-weight: bold;
+  font-size: 1rem;
+  height: 20rem;
+  padding: 10px;
+  flex-wrap: wrap;
+  background-color: rgb(248, 241, 241);
+}
+
+button,
+.btn {
+  border: 2px solid var(--orange, orange);
+  color: var(--teal);
+}
+
+.btn:hover {
+  color: white;
+  background-color: var(--orange, orange);
+  transition: 0.5s ease-out;
+}
+
+.btn2 {
+  width: 6rem;
+  background-color: var(--orange);
+  color: white;
+}
+
+.btn2:hover {
+  border: 2px solid white;
+}
+
+.home-banner {
+  border-radius: 10% 25% 15% 25%;
+}
+
+.navbar-light {
+  background-color: var(--teal);
+  opacity: 0.8;
+  color: white;
+}
+
+.landp-img-01,
+.landp-img-02,
+.landp-img-03 {
+  height: 8rem;
+  width: 8rem;
+
+  border-radius: 50%;
+  margin: 1rem;
+  color: white;
+  font-weight: bolder;
+}
+
+.landp-img-01 {
+  animation: fadeIn 1s;
+  background-color: var(--orange, orange);
+}
+
+.landp-img-02 {
+  background-color: var(--teal, teal);
+  animation: fadeIn 1.5s;
+}
+
+.landp-img-03 {
+  animation: fadeIn 2s;
+  background-color: var(--orange, orange);
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.landp-img-01:hover,
+.landp-img-02:hover,
+.landp-img-03:hover {
+  transform: scale(1.1);
+  transition: 0.3s ease-in;
+  color: white;
+}
+
+/* =============================Drag to resize sidebar start ===================================== */
+#resizer {
+  flex-basis: 10px;
+  position: relative;
+  z-index: 2;
+  cursor: col-resize;
+  background: #333642;
+  margin-right: 3px;
+  margin-left: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#sidebar {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-width: 200px;
+}
+
+/* .mol-container {
+  width: 60%;
+  height: 400px;
+  position: relative;
+} */
+
+.main {
+  flex-basis: 0;
+  flex-grow: 1;
+  min-width: 60%;
+}
+
+/* =============================Drag to resize sidebar end ===================================== */
+
+footer {
+  border: 2px solid wheat;
+  background-color: var(--grey);
+  color: white;
+  bottom: 0 !important;
+}
+
+/* =========================================================== */
+
+.list-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.grid-view {
+  display: flex;
+  flex-direction: colum;
+}
+
+.card-img-bottom {
+  /* width: 100%; */
+  height: 20vw;
+  object-fit: cover;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  border: 3px solid black;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+/* .tooltip:hover .tooltiptext {
+  visibility: visible;
+} */
+
+.all_comps {
+  background-color: #ddd3d0;
+}
+
+.compounds {
+  box-shadow: 0 8px 6px -6px var(--grey);
+}
+
+.compounds:hover {
+  border: 3px solid white;
+  /* box-shadow: 5px 10px rgb(199, 188, 188); */
+  transition: 0.2s ease-out;
+  box-shadow: 0px 5px 12px 0px var(--grey), 0px -5px 12px 0px var(--grey);
+}
+
+.card-link {
+  cursor: pointer !important;
+}
+
+/* ===============================================table==================================== */
+.table {
+  background-color: white;
+}
+
+.results-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  width: 50%;
+  box-shadow: 0 8px 8px 0 var(--grey);
+  transition: 0.5s;
+}
+
+
+.tdclass {
+  position: relative;
+}
+
+.results-select {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  flex-direction: column;
+  max-height: 300px;
+  z-index: 10;
+  width: 100%;
+  box-shadow: 0 8px 8px 0 var(--grey);
+  transition: 0.5s;
+}
+
+.resultslist {
+  background-color: white;
+  color: var(--grey);
+  border: none;
+}
+
+.resultslist:hover {
+  background-color: #ff6e00;
+}
+
+.not-visible {
+  display: none !important;
+}
+
+.visible {
+  display: block;
+}
+
+.scrollbar {
+  overflow: scroll;
+}
+
+.notdisplay {
+  display: none;
+}
+
+#id_Strain_Type {
+  display: block;
+  height: 200px !important;
+  overflow: scroll;
+}
+
+.btnok {
+  border: none;
+  background-color: #ff6e00;
+  color: white;
+
+}
+
+.btnok:hover {
+  border: 2px solid #ff6e00;
+}
+
+td button {
+  border: none;
+  background-color: white;
+  color: var(--teal);
+  margin: 5px 2px 5px 2px;
+
+}
+
+td .btncancel {
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+td .btnsave {
+  position: absolute;
+  top: 0;
+  right: 0px;
+}
+
+td button:hover {
+  color: white;
+  background-color: #ff6e00;
+}
+
+td select option:hover,
+td:hover {
+  background-color: #ff6e00;
+}
+
+th {
+  width: 30% !important;
+}
+
+
+
+
+nav.navbar.shrink {
+  height: 45px;
+}
+
+nav.shrink a {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 15px;
+}
+
+nav.shrink .brand ul {
+  display: none;
+}
+
+nav.shrink .brand .navbar-brand {
+  max-width: 100px;
+}
+
+nav.shrink .navbar-toggle {
+  padding: 4px 5px;
+}
+
+.toLeft {
+  left: 0 !important;
+}

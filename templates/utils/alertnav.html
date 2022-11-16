@@ -1,0 +1,17 @@
+<div id="top-alert">
+    <a class="text-light" href=""><i class="bi bi-house"></i></a>
+    <a class="text-light" href=""><i class="bi bi-info"></i>about us</a>
+    <a class="text-light" href=""><i class="bi bi-git"></i>github</a>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+</div>
+
+<script>
+    $(".btn-close-white").click(function () {
+        $("#top-alert").toggle();
+    });
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+    });
+</script>

@@ -1,0 +1,20 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+{% block content %}
+
+<div class="container-fluid vh-100">
+  <h1>Login Form</h1>
+  <hr />
+  {%include 'utils/message.html'%}
+  <form method="POST" action="{% url 'login'%}">
+    {%csrf_token%} {{ form.as_p}}
+    <p>Don't have account? Create one <a href="/"> here</a>.</p>
+    <p>
+      Forget your password? <a href="/accounts/password_reset/">reset here</a>.
+    </p>
+    <button type="submit" class="btn btn-secondary btn-sm">Log In</button>
+  </form>
+</div>
+
+{%endblock%}
