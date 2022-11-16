@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="row vh-100">
+      <div class="card mx-5 mt-3">
+        <h4 class="my-0">Update Taxonomy: {{object.Organism_Name}}</h4>
+        <hr>
+        <form id="UpdateForm" method="POST" class="post-form" action="{%url 'taxonomy_update' object.Organism_Name %}">
+          {% csrf_token %}
+          {{form.as_p}}
+          <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
+
+        </form>
+        <a href="{% url 'taxo_list' %}">cancel</a>
+      </div>
+
+    </div>
+  </div>
+</div>
