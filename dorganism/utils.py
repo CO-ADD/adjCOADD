@@ -134,6 +134,7 @@ class MySearchbar03(MySearchbar02):
         return queryset.filter(Strain_Type__overlap=value)
 
 
+
 class MySearchbar04(MySearchbar02):
     Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
     Lineage = django_filters.MultipleChoiceFilter(choices="")

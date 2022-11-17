@@ -123,6 +123,7 @@ class Organism(AuditModel):
             Organism_IDSq=Sequence(OrganimsClass)
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = self.str_OrganismID(OrganimsClass,Organism_nextID)
+
             
             while Organism.objects.filter(Organism_Name=Organism_strID).exists():
                 Organism_nextID = next(Organism_IDSq)
@@ -138,7 +139,6 @@ class Organism(AuditModel):
             self.Organism_ID = self.find_Next_OrganismID(str(self.Organism_Name.Class.Dict_Value))
             if self.Organism_ID:
                 super().save(*args, **kwargs)
-            
         else:
             super().save(*args, **kwargs)
 
@@ -193,7 +193,9 @@ class Organism_Batch(AuditModel):
         db_table = 'organism_batch'
 
     def save(self, *args, **kwargs):
+
         if not self.OrgBatch_ID: #Object does not exists
+
             Next_BatchNo = self.find_Next_BatchNo(self.Organism_ID)
             if Next_BatchNo:
                 self.Batch_No = Next_BatchNo
