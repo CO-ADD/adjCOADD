@@ -90,62 +90,62 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD':'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-    # 'dorganism': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD': 'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-
-    # 'ddrug': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD': 'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # }
-
-
     'default': {
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=apputil,public'},
-        'NAME': 'orgdb_local',
-        'HOST': 'Localhost',
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-        'NAME': 'orgdb_local',
-        'TEST': {
-            'NAME': 'mytestdatabase2',
-        },
-        'HOST': 'Localhost',
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
-      'ddrug': {
+
+    'ddrug': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-        'NAME': 'orgdb_local',
-        'HOST': 'Localhost',
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     }
+
+
+    # 'default': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb_local',
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # },
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb_local',
+    #     'TEST': {
+    #         'NAME': 'mytestdatabase2',
+    #     },
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # },
+    #   'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #     'NAME': 'orgdb_local',
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # }
 
    
 

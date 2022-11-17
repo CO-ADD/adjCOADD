@@ -169,7 +169,7 @@ class Organism_Batch(AuditModel):
     Supplier_Code = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier Code")
     Supplier_PO = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier PO")
     Stock_Date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) # Updated by Script
-    Stock_Level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=False, blank=False,editable=False) # Updated by Script
+    Stock_Level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False,editable=False, default=list) # Updated by Script
     Biologist = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
 
     def find_Next_BatchNo(self,Organism_ID) -> int:
