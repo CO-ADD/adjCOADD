@@ -16,7 +16,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 
-from .models import  Organisms, Taxonomy
+from .models import  Organism, Taxonomy
 from .utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03, MySearchbar04
 from apputil.models import Dictionaries
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
@@ -27,7 +27,7 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
 class TaxonomyCardView(LoginRequiredMixin, ListView):
     model=Taxonomy  
-    template_name = 'dOrganism/readForm/Taxonomy_card.html' 
+    template_name = 'dorganism/readForm/Taxonomy_card.html' 
     paginate_by=24
 
     def get_context_data(self, **kwargs):
@@ -41,7 +41,7 @@ class TaxonomyCardView(LoginRequiredMixin, ListView):
 
 # ==========List View================================Read===========================================
 class TaxonomyListView(TaxonomyCardView):
-    template_name = 'dOrganism/readForm/Taxonomy_list.html'
+    template_name = 'dorganism/readForm/Taxonomy_list.html'
 
 # ====================================================Create===========================================
 @login_required(login_url='/login/')
@@ -61,7 +61,7 @@ def createTaxonomy(req):
         else:
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dOrganism/createForm/Taxonomy_c.html', {'form':form})
+    return render(req, 'dorganism/createForm/Taxonomy_c.html', {'form':form})
     
 # ====================================================Update in Form===========================================
 @login_required(login_url='/login/')
@@ -81,7 +81,7 @@ def updateTaxonomy(req, pk):
             return redirect("/")
         else:
             print(form.errors)
-    return render(req, 'dOrganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
+    return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
 @user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
@@ -100,11 +100,11 @@ def deleteTaxonomy(req, pk):
 
     
 
-# # ========================================Organisms CREATE READ UPDATE DELETE View==============================================#
+# # ========================================Organism CREATE READ UPDATE DELETE View==============================================#
 # ==============================List View ===============================================================
 class OrganismListView(LoginRequiredMixin, ListView):
-    model=Organisms  
-    template_name = 'dOrganism/readForm/Organism_list.html'
+    model=Organism  
+    template_name = 'dorganism/readForm/Organism_list.html'
     paginate_by=3
 
     def get_context_data(self, **kwargs):
@@ -128,7 +128,7 @@ class OrganismListView(LoginRequiredMixin, ListView):
 
 class OrganismCardView(OrganismListView):
 
-    template_name = 'dOrganism/readForm/Organism_card.html'
+    template_name = 'dorganism/readForm/Organism_card.html'
 
 
 
@@ -137,7 +137,7 @@ def detailTaxonomy(req, pk):
     context={}
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)    
     context["Taxonomy"]=object_
-    return render(req, "dOrganism/readForm/Taxonomy_detail.html", context)
+    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 # ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
@@ -146,7 +146,7 @@ def detailTaxonomy(req, pk):
     # =============================step 2. Create new record by form===================#
 @login_required
 @user_passes_test(lambda u: u.is_staff) 
-def createOrgnisms(req):
+def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
@@ -181,14 +181,14 @@ def createOrgnisms(req):
 
     else:
         form=CreateOrganism_form()
-    return render(req, 'dOrganism/createForm/Organism_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/createForm/Organism_c.html', { 'form':form, }) 
 
 
 #=========================================Organism detail table with updating in detail table========================================================================================
 @login_required
 def detailOrganism(req, pk):
     context={}
-    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    object_=get_object_or_404(Organism, Organism_ID=pk)
     form=UpdateOrganism_form(instance=object_)
     Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
     Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") #
@@ -205,7 +205,7 @@ def detailOrganism(req, pk):
     context["MTA_Status_choice"]=MTA_Status_choice
     context["Bio_Approval_choice"]=Bio_Approval_choice
 
-    return render(req, "dOrganism/readForm/Organism_detail.html", context)
+    return render(req, "dorganism/readForm/Organism_detail.html", context)
 
 @user_passes_test(lambda u: u.is_staff) 
 @csrf_protect
@@ -213,7 +213,7 @@ def detailChangeOrganism(req):
     kwargs={}
     kwargs['user']=req.user 
     id=req.POST.get('id', '')
-    object_=get_object_or_404(Organisms, Organism_ID=id)
+    object_=get_object_or_404(Organism, Organism_ID=id)
     value=req.POST.get('value','')
     type_value=req.POST.get('type', '')
 
@@ -229,8 +229,8 @@ def detailChangeOrganism(req):
         try:
             fields={type_value: value}
             print(fields)
-            Organisms.objects.filter(pk=id).update(**fields)
-            object_=get_object_or_404(Organisms, Organism_ID=id)
+            Organism.objects.filter(pk=id).update(**fields)
+            object_=get_object_or_404(Organism, Organism_ID=id)
             object_.save(**kwargs)
         except Exception as err:
             print(err)
@@ -241,7 +241,7 @@ def detailChangeOrganism(req):
 @login_required
 @user_passes_test(lambda u: u.is_staff) 
 def updateOrganism(req, pk):
-    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    object_=get_object_or_404(Organism, Organism_ID=pk)
     kwargs={}
     kwargs['user']=req.user
     #This can be minimized when all organism have classes... ----------------
@@ -254,7 +254,7 @@ def updateOrganism(req, pk):
 
         try:
             with transaction.atomic(using='drugs_db'):        # testing!
-                obj = Organisms.objects.select_for_update().get(Organism_ID=pk)
+                obj = Organism.objects.select_for_update().get(Organism_ID=pk)
                 #------------------------If update Organism Name-----------------------------------
                 if  req.POST.get('searchbar_01'):
                     Organism_Name_str=req.POST.get('searchbar_01')
@@ -290,14 +290,14 @@ def updateOrganism(req, pk):
         "Class":Organism_Class_str
     }
    
-    return render(req, "dOrganism/updateForm/Organism_u.html", context)
+    return render(req, "dorganism/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
 @user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    object_=get_object_or_404(Organisms, Organism_ID=pk)
+    object_=get_object_or_404(Organism, Organism_ID=pk)
     try:      
         object_.delete(**kwargs)
         print("deleted")
@@ -349,10 +349,10 @@ def import_excel_taxo(req):
                     print(err)
                 # obj.save()
             
-            return render(req, 'dOrganism/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'dorganism/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
-    return render(req, 'dOrganism/createForm/importDataForm/importexcel.html', {})
+    return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
 def import_excel_dict(req):
@@ -372,16 +372,16 @@ def import_excel_dict(req):
                 obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
                 print(type(obj))
           
-            return render(req, 'dOrganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'dorganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(f'import failed because {err}')
-    return render(req, 'dOrganism/createForm/importDataForm/importexcel.html', {})
+    return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 
 
 
-#==================================================================import Organisms================================================
+#==================================================================import Organism================================================
 @login_required
-def import_excel_organisms(req):
+def import_excel_organism(req):
     print('importing....')
     try:
         if req.method=='POST' and req.FILES['myfile']:
@@ -400,7 +400,7 @@ def import_excel_organisms(req):
                 organism_fkey=Taxonomy.objects.filter(Organism_Name=dbframe[1])
                 print(organism_fkey[0])   
                 try:
-                    obj, created=Organisms.objects.get_or_create(Organism_ID=dbframe[0], Organism_Class_set=organism_fkey[0], Organism_Name=dbframe[1], Organism_Desc=dbframe[2], Strain_ID=dbframe[3], 
+                    obj, created=Organism.objects.get_or_create(Organism_ID=dbframe[0], Organism_Class_set=organism_fkey[0], Organism_Name=dbframe[1], Organism_Desc=dbframe[2], Strain_ID=dbframe[3], 
                                     Strain_Code=dbframe[5], Strain_Desc=dbframe[6], Strain_Notes=dbframe[7], 
                                     Strain_Tissue=dbframe[25], Strain_Type=dbframe[4], Sequence=dbframe[28], Sequence_Link=dbframe[29], Geno_Type=dbframe[33],
                                     Screen_Type=screen_panel, 
@@ -410,10 +410,10 @@ def import_excel_organisms(req):
                     print(err)
                 # obj.save()
             
-            return render(req, 'dOrganism/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
-    return render(req, 'dOrganism/createForm/importDataForm/importexcel.html', {})
+    return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 
 
 #======================================================Export Data Views Function==================================================#  

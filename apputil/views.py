@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ApplicationUser, Dictionaries
-from dOrganism.models import  Taxonomy
+from dorganism.models import  Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
 from django.contrib import messages
@@ -47,7 +47,7 @@ def logout_user(req):
 
 
 def index(req):
-    return render(req, 'dOrganism/home.html')
+    return render(req, 'dorganism/home.html')
 
 
 

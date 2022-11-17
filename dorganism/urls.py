@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organisms, createOrgnisms, detailOrganism,
+from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
                         updateOrganism, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
                         detailChangeOrganism, OrganismListView,OrganismCardView, deleteOrganism)
 from .utils import searchbar_01
@@ -18,7 +18,7 @@ urlpatterns = [
    
 
     path('searchbar_01/', searchbar_01, name="searchbar_01"),
-    path('createOrg/', createOrgnisms, name="org_create"),
+    path('createOrg/', createOrganism, name="org_create"),
     path('createTaxo/', createTaxonomy, name="taxo_create"),
 
     path('updatetaxo/<str:pk>', updateTaxonomy, name="taxonomy_update"),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('deleteTaxo/<str:pk>', deleteTaxonomy, name="taxonomy_delete"),
     #=======================Data Export/Import===================================================================
     path('exportData/', exportCSV, name="dataexport"),
-    path('import_organisms/', import_excel_organisms, name="importOrg"),
+    path('import_organism/', import_excel_organism, name="importOrg"),
     path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),
     
     path('import_dictionary/', import_excel_dict, name="importDict"),

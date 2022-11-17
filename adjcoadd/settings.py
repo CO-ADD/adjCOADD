@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     'django_rdkit',
     'django_filters',
     "sequences.apps.SequencesConfig",
+    "django.contrib.postgres",
+    "psqlextra",
     'apputil.apps.ApptilConfig',
-    'dOrganism.apps.DOrganismConfig',
-    'dTestapp.apps.DTestappConfig',
+    'dorganism.apps.DorganismConfig',
+    'ddrug.apps.DdrugConfig',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'adjCOADD.urls'
+ROOT_URLCONF = 'adjcoadd.urls'
 
 TEMPLATES = [
     {
@@ -81,84 +83,84 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'adjCOADD.wsgi.application'
+WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    
-
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     # 'OPTIONS':{'options': '-c search_path=app'},
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres', #os.environ.get('db_user'),
-    #     'PASSWORD':'',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-    # 'drugs_db01': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=drugs_db01,public'},
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres', #os.environ.get('db_user'),
-    #     'PASSWORD': '',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-
-    # 'drugs_db02': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=drugs_db02,public'},
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres', #os.environ.get('db_user'),
-    #     'PASSWORD': '',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # }
-
-
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=app'},
-        'NAME': 'multi_schema',
-        # 'USER': 'postgres', #os.environ.get('db_user'),
-        # 'PASSWORD':os.environ.get('db_password', 'password'),
-       
-        'HOST': 'Localhost',
-        'PORT': '5432',
-    },
-    'drugs_db01': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=drugs_db01,app'},
-        'NAME': 'multi_schema',
-        'TEST': {
-            'NAME': 'mytestdatabase2',
-        },
-        # 'USER': 'postgres', #os.environ.get('db_user'),
-        # 'PASSWORD': os.environ.get('db_password','password'),
-        'HOST': 'Localhost',
-        'PORT': '5432',
-    },
-      'drugs_db02': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS':{'options': '-c search_path=drugs_db02,app'},
-        'NAME': 'multi_schema',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-        # 'USER': 'postgres', #os.environ.get('db_user'),
-        # 'PASSWORD': os.environ.get('db_password','password'),
-        'HOST': 'Localhost',
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'PORT': '5432',
+    },
+    'dorganism': {
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'PORT': '5432',
+    },
+
+    'ddrug': {
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     }
+
+
+    # 'default': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb_local',
+    #     # 'USER': 'postgres', #os.environ.get('db_user'),
+    #     # 'PASSWORD':os.environ.get('db_password', 'password'),
+       
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # },
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb_local',
+    #     'TEST': {
+    #         'NAME': 'mytestdatabase2',
+    #     },
+    #     # 'USER': 'postgres', #os.environ.get('db_user'),
+    #     # 'PASSWORD': os.environ.get('db_password','password'),
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # },
+    #   'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil'},
+    #     'NAME': 'orgdb_local',
+        
+    #     # 'USER': 'postgres', #os.environ.get('db_user'),
+    #     # 'PASSWORD': os.environ.get('db_password','password'),
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # }
 
    
 
 
 }
 
-DATABASE_ROUTERS = ['dOrganism.dbRouter.DrugsRouter','dTestapp.dbRouter.DrugsRouter']
+DATABASE_ROUTERS = ['dorganism.dbRouter.DrugsRouter','ddrug.dbRouter.DrugsRouter']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

@@ -1,9 +1,9 @@
 import threading
 from django.test import RequestFactory, TestCase
-from .models import Organisms, Taxonomy
+from .models import Organism, Taxonomy
 from .views import updateOrganism, createOrgnisms, TaxoCreate
 
-TestCase.databases={'dOrganism'}
+TestCase.databases={'dorganism'}
 # ====================================test Concurrently=======================================
 def test_concurrently(times):
     """
@@ -38,7 +38,7 @@ def test_concurrently(times):
 # class CreateOrganismTestCase(TestCase):
 #     def setUp(self):
 #         self.factory=RequestFactory()
-#         self.organism=Organisms.objects.create_orgnisms(Organism_Name='for test', Risk_Group='RG03' )
+#         self.organism=Organism.objects.create_orgnisms(Organism_Name='for test', Risk_Group='RG03' )
 
 #     @test_concurrently(15)
 #     def test_update(self):

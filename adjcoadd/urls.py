@@ -9,7 +9,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from apputil.views import index
-import dOrganism.urls
+import dorganism.urls
 import apputil.urls
 from apputil.views import login_user, logout_user
 
@@ -24,7 +24,7 @@ urlpatterns = [
     path('accounts/logout/', logout_user, name='logout' ), 
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
-    path('', include('dOrganism.urls')),
+    path('', include('dorganism.urls')),
    
 ]
 
