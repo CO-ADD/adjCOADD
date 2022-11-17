@@ -385,3 +385,4 @@ dmypy.json
 /static/images
 
 #csv
+/zbackup/
