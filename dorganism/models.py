@@ -36,6 +36,7 @@ class Taxonomy(AuditModel):
     
     class Meta:
         ordering=['Organism_Name']
+        db_table = 'taxonomy'
 
 
     def __str__(self) -> str:
@@ -43,13 +44,6 @@ class Taxonomy(AuditModel):
 
     
 
-class Gene(models.Model):
-    pass
-    """
-    List of different bacterial genes  of Organisms/Bacterias/Fungi/Cells in Isolate Collection
-    """
-
-#-------------------------------------------------------------------------------------------------
 
 
 
@@ -115,6 +109,7 @@ class Organism(AuditModel):
             models.Index(name="org_riskgrp_idx", fields=['Risk_Group']),
             models.Index(name="org_pathgrp_idx", fields=['Pathogen_Group']),
         ]
+        db_table = 'organism'
 
     def __str__(self) -> str:
         return f"{self.Organism_ID} ({self.Strain_Code})"
@@ -190,6 +185,7 @@ class Organism_Batch(AuditModel):
             models.Index(name="orgbatch_sdate_idx",fields=['Stock_Date']),
             models.Index(name="orgbatch_slevel_idx",fields=['Stock_Level']),
         ]
+        db_table = 'organism_batch'
 
     def save(self, *args, **kwargs):
         if not self.Batch_ID: #Object does not exists
@@ -235,6 +231,7 @@ class OrgBatch_Stock(AuditModel):
             models.Index(name="orgbstock_stdate_idx",fields=['Stock_Date']),
             models.Index(name="orgbstock_nleft_idx",fields=['N_Left']),
         ]
+        db_table = 'orgbatch_stock'
     def __str__(self) -> str:
         return f"{self.OrgBatch_ID} {self.Stock_Type} {self.N_Left}"
 
@@ -266,5 +263,6 @@ class Organism_Culture(AuditModel):
             models.Index(name="orgcult_media_idx",fields=['Media_Use']),
             models.Index(name="orgcult_ctype_idx",fields=['Culture_Type']),
         ]
+        db_table = 'organism_culture'
     def __str__(self) -> str:
         return f"{self.Organism_ID} {self.Media_Use} {self.Culture_Type}"

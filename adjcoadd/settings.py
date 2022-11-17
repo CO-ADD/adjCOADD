@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "psqlextra",
     'apputil.apps.ApptilConfig',
     'dorganism.apps.DorganismConfig',
-    'ddrugs.apps.DdrugsConfig',
+    'ddrug.apps.DdrugConfig',
 ]
 
 MIDDLEWARE = [
@@ -90,54 +90,52 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    
-
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
         "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=app'},
-        'NAME': 'postgres',
-        'USER': 'postgres', #os.environ.get('db_user'),
-        'PASSWORD':'',
+        'OPTIONS':{'options': '-c search_path=apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
         'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
-    'drugs_db01': {
+    'dorganism': {
         "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=drugs_db01,app'},
-        'NAME': 'postgres',
-        'USER': 'postgres', #os.environ.get('db_user'),
-        'PASSWORD': '',
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
         'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
 
-    'drugs_db02': {
+    'ddrug': {
         "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=drugs_db02,app'},
-        'NAME': 'postgres',
-        'USER': 'postgres', #os.environ.get('db_user'),
-        'PASSWORD': '',
+        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
         'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     }
 
 
     # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=app'},
-    #     'NAME': 'multi_schema',
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb_local',
     #     # 'USER': 'postgres', #os.environ.get('db_user'),
     #     # 'PASSWORD':os.environ.get('db_password', 'password'),
        
     #     'HOST': 'Localhost',
     #     'PORT': '5432',
     # },
-    # 'drugs_db01': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=drugs_db01,app'},
-    #     'NAME': 'multi_schema',
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb_local',
     #     'TEST': {
     #         'NAME': 'mytestdatabase2',
     #     },
@@ -146,10 +144,10 @@ DATABASES = {
     #     'HOST': 'Localhost',
     #     'PORT': '5432',
     # },
-    #   'drugs_db02': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'OPTIONS':{'options': '-c search_path=drugs_db02,app'},
-    #     'NAME': 'multi_schema',
+    #   'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil'},
+    #     'NAME': 'orgdb_local',
         
     #     # 'USER': 'postgres', #os.environ.get('db_user'),
     #     # 'PASSWORD': os.environ.get('db_password','password'),
@@ -162,7 +160,7 @@ DATABASES = {
 
 }
 
-DATABASE_ROUTERS = ['dorganism.dbRouter.DrugsRouter','ddrugs.dbRouter.DrugsRouter']
+DATABASE_ROUTERS = ['dorganism.dbRouter.DrugsRouter','ddrug.dbRouter.DrugsRouter']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
