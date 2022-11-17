@@ -122,16 +122,17 @@ class MySearchbar02(django_filters.FilterSet):
 
 
 class MySearchbar03(MySearchbar02):
-    pass
-    # Organism_Name = django_filters.CharFilter(field_name='Organism_Name__Organism_Name', lookup_expr='icontains')
-    # Organism_Class=django_filters.ChoiceFilter(field_name='Organism_Name__Class__Dict_Value', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organism.Choice_Dictionaries['Organism_Class']))
-    # Strain_Type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organism.Choice_Dictionaries['Strain_Type']))
-    # class Meta:
-    #     model=Organism
-    #     fields=['Organism_ID', 'Strain_Code', 'Strain_ID',  'Strain_Notes', 'Strain_Type', 'MTA_Document', ]
+    # pass
+    Organism_Name = django_filters.CharFilter(field_name='Organism_Name__Organism_Name', lookup_expr='icontains')
+    Organism_Class=django_filters.ChoiceFilter(field_name='Organism_Name__Class__Dict_Value', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organism.Choice_Dictionaries['Organism_Class']))
+    Strain_Type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionaries(Dictionaries, Organism.Choice_Dictionaries['Strain_Type']))
+    class Meta:
+        model=Organism
+        fields=['Organism_ID', 'Strain_Code', 'Strain_ID',  'Strain_Notes', 'Strain_Type', 'MTA_Document', ]
        
-    # def my_custom_filter(self, queryset, name, value):
-    #     return queryset.filter(Strain_Type__overlap=value)
+    def my_custom_filter(self, queryset, name, value):
+        return queryset.filter(Strain_Type__overlap=value)
+
 
 
 class MySearchbar04(MySearchbar02):

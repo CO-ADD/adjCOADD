@@ -1,5 +1,6 @@
-<div class="modal-dialog" width="800px">
-  <div class="modal-content" width='100%'>
+<div class="modal-dialog">
+  <div class="modal-content" style="width: 50rem;">
+
 
 
     <div class="card mt-3 text-left">
@@ -9,7 +10,7 @@
       <hr>
       <form method="POST" class="post-form" name="create" action="{%url 'org_create'%}">
         {% csrf_token %}
-        {{form.as_table}}
+        {{form}}
         <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
 
         <hr>

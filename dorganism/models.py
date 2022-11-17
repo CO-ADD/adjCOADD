@@ -118,21 +118,26 @@ class Organism(AuditModel):
         return f"{OrganimsClass}_{OrganismNo:04d}"
 
     def find_Next_OrganismID(self,OrganimsClass,OrganismClassTypes = ['GN','GP','MB','FG','MA']) -> str:
+        print(f"this is find_Next_OrganismID...OrganimsClass={OrganimsClass}")
         if OrganimsClass in OrganismClassTypes:
             Organism_IDSq=Sequence(OrganimsClass)
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = self.str_OrganismID(OrganimsClass,Organism_nextID)
-            while self.objects.filter(Organism_Name=Organism_strID).exists():
+
+            
+            while Organism.objects.filter(Organism_Name=Organism_strID).exists():
                 Organism_nextID = next(Organism_IDSq)
                 Organism_strID = self.str_OrganismID(OrganimsClass,Organism_nextID)
+                print(f"name: {Organism_strID}")
             return(Organism_strID)    
         else:
             return(None)
 
     def save(self, *args, **kwargs):
         if not self.Organism_ID: #Object does not exists
-            Next_OrganismID = self.find_Next_OrganismID(str(self.Organism_Name.Class.Dict_Value))
-            if Next_OrganismID:
+            print("this is save from organism model...")
+            self.Organism_ID = self.find_Next_OrganismID(str(self.Organism_Name.Class.Dict_Value))
+            if self.Organism_ID:
                 super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
@@ -164,7 +169,7 @@ class Organism_Batch(AuditModel):
     Supplier_Code = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier Code")
     Supplier_PO = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier PO")
     Stock_Date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) # Updated by Script
-    Stock_Level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=False, blank=False,editable=False) # Updated by Script
+    Stock_Level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False,editable=False, default=list) # Updated by Script
     Biologist = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
 
     def find_Next_BatchNo(self,Organism_ID) -> int:
@@ -188,7 +193,9 @@ class Organism_Batch(AuditModel):
         db_table = 'organism_batch'
 
     def save(self, *args, **kwargs):
-        if not self.Batch_ID: #Object does not exists
+
+        if not self.OrgBatch_ID: #Object does not exists
+
             Next_BatchNo = self.find_Next_BatchNo(self.Organism_ID)
             if Next_BatchNo:
                 self.Batch_No = Next_BatchNo

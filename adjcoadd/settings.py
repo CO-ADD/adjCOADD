@@ -126,9 +126,6 @@ DATABASES = {
     #     "ENGINE": "psqlextra.backend",
     #     'OPTIONS':{'options': '-c search_path=apputil,public'},
     #     'NAME': 'orgdb_local',
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD':os.environ.get('db_password', 'password'),
-       
     #     'HOST': 'Localhost',
     #     'PORT': '5432',
     # },
@@ -139,18 +136,13 @@ DATABASES = {
     #     'TEST': {
     #         'NAME': 'mytestdatabase2',
     #     },
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD': os.environ.get('db_password','password'),
     #     'HOST': 'Localhost',
     #     'PORT': '5432',
     # },
     #   'ddrug': {
     #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil'},
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
     #     'NAME': 'orgdb_local',
-        
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD': os.environ.get('db_password','password'),
     #     'HOST': 'Localhost',
     #     'PORT': '5432',
     # }

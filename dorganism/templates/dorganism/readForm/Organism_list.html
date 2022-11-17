@@ -61,8 +61,9 @@
 
                     <ul class="m-auto">
 
-                        <li><a class="m-auto" href="{%url 'org_detail' object.Organism_ID %}">Details</a></li>
-                        <li><a class="m-auto" href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></li>
+                        <li><a class="m-auto" href="{%url 'org_detail' object.pk %}">Details</a></li>
+                        <li><a class="m-auto" href="{% url 'organism_delete' object.pk %}">Delete</a></li>
+
                     </ul>
                     <p class="fw-lighter fs-6 m-auto"></p>
                     <ul class="fw-lighter fs-6 m-auto">

@@ -164,7 +164,8 @@ def createOrganism(req):
                 print("form is valid")  
                 try:
                     with transaction.atomic():
-                        instance=form.save(commit=False)                  
+                        instance=form.save(commit=False) 
+                        print("form save")                 
                         instance.save(**kwargs)
                         print("saved")
                         return redirect("org_list")
