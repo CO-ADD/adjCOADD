@@ -1,12 +1,12 @@
-from .models import Drugbank#, Dictionaries
+from .models import Drug, VITEK_Card,VITEK_AST,VITEK_ID#, Dictionaries
 
-Route_list=[Drugbank]#,Dictionaries
+Route_list=[Drug, VITEK_Card,VITEK_AST,VITEK_ID]#,Dictionaries
 class DrugsRouter:
     """
     A router to control all database operations on models in the
     applications.
     """
-    route_app_labels={'ddrugs'}
+    route_app_labels={'ddrug'}
    
 
     def db_for_read(self, model, **hints):
@@ -14,7 +14,7 @@ class DrugsRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db02'
+            return 'ddrug'
         return None
 
     def db_for_write(self, model, **hints):
@@ -22,7 +22,7 @@ class DrugsRouter:
         Attempts to write auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db02'
+            return 'ddrug'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -43,5 +43,5 @@ class DrugsRouter:
         'auth_db' database.
         """
         if app_label in self.route_app_labels:
-            return db == 'drugs_db02'
+            return db == 'ddrug'
         return None

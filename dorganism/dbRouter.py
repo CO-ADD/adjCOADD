@@ -1,6 +1,6 @@
-from .models import  Taxonomy, Gene, Organism #, Dictionaries
+from .models import  Taxonomy,  Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture  #, Dictionaries
 
-Route_list=[Taxonomy, Gene, Organism]#, Dictionaries
+Route_list=[Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture]#, Dictionaries
 class DrugsRouter:
     """
     A router to control all database operations on models in the
@@ -14,7 +14,7 @@ class DrugsRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db01'
+            return 'dorganism'
         return None
 
     def db_for_write(self, model, **hints):
@@ -22,7 +22,7 @@ class DrugsRouter:
         Attempts to write auth and contenttypes models go to auth_db.
         """
         if model in Route_list:
-            return 'drugs_db01'
+            return 'dorganism'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -43,5 +43,5 @@ class DrugsRouter:
         'auth_db' database.
         """
         if app_label in self.route_app_labels:
-            return db == 'drugs_db01'
+            return db == 'dorganism'
         return None
