@@ -40,36 +40,55 @@
     </script>
 
 
-    <h2>Organism Table</h2>
+    <h2>Organism Card View</h2>
     <div class="contain-fluid">
-      <div class="row d-flex flex-wrap">
-        {% for object in object_list %}
+      <div class="row d-flex flex-wrap ">
+        {% for object in object_list%}
+        <!-- object_list -->
+        <div class="col-md-4 vh-80 border border-2 m-5">
+          <!-- <div class="card bg-transparent my-2 flex-row"> -->
 
-        <div class="col-md-4 vh-80">
-          <div class="card bg-transparent my-2">
-            <div class="card-body">
-              {%load static%}
+          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="m-auto"
+              href="{%url 'org_detail' object.pk %}">{{object.Organism_Name}} <br><span class="fw-light fs-6">
+                (ID:
+                {{object.Organism_ID}} )</span>
+            </a>
+          </p>
 
-              <img class="card-img m-auto" src="{%static 'images/'%}{{object.id}}.svg" alt="Structure" />
-              <p class="lead fs-4 m-auto">ID: {{object.ID}}</p>
-              <h5 class="bi bi-tag fw-bold lead fs-4 m-auto">
-                Name: {{object.Organism_Name}}
-              </h5>
+          <p class="fw-lighter fs-6 m-auto"><a class="m-auto" href="{% url 'organism_delete' object.pk %}">Delete</a>
+          </p>
+          <ul class="fw-lighter fs-6 m-auto">
+            <li>Created by: {{object.acreated_by}}</li>
+            <li>Created at:{{object.acreated_at}}</li>
+            {%if object.aupdated_by%}
+            <li>Updated at: {{object.aupdated_by}}</li>
+            <li>Updated at: {{object.aupdated_at}}</li>
+            {%endif%}
+          </ul>
+          <p>
+          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.id}}"
+            aria-expanded="false" aria-controls="{{object.id}}">
+            <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+          </div>
 
-              <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{taxo.id}}"
-                aria-expanded="false" aria-controls="{{taxo.id}}">
-                <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
-              </div>
+          </p>
+          <div class="collapse" id="collapse{{object.id}}">
 
-              <div class="collapse" id="collapse{{taxo.id}}">
-                <div class="card-body d-flex flex-column align-items-start">
-                  ...informations
-                </div>
-              </div>
+            <div class="card-body d-flex flex-column align-items-start">
+
+
+              <!--prettier-ignore-->
+
             </div>
           </div>
+          <!-- </div> -->
+
+          <!-- ------------------------------------------------------------------------------------------------------- -->
+
+          <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
         </div>
         {%endfor%}
+
       </div>
       <hr />
       {% include 'utils/pagination.html'%}

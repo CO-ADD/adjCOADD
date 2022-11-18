@@ -43,6 +43,14 @@ class TaxonomyCardView(LoginRequiredMixin, ListView):
 class TaxonomyListView(TaxonomyCardView):
     template_name = 'dorganism/readForm/Taxonomy_list.html'
 
+# ===========Detail View=============================Read============================================
+@login_required
+def detailTaxonomy(req, pk):
+    context={}
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    context["Taxonomy"]=object_
+    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
+
 # ====================================================Create===========================================
 @login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_staff) 
@@ -132,12 +140,6 @@ class OrganismCardView(OrganismListView):
 
 
 
-@login_required
-def detailTaxonomy(req, pk):
-    context={}
-    object_=get_object_or_404(Taxonomy, Organism_Name=pk)    
-    context["Taxonomy"]=object_
-    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 # ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 

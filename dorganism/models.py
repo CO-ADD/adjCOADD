@@ -144,7 +144,8 @@ class Organism(AuditModel):
 
     def __iter__(self):
         for field in self._meta.fields:
-            yield (field.verbose_name, field.value_to_string(self))
+            if field.verbose_name in ['Organism ID', 'Organism Name',  'Strain ID', 'Strain OtherID', 'Strain Code', 'Strain Notes', 'Origin']:
+                yield (field.verbose_name, field.value_to_string(self))
     
 
 #-------------------------------------------------------------------------------------------------
