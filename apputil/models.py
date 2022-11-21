@@ -34,7 +34,7 @@ class ApplicationUser(AbstractUser):
       
 
     def __str__(self) -> str:
-        return f"{self.username}" #f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
+        return f"{self.name}" #f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
 
 #-------------------------------------------------------------------------------------------------

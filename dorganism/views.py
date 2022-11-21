@@ -53,7 +53,7 @@ def detailTaxonomy(req, pk):
 
 # ====================================================Create===========================================
 @login_required(login_url='/login/')
-@user_passes_test(lambda u: u.permissions=='staff', redirect_field_name=None) 
+@user_passes_test(lambda u: u.permissions=='staff', login_url='/login/') 
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
