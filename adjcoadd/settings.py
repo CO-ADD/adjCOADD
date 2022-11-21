@@ -90,6 +90,7 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+
     # 'default': {
     #     # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
@@ -127,12 +128,14 @@ DATABASES = {
         'OPTIONS':{'options': '-c search_path=apputil,public'},
         'NAME': 'orgdb',
         'HOST': 'Localhost',
+
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
         'NAME': 'orgdb',
+
         'TEST': {
             'NAME': 'mytestdatabase2',
         },
@@ -146,6 +149,7 @@ DATABASES = {
         'HOST': 'Localhost',
         'PORT': '5432',
     }
+
 
    
 
@@ -199,6 +203,7 @@ import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
 
+
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
@@ -213,5 +218,7 @@ AUTH_LDAP_BIND_PASSWORD = ""
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
 
+
 # Security Setting
 # CSRF_COOKIE_SECURE=True
+

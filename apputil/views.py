@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
 from .models import ApplicationUser, Dictionary
+
 from dorganism.models import  Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView

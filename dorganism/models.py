@@ -138,7 +138,7 @@ class Organism(AuditModel):
             self.Organism_ID = self.find_Next_OrganismID(str(self.Organism_Name.Class.Dict_Value))
             if self.Organism_ID:
                 super().save(*args, **kwargs)
-            
+
         else:
             super().save(*args, **kwargs)
 
@@ -155,6 +155,7 @@ class Organism_Batch(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
+
         'QC_Status':'QC_Status',
     }
 

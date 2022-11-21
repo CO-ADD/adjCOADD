@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Organism, Taxonomy
+
 from apputil.models import Dictionary
 
 
@@ -48,6 +49,7 @@ def clearIMGfolder():
 
 
 def querysetToChoiseList_Dictionary(model_name, field_name):
+
     options=model_name.objects.filter(Dictionary_Class=field_name).values('Dict_Value', 'Dict_Desc')
     if options:
 
