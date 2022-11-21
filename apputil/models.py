@@ -14,8 +14,8 @@ class ApplicationUser(AbstractUser):
     
     choices_permission=(('general user', 'general user| general user can read record'), ('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
 #-------------------------------------------------------------------------------------------------
-    username = models.CharField(primary_key=True, max_length=55,)        # J.Zuegg
-    user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
+    username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
     # title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
     # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
     # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
@@ -34,11 +34,8 @@ class ApplicationUser(AbstractUser):
       
 
     def __str__(self) -> str:
-        return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
+        return f"{self.username}" #f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
-    def save(self, *args, **kwargs):
-        self.username=self.user_id
-        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):

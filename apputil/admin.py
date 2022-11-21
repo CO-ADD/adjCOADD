@@ -5,7 +5,7 @@ from .models import  ApplicationUser, Dictionary
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    list_display=("username","email","is_staff", "user_id")
+    list_display=("username","email","is_staff", "name")
 
 class DictAdmin(admin.ModelAdmin):
     def save(self, request, *args, **kwargs):

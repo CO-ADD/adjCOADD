@@ -18,7 +18,7 @@ from django.views.generic import ListView, TemplateView
 
 from .models import  Organism, Taxonomy
 from .utils import  querysetToChoiseList_Dictionary, MySearchbar02, MySearchbar03, MySearchbar04
-from apputil.models import Dictionary
+from apputil.models import Dictionary, ApplicationUser
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
 
@@ -154,11 +154,14 @@ def createOrganism(req):
     '''
     
     kwargs={}
-    kwargs['user']=req.user 
+    kwargs['user']=req.user
+    print(f"in view: {req.user}")
+
+    form=CreateOrganism_form(req.user)
     if req.method=='POST':
         Organism_Name=req.POST.get('searchbar_01')
         Strain_Type_list=req.POST.getlist('Strain_Type')
-        form=CreateOrganism_form(Organism_Name, req.POST)
+        form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         
         try:
@@ -169,7 +172,7 @@ def createOrganism(req):
                         instance=form.save(commit=False) 
                         print("form save")                 
                         instance.save(**kwargs)
-                        print("saved")
+                        print("saved--view info")
                         return redirect("org_list")
 
                 except IntegrityError as err:
@@ -182,8 +185,6 @@ def createOrganism(req):
             print(f'error is {form.errors} with {err}')
             return redirect(req.META['HTTP_REFERER'])
 
-    else:
-        form=CreateOrganism_form()
     return render(req, 'dorganism/createForm/Organism_c.html', { 'form':form, }) 
 
 

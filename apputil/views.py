@@ -77,7 +77,7 @@ class AppUserListView(LoginRequiredMixin, ListView):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    fields=['user_id', 'permissions']
+    fields=['name', 'username', 'permissions']
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
@@ -89,7 +89,7 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
 
 class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
-    fields=['user_id', 'permissions', ]
+    fields=['name', 'permissions', ]
     template_name = 'apputil/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
 

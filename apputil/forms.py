@@ -33,7 +33,7 @@ class Login_form(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         print(username)
-        if ApplicationUser.objects.filter(user_id=username):
+        if ApplicationUser.objects.filter(username=username):
             self.user_cache = authenticate(username=username,
 										   password=password)
         else:

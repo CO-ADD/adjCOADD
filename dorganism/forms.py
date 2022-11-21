@@ -2,7 +2,7 @@ from django import forms
 from django.core.paginator import Paginator
 from django.forms import ModelForm
 from dorganism.utils import querysetToChoiseList_Dictionary
-from apputil.models import Dictionary
+from apputil.models import Dictionary, ApplicationUser
 from .models import Organism, Taxonomy
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
@@ -22,14 +22,21 @@ class CreateOrganism_form(ModelForm):
     MTA_Status = forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     Bio_Approval = forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     Organism_Name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
+    Biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all())
    
-   
-    def __init__(self,  Organism_Name=None, *args, **kwargs): #Strain_Type_choices,
+    def __init__(self, user, Organism_Name=None, *args, **kwargs): #Strain_Type_choices,
         self.Organism_Name=Organism_Name
+        user=user
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         Strain_Type_choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Strain_Type']) # 
+        # user=kwargs.pop("user")
+        
 
+        # print(type(user))
+        self.initial['Biologist']= ApplicationUser.objects.filter(username=user)[0]
+       
         self.strainTypeChoices= Strain_Type_choices
+        
         self.fields['Strain_Type'].widget = forms.CheckboxSelectMultiple(choices=self.strainTypeChoices)
         self.fields['Strain_Type'].widget.attrs.update({'class': 'special'})
         self.fields['Oxygen_Pref'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Oxygen_Pref'])
