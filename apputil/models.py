@@ -14,11 +14,11 @@ class ApplicationUser(AbstractUser):
     
     choices_permission=(('general user', 'general user| general user can read record'), ('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
 #-------------------------------------------------------------------------------------------------
-    user_id = models.CharField(unique=True, max_length=50)          # uqjzuegg
-    title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
+    username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
+    # title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
     # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
     # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
-    short_name = models.CharField(max_length=55, blank=True, null=True)        # J.Zuegg
     initials = models.CharField(max_length=5, blank=True, null=True)           # JZG
     organisation = models.CharField(max_length=250, blank=True, null=True)     # University of Queensland
     department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
@@ -34,11 +34,8 @@ class ApplicationUser(AbstractUser):
       
 
     def __str__(self) -> str:
-        return f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
+        return f"{self.name}" #f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
 
-    def save(self, *args, **kwargs):
-        self.username=self.user_id
-        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
@@ -87,7 +84,7 @@ class AuditModel(models.Model):
 
 
 #-------------------------------------------------------------------------------------------------
-class Dictionaries(AuditModel):
+class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
     
     Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class")
@@ -96,6 +93,9 @@ class Dictionaries(AuditModel):
    
     def __str__(self) -> str:
         return f"{self.Dict_Value}.{self.Dict_Desc}"
+    
+    class Meta:
+        db_table = 'dictionary'
 
 
 #-------------------------------------------------------------------------------------------------
@@ -110,6 +110,8 @@ class ApplicationLog(models.Model):
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
+    class Meta:
+        db_table = 'applicationLog'
 
 
 

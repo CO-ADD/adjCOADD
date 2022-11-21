@@ -11,7 +11,9 @@ from django.urls import path, include
 from apputil.views import index
 import dorganism.urls
 import apputil.urls
-from apputil.views import login_user, logout_user
+
+from apputil.views import login_user, logout_user, permission_not_granted
+
 
 
 urlpatterns = [
@@ -22,6 +24,9 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),  
     path('accounts/login/', login_user, name='login' ),
     path('accounts/logout/', logout_user, name='logout' ), 
+
+    path('permission_not_granted/', permission_not_granted, name='permission_not_granted'),
+
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('', include('dorganism.urls')),

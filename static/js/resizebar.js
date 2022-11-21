@@ -1,5 +1,5 @@
-const resizer = document.querySelector("#resizer");
-const sidebar = document.querySelector("#sidebar");
+const resizer = document.querySelector(".resizer");
+const sidebar = document.querySelector(".sidebar");
 
 resizer.addEventListener("mousedown", (event) => {
     console.log("enve")

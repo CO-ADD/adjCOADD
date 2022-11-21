@@ -17,10 +17,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 
 from .models import  Organism, Taxonomy
-from .utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03, MySearchbar04
-from apputil.models import Dictionaries
+from .utils import  querysetToChoiseList_Dictionary, MySearchbar02, MySearchbar03, MySearchbar04
+from apputil.models import Dictionary, ApplicationUser
+from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
-
 
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
@@ -43,9 +43,17 @@ class TaxonomyCardView(LoginRequiredMixin, ListView):
 class TaxonomyListView(TaxonomyCardView):
     template_name = 'dorganism/readForm/Taxonomy_list.html'
 
+# ===========Detail View=============================Read============================================
+@login_required
+def detailTaxonomy(req, pk):
+    context={}
+    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    context["Taxonomy"]=object_
+    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
+
 # ====================================================Create===========================================
-@login_required(login_url='/login/')
-@user_passes_test(lambda u: u.is_staff) 
+# @login_required
+@user_passes_test(lambda u: u.permissions=='staff'or u.permissions=='admin', login_url='permission_not_granted') 
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -64,8 +72,8 @@ def createTaxonomy(req):
     return render(req, 'dorganism/createForm/Taxonomy_c.html', {'form':form})
     
 # ====================================================Update in Form===========================================
-@login_required(login_url='/login/')
-@user_passes_test(lambda u: u.is_staff) 
+@login_required
+@user_passes_test(lambda u: u.permissions=='staff'or u.permissions=='admin', login_url='permission_not_granted') 
 def updateTaxonomy(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     kwargs={}
@@ -84,7 +92,7 @@ def updateTaxonomy(req, pk):
     return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
+@user_passes_test(lambda u: u.permissions=='admin', login_url='permission_not_granted')
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
@@ -132,12 +140,6 @@ class OrganismCardView(OrganismListView):
 
 
 
-@login_required
-def detailTaxonomy(req, pk):
-    context={}
-    object_=get_object_or_404(Taxonomy, Organism_Name=pk)    
-    context["Taxonomy"]=object_
-    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 # ======================================================================CREATE==========================================#
     # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
 
@@ -145,29 +147,32 @@ def detailTaxonomy(req, pk):
 
     # =============================step 2. Create new record by form===================#
 @login_required
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff'or u.permissions=='admin', login_url='permission_not_granted') 
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''
     
     kwargs={}
-    kwargs['user']=req.user 
+    kwargs['user']=req.user
+    print(f"in view: {req.user}")
+
+    form=CreateOrganism_form(req.user)
     if req.method=='POST':
         Organism_Name=req.POST.get('searchbar_01')
         Strain_Type_list=req.POST.getlist('Strain_Type')
-        form=CreateOrganism_form(Organism_Name, req.POST)
+        form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         
         try:
             if form.is_valid():
                 print("form is valid")  
                 try:
-                    with transaction.atomic():
+                    with transaction.atomic(using='dorganism'):
                         instance=form.save(commit=False) 
                         print("form save")                 
                         instance.save(**kwargs)
-                        print("saved")
+                        print("saved--view info")
                         return redirect("org_list")
 
                 except IntegrityError as err:
@@ -180,8 +185,6 @@ def createOrganism(req):
             print(f'error is {form.errors} with {err}')
             return redirect(req.META['HTTP_REFERER'])
 
-    else:
-        form=CreateOrganism_form()
     return render(req, 'dorganism/createForm/Organism_c.html', { 'form':form, }) 
 
 
@@ -190,13 +193,14 @@ def createOrganism(req):
 def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organism, Organism_ID=pk)
-    form=UpdateOrganism_form(instance=object_)
-    Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
-    Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") #
-    Oxygen_Pref_choice=Dictionaries.objects.filter(Dictionary_Class="Oxygen_Preference")
-    Pathogen_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Pathogen_Group")
-    MTA_Status_choice=Dictionaries.objects.filter(Dictionary_Class="License_Status") 
-    Bio_Approval_choice=Dictionaries.objects.filter(Dictionary_Class="Biol_Approval") 
+    user=req.user
+    form=UpdateOrganism_form(user,instance=object_)
+    Strain_Type_choices=Dictionary.objects.filter(Dictionary_Class="Strain_Type") # 
+    Risk_Group_choice=Dictionary.objects.filter(Dictionary_Class="Risk_Group") #
+    Oxygen_Pref_choice=Dictionary.objects.filter(Dictionary_Class="Oxygen_Preference")
+    Pathogen_Group_choice=Dictionary.objects.filter(Dictionary_Class="Pathogen_Group")
+    MTA_Status_choice=Dictionary.objects.filter(Dictionary_Class="License_Status") 
+    Bio_Approval_choice=Dictionary.objects.filter(Dictionary_Class="Biol_Approval") 
     context["object"]=object_
     context["form"]=form
     context["Strain_Type_options"]=Strain_Type_choices
@@ -208,7 +212,7 @@ def detailOrganism(req, pk):
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff' or u.permissions=='admin', login_url='permission_not_granted') 
 @csrf_protect
 def detailChangeOrganism(req):
     kwargs={}
@@ -240,7 +244,7 @@ def detailChangeOrganism(req):
 
 #======================================================================Update Organism=================================================================================
 @login_required
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff' , login_url='permission_not_granted') 
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, Organism_ID=pk)
     kwargs={}
@@ -254,13 +258,13 @@ def updateOrganism(req, pk):
     if req.method=='POST':
 
         try:
-            with transaction.atomic(using='drugs_db'):        # testing!
+            with transaction.atomic(using='dorganism'):        # testing!
                 obj = Organism.objects.select_for_update().get(Organism_ID=pk)
                 #------------------------If update Organism Name-----------------------------------
                 if  req.POST.get('searchbar_01'):
                     Organism_Name_str=req.POST.get('searchbar_01')
                     Organism_new_obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name_str)
-                    form=UpdateOrganism_form(Organism_Name, req.POST, instance=obj)
+                    form=UpdateOrganism_form(req.user, Organism_Name, req.POST, instance=obj)
                     print('form created')
                     #-----------------------Not allow to update name in different class--------
                     if Organism_new_obj.Class.Dict_Value and Organism_new_obj.Class.Dict_Value != Organism_Class_str:
@@ -283,7 +287,7 @@ def updateOrganism(req, pk):
             return redirect(req.META['HTTP_REFERER'])
   
     else:
-        form=UpdateOrganism_form(instance=object_)
+        form=UpdateOrganism_form(req.user,instance=object_)
 
     context={
         "form":form,
@@ -294,7 +298,7 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
+@user_passes_test(lambda u: u.permissions=='admin', login_url='permission_not_granted') 
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -313,6 +317,7 @@ import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', login_url='permission_not_granted') 
 def import_excel_taxo(req):
     print('importing....')
     try:
@@ -327,13 +332,13 @@ def import_excel_taxo(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():
-                class_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
+                class_fkey=Dictionary.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
                 if class_fkey:
                     class_fkey=class_fkey[0]
                 else:
                     class_fkey=None
                 print(class_fkey)
-                division_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.DIVISION)
+                division_fkey=Dictionary.objects.filter(Dict_Value=dbframe.DIVISION)
                 if division_fkey:
                     division_fkey=division_fkey[0]
                 else:
@@ -356,6 +361,7 @@ def import_excel_taxo(req):
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', login_url='permission_not_granted') 
 def import_excel_dict(req):
     print('importing....')
     try:
@@ -370,7 +376,7 @@ def import_excel_dict(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():                   
-                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
+                obj, created=Dictionary.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
                 print(type(obj))
           
             return render(req, 'dorganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
@@ -382,6 +388,7 @@ def import_excel_dict(req):
 
 #==================================================================import Organism================================================
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', login_url='permission_not_granted') 
 def import_excel_organism(req):
     print('importing....')
     try:

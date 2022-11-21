@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import  ApplicationUser, Dictionaries
+from .models import  ApplicationUser, Dictionary
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 
@@ -24,7 +24,7 @@ class ApplicationUser_form(forms.ModelForm):
 # #=======================================Dictionary Form===========================================================
 class Dictionary_form(forms.ModelForm):
     class Meta:
-        model=Dictionaries
+        model=Dictionary
         fields='__all__'
 
 
@@ -33,7 +33,7 @@ class Login_form(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         print(username)
-        if ApplicationUser.objects.filter(user_id=username):
+        if ApplicationUser.objects.filter(username=username):
             self.user_cache = authenticate(username=username,
 										   password=password)
         else:

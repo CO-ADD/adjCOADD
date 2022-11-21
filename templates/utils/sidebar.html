@@ -1,4 +1,4 @@
-<div id="sidebar" class="text-secondary" style="overflow: scroll">
+<div class="sidebar" class="text-secondary" style="overflow: scroll">
     <hr />
     <h4 id="item-1">Search</h4>
     <form id="django-filter-siderbar" method="get" class="form-group mx-5">
@@ -10,9 +10,11 @@
 
 
 </div>
-<div id="resizer"></div>
+<div class="resizer"></div>
+<th class="resizer">-</th>
 {%load static%}
 <script src="{%static 'js/resizebar.js'%}"></script>
+
 
 <script>
     function myfun() {

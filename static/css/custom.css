@@ -6,6 +6,10 @@
   --orange: #2c7a84;
 }
 
+a {
+  text-decoration: none;
+}
+
 body {
   font-family: sans-serif !important;
   letter-spacing: 0px;
@@ -131,7 +135,7 @@ button,
 }
 
 /* =============================Drag to resize sidebar start ===================================== */
-#resizer {
+.resizer {
   flex-basis: 10px;
   position: relative;
   z-index: 2;
@@ -143,7 +147,7 @@ button,
   box-sizing: border-box;
 }
 
-#sidebar {
+.sidebar {
   position: relative;
   margin: 0;
   padding: 0;
@@ -304,6 +308,10 @@ footer {
 
 .btnok:hover {
   border: 2px solid #ff6e00;
+}
+
+span {
+  font-size: 16px;
 }
 
 td button {

@@ -38,35 +38,34 @@
       <thead>
         <tr>
 
-          <th scope="col">username</th>
-          <th scope="col">description</th>
-          <th scope="col">email</th>
+          <th scope="col">Username</th>
+          <th scope="col">User Initial</th>
+          <th scope="col">Description</th>
 
-          <th scope="col">user role</th>
-          <th scope="col">user permissions</th>
-          <th scope="col">update</th>
-          <th scope="col">delete</th>
+          <th scope="col">Email</th>
+          <th scope="col">User Permissions</th>
+          <th scope="col">Update</th>
+          <th scope="col">Delete</th>
         </tr>
       </thead>
       <tbody>
         {% for user in objects %}
+        {%if user.is_appuser%}
         <tr>
           <th scope="row">{{user.username}}</th>
-          <td>{{user.department}}</td>
-          <td>{{user.email}}</td>
+          <td>{{user.initials}}</td>
+          <td>{{user.title_name}}</td>
           <td>
-            <ul>
-              <li>Is superuser:{{user.is_superuser}} </li>
-              <li>Is staff:{{user.is_staff}} </li>
+            {{user.email}}
 
-            </ul>
           </td>
           <td>
             {{user.permissions}}
           </td>
+
           <td>
             {%if request.user.is_superuser%}
-            <div id="{{user.id}}">
+            <div id="{{user.pk}}">
               <a class="btn btn-success btn-sm">Update</a>
             </div>
 
@@ -75,10 +74,10 @@
             <script>
 
               $(document).ready(function () {
-                btn = "#" + "{{user.id}}"
+                btn = "#" + "{{user.pk}}"
                 let my_modal = $('#AppUserUpdateModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'updateAppUser' user.id %}", function () {
+                  my_modal.load("{% url 'updateAppUser' user.pk %}", function () {
                     my_modal.modal("show");
                   });
                 });
@@ -90,7 +89,7 @@
           </td>
           <td>
             {%if request.user.is_superuser%}
-            <div id="d{{user.id}}">
+            <div id="d{{user.pk}}">
               <a class="btn btn-success btn-sm">delete</a>
             </div>
 
@@ -99,11 +98,11 @@
             <script>
 
               $(document).ready(function () {
-                btn = "#d" + "{{user.id}}"
+                btn = "#d" + "{{user.pk}}"
                 console.log(btn)
                 let my_modal = $('#AppUserDelModal');
                 $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'deleteAppUser' user.id %}", function () {
+                  my_modal.load("{% url 'deleteAppUser' user.pk %}", function () {
                     my_modal.modal("show");
 
                   });
@@ -114,6 +113,7 @@
             {%endif%}
           </td>
         </tr>
+        {%endif%}
         {%endfor%}
       </tbody>
     </table>
