@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ApplicationUser, Dictionaries
+
+from .models import ApplicationUser, Dictionary
+
 from dorganism.models import  Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
@@ -13,6 +15,7 @@ from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import Permission
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import  HttpResponse
 # Create your views here.
 # def check_admin(user):
 #    return user.is_superuser
@@ -20,6 +23,8 @@ from django.contrib.auth.forms import AuthenticationForm
 # @user_passes_test(check_admin)
 # def my_view(request): 
 
+def permission_not_granted(request):
+    return HttpResponse("Permission Not Granted")
 
 # =================================Login into Home Page==================================
 def login_user(req):
@@ -77,7 +82,7 @@ class AppUserListView(LoginRequiredMixin, ListView):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    fields=['user_id', 'permissions', 'is_appuser']
+    fields=['name', 'username', 'permissions']
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
@@ -89,31 +94,29 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
 
 class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
-    fields=['user_id', 'permissions', 'is_appuser']
+    fields=['name', 'permissions', ]
     template_name = 'apputil/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
 
-    def form_valid(self, form):
+  
 
-        if form.instance.permissions=='staff':
-            form.instance.is_staff=True
-            form.instance.is_superuser=False
-            
-        if form.instance.permissions=='admin':
-            form.instance.is_staff=True
-            form.instance.is_superuser=True
-        
-        return super().form_valid(form)
-
-class AppUserDeleteView(SuperUserRequiredMixin, DeleteView):
+class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
     template_name='apputil/appUsersDel.html'
     success_url = reverse_lazy('userslist')
+    fields=['is_appuser']
 
-# =====================================Dictionaries View==========================
+    def form_valid(self, form):
 
-class DictionariesView(LoginRequiredMixin, ListView):
-    model=Dictionaries
+        form.instance.is_appuser==False
+        print(form.instance.is_appuser)
+        return super().form_valid(form)
+
+
+# =====================================Dictionary View==========================
+
+class DictionaryView(LoginRequiredMixin, ListView):
+    model=Dictionary
     fields="__all__"
     template_name='apputil/dictList.html'
     
@@ -149,7 +152,7 @@ def createDictionary(req):
 #     kwargs={}
 #     kwargs['user']=req.user
 #     context={}
-#     object_=get_object_or_404(Dictionaries, Dict_Value=pk)
+#     object_=get_object_or_404(Dictionary, Dict_Value=pk)
 #     context['object']=object_
 #     if req.method=="POST":      
 #         object_.delete(**kwargs)

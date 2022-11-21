@@ -90,70 +90,66 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+    # 'default': {
+    #     # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD':'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # },
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD': 'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # },
+
+    # 'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD': 'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # }
+
+    # ==================For Local Test===========================================
+    'default': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=apputil,public'},
         'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD':'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'HOST': 'Localhost',
+
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
         'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+
+        'TEST': {
+            'NAME': 'mytestdatabase2',
+        },
+        'HOST': 'Localhost',
         'PORT': '5432',
     },
-
-    'ddrug': {
+      'ddrug': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
         'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'HOST': 'Localhost',
         'PORT': '5432',
     }
 
-
-    # 'default': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #     'NAME': 'orgdb_local',
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD':os.environ.get('db_password', 'password'),
-       
-    #     'HOST': 'Localhost',
-    #     'PORT': '5432',
-    # },
-    # 'dorganism': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #     'NAME': 'orgdb_local',
-    #     'TEST': {
-    #         'NAME': 'mytestdatabase2',
-    #     },
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD': os.environ.get('db_password','password'),
-    #     'HOST': 'Localhost',
-    #     'PORT': '5432',
-    # },
-    #   'ddrug': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil'},
-    #     'NAME': 'orgdb_local',
-        
-    #     # 'USER': 'postgres', #os.environ.get('db_user'),
-    #     # 'PASSWORD': os.environ.get('db_password','password'),
-    #     'HOST': 'Localhost',
-    #     'PORT': '5432',
-    # }
 
    
 
@@ -207,8 +203,7 @@ import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
 
-# LOGIN_REDIRECT_URL='/'
-# LOGOUT_REDIRECT_URL='/accounts/login'
+
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
@@ -222,43 +217,8 @@ AUTH_LDAP_BIND_PASSWORD = ""
 
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
-# AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=groups,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)")
 
-# AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
-
- 
-
-# AUTH_LDAP_CONNECTION_OPTIONS = {
-
-#     ldap.OPT_DEBUG_LEVEL: 0,
-
-#     ldap.OPT_REFERRALS: 0,
-
-# }
-
-# AUTH_LDAP_ALWAYS_UPDATE_USER=False
- 
-
-# AUTH_LDAP_USER_ATTR_MAP = {
-
-#     "first_name": "givenName",
-
-#     "last_name": "sn",
-
-#     "email": "mail",
-
-#     "username": "uid",
-
-#     "uq_id": "prism",
-
-#     "department": "ou",
-
-# }
-
-
-# ===============================================================
-
-Strain_Type_choices=(("a", "testa"),("b","testb"),("c", "testc"))#querysetToChoiseList_Dictionaries(Dictionaries, Organisms.Choice_Dictionaries['Strain_Type'])
 
 # Security Setting
-CSRF_COOKIE_SECURE=True
+# CSRF_COOKIE_SECURE=True
+

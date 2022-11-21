@@ -1,11 +1,11 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import  ApplicationUser, Dictionaries
+from .models import  ApplicationUser, Dictionary
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    list_display=("username","email","is_staff", "user_id")
+    list_display=("username","email","is_staff", "name")
 
 class DictAdmin(admin.ModelAdmin):
     def save(self, request, *args, **kwargs):
@@ -15,5 +15,5 @@ class DictAdmin(admin.ModelAdmin):
 
 admin.site.register(ApplicationUser, UserAdmin)
 
-admin.site.register(Dictionaries, DictAdmin)
+admin.site.register(Dictionary, DictAdmin)
 

@@ -1,7 +1,7 @@
 const csrftoken = getCookie('csrftoken');
 const sendToServer = (id, value, type) => {
     $.ajax({
-        url: '/aa_chem/updateOrgdetail/', //"{% url 'organism_updatedetail' %}", 
+        url: '/updateOrgdetail/', //"{% url 'organism_updatedetail' %}", 
         type: "POST",
         headers: { 'X-CSRFToken': csrftoken },
         data: { id: id, value: value, type: type }
