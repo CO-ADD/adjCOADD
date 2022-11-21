@@ -13,6 +13,7 @@ from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import Permission
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import  HttpResponse
 # Create your views here.
 # def check_admin(user):
 #    return user.is_superuser
@@ -20,6 +21,8 @@ from django.contrib.auth.forms import AuthenticationForm
 # @user_passes_test(check_admin)
 # def my_view(request): 
 
+def permission_not_granted(request):
+    return HttpResponse("Permission Not Granted")
 
 # =================================Login into Home Page==================================
 def login_user(req):

@@ -23,8 +23,13 @@
             btn = "#" + "{{object.Organism_ID}}"
             let my_modal = $('#OrganismUpdateModal');
             $(`${btn} a`).click(function () {
-                my_modal.load("{% url 'organism_update' object.Organism_ID %}", function () {
-                    my_modal.modal("show");
+                my_modal.load("{% url 'organism_update' object.Organism_ID %}", function (response) {
+                    if (response == "Permission Not Granted") {
+                        alert("permission!")
+
+                    } else {
+                        my_modal.modal("show"); // Open Modal
+                    }
                 });
             });
 

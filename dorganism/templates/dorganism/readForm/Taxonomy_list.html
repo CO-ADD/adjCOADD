@@ -47,8 +47,13 @@
                     let my_modal = $("#createTaxoModal");
 
                     $("#createTaxo a").click(function () {
-                        my_modal.load("{%url 'taxo_create'%}", function () {
-                            my_modal.modal("show"); // Open Modal
+                        my_modal.load("{%url 'taxo_create'%}", function (response) {
+                            if (response == "Permission Not Granted") {
+                                alert("permission!")
+
+                            } else {
+                                my_modal.modal("show"); // Open Modal
+                            }
 
                         });
                     });
