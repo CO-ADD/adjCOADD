@@ -17,8 +17,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 
 from .models import  Organism, Taxonomy
-from .utils import  querysetToChoiseList_Dictionaries, MySearchbar02, MySearchbar03, MySearchbar04
-from apputil.models import Dictionaries
+from .utils import  querysetToChoiseList_Dictionary, MySearchbar02, MySearchbar03, MySearchbar04
+from apputil.models import Dictionary
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
 
@@ -53,7 +53,7 @@ def detailTaxonomy(req, pk):
 
 # ====================================================Create===========================================
 @login_required(login_url='/login/')
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff', redirect_field_name=None) 
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -73,7 +73,7 @@ def createTaxonomy(req):
     
 # ====================================================Update in Form===========================================
 @login_required(login_url='/login/')
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff'or u.permissions=='admin', redirect_field_name=None) 
 def updateTaxonomy(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     kwargs={}
@@ -92,7 +92,7 @@ def updateTaxonomy(req, pk):
     return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
+@user_passes_test(lambda u: u.permissions=='admin', redirect_field_name=None)
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
@@ -147,7 +147,7 @@ class OrganismCardView(OrganismListView):
 
     # =============================step 2. Create new record by form===================#
 @login_required
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff'or u.permissions=='admin', redirect_field_name=None) 
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
@@ -165,7 +165,7 @@ def createOrganism(req):
             if form.is_valid():
                 print("form is valid")  
                 try:
-                    with transaction.atomic():
+                    with transaction.atomic(using='dorganism'):
                         instance=form.save(commit=False) 
                         print("form save")                 
                         instance.save(**kwargs)
@@ -193,12 +193,12 @@ def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organism, Organism_ID=pk)
     form=UpdateOrganism_form(instance=object_)
-    Strain_Type_choices=Dictionaries.objects.filter(Dictionary_Class="Strain_Type") # 
-    Risk_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Risk_Group") #
-    Oxygen_Pref_choice=Dictionaries.objects.filter(Dictionary_Class="Oxygen_Preference")
-    Pathogen_Group_choice=Dictionaries.objects.filter(Dictionary_Class="Pathogen_Group")
-    MTA_Status_choice=Dictionaries.objects.filter(Dictionary_Class="License_Status") 
-    Bio_Approval_choice=Dictionaries.objects.filter(Dictionary_Class="Biol_Approval") 
+    Strain_Type_choices=Dictionary.objects.filter(Dictionary_Class="Strain_Type") # 
+    Risk_Group_choice=Dictionary.objects.filter(Dictionary_Class="Risk_Group") #
+    Oxygen_Pref_choice=Dictionary.objects.filter(Dictionary_Class="Oxygen_Preference")
+    Pathogen_Group_choice=Dictionary.objects.filter(Dictionary_Class="Pathogen_Group")
+    MTA_Status_choice=Dictionary.objects.filter(Dictionary_Class="License_Status") 
+    Bio_Approval_choice=Dictionary.objects.filter(Dictionary_Class="Biol_Approval") 
     context["object"]=object_
     context["form"]=form
     context["Strain_Type_options"]=Strain_Type_choices
@@ -210,7 +210,7 @@ def detailOrganism(req, pk):
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff' or u.permissions=='admin', redirect_field_name=None) 
 @csrf_protect
 def detailChangeOrganism(req):
     kwargs={}
@@ -242,7 +242,7 @@ def detailChangeOrganism(req):
 
 #======================================================================Update Organism=================================================================================
 @login_required
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.permissions=='staff' or u.permissions=='admin', redirect_field_name=None) 
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, Organism_ID=pk)
     kwargs={}
@@ -256,7 +256,7 @@ def updateOrganism(req, pk):
     if req.method=='POST':
 
         try:
-            with transaction.atomic(using='drugs_db'):        # testing!
+            with transaction.atomic(using='dorganism'):        # testing!
                 obj = Organism.objects.select_for_update().get(Organism_ID=pk)
                 #------------------------If update Organism Name-----------------------------------
                 if  req.POST.get('searchbar_01'):
@@ -296,7 +296,7 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
+@user_passes_test(lambda u: u.permissions=='admin', redirect_field_name=None) 
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -315,6 +315,7 @@ import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', redirect_field_name=None) 
 def import_excel_taxo(req):
     print('importing....')
     try:
@@ -329,13 +330,13 @@ def import_excel_taxo(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():
-                class_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
+                class_fkey=Dictionary.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
                 if class_fkey:
                     class_fkey=class_fkey[0]
                 else:
                     class_fkey=None
                 print(class_fkey)
-                division_fkey=Dictionaries.objects.filter(Dict_Value=dbframe.DIVISION)
+                division_fkey=Dictionary.objects.filter(Dict_Value=dbframe.DIVISION)
                 if division_fkey:
                     division_fkey=division_fkey[0]
                 else:
@@ -358,6 +359,7 @@ def import_excel_taxo(req):
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', redirect_field_name=None) 
 def import_excel_dict(req):
     print('importing....')
     try:
@@ -372,7 +374,7 @@ def import_excel_dict(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():                   
-                obj, created=Dictionaries.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
+                obj, created=Dictionary.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
                 print(type(obj))
           
             return render(req, 'dorganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
@@ -384,6 +386,7 @@ def import_excel_dict(req):
 
 #==================================================================import Organism================================================
 @login_required
+@user_passes_test(lambda u: u.permissions=='admin', redirect_field_name=None) 
 def import_excel_organism(req):
     print('importing....')
     try:

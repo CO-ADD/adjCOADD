@@ -4,7 +4,7 @@ from django_rdkit import models
 from django.contrib.postgres.fields import ArrayField
 from django.db import transaction, IntegrityError
 
-from apputil.models import AuditModel, Dictionaries
+from apputil.models import AuditModel, Dictionary
 from dorganism.models import Organism, Organism_Batch
 
 #-------------------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ class Drug(AuditModel):
     List of Drugs, DrugCombinations, DrugScreens 
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionaries = {
+    Choice_Dictionary = {
         'Drug_Type':'Drug_Type',
         'Max_Phase':'Max_Phase',
     }
@@ -79,7 +79,7 @@ class VITEK_Card(AuditModel):
     List of VITEK Cards
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionaries = {
+    Choice_Dictionary= {
         'Card_Type':'Card_Type',
     }
 

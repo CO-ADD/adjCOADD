@@ -1,6 +1,6 @@
-from .models import  Taxonomy,  Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture  #, Dictionaries
+from .models import  Taxonomy,  Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture 
 
-Route_list=[Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture]#, Dictionaries
+Route_list=[Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture]
 class DrugsRouter:
     """
     A router to control all database operations on models in the

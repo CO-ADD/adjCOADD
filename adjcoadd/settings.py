@@ -214,4 +214,4 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 
 # Security Setting
-CSRF_COOKIE_SECURE=True
+# CSRF_COOKIE_SECURE=True

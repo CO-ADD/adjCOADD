@@ -23,7 +23,7 @@ from django.shortcuts import render
     
 #     context={
 #         'page_obj':page_obj,
-#         'chose':Taxonomy.Choice_Dictionaries   
+#         'chose':Taxonomy.Choice_Dictionary   
        
 #     }
   
