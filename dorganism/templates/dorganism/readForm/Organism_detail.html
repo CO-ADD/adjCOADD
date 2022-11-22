@@ -62,8 +62,8 @@
     </p>
     <div class="collapse show" id="collapseExample">
         <div class="card card-body" style="width: 80rem ;">
-            <h4 class="my-0">Update Organism: {{object.Organism_Name}}</h4>
-            <h5>Class: {{Class}}</h5>
+            <h4 class="my-0">Organism: {{object.Organism_Name}}</h4>
+            <h5>Class: {{object.Organism_Name.Class.Dict_Val}}</h5>
             <!-- <p>{{Organism_Name}}</p> -->
 
             {% if messages %}
@@ -75,10 +75,19 @@
             {% endif %}
             <!-- ===================================================================================== -->
             <hr>
+            <b>
+                {%include 'utils/message.html'%}
+            </b>
             <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
                 action="{%url 'organism_update' object.Organism_ID %}">
                 {% csrf_token %}
                 <!-- {{form.as_table}} -->
+                <div class="d-flex m-auto">
+                    <a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a>
+                    <a class="btn m-auto mt-5" href="{% url 'org_detail' object.Organism_ID %}">cancel</a>
+                    <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
+
+                </div>
                 <div class="row">
 
                     <div class="col-md-4 table-responsive-sm">
@@ -100,7 +109,10 @@
                                         <label for="id_Risk_Group">Risk Group</label>
                                     </th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="Risk_Group">
-                                        {{form.Risk_Group}}
+                                        <div class="detail">
+                                            {{object.Risk_Group}}
+                                        </div>
+                                        <div class="form-control select"> {{form.Risk_Group}}</div>
 
                                     </td>
 
@@ -110,7 +122,10 @@
                                     <th scope="row" class="table-light">Pathogen</th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}"
                                         data-type="Pathogen_Group">
-                                        {{form.Pathogen_Group}}
+                                        <div class="detail">
+                                            {{object.Pathogen_Group}}
+                                        </div>
+                                        <div class="form-control select"> {{form.Pathogen_Group}}</div>
 
                                     </td>
 
@@ -131,7 +146,10 @@
                                     <th scope="row" class="table-light">Biol Approval</th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}"
                                         data-type="Bio_Approval">
-                                        {{form.Bio_Approval}}
+                                        <div class="detail">
+                                            {{object.Bio_Approval}}
+                                        </div>
+                                        <div class="form-control select"> {{form.Bio_Approval}}</div>
 
 
                                     </td>
@@ -152,7 +170,11 @@
                                 <tr>
                                     <th scope="row" class="table-light">MTA Status</th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="MTA_Status">
-                                        {{form.MTA_Status}}
+
+                                        <div class="detail">
+                                            {{object.MTA_Status}}
+                                        </div>
+                                        <div class="form-control select"> {{form.MTA_Status}}</div>
 
                                     </td>
 
@@ -201,7 +223,11 @@
                                 <tr>
                                     <th scope="row" class="table-light"> Strain_Type</th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="Strain_Type">
-                                        {{form.Strain_Type}}
+
+                                        <div class="detail">
+                                            {{object.Strain_Type}}
+                                        </div>
+                                        <div class="form-control select"> {{form.Strain_Type}}</div>
                                     </td>
 
                                 </tr>
@@ -247,7 +273,11 @@
                                 <tr>
                                     <th scope="row" class="table-light">Oxygen Pref</th>
                                     <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="Oxygen_Pref">
-                                        {{form.Oxygen_Pref}}
+
+                                        <div class="detail">
+                                            {{object.Oxygen_Pref}}
+                                        </div>
+                                        <div class="form-control select"> {{form.Oxygen_Pref}}</div>
 
                                     </td>
 
@@ -297,22 +327,20 @@
                     </div>
 
                 </div>
-                <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
-                <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
+
+
 
             </form>
-            <a href="{% url 'org_detail' object.Organism_ID %}">cancel</a>
+
         </div>
 
     </div>
 
-    <p><a href="{% url 'organism_delete' object.Organism_ID %}">Delete</a></p>
+
     <div class="card m-4">
-        <b>
-            {%include 'utils/message.html'%}
-        </b>
+
         <div class="card-header">
-            Organism Taxonomy {{object.Organism_Name}}
+            Organism Batch
         </div>
         <div class="row">
             <div class="col-md-4 table-responsive-sm">
