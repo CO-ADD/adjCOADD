@@ -3,14 +3,12 @@ from django.core.paginator import Paginator
 from django.forms import ModelForm
 from dorganism.utils import querysetToChoiseList_Dictionary
 from apputil.models import Dictionary, ApplicationUser
-
 from .models import Organism, Taxonomy
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
-
     # Organism_Desc=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
     Strain_ID= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-floating input-group'}), required=False,)
     Strain_Code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
@@ -45,7 +43,7 @@ class CreateOrganism_form(ModelForm):
         self.fields['Pathogen_Group'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Pathogen_Group'])
         self.fields['MTA_Status'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['MTA_Status'])
         self.fields['Bio_Approval'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Bio_Approval'])
-           
+
     def clean_Organism_Name(self):       
         data=self.cleaned_data['Organism_Name']
         data=get_object_or_404(Taxonomy, Organism_Name=self.Organism_Name)
