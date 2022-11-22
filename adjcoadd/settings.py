@@ -90,6 +90,7 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+
     # 'default': {
     #     # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
@@ -215,3 +216,4 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
+
