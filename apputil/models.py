@@ -11,30 +11,27 @@ import logging
 
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):
+    READ = 1
+    WRITE = 2
+    DELETE = 3
+    ADMIN = 10
     
-    choices_permission=(('general user', 'general user| general user can read record'), ('staff', 'staff| staff can edit record'),('admin','admin| admin is a superuser'))
 #-------------------------------------------------------------------------------------------------
     username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
     name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
-    # title_name = models.CharField(max_length=15, blank=True, null=True)        # Dr
-    # firstname = models.CharField(max_length=50, blank=True)        # Johannes  this field existed in AbstractUser
-    # lastname = models.CharField(max_length=50, blank=True)         # Zuegg     this field existed in AbstractUser
     initials = models.CharField(max_length=5, blank=True, null=True)           # JZG
     organisation = models.CharField(max_length=250, blank=True, null=True)     # University of Queensland
     department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
     group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
     phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
-    # email = models.CharField(max_length=80, blank=True)             # j.zuegg@uq.edu.au    this field existed in AbstractUser
-    permissions = models.CharField(max_length=250, null=True, choices=choices_permission, default=None)      # application permissions .. ReadOnly, ReadWrite, Admin ..
-    session_id = models.CharField(max_length=250, blank=True, null=True)       # not sure if Django has SessionID's
+    permissions = models.IntegerField(default = 0, null=False)      # application permissions .. ReadOnly, ReadWrite, Admin ..
     is_appuser=models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'applicationuser'
-      
-
+        db_table = 'app_user'
+    
     def __str__(self) -> str:
-        return f"{self.name}" #f"{self.first_name}.{self.last_name} ({self.user_id})({self.username})"
+        return f"{self.name}" 
 
 
 #-------------------------------------------------------------------------------------------------
@@ -111,7 +108,7 @@ class ApplicationLog(models.Model):
     log_status = models.CharField(max_length=15, blank=True, editable=False)
 
     class Meta:
-        db_table = 'applicationLog'
+        db_table = 'app_Log'
 
 
 

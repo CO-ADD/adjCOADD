@@ -6,7 +6,9 @@ class DrugsRouter:
     A router to control all database operations on models in the
     applications.
     """
+
     route_app_labels={'ddrug'}
+
    
 
     def db_for_read(self, model, **hints):

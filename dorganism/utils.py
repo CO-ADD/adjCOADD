@@ -64,8 +64,9 @@ def searchbar_01(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
         res=None
         searchInput=req.POST.get('inputtext')
+        print(searchInput)
         qs=Taxonomy.objects.filter(Organism_Name__istartswith=searchInput)
-      
+        print(qs)
         if len(qs)>0 and len(searchInput)>0:
             data=[]
             for i in qs:

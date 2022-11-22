@@ -10,12 +10,12 @@ from django.core.exceptions import ValidationError
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
     # Organism_Desc=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Strain_ID= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Strain_Code=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
+    Strain_ID= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-floating input-group'}), required=False,)
+    Strain_Code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     # Strain_Desc= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
     Strain_Notes= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
     Strain_Tissue=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Oxygen_Pref=forms.ChoiceField(choices=(('',''),('','')), widget=forms.Select(attrs={'class':'form-select', 'id':'Oxygen_Pref_choice'},))
+    Oxygen_Pref=forms.ChoiceField(choices=(('',''),('','')), widget=forms.Select(attrs={'class':'form-select', 'type':'radio'},))
     Risk_Group=forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     Pathogen_Group=forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     MTA_Status = forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))

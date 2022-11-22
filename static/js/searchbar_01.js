@@ -9,7 +9,7 @@ const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value
 const sendSearchData = (inputtext) => {
     $.ajax({
         type: 'POST',
-        url: 'searchbar_01/',
+        url: '/searchbar_01/',
         data: {
             'csrfmiddlewaretoken': csrf,
             'inputtext': inputtext,
