@@ -2,7 +2,7 @@
   <div class="modal-content" style="width: 50rem;">
 
     <div class="card mx-5 mt-3">
-      <h4 class="my-0">Update Organism: {{Organism.Organism_Name}}</h4>
+      <h4 class="my-0">Update Organism: {{Organism.organism_name}}</h4>
       <h5>Class: {{Class}}</h5>
       <!-- <p>{{Organism_Name}}</p> -->
       {% include 'utils/searchbar_01.html' %}
@@ -16,7 +16,7 @@
       <!-- ===================================================================================== -->
       <hr>
       <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
-        action="{%url 'organism_update' Organism.Organism_ID %}">
+        action="{%url 'organism_update' Organism.pk %}">
         {% csrf_token %}
         <div style="display: none;">
 
@@ -26,7 +26,7 @@
         <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
 
       </form>
-      <a href="{% url 'org_detail' Organism.Organism_ID %}">cancel</a>
+      <a href="{% url 'org_detail' Organism.pk %}">cancel</a>
     </div>
 
 
