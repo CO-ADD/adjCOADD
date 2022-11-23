@@ -18,7 +18,10 @@
       <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
         action="{%url 'organism_update' Organism.Organism_ID %}">
         {% csrf_token %}
-        {{form.as_p}}
+        <div style="display: none;">
+
+          {{form.as_p}}
+        </div>
         <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
         <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
 

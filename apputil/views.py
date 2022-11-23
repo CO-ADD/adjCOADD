@@ -23,7 +23,12 @@ from django.shortcuts import  HttpResponse
 # @user_passes_test(check_admin)
 # def my_view(request): 
 
-def permission_not_granted(request):
+def test_UI(req):
+    return render(req, 'layouts-hori-preloader.html',)
+
+
+
+def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
 
 # =================================Login into Home Page==================================

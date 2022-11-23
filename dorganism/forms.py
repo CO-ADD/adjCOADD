@@ -12,12 +12,12 @@ from django.core.exceptions import ValidationError
 class CreateOrganism_form(ModelForm):
 
     # Organism_Desc=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Strain_ID= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-floating input-group'}), required=False,)
+    Strain_ID= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     Strain_Code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     # Strain_Desc= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Strain_Notes= forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Strain_Tissue=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
-    Oxygen_Pref=forms.ChoiceField(choices=(('',''),('','')), widget=forms.Select(attrs={'class':'form-select', 'type':'radio'},))
+    Strain_Notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    Strain_Tissue=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
+    Oxygen_Pref=forms.ChoiceField(choices=(('',''),('','')), widget=forms.Select(attrs={'class':'form-select special'},))
     Risk_Group=forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     Pathogen_Group=forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
     MTA_Status = forms.ChoiceField(choices=(('',''),('','')),  widget=forms.Select(attrs={'class':'form-select'}))
@@ -38,8 +38,8 @@ class CreateOrganism_form(ModelForm):
        
         self.strainTypeChoices= Strain_Type_choices
         
-        self.fields['Strain_Type'].widget = forms.CheckboxSelectMultiple(choices=self.strainTypeChoices)
-        self.fields['Strain_Type'].widget.attrs.update({'class': 'special'})
+        self.fields['Strain_Type'].widget = forms.SelectMultiple(choices=self.strainTypeChoices)
+        self.fields['Strain_Type'].widget.attrs.update({'class': 'form-select', 'size':'3', 'multiple': 'true'})
         self.fields['Oxygen_Pref'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Oxygen_Pref'])
         self.fields['Risk_Group'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Risk_Group'])
         self.fields['Pathogen_Group'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Pathogen_Group'])

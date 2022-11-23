@@ -12,7 +12,7 @@ from apputil.views import index
 import dorganism.urls
 import apputil.urls
 
-from apputil.views import login_user, logout_user, permission_not_granted
+from apputil.views import login_user, logout_user, permission_not_granted,  test_UI
 
 
 
@@ -30,6 +30,7 @@ urlpatterns = [
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('', include('dorganism.urls')),
+    path('UI/', test_UI, name='test_ui' ),
    
 ]
 

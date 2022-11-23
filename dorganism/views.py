@@ -53,7 +53,7 @@ def detailTaxonomy(req, pk):
 
 # ====================================================Create===========================================
 # @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -73,7 +73,7 @@ def createTaxonomy(req):
     
 # ====================================================Update in Form===========================================
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateTaxonomy(req, pk):
     object_=get_object_or_404(Taxonomy, Organism_Name=pk)
     kwargs={}
@@ -92,7 +92,7 @@ def updateTaxonomy(req, pk):
     return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted')
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
@@ -147,7 +147,7 @@ class OrganismCardView(OrganismListView):
 
     # =============================step 2. Create new record by form===================#
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
@@ -212,7 +212,7 @@ def detailOrganism(req, pk):
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 @csrf_protect
 def detailChangeOrganism(req):
     kwargs={}
@@ -244,7 +244,7 @@ def detailChangeOrganism(req):
 
 #======================================================================Update Organism=================================================================================
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, Organism_ID=pk)
     kwargs={}
@@ -265,7 +265,7 @@ def updateOrganism(req, pk):
                     print(req.POST.get('searchbar_01'))
                     Organism_Name_str=req.POST.get('searchbar_01')
                     Organism_new_obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name_str)
-                    form=UpdateOrganism_form(req.user, Organism_Name, req.POST, instance=obj)
+                    form=UpdateOrganism_form(req.user, Organism_Name_str, req.POST, instance=obj)
                     print('form created')
                     #-----------------------Not allow to update name in different class--------
                     if Organism_new_obj.Class.Dict_Value and Organism_new_obj.Class.Dict_Value != Organism_Class_str:
@@ -273,7 +273,7 @@ def updateOrganism(req, pk):
                     #-----------------------Not allow to update name in different class--------
                 #------------------------If update Organism Name-----------------------------------
                 else:
-                    form=UpdateOrganism_form(req.user, object_.Organism_Name.Organism_Name, req.POST, instance=obj) 
+                    form=UpdateOrganism_form(req.user, object_.Organism_Name, req.POST, instance=obj) 
                 try:
                     if form.is_valid():                  
                         instance=form.save(commit=False)
@@ -299,7 +299,7 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -318,7 +318,7 @@ import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 @login_required
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_taxo(req):
     print('importing....')
     try:
@@ -362,7 +362,7 @@ def import_excel_taxo(req):
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
-@user_passes_test(lambda u:u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_dict(req):
     print('importing....')
     try:
@@ -389,7 +389,7 @@ def import_excel_dict(req):
 
 #==================================================================import Organism================================================
 @login_required
-@user_passes_test(lambda u:u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_organism(req):
     print('importing....')
     try:

@@ -23,8 +23,13 @@
   <script src="{% static 'js/htmx.min.js' %}"></script>
   <!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script> -->
   {%load static%}
+  <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+  <!-- Icons Css -->
+  <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+  <!-- App Css-->
+  <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+  {%load static%}
   <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
-
   <style>
     .responsive-width {
       margin: 2% 20%;
@@ -63,8 +68,14 @@
 </head>
 
 <body>
-  {%include "utils/navbar.html"%}
-  <main class="body-content">{% block content %} {% endblock %}</main>
+
+  {%include "layouts-hori-preloader.html"%}
+
+  <main class="body-content">
+    <div><a href="{%url 'test_ui'%}">Test UI</a></div>
+
+    {% block content %} {% endblock %}
+  </main>
 
   <!-- Footer -->
 

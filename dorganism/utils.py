@@ -52,8 +52,10 @@ def querysetToChoiseList_Dictionary(model_name, field_name):
 
     options=model_name.objects.filter(Dictionary_Class=field_name).values('Dict_Value', 'Dict_Desc')
     if options:
-
-        choices=tuple([tuple(d.values()) for d in options])
+       
+        choices_test=tuple([tuple(d.values()) for d in options])
+        choices=tuple((a[0], a[0]+' ( '+ a[1]+' )') for a in choices_test)
+       
     else:
         choices=(('--', 'empty'),)
     return choices
