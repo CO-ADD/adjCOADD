@@ -48,10 +48,13 @@ def clearIMGfolder():
 
 
 def querysetToChoiseList_Dictionary(model_name, field_name):
-    options=model_name.objects.filter(Dictionary_Class=field_name).values('Dict_Value', 'Dict_Desc')
-    if options:
 
-        choices=tuple([tuple(d.values()) for d in options])
+    options=model_name.objects.filter(dict_class=field_name).values('dict_value', 'dict_desc')
+    if options:
+       
+        choices_test=tuple([tuple(d.values()) for d in options])
+        choices=tuple((a[0], a[0]+' ( '+ a[1]+' )') for a in choices_test)
+       
     else:
         choices=(('--', 'empty'),)
     return choices
@@ -65,19 +68,19 @@ def searchbar_01(req):
         res=None
         searchInput=req.POST.get('inputtext')
         print(searchInput)
-        qs=Taxonomy.objects.filter(Organism_Name__istartswith=searchInput)
+        qs=Taxonomy.objects.filter(organism_name__istartswith=searchInput)
         print(qs)
         if len(qs)>0 and len(searchInput)>0:
             data=[]
             for i in qs:
-                if i.Class:
-                    Class=i.Class.Dict_Value
+                if i.org_class:
+                    orgClass=i.org_class.dict_value
                 else:
-                    Class='noClass by Import or ...'
+                    orgClass='noClass by Import or ...'
                 
                 item={
-                    'name':i.Organism_Name,
-                    'class': Class,
+                    'name':i.organism_name,
+                    'class': orgClass,
                 }
                 data.append(item)
             res=data
@@ -111,10 +114,10 @@ def searchbar_01(req):
 
 #==================================searchbar_02======================================
 class MySearchbar02(django_filters.FilterSet):
-    Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
+    organism_name = django_filters.CharFilter(lookup_expr='icontains')
     class Meta:
         model=Taxonomy
-        fields=['Organism_Name']
+        fields=['organism_name']
 
     @property
     def qs(self):
@@ -124,20 +127,20 @@ class MySearchbar02(django_filters.FilterSet):
 
 class MySearchbar03(MySearchbar02):
     # pass
-    Organism_Name = django_filters.CharFilter(field_name='Organism_Name__Organism_Name', lookup_expr='icontains')
-    Organism_Class=django_filters.ChoiceFilter(field_name='Organism_Name__Class__Dict_Value', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Organism_Class']))
-    Strain_Type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['Strain_Type']))
+    organism_name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
+    organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['organism_class']))
+    strain_type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['strain_type']))
     class Meta:
         model=Organism
-        fields=['Organism_ID', 'Strain_Code', 'Strain_ID',  'Strain_Notes', 'Strain_Type', 'MTA_Document', ]
+        fields=['organism_id', 'strain_code', 'strain_id',  'strain_notes', 'strain_type', 'mta_document', ]
        
     def my_custom_filter(self, queryset, name, value):
-        return queryset.filter(Strain_Type__overlap=value)
+        return queryset.filter(strain_type__overlap=value)
 
 
 class MySearchbar04(MySearchbar02):
-    Organism_Name = django_filters.CharFilter(lookup_expr='icontains')
-    Lineage = django_filters.MultipleChoiceFilter(choices="")
+    organism_name = django_filters.CharFilter(lookup_expr='icontains')
+    lineage = django_filters.MultipleChoiceFilter(choices="")
     class Meta:
         model=Taxonomy
-        fields=['Organism_Name', 'Code', 'Class', 'Tax_ID', 'Parent_Tax_ID', 'Tax_Rank', 'Division', 'Lineage']
+        fields=['organism_name', 'code', 'org_class', 'tax_id', 'parent_tax_id', 'tax_rank', 'division', 'lineage']

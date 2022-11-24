@@ -151,7 +151,6 @@ DATABASES = {
     # }
 
 
-
 }
 
 DATABASE_ROUTERS = ['dorganism.dbRouter.DrugsRouter','ddrug.dbRouter.DrugsRouter']

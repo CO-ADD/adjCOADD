@@ -10,12 +10,7 @@ import logging
 
 
 #-------------------------------------------------------------------------------------------------
-class ApplicationUser(AbstractUser):
-    READ = 1
-    WRITE = 2
-    DELETE = 3
-    ADMIN = 10
-    
+class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
     username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
     name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
@@ -24,12 +19,33 @@ class ApplicationUser(AbstractUser):
     department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
     group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
     phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
-    permissions = models.IntegerField(default = 0, null=False)      # application permissions .. ReadOnly, ReadWrite, Admin ..
+    permission = models.CharField(max_length=10, default = 'No', null=False)      # application permissions .. Read, Write, Delete, Admin ..
     is_appuser=models.BooleanField(default=True)
 
     class Meta:
         db_table = 'app_user'
     
+    # --------------------------------------------------------------------------
+    def has_permission(self,strPermission) -> bool:
+    #
+    # Returns True/False if User has strPermission 
+    #   checks if strPermission/self.permission in [Read, Write, Delete, Admin]
+    # --------------------------------------------------------------------------
+        _Permissions = {
+            'Read':1,
+            'Write':2,
+            'Delete':3,
+            'Admin':10,
+        }
+        if strPermission in _Permissions:
+            if self.permission in _Permissions: 
+                return(_Permissions[self.permission]>=_Permissions[strPermission])
+            else:
+                return(False)
+        else:
+            return(False)
+
+    # --------------------------------------------------------------------------
     def __str__(self) -> str:
         return f"{self.name}" 
 
@@ -84,15 +100,20 @@ class AuditModel(models.Model):
 class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
     
-    Dictionary_Class= models.CharField(max_length=30, verbose_name = "Dictionary_Class")
-    Dict_Value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
-    Dict_Desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
+    dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
+    dict_class= models.CharField(max_length=30, verbose_name = "Class")
+    dict_desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
    
-    def __str__(self) -> str:
-        return f"{self.Dict_Value}.{self.Dict_Desc}"
-    
+    #------------------------------------------------
     class Meta:
         db_table = 'dictionary'
+        ordering=['dict_value']
+        indexes = [
+            models.Index(name="dict_class_idx",fields=['dict_class']),
+        ]
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.dict_value}.{self.dict_desc}"
 
 
 #-------------------------------------------------------------------------------------------------

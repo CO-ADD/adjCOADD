@@ -54,7 +54,7 @@ def test_concurrently(times):
 class CreateTaxonomyTestCase(TestCase):
     def setUp(self):
         self.factory=RequestFactory()
-        self.organism=Taxonomy.objects.create_taxonomy(Organism_Name='for test', Risk_Group='RG03', Lineaage=['Lineage', 'test'], Tax_ID=1, Parent_Tax_ID=2000, Tax_Rank='test', Code='tetcode', Other_Names='test' )
+        self.organism=Taxonomy.objects.create_taxonomy(organism_name='for test', risk_group='RG03', lineaage=['Lineage', 'test'], tax_id=1, parent_tax_id=2000, tax_rank='test', code='tetcode', other_names='test' )
 
     @test_concurrently(15)
     def test_update(self):

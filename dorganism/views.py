@@ -47,13 +47,13 @@ class TaxonomyListView(TaxonomyCardView):
 @login_required
 def detailTaxonomy(req, pk):
     context={}
-    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    object_=get_object_or_404(Taxonomy, organism_name=pk)
     context["Taxonomy"]=object_
     return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 
 # ====================================================Create===========================================
 # @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -73,9 +73,9 @@ def createTaxonomy(req):
     
 # ====================================================Update in Form===========================================
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateTaxonomy(req, pk):
-    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    object_=get_object_or_404(Taxonomy, organism_name=pk)
     kwargs={}
     kwargs['user']=req.user 
     form=Taxonomy_form(instance=object_)
@@ -92,14 +92,14 @@ def updateTaxonomy(req, pk):
     return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted')
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
 def deleteTaxonomy(req, pk):
     kwargs={}
     kwargs['user']=req.user 
     print('deleting view')
-    object_=get_object_or_404(Taxonomy, Organism_Name=pk)
+    object_=get_object_or_404(Taxonomy, organism_name=pk)
     try:
-        print(object_.Organism_Name)
+        print(object_.organism_name)
         object_.delete(**kwargs)
         print("deleted")
     except Exception as err:
@@ -147,7 +147,7 @@ class OrganismCardView(OrganismListView):
 
     # =============================step 2. Create new record by form===================#
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
@@ -160,7 +160,7 @@ def createOrganism(req):
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
         Organism_Name=req.POST.get('searchbar_01')
-        Strain_Type_list=req.POST.getlist('Strain_Type')
+        Strain_Type_list=req.POST.getlist('strain_type')
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         
@@ -192,66 +192,55 @@ def createOrganism(req):
 @login_required
 def detailOrganism(req, pk):
     context={}
-    object_=get_object_or_404(Organism, Organism_ID=pk)
+    object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
     form=UpdateOrganism_form(user,instance=object_)
-    # Strain_Type_choices=Dictionary.objects.filter(Dictionary_Class="Strain_Type") # 
-    # Risk_Group_choice=Dictionary.objects.filter(Dictionary_Class="Risk_Group") #
-    # Oxygen_Pref_choice=Dictionary.objects.filter(Dictionary_Class="Oxygen_Preference")
-    # Pathogen_Group_choice=Dictionary.objects.filter(Dictionary_Class="Pathogen_Group")
-    # MTA_Status_choice=Dictionary.objects.filter(Dictionary_Class="License_Status") 
-    # Bio_Approval_choice=Dictionary.objects.filter(Dictionary_Class="Biol_Approval") 
+   
     context["object"]=object_
     context["form"]=form
-    # context["Strain_Type_options"]=Strain_Type_choices
-    # context["Risk_Group_choice"]=Risk_Group_choice
-    # context["Oxygen_Pref_choice"]=Oxygen_Pref_choice
-    # context["Pathogen_Group_choice"]=Pathogen_Group_choice
-    # context["MTA_Status_choice"]=MTA_Status_choice
-    # context["Bio_Approval_choice"]=Bio_Approval_choice
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
-@csrf_protect
-def detailChangeOrganism(req):
-    kwargs={}
-    kwargs['user']=req.user 
-    id=req.POST.get('id', '')
-    object_=get_object_or_404(Organism, Organism_ID=id)
-    value=req.POST.get('value','')
-    type_value=req.POST.get('type', '')
+# @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+# @csrf_protect
+# def detailChangeOrganism(req):
+#     kwargs={}
+#     kwargs['user']=req.user 
+#     id=req.POST.get('id', '')
+#     object_=get_object_or_404(Organism, organism_id=id)
+#     value=req.POST.get('value','')
+#     type_value=req.POST.get('type', '')
 
-    if type_value=='Strain_Type':
-        try:
-            value=value.split(",")
-            object_.Strain_Type=[i for i in value]
-            object_.save(**kwargs)
-        except Exception as err:
-             print("something wroing")
+#     if type_value=='strain_type':
+#         try:
+#             value=value.split(",")
+#             object_.strain_type=[i for i in value]
+#             object_.save(**kwargs)
+#         except Exception as err:
+#              print("something wroing")
     
-    else:
-        try:
-            fields={type_value: value}
-            print(fields)
-            Organism.objects.filter(pk=id).update(**fields)
-            object_=get_object_or_404(Organism, Organism_ID=id)
-            object_.save(**kwargs)
-        except Exception as err:
-            print(err)
+#     else:
+#         try:
+#             fields={type_value: value}
+#             print(fields)
+#             Organism.objects.filter(pk=id).update(**fields)
+#             object_=get_object_or_404(Organism, organism_id=id)
+#             object_.save(**kwargs)
+#         except Exception as err:
+#             print(err)
    
-    return JsonResponse({"success": "updated!"})
+#     return JsonResponse({"success": "updated!"})
 
 #======================================================================Update Organism=================================================================================
 @login_required
-@user_passes_test(lambda u: u.permissions>=2, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateOrganism(req, pk):
-    object_=get_object_or_404(Organism, Organism_ID=pk)
+    object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
     #This can be minimized when all organism have classes... ----------------
-    if object_.Organism_Name.Class:
-        Organism_Class_str=object_.Organism_Name.Class.Dict_Value
+    if object_.organism_name.org_class:
+        Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
         Organism_Class_str="No Class"
     #-------------------------------------------------------------------------
@@ -259,21 +248,21 @@ def updateOrganism(req, pk):
 
         try:
             with transaction.atomic(using='dorganism'):        # testing!
-                obj = Organism.objects.select_for_update().get(Organism_ID=pk)
+                obj = Organism.objects.select_for_update().get(organism_id=pk)
                 #------------------------If update Organism Name-----------------------------------
                 if  req.POST.get('searchbar_01'):
                     print(req.POST.get('searchbar_01'))
                     Organism_Name_str=req.POST.get('searchbar_01')
-                    Organism_new_obj=get_object_or_404(Taxonomy, Organism_Name=Organism_Name_str)
-                    form=UpdateOrganism_form(req.user, Organism_Name, req.POST, instance=obj)
+                    Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
+                    form=UpdateOrganism_form(req.user, Organism_Name_str, req.POST, instance=obj)
                     print('form created')
                     #-----------------------Not allow to update name in different class--------
-                    if Organism_new_obj.Class.Dict_Value and Organism_new_obj.Class.Dict_Value != Organism_Class_str:
+                    if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                     #-----------------------Not allow to update name in different class--------
                 #------------------------If update Organism Name-----------------------------------
                 else:
-                    form=UpdateOrganism_form(req.user, object_.Organism_Name.Organism_Name, req.POST, instance=obj) 
+                    form=UpdateOrganism_form(req.user, object_.organism_name, req.POST, instance=obj) 
                 try:
                     if form.is_valid():                  
                         instance=form.save(commit=False)
@@ -299,11 +288,11 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/updateForm/Organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    object_=get_object_or_404(Organism, Organism_ID=pk)
+    object_=get_object_or_404(Organism, organism_id=pk)
     try:      
         object_.delete(**kwargs)
         print("deleted")
@@ -318,7 +307,7 @@ import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 @login_required
-@user_passes_test(lambda u: u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_taxo(req):
     print('importing....')
     try:
@@ -333,13 +322,13 @@ def import_excel_taxo(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():
-                class_fkey=Dictionary.objects.filter(Dict_Value=dbframe.ORGANISM_CLASS)
+                class_fkey=Dictionary.objects.filter(dict_value=dbframe.ORGANISM_CLASS)
                 if class_fkey:
                     class_fkey=class_fkey[0]
                 else:
                     class_fkey=None
                 print(class_fkey)
-                division_fkey=Dictionary.objects.filter(Dict_Value=dbframe.DIVISION)
+                division_fkey=Dictionary.objects.filter(dict_value=dbframe.DIVISION)
                 if division_fkey:
                     division_fkey=division_fkey[0]
                 else:
@@ -348,9 +337,9 @@ def import_excel_taxo(req):
                 print(division_fkey)
                 # fromdata_time_obj=dt.datetime.strptime(dbframe.DOB, '%d-%m-%Y')
                 try:
-                    obj, created=Taxonomy.objects.get_or_create(Organism_Name=dbframe.ORGANISM_NAME, Other_Names=dbframe.ORGANISM_NAME_OTHER, Code=dbframe.ORGANISM_CODE, 
-                        Class=class_fkey, Tax_ID=dbframe.TAX_ID, Parent_Tax_ID=dbframe.PARENT_TAX_ID, 
-                        Tax_Rank=dbframe.TAX_RANK, Division=division_fkey, Lineage=linea
+                    obj, created=Taxonomy.objects.get_or_create(organism_name=dbframe.ORGANISM_NAME, other_names=dbframe.ORGANISM_NAME_OTHER, code=dbframe.ORGANISM_CODE, 
+                        org_class=class_fkey, tax_id=dbframe.TAX_ID, parent_tax_id=dbframe.PARENT_TAX_ID, 
+                        tax_rank=dbframe.TAX_RANK, division=division_fkey, lineage=linea, acreated_by=req.user
                         )
                 except Exception as err:
                     print(err)
@@ -362,7 +351,7 @@ def import_excel_taxo(req):
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 #=======================================================================================================
 @login_required
-@user_passes_test(lambda u:u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_dict(req):
     print('importing....')
     try:
@@ -377,7 +366,7 @@ def import_excel_dict(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():                   
-                obj, created=Dictionary.objects.get_or_create(Dictionary_Class=dbframe.Class, Dict_Value=dbframe.Term, Dict_Desc =dbframe.Name, acreated_by=req.user)
+                obj, created=Dictionary.objects.get_or_create(dict_class=dbframe.Class, dict_value=dbframe.Term, dict_desc =dbframe.Name, acreated_by=req.user)
                 print(type(obj))
           
             return render(req, 'dorganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})
@@ -389,7 +378,7 @@ def import_excel_dict(req):
 
 #==================================================================import Organism================================================
 @login_required
-@user_passes_test(lambda u:u.permissions>=9, login_url='permission_not_granted') 
+@user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def import_excel_organism(req):
     print('importing....')
     try:
@@ -406,15 +395,15 @@ def import_excel_organism(req):
             for dbframe in dbframe.itertuples():
                 taxID=int('0'+dbframe[22])
                 screen_panel=dbframe[26].split(';')
-                organism_fkey=Taxonomy.objects.filter(Organism_Name=dbframe[1])
+                organism_fkey=Taxonomy.objects.filter(organism_name=dbframe[1])
                 print(organism_fkey[0])   
                 try:
-                    obj, created=Organism.objects.get_or_create(Organism_ID=dbframe[0], Organism_Class_set=organism_fkey[0], Organism_Name=dbframe[1], Organism_Desc=dbframe[2], Strain_ID=dbframe[3], 
-                                    Strain_Code=dbframe[5], Strain_Desc=dbframe[6], Strain_Notes=dbframe[7], 
-                                    Strain_Tissue=dbframe[25], Strain_Type=dbframe[4], Sequence=dbframe[28], Sequence_Link=dbframe[29], Geno_Type=dbframe[33],
-                                    Screen_Type=screen_panel, 
-                                    Tax_ID =taxID,Risk_Group=dbframe[9], Pathogen =dbframe[10],Import_Permit =dbframe[12],Biol_Approval =dbframe[23],Special_Precaution =dbframe[24],Lab_Restriction =dbframe[27],MTA_Document =dbframe[31],
-                                    MTA_Status =dbframe[32],Oxygen_Pref =dbframe[13],Atmosphere_Pref ='containSpecialCHA', Nutrient_Pref =dbframe[15],Biofilm_Pref =dbframe[16], )
+                    obj, created=Organism.objects.get_or_create(organism_id=dbframe[0], organism_name=organism_fkey[0],  strain_id=dbframe[3], 
+                                    strain_code=dbframe[5], strain_notes=dbframe[7], 
+                                    strain_tissue=dbframe[25], strain_type=dbframe[4], sequence=dbframe[28], sequence_link=dbframe[29], 
+                                    strain_panel=screen_panel, 
+                                    tax_id =taxID,risk_group=dbframe[9], pathogen_group =dbframe[10],import_permit =dbframe[12],bio_approval =dbframe[23],special_precaution =dbframe[24],lab_restriction =dbframe[27],mta_document =dbframe[31],
+                                    mta_status =dbframe[32],oxygen_pref =dbframe[13],atmosphere_pref ='containSpecialCHA', nutrient_pref =dbframe[15],biofilm_pref =dbframe[16], acreated_by=req.user )
                 except Exception as err:
                     print(err)
                 # obj.save()
