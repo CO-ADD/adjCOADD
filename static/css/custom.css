@@ -315,8 +315,8 @@ select option {
 }
 
 #id_Strain_Type {
-  display: block;
-  height: 200px !important;
+  /* display: block;
+  height: 200px !important; */
   overflow: scroll;
 }
 
@@ -396,4 +396,9 @@ nav.shrink .navbar-toggle {
 
 .toLeft {
   left: 0 !important;
+}
+
+.special,
+.special option {
+  font-size: 14px !important;
 }

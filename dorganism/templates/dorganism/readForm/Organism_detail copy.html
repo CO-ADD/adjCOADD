@@ -9,7 +9,7 @@
 
     <p class="m-atuo">
 
-    <div id="{{object.Organism_ID}}">
+    <div id="{{object.pk}}">
         <a class="btn btn-success btn-sm">Update</a>
     </div>
 
@@ -20,10 +20,10 @@
         // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
 
         $(document).ready(function () {
-            btn = "#" + "{{object.Organism_ID}}"
+            btn = "#" + "{{object.pk}}"
             let my_modal = $('#OrganismUpdateModal');
             $(`${btn} a`).click(function () {
-                my_modal.load("{% url 'organism_update' object.Organism_ID %}", function (response) {
+                my_modal.load("{% url 'organism_update' object.pk %}", function (response) {
                     if (response == "Permission Not Granted") {
                         alert("permission!")
 
@@ -62,7 +62,7 @@
     </p>
     <div class="collapse" id="collapseExample">
         <div class="card card-body" style="width: 80rem ;">
-            <h4 class="my-0">Update Organism: {{object.Organism_Name}}</h4>
+            <h4 class="my-0">Update Organism: {{object.organism_name}}</h4>
             <h5>Class: {{Class}}</h5>
             <!-- <p>{{Organism_Name}}</p> -->
             {% include 'utils/searchbar_01.html' %}

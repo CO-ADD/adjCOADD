@@ -91,64 +91,64 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-    # 'default': {
-    #     # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD':'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-    # 'dorganism': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD': 'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # },
-
-    # 'ddrug': {
-    #     "ENGINE": "psqlextra.backend",
-    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-    #     'NAME': 'orgdb',
-    #     'USER': 'orgdb', #os.environ.get('db_user'),
-    #     'PASSWORD': 'orgdb',
-    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #     'PORT': '5432',
-    # }
-
-    # ==================For Local Test===========================================
     'default': {
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=apputil,public'},
         'NAME': 'orgdb',
-        'HOST': 'Localhost',
-
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
         'NAME': 'orgdb',
-
-        'TEST': {
-            'NAME': 'mytestdatabase2',
-        },
-        'HOST': 'Localhost',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     },
-      'ddrug': {
+
+    'ddrug': {
         "ENGINE": "psqlextra.backend",
         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
         'NAME': 'orgdb',
-        'HOST': 'Localhost',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
         'PORT': '5432',
     }
+
+    # ==================For Local Test===========================================
+    # 'default': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'HOST': 'Localhost',
+
+    #     'PORT': '5432',
+    # },
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb',
+
+    #     'TEST': {
+    #         'NAME': 'mytestdatabase2',
+    #     },
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # },
+    #   'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'HOST': 'Localhost',
+    #     'PORT': '5432',
+    # }
 
 
 }
@@ -200,7 +200,6 @@ import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
 
-
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
@@ -213,7 +212,6 @@ AUTH_LDAP_BIND_DN = ""
 AUTH_LDAP_BIND_PASSWORD = ""
 
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-
 
 
 # Security Setting

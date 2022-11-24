@@ -1,0 +1,301 @@
+<form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
+    {% csrf_token %}
+    <!-- {{form.as_table}} -->
+    <div class="d-flex border border-2 ">
+
+        <a class=" " href="{% url 'org_detail' object.pk %}">cancel</a>
+        <input style="float: right" type="submit" class="btn btn-sm" value="+" name="note" />
+
+    </div>
+    <div class="row">
+
+        <div class="col-md-4 ">
+
+            <table class="table table-bordered table-responsive-sm m-2">
+
+
+                <tbody>
+                    <tr>
+                        <th scope="row" class="table-light"> Name</th>
+                        <td><a href="{%url 'taxo_detail' object.organism_name %}">{{object.organism_name}}</a>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light">
+                            <label for="id_risk_group">Risk Group</label>
+                        </th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="risk_group">
+                            <div class="detail">
+                                {{object.risk_group}}
+                            </div>
+                            <div class="form-control select"> {{form.risk_group}}</div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light">Pathogen</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="pathogen_group">
+                            <div class="detail">
+                                {{object.pathogen_group}}
+                            </div>
+                            <div class="form-control select"> {{form.pathogen_group}}</div>
+
+                        </td>
+
+                    </tr>
+                    <!-- <tr>
+                    <th scope="row" class="table-light">Panels (chnage to editable)</th>
+                    <td data-id="{{object.pk}}" data-type="Panels">
+                        {{form.Panels}}</td>
+
+                </tr> -->
+                    <tr>
+                        <th scope="row" class="table-light">Lab Restriction</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="lab_restriction">
+
+                            <div class="detail">
+                                {{object.lab_restriction}}
+                            </div>
+                            <div class="input-group select">{{form.lab_restriction}}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Biol Approval</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="bio_approval">
+                            <div class="detail">
+                                {{object.bio_approval}}
+                            </div>
+                            <div class="form-control select"> {{form.bio_approval}}</div>
+
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Import Permit</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="import_permit">
+
+                            <div class="detail">
+                                {{object.import_permit}}
+                            </div>
+                            <div class="input-group select">{{form.import_permit}}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">MTA Document</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="mta_document">
+
+                            <div class="detail">
+                                {{object.mta_document}}
+                            </div>
+                            <div class="input-group select">{{form.mta_document}}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">MTA Status</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="mta_status">
+
+                            <div class="detail">
+                                {{object.mta_status}}
+                            </div>
+                            <div class="form-control select"> {{form.mta_status}}</div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+
+            <table class="table table-bordered m-2 table-responsive-sm ">
+
+                <tbody>
+
+                    <tr>
+                        <td colspan="2" class="table-light">Strain </td>
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light">Strain ID</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="strain_id">
+
+                            <div class="detail">
+                                {{object.strain_id}}
+                            </div>
+                            <div class="input-group select">{{form.strain_id}}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Strain Code</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="strain_code">
+
+                            <div class="detail">
+                                {{object.strain_code}}
+                            </div>
+                            <div class="input-group select">{{form.strain_code}}</div>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light">Strain Notes</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="strain_notes">
+
+                            <div class="detail">
+                                {{object.strain_notes}}
+                            </div>
+                            <div class="input-group select">{{form.strain_notes}}</div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light"> Strain_Type</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
+
+                            <div class="detail">
+                                {%for i in object.strain_type%}
+                                <span>i, </span>
+                                {%endfor%}
+
+                            </div>
+                            <div class="form-control select col-12 fs-6"> {{form.strain_type}}</div>
+                        </td>
+
+                    </tr>
+                    <!-- <tr>
+                    <th scope="row" class="table-light">Gen Type (change)</th>
+                    <td data-id="{{object.pk}}" data-type="Gen_Type">{{form.Gen_Type}}
+                    </td>
+
+                </tr> -->
+                    <tr>
+                        <th scope="row" class="table-light">Sequence</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="sequence">
+                            <div class="detail">
+                                {{object.sequence}}
+                            </div>
+                            <div class="input-group select">{{form.sequence}}</div>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Sequence Link</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="sequence_link">
+                            <div class="detail">
+                                {{object.sequence_link}}
+                            </div>
+                            <div class="input-group select">{{form.sequence_link}}</div>
+
+                        </td>
+
+                    </tr>
+                    <!-- <tr>
+                    <th scope="row" class="table-light">Sequence MLST (change)</th>
+                    <td data-id="{{object.pk}}" data-type="Sequence_ML_ST">
+                        {{form.Sequence_ML_ST}}</td>
+
+                </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+
+            <table class="table table-bordered m-2 table-responsive-sm ">
+                <tbody>
+                    <tr>
+                        <th scope="col" colspan="2" class="table-light">Preference</th>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Oxygen Pref</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="oxygen_pref">
+
+                            <div class="detail">
+                                {{object.oxygen_pref}}
+                            </div>
+                            <div class="form-control select"> {{form.oxygen_pref}}</div>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Atmosphere Pref</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="atmosphere_pref">
+                            <div class="detail">
+                                {{object.atmosphere_pref}}
+                            </div>
+                            <div class="input-group select">{{form.atmosphere_pref}}</div>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Nutrient Pref</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="nutrient_pref">
+                            <div class="detail">
+                                {{object.nutrient_pref}}
+                            </div>
+                            <div class="input-group select">{{form.nutrient_pref}}</div>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Biofilm Pref</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="biofilm_pref">
+                            <div class="detail">
+                                {{object.biofilm_pref}}
+                            </div>
+                            <div class="input-group select">{{form.biofilm_pref}}</div>
+                        </td>
+
+
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="table-light">Biologist (change)</th>
+                        <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="biologist">
+                            <div class="detail">
+                                {{object.biologist}}
+                            </div>
+                            <div class="form-control select">{{form.biologist}}</div>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <th scope="row" class="table-light">Tax ID</th>
+                        <td class="editable" data-id="{{object.pk}}" data-type="tax_id">
+
+                            <div class="detail">
+                                {{object.tax_id}}
+                            </div>
+                            <div class="input-group select">{{form.tax_id}}</div>
+
+                        </td>
+
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+
+</form>

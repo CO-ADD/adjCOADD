@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 from .models import ApplicationUser, Dictionary
-
 from dorganism.models import  Taxonomy
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
@@ -13,7 +11,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.urls import reverse_lazy, reverse
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from django.contrib.auth import logout, login
-from django.contrib.auth.models import Permission
+# from django.contrib.auth.models import Permission
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import  HttpResponse
 # Create your views here.
@@ -23,7 +21,12 @@ from django.shortcuts import  HttpResponse
 # @user_passes_test(check_admin)
 # def my_view(request): 
 
-def permission_not_granted(request):
+def test_UI(req):
+    return render(req, 'layouts-hori-preloader.html',)
+
+
+
+def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
 
 # =================================Login into Home Page==================================
@@ -66,8 +69,7 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 @login_required(login_url='/login/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
-    permissions = Permission.objects.filter(user=current_user)
-    return render(req, 'apputil/userprofile.html', {'currentUser': current_user, 'perm':permissions})
+    return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
 
 
 class AppUserListView(LoginRequiredMixin, ListView):
@@ -82,7 +84,7 @@ class AppUserListView(LoginRequiredMixin, ListView):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    fields=['name', 'username', 'permissions']
+    fields=['name', 'username', 'permission']
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
@@ -94,7 +96,7 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
 
 class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
-    fields=['name', 'permissions', ]
+    fields=['name', 'permission', ]
     template_name = 'apputil/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
 
@@ -125,7 +127,7 @@ class DictionaryView(LoginRequiredMixin, ListView):
         context["objects"]=self.model.objects.filter(astatus__gte=0)
         return context
 # 
-@user_passes_test(lambda u: u.is_superuser, redirect_field_name=None)
+@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def createDictionary(req):
     kwargs={}
     kwargs['user']=req.user
