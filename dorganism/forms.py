@@ -46,7 +46,7 @@ class CreateOrganism_form(ModelForm):
         self.fields['mta_status'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['mta_status'])
         self.fields['bio_approval'].choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['bio_approval'])
            
-    def clean_Organism_Name(self):       
+    def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         return data

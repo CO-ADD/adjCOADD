@@ -192,7 +192,7 @@ def createOrganism(req):
 @login_required
 def detailOrganism(req, pk):
     context={}
-    object_=get_object_or_404(Organism, Organism_ID=pk)
+    object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
     form=UpdateOrganism_form(user,instance=object_)
    

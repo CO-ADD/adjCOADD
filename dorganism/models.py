@@ -59,7 +59,7 @@ class Organism(AuditModel):
         'risk_group':'Risk_Group',
         'pathogen_group':'Pathogen_Group',
         'bio_approval':'Biol_Approval',
-        'oxgen_pref':'Oxygen_Preference',
+        'oxygen_pref':'Oxygen_Preference',
         'mta_status':'License_Status',
         'strain_type':'Strain_Type',
         'strain_panel':'Strain_Panel',
@@ -97,7 +97,6 @@ class Organism(AuditModel):
     nutrient_pref = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Nutirent")
     biofilm_pref = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Biofilm")
 
-    class Meta:
           #------------------------------------------------
     class Meta:
         db_table = 'organism'
@@ -130,7 +129,7 @@ class Organism(AuditModel):
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
             
-            while Organism.objects.filter(Organism_Name=Organism_strID).exists():
+            while Organism.objects.filter(organism_name=Organism_strID).exists():
                 Organism_nextID = next(Organism_IDSq)
                 Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
                 print(f"name: {Organism_strID}")
@@ -140,10 +139,11 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        print("organism save model...")
         if not self.organism_id: #Object does not exists
             print("this is save from organism model...")
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
-            if self.organism_id:
+            if self.organism_id: 
                 super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
@@ -249,7 +249,7 @@ class OrgBatch_Stock(AuditModel):
     #------------------------------------------------
     class Meta:
         db_table = 'orgbatch_stock'
-        ordering=['OrgBatch_ID','Stock_Type']
+        ordering=['orgbatch_id','stock_type']
         indexes = [
             models.Index(name="orgbstock_stype_idx",fields=['stock_type']),
             models.Index(name="orgbstock_freezer_idx",fields=['location_freezer']),

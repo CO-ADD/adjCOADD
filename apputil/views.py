@@ -129,7 +129,7 @@ class DictionaryView(LoginRequiredMixin, ListView):
         context["objects"]=self.model.objects.filter(astatus__gte=0)
         return context
 # 
-@user_passes_test(lambda u: u.has_permission(Admin), redirect_field_name=None)
+@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def createDictionary(req):
     kwargs={}
     kwargs['user']=req.user
