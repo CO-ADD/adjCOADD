@@ -13,7 +13,6 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Organism, Taxonomy
-
 from apputil.models import Dictionary
 
 

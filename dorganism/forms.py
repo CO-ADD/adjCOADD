@@ -3,14 +3,12 @@ from django.core.paginator import Paginator
 from django.forms import ModelForm
 from dorganism.utils import querysetToChoiseList_Dictionary
 from apputil.models import Dictionary, ApplicationUser
-
 from .models import Organism, Taxonomy
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
-
     # Organism_Desc=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False,)
     strain_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)

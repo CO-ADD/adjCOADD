@@ -5,7 +5,6 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import transaction, IntegrityError
 
 from apputil.models import AuditModel, Dictionary
-
 from dorganism.models import Organism, Organism_Batch
 
 #-------------------------------------------------------------------------------------------------
