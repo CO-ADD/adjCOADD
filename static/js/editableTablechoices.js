@@ -8,7 +8,22 @@ $(document).ready(function () {
         var selectbox = $(this).find(".select")
         var detail = $(this).find(".detail")
         selectbox.addClass("visible")
+        $('.updateformshow').addClass("visible")
         detail.addClass("not-visible")
+
+        // var a = Object.values($(this).find("option"))
+        // a.pop()
+        // a.pop()
+        // console.log(a.length)
+        // a.forEach
+
+        // .forEach(i => {
+        //     console.log(i.text)
+        //     const a = i.text.split(" | ")
+        //     console.log(a)
+        // i.innerHTML = a[0]
+        // i.innerHTML += '<b>' + a[1] + '</b>'
+        // })
 
         // input = "<button class='btncancel' class='form-control'><i class='bi bi-x'></i></button>";
         // input += "<button class='btnsave' class='form-control'><i class='bi bi-check'></i></button>";

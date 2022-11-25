@@ -123,32 +123,32 @@ DATABASES = {
      }
 
     # ==================For Local Test===========================================
-    #'default': {
+    # 'default': {
     #    "ENGINE": "psqlextra.backend",
     #    'OPTIONS':{'options': '-c search_path=apputil,public'},
     #    'NAME': 'orgdb',
     #    'HOST': 'Localhost',
 
     #    'PORT': '5432',
-    #},
-    #'dorganism': {
+    # },
+    # 'dorganism': {
     #    "ENGINE": "psqlextra.backend",
     #    'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
     #    'NAME': 'orgdb',
 
-     #   'TEST': {
-      #      'NAME': 'mytestdatabase2',
-       # },
-       # 'HOST': 'Localhost',
-       # 'PORT': '5432',
-    #},
-     # 'ddrug': {
-     #   "ENGINE": "psqlextra.backend",
-     #   'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-     #   'NAME': 'orgdb',
-     #   'HOST': 'Localhost',
-     #   'PORT': '5432',
-    #}
+    #    'TEST': {
+    #        'NAME': 'mytestdatabase2',
+    #    },
+    #    'HOST': 'Localhost',
+    #    'PORT': '5432',
+    # },
+    #  'ddrug': {
+    #    "ENGINE": "psqlextra.backend",
+    #    'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #    'NAME': 'orgdb',
+    #    'HOST': 'Localhost',
+    #    'PORT': '5432',
+    # }
 
 
 }
