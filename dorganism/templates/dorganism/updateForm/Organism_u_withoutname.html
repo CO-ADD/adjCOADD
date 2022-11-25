@@ -2,13 +2,11 @@
     {% csrf_token %}
     <!-- {{form.as_table}} -->
     <div class="row">
-
-        <a class="text-danger col-md-3" href="{% url 'organism_delete' object.pk %}"> Delete Engtry</a>
+        <a class="text-danger" style="width: fit-content;" href="{% url 'organism_delete' object.pk %}"> Delete
+            Engtry</a>
         <div class="col-md-3 updateformshow not-visible">
-
             <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
             <input style="float: right" type="submit" class="btn btn-sm" value="Update Changes" name="note" />
-
         </div>
     </div>
     <div class="row">
