@@ -10,7 +10,7 @@
     <p class="m-atuo">
 
     <div id="{{object.pk}}">
-        <a class="btn btn-success btn-sm">Update with Organism Name</a>
+        <a class="btn btn-sm">Update Organism Name</a>
     </div>
 
     <div id="OrganismUpdateModal" class="modal fade " role="dialog">
@@ -56,11 +56,11 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    <h5 class="my-0">Organism: {{object.organism_name}} | Class:
-                        {{object.organism_name.org_class.dict_value}} | </h5>
-                    <a href="{% url 'organism_delete' object.pk %}"> Delete</a>
+                <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="fs-6 my-0">Organism: {{object.organism_name}} | Class:
+                        {{object.organism_name.org_class.dict_value}} </h5>
+
 
                 </button>
             </h2>
@@ -78,7 +78,7 @@
                     </ul>
                     {% endif %}
                     <!-- ===================================================================================== -->
-                    <hr>
+
                     <b>
                         {%include 'utils/message.html'%}
                     </b>

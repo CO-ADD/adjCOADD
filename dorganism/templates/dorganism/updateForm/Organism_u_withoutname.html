@@ -1,11 +1,15 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
     {% csrf_token %}
     <!-- {{form.as_table}} -->
-    <div class="d-flex border border-2 ">
+    <div class="row">
 
-        <a class=" " href="{% url 'org_detail' object.pk %}">cancel</a>
-        <input style="float: right" type="submit" class="btn btn-sm" value="+" name="note" />
+        <a class="text-danger col-md-3" href="{% url 'organism_delete' object.pk %}"> Delete Engtry</a>
+        <div class="col-md-3 updateformshow not-visible">
 
+            <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
+            <input style="float: right" type="submit" class="btn btn-sm" value="Update Changes" name="note" />
+
+        </div>
     </div>
     <div class="row">
 
@@ -30,7 +34,7 @@
                             <div class="detail">
                                 {{object.risk_group}}
                             </div>
-                            <div class="form-control select"> {{form.risk_group}}</div>
+                            <div class="form-control select"> {{form.risk_group }}</div>
 
                         </td>
 
@@ -166,8 +170,9 @@
                         <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
 
                             <div class="detail">
+
                                 {%for i in object.strain_type%}
-                                <span>i, </span>
+                                <span>i </span>
                                 {%endfor%}
 
                             </div>

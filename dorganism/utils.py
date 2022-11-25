@@ -53,7 +53,7 @@ def querysetToChoiseList_Dictionary(model_name, field_name):
     if options:
        
         choices_test=tuple([tuple(d.values()) for d in options])
-        choices=tuple((a[0], a[0]+' ( '+ a[1]+' )') for a in choices_test)
+        choices=tuple((a[0], a[0]+ " | "+a[1]) for a in choices_test)
        
     else:
         choices=(('--', 'empty'),)

@@ -299,7 +299,7 @@ select option {
 }
 
 .not-visible {
-  display: none !important;
+  display: none;
 }
 
 .visible {
@@ -401,4 +401,13 @@ nav.shrink .navbar-toggle {
 .special,
 .special option {
   font-size: 14px !important;
+}
+
+.updateformshow {
+  margin: auto;
+  width: 50%;
+}
+
+option {
+  font-size: 16px !important;
 }
