@@ -23,16 +23,20 @@ class Taxonomy(AuditModel):
         Division_Code   ROD, BCT, MAM, PLN, PRI
     # """
 #-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'org_class':'Organism_Class',
+        'division':'Organism_Division',
+    }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
-    other_names = models.CharField(blank=True, max_length=100, verbose_name = "Other Names")
-    code = models.CharField(blank=True, max_length=15, verbose_name = "Code")
-    org_class = models.ForeignKey(Dictionary, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
-    tax_id = models.IntegerField(verbose_name = "NCBI Tax ID")
-    parent_tax_id = models.IntegerField(verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
-    tax_rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    division = models.ForeignKey(Dictionary, blank=True, null=True, verbose_name = "Division", related_name='requests_Div', on_delete=models.DO_NOTHING)
-    lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25)
+    other_names = models.CharField(max_length=100, null=True, blank=True, verbose_name = "Other Names")
+    code = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Code")
+    org_class = models.ForeignKey(Dictionary, null=True, blank=True, db_column="org_class", verbose_name = "Class", related_name="Class+", on_delete=models.DO_NOTHING)
+    tax_id = models.IntegerField(null=True, blank=True, verbose_name = "NCBI Tax ID")
+    parent_tax_id = models.IntegerField(null=True, blank=True, erbose_name = "NCBI Parent Tax ID") 
+    tax_rank = models.CharField(max_length=50, null=True, blank=True, verbose_name = "Taxonomy Rank")
+    division = models.ForeignKey(Dictionary, null=True, blank=True, db_column="division", verbose_name = "Division", related_name='Division', on_delete=models.DO_NOTHING)
+    lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
     
     #------------------------------------------------
     class Meta:
@@ -67,35 +71,35 @@ class Organism(AuditModel):
     }
 
 
-    organism_id = models.CharField(primary_key=True, unique=True, blank=True, max_length=15, verbose_name = "Organism ID") #be blank for automatic generate a new one?
-    organism_name= models.ForeignKey(Taxonomy, verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
+    organism_id = models.CharField(primary_key=True, unique=True, max_length=15, verbose_name = "Organism ID") #be blank for automatic generate a new one?
+    organism_name= models.ForeignKey(Taxonomy, db_column="organism_name", verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
     #Organism_desc= models.CharField(blank=True, max_length=150, verbose_name = "Organism Description")
-    strain_id = models.CharField(blank=False, null=False, max_length=50, db_index=True, verbose_name = "Strain ID")
-    strain_otherids = models.CharField(blank=True, null=True, max_length=150, verbose_name = "Strain OtherID")
-    strain_code= models.CharField(blank=True, null=True, max_length=15, verbose_name = "Strain Code")
+    strain_id = models.CharField(max_length=50, null=False, blank=False, db_index=True, verbose_name = "Strain ID")
+    strain_otherids = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Strain OtherID")
+    strain_code= models.CharField(max_length=15, null=True, blank=True, verbose_name = "Strain Code")
     #strain_Desc= models.CharField(blank=True, max_length=150, verbose_name = "Strain Description")
-    strain_notes= models.CharField(blank=True, null=True, max_length=250, verbose_name = "Strain Notes")
-    strain_origin = models.CharField(blank=True, null=True, max_length=200, verbose_name = "Origin")
-    strain_property = models.CharField(blank=True, null=True, max_length=200, verbose_name = "Property")
+    strain_notes= models.CharField(max_length=250, null=True, blank=True, verbose_name = "Strain Notes")
+    strain_origin = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Origin")
+    strain_property = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Property")
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
-    strain_tissue= models.CharField(blank=True, null=True, max_length=250, verbose_name = "Strain Tissue")
-    biologist = models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
-    sequence = models.CharField(blank=True, null=True, max_length=100, verbose_name = "Sequence")
-    sequence_link = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Sequence Link")
-    tax_id = models.IntegerField(null=True, verbose_name = "NCBI Tax ID", default=0)
-    risk_group = models.CharField(blank=True, null=True, max_length=50,verbose_name = "Risk Group")
-    pathogen_group = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Pathogen",)
-    import_permit = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Import Permit")
-    bio_approval = models.CharField(blank=True, null=True, max_length=200, verbose_name = "Biological Approval") 
-    special_precaution = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Special Precaution")
-    lab_restriction = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Lab")
-    mta_status = models.CharField(blank=True, null=True, max_length=150,verbose_name = "MTA Status") 
-    mta_document = models.CharField(blank=True, null=True, max_length=150, verbose_name = "MTA Document")
-    oxygen_pref = models.CharField(blank=True, null=True, max_length=250, verbose_name = "Oxygen")
-    atmosphere_pref = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Atmosphere")
-    nutrient_pref = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Nutirent")
-    biofilm_pref = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Biofilm")
+    strain_tissue= models.CharField(max_length=250, null=True, blank=True, verbose_name = "Strain Tissue")
+    sequence = models.CharField(max_length=100, null=True, blank=True, verbose_name = "Sequence")
+    sequence_link = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Sequence Link")
+    tax_id = models.IntegerField(default=0, null=True, verbose_name = "NCBI Tax ID")
+    risk_group = models.CharField(max_length=50,null=True, blank=True, verbose_name = "Risk Group")
+    pathogen_group = models.CharField(max_length=50, null=True, blank=True, verbose_name = "Pathogen",)
+    import_permit = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Import Permit")
+    bio_approval = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Biological Approval") 
+    special_precaution = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Special Precaution")
+    lab_restriction = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Lab")
+    mta_status = models.CharField(max_length=150,null=True, blank=True, verbose_name = "MTA Status") 
+    mta_document = models.CharField(max_length=150, null=True, blank=True, verbose_name = "MTA Document")
+    oxygen_pref = models.CharField(max_length=250, null=True, blank=True, verbose_name = "Oxygen")
+    atmosphere_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Atmosphere")
+    nutrient_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Nutirent")
+    biofilm_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Biofilm")
+    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
 
           #------------------------------------------------
     class Meta:
@@ -169,19 +173,19 @@ class Organism_Batch(AuditModel):
 
     _SEP = ':'
 
-    orgbatch_id  = models.IntegerField(primary_key=True, blank=False, validators=[MinValueValidator(1), MaxValueValidator(10)], verbose_name = "OrgBatch ID")
-    organism_id = models.ForeignKey(Organism, verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
+    orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
+    organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
     batch_no  = models.IntegerField(null=False, blank=False, verbose_name = "Batch No")
-    batch_notes= models.CharField(blank=True, null=True, max_length=500, verbose_name = "Batch Notes")
-    qc_status = models.CharField(blank=True, null=True, max_length=10, verbose_name = "QC Notes")
-    qc_record = models.CharField(blank=True, null=True, max_length=10, verbose_name = "QC Records")
-    supplier = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier")
-    supplier_code = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier Code")
-    supplier_po = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier PO")
-    stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) # Updated by Script
-    stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False,editable=False, default=list) # Updated by Script
-    biologist =models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
-
+    batch_notes= models.CharField(max_length=500, null=True, blank=True, verbose_name = "Batch Notes")
+    qc_status = models.CharField(max_length=10, null=True, blank=True, verbose_name = "QC Notes")
+    qc_record = models.CharField(max_length=10, null=True, blank=True, verbose_name = "QC Records")
+    supplier = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Supplier")
+    supplier_code = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Supplier Code")
+    supplier_po = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Supplier PO")
+    stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) 
+    stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False, editable=False, default=list) 
+    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
+    
     #------------------------------------------------
     class Meta:
         db_table = 'orgbatch'
@@ -234,17 +238,17 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
-    passage_no = models.IntegerField(null=False, blank=False, verbose_name = "Passage No")
-    location_freezer = models.CharField(blank=True, null=True, max_length=80, verbose_name = "Freezer")
-    location_rack = models.CharField(blank=True, null=True, max_length=10, verbose_name = "Rack")
-    location_column = models.CharField(blank=True, null=True, max_length=10, verbose_name = "Column")
-    location_slot = models.CharField(blank=True, null=True, max_length=10, verbose_name = "Slot")
-    stock_type = models.CharField(blank=True, null=True, max_length=20, verbose_name = "Stock Type")
+    orgbatch_id = models.ForeignKey(Organism_Batch, db_column="orgbatch_id",verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
+    passage_no = models.IntegerField(default=0, null=False, blank=False, verbose_name = "Passage No")
+    location_freezer = models.CharField(max_length=80, null=True, blank=True, verbose_name = "Freezer")
+    location_rack = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Rack")
+    location_column = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Column")
+    location_slot = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Slot")
+    stock_type = models.CharField(max_length=20, null=True, blank=True, verbose_name = "Stock Type")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date")
-    n_created = models.IntegerField(null=False, blank=False, verbose_name = "#Vials created")
-    n_left = models.IntegerField(null=False, blank=False, verbose_name = "#Vials left")
-    biologist =models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) # models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
+    n_created = models.IntegerField(default=0, null=False, blank=False, verbose_name = "#Vials created")
+    n_left = models.IntegerField(default=0, null=False, blank=False, verbose_name = "#Vials left")
+    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
 
     #------------------------------------------------
     class Meta:
@@ -273,15 +277,15 @@ class Organism_Culture(AuditModel):
         'media_use':'Media_Use',
     }
 
-    organism_id = models.ForeignKey(Organism, verbose_name = "Organism ID", on_delete=models.DO_NOTHING)
-    culture_type = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Culture Type") 
-    media_use = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Media Use") 
-    media = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Media") 
-    atmosphere = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Atmosphere") 
-    temperature = models.CharField(blank=True, null=True, max_length=25, verbose_name = "Temperature") 
-    labware = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Labware") 
-    biologist = models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
-    notes = models.CharField(blank=True, null=True, max_length=512, verbose_name = "Media") 
+    organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING)
+    culture_type = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Culture Type") 
+    media_use = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Media Use") 
+    media = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Media") 
+    atmosphere = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Atmosphere") 
+    temperature = models.CharField(max_length=25, null=True, blank=True, verbose_name = "Temperature") 
+    labware = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Labware") 
+    notes = models.CharField(max_length=512, null=True, blank=True, verbose_name = "Media") 
+    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
 
     #------------------------------------------------
     class Meta:
