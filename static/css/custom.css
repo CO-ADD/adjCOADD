@@ -6,6 +6,61 @@
   --orange: #2c7a84;
 }
 
+:root {
+  --bs-heading-bg: #fff;
+  --bs-topbar-search-bg: #f3f3f9;
+  --bs-header-item-color: #555b6d;
+  --bs-boxed-body-bg: #ebebf4;
+  --bs-topnav-bg: #2c7a84;
+  --bs-menu-item-color: #545a6d;
+  --bs-heading-dark-bg: #2a3042;
+  --bs-input-border-color: #ced4da;
+  --bs-input-focus-border-color: #b1bbc4;
+  --bs-form-check-input-border: #ff6e00;
+  --bs-inform-color: #ff6e00;
+  --bs-form-item-color: #625e5d;
+  --bs-footer-bg: #f2f2f5;
+  --bs-footer-color: #74788d;
+  --bs-custom-white: #fff;
+  --bs-border-color: #625e5d;
+}
+
+[data-layout-mode=dark] {
+  --bs-gray-100: #212529;
+  --bs-gray-200: #2a3042;
+  --bs-gray-300: #32394e;
+  --bs-gray-400: #a6b0cf;
+  --bs-gray-500: #bfc8e2;
+  --bs-gray-600: #c3cbe4;
+  --bs-gray-700: #f6f6f6;
+  --bs-gray-800: #eff2f7;
+  --bs-gray-900: #f8f9fa;
+  --bs-body-bg: #222736;
+  --bs-body-bg-rgb: rgb(34, 39, 54);
+  --bs-body-color-rgb: 166, 176, 207;
+  --bs-body-color: #a6b0cf;
+  --bs-heading-color: #f6f6f6;
+  --bs-border-color: #32394e;
+  --bs-custom-white: #2a3042;
+  --bs-input-border-color: #32394e;
+  --bs-input-focus-border-color: #3a425a;
+  --bs-hr-border-color: #32394e;
+  --bs-form-check-input-border: #3a425a;
+  --bs-light: #32394e;
+  --bs-light-rgb: 50, 57, 78;
+  --bs-dark: #f6f6f6;
+  --bs-dark-rgb: 246, 246, 246;
+  --bs-heading-bg: #262b3c;
+  --bs-header-item-color: #a6b0cf;
+  --bs-topbar-search-bg: #2a3042;
+  --bs-heading-dark-bg: #556ee6;
+  --bs-boxed-body-bg: #32394f;
+  --bs-topnav-bg: #282e3f;
+  --bs-menu-item-color: #a6b0cf;
+  --bs-footer-bg: #262b3c;
+  --bs-footer-color: #a6b0cf;
+}
+
 a {
   text-decoration: none;
 }
@@ -13,7 +68,7 @@ a {
 body {
   font-family: sans-serif !important;
   letter-spacing: 0px;
-  color: var(--grey, teal);
+  /* color: var(--grey, teal); */
   font-size: small;
 }
 
@@ -38,7 +93,7 @@ body {
 .navbar-brand:hover,
 .nav-item a:hover {
   /* color: var(--orange, orange); */
-  border: 2px solid white;
+  border: 2px solid var(--bs-border-color);
   /* box-shadow: 0px -5px 10px 0px white; */
   transition: 0.5s ease-in;
 }
@@ -48,7 +103,7 @@ main {
 }
 
 .info {
-  color: var(--teal, teal);
+  color: var(--bs-inform-color);
   font-weight: bold;
   font-size: 1rem;
   height: 20rem;
@@ -59,8 +114,8 @@ main {
 
 button,
 .btn {
-  border: 2px solid var(--orange, orange);
-  color: var(--teal);
+  border: 2px solid var(--bs-border-color);
+  color: var(--bs-inform-color);
 }
 
 .btn:hover {
@@ -84,7 +139,7 @@ button,
 }
 
 .navbar-light {
-  background-color: var(--teal);
+  background-color: var(--bs-topnav-bg);
   opacity: 0.8;
   color: white;
 }
@@ -299,7 +354,7 @@ select option {
 }
 
 .not-visible {
-  display: none !important;
+  display: none;
 }
 
 .visible {
@@ -401,4 +456,13 @@ nav.shrink .navbar-toggle {
 .special,
 .special option {
   font-size: 14px !important;
+}
+
+.updateformshow {
+  margin: auto;
+  width: 50%;
+}
+
+option {
+  font-size: 16px !important;
 }

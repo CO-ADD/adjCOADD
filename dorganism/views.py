@@ -339,7 +339,7 @@ def import_excel_taxo(req):
                 try:
                     obj, created=Taxonomy.objects.get_or_create(organism_name=dbframe.ORGANISM_NAME, other_names=dbframe.ORGANISM_NAME_OTHER, code=dbframe.ORGANISM_CODE, 
                         org_class=class_fkey, tax_id=dbframe.TAX_ID, parent_tax_id=dbframe.PARENT_TAX_ID, 
-                        tax_rank=dbframe.TAX_RANK, division=division_fkey, lineage=linea, acreated_by=req.user
+                        tax_rank=dbframe.TAX_RANK, division=division_fkey, lineage=linea, 
                         )
                 except Exception as err:
                     print(err)
@@ -366,7 +366,7 @@ def import_excel_dict(req):
             print(type(exmpexceldata))
             dbframe=exmpexceldata
             for dbframe in dbframe.itertuples():                   
-                obj, created=Dictionary.objects.get_or_create(dict_class=dbframe.Class, dict_value=dbframe.Term, dict_desc =dbframe.Name, acreated_by=req.user)
+                obj, created=Dictionary.objects.get_or_create(dict_class=dbframe.Class, dict_value=dbframe.Term, dict_desc =dbframe.Name, )
                 print(type(obj))
           
             return render(req, 'dorganism/createForm/importDataForm/importexcel_dict.html', {'uploaded_file_url': uploaded_file_url})

@@ -5,6 +5,7 @@ $(document).ready(function () {
         var selectbox = $(this).find(".select")
         var detail = $(this).find(".detail")
         selectbox.addClass("visible")
+        $('.updateformshow').addClass("visible")
         detail.addClass("not-visible")
         // var value = $(this).text();
         // var input = "<input type='text' class='input-data' value='" + value + "' class='form-control'>";

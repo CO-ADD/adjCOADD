@@ -75,6 +75,7 @@ class AuditModel(models.Model):
     adeleted_by = models.ForeignKey(ApplicationUser, db_column = "adeleted_by", null=True,  verbose_name = "Deleted by", 
         related_name='%(class)s_deleted_by+', editable=False, on_delete=models.DO_NOTHING)
 
+
     #------------------------------------------------
     class Meta:
         abstract = True

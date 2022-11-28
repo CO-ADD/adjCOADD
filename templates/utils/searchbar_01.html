@@ -10,7 +10,7 @@
 
 
 <script>
-    const delay_by_in_ms = 500
+
     let scheduled_function = false
     const searchForm = document.getElementById("search-form")
     const searchInput = document.getElementById("search-input")
@@ -87,7 +87,7 @@
             clearTimeout(scheduled_function)
         }
 
-        scheduled_function = setTimeout(function () { sendSearchData(e.target.value); }, delay_by_in_ms);
+        scheduled_function = setTimeout(function () { sendSearchData(e.target.value); }, 500);
         // sendSearchData(e.target.value)
 
     })
