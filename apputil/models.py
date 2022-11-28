@@ -82,7 +82,10 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(**kwargs)
 
     def save(self, *args, **kwargs):
-        appuser=kwargs.pop("user")
+        appuser=kwargs.get("user")
+        if kwargs.get("user"):
+            kwargs.pop("user")
+        
         
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self._Owner)
