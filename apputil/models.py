@@ -62,36 +62,39 @@ class AuditModel(models.Model):
     VALID = 1
     CONFIRMED = 2
 
+    _Owner = "orgdb"
+
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
-    acreated_at = models.DateTimeField(auto_now_add=True, null=True,verbose_name = "Created at",editable=False)
-    aupdated_at = models.DateTimeField(auto_now=True, null=True,blank=True, verbose_name = "Updated at",editable=False)
-    adeleted_at = models.DateTimeField(blank=True, null=True,verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
-    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
-    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
+    acreated_at = models.DateTimeField(auto_now_add=True, verbose_name = "Created at",editable=False)
+    aupdated_at = models.DateTimeField(auto_now=True, null=True, verbose_name = "Updated at",editable=False)
+    adeleted_at = models.DateTimeField( null=True, verbose_name = "Deleted at",editable=False)
+    acreated_by = models.ForeignKey(ApplicationUser, verbose_name = "Created by",  related_name='%(class)s_created_by', db_column='created_by', editable=False, on_delete=models.DO_NOTHING)
+    aupdated_by = models.ForeignKey(ApplicationUser, null=True,verbose_name = "Updated by",related_name='%(class)s_updated_by', db_column='updated_by', editable=False,on_delete=models.DO_NOTHING)
+    adeleted_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Deleted by", related_name='%(class)s_deleted_by',editable=False, db_column='deleted_by', on_delete=models.DO_NOTHING)
 
     class Meta:
         abstract = True
-    
+     
     def delete(self,**kwargs):
-        print('this is delete function from Audit model class')
         self.astatus = -9
         self.adeleted_at = timezone.now()
-        self.adeleted_by = kwargs.get("user")
-        print(f"deleted by {self.adeleted_by}")
-        self.save(**kwargs)
+        self.adeleted_by_id = kwargs.get("user")
+        super(AuditModel,self).save(**kwargs)
 
     def save(self, *args, **kwargs):
-        print('this is save function from Audit model class')
-        user=kwargs.get("user")
-        print(user)
-        if not self.acreated_by: 	#Createing
-            self.acreated_by = user       
-        else:					#Updateing
-            self.aupdated_by = user
+        appuser=kwargs.get("user")
         if kwargs.get("user"):
             kwargs.pop("user")
-        super().save(*args, **kwargs)
+
+        if appuser is None:
+            appuser = ApplicationUser.objects.get(name=self._Owner)
+
+        if not self.acreated_by_id: 
+            self.acreated_by_id = appuser       
+        else:					#Updateing
+            self.aupdated_by_id = appuser
+
+        super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 
@@ -123,7 +126,7 @@ class ApplicationLog(models.Model):
     log_proc = models.CharField(max_length=50, blank=True, editable=False)
     log_type = models.CharField(max_length=15, blank=True, editable=False)
     log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
-    log_user = models.ForeignKey(ApplicationUser, editable=False, on_delete=models.DO_NOTHING)
+    log_user = models.ForeignKey(ApplicationUser, editable=False, db_column='log_user',on_delete=models.DO_NOTHING)
     log_object = models.CharField(max_length=15, blank=True, editable=False)
     log_desc = models.CharField(max_length=1024, blank=True, editable=False)
     log_status = models.CharField(max_length=15, blank=True, editable=False)
