@@ -33,7 +33,7 @@ class Taxonomy(AuditModel):
     code = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Code")
     org_class = models.ForeignKey(Dictionary, null=True, blank=True, db_column="org_class", verbose_name = "Class", related_name="Class+", on_delete=models.DO_NOTHING)
     tax_id = models.IntegerField(null=True, blank=True, verbose_name = "NCBI Tax ID")
-    parent_tax_id = models.IntegerField(null=True, blank=True, erbose_name = "NCBI Parent Tax ID") 
+    parent_tax_id = models.IntegerField(null=True, blank=True, verbose_name = "NCBI Parent Tax ID") 
     tax_rank = models.CharField(max_length=50, null=True, blank=True, verbose_name = "Taxonomy Rank")
     division = models.ForeignKey(Dictionary, null=True, blank=True, db_column="division", verbose_name = "Division", related_name='Division', on_delete=models.DO_NOTHING)
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
