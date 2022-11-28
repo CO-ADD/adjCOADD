@@ -78,14 +78,12 @@ class AuditModel(models.Model):
     def delete(self,**kwargs):
         self.astatus = -9
         self.adeleted_at = timezone.now()
-        self.adeleted_by_id = kwargs.get("user")
+        self.adeleted_by = kwargs.pop("user")
         super(AuditModel,self).save(**kwargs)
 
     def save(self, *args, **kwargs):
-        appuser=kwargs.get("user")
-        if kwargs.get("user"):
-            kwargs.pop("user")
-
+        appuser=kwargs.pop("user")
+        
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self._Owner)
 
