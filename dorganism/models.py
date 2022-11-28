@@ -23,15 +23,19 @@ class Taxonomy(AuditModel):
         Division_Code   ROD, BCT, MAM, PLN, PRI
     # """
 #-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'org_class':'Organism_Class',
+        'division':'Organism_Division',
+    }
 
-    organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
-    other_names = models.CharField(blank=True, max_length=100, verbose_name = "Other Names")
-    code = models.CharField(blank=True, max_length=15, verbose_name = "Code")
-    org_class = models.ForeignKey(Dictionary, blank=True, null=True, verbose_name = "Class", related_name="dictClass+", on_delete=models.DO_NOTHING)
-    tax_id = models.IntegerField(verbose_name = "NCBI Tax ID")
-    parent_tax_id = models.IntegerField(verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
-    tax_rank = models.CharField(blank=True, max_length=50, verbose_name = "Taxonomy Rank")
-    division = models.ForeignKey(Dictionary, blank=True, null=True, verbose_name = "Division", related_name='requests_Div', on_delete=models.DO_NOTHING)
+    organism_name = models.CharField(primary_key=True, unique=True, max_length=100,  verbose_name = "Specie")
+    other_names = models.CharField(null=True, blank=True, max_length=100, verbose_name = "Other Names")
+    code = models.CharField(null=True, blank=True, max_length=15, verbose_name = "Code")
+    org_class = models.ForeignKey(Dictionary, db_column='org_class', null=True, blank=True, verbose_name = "Class", related_name="Class+", on_delete=models.DO_NOTHING)
+    tax_id = models.IntegerField(null=True, verbose_name = "NCBI Tax ID")
+    parent_tax_id = models.IntegerField(null=True, verbose_name = "NCBI Parent Tax ID") #empty from no.207668 
+    tax_rank = models.CharField(null=True, blank=True, max_length=50, verbose_name = "Taxonomy Rank")
+    division = models.ForeignKey(Dictionary,db_column='division', null=True, blank=True, verbose_name = "Division", related_name='Division+', on_delete=models.DO_NOTHING)
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25)
     
     #------------------------------------------------
@@ -68,7 +72,7 @@ class Organism(AuditModel):
 
 
     organism_id = models.CharField(primary_key=True, unique=True, blank=True, max_length=15, verbose_name = "Organism ID") #be blank for automatic generate a new one?
-    organism_name= models.ForeignKey(Taxonomy, verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
+    organism_name= models.ForeignKey(Taxonomy,db_column='organism_name', verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
     #Organism_desc= models.CharField(blank=True, max_length=150, verbose_name = "Organism Description")
     strain_id = models.CharField(blank=False, null=False, max_length=50, db_index=True, verbose_name = "Strain ID")
     strain_otherids = models.CharField(blank=True, null=True, max_length=150, verbose_name = "Strain OtherID")
@@ -80,7 +84,7 @@ class Organism(AuditModel):
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     strain_tissue= models.CharField(blank=True, null=True, max_length=250, verbose_name = "Strain Tissue")
-    biologist = models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
+    biologist = models.ForeignKey(ApplicationUser, db_column='biologist', verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
     sequence = models.CharField(blank=True, null=True, max_length=100, verbose_name = "Sequence")
     sequence_link = models.CharField(blank=True, null=True, max_length=500, verbose_name = "Sequence Link")
     tax_id = models.IntegerField(null=True, verbose_name = "NCBI Tax ID", default=0)
@@ -170,7 +174,7 @@ class Organism_Batch(AuditModel):
     _SEP = ':'
 
     orgbatch_id  = models.IntegerField(primary_key=True, blank=False, validators=[MinValueValidator(1), MaxValueValidator(10)], verbose_name = "OrgBatch ID")
-    organism_id = models.ForeignKey(Organism, verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
+    organism_id = models.ForeignKey(Organism, db_column='organism_id-batch',verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
     batch_no  = models.IntegerField(null=False, blank=False, verbose_name = "Batch No")
     batch_notes= models.CharField(blank=True, null=True, max_length=500, verbose_name = "Batch Notes")
     qc_status = models.CharField(blank=True, null=True, max_length=10, verbose_name = "QC Notes")
@@ -180,7 +184,7 @@ class Organism_Batch(AuditModel):
     supplier_po = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Supplier PO")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) # Updated by Script
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False,editable=False, default=list) # Updated by Script
-    biologist =models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
+    biologist =models.ForeignKey(ApplicationUser, db_column='biologist', verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
 
     #------------------------------------------------
     class Meta:
@@ -234,7 +238,7 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
+    orgbatch_id = models.ForeignKey(Organism_Batch, db_column='orgbatch_id',verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
     passage_no = models.IntegerField(null=False, blank=False, verbose_name = "Passage No")
     location_freezer = models.CharField(blank=True, null=True, max_length=80, verbose_name = "Freezer")
     location_rack = models.CharField(blank=True, null=True, max_length=10, verbose_name = "Rack")
@@ -244,7 +248,7 @@ class OrgBatch_Stock(AuditModel):
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date")
     n_created = models.IntegerField(null=False, blank=False, verbose_name = "#Vials created")
     n_left = models.IntegerField(null=False, blank=False, verbose_name = "#Vials left")
-    biologist =models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) # models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
+    biologist =models.ForeignKey(ApplicationUser, db_column='biologist', verbose_name = "Biologist", on_delete=models.DO_NOTHING) # models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
 
     #------------------------------------------------
     class Meta:
@@ -273,14 +277,14 @@ class Organism_Culture(AuditModel):
         'media_use':'Media_Use',
     }
 
-    organism_id = models.ForeignKey(Organism, verbose_name = "Organism ID", on_delete=models.DO_NOTHING)
+    organism_id = models.ForeignKey(Organism, db_column='organism_id-culture',verbose_name = "Organism ID", on_delete=models.DO_NOTHING)
     culture_type = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Culture Type") 
     media_use = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Media Use") 
     media = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Media") 
     atmosphere = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Atmosphere") 
     temperature = models.CharField(blank=True, null=True, max_length=25, verbose_name = "Temperature") 
     labware = models.CharField(blank=True, null=True, max_length=120, verbose_name = "Labware") 
-    biologist = models.ForeignKey(ApplicationUser, verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
+    biologist = models.ForeignKey(ApplicationUser,db_column='biologist', verbose_name = "Biologist", on_delete=models.DO_NOTHING) #models.CharField(blank=True, null=True, max_length=50, verbose_name = "Biologist")
     notes = models.CharField(blank=True, null=True, max_length=512, verbose_name = "Media") 
 
     #------------------------------------------------
