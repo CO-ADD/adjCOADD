@@ -56,29 +56,36 @@ class AuditModel(models.Model):
     An abstract base class model that provides audit informations 
     """
 #-------------------------------------------------------------------------------------------------
-    DELETED = -9
-    INVALID = -1
-    UNDEFINED = 0
-    VALID = 1
-    CONFIRMED = 2
-
-    _Owner = "orgdb"
-
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
     adeleted_at = models.DateTimeField(null=True,  editable=False, verbose_name="Deleted at",)
-    acreated_by = models.ForeignKey(ApplicationUser, db_column = "acreated_by", null=False, verbose_name = "Created by", 
-        related_name='%(class)s_created_by+', editable=False, on_delete=models.DO_NOTHING)
-    aupdated_by = models.ForeignKey(ApplicationUser, db_column = "aupdated_by", null=True,  verbose_name = "Updated by", 
-        related_name='%(class)s_updated_by+', editable=False, on_delete=models.DO_NOTHING)
-    adeleted_by = models.ForeignKey(ApplicationUser, db_column = "adeleted_by", null=True,  verbose_name = "Deleted by", 
-        related_name='%(class)s_deleted_by+', editable=False, on_delete=models.DO_NOTHING)
+    acreated = models.ForeignKey(ApplicationUser, null=False, verbose_name = "Created by", 
+        related_name="%(class)s_acreated_by", editable=False, on_delete=models.DO_NOTHING)
+    aupdated = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Updated by", 
+        related_name="%(class)s_aupdated_by", editable=False, on_delete=models.DO_NOTHING)
+    adeleted = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Deleted by", 
+        related_name="%(class)s_adeleted_by", editable=False, on_delete=models.DO_NOTHING)
 
     #------------------------------------------------
     class Meta:
         abstract = True
     
+    #------------------------------------------------
+    def get_ClassValue(self,key):
+        KeyValues = {
+            "Deleted"   : -9,
+            "Invalid"   : -1,
+            "Undefined" :  0,
+            "Valid"     :  1,
+            "Confirmed" :  2,
+            "Owner"     : "orgdb"
+        }
+        if key in KeyValues:
+            return(KeyValues[key])
+        else:
+            return(None)
+
     #------------------------------------------------
     def delete(self,**kwargs):
         appuser=kwargs.get("user")
@@ -87,8 +94,8 @@ class AuditModel(models.Model):
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self._Owner)
 
-        self.astatus = self.DELETED
-        self.adeleted_by = appuser
+        self.astatus = self.get_ClassValue("Deleted")
+        self.adeleted_id = appuser
         self.adeleted_at = timezone.now()
         super(AuditModel,self).save(**kwargs)
 
@@ -98,13 +105,13 @@ class AuditModel(models.Model):
         if kwargs.get("user"):
             kwargs.pop("user")
         if appuser is None:
-            appuser = ApplicationUser.objects.get(name=self._Owner)
+            appuser = ApplicationUser.objects.get(name=self.get_ClassValue("Owner"))
 
-        if not self.acreated_by:
-            self.acreated_by = appuser
+        if not self.acreated_id:
+            self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
-            self.aupdated_by = appuser
+            self.aupdated_id = appuser
             self.aupdated_at = timezone.now()       
         super(AuditModel,self).save(*args, **kwargs)
 
@@ -144,7 +151,7 @@ class ApplicationLog(models.Model):
     log_status = models.CharField(max_length=15, null=True, blank=True, editable=False)
 
     class Meta:
-        db_table = 'app_Log'
+        db_table = 'app_log'
 
 
 
