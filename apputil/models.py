@@ -63,35 +63,48 @@ class AuditModel(models.Model):
     CONFIRMED = 2
 
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
-    acreated_at = models.DateTimeField(auto_now_add=True, null=True,verbose_name = "Created at",editable=False)
-    aupdated_at = models.DateTimeField(auto_now=True, null=True,blank=True, verbose_name = "Updated at",editable=False)
-    adeleted_at = models.DateTimeField(blank=True, null=True,verbose_name = "Deleted at",editable=False)
-    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
-    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
-    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
+    acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
+    aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
+    adeleted_at = models.DateTimeField(null=True,  editable=False, verbose_name="Deleted at",)
+    acreated = models.ForeignKey(ApplicationUser, null=False, verbose_name = "Created by", 
+        related_name='%(class)s_created_by', editable=False, on_delete=models.DO_NOTHING)
+    aupdated = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Updated by", 
+        related_name='%(class)s_updated_by', editable=False, on_delete=models.DO_NOTHING)
+    adeleted = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Deleted by", 
+        related_name='%(class)s_deleted_by', editable=False, on_delete=models.DO_NOTHING)
 
+       #------------------------------------------------
     class Meta:
         abstract = True
     
+    #------------------------------------------------
     def delete(self,**kwargs):
-        print('this is delete function from Audit model class')
-        self.astatus = -9
-        self.adeleted_at = timezone.now()
-        self.adeleted_by = kwargs.get("user")
-        print(f"deleted by {self.adeleted_by}")
-        self.save(**kwargs)
-
-    def save(self, *args, **kwargs):
-        print('this is save function from Audit model class')
-        user=kwargs.get("user")
-        print(user)
-        if not self.acreated_by: 	#Createing
-            self.acreated_by = user       
-        else:					#Updateing
-            self.aupdated_by = user
+        appuser=kwargs.get("user")
         if kwargs.get("user"):
             kwargs.pop("user")
-        super().save(*args, **kwargs)
+        if appuser is None:
+            appuser = ApplicationUser.objects.get(name=self._Owner)
+
+        self.astatus = self.DELETED
+        self.adeleted_by = appuser
+        self.adeleted_at = timezone.now()
+        super(AuditModel,self).save(**kwargs)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        appuser=kwargs.get("user")
+        if kwargs.get("user"):
+            kwargs.pop("user")
+        if appuser is None:
+            appuser = ApplicationUser.objects.get(name=self._Owner)
+
+        if not self.acreated_by:
+            self.acreated_by = appuser
+            self.acreated_at = timezone.now()       
+        else:	
+            self.aupdated_by = appuser
+            self.aupdated_at = timezone.now()       
+        super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 
