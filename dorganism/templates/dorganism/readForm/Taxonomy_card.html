@@ -60,21 +60,17 @@
       </script>
 
       <div class="row d-flex flex-wrap">
-        {% for taxo in page_obj %}
+        {% for object in page_obj %}
 
         <div id="comps-taxo" class="col-md-3">
           <div class="card bg-transparent my-2 compounds">
-            <a class="btn btn-sm btn-outline-secondary" href="{%url 'taxo_detail' taxo.pk%}">Detail</a>
-            <p class="lead fs-4 m-auto"> ID: {{taxo.division}}</p>
-            <a href="{% url 'taxonomy_delete' taxo.pk %}">Delete</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{%url 'taxo_detail' object.pk%}">Detail</a>
+            <p class="lead fs-4 m-auto"> ID: {{object.division}}</p>
 
+            {%include 'dorganism/deleteForm/Taxonomy_del.html'%}
 
-
-
-
-
-            <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.pk}}</h5>
-            <div id="{{taxo.pk}}">
+            <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{object.pk}}</h5>
+            <div id="{{object.pk}}">
               <a class="card-link">Update</a>
             </div>
 
@@ -84,13 +80,13 @@
 
               $(document).ready(function () {
 
-                btn = "#" + "{{taxo.pk}}"
+                btn = "#" + "{{object.pk}}"
                 let my_modal = $('#taxoUpdateModal');
 
                 console.log(btn)
                 $(`${btn} a`).click(function () {
 
-                  my_modal.load("{% url 'taxonomy_update' taxo.pk %}", function (response) {
+                  my_modal.load("{% url 'taxonomy_update' object.pk %}", function (response) {
                     if (response == "Permission Not Granted") {
                       alert("permission!")
 
@@ -105,44 +101,44 @@
 
 
             <p>
-            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{taxo.pk}}"
-              aria-expanded="false" aria-controls="{{taxo.pk}}">
+            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
+              aria-expanded="false" aria-controls="{{object.pk}}">
               <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
             </div>
 
             </p>
-            <div class="collapse" id="collapse{{taxo.pk}}">
+            <div class="collapse" id="collapse{{object.pk}}">
 
               <div class="card-body d-flex flex-column align-items-start">
 
-                <p class="lead fs-5 text-dark">Tax_ID: {{taxo.tax_id}}}</p>
+                <p class="lead fs-5 text-dark">Tax_ID: {{object.tax_id}}}</p>
                 <p class="fw-bold lead fs-5 text-success">
-                  {{taxo.lineage}}
+                  {{object.lineage}}
 
-                  {%for item in taxo.lineage%}
+                  {%for item in object.lineage%}
                   <li>{{item}}</li>
                   {%endfor%}
                 </p>
 
                 <p>Division_CODE:
-                  {{taxo.division_code}}
+                  {{object.division_code}}
                 </p>
                 <ul>
                   <li>
-                    {{taxo.other_names}}
+                    {{object.other_names}}
                   </li>
                   <li>
-                    {{taxo.division}}
+                    {{object.division}}
                   </li>
                   <li>
-                    {{taxo.org_class}}
+                    {{object.org_class}}
                   </li>
 
                   <li>
-                    {{taxo.tax_rank}}
+                    {{object.tax_rank}}
                   </li>
                   <li>
-                    {{taxo.division}}
+                    {{object.division}}
                   </li>
                 </ul>
                 <!--prettier-ignore-->

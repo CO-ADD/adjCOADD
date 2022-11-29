@@ -48,7 +48,7 @@ class TaxonomyListView(TaxonomyCardView):
 def detailTaxonomy(req, pk):
     context={}
     object_=get_object_or_404(Taxonomy, organism_name=pk)
-    context["Taxonomy"]=object_
+    context["object"]=object_
     return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 
 # ====================================================Create===========================================
@@ -102,11 +102,9 @@ def deleteTaxonomy(req, pk):
         if req.method=='POST':
             object_.delete(**kwargs)
             print("deleted")
-            return redirect("/")
     except Exception as err:
-        print(err)
-    return render(req, 'dorganism/deleteForm/Taxonomy_del.html', {'object':object_})
-
+        print(err) 
+    return redirect("taxo_card")
     
 
 # # ========================================Organism CREATE READ UPDATE DELETE View==============================================#
@@ -295,18 +293,15 @@ def deleteOrganism(req, pk):
     kwargs['user']=req.user
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
-        if req.method=='POST':
-            object_.delete(**kwargs)
-            print("deleted")
+        # if req.method=='POST':
+        object_.delete(**kwargs)
+        print("deleted")
             
     except Exception as err:
         print(err)
-    return render(req, 'dorganism/deleteForm/Organism_del.html', {'object':object_})
+    return redirect('taxo_list')
+   
 
-    
-    
-
-  
 # # ==============================Import Excel files===========================================================#
 import pandas as pd
 from django.conf import settings
