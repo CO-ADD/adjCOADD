@@ -115,7 +115,7 @@ class Dictionary(AuditModel):
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
-    dict_desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
+    dict_desc = models.CharField(max_length=150, blank=True, null=True, verbose_name = "Description")
    
     #------------------------------------------------
     class Meta:
