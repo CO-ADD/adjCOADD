@@ -14,11 +14,11 @@ class ApplicationUser(AbstractUser):
 #-------------------------------------------------------------------------------------------------
     username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
     name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
-    initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
-    organisation = models.CharField(max_length=250, null=True, blank=True)     # University of Queensland
-    department = models.CharField(max_length=250, null=True, blank=True)       # Institute for Molecular Bioscience
-    group = models.CharField(max_length=50, null=True, blank=True)             # Blaskovich
-    phone = models.CharField(max_length=25, null=True, blank=True)             # +61 7 344 62994
+    initials = models.CharField(max_length=5, blank=True, null=True)           # JZG
+    organisation = models.CharField(max_length=250, blank=True, null=True)     # University of Queensland
+    department = models.CharField(max_length=250, blank=True, null=True)       # Institute for Molecular Bioscience
+    group = models.CharField(max_length=50, blank=True, null=True)             # Blaskovich
+    phone = models.CharField(max_length=25, blank=True, null=True)             # +61 7 344 62994
     permission = models.CharField(max_length=10, default = 'No', null=False)      # application permissions .. Read, Write, Delete, Admin ..
     is_appuser=models.BooleanField(default=True)
 
@@ -62,52 +62,36 @@ class AuditModel(models.Model):
     VALID = 1
     CONFIRMED = 2
 
-    _Owner = "orgdb"
-
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
-    acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
-    aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
-    adeleted_at = models.DateTimeField(null=True,  editable=False, verbose_name="Deleted at",)
-    acreated_by = models.ForeignKey(ApplicationUser, db_column = "acreated_by", null=False, verbose_name = "Created by", 
-        related_name='%(class)s_created_by+', editable=False, on_delete=models.DO_NOTHING)
-    aupdated_by = models.ForeignKey(ApplicationUser, db_column = "aupdated_by", null=True,  verbose_name = "Updated by", 
-        related_name='%(class)s_updated_by+', editable=False, on_delete=models.DO_NOTHING)
-    adeleted_by = models.ForeignKey(ApplicationUser, db_column = "adeleted_by", null=True,  verbose_name = "Deleted by", 
-        related_name='%(class)s_deleted_by+', editable=False, on_delete=models.DO_NOTHING)
+    acreated_at = models.DateTimeField(auto_now_add=True, null=True,verbose_name = "Created at",editable=False)
+    aupdated_at = models.DateTimeField(auto_now=True, null=True,blank=True, verbose_name = "Updated at",editable=False)
+    adeleted_at = models.DateTimeField(blank=True, null=True,verbose_name = "Deleted at",editable=False)
+    acreated_by = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Created by", related_name='%(class)s_requests_created',editable=False, on_delete=models.DO_NOTHING)
+    aupdated_by = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Updated by", related_name='%(class)s_requests_updated',editable=False,on_delete=models.DO_NOTHING)
+    adeleted_by = models.ForeignKey(ApplicationUser, blank=True, null=True, verbose_name = "Deleted by",related_name='%(class)s_requests_deleted',editable=False,on_delete=models.DO_NOTHING)
 
-
-    #------------------------------------------------
     class Meta:
         abstract = True
     
-    #------------------------------------------------
     def delete(self,**kwargs):
-        appuser=kwargs.get("user")
-        if kwargs.get("user"):
-            kwargs.pop("user")
-        if appuser is None:
-            appuser = ApplicationUser.objects.get(name=self._Owner)
-
-        self.astatus = self.DELETED
-        self.adeleted_by = appuser
+        print('this is delete function from Audit model class')
+        self.astatus = -9
         self.adeleted_at = timezone.now()
-        super(AuditModel,self).save(**kwargs)
+        self.adeleted_by = kwargs.get("user")
+        print(f"deleted by {self.adeleted_by}")
+        self.save(**kwargs)
 
-    #------------------------------------------------
     def save(self, *args, **kwargs):
-        appuser=kwargs.get("user")
+        print('this is save function from Audit model class')
+        user=kwargs.get("user")
+        print(user)
+        if not self.acreated_by: 	#Createing
+            self.acreated_by = user       
+        else:					#Updateing
+            self.aupdated_by = user
         if kwargs.get("user"):
             kwargs.pop("user")
-        if appuser is None:
-            appuser = ApplicationUser.objects.get(name=self._Owner)
-
-        if not self.acreated_by:
-            self.acreated_by = appuser
-            self.acreated_at = timezone.now()       
-        else:	
-            self.aupdated_by = appuser
-            self.aupdated_at = timezone.now()       
-        super(AuditModel,self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
 
@@ -118,7 +102,7 @@ class Dictionary(AuditModel):
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
-    dict_desc = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Description")
+    dict_desc = models.CharField(max_length=120, blank=True, null=True, verbose_name = "Description")
    
     #------------------------------------------------
     class Meta:
@@ -135,17 +119,17 @@ class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class ApplicationLog(models.Model):
 #-------------------------------------------------------------------------------------------------
-    log_code = models.CharField(max_length=15, null=True, blank=True, editable=False)
-    log_proc = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    log_type = models.CharField(max_length=15, null=True, blank=True, editable=False)
-    log_time = models.DateTimeField(auto_now=True, editable=False)
-    log_user = models.ForeignKey(ApplicationUser, db_column = "log_user", editable=False, on_delete=models.DO_NOTHING)
-    log_object = models.CharField(max_length=15, null=True, blank=True, editable=False)
-    log_desc = models.CharField(max_length=1024, null=True, blank=True, editable=False)
-    log_status = models.CharField(max_length=15, null=True, blank=True, editable=False)
+    log_code = models.CharField(max_length=15, blank=True, editable=False)
+    log_proc = models.CharField(max_length=50, blank=True, editable=False)
+    log_type = models.CharField(max_length=15, blank=True, editable=False)
+    log_time = models.DateTimeField(auto_now=True, blank=True, editable=False)
+    log_user = models.ForeignKey(ApplicationUser, editable=False, on_delete=models.DO_NOTHING)
+    log_object = models.CharField(max_length=15, blank=True, editable=False)
+    log_desc = models.CharField(max_length=1024, blank=True, editable=False)
+    log_status = models.CharField(max_length=15, blank=True, editable=False)
 
     class Meta:
-        db_table = 'app_Log'
+        db_table = 'app_log'
 
 
 
