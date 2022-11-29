@@ -23,10 +23,13 @@
           {{form.as_p}}
         </div>
         <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
-        <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
+        <div class="d-flex m-auto">
+          <a class="btn m-auto mt-5" href="{% url 'org_detail' Organism.pk %}">Discard Update</a>
+          <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
+
+        </div>
 
       </form>
-      <a href="{% url 'org_detail' Organism.pk %}">cancel</a>
     </div>
 
 

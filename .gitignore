@@ -316,7 +316,7 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
-uploads/
+uploads/*.*
 # Scrapy stuff:
 .scrapy
 
