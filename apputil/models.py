@@ -62,6 +62,8 @@ class AuditModel(models.Model):
     VALID = 1
     CONFIRMED = 2
 
+    _Owner='orgdb'
+
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
@@ -86,7 +88,7 @@ class AuditModel(models.Model):
             appuser = ApplicationUser.objects.get(name=self._Owner)
 
         self.astatus = self.DELETED
-        self.adeleted_by = appuser
+        self.adeleted_id = appuser
         self.adeleted_at = timezone.now()
         super(AuditModel,self).save(**kwargs)
 
@@ -98,11 +100,11 @@ class AuditModel(models.Model):
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self._Owner)
 
-        if not self.acreated_by:
-            self.acreated_by = appuser
+        if not self.acreated_id:
+            self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
-            self.aupdated_by = appuser
+            self.aupdated_id = appuser
             self.aupdated_at = timezone.now()       
         super(AuditModel,self).save(*args, **kwargs)
 

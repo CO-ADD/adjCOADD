@@ -99,12 +99,13 @@ def deleteTaxonomy(req, pk):
     print('deleting view')
     object_=get_object_or_404(Taxonomy, organism_name=pk)
     try:
-        print(object_.organism_name)
-        object_.delete(**kwargs)
-        print("deleted")
+        if req.method=='POST':
+            object_.delete(**kwargs)
+            print("deleted")
+            return redirect("/")
     except Exception as err:
         print(err)
-    return redirect("/")
+    return render(req, 'dorganism/deleteForm/Taxonomy_del.html', {'object':object_})
 
     
 
@@ -293,12 +294,16 @@ def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
     object_=get_object_or_404(Organism, organism_id=pk)
-    try:      
-        object_.delete(**kwargs)
-        print("deleted")
+    try:
+        if req.method=='POST':
+            object_.delete(**kwargs)
+            print("deleted")
+            
     except Exception as err:
         print(err)
-    return redirect("org_list")
+    return render(req, 'dorganism/deleteForm/Organism_del.html', {'object':object_})
+
+    
     
 
   

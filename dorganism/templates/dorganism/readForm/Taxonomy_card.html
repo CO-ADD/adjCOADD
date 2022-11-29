@@ -66,7 +66,12 @@
           <div class="card bg-transparent my-2 compounds">
             <a class="btn btn-sm btn-outline-secondary" href="{%url 'taxo_detail' taxo.pk%}">Detail</a>
             <p class="lead fs-4 m-auto"> ID: {{taxo.division}}</p>
-            <a href="{%url 'taxonomy_delete' taxo.pk %}">Delete</a>
+            <a href="{% url 'taxonomy_delete' taxo.pk %}">Delete</a>
+
+
+
+
+
 
             <h5 class="bi bi-tag fw-bold lead fs-4 m-auto"> Name: {{taxo.pk}}</h5>
             <div id="{{taxo.pk}}">
