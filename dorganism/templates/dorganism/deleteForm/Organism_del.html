@@ -1,7 +1,12 @@
-<form method="POST">
-    <!-- Security token by Django -->
-    {% csrf_token %}
-    Are you want to delete this item ?
-    <input type="submit" value="Yes" />
-    <a href="/">Cancel </a>
-</form>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form id="deleteOrganismForm" method="POST" class="post-form" action="{% url 'organism_delete' object.pk %}">
+            <!--prettier-ignore-->
+            {% csrf_token %}
+
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+
+            <input type="submit" value="Confirm" />
+        </form>
+    </div>
+</div>

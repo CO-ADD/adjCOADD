@@ -11,7 +11,7 @@
                 class="bi bi-arrow-bar-left"></i></a>
     </div>
     <p class="m-atuo">
-    <div id="{{Taxonomy.pk}}">
+    <div id="{{object.pk}}">
         <a class="btn btn-success btn-sm">Update</a>
     </div>
 
@@ -22,10 +22,10 @@
         // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
 
         $(document).ready(function () {
-            btn = "#" + "{{Taxonomy.pk}}"
+            btn = "#" + "{{object.pk}}"
             let my_modal = $('#TaxonomyUpdateModal');
             $(`${btn} a`).click(function () {
-                my_modal.load("{% url 'taxonomy_update' Taxonomy.pk %}", function () {
+                my_modal.load("{% url 'taxonomy_update' object.pk %}", function () {
                     my_modal.modal("show");
                 });
             });
@@ -51,13 +51,13 @@
 
 
     </p>
-    <p><a href="{% url 'taxonomy_delete' Taxonomy.pk %}">Delete</a></p>
+    {%include 'dorganism/deleteForm/Taxonomy_del.html'%}
     <div class="card m-4">
         <b>
             {%include 'utils/message.html'%}
         </b>
         <div class="card-header">
-            Organism Taxonomy {{Taxonomy.pk}}
+            Organism Taxonomy {{object.pk}}
         </div>
         <div class="row">
             <div class="col-md-4 table-responsive-sm">
@@ -67,56 +67,56 @@
                     <thead>
                         <tr>
                             <th scope="col" class="table-light">Organism Name</th>
-                            <th scope="col" class="table-light">{{Taxonomy.pk}}</th>
+                            <th scope="col" class="table-light">{{object.pk}}</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row" class="table-light"> Other Names</th>
-                            <td><a href="">{{Taxonomy.other_names}}</a>
+                            <td><a href="">{{object.other_names}}</a>
                             </td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light"> Class</th>
-                            <td> {{Taxonomy.org_class.dict_desc}}
+                            <td> {{object.org_class.dict_desc}}
                             </td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Tax_ID</th>
-                            <td class="" data-id="{{Taxonomy.pk}}" data-type="tax_id">
-                                {{Taxonomy.tax_id}} (integer)
+                            <td class="" data-id="{{object.pk}}" data-type="tax_id">
+                                {{object.tax_id}} (integer)
                             </td>
 
                         </tr>
 
                         <tr>
                             <th scope="row" class="table-light">Parent_Tax_ID</th>
-                            <td class="" data-id="{{Taxonomy.pk}}" data-type="parent_tax_id">
-                                {{Taxonomy.parent_tax_id}} (integer)
+                            <td class="" data-id="{{object.pk}}" data-type="parent_tax_id">
+                                {{object.parent_tax_id}} (integer)
 
                             </td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Tax_Rank</th>
-                            <td class="editable" data-id="{{Taxonomy.pk}}" data-type="tax_rank">
-                                {{Taxonomy.tax_rank}}</td>
+                            <td class="editable" data-id="{{object.pk}}" data-type="tax_rank">
+                                {{object.tax_rank}}</td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Division</th>
-                            <td class="editable" data-id="{{Taxonomy.pk}}" data-type="division">
-                                {{Taxonomy.division}}</td>
+                            <td class="editable" data-id="{{object.pk}}" data-type="division">
+                                {{object.division}}</td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Lineage</th>
-                            <td class="" data-id="{{Taxonomy.pk}}" data-type="lineage">
-                                (Taxonomy.lineage)
-                                {% for obj in Taxonomy.lineage %}
+                            <td class="" data-id="{{object.pk}}" data-type="lineage">
+                                (object.lineage)
+                                {% for obj in object.lineage %}
                                 <p>* {{obj}} </p>
                                 {%endfor%}
                                 </select>
