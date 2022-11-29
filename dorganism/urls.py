@@ -27,7 +27,7 @@ urlpatterns = [
 
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
-    re_path(r'^deleteTaxo/(?P<pk>\w+\s*\w+)/', deleteTaxonomy, name="taxonomy_delete"),
+    re_path(r'^deleteTaxo/(?P<pk>\w+\s*\w*\s*\w*\.*\s*\w*)/', deleteTaxonomy, name="taxonomy_delete"),
   
     #=======================Data Export/Import===================================================================
     path('exportData/', exportCSV, name="dataexport"),
