@@ -81,8 +81,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def delete(self,**kwargs):
         appuser=kwargs.get("user")
-        if kwargs.get("user"):
-            kwargs.pop("user")
+        kwargs.pop("user")
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
@@ -94,8 +93,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         appuser=kwargs.get("user")
-        if kwargs.get("user"):
-            kwargs.pop("user")
+        kwargs.pop("user")
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
