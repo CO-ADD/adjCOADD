@@ -22,7 +22,7 @@ from django.shortcuts import  HttpResponse
 # def my_view(request): 
 
 def test_UI(req):
-    return render(req, 'layouts-hori-preloader.html',)
+    return render(req, 'utils/datatable.html',)
 
 
 
