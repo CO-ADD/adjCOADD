@@ -8,18 +8,6 @@ from django.contrib.auth import authenticate
 class ApplicationUser_form(forms.ModelForm):
     pass
     
-#     def save(self, *args, **kwargs):
-#         instance=super(ApplicationUser_form, self).save(commit=False)
-#         if instance.permission=='staff':
-#             instance.is_staff=True
-#             print('it working')
-#         instance.save() 
-#     class Meta:
-#         model = ApplicationUser      
-#         fields= ['user_id', 'permissions', 'is_appuser']
-    
-        
-
 
 # #=======================================Dictionary Form===========================================================
 class Dictionary_form(forms.ModelForm):

@@ -1,16 +1,30 @@
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="row vh-100">
-      <div class="card mx-5 mt-3">
+<!-- <div id="{{object.pk}}"> -->
+<a class="card-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Update</a>
+<!-- </div> -->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+
         <h4 class="my-0">Update Taxonomy: {{object.pk}}</h4>
         <hr>
-        <form id="UpdateForm" method="POST" class="post-form" action="{%url 'taxonomy_update' object.pk %}">
+        <form method="POST" class="post-form" action="{%url 'taxonomy_update' object.pk %}">
           {% csrf_token %}
           {{form.as_p}}
           <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
 
+          <button type="button" class="btn m-auto mt-5" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
         </form>
-        <a href="{% url 'taxo_list' %}">cancel</a>
       </div>
 
     </div>

@@ -15,9 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="">Contact</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="">Portal</a>
-                </li>
+
             </ul>
         </div>
         <form class=" mx-5">
@@ -44,12 +42,40 @@
                 </li>
                 <li class="nav-item d-flex">
                     {% if user.is_authenticated %}
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
+                                alt="Avatar">
+                            <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{user.username}}</span>
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                                <span key="t-profile">Profile</span></a>
+                            <a class="dropdown-item" href="#"> <input class="form-check-input" type="checkbox"
+                                    id="dark-mode">
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Switch to Dark</label> </a>
 
+                            <a class="dropdown-item d-block" href="#"><span
+                                    class="badge bg-success float-end">11</span><i
+                                    class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                                    key="t-settings">Settings</span></a>
 
-                    <a class="nav-link active" href="{%url 'logout'%}">Log Out</a>
-                    <a class="nav-link active" href="{%url 'userslist' %}">Users List</a>
-                    <a class="nav-link active" href="{%url 'dict_view'%}">DICTIONARY</a>
+                            <div class="dropdown-divider"></div>
+                            {%if user.is_superuser %}
 
+                            <a class="dropdown-item" href="{%url 'userslist' %}">Users List</a>
+                            <a class="dropdown-item" href="{%url 'dict_view'%}">DICTIONARY</a>
+                            {%endif%}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="{%url 'logout'%}"><i
+                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                    key="t-logout">Logout</span></a>
+
+                        </div>
+                    </div>
                     {%else%}
 
                     <a class="nav-link active" href="{%url 'login'%}">Log In</a>
@@ -72,4 +98,44 @@
 
         }
     });
+</script>
+
+<script>
+    let darkMode = localStorage.getItem('darkMode');
+    const darkModeToggle = document.querySelector('#dark-mode');
+
+    // check if dark mode enabled
+    // if off turn on
+    // if on turn off
+
+    const enabledarkMode = () => {
+        // darkModeToggle.checked = true;
+        document.body.classList.add('darkMode');
+        localStorage.setItem('darkMode', 'enabled');
+    }
+    const disabledarkMode = () => {
+        document.body.classList.remove('darkMode');
+
+        localStorage.setItem('darkMode', null);
+    }
+
+    if (darkMode === 'enabled') {
+        darkModeToggle.checked = true;
+        enabledarkMode();
+    }
+
+    darkModeToggle.addEventListener('click', (e) => {
+        darkMode = localStorage.getItem('darkMode');
+        if (darkMode !== 'enabled') {
+            enabledarkMode();
+            e.target.checked = true;
+            console.log(e.target.checked)
+            console.log(darkMode);
+        } else {
+            console.log(e.target.checked)
+            disabledarkMode();
+            e.target.checked = false;
+        }
+    });
+
 </script>

@@ -49,6 +49,7 @@ def detailTaxonomy(req, pk):
     context={}
     object_=get_object_or_404(Taxonomy, organism_name=pk)
     context["object"]=object_
+    context['form']=Taxonomy_form(instance=object_)
     return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
 
 # ====================================================Create===========================================
@@ -86,7 +87,7 @@ def updateTaxonomy(req, pk):
             instance=form.save(commit=False)        
             instance.save(**kwargs)
             print("saved")
-            return redirect("/")
+            return redirect(req.META['HTTP_REFERER']) 
         else:
             print(form.errors)
     return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
@@ -200,36 +201,6 @@ def detailOrganism(req, pk):
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
-# @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-# @csrf_protect
-# def detailChangeOrganism(req):
-#     kwargs={}
-#     kwargs['user']=req.user 
-#     id=req.POST.get('id', '')
-#     object_=get_object_or_404(Organism, organism_id=id)
-#     value=req.POST.get('value','')
-#     type_value=req.POST.get('type', '')
-
-#     if type_value=='strain_type':
-#         try:
-#             value=value.split(",")
-#             object_.strain_type=[i for i in value]
-#             object_.save(**kwargs)
-#         except Exception as err:
-#              print("something wroing")
-    
-#     else:
-#         try:
-#             fields={type_value: value}
-#             print(fields)
-#             Organism.objects.filter(pk=id).update(**fields)
-#             object_=get_object_or_404(Organism, organism_id=id)
-#             object_.save(**kwargs)
-#         except Exception as err:
-#             print(err)
-   
-#     return JsonResponse({"success": "updated!"})
-
 #======================================================================Update Organism=================================================================================
 @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -293,13 +264,12 @@ def deleteOrganism(req, pk):
     kwargs['user']=req.user
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
-        # if req.method=='POST':
         object_.delete(**kwargs)
         print("deleted")
             
     except Exception as err:
         print(err)
-    return redirect('taxo_list')
+    return redirect('/')
    
 
 # # ==============================Import Excel files===========================================================#
