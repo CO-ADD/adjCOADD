@@ -1,12 +1,32 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <form id="deleteOrganismForm" method="POST" class="post-form" action="{% url 'organism_delete' object.pk %}">
-            <!--prettier-ignore-->
-            {% csrf_token %}
+<!-- trigger modal -->
+<a class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    !Delete Entry!
+</a>
 
-            <p>Are you sure you want to delete "{{ object }}"?</p>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="post-form" action="{% url 'organism_delete' object.pk %}">
+                    <!--prettier-ignore-->
+                    {% csrf_token %}
 
-            <input type="submit" value="Confirm" />
-        </form>
+                    <p>Are you sure you want to delete "{{ object }}"?</p>
+
+                    <input class="btn btn-outline-secondary" type="submit" value="Confirm" />
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+
     </div>
 </div>

@@ -5,61 +5,63 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class=" mx-2 border border-2">
-
-
-    <p class="m-atuo">
-
-    <div id="{{object.pk}}">
-        <a class="btn btn-sm">Update Organism Name</a>
+    <div>
+        <a class="btn btn-sm btn-outline-secondary" href="{%url 'org_card' %}"><i class="bi bi-view-list"></i><i
+                class="bi bi-arrow-bar-left"></i></a>
     </div>
 
-    <div id="OrganismUpdateModal" class="modal fade " role="dialog">
-    </div>
+    <div class="m-atuo">
+        <div class="d-flex justify-content-between my-2">
 
-    <script>
-        // document.formHasErrors = {% if form.errors %}true{% else %} false{% endif %};
+            <div id="{{object.pk}}">
+                <a class="btn btn-sm">Update Organism Name</a>
+            </div>
+            {%include 'dorganism/deleteForm/Organism_del.html'%}
+        </div>
 
-        $(document).ready(function () {
-            btn = "#" + "{{object.pk}}"
-            let my_modal = $('#OrganismUpdateModal');
-            $(`${btn} a`).click(function () {
-                my_modal.load("{% url 'organism_update' object.pk %}", function (response) {
-                    if (response == "Permission Not Granted") {
-                        alert("permission!")
+        <div id="OrganismUpdateModal" class="modal fade " role="dialog" data-bs-backdrop="static">
+        </div>
 
-                    } else {
-                        my_modal.modal("show"); // Open Modal
-                    }
+        <script>
+            $(document).ready(function () {
+                btn = "#" + "{{object.pk}}"
+                let my_modal = $('#OrganismUpdateModal');
+                $(`${btn} a`).click(function () {
+                    my_modal.load("{% url 'organism_update' object.pk %}", function (response) {
+                        if (response == "Permission Not Granted") {
+                            alert("permission!")
+
+                        } else {
+                            my_modal.modal("show"); // Open Modal
+                        }
+                    });
                 });
+                if (document.formHasErrors) {
+                    my_modal.modal('show');
+                }
             });
 
+        </script>
 
-            if (document.formHasErrors) {
-                my_modal.modal('show');
-            }
+        <script>
+            $(document).ready(function () {
+                let my_modal = $('#OrganismUpdateModal');
+                if (document.formHasErrors) {
+                    my_modal.modal('show');
+                }
+            })
+        </script>
 
-
-        });
-
-    </script>
-    {% if form_error %}
-    <script>
-        $(document).ready(function () {
-
-            let my_modal = $('#OrganismUpdateModal');
-            my_modal.modal("show");
-        })
-    </script>
-    {% endif %}
-    </p>
+    </div>
     <div class="accordion" id="organism-detail">
-
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     <h5 class="fs-6 my-0">Organism: {{object.organism_name}} | Class:
-                        {{object.organism_name.org_class.dict_value}} </h5>
+                        {{object.organism_name.org_class.dict_value}}
+
+                    </h5>
 
 
                 </button>

@@ -1,0 +1,73 @@
+<table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+    <thead>
+        <tr>
+            <th>Organism ID</th>
+            <th>Other Names</th>
+            <th> Class</th>
+            <th>Tax_ID</th>
+            <th>Parent_Tax_ID</th>
+            <th>Tax_Rank</th>
+            <th class="table-light">Division</th>
+            <th class="table-light">Lineage</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        {% for object in page_obj %}
+        <tr>
+            <td>{{object.pk}}</td>
+            <td>{{object.other_names}}</td>
+            <td>{{object.org_class.dict_desc}}</td>
+            <td> {{object.tax_id}}</td>
+            <td> {{object.parent_tax_id}}</td>
+            <td>{{object.tax_rank}}</td>
+            <td>{{object.division}}</td>
+            <td>
+                <select class="form-select" aria-label="Default select example">
+                    <option value="lineage" selected>lineage</option>
+                    {% for obj in object.lineage %}
+                    <option value="{{obj}}">{{obj}}</option>
+                    {%endfor%}
+
+                </select>
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+
+{%load static%}
+<script src="{% static 'assets/libs/jquery/jquery.min.js'%}"></script>
+<script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<script src="{% static 'assets/libs/metismenu/metisMenu.min.js'%}"></script>
+<script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
+<script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+
+<!-- Required datatable js -->
+{%load static%}
+<script src="{% static 'assets/libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'assets/libs/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'assets/libs/pdfmake/build/pdfmake.min.js'%}"></script>
+<script src="{% static 'assets/libs/pdfmake/build/vfs_fonts.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.colVis.min.js'%}"></script>
+
+<!-- Responsive examples -->
+<script src="{% static 'assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'assets/js/pages/datatables.init.js'%}"></script>
+
+<script src="{% static 'assets/js/app.js'%}"></script>
+
+</body>
+
+</html>

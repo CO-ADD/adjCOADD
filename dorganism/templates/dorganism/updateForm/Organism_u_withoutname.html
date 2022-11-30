@@ -2,32 +2,6 @@
     {% csrf_token %}
     <!-- {{form.as_table}} -->
     <div class="row">
-        <a class="text-danger" style="width: fit-content;" href="{% url 'organism_delete' object.pk %}"> Delete
-            Engtry</a>
-
-        <div id="d{{object.pk}}">
-            <a class="btn btn-success btn-sm">delete</a>
-        </div>
-
-        <div id="OrganismDelModal" class="modal fade" role="dialog">
-        </div>
-        <script>
-
-            $(document).ready(function () {
-                btn = "#d" + "{{object.pk}}"
-                console.log('{{object.pk}}')
-                let my_modal = $('#OrganismDelModal');
-                $(`${btn} a`).click(function () {
-                    my_modal.load("{% url 'organism_delete' object.pk %}", function () {
-                        my_modal.modal("show");
-
-                    });
-                });
-            });
-
-        </script>
-
-
         <div class="col-md-3 updateformshow not-visible">
             <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
             <input style="float: right" type="submit" class="btn btn-sm" value="Update Changes" name="note" />

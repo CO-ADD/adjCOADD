@@ -25,7 +25,8 @@
   --bs-border-color: #625e5d;
 }
 
-[data-layout-mode=dark] {
+/* [data-layout-mode=dark], */
+.darkMode {
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
   --bs-gray-300: #32394e;
@@ -68,7 +69,8 @@ a {
 body {
   font-family: sans-serif !important;
   letter-spacing: 0px;
-  /* color: var(--grey, teal); */
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
   font-size: small;
 }
 

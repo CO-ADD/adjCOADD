@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
                         updateOrganism, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
-                       OrganismListView,OrganismCardView, deleteOrganism) # detailChangeOrganism, 
+                       OrganismListView,OrganismCardView, deleteOrganism) 
 from .utils import searchbar_01
 
 
@@ -21,10 +21,9 @@ urlpatterns = [
     path('createOrg/', createOrganism, name="org_create"),
     path('createTaxo/', createTaxonomy, name="taxo_create"),
 
-    path('updatetaxo/<str:pk>', updateTaxonomy, name="taxonomy_update"),
+    re_path(r'^updatetaxo/(?P<pk>\w+\s*\w*\s*\w*\.*\s*\w*)/', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
-    # path('updateOrgdetail/', detailChangeOrganism, name="organism_updatedetail"),
-
+   
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
     re_path(r'^deleteTaxo/(?P<pk>\w+\s*\w*\s*\w*\.*\s*\w*)/', deleteTaxonomy, name="taxonomy_delete"),

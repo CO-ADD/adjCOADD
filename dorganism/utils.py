@@ -91,30 +91,13 @@ def searchbar_01(req):
     return JsonResponse({})
 
 
-#==================================searchbar_02======================================
-# def searchbar_02(req, model, model_field):
-#     variable_column=model_field
-#     search_type='contains'
-#     filter_search=variable_column+'__'+search_type
-#     # gt=None
-#     if req.method=='POST':
-#         qs =req.POST.get('search')
-#         # gt=qs.strip()
-#         field=req.POST.get('field')
-#         if field==model_field:
-#             result=model.objects.filter(astatus__gte=0, **{filter_search:qs})
-        
-#     else:
-#         result=model.objects.filter(astatus__gte=0)
-    
-#     return result
-
-
-
 
 #==================================searchbar_02======================================
 class MySearchbar02(django_filters.FilterSet):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
+    org_class=django_filters.ChoiceFilter(field_name='org_class', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['organism_class']))
+
+
     class Meta:
         model=Taxonomy
         fields=['organism_name']

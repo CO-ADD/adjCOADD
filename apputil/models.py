@@ -63,7 +63,6 @@ class AuditModel(models.Model):
     CONFIRMED = 2
     OWNER     = "orgdb"
 
-
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")

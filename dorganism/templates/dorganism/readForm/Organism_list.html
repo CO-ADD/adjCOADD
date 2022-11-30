@@ -21,7 +21,7 @@
             </a>
         </div>
 
-        <div id="createOrganismModal" class="modal fade" role="dialog">
+        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
         </div>
         <script>
 
@@ -49,50 +49,10 @@
 
         {% include 'utils/pagination.html'%}
 
-        <div class="contain-fluid">
-
-            <div class="row d-flex flex-wrap mx-2">
-                <!-- object_list -->
-
-                <table class="table table-bordered  border border-2">
-                    <tbody>
-                        {% for object in object_list%}
-
-                        <tr>
-                            {%for field, val in object%}
-
-                            <th class="sidebar">
-                                {{ field }}
-                                <input type="text" value="filter">
-                            </th>
-                            <th class="resizer">-</th>
+        <!-- object_list -->
+        {%include 'utils/datatable_org.html'%}
 
 
-                            {%endfor%}
-                        </tr>
-                        <!-- <tr>
-                            {%for field, val in object%}
-
-                            <td>
-                                {{ val }}
-                            </td>
-                            <td class="dragbar">
-                                -
-                            </td>
-                            {%endfor%}
-                        </tr> -->
-                        {%endfor%}
-                </table>
-                </tbody>
-
-            </div>
-
-
-
-        </div>
-        <hr>
-
-        {% include 'utils/pagination.html'%}
     </div>
 
 </div>
