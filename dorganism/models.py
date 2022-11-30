@@ -69,10 +69,10 @@ class Organism(AuditModel):
         'strain_panel':'Strain_Panel',
         'organism_class':'Organism_Class',
     }
+    ORG_CLASSES = ['GN','GP','MB','FG','MA']
 
-
-    organism_id = models.CharField(primary_key=True, unique=True, max_length=15, verbose_name = "Organism ID") #be blank for automatic generate a new one?
-    organism_name= models.ForeignKey(Taxonomy, db_column="organism_name", verbose_name = "Organism Name", on_delete=models.DO_NOTHING) #models do nothing?
+    organism_id = models.CharField(primary_key=True, unique=True, max_length=15, verbose_name = "Organism ID") 
+    organism_name= models.ForeignKey(Taxonomy, db_column="organism_name", verbose_name = "Organism Name", on_delete=models.DO_NOTHING) 
     #Organism_desc= models.CharField(blank=True, max_length=150, verbose_name = "Organism Description")
     strain_id = models.CharField(max_length=50, null=False, blank=False, db_index=True, verbose_name = "Strain ID")
     strain_otherids = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Strain OtherID")
@@ -126,10 +126,10 @@ class Organism(AuditModel):
         return f"{OrganimClass}_{OrganismNo:04d}"
 
     #------------------------------------------------
-    def find_Next_OrganismID(self,OrganimClass,OrganismClassTypes = ['GN','GP','MB','FG','MA']) -> str:
-        print(f"this is find_Next_OrganismID...OrganimsClass={OrganimClass}")
-        if OrganimClass in OrganismClassTypes:
-            Organism_IDSq=Sequence(OrganimClass)
+    def find_Next_OrganismID(self,OrganimClass) -> str:
+        print(f".. find_Next_OrganismID...OrganimsClass={OrganimClass}")
+        if OrganimClass in self.ORG_CLASSES:
+            Organism_IDSq = Sequence(OrganimClass)
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
             
@@ -145,7 +145,7 @@ class Organism(AuditModel):
     def save(self, *args, **kwargs):
         print("organism save model...")
         if not self.organism_id: #Object does not exists
-            print("this is save from organism model...")
+            print(".. save organism model...")
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
             if self.organism_id: 
                 super().save(*args, **kwargs)
@@ -165,13 +165,10 @@ class Organism_Batch(AuditModel):
     Organism/Isolate Batch Collection
     """
 #-------------------------------------------------------------------------------------------------
-
     Choice_Dictionary = {
-
         'qc_status':'QC_Status',
     }
-
-    _SEP = ':'
+    SEP = ":"
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
@@ -211,7 +208,7 @@ class Organism_Batch(AuditModel):
 
     #------------------------------------------------
     def str_OrgBatchID(self,OrganismID,BatchNo) -> str:
-        return(f"{OrganismID}{self._SEP}{BatchNo:02d}")
+        return(f"{OrganismID}{self.SEP}{BatchNo:02d}")
 
 
     #------------------------------------------------
