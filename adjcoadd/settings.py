@@ -123,8 +123,6 @@ DATABASES = {
       }
 
    
-
-
     # ==================For Local Test===========================================
     # 'default': {
     #    "ENGINE": "psqlextra.backend",
