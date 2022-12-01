@@ -19,6 +19,10 @@
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
     integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
   {%load static%}
   <script src="{% static 'js/htmx.min.js' %}"></script>
   <!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script> -->
@@ -38,7 +42,7 @@
   {%include "utils/navbar.html"%}
 
   <main class="body-content">
-    <div><a href="{%url 'test_ui'%}">Test UI</a></div>
+
 
     {% block content %} {% endblock %}
   </main>

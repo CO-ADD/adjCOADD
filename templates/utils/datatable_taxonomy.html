@@ -1,22 +1,30 @@
-<table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+{%include './preloader.html'%}
+<h5>{%include 'utils/message.html'%}</h5>
+<table id="datatable_taxonomy" class="display">
     <thead>
         <tr>
-            <th>Organism ID</th>
-            <th>Other Names</th>
-            <th> Class</th>
+            <th style="width: 10%">Organism ID</th>
+            <th style="width: 10%">Other Names</th>
+            <th style="width: 10%"> Class</th>
             <th>Tax_ID</th>
-            <th>Parent_Tax_ID</th>
-            <th>Tax_Rank</th>
-            <th class="table-light">Division</th>
-            <th class="table-light">Lineage</th>
+            <th style="width: 10%">Parent_Tax_ID</th>
+            <th style="width: 10%">Tax_Rank</th>
+            <th style="width: 10%" class="table-light">Division</th>
+            <th style="width: 15%" class="table-light">Lineage
+
+                <a id="createTaxo" class="card-link text-success" style="float: right">Add New
+                    <i class="bi bi-plus"></i>
+                </a>
+            </th>
         </tr>
     </thead>
 
-
     <tbody>
-        {% for object in page_obj %}
+        {% for object in object_list %}
         <tr>
-            <td>{{object.pk}}</td>
+            <td>{{object.pk}}
+
+            </td>
             <td>{{object.other_names}}</td>
             <td>{{object.org_class.dict_desc}}</td>
             <td> {{object.tax_id}}</td>
@@ -37,37 +45,34 @@
     </tbody>
 </table>
 
-
 {%load static%}
-<script src="{% static 'assets/libs/jquery/jquery.min.js'%}"></script>
-<script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-<script src="{% static 'assets/libs/metismenu/metisMenu.min.js'%}"></script>
-<script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
-<script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
 
-<!-- Required datatable js -->
-{%load static%}
-<script src="{% static 'assets/libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
-<!-- Buttons examples -->
-<script src="{% static 'assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js'%}"></script>
-<script src="{% static 'assets/libs/jszip/jszip.min.js'%}"></script>
-<script src="{% static 'assets/libs/pdfmake/build/pdfmake.min.js'%}"></script>
-<script src="{% static 'assets/libs/pdfmake/build/vfs_fonts.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.colVis.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+        $('#datatable_taxonomy').DataTable();
+    });
+</script>
 
-<!-- Responsive examples -->
-<script src="{% static 'assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+<div id="createTaxoModal" class="modal fade" role="dialog">
+</div>
 
-<!-- Datatable init js -->
-<script src="{% static 'assets/js/pages/datatables.init.js'%}"></script>
+<script>
 
-<script src="{% static 'assets/js/app.js'%}"></script>
+    $(document).ready(function () {
 
-</body>
+        let my_modal = $("#createTaxoModal");
 
-</html>
+        $("#createTaxo").click(function () {
+            my_modal.load("{%url 'taxo_create'%}", function (response) {
+                if (response == "Permission Not Granted") {
+                    alert("permission!")
+
+                } else {
+                    my_modal.modal("show"); // Open Modal
+                }
+
+            });
+        });
+    });
+</script>

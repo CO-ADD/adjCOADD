@@ -1,20 +1,28 @@
 {% load myapp_extras %}
-<div class="pagination">
+<!-- <div class="pagination"> -->
+{% if page_obj.has_other_pages %}
+<div class="btn-group" role="group" aria-label="Item pagination">
     <span class="step-links">
+        <a href="{% my_url 1 'page' request.GET.urlencode %}" class="btn btn-sm btn-outline-secondary">&laquo; 1</a>
+        <a href="{% my_url 2 'page' request.GET.urlencode %}" class="btn btn-sm  btn-outline-secondary">&laquo; 2</a>
+        <a href="{% my_url 3 'page' request.GET.urlencode %}" class="btn btn-sm  btn-outline-secondary">&laquo; 3</a>
         {% if page_obj.has_previous %}
-        <a href="{% my_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
-        <a href="{% my_url 2 'page' request.GET.urlencode %}">&laquo; 2</a>
         <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
         {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
+        <button class="btn btn-outline-primary active">
+            <!-- <span class="current"> -->
+            {{ page_obj.number }}
+            <!-- </span> -->
+        </button>
         {% if page_obj.has_next %}
-        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
-        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last
-            &raquo;</a>
+        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}"
+            class="btn btn-sm  btn-outline-btn-outline-secondaryy">next &raquo;</a>
+        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"
+            class="btn btn-sm  btn-outline-btn-outline-secondary">last (of {{ page_obj.paginator.num_pages }})
+        </a>
         {% endif %}
     </span>
 </div>
+{%else%}
+<a href="{% my_url 1 'page' request.GET.urlencode %}" class="btn btn-sm btn-outline-secondary">Current Page 1 of 1</a>
+{% endif %}

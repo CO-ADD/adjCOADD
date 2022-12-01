@@ -25,10 +25,10 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
-class TaxonomyCardView(LoginRequiredMixin, ListView):
+class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
-    template_name = 'dorganism/readForm/Taxonomy_card.html' 
-    paginate_by=24
+    template_name = 'dorganism/readForm/Taxonomy_list.html' 
+    # paginate_by=24
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -40,8 +40,9 @@ class TaxonomyCardView(LoginRequiredMixin, ListView):
         return MySearchbar04(self.request.GET, queryset=qs).qs
 
 # ==========List View================================Read===========================================
-class TaxonomyListView(TaxonomyCardView):
-    template_name = 'dorganism/readForm/Taxonomy_list.html'
+class TaxonomyCardView(TaxonomyListView):
+    template_name = 'dorganism/readForm/Taxonomy_card.html'
+    paginate_by=24
 
 # ===========Detail View=============================Read============================================
 @login_required
@@ -113,7 +114,6 @@ def deleteTaxonomy(req, pk):
 class OrganismListView(LoginRequiredMixin, ListView):
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
-    paginate_by=3
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -137,6 +137,7 @@ class OrganismListView(LoginRequiredMixin, ListView):
 class OrganismCardView(OrganismListView):
 
     template_name = 'dorganism/readForm/Organism_card.html'
+    paginate_by=3
 
 
 

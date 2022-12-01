@@ -6,6 +6,7 @@
         <div class="d-flex flex-wrap justify-content-between">
             <a href="{%url 'importOrg'%}" class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-up"></i>import
                 organism</a>
+
             <div>
 
                 <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
@@ -14,40 +15,14 @@
         </div>
         <hr>
 
-        <div id="createOrganism">
 
-            <a class="btn m-auto" style="float:right;">Create New Organism
-                <i class="bi bi-plus"></i>
-            </a>
-        </div>
 
-        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
-        </div>
-        <script>
 
-            $(document).ready(function () {
-
-                let my_modal = $("#createOrganismModal");
-
-                $("#createOrganism a").click(function () {
-                    my_modal.load("{%url 'org_create'%}", function (response) {
-                        if (response == "Permission Not Granted") {
-                            alert("permission!")
-
-                        } else {
-                            my_modal.modal("show"); // Open Modal
-                        }
-
-                    });
-                });
-            });
-
-        </script>
 
 
         <!-- -----------------------------------------View Switch-------------------------------------------------------------------- -->
 
-        {% include 'utils/pagination.html'%}
+
 
         <!-- object_list -->
         {%include 'utils/datatable_org.html'%}

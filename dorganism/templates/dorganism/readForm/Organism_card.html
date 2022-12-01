@@ -1,11 +1,38 @@
 {% extends "base.html" %}
+{% block title%} mysite{% endblock %}
 {% block content %}
 <div class="d-flex flex-row bg-light justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <div class="main d-flex flex-column">
+
     <div class="d-flex flex-wrap justify-content-between">
       <a href="{%url 'importOrg'%}" class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-up"></i>import
         organism</a>
+      {% include 'utils/pagination.html'%}
+      <a id="createOrganism" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
+      </a>
+      <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+      </div>
+      <script>
+
+        $(document).ready(function () {
+
+          let my_modal = $("#createOrganismModal");
+
+          $("#createOrganism").click(function () {
+            my_modal.load("{%url 'org_create'%}", function (response) {
+              if (response == "Permission Not Granted") {
+                alert("permission!")
+
+              } else {
+                my_modal.modal("show"); // Open Modal
+              }
+
+            });
+          });
+        });
+
+      </script>
       <div>
 
         <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
@@ -17,54 +44,21 @@
     </div>
     <hr>
 
-    <div id="createOrganism">
-
-      <a class="btn m-auto" style="float:right;">Create New Organism
-        <i class="fa fa-plus"></i>
-      </a>
-    </div>
-
-    <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
-    </div>
-    <script>
-
-      $(document).ready(function () {
-
-        let my_modal = $("#createOrganismModal");
-
-        $("#createOrganism a").click(function () {
-          my_modal.load("{%url 'org_create'%}", function (response) {
-            if (response == "Permission Not Granted") {
-              alert("permission!")
-
-            } else {
-              my_modal.modal("show"); // Open Modal
-            }
-
-          });
-        });
-      });
-
-    </script>
-
-
-    <h2>Organism Card View</h2>
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap ">
-        {% for object in object_list%}
+        {% for object in page_obj %}
         <!-- object_list -->
-        <div class="col-md-4 vh-80 border border-2 m-5">
-          <!-- <div class="card bg-transparent my-2 flex-row"> -->
+        <div class="col-md-2 vh-80 border border-2 m-2">
 
-          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="m-auto"
+
+          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="card-link"
               href="{%url 'org_detail' object.pk %}">{{object.organism_name}} <br><span class="fw-light fs-6">
                 (ID:
                 {{object.organism_id}} )</span>
             </a>
           </p>
 
-          <p class="fw-lighter fs-6 m-auto"><a class="m-auto" href="{% url 'organism_delete' object.pk %}">Delete</a>
-          </p>
+
           <ul class="fw-lighter fs-6 m-auto">
             <li>Created by: {{object.acreated_by}}</li>
             <li>Created at:{{object.acreated_at}}</li>
@@ -101,18 +95,7 @@
       <hr />
       {% include 'utils/pagination.html'%}
     </div>
-    {% load static %}
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-    <!-- <script>
-      $(document).ready(() => {
-        console.log("loading document")
-        $('a.switch').click(function () {
-          var url = this.href + '?' + window.location.href.split('?')[1];
-          window.location.href = url;
-          return false;
-        });
-      })
 
-    </script> -->
-
-    {%endblock%}
+  </div>
+</div>
+{%endblock%}
