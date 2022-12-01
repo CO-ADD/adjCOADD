@@ -18,7 +18,7 @@
     </thead>
 
     <tbody>
-        {%for object in object_list%}
+        {%for object in page_obj %}
         <tr>
             <td>{{object.pk}}</td>
             <td>{{object.organism_name}}</td>
@@ -36,7 +36,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#datatable_org').DataTable();
+        $('#datatable_org').DataTable(
+            { "paging": false }
+        );
     });
 </script>
 

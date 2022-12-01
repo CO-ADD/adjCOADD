@@ -28,7 +28,7 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
     template_name = 'dorganism/readForm/Taxonomy_list.html' 
-    # paginate_by=24
+    paginate_by=10
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -114,6 +114,7 @@ def deleteTaxonomy(req, pk):
 class OrganismListView(LoginRequiredMixin, ListView):
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
+    paginate_by=3
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)

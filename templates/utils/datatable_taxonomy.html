@@ -1,4 +1,5 @@
 {%include './preloader.html'%}
+
 <h5>{%include 'utils/message.html'%}</h5>
 <table id="datatable_taxonomy" class="display">
     <thead>
@@ -20,7 +21,7 @@
     </thead>
 
     <tbody>
-        {% for object in object_list %}
+        {% for object in page_obj %}
         <tr>
             <td>{{object.pk}}
 
@@ -50,7 +51,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#datatable_taxonomy').DataTable();
+        $('#datatable_taxonomy').DataTable(
+            { "paging": false }
+        );
     });
 </script>
 
