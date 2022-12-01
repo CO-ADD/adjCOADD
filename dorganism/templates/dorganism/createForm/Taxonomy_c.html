@@ -1,21 +1,23 @@
 <div class="modal-dialog">
   <div class="modal-content">
-    <form
-      id="createTaxoForm"
-      method="POST"
-      class="post-form"
-      name="create-taxo"
-      action="{%url 'taxo_create'%}"
-    >
-      {% csrf_token %}
-      <div class="modal-header">
-        <h4 class="modal-title">Create Taxo</h4>
-      </div>
+    <div class="modal-header">
+      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
 
-      {{ form.as_p }}
-      <div class="modal-footer">
-        <input type="submit" class="btn btn-success m-auto" value="Add" />
-      </div>
-    </form>
+      <form id="createTaxoForm" method="POST" class="post-form" name="create-taxo" action="{%url 'taxo_create'%}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h4 class="modal-title">Create Taxo</h4>
+        </div>
+
+        {{ form.as_p }}
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-outline-secondary" value="Add" />
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

@@ -1,18 +1,24 @@
-<table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+{%include './preloader.html'%}
+<h5>{%include 'utils/message.html'%}</h5>
+<table id="datatable_org" class="display">
     <thead>
         <tr>
-            <th>Organism ID</th>
+            <th style="width: 15%">Organism ID </th>
             <th>Organism Name</th>
             <th>RiskGroup</th>
             <th>Pathogen</th>
             <th>Lab Restriction</th>
-            <th>Bio Approval</th>
+            <th style="width: 15%">Bio Approval
+
+                <a id="createOrganism" class="card-link text-success" style="float: right;"><i class="bi bi-plus">Add
+                        New</i>
+                </a>
+            </th>
         </tr>
     </thead>
 
-
     <tbody>
-        {%for object in object_list%}
+        {%for object in page_obj %}
         <tr>
             <td>{{object.pk}}</td>
             <td>{{object.organism_name}}</td>
@@ -25,37 +31,35 @@
     </tbody>
 </table>
 
-
 {%load static%}
-<script src="{% static 'assets/libs/jquery/jquery.min.js'%}"></script>
-<script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-<script src="{% static 'assets/libs/metismenu/metisMenu.min.js'%}"></script>
-<script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
-<script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
 
-<!-- Required datatable js -->
-{%load static%}
-<script src="{% static 'assets/libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
-<!-- Buttons examples -->
-<script src="{% static 'assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js'%}"></script>
-<script src="{% static 'assets/libs/jszip/jszip.min.js'%}"></script>
-<script src="{% static 'assets/libs/pdfmake/build/pdfmake.min.js'%}"></script>
-<script src="{% static 'assets/libs/pdfmake/build/vfs_fonts.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.colVis.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+        $('#datatable_org').DataTable(
+            { "paging": false }
+        );
+    });
+</script>
 
-<!-- Responsive examples -->
-<script src="{% static 'assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
-<script src="{% static 'assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+<div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+</div>
+<script>
 
-<!-- Datatable init js -->
-<script src="{% static 'assets/js/pages/datatables.init.js'%}"></script>
+    $(document).ready(function () {
 
-<script src="{% static 'assets/js/app.js'%}"></script>
+        let my_modal = $("#createOrganismModal");
 
-</body>
+        $("#createOrganism").click(function () {
+            my_modal.load("{%url 'org_create'%}", function (response) {
+                if (response == "Permission Not Granted") {
+                    alert("permission!")
 
-</html>
+                } else {
+                    my_modal.modal("show");
+                }
+
+            });
+        });
+    });
+</script>

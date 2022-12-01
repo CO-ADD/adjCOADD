@@ -1,20 +1,32 @@
 {% load myapp_extras %}
-<div class="pagination">
+<!-- <div class="pagination"> -->
+{% if page_obj.has_other_pages %}
+<div class="btn-group" role="group" aria-label="Item pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-        <a href="{% my_url 1 'page' request.GET.urlencode %}">&laquo; first</a>
-        <a href="{% my_url 2 'page' request.GET.urlencode %}">&laquo; 2</a>
         <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
+        {%else%}
+        <span>Previous</span>
         {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
+        <a href="{% my_url 1 'page' request.GET.urlencode %}" class="btn btn-sm btn-outline-secondary">&laquo; 1</a>
+        <a href="{% my_url 2 'page' request.GET.urlencode %}" class="btn btn-sm  btn-outline-secondary">&laquo; 2</a>
+        <a href="{% my_url 3 'page' request.GET.urlencode %}" class="btn btn-sm  btn-outline-secondary">&laquo; 3</a>
+        <button class="btn btn-outline-primary active">
+            <!-- <span class="current"> -->
+            {{ page_obj.number }}
+            <!-- </span> -->
+        </button>
         {% if page_obj.has_next %}
-        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a>
-        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last
-            &raquo;</a>
+        <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}"
+            class="btn btn-sm  btn-outline-btn-outline-secondaryy">Next &raquo;</a>
+        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"
+            class="btn btn-sm  btn-outline-btn-outline-secondary">Last (of {{ page_obj.paginator.num_pages }})
+        </a>
         {% endif %}
     </span>
 </div>
+{%else%}
+<span>Previous</span>
+<a href="{% my_url 1 'page' request.GET.urlencode %}" class="btn btn-sm btn-outline-secondary">{{ page_obj.number }}</a>
+<span>Next</span>
+{% endif %}

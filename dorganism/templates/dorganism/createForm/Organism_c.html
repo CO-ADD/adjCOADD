@@ -1,6 +1,9 @@
 <div class="modal-dialog">
   <div class="modal-content" style="width: 50rem;">
-
+    <div class="modal-header">
+      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
 
     <div class="card mt-3 text-left">
       <h4 class="my-0">Create Organism</h4>
@@ -13,8 +16,8 @@
         <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
 
         <hr>
-        <input type="submit" class="btn m-auto mt-5" value="Add" name="note" />
-        <a class="btn m-auto mt-5" href="{% url 'org_list' %}">cancel</a>
+        <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
 
       </form>
     </div>

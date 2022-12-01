@@ -23,41 +23,7 @@
             </div>
             <hr>
 
-
-
-
             {% include 'utils/pagination.html'%}
-            <div id="createTaxo">
-
-                <a class="btn m-auto">Create New Taxo
-                    <i class="bi bi-plus"></i>
-                </a>
-                <h5>{%include 'utils/message.html'%}</h5>
-            </div>
-
-            <div id="createTaxoModal" class="modal fade" role="dialog">
-            </div>
-            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-            <script>
-
-                $(document).ready(function () {
-
-                    let my_modal = $("#createTaxoModal");
-
-                    $("#createTaxo a").click(function () {
-                        my_modal.load("{%url 'taxo_create'%}", function (response) {
-                            if (response == "Permission Not Granted") {
-                                alert("permission!")
-
-                            } else {
-                                my_modal.modal("show"); // Open Modal
-                            }
-
-                        });
-                    });
-                });
-
-            </script>
             <div class="row d-flex flex-wrap">
 
                 {% include 'utils/datatable_taxonomy.html'%}
