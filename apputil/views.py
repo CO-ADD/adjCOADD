@@ -1,35 +1,36 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import ApplicationUser, Dictionary
-from dorganism.models import  Taxonomy
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import ListView
-from django.contrib import messages
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from django.urls import reverse_lazy, reverse
+
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
-from django.contrib.auth import logout, login
-# from django.contrib.auth.models import Permission
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import  HttpResponse
-# Create your views here.
-# def check_admin(user):
-#    return user.is_superuser
+from .models import ApplicationUser, Dictionary
+from dorganism.models import Organism, Taxonomy
 
-# @user_passes_test(check_admin)
-# def my_view(request): 
 
+# ------test-------------------
 def test_UI(req):
     return render(req, 'utils/datatable.html',)
-
+#------------------------------
 
 
 def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
+## =================================APP Home========================================
+def index(req):
+    object_1=Organism.objects.count()
+    object_2=Taxonomy.objects.count()
+    return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2})
+## =================================APP Home======================================##
 
-# =================================Login into Home Page==================================
+## =================================APP Log in/out =================================
 def login_user(req):
     if req.method=='POST':
         form=Login_form(data=req.POST)
@@ -52,14 +53,9 @@ def logout_user(req):
     logout(req)    
     return redirect("/accounts/login/")
 
+# =================================APP Log in/out ==================================##
 
-
-def index(req):
-    return render(req, 'dorganism/home.html')
-
-
-
-# =========================Application Users View========================================
+## =========================Application Users View====================================
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
     def test_func(self):
@@ -113,9 +109,9 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
         form.instance.is_appuser==False
         print(form.instance.is_appuser)
         return super().form_valid(form)
+# =========================Application Users View==================================##
 
-
-# =====================================Dictionary View==========================
+## ========================Dictionary View===========================================
 
 class DictionaryView(LoginRequiredMixin, ListView):
     model=Dictionary
@@ -148,6 +144,7 @@ def createDictionary(req):
             return redirect("dict_view")
     
     return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
+## ============================Dictionary View======================================##
 
 # @user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
 # def deleteDictionary(req, pk):

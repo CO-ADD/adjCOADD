@@ -34,7 +34,40 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto fs-5">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">SCREENING DATA</a>
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="d-xl-inline-block">MODELS</span>
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a class="dropdown-item" href="{%url 'org_list' %}">
+                                ORGANISM
+                            </a>
+                            <a class="dropdown-item" href="{%url 'taxo_card' %}">
+                                TAXONOMY
+                            </a>
+
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="d-xl-inline-block">IMPORT DATA</span>
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="{%url 'importOrg'%}" class=""><i class="bi bi-cloud-arrow-up"></i>import
+                                organism</a>
+                            <a href="{%url 'importTaxo'%}" class=""><i class="bi bi-cloud-arrow-up"></i>import
+                                Taxonomy</a>
+
+                        </div>
+                    </div>
                 </li>
 
                 <li class="nav-item">

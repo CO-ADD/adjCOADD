@@ -168,3 +168,4 @@ class ChoiceArrayField(ArrayField):
         defaults.update(kwargs)
   
         return super(ArrayField, self).formfield(**defaults)
+
