@@ -8,7 +8,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from apputil.views import index
 import dorganism.urls
 import apputil.urls
 
@@ -16,8 +15,7 @@ from apputil.views import login_user, logout_user, permission_not_granted,  test
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="index"),
-
+    
     #========================appusers URL==========================================================================
     # path('accounts/', include('django.contrib.auth.urls')),  
     path('accounts/login/', login_user, name='login' ),

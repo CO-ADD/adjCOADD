@@ -7,7 +7,7 @@ from .views import (index, userprofile, AppUserListView, AppUserCreateView, AppU
 
 
 urlpatterns = [
-
+    path('', index, name="index"),
     path('user_list/', AppUserListView.as_view(), name="userslist"),
     path('user_create/', AppUserCreateView.as_view(), name="createAppUser"),
     path('user_update/<str:pk>', AppUserUpdateView.as_view(), name="updateAppUser"),

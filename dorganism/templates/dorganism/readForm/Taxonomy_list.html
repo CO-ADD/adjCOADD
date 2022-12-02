@@ -12,9 +12,8 @@
 
         <div class="main d-flex flex-column">
             <div class="d-flex flex-wrap justify-content-between">
-                <a href="{%url 'importTaxo'%}" class="btn btn-outline-secondary"><i
-                        class="bi bi-cloud-arrow-up"></i>import
-                    Taxonomy</a>
+
+                {% include 'utils/pagination.html'%}
                 <div>
 
                     <a href="{%url 'taxo_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></a>
@@ -23,7 +22,6 @@
             </div>
             <hr>
 
-            {% include 'utils/pagination.html'%}
             <div class="row d-flex flex-wrap">
 
                 {% include 'utils/datatable_taxonomy.html'%}

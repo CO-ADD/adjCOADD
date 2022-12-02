@@ -168,3 +168,14 @@ class ChoiceArrayField(ArrayField):
         defaults.update(kwargs)
   
         return super(ArrayField, self).formfield(**defaults)
+
+class Integer(models.Model):
+    LOW = 5
+    NORMAL = 10
+    HIGH = 25
+    STATUS_CHOICES = (
+        (LOW, 'Low'),
+        (NORMAL, 'Normal'),
+        (HIGH, 'High'), 
+    )
+    num= models.IntegerField(default = 5, choices=STATUS_CHOICES)

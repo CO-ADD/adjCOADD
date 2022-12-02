@@ -20,11 +20,8 @@
 
         console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
-        // input_arr.forEach(item => { item.value = null; console.log("clear") })
-        // form_input = form.querySelectorAll('p input')
         form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
         form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
-        //   this.parentElement.submit();
         form.submit();
     }
 </script>

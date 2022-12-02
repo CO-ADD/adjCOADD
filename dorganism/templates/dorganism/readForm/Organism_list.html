@@ -4,9 +4,8 @@
     {%include "utils/sidebar.html"%}
     <div class="main d-flex flex-column">
         <div class="d-flex flex-wrap justify-content-between">
-            <a href="{%url 'importOrg'%}" class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-up"></i>import
-                organism</a>
 
+            {% include 'utils/pagination.html'%}
             <div>
 
                 <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
@@ -22,7 +21,6 @@
 
         <!-- -----------------------------------------View Switch-------------------------------------------------------------------- -->
 
-        {% include 'utils/pagination.html'%}
         <div class="row d-flex flex-wrap">
             <!-- object_list -->
             {%include 'utils/datatable_org.html'%}

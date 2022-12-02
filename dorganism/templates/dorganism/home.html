@@ -28,16 +28,18 @@
   <!-- </div> -->
 </div>
 <div class="d-flex justify-content-center">
-  <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'taxo_card' %}">
+  <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'taxo_card' %}"
+    data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_taxo}} spieces">
     TAXONOMY
   </a>
 
-  <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_list' %}">
+  <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_list' %}"
+    data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims">
     ORGANISM
   </a>
 
   <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="#">
-    GENE
+    ORGANISM BATCH
   </a>
 
 </div>

@@ -22,6 +22,10 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
+
+ 
+
+
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
@@ -29,16 +33,40 @@ class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
     template_name = 'dorganism/readForm/Taxonomy_list.html' 
     paginate_by=10
+    
+
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context['filter']=MySearchbar04(self.request.GET, queryset=self.get_queryset())
+        print(type(context['filter'].qs))
         return context
+
+    
 
     def get_queryset(self):
         qs=super().get_queryset()
         return MySearchbar04(self.request.GET, queryset=qs).qs
 
+    # def get(self, request):
+
+    #     paginate_by = request.GET.get('paginate_by',10)
+    #     data =self.get_queryset()
+    #     print(type(data))
+    #     filter=MySearchbar04(self.request.GET, queryset=self.get_queryset())
+
+    #     paginator = Paginator(data, paginate_by)
+    #     page = request.GET.get('page')
+
+    #     try:
+    #         paginated = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         paginated = paginator.get_page(1)
+    #     except EmptyPage:
+    #         paginated = paginator.page(paginator.num_pages)
+
+    #     return render(request, self.template_name, {'page_obj':paginated, 'paginate_by':paginate_by, 'filter':filter})
+ 
 # ==========List View================================Read===========================================
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
