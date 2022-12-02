@@ -30,7 +30,8 @@
 
             <script>
                 $(document).ready(() => {
-                    console.log("loading document")
+
+                    console.log(document.cookie)
                     $('a.switch').click(function () {
                         var url = this.href + '?' + window.location.href.split('?')[1];
                         window.location.href = url;

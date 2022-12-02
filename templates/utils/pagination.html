@@ -36,7 +36,7 @@
         </a>
         {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %} <a
             href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"
-            class="btn btn-sm  btn-outline-btn-outline-secondary"> {{ page_obj.paginator.num_pages }}
+            class="btn btn-sm  btn-outline-btn-outline-secondary"> {{page_obj.paginator.num_pages}}
             </a>
             {%endif%}
             {% endif %}
@@ -44,14 +44,25 @@
             </span>
     </div>
     <hr>
-    <form method="GET">
-        <select name="paginate_by" id="">
-            <option value="" selected>{{paginate_by}}</option>
-            <option value="5">5</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
+    <form action="" method="GET">
+        <select class="form-select" aria-label="Default select example" id="pages_set" onchange="changeFunc();">
+            <option value="">{{paginate_by}}</option>
+            <option value=5>5</option>
+            <option value=10>10</option>
+            <option value=20>20</option>
         </select>
-        <input type="submit" value="Paginate">
+        <input class="btn btn-sm btn-outline-secondary" type="submit" value="Show {{paginate_by}} One Page">
     </form>
 </div>
+<script>
+    function changeFunc() {
+        var selectBox = document.getElementById("pages_set");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+        var e = document.getElementById('pages_set')
+        console.log('thisi')
+        console.log(e.value)
+        var value = selectedValue
+        document.cookie = "key=" + value;
+    }
+</script>
