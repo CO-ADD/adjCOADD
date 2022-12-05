@@ -382,7 +382,7 @@ dmypy.json
 .pyre/
 
 #images
-/static/images
+/static/images/*.*
 
 #csv
 /zbackup/

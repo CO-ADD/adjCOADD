@@ -23,24 +23,40 @@ from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
 
- 
 
+def get_paginate(request):
+    pass
 
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
 class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
-    template_name = 'dorganism/readForm/Taxonomy_list.html' 
+    template_name = 'dorganism/readForm/Taxonomy_list.html'
+    # paginate_by=24
+
+    # def paginate_by(self, request):
+    #     self.paginate_by=get_paginate(request) or 25
+    #     return self.paginate_by
+    
+    # def get_context_data(self, **kwargs):
+    #     context=super().get_context_data(**kwargs)
+    #     context['filter']=MySearchbar04(self.request.GET, queryset=self.get_queryset())
+    #     return context
 
     def get_queryset(self):
         qs=super().get_queryset()
-        return MySearchbar04(self.request.GET, queryset=qs).qs
+        # print(MySearchbar04(self.request.GET, queryset=qs).qs)
+        # return MySearchbar04(self.request.GET, queryset=qs).qs
+        return qs
 
     def get(self, request):
         paginate_by=request.COOKIES.get('key') or 5
-        data =self.get_queryset()
+    #     # paginate_by=get_paginate(request)
+        data =MySearchbar04(self.request.GET, queryset=self.get_queryset()).qs #self.get_queryset()
+        # data_json=serializers.serialize('json', data)
         filter=MySearchbar04(self.request.GET, queryset=self.get_queryset())
+   
         paginator = Paginator(data, paginate_by)
         page = request.GET.get('page')
         try:
@@ -79,7 +95,7 @@ def createTaxonomy(req):
             instance=form.save(commit=False)
             instance.save(**kwargs)
             print("saved")
-            return redirect("/")
+            return redirect(req.META['HTTP_REFERER']) 
         else:
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      

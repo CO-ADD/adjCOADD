@@ -41,7 +41,7 @@
 
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap">
-        {% for object in page_obj %}
+        {% for object in object_list %}
         <!-- object_list -->
         <div class="col-md-2 vh-80 border border-2 m-2">
 
@@ -52,8 +52,6 @@
                 Name: {{object.pk}}</span>
             </a>
           </p>
-
-
 
 
           <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.pk}}"

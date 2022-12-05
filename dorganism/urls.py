@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
                         updateOrganism, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
-                       OrganismListView,OrganismCardView, deleteOrganism) 
+                       OrganismListView,OrganismCardView, deleteOrganism, get_paginate) 
 from .utils import searchbar_01
 
 
@@ -34,4 +34,6 @@ urlpatterns = [
     path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),
     
     path('import_dictionary/', import_excel_dict, name="importDict"),
+
+    path('getpage/', get_paginate, name="getpage"),
 ]
