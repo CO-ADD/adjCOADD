@@ -7,13 +7,13 @@
 
     <div class="card mt-3 text-left">
       <h4 class="my-0">Create Organism</h4>
-      {% include 'utils/searchbar_01.html' %}
+      {% include 'utils/search_organism.html' %}
       <!-- ===================================================================================== -->
       <hr>
       <form method="POST" class="post-form" name="create" action="{%url 'org_create'%}">
         {% csrf_token %}
-        {{form}}
-        <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
+        {{form.as_p}}
+        <input type="text" id="taxo-name" name="search_organism" style="display: none;">
 
         <hr>
         <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />

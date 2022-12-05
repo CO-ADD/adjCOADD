@@ -2,10 +2,10 @@
   <div class="modal-content" style="width: 50rem;">
 
     <div class="card mx-5 mt-3">
-      <h4 class="my-0">Update Organism: {{Organism.organism_name}}</h4>
-      <h5>Class: {{Class}}</h5>
+      <h4 class="my-0">Update Organism: {{object.organism_name}}</h4>
+      <h5>Class: {{object.organism_name.org_class.dict_value}}</h5>
       <!-- <p>{{Organism_Name}}</p> -->
-      {% include 'utils/searchbar_01.html' %}
+      {% include 'utils/search_organism.html' %}
       {% if messages %}
       <ul class="messages">
         {% for message in messages %}
@@ -16,15 +16,15 @@
       <!-- ===================================================================================== -->
       <hr>
       <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
-        action="{%url 'organism_update' Organism.pk %}">
+        action="{%url 'organism_update' object.pk %}">
         {% csrf_token %}
         <div style="display: none;">
 
           {{form.as_p}}
         </div>
-        <input type="text" id="taxo-name" name="searchbar_01" style="display: none;">
+        <input type="text" id="taxo-name" name="search_organism" style="display: none;">
         <div class="d-flex m-auto">
-          <a class="btn m-auto mt-5" href="{% url 'org_detail' Organism.pk %}">Discard Update</a>
+          <a class="btn m-auto mt-5" href="{% url 'org_detail' object.pk %}">Discard Update</a>
           <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
 
         </div>

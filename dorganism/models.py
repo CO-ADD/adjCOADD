@@ -31,11 +31,13 @@ class Taxonomy(AuditModel):
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
     other_names = models.CharField(max_length=100, null=True, blank=True, verbose_name = "Other Names")
     code = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Code")
-    org_class = models.ForeignKey(Dictionary, null=True, blank=True, db_column="org_class", verbose_name = "Class", related_name="Class+", on_delete=models.DO_NOTHING)
+    org_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="org_class", related_name="Class+")
     tax_id = models.IntegerField(null=True, blank=True, verbose_name = "NCBI Tax ID")
     parent_tax_id = models.IntegerField(null=True, blank=True, verbose_name = "NCBI Parent Tax ID") 
     tax_rank = models.CharField(max_length=50, null=True, blank=True, verbose_name = "Taxonomy Rank")
-    division = models.ForeignKey(Dictionary, null=True, blank=True, db_column="division", verbose_name = "Division", related_name='Division', on_delete=models.DO_NOTHING)
+    division = models.ForeignKey(Dictionary, null=True, blank=True,  verbose_name = "Division", on_delete=models.DO_NOTHING, 
+        db_column="division", related_name='Division')
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
     
     #------------------------------------------------
@@ -62,56 +64,51 @@ class Organism(AuditModel):
     Choice_Dictionary = {
         'risk_group':'Risk_Group',
         'pathogen_group':'Pathogen_Group',
-        'bio_approval':'Biol_Approval',
         'oxygen_pref':'Oxygen_Preference',
         'mta_status':'License_Status',
         'strain_type':'Strain_Type',
         'strain_panel':'Strain_Panel',
         'organism_class':'Organism_Class',
     }
-    ORG_CLASSES = ['GN','GP','MB','FG','MA']
 
-    organism_id = models.CharField(primary_key=True, unique=True, max_length=15, verbose_name = "Organism ID") 
-    organism_name= models.ForeignKey(Taxonomy, db_column="organism_name", verbose_name = "Organism Name", on_delete=models.DO_NOTHING) 
-    #Organism_desc= models.CharField(blank=True, max_length=150, verbose_name = "Organism Description")
-    strain_id = models.CharField(max_length=50, null=False, blank=False, db_index=True, verbose_name = "Strain ID")
-    strain_otherids = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Strain OtherID")
+    organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
+    organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
+        db_column="organism_name", related_name="OrganismName")
+    strain_ids = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Strain IDs")
     strain_code= models.CharField(max_length=15, null=True, blank=True, verbose_name = "Strain Code")
-    #strain_Desc= models.CharField(blank=True, max_length=150, verbose_name = "Strain Description")
-    strain_notes= models.CharField(max_length=250, null=True, blank=True, verbose_name = "Strain Notes")
-    strain_origin = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Origin")
-    strain_property = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Property")
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
-    strain_tissue= models.CharField(max_length=250, null=True, blank=True, verbose_name = "Strain Tissue")
-    sequence = models.CharField(max_length=100, null=True, blank=True, verbose_name = "Sequence")
-    sequence_link = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Sequence Link")
+    res_property= models.CharField(max_length=350, null=True, blank=True, verbose_name = "Resistance Property")
+    gen_property= models.CharField(max_length=350, null=True, blank=True, verbose_name = "Genetic Property")
+    strain_origin = models.CharField(max_length=350, null=True, blank=True, verbose_name = "Origin of Strain")
+    reference = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Reference")
+    growth_preference = models.CharField(max_length=250, null=True, blank=True, verbose_name = "Growth/Screen Preference")
+    strain_notes= models.CharField(max_length=250, null=True, blank=True, verbose_name = "Strain Notes")
     tax_id = models.IntegerField(default=0, null=True, verbose_name = "NCBI Tax ID")
-    risk_group = models.CharField(max_length=50,null=True, blank=True, verbose_name = "Risk Group")
-    pathogen_group = models.CharField(max_length=50, null=True, blank=True, verbose_name = "Pathogen",)
-    import_permit = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Import Permit")
-    bio_approval = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Biological Approval") 
-    special_precaution = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Special Precaution")
-    lab_restriction = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Lab")
-    mta_status = models.CharField(max_length=150,null=True, blank=True, verbose_name = "MTA Status") 
+    sequence_link = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Sequence Link")
+    strain_identification = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Strain Identification")
+    mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
+        db_column="mta_status", related_name="MTA+")
     mta_document = models.CharField(max_length=150, null=True, blank=True, verbose_name = "MTA Document")
-    oxygen_pref = models.CharField(max_length=250, null=True, blank=True, verbose_name = "Oxygen")
-    atmosphere_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Atmosphere")
-    nutrient_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Nutirent")
-    biofilm_pref = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Biofilm")
-    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
+    lab_restriction = models.ForeignKey(Dictionary,null=True, blank=True, db_column="lab_restriction", verbose_name = "Lab", on_delete=models.DO_NOTHING)
+    risk_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Risk Group", on_delete=models.DO_NOTHING,
+        db_column="risk_group", related_name="Risk+")
+    pathogen_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pathogen", on_delete=models.DO_NOTHING,
+        db_column="pathogen_group", related_name="Pathogen+")
+    oxygen_pref = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Oxygen", on_delete=models.DO_NOTHING,
+        db_column="oxygen_pref", related_name="Oxygen+")
+    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="Biologist")
 
-          #------------------------------------------------
+    #------------------------------------------------
     class Meta:
         db_table = 'organism'
         ordering=['organism_name']
         indexes = [
-            models.Index(name="org_stid_idx", fields=['strain_id']),
-            models.Index(name="org_stother_idx", fields=['strain_otherids']),
+            models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),
             models.Index(name="org_strainid_idx", fields=['strain_type']),
             models.Index(name="org_stpanel_idx", fields=['strain_panel']),
-            models.Index(name="org_mta_idx", fields=['mta_status']),
             models.Index(name="org_taxid_idx", fields=['tax_id']),
             models.Index(name="org_riskgrp_idx", fields=['risk_group']),
             models.Index(name="org_pathgrp_idx", fields=['pathogen_group']),
@@ -126,10 +123,10 @@ class Organism(AuditModel):
         return f"{OrganimClass}_{OrganismNo:04d}"
 
     #------------------------------------------------
-    def find_Next_OrganismID(self,OrganimClass) -> str:
-        print(f".. find_Next_OrganismID...OrganimsClass={OrganimClass}")
-        if OrganimClass in self.ORG_CLASSES:
-            Organism_IDSq = Sequence(OrganimClass)
+    def find_Next_OrganismID(self,OrganimClass,OrganismClassTypes = ['GN','GP','MB','FG','MA']) -> str:
+        print(f"this is find_Next_OrganismID...OrganimsClass={OrganimClass}")
+        if OrganimClass in OrganismClassTypes:
+            Organism_IDSq=Sequence(OrganimClass)
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
             
@@ -145,7 +142,7 @@ class Organism(AuditModel):
     def save(self, *args, **kwargs):
         print("organism save model...")
         if not self.organism_id: #Object does not exists
-            print(".. save organism model...")
+            print("this is save from organism model...")
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
             if self.organism_id: 
                 super().save(*args, **kwargs)
@@ -155,7 +152,7 @@ class Organism(AuditModel):
     #------------------------------------------------
     def __iter__(self):
         for field in self._meta.fields:
-            if field.verbose_name in ['Organism ID', 'Organism Name',  'Strain ID', 'Strain OtherID', 'Strain Code', 'Strain Notes', 'Origin']:
+            if field.verbose_name in ['Organism ID', 'Organism Name',  'Strain ID',  'Strain Code', 'Strain Notes', 'Origin']:
                 yield (field.verbose_name, field.value_to_string(self))
     
 
@@ -165,10 +162,13 @@ class Organism_Batch(AuditModel):
     Organism/Isolate Batch Collection
     """
 #-------------------------------------------------------------------------------------------------
+
     Choice_Dictionary = {
+
         'qc_status':'QC_Status',
     }
-    SEP = ":"
+
+    _SEP = ':'
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
@@ -208,7 +208,7 @@ class Organism_Batch(AuditModel):
 
     #------------------------------------------------
     def str_OrgBatchID(self,OrganismID,BatchNo) -> str:
-        return(f"{OrganismID}{self.SEP}{BatchNo:02d}")
+        return(f"{OrganismID}{self._SEP}{BatchNo:02d}")
 
 
     #------------------------------------------------

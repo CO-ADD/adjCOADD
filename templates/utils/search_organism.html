@@ -21,7 +21,7 @@
     const sendSearchData = (inputtext) => {
         $.ajax({
             type: 'POST',
-            url: '{% url "searchbar_01" %}',
+            url: '{% url "search_organism" %}',
             data: {
                 'csrfmiddlewaretoken': csrf,
                 'inputtext': inputtext,
