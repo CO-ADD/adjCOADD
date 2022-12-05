@@ -1,12 +1,12 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
 from dorganism.utils import querysetToChoiseList_Dictionary
+from django.shortcuts import get_object_or_404
+
 from apputil.models import Dictionary, ApplicationUser
 from .models import Organism, Taxonomy
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
-from django.contrib.postgres.forms import SimpleArrayField
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
@@ -21,7 +21,6 @@ class CreateOrganism_form(ModelForm):
     mta_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']), widget=forms.Select(attrs={'class':'form-select'}))
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all())
-    strain_panel=SimpleArrayField(forms.MultipleChoiceField(required=False, choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['strain_type'])))
    
     def __init__(self, user, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name

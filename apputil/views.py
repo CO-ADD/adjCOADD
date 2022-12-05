@@ -14,15 +14,12 @@ from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
 from dorganism.models import Organism, Taxonomy
 
-
-# ------test-------------------
-def test_UI(req):
-    return render(req, 'utils/datatable.html',)
-#------------------------------
-
-
+# ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
 def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
+
+
+
 ## =================================APP Home========================================
 def index(req):
     object_1=Organism.objects.count()

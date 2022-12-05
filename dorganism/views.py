@@ -27,9 +27,9 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 def get_paginate(request):
     pass
 
-# # =======================================Taxonomy Read Create Update Delete View=============================================================================#
+# #############################TAXONOMY############################################
 
-# =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #
+# =========================================Taxonomy Card View in Chem Homepage=============== #
 class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
     template_name = 'dorganism/readForm/Taxonomy_list.html'
@@ -122,10 +122,10 @@ def deleteTaxonomy(req, pk):
     except Exception as err:
         print(err) 
     return redirect("taxo_card")
-  
 
-# # ========================================Organism CREATE READ UPDATE DELETE View==============================================#
-# ==============================List View ===============================================================
+######################################################################ORGANISM###########################################
+# # ========================================Organism CREATE READ UPDATE DELETE View==#
+# ==============================List View ================================
 class OrganismListView(LoginRequiredMixin, ListView):
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
@@ -263,7 +263,6 @@ def updateOrganism(req, pk):
     context={
         "form":form,
         "object":object_,
-        "Class":Organism_Class_str
     }
    
     return render(req, "dorganism/updateForm/Organism_u.html", context)
