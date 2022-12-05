@@ -31,8 +31,9 @@
                 {% if page_obj.has_next %}
                 <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next Page &raquo;</a>
                 {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %} <span>...</span>
-        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"> {{
-            page_obj.paginator.num_pages }}
+        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">
+            <!--prettier-ignore-->
+            {{page_obj.paginator.num_pages }}
         </a>
         {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %} <a
             href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"
@@ -46,14 +47,14 @@
     <hr>
     <form action="" method="GET">
 
-        <select class="form-select" aria-label="Default select example" name="pages" id="pages_set"
+        <select style="width: fit-content;" aria-label="Default select example" name="pages" id="pages_set"
             onchange="changeFunc();">
-            <option value="">{{paginate_by}}</option>
-            <option value=5>5</option>
-            <option value=10>10</option>
-            <option value=20>20</option>
+            <option value="">{{paginate_by}} one page</option>
+            <option value=5>5 one page</option>
+            <option value=10>10 one page</option>
+            <option value=20>20 one page</option>
         </select>
-        <input class="btn btn-sm btn-outline-secondary" type="submit" value="Show {{paginate_by}} One Page">
+        <input class="stretched-link bg-link" type="submit" value="confirm">
     </form>
 </div>
 <script>

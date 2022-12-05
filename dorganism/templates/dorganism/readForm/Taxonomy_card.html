@@ -41,7 +41,7 @@
 
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap">
-        {% for object in object_list %}
+        {% for object in page_obj %}
         <!-- object_list -->
         <div class="col-md-2 vh-80 border border-2 m-2">
 
@@ -104,8 +104,7 @@
         <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
         {%endfor%}
       </div>
-      {% include 'utils/pagination.html'%}
-      <hr />
+
     </div>
   </div>
 </div>

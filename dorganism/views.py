@@ -17,7 +17,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 
 from .models import  Organism, Taxonomy
-from .utils import  querysetToChoiseList_Dictionary, MySearchbar02, MySearchbar03, MySearchbar04
+from .utils import  Organismfilter, Taxonomyfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
@@ -33,30 +33,17 @@ def get_paginate(request):
 class TaxonomyListView(LoginRequiredMixin, ListView):
     model=Taxonomy  
     template_name = 'dorganism/readForm/Taxonomy_list.html'
-    # paginate_by=24
-
-    # def paginate_by(self, request):
-    #     self.paginate_by=get_paginate(request) or 25
-    #     return self.paginate_by
-    
-    # def get_context_data(self, **kwargs):
-    #     context=super().get_context_data(**kwargs)
-    #     context['filter']=MySearchbar04(self.request.GET, queryset=self.get_queryset())
-    #     return context
-
+   
     def get_queryset(self):
         qs=super().get_queryset()
-        # print(MySearchbar04(self.request.GET, queryset=qs).qs)
-        # return MySearchbar04(self.request.GET, queryset=qs).qs
         return qs
 
     def get(self, request):
         paginate_by=request.COOKIES.get('key') or 5
     #     # paginate_by=get_paginate(request)
-        data =MySearchbar04(self.request.GET, queryset=self.get_queryset()).qs #self.get_queryset()
+        data =Taxonomyfilter(self.request.GET, queryset=self.get_queryset()).qs #self.get_queryset()
         # data_json=serializers.serialize('json', data)
-        filter=MySearchbar04(self.request.GET, queryset=self.get_queryset())
-   
+        filter=Taxonomyfilter(self.request.GET, queryset=self.get_queryset())
         paginator = Paginator(data, paginate_by)
         page = request.GET.get('page')
         try:
@@ -149,12 +136,12 @@ class OrganismListView(LoginRequiredMixin, ListView):
         except Exception as err:
             print(err)
             queryset=("", )
-        return MySearchbar03(self.request.GET, queryset=queryset).qs
+        return Organismfilter(self.request.GET, queryset=queryset).qs
     
     def get(self, request):
         paginate_by=request.COOKIES.get('key') or 5
         data =self.get_queryset()
-        filter=MySearchbar03(self.request.GET, queryset=self.get_queryset())
+        filter=Organismfilter(self.request.GET, queryset=self.get_queryset())
         paginator = Paginator(data, paginate_by)
         page = request.GET.get('page')
         try:
@@ -169,25 +156,21 @@ class OrganismCardView(OrganismListView):
     template_name = 'dorganism/readForm/Organism_card.html'
 
 # ======================================================================CREATE==========================================#
-    # ==============Step1. Ajax Call search Taxonomy(for all models using Taxonomy as ForeignKey)=================#
-
-    #  ===================refer to utils.py function searchbar_01==========================================
-
+    # ==Step1. Ajax Call(def search_organism in utils) search Taxonomy(for all models using Taxonomy as ForeignKey)=====#
     # =============================step 2. Create new record by form===================#
 @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
-    '''
-    
+    '''  
     kwargs={}
     kwargs['user']=req.user
     print(f"in view: {req.user}")
 
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
-        Organism_Name=req.POST.get('searchbar_01')
+        Organism_Name=req.POST.get('search_organism')
         Strain_Type_list=req.POST.getlist('strain_type')
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
@@ -248,9 +231,9 @@ def updateOrganism(req, pk):
             with transaction.atomic(using='dorganism'):        # testing!
                 obj = Organism.objects.select_for_update().get(organism_id=pk)
                 #------------------------If update Organism Name-----------------------------------
-                if  req.POST.get('searchbar_01'):
-                    print(req.POST.get('searchbar_01'))
-                    Organism_Name_str=req.POST.get('searchbar_01')
+                if  req.POST.get('search_organism'):
+                    print(req.POST.get('search_organism'))
+                    Organism_Name_str=req.POST.get('search_organism')
                     Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
                     form=UpdateOrganism_form(req.user, Organism_Name_str, req.POST, instance=obj)
                     print('form created')
@@ -279,7 +262,7 @@ def updateOrganism(req, pk):
 
     context={
         "form":form,
-        "Organism":object_,
+        "object":object_,
         "Class":Organism_Class_str
     }
    
