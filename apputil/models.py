@@ -12,8 +12,8 @@ import logging
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
-    username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
-    name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
+    username = models.CharField(unique=True, max_length=55, verbose_name='uquser')       # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='user')          # J.Zuegg
     initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
     organisation = models.CharField(max_length=250, null=True, blank=True)     # University of Queensland
     department = models.CharField(max_length=250, null=True, blank=True)       # Institute for Molecular Bioscience
