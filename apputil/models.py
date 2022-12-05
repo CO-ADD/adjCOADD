@@ -12,8 +12,8 @@ import logging
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
-    username = models.CharField(unique=True, max_length=55, verbose_name='uquser')       # uqjzuegg 
-    name = models.CharField(primary_key=True,  max_length=50, verbose_name='user')          # J.Zuegg
+    username = models.CharField(unique=True, max_length=55, verbose_name='user_identity_ldap')       # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='appuser name')          # J.Zuegg
     initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
     organisation = models.CharField(max_length=250, null=True, blank=True)     # University of Queensland
     department = models.CharField(max_length=250, null=True, blank=True)       # Institute for Molecular Bioscience
@@ -51,6 +51,11 @@ class ApplicationUser(AbstractUser):
 
 
 #-------------------------------------------------------------------------------------------------
+# class AuditModel(models.Model):
+#     """
+#     An abstract base class model that provides audit informations 
+#     """
+#-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 
@@ -58,9 +63,9 @@ class AuditModel(models.Model):
 #-------------------------------------------------------------------------------------------------
     DELETED   = -9
     INVALID   = -1
-    UNDEFINED = 0
-    VALID     = 1
-    CONFIRMED = 2
+    UNDEFINED =  0
+    VALID     =  1
+    CONFIRMED =  2
     OWNER     = "orgdb"
 
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
@@ -74,7 +79,7 @@ class AuditModel(models.Model):
     adeleted = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Deleted by", 
         related_name="%(class)s_adeleted_by", editable=False, on_delete=models.DO_NOTHING)
 
-       #------------------------------------------------
+    #------------------------------------------------
     class Meta:
         abstract = True
     
@@ -114,11 +119,12 @@ class Dictionary(AuditModel):
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
-    dict_desc = models.CharField(max_length=150, blank=True, null=True, verbose_name = "Description")
+    dict_desc = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Description")
    
     #------------------------------------------------
     class Meta:
-        db_table = 'dictionary'
+        app_label = 'apputil'
+        db_table = 'app_dictionary'
         ordering=['dict_value']
         indexes = [
             models.Index(name="dict_class_idx",fields=['dict_class']),
@@ -141,8 +147,8 @@ class ApplicationLog(models.Model):
     log_status = models.CharField(max_length=15, null=True, blank=True, editable=False)
 
     class Meta:
+        app_label = 'apputil'
         db_table = 'app_log'
-
 
 
 #=========================Not used...==============
@@ -168,4 +174,3 @@ class ChoiceArrayField(ArrayField):
         defaults.update(kwargs)
   
         return super(ArrayField, self).formfield(**defaults)
-

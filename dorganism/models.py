@@ -42,6 +42,7 @@ class Taxonomy(AuditModel):
     
     #------------------------------------------------
     class Meta:
+        app_label = 'dorganism'
         db_table = 'taxonomy'
         ordering=['organism_name']
         indexes = [
@@ -102,6 +103,7 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     class Meta:
+        app_label = 'dorganism'
         db_table = 'organism'
         ordering=['organism_name']
         indexes = [
@@ -185,6 +187,7 @@ class Organism_Batch(AuditModel):
     
     #------------------------------------------------
     class Meta:
+        app_label = 'dorganism'
         db_table = 'orgbatch'
         ordering=['orgbatch_id']
         indexes = [
@@ -249,6 +252,7 @@ class OrgBatch_Stock(AuditModel):
 
     #------------------------------------------------
     class Meta:
+        app_label = 'dorganism'
         db_table = 'orgbatch_stock'
         ordering=['orgbatch_id','stock_type']
         indexes = [
@@ -286,6 +290,7 @@ class Organism_Culture(AuditModel):
 
     #------------------------------------------------
     class Meta:
+        app_label = 'dorganism'
         db_table = 'organism_culture'
         ordering=['organism_id','culture_type','media_use']
         indexes = [

@@ -27,7 +27,6 @@ from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 def get_paginate(request):
     pass
 
-
 # # =======================================Taxonomy Read Create Update Delete View=============================================================================#
 
 # =========================================Taxonomy Card View in Chem Homepage===============Read================================================= #

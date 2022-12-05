@@ -71,7 +71,8 @@ class Drug(AuditModel):
         return f"{self.Drug_Name} ({self.Drug_Code})"
     
     class Meta:
-        db_table='drug'
+        app_label = "ddrug"
+        db_table ="drug"
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):
@@ -93,6 +94,8 @@ class VITEK_Card(AuditModel):
     Analysis_Time = models.CharField(blank=True, null=True, unique=True, max_length=15, verbose_name = "Analysis Time") 
 
     class Meta:
+        app_label = "ddrug"
+        db_table='vitek_card'
         ordering=['Card_Type','Card_Code','Card_Barcode']
         indexes = [
             models.Index(name="vcard_ctype_idx",fields=['Card_Type']),
@@ -100,7 +103,7 @@ class VITEK_Card(AuditModel):
             models.Index(name="vcard_bcode_idx",fields=['Card_Barcode']),
             models.Index(name="vcard_orgbatch_idx",fields=['OrgBatch_ID']),
         ]
-        db_table='VITEK_card'
+
     def __str__(self) -> str:
         return f"{self.OrgBatch_ID} {self.Stock_Type} {self.N_Left}"
 
@@ -126,6 +129,8 @@ class VITEK_AST(AuditModel):
     Page_No = models.IntegerField(blank=True, null=True, verbose_name = "PDF PageNo")  
 
     class Meta:
+        app_label = "ddrug"
+        db_table='vitek_ast'
         # ordering=['OrgBatch']
         indexes = [
             models.Index(name="vast_drugid_idx",fields=['Drug_ID']),
@@ -134,7 +139,7 @@ class VITEK_AST(AuditModel):
             models.Index(name="vast_org_idx",fields=['Organism']),
             models.Index(name="vast_fname_idx",fields=['Filename']),
         ]
-        db_table='VITEK_AST'
+
     def __str__(self) -> str:
         return f"{self.Card_Barcode} {self.ID_Organism}"
 
@@ -156,6 +161,8 @@ class VITEK_ID(AuditModel):
     Page_No = models.IntegerField(blank=True, null=True, verbose_name = "PDF PageNo")  
 
     class Meta:
+        app_label = "ddrug"
+        db_table='vitek_id'
         # ordering=['OrgBatch']
         indexes = [
             models.Index(name="vid_idorg_idx",fields=['ID_Organism']),
@@ -163,7 +170,6 @@ class VITEK_ID(AuditModel):
             models.Index(name="vid_idconf_idx",fields=['ID_Confidence']),
             models.Index(name="vid_fname_idx",fields=['Filename']),
         ]
-        db_table='VITEK_ID'
     def __str__(self) -> str:
         return f"{self.Card_Barcode}"
 #-------------------------------------------------------------------------------------------------
