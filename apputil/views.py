@@ -29,7 +29,7 @@ def index(req):
 
 ## =================================APP Log in/out =================================
 def login_user(req):
-    if req.user.is_appuser:
+    if req.user.is_authenticated:
         return redirect("index")
     else:
 
@@ -62,12 +62,10 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-
 @login_required(login_url='/login/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
-
 
 class AppUserListView(LoginRequiredMixin, ListView):
     model=ApplicationUser
@@ -90,14 +88,11 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
         context["objects"]=self.model.objects.all()
         return context
 
-
 class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
     fields=['name', 'permission', ]
     template_name = 'apputil/appUsersUpdate.html'
     success_url = reverse_lazy('userslist')
-
-  
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser

@@ -152,8 +152,6 @@ DATABASES = {
 #     }
 
 
-
-
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
 
