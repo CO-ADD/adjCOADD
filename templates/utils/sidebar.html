@@ -1,12 +1,29 @@
 <div class="sidebar" class="text-secondary" style="overflow: scroll">
     <h4 id="item-1">Search</h4>
     <form id="django-filter-siderbar" method="get" class="form-group mx-5">
+        <div class="d-flex">
+            <span>show</span>
+            <span>
+
+                <select style="width: fit-content;" name="paginate_by" id="pages_set" onchange="changeFunc();">
+                    <option value=5> Default</option>
+                    <option value=5>5 </option>
+                    <option value=10>10 </option>
+                    <option value=20>20 </option>
+                </select>
+            </span>
+            <span>
+
+                entries on one Page
+            </span>
+        </div>
+        <hr>
         {{filter.form.as_p}}
-        <input class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
+        <input id="filter-apply" class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
 
         <button class="form-control-sm" type="reset" onclick="myfun()">Reset</button>
     </form>
-
+    <!-- </form> -->
 
 </div>
 <div class="resizer"></div>
@@ -24,4 +41,17 @@
         form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
         form.submit();
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        console.log("working...")
+        $("#filter-apply").on("click", function () {
+            console.log("working...")
+            var value = $("form").cleaned_data;
+            console.log(value)
+            document.cookie = "filter=" + value;
+
+        })
+    })
 </script>

@@ -6,12 +6,13 @@
         <tr>
             <th style="width: 10%">Organism ID</th>
             <th style="width: 10%">Other Names</th>
-            <th style="width: 10%"> Class</th>
+            <th style="width: 10%">Class</th>
             <th>Tax_ID</th>
             <th style="width: 10%">Parent_Tax_ID</th>
             <th style="width: 10%">Tax_Rank</th>
             <th style="width: 10%" class="table-light">Division</th>
-            <th style="width: 15%" class="table-light">Lineage
+            <th style="width: 15%" class="table-light">
+                Lineage
 
                 <a id="createTaxo" class="card-link text-success" style="float: right">Add New
                     <i class="bi bi-plus"></i>
@@ -21,15 +22,13 @@
     </thead>
 
     <tbody>
-        {% for object in page_obj %}
+        {% for object in object_list %}
         <tr>
-            <td>{{object.pk}}
-
-            </td>
+            <td>{{object.pk}}</td>
             <td>{{object.other_names}}</td>
             <td>{{object.org_class.dict_desc}}</td>
-            <td> {{object.tax_id}}</td>
-            <td> {{object.parent_tax_id}}</td>
+            <td>{{object.tax_id}}</td>
+            <td>{{object.parent_tax_id}}</td>
             <td>{{object.tax_rank}}</td>
             <td>{{object.division}}</td>
             <td>
@@ -38,7 +37,6 @@
                     {% for obj in object.lineage %}
                     <option value="{{obj}}">{{obj}}</option>
                     {%endfor%}
-
                 </select>
             </td>
         </tr>
@@ -51,30 +49,28 @@
 
 <script>
     $(document).ready(function () {
-        $('#datatable_taxonomy').DataTable(
-            { "paging": false }
-        );
+        $("#datatable_taxonomy").DataTable({
+            // processing: true,
+            // serverSide: true,
+            // ajax: "{%url 'taxo_list'%}",
+            paging: false,
+        });
     });
 </script>
 
-<div id="createTaxoModal" class="modal fade" role="dialog">
-</div>
+<div id="createTaxoModal" class="modal fade" role="dialog"></div>
 
 <script>
-
     $(document).ready(function () {
-
         let my_modal = $("#createTaxoModal");
 
         $("#createTaxo").click(function () {
             my_modal.load("{%url 'taxo_create'%}", function (response) {
                 if (response == "Permission Not Granted") {
-                    alert("permission!")
-
+                    alert("permission!");
                 } else {
                     my_modal.modal("show"); // Open Modal
                 }
-
             });
         });
     });

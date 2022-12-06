@@ -91,71 +91,72 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-    #    'default': {
-    # #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'default': {
+     #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-    #        "ENGINE": "psqlextra.backend",
-    #        'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #        'NAME': 'orgdb',
-    #        'USER': 'orgdb', #os.environ.get('db_user'),
-    #        'PASSWORD':'orgdb',
-    #        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #        'PORT': '5432',
-    #    },
-    #    'dorganism': {
-    #        "ENGINE": "psqlextra.backend",
-    #        'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #        'NAME': 'orgdb',
-    #        'USER': 'orgdb', #os.environ.get('db_user'),
-    #        'PASSWORD': 'orgdb',
-    #        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #        'PORT': '5432',
-    #    },
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=apputil,public'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD':'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        },
+        'dorganism': {
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD': 'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        },
 
-    #    'ddrug': {
-    #        "ENGINE": "psqlextra.backend",
-    #        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-    #        'NAME': 'orgdb',
-    #        'USER': 'orgdb', #os.environ.get('db_user'),
-    #        'PASSWORD': 'orgdb',
-    #        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #        'PORT': '5432',
-    #    }
+        'ddrug': {
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD': 'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        }
 
    
     # ==================For Local Test===========================================
-   'default': {
-      "ENGINE": "psqlextra.backend",
-      'OPTIONS':{'options': '-c search_path=apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
+#    'default': {
+#       "ENGINE": "psqlextra.backend",
+#       'OPTIONS':{'options': '-c search_path=apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
 
-      'PORT': '5432',
-    },
-    'dorganism': {
-      "ENGINE": "psqlextra.backend",
-      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-      'NAME': 'orgdb',
+#       'PORT': '5432',
+#     },
+#     'dorganism': {
+#       "ENGINE": "psqlextra.backend",
+#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+#       'NAME': 'orgdb',
 
-      'TEST': {
-          'NAME': 'mytestdatabase2',
-      },
-      'HOST': 'Localhost',
-      'PORT': '5432',
-   },
-    'ddrug': {
-      "ENGINE": "psqlextra.backend",
-      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
-    }
+#       'TEST': {
+#           'NAME': 'mytestdatabase2',
+#       },
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#    },
+#     'ddrug': {
+#       "ENGINE": "psqlextra.backend",
+#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#     }
+
 
 
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
-# DATABASE_ROUTERS = ['dorganism.dbRouter.DrugsRouter','ddrug.dbRouter.DrugsRouter']
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
