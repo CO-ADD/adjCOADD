@@ -63,7 +63,6 @@ class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
     paginate_by=24
  
- 
 # ===========Detail View=============================Read============================================
 @login_required
 def detailTaxonomy(req, pk):

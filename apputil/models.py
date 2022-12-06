@@ -105,13 +105,13 @@ class AuditModel(models.Model):
         kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
-
         if not self.acreated_id:
             self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
             self.aupdated_id = appuser
-            self.aupdated_at = timezone.now()       
+            self.aupdated_at = timezone.now()
+        
         super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
