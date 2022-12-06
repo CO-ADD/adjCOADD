@@ -39,6 +39,7 @@ class Taxonomy(AuditModel):
     division = models.ForeignKey(Dictionary, null=True, blank=True,  verbose_name = "Division", on_delete=models.DO_NOTHING, 
         db_column="division", related_name='Division')
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
+    # slug = models.SlugField(max_length=255, unique=True)
     
     #------------------------------------------------
     class Meta:
@@ -50,11 +51,30 @@ class Taxonomy(AuditModel):
             models.Index(name="tax_taxid_idx", fields=['tax_id']),
             models.Index(name="tax_div_idx", fields=['division']),
         ]
+
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.organism_name}"
 
+    #------------------------------------------------
 
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:             
+    #         self.slug = slugify(self.organism_name)           
+    #     super(Post, self).save(*args, **kwargs)
+
+
+    #------------------------------------------------
+    @classmethod
+    def exists(self,OrgName):
+        try:
+            retInstance = self.objects.get(organism_name=OrgName)
+        except:
+            retInstance = None
+        return(retInstance)
+ 
+    #------------------------------------------------
+        
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
     """
@@ -72,11 +92,13 @@ class Organism(AuditModel):
         'organism_class':'Organism_Class',
     }
 
+    ORG_CLASSES = ['GN','GP','MB','FG','MA']
+
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
-        db_column="organism_name", related_name="OrganismName")
+        db_column="organism_name", related_name="organism_name+")
     strain_ids = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Strain IDs")
-    strain_code= models.CharField(max_length=15, null=True, blank=True, verbose_name = "Strain Code")
+    strain_code= models.CharField(max_length=30, null=True, blank=True, verbose_name = "Strain Code")
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     res_property= models.CharField(max_length=350, null=True, blank=True, verbose_name = "Resistance Property")
@@ -89,23 +111,23 @@ class Organism(AuditModel):
     sequence_link = models.CharField(max_length=500, null=True, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, null=True, blank=True, verbose_name = "Strain Identification")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
-        db_column="mta_status", related_name="MTA+")
+        db_column="mta_status", related_name="%(class)s_MTA+")
     mta_document = models.CharField(max_length=150, null=True, blank=True, verbose_name = "MTA Document")
     lab_restriction = models.ForeignKey(Dictionary,null=True, blank=True, db_column="lab_restriction", verbose_name = "Lab", on_delete=models.DO_NOTHING)
     risk_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Risk Group", on_delete=models.DO_NOTHING,
-        db_column="risk_group", related_name="Risk+")
+        db_column="risk_group", related_name="%(class)s_Risk+")
     pathogen_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pathogen", on_delete=models.DO_NOTHING,
-        db_column="pathogen_group", related_name="Pathogen+")
+        db_column="pathogen_group", related_name="%(class)s_Pathogen+")
     oxygen_pref = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Oxygen", on_delete=models.DO_NOTHING,
-        db_column="oxygen_pref", related_name="Oxygen+")
+        db_column="oxygen_pref", related_name="%(class)s_Oxygen+")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
-        db_column="biologist", related_name="Biologist")
+        db_column="biologist", related_name="%(class)s_Biologist")
 
     #------------------------------------------------
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism'
-        ordering=['organism_name']
+    #    ordering=['organism_name']
         indexes = [
             models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),
@@ -121,34 +143,42 @@ class Organism(AuditModel):
         return f"{self.organism_id} ({self.strain_code})"
 
     #------------------------------------------------
+    @classmethod
     def str_OrganismID(self,OrganimClass,OrganismNo) -> str:
         return f"{OrganimClass}_{OrganismNo:04d}"
 
     #------------------------------------------------
-    def find_Next_OrganismID(self,OrganimClass,OrganismClassTypes = ['GN','GP','MB','FG','MA']) -> str:
-        print(f"this is find_Next_OrganismID...OrganimsClass={OrganimClass}")
-        if OrganimClass in OrganismClassTypes:
-            Organism_IDSq=Sequence(OrganimClass)
+    @classmethod
+    def exists(self,OrgID):
+        try:
+            retInstance = self.objects.get(organism_id=OrgID)
+        except:
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    def find_Next_OrganismID(self,OrganismClass,OrganismClassTypes = ORG_CLASSES) -> str:
+        if OrganismClass in OrganismClassTypes:
+            Organism_IDSq=Sequence(OrganismClass)
             Organism_nextID = next(Organism_IDSq)
-            Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
-            
-            while Organism.objects.filter(organism_name=Organism_strID).exists():
+            Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
+            while Organism.objects.filter(organism_id=Organism_strID).first():
                 Organism_nextID = next(Organism_IDSq)
-                Organism_strID = self.str_OrganismID(OrganimClass,Organism_nextID)
-                print(f"name: {Organism_strID}")
+                Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
             return(Organism_strID)    
         else:
             return(None)
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        print("organism save model...")
+        #print(f"[save_Organism] ..")
         if not self.organism_id: #Object does not exists
-            print("this is save from organism model...")
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
+            #print(f"[save_Organism] .. NEW {self.organism_id} ")
             if self.organism_id: 
                 super().save(*args, **kwargs)
         else:
+            #print(f"[save_Organism] .. existing {self.organism_id} ")
             super().save(*args, **kwargs)
 
     #------------------------------------------------
@@ -170,11 +200,12 @@ class Organism_Batch(AuditModel):
         'qc_status':'QC_Status',
     }
 
-    _SEP = ':'
+    SEP = ':'
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
-    organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING) 
-    batch_no  = models.IntegerField(null=False, blank=False, verbose_name = "Batch No")
+    organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id+")
+    batch_no  = models.IntegerField(default = 0, null=False, blank=False, verbose_name = "Batch No")
     batch_notes= models.CharField(max_length=500, null=True, blank=True, verbose_name = "Batch Notes")
     qc_status = models.CharField(max_length=10, null=True, blank=True, verbose_name = "QC Notes")
     qc_record = models.CharField(max_length=10, null=True, blank=True, verbose_name = "QC Records")
@@ -183,7 +214,8 @@ class Organism_Batch(AuditModel):
     supplier_po = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Supplier PO")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=False) 
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", null=True, blank=False, editable=False, default=list) 
-    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
+    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_Biologist")
     
     #------------------------------------------------
     class Meta:
@@ -210,9 +242,18 @@ class Organism_Batch(AuditModel):
         return(next_BatchNo)    
 
     #------------------------------------------------
+    @classmethod
     def str_OrgBatchID(self,OrganismID,BatchNo) -> str:
-        return(f"{OrganismID}{self._SEP}{BatchNo:02d}")
+        return(f"{OrganismID}{self.SEP}{BatchNo:02d}")
 
+    #------------------------------------------------
+    @classmethod
+    def exists(self,BatchID):
+        try:
+            retInstance = self.objects.get(orgbatch_id=BatchID)
+        except:
+            retInstance = None
+        return(retInstance)
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -238,8 +279,9 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, db_column="orgbatch_id",verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
-    passage_no = models.IntegerField(default=0, null=False, blank=False, verbose_name = "Passage No")
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch", related_name="%(class)s_orgbatch_id+") 
+    passage_no = models.IntegerField(default=0, null=True, blank=True, verbose_name = "Passage No")
     location_freezer = models.CharField(max_length=80, null=True, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Column")
@@ -248,7 +290,8 @@ class OrgBatch_Stock(AuditModel):
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date")
     n_created = models.IntegerField(default=0, null=False, blank=False, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, null=False, blank=False, verbose_name = "#Vials left")
-    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
+    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_Biologist")
 
     #------------------------------------------------
     class Meta:
@@ -278,7 +321,8 @@ class Organism_Culture(AuditModel):
         'media_use':'Media_Use',
     }
 
-    organism_id = models.ForeignKey(Organism, db_column="organism_id", verbose_name = "Organism ID", on_delete=models.DO_NOTHING)
+    organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id+")
     culture_type = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Culture Type") 
     media_use = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Media Use") 
     media = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Media") 
@@ -286,7 +330,8 @@ class Organism_Culture(AuditModel):
     temperature = models.CharField(max_length=25, null=True, blank=True, verbose_name = "Temperature") 
     labware = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Labware") 
     notes = models.CharField(max_length=512, null=True, blank=True, verbose_name = "Media") 
-    biologist = models.ForeignKey(ApplicationUser, null=True, db_column="biologist", verbose_name = "Biologist", on_delete=models.DO_NOTHING) 
+    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_Biologist")
 
     #------------------------------------------------
     class Meta:

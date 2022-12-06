@@ -23,15 +23,10 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
-
-
-def get_paginate(request):
-    pass
-
-# #############################TAXONOMY############################################
-
+#  #####################Django Filter View#################
 class FilteredListView(ListView):
     filterset_class = None
+    paginate_by=10
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -47,55 +42,28 @@ class FilteredListView(ListView):
         context = super().get_context_data(**kwargs)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
+        context['paginate_by']=self.get_paginate_by(self, **kwargs)
         return context
-
-class TaxonomyListView(LoginRequiredMixin, FilteredListView):
-    model=Taxonomy  
-    template_name = 'dorganism/readForm/Taxonomy_list.html' 
-    paginate_by=5
-    filterset_class=Taxonomyfilter
 
     def get_paginate_by(self, queryset):
         qs=super().get_queryset()
-    #     print (qs.count())
-        paginate_by= self.request.GET.get("paginate_by", self.paginate_by)#self.request.COOKIES.get('key') or 5 #qs.count()/20 or 30
-
+        paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
 
 
-
-# =========================================Taxonomy Card View in Chem Homepage=============== #
-# class TaxonomyListView(LoginRequiredMixin, ListView):
-#     model=Taxonomy  
-#     template_name = 'dorganism/readForm/Taxonomy_list.html'
-    
-#     def get_queryset(self):
-#         qs=super().get_queryset()
-#         return qs
-
-    # def get(self, request):
-    #     paginate_by= request.COOKIES.get('key') or 5
-    # #     # paginate_by=get_paginate(request)
-    #     data =Taxonomyfilter(self.request.GET, queryset=self.get_queryset()).qs #self.get_queryset()
-    #     # data_json=serializers.serialize('json', data)
-    #     filter=Taxonomyfilter(self.request.GET, queryset=self.get_queryset())
-    #     paginator = Paginator(data, paginate_by)
-    #     page = request.GET.get('page')
-    #     try:
-    #         paginated = paginator.get_page(page)
-    #     except PageNotAnInteger:
-    #         paginated = paginator.get_page(1)
-    #     except EmptyPage:
-    #         paginated = paginator.page(paginator.num_pages)
-    #     return render(request, self.template_name, {'page_obj':paginated, 'paginate_by':paginate_by, 'filter':filter})
- 
+# #############################TAXONOMY View############################################
 # ==========List View================================Read===========================================
+class TaxonomyListView(LoginRequiredMixin, FilteredListView):
+    model=Taxonomy  
+    template_name = 'dorganism/readForm/Taxonomy_list.html' 
+    filterset_class=Taxonomyfilter
+
+ 
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
     paginate_by=24
  
-    
-
+ 
 # ===========Detail View=============================Read============================================
 @login_required
 def detailTaxonomy(req, pk):
@@ -160,35 +128,19 @@ def deleteTaxonomy(req, pk):
         print(err) 
     return redirect("taxo_card")
 
-######################################################################ORGANISM###########################################
-# # ========================================Organism CREATE READ UPDATE DELETE View==#
+############################################### ORGANISM View ###########################################
 # ==============================List View ================================
-class OrganismListView(LoginRequiredMixin, ListView):
+class OrganismListView(LoginRequiredMixin, FilteredListView):
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
+    filterset_class=Organismfilter
+    paginate_by=10
 
-    def get_queryset(self):
-        try:
-            queryset=super().get_queryset()
-        except Exception as err:
-            print(err)
-            queryset=("", )
-        return Organismfilter(self.request.GET, queryset=queryset).qs
+    def get_paginate_by(self, queryset):
+        qs=super().get_queryset()
+        paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
+        return paginate_by
     
-    def get(self, request):
-        paginate_by=request.COOKIES.get('key') or 5
-        data =self.get_queryset()
-        filter=Organismfilter(self.request.GET, queryset=self.get_queryset())
-        paginator = Paginator(data, paginate_by)
-        page = request.GET.get('page')
-        try:
-            paginated = paginator.get_page(page)
-        except PageNotAnInteger:
-            paginated = paginator.get_page(1)
-        except EmptyPage:
-            paginated = paginator.page(paginator.num_pages)
-        return render(request, self.template_name, {'page_obj':paginated, 'paginate_by':paginate_by, 'filter':filter})
-
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/readForm/Organism_card.html'
 

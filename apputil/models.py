@@ -25,6 +25,15 @@ class ApplicationUser(AbstractUser):
     class Meta:
         db_table = 'app_user'
     
+    #------------------------------------------------
+    @classmethod
+    def exists(self,UserName):
+        try:
+            retInstance = self.objects.get(name=UserName)
+        except:
+            retInstance = None
+        return(retInstance)
+
     # --------------------------------------------------------------------------
     def has_permission(self,strPermission) -> bool:
     #
@@ -50,11 +59,6 @@ class ApplicationUser(AbstractUser):
         return f"{self.name}" 
 
 
-#-------------------------------------------------------------------------------------------------
-# class AuditModel(models.Model):
-#     """
-#     An abstract base class model that provides audit informations 
-#     """
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
     """
@@ -86,7 +90,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def delete(self,**kwargs):
         appuser=kwargs.get("user")
-        kwargs.pop("user", None)
+        kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
@@ -98,16 +102,16 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         appuser=kwargs.get("user")
-        kwargs.pop("user", None)
+        kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
+
         if not self.acreated_id:
             self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
             self.aupdated_id = appuser
-            self.aupdated_at = timezone.now()
-        
+            self.aupdated_at = timezone.now()       
         super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
@@ -132,6 +136,25 @@ class Dictionary(AuditModel):
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.dict_value}.{self.dict_desc}"
+
+    #------------------------------------------------
+    @classmethod
+    def exists(self,DictClass,DictValue=None,DictDesc=None):
+        if DictValue:
+            try:
+                retDict = Dictionary.objects.get(dict_value=DictValue, dict_class=DictClass)
+            except:
+                print(f"[Dict Value Not Found] {DictValue} {DictClass}")
+                retDict = None
+        elif DictDesc:
+            try:
+                retDict = Dictionary.objects.get(dict_desc=DictDesc, dict_class=DictClass)
+            except:
+                print(f"[Dict Desc Not Found] {DictDesc} {DictClass}")
+                retDict = None
+        else:
+            retDict = None
+        return(retDict)
 
 
 #-------------------------------------------------------------------------------------------------
