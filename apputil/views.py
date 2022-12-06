@@ -29,26 +29,30 @@ def index(req):
 
 ## =================================APP Log in/out =================================
 def login_user(req):
-    if req.method=='POST':
-        form=Login_form(data=req.POST)
-        username_ldap=req.POST.get('username')
-        # print(user)
-        if form.is_valid():
-            print("form is valid")
-            user=form.get_user()
-            login(req, user, backend="django_auth_ldap.backend.LDAPBackend",)
-            return redirect("/")
-        
-        else:
-            messages.warning(req, ' no permission for this application, please contact Admin!')
-            return redirect(req.META['HTTP_REFERER'])
+    if req.user.is_appuser:
+        return redirect("index")
     else:
-        form = Login_form()
-    return render(req, 'registration/login.html', {'form': form})    
+
+        if req.method=='POST':
+            form=Login_form(data=req.POST)
+            username_ldap=req.POST.get('username')
+        # print(user)
+            if form.is_valid():
+                print("form is valid")
+                user=form.get_user()
+                login(req, user, backend="django_auth_ldap.backend.LDAPBackend",)
+                return redirect("index")
+        
+            else:
+                messages.warning(req, ' no permission for this application, please contact Admin!')
+                return redirect("index")
+        else:
+            form = Login_form()
+        return render(req, 'registration/login.html', {'form': form})    
 
 def logout_user(req):
     logout(req)    
-    return redirect("/accounts/login/")
+    return redirect("/")
 
 # =================================APP Log in/out ==================================##
 

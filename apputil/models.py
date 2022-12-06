@@ -86,7 +86,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def delete(self,**kwargs):
         appuser=kwargs.get("user")
-        kwargs.pop("user")
+        kwargs.pop("user", None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
@@ -98,16 +98,16 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         appuser=kwargs.get("user")
-        kwargs.pop("user")
+        kwargs.pop("user", None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
-
         if not self.acreated_id:
             self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
             self.aupdated_id = appuser
-            self.aupdated_at = timezone.now()       
+            self.aupdated_at = timezone.now()
+        
         super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------

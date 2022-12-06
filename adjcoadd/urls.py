@@ -11,22 +11,17 @@ from django.urls import path, include
 import dorganism.urls
 import apputil.urls
 
-from apputil.views import login_user, logout_user, permission_not_granted,  test_UI
+from apputil.views import login_user, logout_user, permission_not_granted
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    
+    path('admin/', admin.site.urls), 
     #========================appusers URL==========================================================================
-    # path('accounts/', include('django.contrib.auth.urls')),  
-    path('accounts/login/', login_user, name='login' ),
+    path('', login_user, name='login' ),
     path('accounts/logout/', logout_user, name='logout' ), 
     path('permission_not_granted/', permission_not_granted, name='permission_not_granted'),
-
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('', include('dorganism.urls')),
-    path('UI/', test_UI, name='test_ui' ),
-   
 ]
 
 if settings.DEBUG:
