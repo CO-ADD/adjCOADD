@@ -23,6 +23,7 @@
   --bs-footer-color: #74788d;
   --bs-custom-white: #fff;
   --bs-border-color: #625e5d;
+  --bs-body-bg: #fff;
 }
 
 .darkMode {
@@ -124,7 +125,8 @@ body {
   font-family: sans-serif !important;
   letter-spacing: 0px;
   color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
+  /* var(--bs-body-bg); */
   font-size: small;
 }
 

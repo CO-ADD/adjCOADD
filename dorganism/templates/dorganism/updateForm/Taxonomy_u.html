@@ -1,6 +1,5 @@
-<!-- <div id="{{object.pk}}"> -->
 <a class="card-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Update</a>
-<!-- </div> -->
+
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -18,7 +17,7 @@
 
         <h4 class="my-0">Update Taxonomy: {{object.pk}}</h4>
         <hr>
-        <form method="POST" class="post-form" action="{%url 'taxonomy_update' object.pk %}">
+        <form method="POST" class="post-form" action="{%url 'taxonomy_update' object.urlname %}">
           {% csrf_token %}
           {{form.as_p}}
           <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />

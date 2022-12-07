@@ -63,6 +63,7 @@ class ApplicationUser(AbstractUser):
 
 
 #-------------------------------------------------------------------------------------------------
+
 class AuditModel(models.Model):
     """
     An abstract base class model that provides audit informations 

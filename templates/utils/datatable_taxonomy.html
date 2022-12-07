@@ -1,17 +1,17 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_taxonomy" class="display">
+<table id="datatable_taxonomy" class="cell-border" style="width:100%">
     <thead>
         <tr>
-            <th style="width: 10%">Organism ID</th>
+            <th style="width: fit-content; height: fit-content; padding:0">Organism ID</th>
             <th style="width: 10%">Other Names</th>
             <th style="width: 10%">Class</th>
-            <th>Tax_ID</th>
-            <th style="width: 10%">Parent_Tax_ID</th>
+            <th style="width: 5%">Tax_ID</th>
+            <th style="width: 5%">Parent_Tax_ID</th>
             <th style="width: 10%">Tax_Rank</th>
             <th style="width: 10%" class="table-light">Division</th>
-            <th style="width: 15%" class="table-light">
+            <th class="table-light">
                 Lineage
 
                 <a id="createTaxo" class="card-link text-success" style="float: right">Add New
@@ -53,6 +53,7 @@
             // processing: true,
             // serverSide: true,
             // ajax: "{%url 'taxo_list'%}",
+            searching: false,
             paging: false,
         });
     });

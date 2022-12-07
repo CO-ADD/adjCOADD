@@ -14,24 +14,14 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
-
-  <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
     integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-
   <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
-  {%load static%}
-  <script src="{% static 'js/htmx.min.js' %}"></script>
-  <!-- <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script> -->
-  <!-- {%load static%} -->
-  <!-- Icons Css -->
-  <!-- <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" /> -->
-  <!-- App Css-->
-  {%load static%}
 
+  {%load static%}
   <link href="{% static 'css/app.css' %}" id="app-style" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
 
@@ -40,10 +30,7 @@
 <body>
 
   {%include "utils/navbar.html"%}
-
   <main class="body-content">
-
-
     {% block content %} {% endblock %}
   </main>
 

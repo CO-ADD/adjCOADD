@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
-from dorganism.utils import querysetToChoiseList_Dictionary
+from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
@@ -26,9 +26,9 @@ class CreateOrganism_form(ModelForm):
         self.organism_name=organism_name
         user=user
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
-        self.fields['strain_type'].widget = forms.SelectMultiple(choices= querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['strain_type']))
+        self.fields['strain_type'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type']))
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.fields['strain_panel'].widget = forms.SelectMultiple(choices= querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['strain_panel']))
+        self.fields['strain_panel'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel']))
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
         self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
               
@@ -50,6 +50,8 @@ class UpdateOrganism_form(CreateOrganism_form):
 
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
+    org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']), widget=forms.Select(attrs={'class':'form-select'}))
+    division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']), widget=forms.Select(attrs={'class':'form-select'}))
     class Meta:
         model =Taxonomy
         fields='__all__'
