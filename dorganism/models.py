@@ -44,6 +44,7 @@ class Taxonomy(AuditModel):
     division = models.ForeignKey(Dictionary, null=True, blank=True,  verbose_name = "Division", on_delete=models.DO_NOTHING, 
         db_column="division", related_name='Division')
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
+    # slug = models.SlugField(max_length=255, unique=True)
     
     #------------------------------------------------
     class Meta:
@@ -132,7 +133,7 @@ class Organism(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism'
-        ordering=['organism_name']
+    #    ordering=['organism_name']
         indexes = [
             models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),
