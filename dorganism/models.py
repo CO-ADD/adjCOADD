@@ -7,6 +7,7 @@ from psqlextra.indexes import UniqueIndex
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
+from django.utils.text import slugify
 
 #-------------------------------------------------------------------------------------------------
 # Organism Application Model
@@ -29,6 +30,7 @@ class Taxonomy(AuditModel):
     }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
+    urlname = models.SlugField(max_length=100, verbose_name = "URLSpecie")
     other_names = models.CharField(max_length=100, null=True, blank=True, verbose_name = "Other Names")
     code = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Code")
     org_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
@@ -39,7 +41,6 @@ class Taxonomy(AuditModel):
     division = models.ForeignKey(Dictionary, null=True, blank=True,  verbose_name = "Division", on_delete=models.DO_NOTHING, 
         db_column="division", related_name='Division')
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
-    # slug = models.SlugField(max_length=255, unique=True)
     
     #------------------------------------------------
     class Meta:
@@ -57,22 +58,21 @@ class Taxonomy(AuditModel):
         return f"{self.organism_name}"
 
     #------------------------------------------------
-
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:             
-    #         self.slug = slugify(self.organism_name)           
-    #     super(Post, self).save(*args, **kwargs)
-
-
-    #------------------------------------------------
     @classmethod
-    def exists(self,OrgName):
+    def exists(self,OrgName,verbose=0):
         try:
             retInstance = self.objects.get(organism_name=OrgName)
         except:
+            if verbose:
+                print(f"[Taxonomy Not Found] {OrgName} ")
             retInstance = None
         return(retInstance)
- 
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        self.urlname = slugify(self.organism_name)
+        super(Taxonomy, self).save()
+
     #------------------------------------------------
         
 #-------------------------------------------------------------------------------------------------
@@ -93,6 +93,7 @@ class Organism(AuditModel):
     }
 
     ORG_CLASSES = ['GN','GP','MB','FG','MA']
+    SEP = "_"
 
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
@@ -145,14 +146,24 @@ class Organism(AuditModel):
     #------------------------------------------------
     @classmethod
     def str_OrganismID(self,OrganimClass,OrganismNo) -> str:
-        return f"{OrganimClass}_{OrganismNo:04d}"
+    #
+    # Input:    OrganismClass GN, GP,...
+    #           OrganismNo 
+    # Output:   Oragnism_ID as string like GN_0001 
+    #
+        return(f"{OrganimClass}{self.SEP}{OrganismNo:04d}")
 
     #------------------------------------------------
     @classmethod
-    def exists(self,OrgID):
+    def exists(self,OrgID,verbose=0):
+    #
+    # Returns an instance by organism_id
+    #
         try:
             retInstance = self.objects.get(organism_id=OrgID)
         except:
+            if verbose:
+                print(f"[OrgansimID Not Found] {OrgID} ")
             retInstance = None
         return(retInstance)
 
@@ -176,10 +187,10 @@ class Organism(AuditModel):
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
             #print(f"[save_Organism] .. NEW {self.organism_id} ")
             if self.organism_id: 
-                super().save(*args, **kwargs)
+                super(Organism, self).save(*args, **kwargs)
         else:
             #print(f"[save_Organism] .. existing {self.organism_id} ")
-            super().save(*args, **kwargs)
+            super(Organism, self).save(*args, **kwargs)
 
     #------------------------------------------------
     def __iter__(self):
@@ -200,7 +211,7 @@ class Organism_Batch(AuditModel):
         'qc_status':'QC_Status',
     }
 
-    SEP = ':'
+    SEP = '_'
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
@@ -248,10 +259,15 @@ class Organism_Batch(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,BatchID):
+    def exists(self,BatchID,verbose=0):
+    #
+    # Returns an instance if found by orgbatch_id
+    #
         try:
             retInstance = self.objects.get(orgbatch_id=BatchID)
         except:
+            if verbose:
+                print(f"[OrgBatch Not Found] {BatchID} ")
             retInstance = None
         return(retInstance)
 
@@ -262,9 +278,9 @@ class Organism_Batch(AuditModel):
             if Next_BatchNo:
                 self.Batch_No = Next_BatchNo
                 self.orgbatch_id = self.str_OrgBatchID(self.organism_id,Next_BatchNo)
-                super().save(*args, **kwargs)
+                super(Organism_Batch,self).save(*args, **kwargs)
         else:
-            super().save(*args, **kwargs)
+            super(Organism_Batch,self).save(*args, **kwargs)
 
 
 #=================================================================================================
