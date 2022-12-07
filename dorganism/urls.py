@@ -11,7 +11,7 @@ from .utils import search_organism
 urlpatterns = [
     path('taxonomy_card', TaxonomyCardView.as_view(), name="taxo_card"),
     path('taxonomy_list', TaxonomyListView.as_view(), name="taxo_list"),
-    path('taxonomy/<str:slug>', detailTaxonomy, name="taxo_detail"),
+    path('taxonomy/<slug:slug>', detailTaxonomy, name="taxo_detail"),
     path('organism_card', OrganismCardView.as_view(), name="org_card"),
     path('organism_list', OrganismListView.as_view(), name="org_list"),
     path('organism/<str:pk>', detailOrganism, name="org_detail"),
@@ -21,12 +21,12 @@ urlpatterns = [
     path('createOrg/', createOrganism, name="org_create"),
     path('createTaxo/', createTaxonomy, name="taxo_create"),
 
-    re_path(r'^updatetaxo/(?P<pk>\w+\s*\w*\s*\w*\.*\s*\w*)/', updateTaxonomy, name="taxonomy_update"),
+    path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
    
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
-    re_path(r'^deleteTaxo/(?P<pk>\w+\s*\w*\s*\w*\.*\s*\w*)/', deleteTaxonomy, name="taxonomy_delete"),
+    path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
   
     #=======================Data Export/Import===================================================================
     path('exportData/', exportCSV, name="dataexport"),

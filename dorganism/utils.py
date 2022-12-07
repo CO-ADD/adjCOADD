@@ -7,24 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Organism, Taxonomy
 from apputil.models import Dictionary
-
-
-
-# ===================================Multiple choices__Dictionary queryset convert to choice Tuples ==#
-
-def querysetToChoiseList_Dictionary(model_name, field_name):
-
-    options=model_name.objects.filter(dict_class=field_name).values('dict_value', 'dict_desc')
-    if options:
-       
-        choices_test=tuple([tuple(d.values()) for d in options])
-        choices=tuple((a[0], a[0]+ " | "+a[1]) for a in choices_test)
-       
-    else:
-        choices=(('--', 'empty'),)
-    return choices
-
-
+from apputil.utils import get_DictonaryChoices_byDictClass
 
 #=====================================search_organism===============================================================
 
@@ -60,7 +43,7 @@ def search_organism(req):
 #==================================Filters======================================
 class Filterbase(django_filters.FilterSet):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    org_class=django_filters.ChoiceFilter(field_name='org_class', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['organism_class']))
+    org_class=django_filters.ChoiceFilter(field_name='org_class', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class']))
 
 
     class Meta:
@@ -74,21 +57,28 @@ class Filterbase(django_filters.FilterSet):
 
 
 class Organismfilter(Filterbase):
-    # pass
     organism_name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
-    organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['organism_class']))
-    strain_type=django_filters.MultipleChoiceFilter(method='my_custom_filter', choices=querysetToChoiseList_Dictionary(Dictionary, Organism.Choice_Dictionary['strain_type']))
+    organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class']))
+    strain_type=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type']))
+    strain_panel=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel']))
+    risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
+    mta_status=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']))
+    oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
+    pathogen_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']))
     class Meta:
         model=Organism
-        fields=['organism_id', 'strain_code', 'strain_ids',  'strain_notes', 'strain_type', 'mta_document', ]
+        fields=['organism_id', 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
        
-    def my_custom_filter(self, queryset, name, value):
-        return queryset.filter(strain_type__overlap=value)
+    def multichoices_filter(self, queryset, name, value):
+        lookup='__'.join([name, 'overlap'])
+        return queryset.filter(**{lookup: value})
+
 
 
 class Taxonomyfilter(Filterbase):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
     lineage = django_filters.MultipleChoiceFilter(choices="")
+    division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
     class Meta:
         model=Taxonomy
         fields=['organism_name', 'code', 'org_class', 'tax_id', 'parent_tax_id', 'tax_rank', 'division', 'lineage']

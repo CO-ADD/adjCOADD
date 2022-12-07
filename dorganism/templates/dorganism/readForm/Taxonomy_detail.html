@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Tax_ID</th>
-                            <td class="" data-id="{{object.pk}}" data-type="tax_id">
+                            <td class="" data-id="{{object.urlname}}" data-type="tax_id">
                                 {{object.tax_id}} (integer)
                             </td>
 
@@ -59,7 +59,7 @@
 
                         <tr>
                             <th scope="row" class="table-light">Parent_Tax_ID</th>
-                            <td class="" data-id="{{object.pk}}" data-type="parent_tax_id">
+                            <td class="" data-id="{{object.urlname}}" data-type="parent_tax_id">
                                 {{object.parent_tax_id}} (integer)
 
                             </td>
@@ -67,19 +67,19 @@
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Tax_Rank</th>
-                            <td class="editable" data-id="{{object.pk}}" data-type="tax_rank">
+                            <td class="editable" data-id="{{object.urlname}}" data-type="tax_rank">
                                 {{object.tax_rank}}</td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Division</th>
-                            <td class="editable" data-id="{{object.pk}}" data-type="division">
+                            <td class="editable" data-id="{{object.urlname}}" data-type="division">
                                 {{object.division}}</td>
 
                         </tr>
                         <tr>
                             <th scope="row" class="table-light">Lineage</th>
-                            <td class="" data-id="{{object.pk}}" data-type="lineage">
+                            <td class="" data-id="{{object.urlname}}" data-type="lineage">
                                 (object.lineage)
                                 {% for obj in object.lineage %}
                                 <p>* {{obj}} </p>

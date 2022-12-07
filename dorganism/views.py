@@ -24,9 +24,10 @@ from apputil.views import permission_not_granted
 from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
 
 #  #####################Django Filter View#################
+# Base Class for all models list/card view
 class FilteredListView(ListView):
     filterset_class = None
-    paginate_by=10
+    paginate_by=15
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -61,14 +62,13 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
  
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
-    paginate_by=24
  
  
 # ===========Detail View=============================Read============================================
 @login_required
-def detailTaxonomy(req, pk):
+def detailTaxonomy(req, slug=None):
     context={}
-    object_=get_object_or_404(Taxonomy, organism_name=pk)
+    object_=get_object_or_404(Taxonomy, urlname=slug)
     context["object"]=object_
     context['form']=Taxonomy_form(instance=object_)
     return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
@@ -96,8 +96,8 @@ def createTaxonomy(req):
 # ====================================================Update in Form===========================================
 @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def updateTaxonomy(req, pk):
-    object_=get_object_or_404(Taxonomy, organism_name=pk)
+def updateTaxonomy(req, slug=None):
+    object_=get_object_or_404(Taxonomy, urlname=slug)
     kwargs={}
     kwargs['user']=req.user 
     form=Taxonomy_form(instance=object_)
@@ -115,11 +115,11 @@ def updateTaxonomy(req, pk):
 
 # ====================================================Delete===========================================
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
-def deleteTaxonomy(req, pk):
+def deleteTaxonomy(req, slug=None):
     kwargs={}
     kwargs['user']=req.user 
     print('deleting view')
-    object_=get_object_or_404(Taxonomy, organism_name=pk)
+    object_=get_object_or_404(Taxonomy, urlname=slug)
     try:
         if req.method=='POST':
             object_.delete(**kwargs)
@@ -128,18 +128,14 @@ def deleteTaxonomy(req, pk):
         print(err) 
     return redirect("taxo_card")
 
+    
+
 ############################################### ORGANISM View ###########################################
 # ==============================List View ================================
 class OrganismListView(LoginRequiredMixin, FilteredListView):
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
     filterset_class=Organismfilter
-    paginate_by=10
-
-    def get_paginate_by(self, queryset):
-        qs=super().get_queryset()
-        paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
-        return paginate_by
     
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/readForm/Organism_card.html'
@@ -271,7 +267,8 @@ def deleteOrganism(req, pk):
     return redirect('/')
    
 
-# # ==============================Import Excel files===========================================================#
+
+############################################### Import CSV View ###########################################
 import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -382,7 +379,7 @@ def import_excel_organism(req):
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
 
 
-#======================================================Export Data Views Function==================================================#  
+############################################### Export CSV View ###########################################
 # # @user_passes_test(lambda u: u.is_admin)
 # @permission_required('importdata')
 @login_required

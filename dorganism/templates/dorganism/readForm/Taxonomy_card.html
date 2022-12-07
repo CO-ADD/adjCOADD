@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% block title%} mysite{% endblock %}
 {% block content%}
-<div class="d-flex flex-row bg-light justify-content-between vh-100">
+<div class="d-flex flex-row justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <div class="main d-flex flex-column">
     <div class="d-flex flex-wrap justify-content-between">
@@ -44,22 +44,22 @@
         {% for object in page_obj %}
         <!-- object_list -->
         <div class="col-md-2 vh-80 border border-2 m-2">
+          <a class="card-link" href="{%url 'taxo_detail' object.urlname %}">
+            <p class="i bi-tag fw-bold lead fs-5 m-auto">
 
-          <p class="i bi-tag fw-bold lead fs-5 m-auto">
+              ID: {{object.pk}}
+              <br><span class="fw-light fs-6">
+                Name: {{object.pk}}</span>
 
-            ID: {{object.pk}}
-            <br><span class="fw-light fs-6">
-              Name: {{object.pk}}</span>
+            </p>
+          </a>
 
-          </p>
-
-
-          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.pk}}"
-            aria-expanded="false" aria-controls="{{object.pk}}">
+          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.urlname}}"
+            aria-expanded="false" aria-controls="{{object.urlname}}">
             <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
           </div>
 
-          <div class="collapse" id="{{object.pk}}">
+          <div class="collapse" id="{{object.urlname}}">
 
             <div class="card-body d-flex flex-column align-items-start">
 
