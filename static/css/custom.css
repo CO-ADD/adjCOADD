@@ -1,13 +1,13 @@
 @import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
 
 :root {
-  --teal: #ff6e00;
+  --teal: #2c7a84;
+  --orange: #ff6e00;
   --grey: #625e5d;
-  --orange: #2c7a84;
 }
 
 :root {
-  --bs-heading-bg: #fff;
+  --bs-heading-bg: var(--teal);
   --bs-topbar-search-bg: #f3f3f9;
   --bs-header-item-color: #555b6d;
   --bs-boxed-body-bg: #ebebf4;
@@ -25,7 +25,6 @@
   --bs-border-color: #625e5d;
 }
 
-/* [data-layout-mode=dark], */
 .darkMode {
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
@@ -62,6 +61,61 @@
   --bs-footer-color: #a6b0cf;
 }
 
+.navbar {
+  background-color: var(--bs-heading-bg);
+}
+
+.navbar-toggler {
+  background-color: var(--bs-inform-color);
+
+}
+
+.navbar-toggler-icon {
+  color: var(--bs-topnav-bg);
+}
+
+.navbar-light {
+  background-color: var(--bs-topnav-bg);
+  opacity: 0.8;
+  color: white;
+}
+
+.navbar-brand,
+.nav-link {
+  color: white !important;
+  border: 2px solid transparent;
+}
+
+.navbar-brand:hover,
+.nav-item a:hover {
+  /* color: var(--orange, orange); */
+  border: 2px solid var(--bs-border-color);
+  /* box-shadow: 0px -5px 10px 0px white; */
+  transition: 0.5s ease-in;
+}
+
+nav.navbar.shrink {
+  height: 45px;
+}
+
+nav.shrink a {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 15px;
+}
+
+nav.shrink .brand ul {
+  display: none;
+}
+
+nav.shrink .brand .navbar-brand {
+  max-width: 100px;
+}
+
+nav.shrink {
+  padding: 4px 5px;
+}
+
 a {
   text-decoration: none;
 }
@@ -86,19 +140,6 @@ body {
   justify-content: space-between;
 }
 
-.navbar-brand,
-.nav-link {
-  color: white !important;
-  border: 2px solid transparent;
-}
-
-.navbar-brand:hover,
-.nav-item a:hover {
-  /* color: var(--orange, orange); */
-  border: 2px solid var(--bs-border-color);
-  /* box-shadow: 0px -5px 10px 0px white; */
-  transition: 0.5s ease-in;
-}
 
 
 .info {
@@ -137,11 +178,6 @@ button,
   border-radius: 10% 25% 15% 25%;
 }
 
-.navbar-light {
-  background-color: var(--bs-topnav-bg);
-  opacity: 0.8;
-  color: white;
-}
 
 .landp-img-01,
 .landp-img-02,
@@ -420,27 +456,6 @@ td:hover {
 }
 
 
-nav.navbar.shrink {
-  height: 45px;
-}
-
-nav.shrink a {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  font-size: 15px;
-}
-
-nav.shrink .brand ul {
-  display: none;
-}
-
-nav.shrink .brand .navbar-brand {
-  max-width: 100px;
-}
-
-nav.shrink .navbar-toggle {
-  padding: 4px 5px;
-}
 
 .toLeft {
   left: 0 !important;

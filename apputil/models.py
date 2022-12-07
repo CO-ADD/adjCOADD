@@ -12,8 +12,8 @@ import logging
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
-    username = models.CharField(unique=True, max_length=55, verbose_name='uquser')       # uqjzuegg 
-    name = models.CharField(primary_key=True,  max_length=50, verbose_name='user')          # J.Zuegg
+    username = models.CharField(unique=True, max_length=55, verbose_name='uq user')       # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='user name')          # J.Zuegg
     initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
     organisation = models.CharField(max_length=250, null=True, blank=True)     # University of Queensland
     department = models.CharField(max_length=250, null=True, blank=True)       # Institute for Molecular Bioscience
@@ -27,6 +27,9 @@ class ApplicationUser(AbstractUser):
     
     #------------------------------------------------
     @classmethod
+    #
+    # Returns an User instance if found by name
+    #
     def exists(self,UserName):
         try:
             retInstance = self.objects.get(name=UserName)
@@ -139,18 +142,26 @@ class Dictionary(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,DictClass,DictValue=None,DictDesc=None):
+    def exists(self,DictClass,DictValue=None,DictDesc=None,verbose=1):
+    #
+    # Returns a Dictionary instance if found 
+    #    by dict_value
+    #    by dict_desc (set dict_value = None)
+
+    #
         if DictValue:
             try:
                 retDict = Dictionary.objects.get(dict_value=DictValue, dict_class=DictClass)
             except:
-                print(f"[Dict Value Not Found] {DictValue} {DictClass}")
+                if verbose:
+                    print(f"[Dict Value Not Found] {DictValue} {DictClass}")
                 retDict = None
         elif DictDesc:
             try:
                 retDict = Dictionary.objects.get(dict_desc=DictDesc, dict_class=DictClass)
             except:
-                print(f"[Dict Desc Not Found] {DictDesc} {DictClass}")
+                if verbose:
+                    print(f"[Dict Desc Not Found] {DictDesc} {DictClass}")
                 retDict = None
         else:
             retDict = None
