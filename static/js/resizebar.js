@@ -1,5 +1,6 @@
 const resizer = document.querySelector(".resizer");
 const sidebar = document.querySelector(".sidebar");
+const hidefilter = document.getElementById("filterhide")
 
 resizer.addEventListener("mousedown", (event) => {
     console.log("enve")
@@ -19,7 +20,7 @@ function resize(e) {
     sidebar.style.flexBasis = size;
 }
 
-resizer.addEventListener("dblclick", () => {
+hidefilter.addEventListener("dblclick", () => {
     console.log("double clicked")
     sidebar.classList.toggle("not-visible");
     resizer.classList.toggle("toLeft")
