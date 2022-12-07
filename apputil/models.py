@@ -68,11 +68,6 @@ class AuditModel(models.Model):
     An abstract base class model that provides audit informations 
     """
 #-------------------------------------------------------------------------------------------------
-class AuditModel(models.Model):
-    """
-    An abstract base class model that provides audit informations 
-    """
-#-------------------------------------------------------------------------------------------------
     DELETED   = -9
     INVALID   = -1
     UNDEFINED =  0
@@ -113,13 +108,13 @@ class AuditModel(models.Model):
         kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
-
         if not self.acreated_id:
             self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
             self.aupdated_id = appuser
-            self.aupdated_at = timezone.now()       
+            self.aupdated_at = timezone.now()
+        
         super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
