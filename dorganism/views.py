@@ -310,7 +310,7 @@ def import_excel_taxo(req):
                     print(err)
                 # obj.save()
             
-            return render(req, 'dorganism/createForm/importDataForm/importexcel_taxo.html', {'uploaded_file_url': uploaded_file_url})
+            return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
     except Exception as err:
         print(err)
     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})

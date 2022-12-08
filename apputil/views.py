@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+from django.http import JsonResponse
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic import ListView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
@@ -155,3 +157,72 @@ def createDictionary(req):
 #         return redirect(req.META['HTTP_REFERER'])
     
 #     return render(req, 'apputil/dictionary_del.html', context)
+
+from django.core.files.storage import FileSystemStorage
+from django.views import View
+from django import forms
+# ==========================File Process=====================================
+
+class FileUploadForm(forms.Form):
+    excel_file = forms.FileField(required=False)
+
+class Importhandler(View):
+    template_name='apputil/importdata.html'
+    file_url=''
+
+    def get(self, request):
+        form = FileUploadForm()
+        return render(request, 'apputil/importdata.html', { 'form': form, })
+
+    def post(self, request):
+        form = FileUploadForm(request.POST, request.FILES)
+        context = {}
+        if form.is_valid():
+        # try:
+            myfile=request.FILES['myfile']
+            fs=FileSystemStorage()
+            filename=fs.save(myfile.name, myfile)
+            self.file_url=fs.url(filename)
+            context['message']=self.file_url
+            return render(request,'apputil/importdata.html', context)
+        # except Exception as err:
+        else:
+            messages.warning(request, f'There is {form.errors} error, upload again')
+
+        context['form'] = form
+        return render(request, 'apputil/importdata.html', context)
+
+    @csrf_exempt
+    @staticmethod
+    def run_task(request):
+        task_type = request.POST.get("type")
+        file_path=request.POST.get("filepath")
+        print(file_path)
+        if task_type =='Validation':
+            # read file from self.file_url
+            # validate fields
+            #return status=error, warning, or pass
+            #return result=ErrorList
+            return JsonResponse({"task_id": "somehash", 'task_status':'pass', 'task_result':'ErrorList'})
+    # check status
+    @csrf_exempt
+    @staticmethod
+    def get_status(request, res=None):
+        print(res)
+        return JsonResponse({"task_id": res.task_id, 'status': '...'})
+    # create entries
+    @csrf_exempt
+    @staticmethod
+    def save_task(request):
+        # call save object funtion 
+        
+        return JsonResponse({"status":"SUCCESS"})
+    
+    #delete task
+    @csrf_exempt
+    @staticmethod
+    def delete_task(request):
+        file_path=request.POST.get("filepath")
+        # call delete task
+        os.remove(file_path)
+        return JsonResponse({"status":"Empty"})

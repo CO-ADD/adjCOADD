@@ -1,0 +1,78 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="column is-two-thirds">
+            <h1 class="title">Import</h1>
+            <div class="shadow-lg continer">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Excel Data Upload</h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+
+                                        </label>
+                                    </div>
+
+                                    <input type="file" name="myfile" class="form-control">
+                                    <button type="submit" class="btn btn-success">Upload</button>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <hr><br>
+            <div>
+                <h3 class="title is-2" id="filepath">{{message}}</h3>
+                <h3 class="text-danger">
+                    {%include 'utils/message.html'%}
+                </h3>
+                <div class="field is-grouped">
+                    <p class="control">
+                        <button class="button is-primary" data-type="Validation">Next</button>
+                        <!-- <button class="button is-primary" data-type="2">Medium</button>
+                        <button class="button is-primary" data-type="3">Long</button> -->
+                    </p>
+                </div>
+            </div>
+            <br><br>
+            <div>
+                <h2 class="title is-2">Task Status</h2>
+                <br>
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasks">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+{%endblock%}
