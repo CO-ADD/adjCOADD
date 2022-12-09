@@ -6,6 +6,7 @@ from .views import (index, userprofile, AppUserListView, AppUserCreateView, AppU
     AppUserDeleteView, AppUserListView, DictionaryView, createDictionary, Importhandler)
 
 
+
 urlpatterns = [
     path('index/', index, name="index"),
     path('user_list/', AppUserListView.as_view(), name="userslist"),

@@ -44,7 +44,6 @@ class Taxonomy(AuditModel):
     division = models.ForeignKey(Dictionary, null=True, blank=True,  verbose_name = "Division", on_delete=models.DO_NOTHING, 
         db_column="division", related_name='Division')
     lineage = ArrayField(models.CharField(max_length=25, null=True, blank=True),size = 25, null=True)
-    # slug = models.SlugField(max_length=255, unique=True)
     
     #------------------------------------------------
     class Meta:

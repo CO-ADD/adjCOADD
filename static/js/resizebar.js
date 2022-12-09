@@ -2,6 +2,7 @@ const resizer = document.querySelector(".resizer");
 const sidebar = document.querySelector(".sidebar");
 const hidefilter = document.getElementById("hidefilter")
 
+
 resizer.addEventListener("mousedown", (event) => {
     console.log(hidefilter)
     document.addEventListener("mousemove", resize, false);

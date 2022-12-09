@@ -62,8 +62,6 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
  
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
- 
- 
 # ===========Detail View=============================Read============================================
 @login_required
 def detailTaxonomy(req, slug=None):
@@ -127,8 +125,6 @@ def deleteTaxonomy(req, slug=None):
     except Exception as err:
         print(err) 
     return redirect("taxo_card")
-
-    
 
 ############################################### ORGANISM View ###########################################
 # ==============================List View ================================
