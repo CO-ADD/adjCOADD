@@ -479,14 +479,14 @@ option {
 
 
 /********************  Preloader *******************/
-#loader4 {
+#preLoader {
   height: 100px;
   width: 260px;
   margin: 70px auto 0;
   position: relative
 }
 
-#loader4 .loader {
+#preLoader .loader {
   background: #ccc;
   width: 40px;
   height: 40px;
@@ -495,26 +495,26 @@ option {
   position: absolute
 }
 
-#loader4 .loader-1 {
+#preLoader .loader-1 {
   animation: animateDot1 1.5s linear infinite;
   left: 130px;
   background: #f73138
 }
 
-#loader4 .loader-2 {
+#preLoader .loader-2 {
   background: #00b733;
   left: 60px;
   animation: animateDot2 1.5s linear infinite;
   animation-delay: .5s
 }
 
-#loader4 .loader-3 {
+#preLoader .loader-3 {
   background: #448afc;
   left: 130px;
   animation: animateDot3 1.5s linear infinite
 }
 
-#loader4 .loader-4 {
+#preLoader .loader-4 {
   background: #950faf;
   left: 60px;
   animation: animateDot4 1.5s linear infinite;

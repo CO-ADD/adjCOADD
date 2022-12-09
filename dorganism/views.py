@@ -17,7 +17,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
-from .models import  Organism, Taxonomy
+from .models import  Organism, Taxonomy, Organism_Batch
 from .utils import  Organismfilter, Taxonomyfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
@@ -194,7 +194,10 @@ def detailOrganism(req, pk):
    
     context["object"]=object_
     context["form"]=form
-
+    context["page_obj"]=Organism_Batch.objects.filter(organism_id=pk)
+    context["batch_fields"]=[f.name for f in Organism_Batch._meta.get_fields()]
+    # context["batch_values"]=[f for f in Organism_Batch._meta.get_fields()]
+    # print(context["batch_values"])
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================
@@ -273,7 +276,8 @@ import pandas as pd
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 @login_required
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted')
+@transaction.atomic
 def import_excel_taxo(req):
     print('importing....')
     try:

@@ -2,11 +2,15 @@ import os
 import re
 import unicodedata
 import django_filters
+import pandas as pd
+
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import transaction
 
 from .models import Dictionary
+
 
 # ===================================Dictionary query convert to choice Tuples========================================================================#
 
@@ -44,3 +48,5 @@ def slugify(value, lower=False, allow_unicode=False):
     else:
         return value
 #-----------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------

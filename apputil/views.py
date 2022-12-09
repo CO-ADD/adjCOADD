@@ -14,6 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
+from dorganism.utils import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -144,24 +145,16 @@ def createDictionary(req):
     return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
 ## ============================Dictionary View======================================##
 
-# @user_passes_test(lambda u: u.is_superuser, redirect_field_name=None) #login_url='/redirect/to/somewhere'
-# def deleteDictionary(req, pk):
-#     kwargs={}
-#     kwargs['user']=req.user
-#     context={}
-#     object_=get_object_or_404(Dictionary, Dict_Value=pk)
-#     context['object']=object_
-#     if req.method=="POST":      
-#         object_.delete(**kwargs)
-#         print("deleted")
-#         return redirect(req.META['HTTP_REFERER'])
-    
-#     return render(req, 'apputil/dictionary_del.html', context)
+
+
+# ==========================File Process=====================================
 
 from django.core.files.storage import FileSystemStorage
 from django.views import View
 from django import forms
-# ==========================File Process=====================================
+import json
+from django.core import serializers
+import os
 
 class FileUploadForm(forms.Form):
     excel_file = forms.FileField(required=False)
@@ -169,6 +162,7 @@ class FileUploadForm(forms.Form):
 class Importhandler(View):
     template_name='apputil/importdata.html'
     file_url=''
+    data_list=[]
 
     def get(self, request):
         form = FileUploadForm()
@@ -177,52 +171,81 @@ class Importhandler(View):
     def post(self, request):
         form = FileUploadForm(request.POST, request.FILES)
         context = {}
-        if form.is_valid():
-        # try:
-            myfile=request.FILES['myfile']
-            fs=FileSystemStorage()
-            filename=fs.save(myfile.name, myfile)
-            self.file_url=fs.url(filename)
-            context['message']=self.file_url
-            return render(request,'apputil/importdata.html', context)
-        # except Exception as err:
-        else:
-            messages.warning(request, f'There is {form.errors} error, upload again')
+
+        try:
+            if form.is_valid():
+                myfile=request.FILES['myfile']
+                fs=FileSystemStorage()
+                filename=fs.save(myfile.name, myfile)
+                self.file_url=fs.url(filename)
+                context['message']=self.file_url
+         
+            
+                return render(request,'apputil/importdata.html', context)
+            else:
+                messages.warning(request, f'There is {form.errors} error, upload again')
+        except Exception as err:
+            messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
         context['form'] = form
+       
+
         return render(request, 'apputil/importdata.html', context)
 
     @csrf_exempt
     @staticmethod
     def run_task(request):
+        
         task_type = request.POST.get("type")
-        file_path=request.POST.get("filepath")
-        print(file_path)
+        Importhandler.file_url=request.POST.get("filepath")
+        
         if task_type =='Validation':
             # read file from self.file_url
             # validate fields
             #return status=error, warning, or pass
             #return result=ErrorList
-            return JsonResponse({"task_id": "somehash", 'task_status':'pass', 'task_result':'ErrorList'})
+            
+            Importhandler.data_list=import_excel(Importhandler.file_url)
+            if Importhandler.data_list == 'datatype':
+                error='error'
+            else:
+                error='pass'
+            return JsonResponse({"task_num": "somehash", 'task_status':'status', 'task_result': error})
+
     # check status
     @csrf_exempt
     @staticmethod
-    def get_status(request, res=None):
-        print(res)
-        return JsonResponse({"task_id": res.task_id, 'status': '...'})
+    def get_status(request, **args):
+     
+        task_num=args
+        # print(len(Importhandler.data_list))
+        print(f'this is from get_status {Importhandler.data_list} of {type(Importhandler.data_list)}')
+        if isinstance(Importhandler.data_list, Exception):
+            result=str(Importhandler.data_list)
+            return JsonResponse({ 'status': "error", 'result':result, 'id':task_num}, status=200)
+        
+        return JsonResponse({ 'status': "pass", 'result':'ok', 'id':task_num}, status=200)
+    
     # create entries
     @csrf_exempt
     @staticmethod
     def save_task(request):
         # call save object funtion 
+        for obj in Importhandler.data_list:
+            obj.save()
         
-        return JsonResponse({"status":"SUCCESS"})
+        return JsonResponse({"status":"SUCCESS"}, status=200)
     
     #delete task
     @csrf_exempt
     @staticmethod
     def delete_task(request):
-        file_path=request.POST.get("filepath")
-        # call delete task
-        os.remove(file_path)
-        return JsonResponse({"status":"Empty"})
+        print(Importhandler.file_url)
+        for filename in os.listdir("uploads"):
+                file_path=os.path.join("uploads", filename)
+                try:
+                    os.unlink(file_path)
+                    print("removed!")
+                except Exception as err:
+                    print(err)
+        return JsonResponse({})

@@ -1,0 +1,57 @@
+{%include './preloader.html'%}
+
+<h5>{%include 'utils/message.html'%}</h5>
+<table id="datatable_batch" class="cell-border" style="width:100%">
+    <thead>
+        <tr>
+            {%for th in batch_fields%}
+            <th style="width: fit-content; height: fit-content; padding:0">{{th}}</th>
+
+            {%endfor%}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for object in page_obj %}
+        <tr>
+            <td>{{object.vitek_card}}</td>
+            <td>{{object.astatus}}</td>
+            <td>{{object.acreated_at}}</td>
+            <td>{{object.aupdated_at}}</td>
+            <td>{{object.adeleted_at}}</td>
+            <td>{{object.acreated}}</td>
+            <td>{{object.aupdated}}</td>
+            <td>{{object.adeleted}}</td>
+            <td>{{object.orgbatch_id}}</td>
+            <td>{{object.organism_id}}</td>
+            <td>{{object.batch_no}}</td>
+            <td>{{object.batch_notes}}</td>
+            <td>{{object.qc_status}}</td>
+            <td>{{object.qc_record}}</td>
+            <td>{{object.supplier}}</td>
+            <td>{{object.supplier_code}}</td>
+            <td>{{object.supplier_po}}</td>
+            <td>{{object.stock_date}}</td>
+            <td>{{object.stock_level}}</td>
+            <td>{{object.biologist}}</td>
+
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#datatable_batch").DataTable({
+            // processing: true,
+            // serverSide: true,
+            // ajax: "{%url 'taxo_list'%}",
+            // searching: false,
+            // paging: false,
+        });
+    });
+</script>
