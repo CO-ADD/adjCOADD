@@ -1,0 +1,86 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row bg-secondary " style="height: 20px;">progress bar</div>
+    <section class="row border ">
+
+        <div class="card mt-5 border">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Excel Data Upload</h2>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+
+                            </label>
+                        </div>
+
+                        <input type="file" name="myfile" class="form-control">
+
+                        <button id="data_upload" type="submit" class="btn btn-success m-2"> Upload
+                        </button>
+
+                        <br />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <hr><br>
+    <section id="down">
+        <h3 class="title is-2" id="filepath">{{message}}</h3>
+        <h3 class="text-danger">
+            {%include 'utils/message.html'%}
+        </h3>
+        {%if message %}
+        <div class="field is-grouped">
+            <p class="control">
+                <button class="button is-primary" data-type="Validation">Next</button>
+                <!-- <button class="button is-primary" data-type="2">Medium</button>
+                        <button class="button is-primary" data-type="3">Long</button> -->
+            </p>
+        </div>
+        <br><br>
+        <div>
+            <h2 class="title is-2">Task Status</h2>
+            <br>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="tasks">
+                </tbody>
+            </table>
+        </div>
+        {%endif %}
+    </section>
+    {%include 'utils/preloader.html'%}
+    <section id="next_to_confirm" class="not-visible">
+        <h1>
+
+            <div>Next availabe actions:</div>
+            <button id="savedata" class="btn btn-sm">Save</button>
+            <button id="cancelTask" class="btn btn-sm">Cancel</button>
+        </h1>
+    </section>
+</div>
+
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/importhandler.js' %}"></script>
+
+{%endblock%}
