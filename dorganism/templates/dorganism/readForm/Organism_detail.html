@@ -121,5 +121,15 @@
 <script src="{% static 'js/editableTablechoices.js' %}" type="text/javascript"></script>
 <!-- <script src="{% static 'js/js_utils/getCookie.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/js_utils/ajax_update.js' %}" type="text/javascript"></script> -->
+<script
+  type="text/javascript"
+  src="{% static 'js/js_utils/dataTables.min.js'%}"
+></script>
+
+<script>
+  $(document).ready(function () {
+    $("#datatable_batch").DataTable();
+  });
+</script>
 
 {%endblock%}

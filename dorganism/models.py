@@ -79,6 +79,18 @@ class Taxonomy(AuditModel):
         super(Taxonomy, self).save()
 
     #------------------------------------------------
+    @classmethod
+    def get_fields(self):
+        fields_list=['Specie', 'Other Names',  'Code',  'Class', 'NCBI Tax ID', 'NCBI Parent Tax ID','Taxonomy Rank','Division', 'lineage']
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in fields_list]
+        return select_fields
+    
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.verbose_name in ['Specie', 'Other Names',  'Code',  'Class', 'NCBI Tax ID', 'NCBI Parent Tax ID','Taxonomy Rank','Division', 'lineage']:    
+                value_list.append(field.value_to_string(self))
+        return value_list
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -133,7 +145,7 @@ class Organism(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism'
-    #    ordering=['organism_name']
+        ordering=['organism_name']
         indexes = [
             models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),
@@ -198,11 +210,18 @@ class Organism(AuditModel):
             super(Organism, self).save(*args, **kwargs)
 
     #------------------------------------------------
-    def __iter__(self):
+    @classmethod
+    def get_fields(self):
+        fields_list=['Organism ID', 'Organism Name',  'Risk Group',  'Pathogen', 'Lab Restriction', 'Bio Approval']
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in fields_list]
+        return select_fields
+
+    def get_values(self):
+        value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ['Organism ID', 'Organism Name',  'Strain ID',  'Strain Code', 'Strain Notes', 'Origin']:
-                yield (field.verbose_name, field.value_to_string(self))
-    
+            if field.verbose_name in ['Organism ID', 'Organism Name',  'Risk Group',  'Pathogen', 'Lab Restriction', 'Bio Approval']:    
+                value_list.append(field.value_to_string(self))
+        return value_list
 
 #=================================================================================================
 class Organism_Batch(AuditModel):
@@ -276,7 +295,7 @@ class Organism_Batch(AuditModel):
                 print(f"[OrgBatch Not Found] {BatchID} ")
             retInstance = None
         return(retInstance)
-
+    
     #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.orgbatch_id: #Object does not exists
@@ -288,6 +307,12 @@ class Organism_Batch(AuditModel):
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
 
+    #-------------------------------------------------- 
+    @classmethod
+    def get_fields(self):
+        fields_list=["vitek_card","orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","stock_level","biologist"]
+        select_fields=[f.verbose_name for f in self._meta.fields if f.name in fields_list]
+        return select_fields
 
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):

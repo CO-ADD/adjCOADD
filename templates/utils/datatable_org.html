@@ -1,65 +1,72 @@
 {%include './preloader.html'%}
 <h5>{%include 'utils/message.html'%}</h5>
 <table id="datatable_org" class="display">
-    <thead>
-        <tr>
-            <th style="width: 15%">Organism ID </th>
-            <th>Organism Name</th>
-            <th>RiskGroup</th>
-            <th>Pathogen</th>
-            <th>Lab Restriction</th>
-            <th style="width: 15%">Bio Approval
+  <thead>
+    <a id="createOrganism" class="card-link text-success" style="float: right"
+      ><i class="bi bi-plus">Add New</i>
+    </a>
+    <tr>
+      {%for field in fields%}
+      <th>{{field}}</th>
+      {%endfor%}
+      <!-- <th style="width: 15%">
+        Organism ID
+      </th>
+      <th>Organism Name</th>
+      <th>RiskGroup</th>
+      <th>Pathogen</th>
+      <th>Lab Restriction</th>
+      <th style="width: 15%">Bio Approval</th> -->
+    </tr>
+  </thead>
 
-                <a id="createOrganism" class="card-link text-success" style="float: right;"><i class="bi bi-plus">Add
-                        New</i>
-                </a>
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {%for object in page_obj %}
-        <tr>
-            <td>{{object.pk}}</td>
-            <td>{{object.organism_name}}</td>
-            <td>{{object.risk_group}}</td>
-            <td>{{object.pathogen_group}}</td>
-            <td>{{object.lab_restriction}}</td>
-            <td>{{object.bio_approval}}</td>
-        </tr>
-        {%endfor%}
-    </tbody>
+  <tbody>
+    {%for object in page_obj %}
+    <tr>
+      {%for value in object.get_values%}
+      <td>{{value}}</td>
+      {%endfor%}
+      <!-- <td>{{object.pk}}</td>
+      <td>{{object.organism_name}}</td>
+      <td>{{object.risk_group}}</td>
+      <td>{{object.pathogen_group}}</td>
+      <td>{{object.lab_restriction}}</td>
+      <td>{{object.bio_approval}}</td> -->
+    </tr>
+    {%endfor%}
+  </tbody>
 </table>
 
 {%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{% static 'js/js_utils/dataTables.min.js'%}"
+></script>
 
 <script>
-    $(document).ready(function () {
-        $('#datatable_org').DataTable(
-            { "paging": false }
-        );
-    });
+  $(document).ready(function () {
+    $("#datatable_org").DataTable({ paging: false });
+  });
 </script>
 
-<div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
-</div>
+<div
+  id="createOrganismModal"
+  class="modal fade"
+  role="dialog"
+  data-bs-backdrop="static"
+></div>
 <script>
+  $(document).ready(function () {
+    let my_modal = $("#createOrganismModal");
 
-    $(document).ready(function () {
-
-        let my_modal = $("#createOrganismModal");
-
-        $("#createOrganism").click(function () {
-            my_modal.load("{%url 'org_create'%}", function (response) {
-                if (response == "Permission Not Granted") {
-                    alert("permission!")
-
-                } else {
-                    my_modal.modal("show");
-                }
-
-            });
-        });
+    $("#createOrganism").click(function () {
+      my_modal.load("{%url 'org_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show");
+        }
+      });
     });
+  });
 </script>
