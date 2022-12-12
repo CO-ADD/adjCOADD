@@ -314,6 +314,13 @@ class Organism_Batch(AuditModel):
         select_fields=[f.verbose_name for f in self._meta.fields if f.name in fields_list]
         return select_fields
 
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.verbose_name in ["vitek_card","orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","stock_level","biologist"]:    
+                value_list.append(field.value_to_string(self))
+        return value_list
+
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):
     """
