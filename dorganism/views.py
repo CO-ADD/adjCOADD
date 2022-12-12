@@ -188,7 +188,7 @@ def detailOrganism(req, pk):
    
     context["object"]=object_
     context["form"]=form
-    context["page_obj"]=Organism_Batch.objects.filter(organism_id=pk)
+    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=pk)
     context["batch_fields"]=Organism_Batch.get_fields()
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
