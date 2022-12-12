@@ -81,14 +81,13 @@ class Taxonomy(AuditModel):
     #------------------------------------------------
     @classmethod
     def get_fields(self):
-        fields_list=['Specie', 'Other Names',  'Code',  'Class', 'NCBI Tax ID', 'NCBI Parent Tax ID','Taxonomy Rank','Division', 'lineage']
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in fields_list]
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in TAXONOMY_FIELDs]
         return select_fields
     
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ['Specie', 'Other Names',  'Code',  'Class', 'NCBI Tax ID', 'NCBI Parent Tax ID','Taxonomy Rank','Division', 'lineage']:    
+            if field.verbose_name in TAXONOMY_FIELDs:    
                 value_list.append(field.value_to_string(self))
         return value_list
         
@@ -212,14 +211,13 @@ class Organism(AuditModel):
     #------------------------------------------------
     @classmethod
     def get_fields(self):
-        fields_list=['Organism ID', 'Organism Name',  'Risk Group',  'Pathogen', 'Lab Restriction', 'Bio Approval']
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in fields_list]
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_FIELDs]
         return select_fields
 
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ['Organism ID', 'Organism Name',  'Risk Group',  'Pathogen', 'Lab Restriction', 'Bio Approval']:    
+            if field.verbose_name in ORGANISM_FIELDs:    
                 value_list.append(field.value_to_string(self))
         return value_list
 
@@ -310,9 +308,15 @@ class Organism_Batch(AuditModel):
     #-------------------------------------------------- 
     @classmethod
     def get_fields(self):
-        fields_list=["vitek_card","orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","stock_level","biologist"]
-        select_fields=[f.verbose_name for f in self._meta.fields if f.name in fields_list]
+        select_fields=[f.verbose_name for f in self._meta.fields if f.name in ORGANISM_BATCH_FIELDs]
         return select_fields
+
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.verbose_name in ORGANISM_BATCH_FIELDs:    
+                value_list.append(field.value_to_string(self))
+        return value_list
 
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):
