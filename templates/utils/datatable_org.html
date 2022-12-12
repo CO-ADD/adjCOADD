@@ -1,14 +1,8 @@
-<a id="createOrganism" class="card-link text-success" style="float: right"
-  >Add New
+<a id="createOrganism" class="card-link text-success" style="float: right">Add New
   <i class="bi bi-plus"></i>
 </a>
-<div
-  id="createOrganismModal"
-  class="modal fade"
-  role="dialog"
-  data-bs-backdrop="static"
-></div>
-{%include 'utils/datatable_overview.html'}
+<div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
+{%include 'utils/datatable_overview.html %'}
 <script>
   $(document).ready(function () {
     let my_modal = $("#createOrganismModal");
