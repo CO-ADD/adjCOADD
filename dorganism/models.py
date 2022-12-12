@@ -219,6 +219,7 @@ class Organism(AuditModel):
         for field in self._meta.fields:
             if field.verbose_name in ORGANISM_FIELDs:    
                 value_list.append(field.value_to_string(self))
+                print(value_list)
         return value_list
 
 #=================================================================================================
@@ -308,7 +309,7 @@ class Organism_Batch(AuditModel):
     #-------------------------------------------------- 
     @classmethod
     def get_fields(self):
-        select_fields=[f.verbose_name for f in self._meta.fields if f.name in ORGANISM_BATCH_FIELDs]
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_BATCH_FIELDs]
         return select_fields
 
     def get_values(self):
@@ -316,6 +317,7 @@ class Organism_Batch(AuditModel):
         for field in self._meta.fields:
             if field.verbose_name in ORGANISM_BATCH_FIELDs:    
                 value_list.append(field.value_to_string(self))
+        print(value_list)
         return value_list
 
 #=================================================================================================
