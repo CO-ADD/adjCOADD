@@ -16,68 +16,38 @@ $(".button").on("click", function () {
   })
     .done((res) => {
       console.log(res);
-      // const html = `
-      // <tr>
-      // <td>${res.task_num}</td>
-      // <td>${res.task_status}</td>
-      // <td>${res.task_result}</td>
-      // </tr>`;
-      // $("#tasks").append(html);
-      // if (res.status === "error") {
-      //   $("#savedata").prop("disabled", true);
-      //   $("#savedata").addClass("disabled");
-      // }
-      // if (res.result == "pass") {
-      //   $("#next_to_confirm").toggleClass("visible");
-      // }
-      // const taskStatus = res.status;
-      // $("#preLoader").fadeOut();
-      var taskResult = res.task_result;
-      var taskStatus = res.task_status;
-      var taskId = res.task_num;
-      getStatus({ taskId, taskResult, taskStatus });
-    })
-    .fail((err) => {
-      console.log(err);
-    });
-});
-
-function getStatus({ taskId, taskResult, taskStatus }) {
-  $.ajax({
-    url: `/tasks/${taskId}/`,
-    method: "POST",
-    data: { taskId, taskResult, taskStatus },
-  })
-    .done((res) => {
       const html = `
       <tr>
-      <td>${res.id}</td>
-      <td>${res.status}</td>
-      <td>${res.result}</td>
+      <td>${res.task_num}</td>
+      <td>${res.task_status}</td>
+      <td>${res.task_result}</td>
       </tr>`;
       $("#tasks").append(html);
       if (res.status === "error") {
         $("#savedata").prop("disabled", true);
         $("#savedata").addClass("disabled");
       }
-      $("#next_to_confirm").toggleClass("visible");
+      if (res.result == "pass") {
+        $("#next_to_confirm").toggleClass("visible");
+      }
       const taskStatus = res.status;
       $("#preLoader").fadeOut();
     })
     .fail((err) => {
       console.log(err);
     });
-}
-$("#savedata").on("click", function () {
+});
+
+$("#save_Proceed").on("click", function () {
   $("#preLoader").fadeIn();
   $.ajax({
-    url: "/tasks/save",
+    url: "/tasks/proceed",
     data: {},
     method: "POST",
   })
     .done((res) => {
       $("#preLoader").fadeOut();
-      window.alert("saved!");
+      save_data(res);
     })
     .fail((err) => {
       console.log(err);
@@ -99,3 +69,5 @@ $("#cancelTask").on("click", function () {
     });
   // window.alert("task canceled");
 });
+
+save_data = () => {};

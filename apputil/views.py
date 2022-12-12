@@ -229,25 +229,13 @@ class Importhandler(View):
             return JsonResponse({"task_num": "somehash", 'task_status':status, 'task_result': result})
         elif task_type=='Cancel':
             Importhandler.delete_task(request)
-            return redirect('import')
+            return JsonResponse({})
 
-    # # check status
-    @csrf_exempt
-    @staticmethod
-    def get_status(request, **args):
-     
-        # task_num=args
-        task_id= request.POST.get("taskId")
-        result=request.POST.get("taskResult")
-        status=request.POST.get("taskStatus")
-        # print(len(Importhandler.data_list))
-        print(f'this is from get_status {Importhandler.data_list} of {type(Importhandler.data_list)}')
-        if isinstance(Importhandler.data_list, Exception):
-            result=str(Importhandler.data_list)
-            return JsonResponse({ 'status': status, 'result':result, 'id':task_id}, status=200)
-        
-        return JsonResponse({ 'status': "pass", 'result':'ok', 'id':task_id}, status=200)
-    
+    def proceed_save(request):
+        for obj in Importhandler.data_list:
+            obj.save()
+        return JsonResponse({"status":"SUCCESS"}, status=200)
+        # pass
 
 
     
@@ -256,8 +244,5 @@ class Importhandler(View):
     @staticmethod
     def save_task(request):
         # call save object funtion 
-        for obj in Importhandler.data_list:
-            obj.save()
-        
-        return JsonResponse({"status":"SUCCESS"}, status=200)
+        pass
     

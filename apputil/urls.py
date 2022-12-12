@@ -16,14 +16,8 @@ urlpatterns = [
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
     path('dict/create', createDictionary, name='dict_create' ),
     path("import/", Importhandler.as_view(), name="import"),
-    path("tasks/save", Importhandler.save_task, name="save_task"),
-    # path("tasks/<task_id>/", Importhandler.get_status, name="status_task"),
     path("tasks/", Importhandler.run_task, name="run_task"),
+    path("tasks/save", Importhandler.save_task, name="save_task"),
+    path("tasks/proceed", Importhandler.proceed_save, name="save_task"),
     path("tasks/cancel", Importhandler.delete_task, name="cancel_task"),
-    # path("tasks/save", Importhandler.save_task, name="save_task"),
-
-    # path('dictionary_update/<str:pk>', createDictionary, name='updateDictionary' ),
-    # re_path(r'dictionary_update/(?P<pk>\w+)/', createDictionary, name='updateDictionary'),
-    # re_path(r'dictionary_update/(?P<pk>\w+)/', deleteDictionary, name="deleteDictionary"),
-    # path('dictionary_delete/<str:pk>', deleteDictionary, name="deleteDictionary"),
 ]

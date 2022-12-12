@@ -2,7 +2,7 @@
 <!--prettier-ignore-->
 {% block title%} mysite{% endblock %}
 {% block content %}
-
+<!-- Start upload datafiles, scanne virus -->
 <div class="container">
     <div class="row bg-secondary " style="height: 20px;">progress bar</div>
     <section class="row border ">
@@ -27,6 +27,7 @@
         </div>
     </section>
 
+    <!-- Run check entries in .csv or excel file -->
     <hr><br>
     <section id="down">
         <h3 class="title is-2" id="filepath">{{message}}</h3>
@@ -60,15 +61,18 @@
         {%endif %}
     </section>
     {%include 'utils/preloader.html'%}
+
+    <!-- Proceeding Save data -->
     <section id="next_to_confirm" class="not-visible">
         <h1>
 
             <div>Next availabe actions:</div>
-            <button id="savedataDB" class="btn btn-sm">Database Validation</button>
-            <button id="cancelTaskDB" class="btn btn-sm">Cancel Task</button>
+            <button id="save_Proceed" class="btn btn-sm">Database Validation</button>
+            <button id="stop_Proceed" class="btn btn-sm">Cancel Task</button>
         </h1>
     </section>
-
+ 
+    <!-- confirm save or cancel task-->
     <section id="final_to_confirm" class="not-visible">
         <h1>
 
