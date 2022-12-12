@@ -44,6 +44,8 @@ class FilteredListView(ListView):
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
+        context['fields']=self.model.get_fields()
+        print(context['fields'])
         return context
 
     def get_paginate_by(self, queryset):
@@ -155,27 +157,23 @@ def createOrganism(req):
         Strain_Type_list=req.POST.getlist('strain_type')
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
-        
-        try:
-            if form.is_valid():
-                print("form is valid")  
-                try:
-                    with transaction.atomic(using='dorganism'):
-                        instance=form.save(commit=False) 
-                        print("form save")                 
-                        instance.save(**kwargs)
-                        print("saved--view info")
-                        return redirect("org_list")
+        if form.is_valid():
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    print("form save")                 
+                    instance.save(**kwargs)
+                    print("saved--view info")
+                    return redirect("org_list")
 
-                except IntegrityError as err:
-                        messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-                        return redirect(req.META['HTTP_REFERER'])                
-            else:
-                print(f'something wrong...{form.errors}')
-                return redirect(req.META['HTTP_REFERER'])      
-        except Exception as err:
-            print(f'error is {form.errors} with {err}')
-            return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'something wrong...{form.errors}')
+            return redirect(req.META['HTTP_REFERER'])      
+        
 
     return render(req, 'dorganism/createForm/Organism_c.html', { 'form':form, }) 
 
@@ -191,9 +189,7 @@ def detailOrganism(req, pk):
     context["object"]=object_
     context["form"]=form
     context["page_obj"]=Organism_Batch.objects.filter(organism_id=pk)
-    context["batch_fields"]=[f.name for f in Organism_Batch._meta.get_fields()]
-    # context["batch_values"]=[f for f in Organism_Batch._meta.get_fields()]
-    # print(context["batch_values"])
+    context["batch_fields"]=Organism_Batch.get_fields()
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================

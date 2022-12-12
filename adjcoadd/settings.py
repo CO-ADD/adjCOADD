@@ -125,7 +125,7 @@ DATABASES = {
    
     # ==================For Local Test===========================================
 #    'default': {
-#       "ENGINE": "psqlextra.backend",
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
 #       'OPTIONS':{'options': '-c search_path=apputil,public'},
 #       'NAME': 'orgdb',
 #       'HOST': 'Localhost',
@@ -133,7 +133,7 @@ DATABASES = {
 #       'PORT': '5432',
 #     },
 #     'dorganism': {
-#       "ENGINE": "psqlextra.backend",
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
 #       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
 #       'NAME': 'orgdb',
 
@@ -144,7 +144,7 @@ DATABASES = {
 #       'PORT': '5432',
 #    },
 #     'ddrug': {
-#       "ENGINE": "psqlextra.backend",
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
 #       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
 #       'NAME': 'orgdb',
 #       'HOST': 'Localhost',

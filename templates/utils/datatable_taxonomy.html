@@ -1,78 +1,22 @@
-{%include './preloader.html'%}
-
-<h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_taxonomy" class="cell-border" style="width:100%">
-    <thead>
-        <tr>
-            <th style="width: fit-content; height: fit-content; padding:0">Organism ID</th>
-            <th style="width: 10%">Other Names</th>
-            <th style="width: 10%">Class</th>
-            <th style="width: 5%">Tax_ID</th>
-            <th style="width: 5%">Parent_Tax_ID</th>
-            <th style="width: 10%">Tax_Rank</th>
-            <th style="width: 10%" class="table-light">Division</th>
-            <th class="table-light">
-                Lineage
-
-                <a id="createTaxo" class="card-link text-success" style="float: right">Add New
-                    <i class="bi bi-plus"></i>
-                </a>
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for object in object_list %}
-        <tr>
-            <td>{{object.pk}}</td>
-            <td>{{object.other_names}}</td>
-            <td>{{object.org_class.dict_desc}}</td>
-            <td>{{object.tax_id}}</td>
-            <td>{{object.parent_tax_id}}</td>
-            <td>{{object.tax_rank}}</td>
-            <td>{{object.division}}</td>
-            <td>
-                <select class="form-select" aria-label="Default select example">
-                    <option value="lineage" selected>lineage</option>
-                    {% for obj in object.lineage %}
-                    <option value="{{obj}}">{{obj}}</option>
-                    {%endfor%}
-                </select>
-            </td>
-        </tr>
-        {%endfor%}
-    </tbody>
-</table>
-
-{%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
-
-<script>
-    $(document).ready(function () {
-        $("#datatable_taxonomy").DataTable({
-            // processing: true,
-            // serverSide: true,
-            // ajax: "{%url 'taxo_list'%}",
-            searching: false,
-            paging: false,
-        });
-    });
-</script>
+<a id="createTaxo" class="card-link text-success" style="float: right"
+  >Add New
+  <i class="bi bi-plus"></i>
+</a>
 
 <div id="createTaxoModal" class="modal fade" role="dialog"></div>
-
+{%include 'utils/datatable_overview.html'%}
 <script>
-    $(document).ready(function () {
-        let my_modal = $("#createTaxoModal");
+  $(document).ready(function () {
+    let my_modal = $("#createTaxoModal");
 
-        $("#createTaxo").click(function () {
-            my_modal.load("{%url 'taxo_create'%}", function (response) {
-                if (response == "Permission Not Granted") {
-                    alert("permission!");
-                } else {
-                    my_modal.modal("show"); // Open Modal
-                }
-            });
-        });
+    $("#createTaxo").click(function () {
+      my_modal.load("{%url 'taxo_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
     });
+  });
 </script>

@@ -191,6 +191,20 @@ class Importhandler(View):
        
 
         return render(request, 'apputil/importdata.html', context)
+    
+    #delete task
+    @csrf_exempt
+    @staticmethod
+    def delete_task(request):
+        print(Importhandler.file_url)
+        for filename in os.listdir("uploads"):
+                file_path=os.path.join("uploads", filename)
+                try:
+                    os.unlink(file_path)
+                    print("removed!")
+                except Exception as err:
+                    print(err)
+        return JsonResponse({})
 
     @csrf_exempt
     @staticmethod
@@ -206,46 +220,29 @@ class Importhandler(View):
             #return result=ErrorList
             
             Importhandler.data_list=import_excel(Importhandler.file_url)
-            if Importhandler.data_list == 'datatype':
-                error='error'
+            if isinstance(Importhandler.data_list, Exception):
+                result=str(Importhandler.data_list)
+                status='Form Errors'
             else:
-                error='pass'
-            return JsonResponse({"task_num": "somehash", 'task_status':'status', 'task_result': error})
+                result='pass'
+                status='Form is Valid'
+            return JsonResponse({"task_num": "somehash", 'task_status':status, 'task_result': result})
+        elif task_type=='Cancel':
+            Importhandler.delete_task(request)
+            return JsonResponse({})
 
-    # check status
-    @csrf_exempt
-    @staticmethod
-    def get_status(request, **args):
-     
-        task_num=args
-        # print(len(Importhandler.data_list))
-        print(f'this is from get_status {Importhandler.data_list} of {type(Importhandler.data_list)}')
-        if isinstance(Importhandler.data_list, Exception):
-            result=str(Importhandler.data_list)
-            return JsonResponse({ 'status': "error", 'result':result, 'id':task_num}, status=200)
-        
-        return JsonResponse({ 'status': "pass", 'result':'ok', 'id':task_num}, status=200)
+    def proceed_save(request):
+        for obj in Importhandler.data_list:
+            obj.save()
+        return JsonResponse({"status":"SUCCESS"}, status=200)
+        # pass
+
+
     
     # create entries
     @csrf_exempt
     @staticmethod
     def save_task(request):
         # call save object funtion 
-        for obj in Importhandler.data_list:
-            obj.save()
-        
-        return JsonResponse({"status":"SUCCESS"}, status=200)
+        pass
     
-    #delete task
-    @csrf_exempt
-    @staticmethod
-    def delete_task(request):
-        print(Importhandler.file_url)
-        for filename in os.listdir("uploads"):
-                file_path=os.path.join("uploads", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
-        return JsonResponse({})
