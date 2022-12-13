@@ -386,3 +386,5 @@ dmypy.json
 
 #csv
 /zbackup/
+
+.DJANGO_SECRET_KEY
