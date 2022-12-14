@@ -1,8 +1,8 @@
 // custom javascript
-
 $(document).ready(() => {
   console.log("document ready!");
 });
+const csrftoken = getCookie('csrftoken');
 // Function to call the function run_task in Views.py
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
@@ -16,6 +16,10 @@ $(".button").on("click", function () {
   })
     .done((res) => {
       console.log(res);
+      if (jQuery.isEmptyObject(res)) {
+        console.log("reloading.")
+        window.location.reload("/import/")
+      }
       const html = `
       <tr>
       <td>${res.task_num}</td>
@@ -23,11 +27,12 @@ $(".button").on("click", function () {
       <td>${res.task_result}</td>
       </tr>`;
       $("#tasks").append(html);
-      if (res.status === "error") {
-        $("#savedata").prop("disabled", true);
-        $("#savedata").addClass("disabled");
+      if (res.task_status === "Form Errors") {
+        $("#save_Proceed").prop("disabled", true);
+        $("#save_Proceed").addClass("disabled");
+        $("#next_to_confirm").toggleClass("visible");
       }
-      if (res.result == "pass") {
+      if (res.task_status === "Form is Valid") {
         $("#next_to_confirm").toggleClass("visible");
       }
       const taskStatus = res.status;
@@ -44,6 +49,7 @@ $("#save_Proceed").on("click", function () {
     url: "/tasks/proceed",
     data: {},
     method: "POST",
+    headers: { 'X-CSRFToken': csrftoken },
   })
     .done((res) => {
       $("#preLoader").fadeOut();
@@ -54,7 +60,7 @@ $("#save_Proceed").on("click", function () {
     });
 });
 
-$("#cancelTask").on("click", function () {
+$("#stop_Proceed").on("click", function () {
   $.ajax({
     url: "/tasks/cancel",
     data: {},
@@ -67,7 +73,21 @@ $("#cancelTask").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
-  // window.alert("task canceled");
+
 });
 
-save_data = () => {};
+save_data = (res) => {
+  $.ajax({
+    url: "/tasks/cancel",
+    data: {},
+    method: "POST",
+  })
+    .done((res) => {
+      window.alert("task canceled");
+      location.reload();
+    })
+    .fail((err) => {
+      console.log(err);
+    });
+
+};

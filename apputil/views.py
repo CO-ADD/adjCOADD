@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from dorganism.utils import import_excel
+from .utils import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -230,13 +230,11 @@ class Importhandler(View):
         elif task_type=='Cancel':
             Importhandler.delete_task(request)
             return JsonResponse({})
-
+   
     def proceed_save(request):
         for obj in Importhandler.data_list:
             obj.save()
         return JsonResponse({"status":"SUCCESS"}, status=200)
-        # pass
-
 
     
     # create entries

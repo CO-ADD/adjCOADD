@@ -21,7 +21,7 @@
                         <input type="file" name="myfile" class="form-control">
                         <button id="data_upload" type="submit" class="btn btn-success m-2"> Upload
                         </button>
-                 </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -37,9 +37,22 @@
         {%if message %}
         <div class="field is-grouped">
             <p class="control">
-                <button class="button" data-type="Validation">Form Validation</button>
-                <button class="button" data-type="Cancel">Cancel Task</button>
-              
+                Form uploaded, you can:
+            <ul>
+
+                <li>
+                    validate form before you import it into DB
+                    <button class="button" data-type="Validation">Form Validation</button>
+                    or
+                </li>
+                <li>
+                    Cancel this task, upload another file
+                    <!-- <button class="button" data-type="Cancel" >Cancel Task</button> -->
+                    <a class="button" data-type="Cancel" href="{%url 'import'%}">Cancel Task</a>
+                </li>
+
+            </ul>
+
             </p>
         </div>
         <br><br>
@@ -64,14 +77,26 @@
 
     <!-- Proceeding Save data -->
     <section id="next_to_confirm" class="not-visible">
-        <h1>
+        <p>
 
-            <div>Next availabe actions:</div>
-            <button id="save_Proceed" class="btn btn-sm">Database Validation</button>
-            <button id="stop_Proceed" class="btn btn-sm">Cancel Task</button>
-        </h1>
+        <div>Next availabe actions:</div>
+        <ul>
+            <li>
+                if validation passed, you can try to save your file in DB
+                <button id="save_Proceed" class="btn btn-sm">Database Validation</button>
+            </li>
+            <li>if not, you can..
+                cancel and clean task, re load another file
+                <button id="stop_Proceed" class="btn btn-sm" href="{%url 'import'%}">Cancel Task</button>
+            </li>
+            <li>
+                or back to first step
+                <a class="btn btn-sm" href="{%url 'import'%}">Reset</a>
+            </li>
+        </ul>
+        </p>
     </section>
- 
+
     <!-- confirm save or cancel task-->
     <section id="final_to_confirm" class="not-visible">
         <h1>
@@ -86,6 +111,7 @@
 
 {%load static%}
 <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/js_utils/getCookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/importhandler.js' %}"></script>
 
 {%endblock%}
