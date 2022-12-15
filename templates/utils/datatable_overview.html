@@ -3,10 +3,7 @@
 <h5>{%include 'utils/message.html'%}</h5>
 <table id="datatable_taxonomy" class="cell-border" style="width: 100%">
   <thead>
-    <a id="createTaxo" class="card-link text-success" style="float: right"
-      >Add New
-      <i class="bi bi-plus"></i>
-    </a>
+
     <tr>
       {%for field in fields%}
       <th>{{field}}</th>
@@ -26,10 +23,7 @@
 </table>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{% static 'js/js_utils/dataTables.min.js'%}"
-></script>
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
 
 <script>
   $(document).ready(function () {

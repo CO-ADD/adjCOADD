@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from dorganism.utils import import_excel
+from .utils import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -179,8 +179,6 @@ class Importhandler(View):
                 filename=fs.save(myfile.name, myfile)
                 self.file_url=fs.url(filename)
                 context['message']=self.file_url
-         
-            
                 return render(request,'apputil/importdata.html', context)
             else:
                 messages.warning(request, f'There is {form.errors} error, upload again')
@@ -188,8 +186,6 @@ class Importhandler(View):
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
         context['form'] = form
-       
-
         return render(request, 'apputil/importdata.html', context)
     
     #delete task
@@ -209,7 +205,6 @@ class Importhandler(View):
     @csrf_exempt
     @staticmethod
     def run_task(request):
-        
         task_type = request.POST.get("type")
         Importhandler.file_url=request.POST.get("filepath")
         
@@ -230,13 +225,11 @@ class Importhandler(View):
         elif task_type=='Cancel':
             Importhandler.delete_task(request)
             return JsonResponse({})
-
+   
     def proceed_save(request):
         for obj in Importhandler.data_list:
             obj.save()
         return JsonResponse({"status":"SUCCESS"}, status=200)
-        # pass
-
 
     
     # create entries

@@ -57,7 +57,7 @@
   --bs-heading-dark-bg: #556ee6;
   --bs-boxed-body-bg: #32394f;
   --bs-topnav-bg: #282e3f;
-  --bs-menu-item-color: #a6b0cf;
+  --bs-menu-item-color: #878c9b;
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
 }
@@ -125,18 +125,18 @@ body {
   font-family: sans-serif !important;
   letter-spacing: 0px;
   color: var(--bs-body-color);
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
+
   /* var(--bs-body-bg); */
   font-size: small;
+  text-transform: uppercase;
 }
 
-.body-content {
-  margin-top: 150px;
-}
+
 
 #top-alert {
   width: 100%;
-  background-color: black;
+  background-color: rgb(160, 160, 160);
   height: 35px;
   display: flex;
   justify-content: space-between;
@@ -228,11 +228,11 @@ button,
 
 /* =============================Drag to resize sidebar start ===================================== */
 .resizer {
-  flex-basis: 10px;
+  flex-basis: 0;
   position: relative;
   z-index: 2;
   cursor: col-resize;
-  background: #333642;
+  background: #b7b8b9;
   margin-right: 3px;
   margin-left: 0;
   padding: 0;
@@ -253,9 +253,9 @@ button,
 } */
 
 .main {
-  flex-basis: 0;
+  /* flex-basis: 0; */
   flex-grow: 1;
-  min-width: 70%;
+  /* min-width: 70%; */
 }
 
 /* =============================Drag to resize sidebar end ===================================== */
@@ -329,7 +329,7 @@ footer {
 
 /* ===============================================table==================================== */
 .table {
-  background-color: white;
+  background-color: var(--bs-footer-bg)
 }
 
 .results-card {

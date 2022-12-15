@@ -9,18 +9,18 @@
     <div class="d-flex flex-wrap justify-content-between">
 
       {% include 'utils/pagination.html'%}
-      <a id="createOrganism" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
+      <a id="createBatch" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
       </a>
-      <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+      <div id="createBatchModal" class="modal fade" role="dialog" data-bs-backdrop="static">
       </div>
       <script>
 
         $(document).ready(function () {
 
-          let my_modal = $("#createOrganismModal");
+          let my_modal = $("#createBatchModal");
 
-          $("#createOrganism").click(function () {
-            my_modal.load("{%url 'org_create'%}", function (response) {
+          $("#createBatch").click(function () {
+            my_modal.load("{%url 'batch_create'%}", function (response) {
               if (response == "Permission Not Granted") {
                 alert("permission!")
 
@@ -33,14 +33,7 @@
         });
 
       </script>
-      <div>
 
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
-        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary">
-          <i class="bi bi-grid-fill"></i>
-
-        </a>
-      </div>
     </div>
 
 
@@ -51,10 +44,10 @@
         <div class="col-md-2 vh-80 border border-2 m-2">
 
 
-          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="card-link"
-              href="{%url 'org_detail' object.pk %}">{{object.organism_name}} <br><span class="fw-light fs-6">
+          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="card-link" href="#">{{object.orgbatch_id}} <br><span
+                class="fw-light fs-6">
                 (ID:
-                {{object.organism_id}} )</span>
+                {{object.pk}} )</span>
             </a>
           </p>
 
@@ -85,6 +78,7 @@
         {%endfor%}
 
       </div>
+
 
     </div>
 

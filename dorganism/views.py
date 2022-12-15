@@ -18,10 +18,10 @@ from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
 from .models import  Organism, Taxonomy, Organism_Batch
-from .utils import  Organismfilter, Taxonomyfilter
+from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form
 
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
@@ -155,6 +155,7 @@ def createOrganism(req):
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism')
         Strain_Type_list=req.POST.getlist('strain_type')
+        print(Strain_Type_list)
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         if form.is_valid():
@@ -261,6 +262,33 @@ def deleteOrganism(req, pk):
         print(err)
     return redirect('/')
    
+# #############################BATCH View############################################
+# ==========List View================================Read===========================================
+class BatchCardView(LoginRequiredMixin, FilteredListView):
+    model=Organism_Batch 
+    template_name = 'dorganism/readForm/OrganismBatch_card.html' 
+    filterset_class=Batchfilter
+
+@login_required
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def createBatch(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Batch_form
+    if req.method=='POST':
+        form=Batch_form(req.POST)
+        if form.is_valid():
+            print("form is valid")   
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            print("saved")
+            return redirect(req.META['HTTP_REFERER']) 
+        else:
+            messages.error(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])      
+    return render(req, 'dorganism/createForm/Batch_c.html', {'form':form})
+
+
 
 
 ############################################### Import CSV View ###########################################
