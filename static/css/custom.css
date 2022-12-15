@@ -68,7 +68,6 @@
 
 .navbar-toggler {
   background-color: var(--bs-inform-color);
-
 }
 
 .navbar-toggler-icon {
@@ -132,8 +131,6 @@ body {
   text-transform: uppercase;
 }
 
-
-
 #top-alert {
   width: 100%;
   background-color: rgb(160, 160, 160);
@@ -141,8 +138,6 @@ body {
   display: flex;
   justify-content: space-between;
 }
-
-
 
 .info {
   color: var(--bs-inform-color);
@@ -179,7 +174,6 @@ button,
 .home-banner {
   border-radius: 10% 25% 15% 25%;
 }
-
 
 .landp-img-01,
 .landp-img-02,
@@ -329,7 +323,7 @@ footer {
 
 /* ===============================================table==================================== */
 .table {
-  background-color: var(--bs-footer-bg)
+  background-color: var(--bs-footer-bg);
 }
 
 .results-card {
@@ -340,7 +334,6 @@ footer {
   box-shadow: 0 8px 8px 0 var(--grey);
   transition: 0.5s;
 }
-
 
 .tdclass {
   position: relative;
@@ -416,7 +409,6 @@ select option {
   border: none;
   background-color: #ff6e00;
   color: white;
-
 }
 
 .btnok:hover {
@@ -432,7 +424,6 @@ td button {
   background-color: white;
   color: var(--teal);
   margin: 5px 2px 5px 2px;
-
 }
 
 td .btncancel {
@@ -457,8 +448,6 @@ td:hover {
   background-color: #ff6e00;
 }
 
-
-
 .toLeft {
   left: 0 !important;
 }
@@ -477,13 +466,12 @@ option {
   font-size: 16px !important;
 }
 
-
 /********************  Preloader *******************/
 #preLoader {
   height: 100px;
   width: 260px;
   margin: 70px auto 0;
-  position: relative
+  position: relative;
 }
 
 #preLoader .loader {
@@ -492,91 +480,91 @@ option {
   height: 40px;
   border-radius: 24px;
   display: inline-block;
-  position: absolute
+  position: absolute;
 }
 
 #preLoader .loader-1 {
   animation: animateDot1 1.5s linear infinite;
   left: 130px;
-  background: #f73138
+  background: #f73138;
 }
 
 #preLoader .loader-2 {
   background: #00b733;
   left: 60px;
   animation: animateDot2 1.5s linear infinite;
-  animation-delay: .5s
+  animation-delay: 0.5s;
 }
 
 #preLoader .loader-3 {
   background: #448afc;
   left: 130px;
-  animation: animateDot3 1.5s linear infinite
+  animation: animateDot3 1.5s linear infinite;
 }
 
 #preLoader .loader-4 {
   background: #950faf;
   left: 60px;
   animation: animateDot4 1.5s linear infinite;
-  animation-delay: .5s
+  animation-delay: 0.5s;
 }
 
 @keyframes animateDot1 {
   0% {
-    transform: rotate(0) translateX(-60px)
+    transform: rotate(0) translateX(-60px);
   }
 
   25%,
   75% {
-    transform: rotate(180deg) translateX(-60px)
+    transform: rotate(180deg) translateX(-60px);
   }
 
   100% {
-    transform: rotate(360deg) translateX(-60px)
+    transform: rotate(360deg) translateX(-60px);
   }
 }
 
 @keyframes animateDot2 {
   0% {
-    transform: rotate(0) translateX(-70px)
+    transform: rotate(0) translateX(-70px);
   }
 
   25%,
   75% {
-    transform: rotate(-180deg) translateX(-70px)
+    transform: rotate(-180deg) translateX(-70px);
   }
 
   100% {
-    transform: rotate(-360deg) translateX(-70px)
+    transform: rotate(-360deg) translateX(-70px);
   }
 }
 
 @keyframes animateDot3 {
   0% {
-    transform: rotate(0) translateX(60px)
+    transform: rotate(0) translateX(60px);
   }
 
   25%,
   75% {
-    transform: rotate(180deg) translateX(60px)
+    transform: rotate(180deg) translateX(60px);
   }
 
   100% {
-    transform: rotate(360deg) translateX(60px)
+    transform: rotate(360deg) translateX(60px);
   }
 }
 
 @keyframes animateDot4 {
   0% {
-    transform: rotate(0) translateX(60px)
+    transform: rotate(0) translateX(60px);
   }
 
   25%,
   75% {
-    transform: rotate(-180deg) translateX(60px)
+    transform: rotate(-180deg) translateX(60px);
   }
 
   100% {
-    transform: rotate(-360deg) translateX(60px)
+    transform: rotate(-360deg) translateX(60px);
   }
 }
