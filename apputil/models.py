@@ -1,5 +1,6 @@
 # Create your models here.
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
@@ -63,6 +64,10 @@ class ApplicationUser(AbstractUser):
 
 
 #-------------------------------------------------------------------------------------------------
+class AuditModel(models.Model):
+    """
+    An abstract base class model that provides audit informations 
+    """
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
     """
@@ -92,6 +97,15 @@ class AuditModel(models.Model):
         abstract = True
     
     #------------------------------------------------
+    def validate(self,**kwargs):
+        retValid = None
+        try:
+            self.full_clean(**kwargs)
+        except ValidationError as e:
+            retValid = e.message_dict
+        return(retValid)
+
+    #------------------------------------------------
     def delete(self,**kwargs):
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
@@ -105,17 +119,31 @@ class AuditModel(models.Model):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        #
+        # Checks for application user
+        #   could also use middleware
+        #
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
+
         if not self.acreated_id:
             self.acreated_id = appuser
             self.acreated_at = timezone.now()       
         else:	
             self.aupdated_id = appuser
             self.aupdated_at = timezone.now()
-        
+
+        #
+        # Checks if a clean=True is requested
+        #   Default, via forms is False, but can be set via scripts/API
+        #  
+        modelClean=kwargs.get("clean")  
+        kwargs.pop("clean",None)
+        if modelClean:
+            self.full_clean()
+                 
         super(AuditModel,self).save(*args, **kwargs)
 
 #-------------------------------------------------------------------------------------------------
@@ -127,7 +155,7 @@ class Dictionary(AuditModel):
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
-    dict_desc = models.CharField(max_length=120, null=True, blank=True, verbose_name = "Description")
+    dict_desc = models.CharField(max_length=120, blank=True, verbose_name = "Description")
    
     #------------------------------------------------
     class Meta:
@@ -139,7 +167,8 @@ class Dictionary(AuditModel):
         ]
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.dict_value}.{self.dict_desc}"
+#        return f"{self.dict_value}.{self.dict_desc}"
+        return f"{self.dict_value}"
 
     #------------------------------------------------
     @classmethod
@@ -148,7 +177,6 @@ class Dictionary(AuditModel):
     # Returns a Dictionary instance if found 
     #    by dict_value
     #    by dict_desc (set dict_value = None)
-
     #
         if DictValue:
             try:
@@ -167,6 +195,46 @@ class Dictionary(AuditModel):
         else:
             retDict = None
         return(retDict)
+
+    #------------------------------------------------
+    @classmethod
+    #
+    # Returns Dictionary entries for a DictClass as Choices
+    #
+    def get_Dictionary_asChoice(self, DictClass, sep = " | ", emptyChoice= ('--', 'empty')):
+        dictList=Dictionary.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
+        if dictList:
+            choices_test=tuple([tuple(d.values()) for d in dictList])
+            choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_test)    
+        else:
+            choices=emptyChoice
+        return choices
+
+    #------------------------------------------------
+    @classmethod
+    #
+    # Returns Dictionary entries for a DictClass as Choices
+    #
+    def get_DictionaryStrList_asArray(self,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    #-----------------------------------------------------------------------------------
+        retDictList = []
+        if DictValueStr:
+            dLst = DictValueStr.split(sep)
+            for dVal in dLst:
+                xDict = self.exists(DictClass,dVal.strip(),None)
+                if xDict:
+                    retDictList.append(xDict.dict_value)
+                else:
+                    retDictList.append(f"{dVal.strip()}{notFound}")
+        elif DictDescStr:
+            dLst = DictDescStr.split(sep)
+            for dDesc in dLst:
+                xDict = self.exists(DictClass,None,dDesc.strip())
+                if xDict:
+                    retDictList.append(xDict.dict_value)
+                else:
+                    retDictList.append(f"{dDesc.strip()}{notFound}")
+        return(retDictList)
 
 
 #-------------------------------------------------------------------------------------------------

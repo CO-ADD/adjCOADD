@@ -1,0 +1,30 @@
+<div class="d-flex bg-dark justify-content-between" style="margin-top: 120px;">
+    <button id="hidefilter" class="btn btn-sm">c/o filter</button>
+    <div>
+
+        <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight">show sidebar</button>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+            data-bs-backdrop="false" style="width: 120px;">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                    ORGANISM Batch
+                </a>
+                <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                    Import
+                </a>
+                <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                    update page
+                </a>
+                <a class="btn btn-sm" href="{%url 'import'%}">
+                    IMPORT
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

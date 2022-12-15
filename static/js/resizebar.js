@@ -21,8 +21,7 @@ function resize(e) {
     sidebar.style.flexBasis = size;
 }
 
-hidefilter.addEventListener("dblclick", () => {
-    console.log("double clicked")
+hidefilter.addEventListener("click", () => {
     sidebar.classList.toggle("not-visible");
     resizer.classList.toggle("toLeft")
 })

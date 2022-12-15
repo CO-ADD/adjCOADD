@@ -6,7 +6,7 @@ from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
-from .models import Organism, Taxonomy
+from .models import Organism, Taxonomy, Organism_Batch
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
@@ -55,3 +55,23 @@ class Taxonomy_form(forms.ModelForm):
     class Meta:
         model =Taxonomy
         fields='__all__'
+
+
+#========================================Batch Form================================================================
+class Batch_form(forms.ModelForm):
+
+    # def __init__(self, user, organism_name=None, *args, **kwargs): 
+    #     self.organism_name=organism_name
+    #     user=user
+    #     super(CreateOrganism_form, self).__init__(*args, **kwargs)
+    #     self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
+
+    # def clean_organism_name(self):       
+    #     data=self.cleaned_data['organism_name']
+    #     data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
+    #     return data
+
+    class Meta:
+        model =Organism_Batch
+        fields=["orgbatch_id","organism_id","supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
+

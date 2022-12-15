@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Organism, Taxonomy
+from .models import Organism, Taxonomy, Organism_Batch
 from apputil.models import Dictionary
 from apputil.utils import get_DictonaryChoices_byDictClass
 
@@ -86,4 +86,8 @@ class Taxonomyfilter(Filterbase):
 
 
 
-
+class Batchfilter(Filterbase):
+    Stock_Date=django_filters.IsoDateTimeFilter(field_name='stock_date')
+    class Meta:
+        model=Organism_Batch
+        fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]

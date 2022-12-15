@@ -179,8 +179,6 @@ class Importhandler(View):
                 filename=fs.save(myfile.name, myfile)
                 self.file_url=fs.url(filename)
                 context['message']=self.file_url
-         
-            
                 return render(request,'apputil/importdata.html', context)
             else:
                 messages.warning(request, f'There is {form.errors} error, upload again')
@@ -188,8 +186,6 @@ class Importhandler(View):
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
         context['form'] = form
-       
-
         return render(request, 'apputil/importdata.html', context)
     
     #delete task
@@ -209,7 +205,6 @@ class Importhandler(View):
     @csrf_exempt
     @staticmethod
     def run_task(request):
-        
         task_type = request.POST.get("type")
         Importhandler.file_url=request.POST.get("filepath")
         
