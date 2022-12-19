@@ -70,7 +70,16 @@ class Batch_form(forms.ModelForm):
     #     data=self.cleaned_data['organism_name']
     #     data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
     #     return data
-
+    def __init__(self, user, organism_name=None, *args, **kwargs): 
+        self.organism_name=organism_name
+        user=user
+        super(Batch_form, self).__init__(*args, **kwargs)
+        self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
+              
+    def clean_organism_name(self):       
+        data=self.cleaned_data['organism_name']
+        data=get_object_or_404(Organism, organism_name=self.organism_name)
+        return data
     class Meta:
         model =Organism_Batch
         fields=["orgbatch_id","organism_id","supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
