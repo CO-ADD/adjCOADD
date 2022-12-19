@@ -141,7 +141,7 @@ class OrganismCardView(OrganismListView):
 # ======================================================================CREATE==========================================#
     # ==Step1. Ajax Call(def search_organism in utils) search Taxonomy(for all models using Taxonomy as ForeignKey)=====#
     # =============================step 2. Create new record by form===================#
-@login_required
+# @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createOrganism(req):
     '''
@@ -154,8 +154,8 @@ def createOrganism(req):
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism')
-        Strain_Type_list=req.POST.getlist('strain_type')
-        print(Strain_Type_list)
+        # Strain_Type_list=req.POST.getlist('strain_type')
+        # print(Strain_Type_list)
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         if form.is_valid():
@@ -186,10 +186,10 @@ def detailOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
     form=UpdateOrganism_form(user,instance=object_)
-   
+    print(pk)
     context["object"]=object_
     context["form"]=form
-    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=pk)
+    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id)
     context["batch_fields"]=Organism_Batch.get_fields()
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
@@ -269,24 +269,35 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/readForm/OrganismBatch_card.html' 
     filterset_class=Batchfilter
 
-@login_required
+# @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createBatch(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Batch_form
+    form=Batch_form(req.user)
+
     if req.method=='POST':
-        form=Batch_form(req.POST)
+        Organism_Name=req.POST.get('search_organism')
+        form=Batch_form(req.user, Organism_Name, req.POST)
         if form.is_valid():
-            print("form is valid")   
-            instance=form.save(commit=False)
-            instance.save(**kwargs)
-            print("saved")
-            return redirect(req.META['HTTP_REFERER']) 
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    print("form save")                 
+                    instance.save(**kwargs)
+                    print("saved--view info")
+                    return redirect(req.META['HTTP_REFERER']) 
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
         else:
-            messages.error(req, form.errors)
+            print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/createForm/Batch_c.html', {'form':form})
+        
+
+    return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
 
 
 

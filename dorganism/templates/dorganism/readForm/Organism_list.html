@@ -17,7 +17,30 @@
 
         <div class="row d-flex flex-wrap">
             <!-- object_list -->
-            {%include 'utils/datatable_org.html'%}
+
+<a id="createOrganism" class="card-link text-success" style="float: right">Add New
+  <i class="bi bi-plus"></i>
+</a>
+<div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
+{%include 'utils/datatable_overview.html' %}
+<script>
+  $(document).ready(function () {
+    let my_modal = $("#createOrganismModal");
+
+    $("#createOrganism").click(function () {
+      my_modal.load("{%url 'org_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show");
+        }
+      });
+    });
+  });
+</script>
+
+
+
         </div>
 
     </div>
@@ -26,17 +49,6 @@
 
 </div>
 
-<script>
-    $(document).ready(() => {
-        console.log("loading document")
-        $('a.switch').click(function () {
-            var url = this.href + '?' + window.location.href.split('?')[1];
-            window.location.href = url;
-            return false;
-        });
 
-
-    })
-</script>
 
 {% endblock %}

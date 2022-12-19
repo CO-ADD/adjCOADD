@@ -309,7 +309,7 @@ class Organism_Batch(AuditModel):
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
-    
+        
     #------------------------------------------------
     #Method Get Fields, Values List
     @classmethod
@@ -324,6 +324,7 @@ class Organism_Batch(AuditModel):
                 value_list.append(field.value_to_string(self))
         print(value_list)
         return value_list
+
 
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):
@@ -340,7 +341,7 @@ class OrgBatch_Stock(AuditModel):
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
-    passage_no = models.IntegerField(default=0, blank=True, verbose_name = "Passage No")
+    passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
@@ -348,6 +349,7 @@ class OrgBatch_Stock(AuditModel):
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock_type+")
     stock_date = models.DateField(verbose_name = "Stock Date")
+    stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
     n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
@@ -363,6 +365,7 @@ class OrgBatch_Stock(AuditModel):
             models.Index(name="orgbstock_freezer_idx",fields=['location_freezer']),
             models.Index(name="orgbstock_stdate_idx",fields=['stock_date']),
             models.Index(name="orgbstock_nleft_idx",fields=['n_left']),
+            models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
         ]
 
     #------------------------------------------------
@@ -371,15 +374,15 @@ class OrgBatch_Stock(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(self,BatchID,StockType,verbose=0):
+    def exists(self,StockID,verbose=0):
     #
     # Returns an instance if found by orgbatch_id and stocktype
     #
         try:
-            retInstance = self.objects.get(orgbatch_id=BatchID)
+            retInstance = self.objects.get(stock_id=StockID)
         except:
             if verbose:
-                print(f"[OrgBatch Not Found] {BatchID} ")
+                print(f"[OrgBatch Not Found] {StockID}")
             retInstance = None
         return(retInstance)
 

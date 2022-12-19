@@ -98,12 +98,46 @@ class AuditModel(models.Model):
     
     #------------------------------------------------
     def validate(self,**kwargs):
+    #
+    # Validates the instance using full_clean
+    # 
         retValid = None
         try:
             self.full_clean(**kwargs)
         except ValidationError as e:
             retValid = e.message_dict
         return(retValid)
+
+
+    #-------------------------------------------------------------------
+    def clean_Fields(self,default_Char="",default_Integer=0):
+    #
+    # Sets 'None' fields in the instance according to Django guidelines 
+    #   sets CharField    to "" (empty) or 'default' 
+    #   sets IntegerField to 0 or 'default'
+    #
+        clFields = {}
+        for field in self._meta.get_fields(include_parents=False):
+            fType = field.get_internal_type()
+            if fType == "IntegerField":
+                if hasattr(self,field.name):
+                    if getattr(self,field.name) is None:
+                        defValue = default_Integer
+                        fDict = field.deconstruct()[3]
+                        if 'default' in fDict:
+                            defValue = fDict['default']
+                        setattr(self,field.name,defValue)
+                        clFields[field.name]=defValue
+            elif fType == "CharField":
+                if hasattr(self,field.name):
+                    if getattr(self,field.name) is None:
+                        defValue = default_Char
+                        fDict = field.deconstruct()[3]
+                        if 'default' in fDict:
+                            defValue = fDict['default']
+                        setattr(self,field.name,defValue)
+                        clFields[field.name]=defValue
+        return(clFields)
 
     #------------------------------------------------
     def delete(self,**kwargs):
