@@ -74,7 +74,7 @@ class Batch_form(forms.ModelForm):
         self.organism_name=organism_name
         user=user
         super(Batch_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
               
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
