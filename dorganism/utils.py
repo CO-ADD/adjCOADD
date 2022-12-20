@@ -54,6 +54,10 @@ class Filterbase(django_filters.FilterSet):
     def qs(self):
         parent = super().qs
         return parent.filter(astatus__gte=0)
+   
+    def multichoices_filter(self, queryset, name, value):
+        lookup='__'.join([name, 'overlap'])
+        return queryset.filter(**{lookup: value})
 
 
 class Organismfilter(Filterbase):
@@ -69,15 +73,13 @@ class Organismfilter(Filterbase):
         model=Organism
         fields=['organism_id', 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
        
-    def multichoices_filter(self, queryset, name, value):
-        lookup='__'.join([name, 'overlap'])
-        return queryset.filter(**{lookup: value})
 
 
 
 class Taxonomyfilter(Filterbase):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    lineage = django_filters.MultipleChoiceFilter(choices="")
+    lineage = django_filters.MultipleChoiceFilter( choices= "")
+    # django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['lineage'], ' | '))
     division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
     class Meta:
         model=Taxonomy

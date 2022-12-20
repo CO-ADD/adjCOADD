@@ -1,5 +1,19 @@
 <form id="BatchUpdateForm" method="POST" action="{%url 'batch_update' object.pk %}">
     {% csrf_token %}
-    {{form}}
+    <table>
+        <tbody>
+
+            <tr>
+
+                {%for field in form%}
+                <td>
+
+                    {{field}}
+                </td>
+                {% endfor%}
+                <td><input type="submit" value="update"></td>
+            </tr>
+        </tbody>
+    </table>
 
 </form>

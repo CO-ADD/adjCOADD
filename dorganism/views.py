@@ -309,6 +309,7 @@ def updateBatch(req, pk):
     kwargs={}
     kwargs['user']=req.user
    
+    form=Batch_form(req.user, instance=object_)
     #-------------------------------------------------------------------------
     if req.method=='POST':
         form=Batch_form(req.user, object_.organism_id, req.POST, instance=obj) 
@@ -332,8 +333,7 @@ def updateBatch(req, pk):
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
-    else:
-        form=Batch_form(req.user, instance=object_)
+    
 
     context={
         "form":form,
