@@ -128,7 +128,7 @@ body {
 
   /* var(--bs-body-bg); */
   font-size: small;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 #top-alert {
@@ -255,7 +255,7 @@ button,
 /* =============================Drag to resize sidebar end ===================================== */
 
 footer {
-  border: 2px solid wheat;
+  /* border: 2px solid wheat; */
   background-color: var(--grey);
   color: white;
   bottom: 0 !important;

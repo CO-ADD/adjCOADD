@@ -17,6 +17,10 @@ class Dictionary_form(forms.ModelForm):
 
 
 class Login_form(AuthenticationForm):
+    username=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'UQ Username', }), label='')
+    password= forms.CharField(widget=forms.PasswordInput(
+    attrs={'class':'form-control','type':'password', 'name': 'password','placeholder':'Password'}),
+    label='')
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')

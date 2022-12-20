@@ -57,6 +57,7 @@ class FilteredListView(ListView):
 # #############################TAXONOMY View############################################
 # ==========List View================================Read===========================================
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
     model=Taxonomy  
     template_name = 'dorganism/readForm/Taxonomy_list.html' 
     filterset_class=Taxonomyfilter
@@ -131,6 +132,7 @@ def deleteTaxonomy(req, slug=None):
 ############################################### ORGANISM View ###########################################
 # ==============================List View ================================
 class OrganismListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
     model=Organism  
     template_name = 'dorganism/readForm/Organism_list.html'
     filterset_class=Organismfilter
@@ -265,6 +267,7 @@ def deleteOrganism(req, pk):
 # #############################BATCH View############################################
 # ==========List View================================Read===========================================
 class BatchCardView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
     model=Organism_Batch 
     template_name = 'dorganism/readForm/OrganismBatch_card.html' 
     filterset_class=Batchfilter
@@ -299,6 +302,45 @@ def createBatch(req):
 
     return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
 
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateBatch(req, pk):
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    #-------------------------------------------------------------------------
+    if req.method=='POST':
+        form=Batch_form(req.user, object_.organism_id, req.POST, instance=obj) 
+        try:
+            with transaction.atomic(using='dorganism'):        # testing!
+                obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
+                #------------------------If update Organism Name-----------------------------------
+                ##do somthing here later
+                ##Not allow to update name in different class--------
+                # ---------------------------------------------------------------------------------
+                try:
+                    if form.is_valid():                  
+                        instance=form.save(commit=False)
+                        instance.save(**kwargs)
+                        print('save updated')                 
+                        return redirect(req.META['HTTP_REFERER'])
+                except Exception as err:
+                    print(err)
+                   
+        except Exception as err:
+            messages.warning(req, f'Update failed due to {err} error')
+            return redirect(req.META['HTTP_REFERER'])
+  
+    else:
+        form=Batch_form(req.user, instance=object_)
+
+    context={
+        "form":form,
+        "object":object_,
+    }
+   
+    return render(req, "dorganism/updateForm/Batch_u.html", context)
 
 
 
