@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
-                        updateOrganism, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
+                        updateOrganism, updateBatch, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
                        OrganismListView,OrganismCardView, BatchCardView, createBatch, deleteOrganism) 
 from .utils import search_organism
 
@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
+    path('updateBat/<str:pk>', updateBatch, name="batch_update"),
    
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),

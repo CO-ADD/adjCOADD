@@ -83,7 +83,7 @@ save_data = (res) => {
     method: "POST",
   })
     .done((res) => {
-      window.alert("task canceled");
+      window.alert("Data Saved!");
       location.reload();
     })
     .fail((err) => {
