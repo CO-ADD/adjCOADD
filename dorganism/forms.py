@@ -30,7 +30,7 @@ class CreateOrganism_form(ModelForm):
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
+        self.initial['biologist']= get_object_or_404(ApplicationUser, name=user)
               
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
