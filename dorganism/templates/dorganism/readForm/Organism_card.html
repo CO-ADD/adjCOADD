@@ -51,21 +51,22 @@
         <div class="col-md-2 vh-80 border border-2 m-2">
 
 
-          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="card-link"
-              href="{%url 'org_detail' object.pk %}">{{object.organism_name}} <br><span class="fw-light fs-6">
-                (ID:
-                {{object.organism_id}} )</span>
-            </a>
+          <p class="fw-bold lead fs-6 m-auto"><a class="card-link" href="{%url 'org_detail' object.pk %}">
+              {{object.organism_id}} &nbsp &nbsp &nbsp{{object.strain_code}}</a><br><span class="fw-light fs-6">
+              {{object.organism_name}}
+            </span>
+
           </p>
 
 
           <ul class="fw-lighter fs-6 m-auto">
-            <li>Created by: {{object.acreated_by}}</li>
-            <li>Created at:{{object.acreated_at}}</li>
-            {%if object.aupdated_by%}
-            <li>Updated at: {{object.aupdated_by}}</li>
-            <li>Updated at: {{object.aupdated_at}}</li>
-            {%endif%}
+            <li><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
+              "> {{object.strain_ids}}</a></li>
+            <li>Strain Type <br>
+              {%for type in object.strain_type%}
+              <span style="font-style: italic;"> | {{type}}</span>
+              {%endfor%}
+            </li>
           </ul>
           <p>
           <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
@@ -76,7 +77,7 @@
           </p>
           <div class="collapse" id="collapse{{object.pk}}">
 
-
+            res_property, gen_property
 
             About...
 
