@@ -53,21 +53,25 @@
 
           <p class="fw-bold lead fs-6 m-auto"><a class="card-link" href="{%url 'org_detail' object.pk %}">
               {{object.organism_id}} &nbsp &nbsp &nbsp{{object.strain_code}}</a><br><span class="fw-light fs-6">
-              {{object.organism_name}}
             </span>
 
           </p>
+          <p class="fw-lighter fs-6 m-auto">
+            {{object.organism_name}}
+          </p>
 
 
-          <ul class="fw-lighter fs-6 m-auto">
-            <li><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
-              "> {{object.strain_ids}}</a></li>
-            <li>Strain Type <br>
-              {%for type in object.strain_type%}
-              <span style="font-style: italic;"> | {{type}}</span>
-              {%endfor%}
-            </li>
+          <p class="fw-lighter fs-6 m-auto">
+            <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
+              "> {{object.strain_ids}}</a>
+          </p>
+          <p class="fw-lighter fs-6 m-auto">Strain Type <br>
+          <ul>
+            {%for type in object.strain_type%}
+            <li style="font-style: italic;"> {{type}}</li>
+            {%endfor%}
           </ul>
+          </p>
           <p>
           <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
             aria-expanded="false" aria-controls="{{object.pk}}">
