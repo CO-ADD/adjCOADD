@@ -1,0 +1,5 @@
+<form id="BatchUpdateForm" method="POST" action="{%url 'batch_update' object.pk %}">
+    {% csrf_token %}
+    {{form}}
+
+</form>

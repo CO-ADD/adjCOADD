@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from .utils import import_excel
+from adjcoadd.utils import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -24,6 +24,7 @@ def permission_not_granted(req):
 
 
 ## =================================APP Home========================================
+@login_required(login_url='/')
 def index(req):
     object_1=Organism.objects.count()
     object_2=Taxonomy.objects.count()
@@ -48,7 +49,7 @@ def login_user(req):
         
             else:
                 messages.warning(req, ' no permission for this application, please contact Admin!')
-                return redirect("index")
+                return redirect("/")
         else:
             form = Login_form()
         return render(req, 'registration/login.html', {'form': form})    
@@ -61,16 +62,18 @@ def logout_user(req):
 
 ## =========================Application Users View====================================
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = '/'
 
     def test_func(self):
         return self.request.user.is_superuser
 
-@login_required(login_url='/login/')
+@login_required(login_url='/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
 
 class AppUserListView(LoginRequiredMixin, ListView):
+    login_url = '/'
     model=ApplicationUser
     fields='__all__'
     template_name = 'apputil/appUsers.html'
@@ -113,6 +116,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 ## ========================Dictionary View===========================================
 
 class DictionaryView(LoginRequiredMixin, ListView):
+    login_url = '/'
     model=Dictionary
     fields="__all__"
     template_name='apputil/dictList.html'
@@ -215,6 +219,7 @@ class Importhandler(View):
             #return result=ErrorList
             
             Importhandler.data_list=import_excel(Importhandler.file_url)
+            print(import_excel(Importhandler.file_url))
             if isinstance(Importhandler.data_list, Exception):
                 result=str(Importhandler.data_list)
                 status='Form Errors'
@@ -225,10 +230,18 @@ class Importhandler(View):
         elif task_type=='Cancel':
             Importhandler.delete_task(request)
             return JsonResponse({})
-   
+
+    @csrf_exempt
+    @staticmethod
     def proceed_save(request):
+        errList=[]
+        print(Importhandler.data_list)
         for obj in Importhandler.data_list:
-            obj.save()
+            try:
+                obj.save()
+            except Exception as err:
+                print(err)
+                errList.append[err]
         return JsonResponse({"status":"SUCCESS"}, status=200)
 
     
