@@ -48,43 +48,44 @@
       <div class="row d-flex flex-wrap ">
         {% for object in page_obj %}
         <!-- object_list -->
-        <div class="col-md-2 vh-80 border border-2 m-2">
+        <div class="col-md-2 vh-80 m-0 p-1">
+          <div class="card m-0 px-1">
+
+            <p class="fw-bold lead fs-6 m-auto"><a class="card-link" href="{%url 'org_detail' object.pk %}">
+                {{object.organism_id}}</a>
+            </p>
+
+            <p class="fw-lighter m-auto" style="font-size: x-small;">{{object.strain_code}}</p>
+            <p class="fw-lighter fs-6 m-auto">
+              {{object.organism_name}}
+            </p>
 
 
-          <p class="fw-bold lead fs-6 m-auto"><a class="card-link" href="{%url 'org_detail' object.pk %}">
-              {{object.organism_id}} &nbsp &nbsp &nbsp{{object.strain_code}}</a><br><span class="fw-light fs-6">
-            </span>
+            <p class="fw-lighter fs-6 m-auto">
+              <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
+            " target="_blank"> {{object.strain_ids}}</a>
+            </p>
+            <p class="fw-lighter fs-6 m-auto">
 
-          </p>
-          <p class="fw-lighter fs-6 m-auto">
-            {{object.organism_name}}
-          </p>
+              {%for type in object.strain_type%}
+              {{type}},
+              {%endfor%}
 
+            </p>
+            <p>
+            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
+              aria-expanded="false" aria-controls="{{object.pk}}">
+              <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+            </div>
 
-          <p class="fw-lighter fs-6 m-auto">
-            <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
-              "> {{object.strain_ids}}</a>
-          </p>
-          <p class="fw-lighter fs-6 m-auto">Strain Type <br>
-          <ul>
-            {%for type in object.strain_type%}
-            <li style="font-style: italic;"> {{type}}</li>
-            {%endfor%}
-          </ul>
-          </p>
-          <p>
-          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
-            aria-expanded="false" aria-controls="{{object.pk}}">
-            <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
-          </div>
+            </p>
+            <div class="collapse" id="collapse{{object.pk}}">
 
-          </p>
-          <div class="collapse" id="collapse{{object.pk}}">
+              res_property, gen_property
 
-            res_property, gen_property
+              About...
 
-            About...
-
+            </div>
           </div>
         </div>
         {%endfor%}

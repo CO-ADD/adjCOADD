@@ -1,0 +1,35 @@
+{%include './preloader.html'%}
+
+<h5>{%include 'utils/message.html'%}</h5>
+<table id="datatable_general" class="cell-border" style="width: 100%">
+  <thead>
+
+    <tr>
+      {%for field in fields%}
+      <th>{{field}}</th>
+      {%endfor%}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in page_obj%}
+    <tr>
+      {%for value in object.get_values%}
+      <td>{{value}}</td>
+      {%endfor%}
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#datatable_general").DataTable({
+      searching: false,
+      paging: false,
+    });
+  });
+</script>

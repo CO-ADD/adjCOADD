@@ -4,8 +4,8 @@ from django.urls import path, include, re_path
 
 from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
                         updateOrganism, updateBatch, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
-                       OrganismListView,OrganismCardView, BatchCardView, createBatch, deleteOrganism) 
-from .utils import search_organism
+                       OrganismListView,OrganismCardView, BatchCardView, createBatch, deleteOrganism, deleteBatch, createStock) 
+from .utils import search_organism, search_organism_id
 
 
 urlpatterns = [
@@ -18,9 +18,12 @@ urlpatterns = [
     path('organism-batch_card', BatchCardView.as_view(), name="batch_card"),
 
     path('search_organism/', search_organism, name="search_organism"),
+    path('search_organism_id/', search_organism_id, name="search_organism_id"),
     path('createOrg/', createOrganism, name="org_create"),
     path('createTaxo/', createTaxonomy, name="taxo_create"),
     path('createBatch/', createBatch, name="batch_create"),
+    path('createStock/', createStock, name="stock_create"),
+    
 
     path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
@@ -29,6 +32,7 @@ urlpatterns = [
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
     path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
+    path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
   
     #=======================Data Export/Import===================================================================
     path('exportData/', exportCSV, name="dataexport"),

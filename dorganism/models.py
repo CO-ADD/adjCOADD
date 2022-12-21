@@ -274,9 +274,9 @@ class Organism_Batch(AuditModel):
         return f"{self.orgbatch_id}"
 
     #------------------------------------------------
-    def find_Next_BatchNo(self,OrganismID) -> int:
+    def find_Next_BatchNo(self, OrganismID) -> int:
         next_BatchNo = 1
-        while self.objects.filter(organism_id=OrganismID, batch_no=next_BatchNo).exists():
+        while Organism_Batch.objects.filter(organism_id=OrganismID, batch_no=next_BatchNo).exists():
             next_BatchNo = next_BatchNo + 1
         return(next_BatchNo)    
 
@@ -302,10 +302,14 @@ class Organism_Batch(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.orgbatch_id: #Object does not exists
-            Next_BatchNo = self.find_Next_BatchNo(self.Organism_ID)
+            try:
+                print(self.organism_id.organism_id)
+            except Exception as err:
+                print(err)
+            Next_BatchNo = self.find_Next_BatchNo(self.organism_id.organism_id)
             if Next_BatchNo:
                 self.Batch_No = Next_BatchNo
-                self.orgbatch_id = self.str_OrgBatchID(self.organism_id,Next_BatchNo)
+                self.orgbatch_id = self.str_OrgBatchID(self.organism_id.organism_id,Next_BatchNo)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
             super(Organism_Batch,self).save(*args, **kwargs)

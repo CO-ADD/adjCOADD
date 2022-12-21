@@ -1,6 +1,6 @@
 <!-- trigger modal -->
 <a class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    <i class="fa fa-trash"></i>
+    <i class="fa-solid fa-trash"></i>
 </a>
 
 <!-- Modal -->
@@ -9,11 +9,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Delete View</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" class="post-form" action="{% url 'organism_delete' object.pk %}">
+                <form method="POST" class="post-form" action="{% url 'batch_delete' object.pk %}">
                     <!--prettier-ignore-->
                     {% csrf_token %}
 

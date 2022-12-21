@@ -58,7 +58,7 @@
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h5 class="fs-6 my-0">Organism: {{object.organism_name}} | Class:
+                    <h5 class="fs-6 my-0">{{object.organism_name}} |
                         {{object.organism_name.org_class.dict_value}}
 
                     </h5>
@@ -152,7 +152,10 @@
 
     <script>
         $(document).ready(function () {
-            $("#datatable_batch").DataTable();
+            $("#datatable_batch").DataTable({
+                searching: false,
+                paging: false,
+            });
         });
     </script>
     <script src="https://unpkg.com/htmx.org@1.8.4"

@@ -6,7 +6,7 @@ from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
-from .models import Organism, Taxonomy, Organism_Batch
+from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
 from adjcoadd.constants import *
 
 #=======================================Organism Create Form=============================================================
@@ -52,40 +52,35 @@ class UpdateOrganism_form(CreateOrganism_form):
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
     org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']), widget=forms.Select(attrs={'class':'form-select'}))
-    division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']), widget=forms.Select(attrs={'class':'form-select'}))
+    division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
     class Meta:
         model =Taxonomy
-        fields='__all__'
+        exclude=['urlname']
 
 
 #========================================Batch Form================================================================
 class Batch_form(forms.ModelForm):
-
-    # def __init__(self, user, organism_name=None, *args, **kwargs): 
-    #     self.organism_name=organism_name
-    #     user=user
-    #     super(CreateOrganism_form, self).__init__(*args, **kwargs)
-    #     self.initial['biologist']= ApplicationUser.objects.filter(username=user)[0]
-
-    # def clean_organism_name(self):       
-    #     data=self.cleaned_data['organism_name']
-    #     data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
-    #     return data
-    def __init__(self, user, organism_name=None, *args, **kwargs): 
-        self.organism_name=organism_name
+    organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
+   
+    def __init__(self, user, organism_id=None, *args, **kwargs):
+        self.organism_id=organism_id
         user=user
         super(Batch_form, self).__init__(*args, **kwargs)
         self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
               
-    def clean_organism_name(self):       
-        data=self.cleaned_data['organism_name']
-        data=get_object_or_404(Organism, organism_name=self.organism_name)
+    def clean_organism_id(self):       
+        data=self.cleaned_data['organism_id']
+        # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
+        data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
         return data
+
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_modelFIELDs
+        fields=ORGANISM_BATCH_modelFIELDs+["organism_id"]
+        exclude=['orgbatch_id']
 
 class Batchupdate_form(forms.ModelForm):
+    
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_modelFIELDs
@@ -94,3 +89,12 @@ class Batchupdate_form(forms.ModelForm):
         user=user
         super(Batchupdate_form, self).__init__(*args, **kwargs)
         self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+
+
+# ===============================Stock Form-------------------------------
+class Stock_form(Batchupdate_form):
+
+   
+    class Meta:
+        model =OrgBatch_Stock
+        fields=ORGANISM_STOCK_modelFIELDs

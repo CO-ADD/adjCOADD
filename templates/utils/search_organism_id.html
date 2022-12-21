@@ -1,0 +1,12 @@
+<!-- ================================================================================== -->
+<div class="my-0">
+  <label>Micro Organism</label>
+  <form id="search-form" autocomplete="off">
+    {% csrf_token %}
+    <input type="text" id="search-input" placeholder="search Micro-organism" class="form-control" />
+  </form>
+  <div id="results-box" class="results-card"></div>
+</div>
+
+{%load static%}
+<script src="{% static 'js/search_organism_id.js' %}"></script>

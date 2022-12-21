@@ -62,6 +62,14 @@
   --bs-footer-color: #a6b0cf;
 }
 
+/* table.dataTable td {
+  font-style: normal;
+} */
+
+.dataTables_wrapper {
+  font-style: normal;
+}
+
 .navbar {
   background-color: var(--bs-heading-bg);
 }
