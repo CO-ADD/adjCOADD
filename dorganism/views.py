@@ -434,8 +434,6 @@ def deleteStock(req, pk):
 
 
 
-
-
 ############################################### Import CSV View ###########################################
 import pandas as pd
 from django.conf import settings
