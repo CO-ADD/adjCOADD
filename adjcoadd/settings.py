@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
-    "psqlextra",
+    # "psqlextra",
     'apputil.apps.ApptilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
