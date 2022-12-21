@@ -84,3 +84,13 @@ class Batch_form(forms.ModelForm):
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_modelFIELDs
+
+class Batchupdate_form(forms.ModelForm):
+    class Meta:
+        model =Organism_Batch
+        fields=ORGANISM_BATCH_modelFIELDs
+
+    def __init__(self, user, *args, **kwargs): 
+        user=user
+        super(Batchupdate_form, self).__init__(*args, **kwargs)
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)

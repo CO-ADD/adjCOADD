@@ -93,3 +93,36 @@ class Batchfilter(Filterbase):
     class Meta:
         model=Organism_Batch
         fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
+
+
+
+# -------------------editable tables utility function--------------------------------
+# @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+# @csrf_protect
+# def detailChangeOrganism(req):
+#     kwargs={}
+#     kwargs['user']=req.user 
+#     id=req.POST.get('id', '')
+#     object_=get_object_or_404(Organism, organism_id=id)
+#     value=req.POST.get('value','')
+#     type_value=req.POST.get('type', '')
+
+#     if type_value=='strain_type':
+#         try:
+#             value=value.split(",")
+#             object_.strain_type=[i for i in value]
+#             object_.save(**kwargs)
+#         except Exception as err:
+#              print("something wroing")
+    
+#     else:
+#         try:
+#             fields={type_value: value}
+#             print(fields)
+#             Organism.objects.filter(pk=id).update(**fields)
+#             object_=get_object_or_404(Organism, organism_id=id)
+#             object_.save(**kwargs)
+#         except Exception as err:
+#             print(err)
+   
+#     return JsonResponse({"success": "updated!"})

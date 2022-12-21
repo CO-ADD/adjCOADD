@@ -21,7 +21,7 @@ from .models import  Organism, Taxonomy, Organism_Batch
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form
 
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
@@ -309,32 +309,28 @@ def updateBatch(req, pk):
     kwargs={}
     kwargs['user']=req.user
    
-    form=Batch_form(req.user, instance=object_)
+    form=Batchupdate_form(req.user, instance=object_)
     #-------------------------------------------------------------------------
     if req.method=='POST':
-        form=Batch_form(req.user, object_.organism_id, req.POST, instance=obj) 
-        try:
-            with transaction.atomic(using='dorganism'):        # testing!
-                obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
-                #------------------------If update Organism Name-----------------------------------
-                ##do somthing here later
-                ##Not allow to update name in different class--------
-                # ---------------------------------------------------------------------------------
-                try:
-                    if form.is_valid():                  
-                        instance=form.save(commit=False)
-                        instance.save(**kwargs)
-                        print('save updated')                 
-                        return redirect(req.META['HTTP_REFERER'])
-                except Exception as err:
-                    print(err)
-                   
-        except Exception as err:
-            messages.warning(req, f'Update failed due to {err} error')
+        form=Batchupdate_form(req.user, req.POST, instance=object_)
+        if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])
-  
-    
+        else:
 
+            try:
+                with transaction.atomic(using='dorganism'):        # testing!
+                    obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
+                    try:
+                        if form.is_valid():                  
+                            instance=form.save(commit=False)
+                            instance.save(**kwargs)
+                            return redirect(req.META['HTTP_REFERER'])
+                    except Exception as err:
+                        print(err)
+                   
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+                return redirect(req.META['HTTP_REFERER'])
     context={
         "form":form,
         "object":object_,

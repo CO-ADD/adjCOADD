@@ -1,50 +1,68 @@
 {% load myapp_extras %}
 <!--prettier-ignore-->
-<div>
+<div class="p-2">
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-            <a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
-            {%else%}
-            <span>Previous</span>
-            {% endif %}
+    <ul class="pagination">
+        <!-- <span class="step-links"> -->
+        {% if page_obj.has_previous %}
+        <li class="page-item">
 
-            {% if page_obj.number > 3 %}
-            <a href="{% my_url 1 'page' request.GET.urlencode %}">&laquo; 1</a>
-            {% if page_obj.number > 4 %}
-            <span>...</span>
-            {% endif %}
-            {%endif %}
+            <a class="page-link"
+                href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
+        </li>
+        {%else%}
+        <li class="page-item">
 
-            {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-            <a href="{% my_url num 'page' request.GET.urlencode %}" class="bg-warning">
+            <a class="page-link">Previous</a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.number > 3 %}
+        <li class="page-item">
+            <a class="page-link" href="{% my_url 1 'page' request.GET.urlencode %}">&laquo; 1</a>
+        </li>
+        {% if page_obj.number > 4 %}
+        <li class="page-item">
+
+            <a class="page-link">...</a>
+        </li>
+        {% endif %}
+        {%endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item">
+
+            <a class="page-link bg-warning" href="{% my_url num 'page' request.GET.urlencode %}">
                 {{num}}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                href="{% my_url num 'page' request.GET.urlencode %}" class="">
-                {{num}}</a>
-                {%endif%}
-                {%endfor%}
-                <!--prettier-ignore-->
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
 
-                {% if page_obj.has_next %}
-                <a href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next Page &raquo;</a>
-                {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %} <span>...</span>
-        <a href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">
-            <!--prettier-ignore-->
-            {{page_obj.paginator.num_pages}} of {{page_obj.paginator.num_pages}}
-        </a>
-        {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %} <a
-            href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}"
-            class="btn btn-sm  btn-outline-btn-outline-secondary">
-            {{page_obj.paginator.num_pages}} of {{page_obj.paginator.num_pages}}
-            </a>
+            <a class="page-link " href="{% my_url num 'page' request.GET.urlencode %}">
+                {{num}}</a>
+            </li>
             {%endif%}
-            {% endif %}
+            {%endfor%}
             <!--prettier-ignore-->
-            </span>
-    </div>
+
+            {% if page_obj.has_next %}
+            <li class="page-item ">
+
+
+                <a class="page-link " href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next
+                    Page &raquo;</a>
+            </li>
+
+            <li class="page-item ">
+                <a class="page-link " href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">
+                    ( {{page_obj.number}} of {{page_obj.paginator.num_pages}})
+                </a>
+            </li>
+
+            {% endif %}
+    </ul>
+    <!--prettier-ignore-->
+    <!-- </span> -->
     <hr>
 
 </div>
