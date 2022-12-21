@@ -49,33 +49,14 @@
                   {{object.organism_id}} )</span>
               </a>
             </p>
+            <hr>
+            <a id="createStock" class="card-link" style="float:right;"><i class="bi bi-plus"></i> Stock
+            </a>
+            <div id="createStockModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+            </div>
+            <hr>
             <ul class="fw-lighter fs-6 m-auto">
-              <li>
-                <a id="createStock" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
-                </a>
-                <div id="createStockModal" class="modal fade" role="dialog" data-bs-backdrop="static">
-                </div>
-                <script>
 
-                  $(document).ready(function () {
-
-                    let my_modal = $("#createStockModal");
-
-                    $("#createStock").click(function () {
-                      my_modal.load("{%url 'stock_create'%}", function (response) {
-                        if (response == "Permission Not Granted") {
-                          alert("permission!")
-
-                        } else {
-                          my_modal.modal("show"); // Open Modal
-                        }
-
-                      });
-                    });
-                  });
-
-                </script>
-              </li>
               <li>
 
                 {%for stock in object.orgbatchstock_set.all %}
@@ -106,4 +87,26 @@
 
   </div>
 </div>
+<script>
+
+  $(document).ready(function () {
+
+    let my_modal = $("#createStockModal");
+
+    $("#createStock").click(function () {
+      my_modal.load("{%url 'stock_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!")
+
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+
+      });
+    });
+  });
+
+</script>
+
+
 {%endblock%}
