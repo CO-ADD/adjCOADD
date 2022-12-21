@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
 from .models import Organism, Taxonomy, Organism_Batch
+from adjcoadd.constants import *
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
@@ -82,5 +83,14 @@ class Batch_form(forms.ModelForm):
         return data
     class Meta:
         model =Organism_Batch
-        fields=["orgbatch_id","organism_id","supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
+        fields=ORGANISM_BATCH_modelFIELDs
 
+class Batchupdate_form(forms.ModelForm):
+    class Meta:
+        model =Organism_Batch
+        fields=ORGANISM_BATCH_modelFIELDs
+
+    def __init__(self, user, *args, **kwargs): 
+        user=user
+        super(Batchupdate_form, self).__init__(*args, **kwargs)
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)

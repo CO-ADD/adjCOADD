@@ -105,31 +105,78 @@
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    {%include 'utils/datatable_batch.html' %}
+                    <h5>{%include 'utils/message.html'%}</h5>
+
+                    <div class="table-responsive">
+                        <a id="createBatch" class="card-link text-success" style="float: right">Add New
+                            <i class="bi bi-plus"></i>
+                        </a>
+                        <table id="datatable_batch" class="cell-border" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    {%for th in batch_fields %}
+                                    <th>{{th}}</th>
+                                    {%endfor%}
+                                    <th style="width: 10em;">EDIT</th>
+                                    <!-- <th>update</th> -->
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for object in batch_obj %}
+                                <tr id="databatch{{object.pk}}">
+                                    <!-- ORGANISM_BATCH_modelFIELDs = ["orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","biologist"] -->
+                                    {%include 'dorganism/updateForm/batch_tr.html'%}
+
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+
         </div>
 
 
     </div>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    <script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/editableTablechoices.js' %}" type="text/javascript"></script>
+    <!-- <script src="{% static 'js/table-edits.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/table-editable.int.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/js_utils/getCookie.js'%}"></script> -->
+    <script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#datatable_batch").DataTable();
+        });
+    </script>
+    <script src="https://unpkg.com/htmx.org@1.8.4"
+        integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+        crossorigin="anonymous"></script>
 
 
-</div>
-{% load static %}
-<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/editableTablechoices.js' %}" type="text/javascript"></script>
-<!-- <script src="{% static 'js/js_utils/getCookie.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/js_utils/ajax_update.js' %}" type="text/javascript"></script> -->
-<script
-  type="text/javascript"
-  src="{% static 'js/js_utils/dataTables.min.js'%}"
-></script>
+    <div id="createBatchModal" class="modal fade" role="dialog"></div>
 
-<script>
-  $(document).ready(function () {
-    $("#datatable_batch").DataTable();
-  });
-</script>
+    <script>
+        $(document).ready(function () {
+            let my_modal = $("#createBatchModal");
 
-{%endblock%}
+            $("#createBatch").click(function () {
+                my_modal.load("{%url 'batch_create'%}", function (response) {
+                    if (response == "Permission Not Granted") {
+                        alert("permission!");
+                    } else {
+                        my_modal.modal("show"); // Open Modal
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    {%endblock%}

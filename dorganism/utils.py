@@ -54,6 +54,10 @@ class Filterbase(django_filters.FilterSet):
     def qs(self):
         parent = super().qs
         return parent.filter(astatus__gte=0)
+   
+    def multichoices_filter(self, queryset, name, value):
+        lookup='__'.join([name, 'overlap'])
+        return queryset.filter(**{lookup: value})
 
 
 class Organismfilter(Filterbase):
@@ -69,15 +73,13 @@ class Organismfilter(Filterbase):
         model=Organism
         fields=['organism_id', 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
        
-    def multichoices_filter(self, queryset, name, value):
-        lookup='__'.join([name, 'overlap'])
-        return queryset.filter(**{lookup: value})
 
 
 
 class Taxonomyfilter(Filterbase):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    lineage = django_filters.MultipleChoiceFilter(choices="")
+    lineage = django_filters.MultipleChoiceFilter( choices= "")
+    # django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['lineage'], ' | '))
     division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
     class Meta:
         model=Taxonomy
@@ -91,3 +93,36 @@ class Batchfilter(Filterbase):
     class Meta:
         model=Organism_Batch
         fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
+
+
+
+# -------------------editable tables utility function--------------------------------
+# @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+# @csrf_protect
+# def detailChangeOrganism(req):
+#     kwargs={}
+#     kwargs['user']=req.user 
+#     id=req.POST.get('id', '')
+#     object_=get_object_or_404(Organism, organism_id=id)
+#     value=req.POST.get('value','')
+#     type_value=req.POST.get('type', '')
+
+#     if type_value=='strain_type':
+#         try:
+#             value=value.split(",")
+#             object_.strain_type=[i for i in value]
+#             object_.save(**kwargs)
+#         except Exception as err:
+#              print("something wroing")
+    
+#     else:
+#         try:
+#             fields={type_value: value}
+#             print(fields)
+#             Organism.objects.filter(pk=id).update(**fields)
+#             object_=get_object_or_404(Organism, organism_id=id)
+#             object_.save(**kwargs)
+#         except Exception as err:
+#             print(err)
+   
+#     return JsonResponse({"success": "updated!"})
