@@ -12,16 +12,18 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+        <a class="btn btn-sm m-3 bg-warning" href="{%url 'dataexport'%}" data-bs-toggle="tooltip"
+          data-bs-placement="top" title="Export Data">
+          <i class="fa fa-file-export"></i>
+        </a>
+        <a class="btn btn-sm m-3 bg-warning" href="{%url 'import'%}" data-bs-toggle="tooltip" data-bs-placement="top"
+          title="Import Data"><i class="fa fa-file-import"></i> </a>
+        <a class="btn btn-sm m-3" href="{%url 'batch_card'%}" data-bs-toggle="tooltip" data-bs-placement="top" title="">
           ORGANISM Batch
         </a>
-        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
-          Import
+        <a class="btn btn-sm disabled m-3" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
+          <i class="fa-solid fa-arrows-rotate"></i>
         </a>
-        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
-          update page
-        </a>
-        <a class="btn btn-sm" href="{%url 'import'%}"> IMPORT </a>
       </div>
     </div>
   </div>
