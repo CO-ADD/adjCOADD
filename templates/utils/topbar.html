@@ -1,58 +1,24 @@
 <div class="d-flex bg-dark justify-content-between mb-0">
-  <button id="hidefilter" class="btn btn-sm">c/o filter</button>
+  <button id="hidefilter" class="btn btn-sm"><i class="fas fa-sync fa-spin"></i></button>
   <div>
-    <button
-      class="btn btn-sm"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight"
-    >
-      show sidebar
+    <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">
+      <i class="fas fa-cog fa-spin"></i>
     </button>
 
-    <div
-      class="offcanvas offcanvas-end"
-      tabindex="-1"
-      id="offcanvasRight"
-      aria-labelledby="offcanvasRightLabel"
-      data-bs-backdrop="false"
-      style="width: 120px"
-    >
+    <div class="offcanvas offcanvas-end" tabindex="1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+      data-bs-backdrop="false" style="width: 120px; margin-top: 8%;">
       <div class="offcanvas-header">
-        <button
-          type="button"
-          class="btn-close text-reset"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <a
-          class="btn btn-sm disabled"
-          href="#"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title=""
-        >
+        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
           ORGANISM Batch
         </a>
-        <a
-          class="btn btn-sm disabled"
-          href="#"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title=""
-        >
+        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
           Import
         </a>
-        <a
-          class="btn btn-sm disabled"
-          href="#"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title=""
-        >
+        <a class="btn btn-sm disabled" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="">
           update page
         </a>
         <a class="btn btn-sm" href="{%url 'import'%}"> IMPORT </a>

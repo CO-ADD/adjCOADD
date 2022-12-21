@@ -17,17 +17,17 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
-from .models import  Organism, Taxonomy, Organism_Batch
+from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form, Stock_form
 
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
 class FilteredListView(ListView):
     filterset_class = None
-    paginate_by=15
+    paginate_by=50
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -105,7 +105,6 @@ def updateTaxonomy(req, slug=None):
     if req.method=='POST':
         form=Taxonomy_form(req.POST, instance=object_)
         if form.is_valid():
-            print("form is valid")   
             instance=form.save(commit=False)        
             instance.save(**kwargs)
             print("saved")
@@ -119,12 +118,10 @@ def updateTaxonomy(req, slug=None):
 def deleteTaxonomy(req, slug=None):
     kwargs={}
     kwargs['user']=req.user 
-    print('deleting view')
     object_=get_object_or_404(Taxonomy, urlname=slug)
     try:
         if req.method=='POST':
             object_.delete(**kwargs)
-            print("deleted")
     except Exception as err:
         print(err) 
     return redirect("taxo_card")
@@ -156,8 +153,6 @@ def createOrganism(req):
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism')
-        # Strain_Type_list=req.POST.getlist('strain_type')
-        # print(Strain_Type_list)
         form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
         print(f"request.Post.get {Organism_Name}")     
         if form.is_valid():
@@ -272,6 +267,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/readForm/OrganismBatch_card.html' 
     filterset_class=Batchfilter
 
+    
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createBatch(req):
@@ -280,14 +276,14 @@ def createBatch(req):
     form=Batch_form(req.user)
 
     if req.method=='POST':
-        Organism_Name=req.POST.get('search_organism')
-        form=Batch_form(req.user, Organism_Name, req.POST)
+        Organism_Id=req.POST.get('search_organism')
+        form=Batch_form(req.user, Organism_Id, req.POST)
         if form.is_valid():
             print("form is valid")  
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    print("form save")                 
+                    # print(instance.organism_id)                 
                     instance.save(**kwargs)
                     print("saved--view info")
                     return redirect(req.META['HTTP_REFERER']) 
@@ -337,6 +333,105 @@ def updateBatch(req, pk):
     }
    
     return render(req, "dorganism/updateForm/Batch_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteBatch(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
+
+
+############################################### Stock View ###########################################
+
+
+# @login_required
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def createStock(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Stock_form(req.user)
+
+    if req.method=='POST':
+        
+        form=Stock_form(req.user, req.POST)
+        if form.is_valid():
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    print("form save")                 
+                    instance.save(**kwargs)
+                    print("saved--view info")
+                    return redirect(req.META['HTTP_REFERER']) 
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'something wrong...{form.errors}')
+            return redirect(req.META['HTTP_REFERER'])      
+        
+
+    return render(req, 'dorganism/createForm/Stock_c.html', { 'form':form, }) 
+
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateBatch(req, pk):
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Batchupdate_form(req.user, instance=object_)
+    #-------------------------------------------------------------------------
+    if req.method=='POST':
+        form=Batchupdate_form(req.user, req.POST, instance=object_)
+        if "cancel" in req.POST:
+            return redirect(req.META['HTTP_REFERER'])
+        else:
+
+            try:
+                with transaction.atomic(using='dorganism'):        # testing!
+                    obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
+                    try:
+                        if form.is_valid():                  
+                            instance=form.save(commit=False)
+                            instance.save(**kwargs)
+                            return redirect(req.META['HTTP_REFERER'])
+                    except Exception as err:
+                        print(err)
+                   
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+                return redirect(req.META['HTTP_REFERER'])
+    context={
+        "form":form,
+        "object":object_,
+    }
+   
+    return render(req, "dorganism/updateForm/Batch_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteBatch(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
+
+
+
 
 
 

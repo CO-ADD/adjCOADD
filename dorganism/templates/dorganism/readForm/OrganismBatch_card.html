@@ -41,38 +41,41 @@
       <div class="row d-flex flex-wrap ">
         {% for object in page_obj %}
         <!-- object_list -->
-        <div class="col-md-2 vh-80 border border-2 m-2">
-
-
-          <p class="i bi-tag fw-bold lead fs-5 m-auto"><a class="card-link" href="#">{{object.orgbatch_id}} <br><span
-                class="fw-light fs-6">
-                (Organism ID:
-                {{object.organism_id}} )</span>
+        <div class="col-md-2 vh-80 m-2">
+          <div class="card">
+            <p class="fw-bold lead fs-5 m-auto"><a class="card-link" href="#">{{object.orgbatch_id}} <br><span
+                  class="fw-light fs-6">
+                  (Organism ID:
+                  {{object.organism_id}} )</span>
+              </a>
+            </p>
+            <hr>
+            <a id="createStock" class="card-link" style="float:right;"><i class="bi bi-plus"></i> Stock
             </a>
-          </p>
+            <div id="createStockModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+            </div>
+            <hr>
+            <ul class="fw-lighter fs-6 m-auto">
 
+              <li>
 
-          <ul class="fw-lighter fs-6 m-auto">
-            <li>Created by: {{object.acreated_by}}</li>
-            <li>Created at:{{object.acreated_at}}</li>
-            {%if object.aupdated_by%}
-            <li>Updated at: {{object.aupdated_by}}</li>
-            <li>Updated at: {{object.aupdated_at}}</li>
-            {%endif%}
-          </ul>
-          <p>
-          <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
-            aria-expanded="false" aria-controls="{{object.pk}}">
-            <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
-          </div>
+                {%for stock in object.orgbatchstock_set.all %}
+                <p>{{stock.biologist}}</p>
+                {%endfor%}
+              </li>
+            </ul>
+            <p>
+            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
+              aria-expanded="false" aria-controls="{{object.pk}}">
+              <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+            </div>
 
-          </p>
-          <div class="collapse" id="collapse{{object.pk}}">
+            </p>
+            <div class="collapse" id="collapse{{object.pk}}">
 
+              About...
 
-
-            About...
-
+            </div>
           </div>
         </div>
         {%endfor%}
@@ -84,4 +87,26 @@
 
   </div>
 </div>
+<script>
+
+  $(document).ready(function () {
+
+    let my_modal = $("#createStockModal");
+
+    $("#createStock").click(function () {
+      my_modal.load("{%url 'stock_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!")
+
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+
+      });
+    });
+  });
+
+</script>
+
+
 {%endblock%}

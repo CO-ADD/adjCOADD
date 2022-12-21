@@ -39,6 +39,29 @@ def search_organism(req):
     return JsonResponse({})
 
 
+def search_organism_id(req):
+    if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+        res=None
+        searchInput=req.POST.get('inputtext')
+        print(searchInput)
+        qs=Organism.objects.filter(organism_id__istartswith=searchInput)
+        print(qs)
+        if len(qs)>0 and len(searchInput)>0:
+            data=[]
+            for i in qs:
+                print(i.organism_id)
+                item={
+                    'name':i.organism_id,
+                }
+                data.append(item)
+            res=data
+        else:
+            res='No organism found...'
+        
+        return JsonResponse({'data':res})
+    return JsonResponse({})
+
+
 
 #==================================Filters======================================
 class Filterbase(django_filters.FilterSet):
@@ -61,6 +84,7 @@ class Filterbase(django_filters.FilterSet):
 
 
 class Organismfilter(Filterbase):
+    organism_id=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
     organism_name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
     organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class']))
     strain_type=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))

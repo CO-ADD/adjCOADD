@@ -8,6 +8,8 @@
       {%for field in fields%}
       <th>{{field}}</th>
       {%endfor%}
+      <th>NCBI Tax ID</th>
+      <th>Lineage</th>
     </tr>
   </thead>
 
@@ -17,6 +19,13 @@
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
+      <td><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+          target="_blank">{{object.tax_id}}</a></td>
+      <td>
+        {% for i in object.lineage%}
+        {{i}},
+        {%endfor%}
+      </td>
     </tr>
     {%endfor%}
   </tbody>

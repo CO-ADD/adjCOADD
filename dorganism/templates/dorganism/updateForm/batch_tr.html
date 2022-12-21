@@ -1,10 +1,15 @@
-<td>{{object.pk}}</td>
-<td>{{object.organism_id}}</td>
-<td>{{object.batch_no}}</td>
-<td>{{object.batch_notes}}</td>
 
-<td>
+{%for value in object.get_values%}
+<td>{{value}}</td>
+{%endfor%}
 
-    <button hx-get="{% url 'batch_update' object.pk %}" hx-taget="#databatch{{object.pk}}">update
+<td style="width: 10%;">
+
+    <button hx-get="{% url 'batch_update' object.pk %}" hx-taget="#databatch{{object.pk}}"><i class="fa fa-pencil"
+            aria-hidden="true"></i>
     </button>
+    <div style="float: right">
+
+        {%include 'dorganism/deleteForm/Batch_del.html'%}
+    </div>
 </td>
