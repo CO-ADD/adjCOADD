@@ -383,22 +383,22 @@ def createStock(req):
 
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def updateBatch(req, pk):
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+def updateStock(req, pk):
+    object_=get_object_or_404(Organism_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
    
-    form=Batchupdate_form(req.user, instance=object_)
+    form=Stock_form(req.user, instance=object_)
     #-------------------------------------------------------------------------
     if req.method=='POST':
-        form=Batchupdate_form(req.user, req.POST, instance=object_)
+        form=Stock_form(req.user, req.POST, instance=object_)
         if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])
         else:
 
             try:
                 with transaction.atomic(using='dorganism'):        # testing!
-                    obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
+                    obj = Organism_Stock.objects.select_for_update().get(pk=pk)
                     try:
                         if form.is_valid():                  
                             instance=form.save(commit=False)
@@ -415,13 +415,13 @@ def updateBatch(req, pk):
         "object":object_,
     }
    
-    return render(req, "dorganism/updateForm/Batch_u.html", context)
+    return render(req, "dorganism/updateForm/Stock_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
-def deleteBatch(req, pk):
+def deleteStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    object_=get_object_or_404(Organism_Stock, pk=pk)
     try:
         object_.delete(**kwargs)
         print("deleted")
