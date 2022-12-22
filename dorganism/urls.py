@@ -34,7 +34,7 @@ urlpatterns = [
     path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
     path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
   
-    #=======================Data Export/Import===================================================================
+    #=======================Data Export/Import ===================================================================
     path('exportData/', exportCSV, name="dataexport"),
     path('import_organism/', import_excel_organism, name="importOrg"),
     path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),

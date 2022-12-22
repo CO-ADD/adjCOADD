@@ -3,69 +3,53 @@
 {% block content %}
 {%include 'utils/topbar.html'%}
 <div class="d-flex flex-row bg-transparent justify-content-between vh-100">
+  <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
+  <!-- Main View -->
   <div class="main d-flex flex-column">
-
-    <div class="d-flex flex-wrap justify-content-between">
-
-      {% include 'utils/pagination.html'%}
+    <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+      <!-- Call Create Taxonomy  Modal-->
       <a id="createOrganism" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
       </a>
       <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
       </div>
-      <script>
+      <!-- End---------------------- -->
 
-        $(document).ready(function () {
-
-          let my_modal = $("#createOrganismModal");
-
-          $("#createOrganism").click(function () {
-            my_modal.load("{%url 'org_create'%}", function (response) {
-              if (response == "Permission Not Granted") {
-                alert("permission!")
-
-              } else {
-                my_modal.modal("show"); // Open Modal
-              }
-
-            });
-          });
-        });
-
-      </script>
-      <div>
-
+      {% include 'utils/pagination.html'%}
+      <!-- Swich Table/Card View -->
+      <div class="m-0">
         <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
         <a href="{%url 'org_card'%}" class="btn btn-outline-secondary">
           <i class="bi bi-grid-fill"></i>
-
         </a>
       </div>
+      <!-- End -->
     </div>
-
-
+    <!-- Card View Content -->
     <div class="contain-fluid">
-      <div class="row d-flex flex-wrap ">
+      <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
-        <!-- object_list -->
         <div class="col-md-2 vh-80 m-0 p-1">
-          <div class="card m-0 px-1">
+          <div class="card ms-3 px-1">
 
-            <p class="fw-bold lead fs-6 m-auto"><a class="card-link" href="{%url 'org_detail' object.pk %}">
+            <p class="card-title px-1 fw-bold text-uppercase"><a class="card-link"
+                href="{%url 'org_detail' object.pk %}">
                 {{object.organism_id}}</a>
             </p>
 
-            <p class="fw-lighter m-auto" style="font-size: x-small;">{{object.strain_code}}</p>
-            <p class="fw-lighter fs-6 m-auto">
+            <p class=" card-text m-0 fst-normal" style="font-size: x-small;">{{object.strain_code}}</p>
+            <p class=" card-text m-0 fst-italic">
               {{object.organism_name}}
             </p>
+            <p class=" card-text m-0 fst-normal">{{object.strain_ids}}</p>
 
 
-            <p class="fw-lighter fs-6 m-auto">
-              <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.strain_ids}}
-            " target="_blank"> {{object.strain_ids}}</a>
+
+            <p class="card-text m-0 fst-normal">
+              <a class="card-link" style="float: right" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}
+            " target="_blank"> {{object.tax_id}}</a>
             </p>
-            <p class="fw-lighter fs-6 m-auto">
+            <p class=" card-text m-0 fst-normal fs-6">
 
               {%for type in object.strain_type%}
               {{type}},
@@ -80,11 +64,9 @@
 
             </p>
             <div class="collapse" id="collapse{{object.pk}}">
-
-              res_property, gen_property
-
-              About...
-
+              <p class=" card-text m-0 fst-normal">{{object.res_property}}</p>
+              <br>
+              <p class=" card-text m-0 fst-normal">{{object.gen_property}}</p>
             </div>
           </div>
         </div>
@@ -96,4 +78,24 @@
 
   </div>
 </div>
+<script>
+
+  $(document).ready(function () {
+
+    let my_modal = $("#createOrganismModal");
+
+    $("#createOrganism").click(function () {
+      my_modal.load("{%url 'org_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!")
+
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+
+      });
+    });
+  });
+
+</script>
 {%endblock%}

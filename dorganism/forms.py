@@ -98,4 +98,3 @@ class Stock_form(Batchupdate_form):
     class Meta:
         model =OrgBatch_Stock
         fields=ORGANISM_STOCK_modelFIELDs
-

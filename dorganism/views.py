@@ -433,7 +433,6 @@ def deleteStock(req, pk):
 
 
 
-
 ############################################### Import CSV View ###########################################
 import pandas as pd
 from django.conf import settings
@@ -547,20 +546,20 @@ def import_excel_organism(req):
 
 
 ############################################### Export CSV View ###########################################
-# # @user_passes_test(lambda u: u.is_admin)
-# @permission_required('importdata')
+import csv
+import datetime 
+
 @login_required
+@user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def exportCSV(req):
-    response=HttpResponse(content_type='text/csv')
-   
-    writer=csv.writer(response)
-    writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"])#['id', 'drug_name','drug_mol']
-    query=Taxonomy.objects.all()
-    comp_list=[comp for comp in query]
+    queryset=Taxonomy.objects.all()
+    query= Taxonomyfilter(req.GET, queryset=queryset).qs
+    response = HttpResponse(content_type='text/csv')
+    file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
 
-    for comp in comp_list:
-        writer.writerow(['S', 'O','C', "Cl", "NC", "NP", "T","D", "Di", "Lineaage"]) #[comp.id, comp.drug_name, comp.smiles]
-
-    response['Content-Disposition']='attachment; filename="Taxo_export.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['name', 'class','lineage',])
+    for i in query.values_list('organism_name','org_class', 'lineage',):
+        writer.writerow(i)
+    response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
     return response
-   

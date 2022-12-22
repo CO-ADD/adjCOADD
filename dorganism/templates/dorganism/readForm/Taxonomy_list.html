@@ -1,7 +1,7 @@
 <!--prettier-ignore-->
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} mysite{% endblock %}
+{% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 {%include 'utils/topbar.html'%}
@@ -12,6 +12,7 @@
 
     <div class="main d-flex flex-column" style="height: fit-content;">
       <div class="d-flex flex-wrap justify-content-between m-0">
+
 
         {% include 'utils/pagination.html'%}
         <div>
@@ -45,11 +46,6 @@
           });
         </script>
       </div>
-
-
-
-
-
     </div>
   </div>
 </div>
