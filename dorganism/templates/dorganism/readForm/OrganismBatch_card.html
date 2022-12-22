@@ -50,10 +50,30 @@
               </a>
             </p>
             <hr>
-            <a id="createStock" class="card-link" style="float:right;"><i class="bi bi-plus"></i> Stock
+            <a id="createStockfor{{object.pk}}" class="card-link" style="float:right;"><i class="bi bi-plus"></i> Stock
             </a>
-            <div id="createStockModal" class="modal fade" role="dialog" data-bs-backdrop="static">
+            <div id="createStockModal{{object.pk}}" class="modal fade" role="dialog" data-bs-backdrop="static">
             </div>
+            <script>
+
+              $(document).ready(function () {
+
+                let my_modal = $("#createStockModal{{object.pk}}");
+
+                $("#createStockfor{{object.pk}}").click(function () {
+                  my_modal.load("{%url 'stock_create'%}", function (response) {
+                    if (response == "Permission Not Granted") {
+                      alert("permission!")
+
+                    } else {
+                      my_modal.modal("show"); // Open Modal
+                    }
+
+                  });
+                });
+              });
+
+            </script>
             <hr>
             <ul class="fw-lighter fs-6 m-auto">
 
@@ -87,26 +107,7 @@
 
   </div>
 </div>
-<script>
 
-  $(document).ready(function () {
-
-    let my_modal = $("#createStockModal");
-
-    $("#createStock").click(function () {
-      my_modal.load("{%url 'stock_create'%}", function (response) {
-        if (response == "Permission Not Granted") {
-          alert("permission!")
-
-        } else {
-          my_modal.modal("show"); // Open Modal
-        }
-
-      });
-    });
-  });
-
-</script>
 
 
 {%endblock%}
