@@ -32,10 +32,15 @@ try:
 except KeyError as e:
    raise RuntimeError("Could not find a SECRET_KEY in environment") from e
 
+# Second choice for secret key
+# with open('/etc/secret_key.txt') as f:
+#     SECRET_KEY = f.read().strip()
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost"]
+ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 
 # Application definition
