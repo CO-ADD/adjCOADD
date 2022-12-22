@@ -1,7 +1,7 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_taxonomy" class="cell-border" style="width: 100%">
+<table id="datatable_taxonomy" class="display cell-border" style="width: 100%">
   <thead>
 
     <tr>
@@ -9,7 +9,7 @@
       <th>{{field}}</th>
       {%endfor%}
       <th>NCBI Tax ID</th>
-      <th>Lineage</th>
+      <th style="width: 20%;">Lineage</th>
     </tr>
   </thead>
 
@@ -22,9 +22,12 @@
       <td><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
           target="_blank">{{object.tax_id}}</a></td>
       <td>
-        {% for i in object.lineage%}
-        {{i}},
-        {%endfor%}
+        <div style="width:300px ; overflow: auto; margin:0; padding:0">
+
+          {% for i in object.lineage%}
+          {{i}},
+          {%endfor%}
+        </div>
       </td>
     </tr>
     {%endfor%}
@@ -39,6 +42,9 @@
     $("#datatable_taxonomy").DataTable({
       searching: false,
       paging: false,
+      fixedColumns: {
+        heightMatch: 'none'
+      }
     });
   });
 </script>

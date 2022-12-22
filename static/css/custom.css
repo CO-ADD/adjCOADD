@@ -70,6 +70,15 @@
   font-style: normal;
 }
 
+th,
+td {
+  white-space: nowrap;
+}
+
+tr {
+  height: 30px;
+}
+
 .navbar {
   background-color: var(--bs-heading-bg);
 }
@@ -139,13 +148,13 @@ body {
   /* text-transform: uppercase; */
 }
 
-#top-alert {
+/* #top-alert {
   width: 100%;
   background-color: rgb(160, 160, 160);
   height: 35px;
   display: flex;
   justify-content: space-between;
-}
+} */
 
 .info {
   color: var(--bs-inform-color);

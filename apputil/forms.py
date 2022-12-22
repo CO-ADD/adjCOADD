@@ -1,4 +1,3 @@
-
 from django import forms
 from .models import  ApplicationUser, Dictionary
 from django.contrib.auth.forms import AuthenticationForm

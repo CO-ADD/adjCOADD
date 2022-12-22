@@ -8,6 +8,7 @@
       {%for field in fields%}
       <th>{{field}}</th>
       {%endfor%}
+      <th>NCBI Tax ID</th>
     </tr>
   </thead>
 
@@ -17,6 +18,12 @@
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
+      <td>
+        <a class="card-link" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}
+        " target="_blank"> {{object.tax_id}}</a>
+
+        </a>
+      </td>
     </tr>
     {%endfor%}
   </tbody>
