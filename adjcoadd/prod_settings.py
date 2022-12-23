@@ -207,3 +207,13 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 # SECURE_HSTS_SECONDS             = 1000000
 # SECURE_FRAME_DENY               = True
 
+# Django Session timeout setting
+
+# Django Session timeout setting
+INACTIVE_TIME= 10
+SESSION_COOKIE_AGE=60
+SESSION_EXPIRE_SECONDS = 10   
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_IDLE_TIMEOUT = 10
+

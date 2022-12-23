@@ -349,7 +349,18 @@ def deleteBatch(req, pk):
 
 
 ############################################### Stock View ###########################################
+class StockListView(LoginRequiredMixin, ListView):
+    login_url = '/'
+    model=OrgBatch_Stock
+    template_name = 'dorganism/readForm/OrganismStock_list.html' 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'))
+        context["object_list"]=project
+        context["stock_fields"]=OrgBatch_Stock.get_fields()
+        return context
+    
 
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -384,7 +395,7 @@ def createStock(req):
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateStock(req, pk):
-    object_=get_object_or_404(Organism_Stock, pk=pk)
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
    
@@ -398,7 +409,7 @@ def updateStock(req, pk):
 
             try:
                 with transaction.atomic(using='dorganism'):        # testing!
-                    obj = Organism_Stock.objects.select_for_update().get(pk=pk)
+                    obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
                     try:
                         if form.is_valid():                  
                             instance=form.save(commit=False)
@@ -421,7 +432,7 @@ def updateStock(req, pk):
 def deleteStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    object_=get_object_or_404(Organism_Stock, pk=pk)
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     try:
         object_.delete(**kwargs)
         print("deleted")

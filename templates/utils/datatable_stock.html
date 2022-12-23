@@ -1,0 +1,54 @@
+<table id="datatable_stock" class="cell-border" style="width: 100%">
+  <thead>
+    <tr>
+      <a id="createStock" class="card-link text-success" style="float: right">Add New
+        <i class="bi bi-plus"></i>
+      </a>
+      {%for th in stock_fields %}
+      <th style="width: fit-content; height: fit-content; padding: 0">
+        {{th}}
+      </th>
+      {%endfor%}
+      <th>Update</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in object_list %}
+    <tr class="tablerow-view" id="datastock{{object.pk}}">
+      {%for value in object.get_values%}
+      <td>{{value}}</td>
+      {%endfor%}
+
+      <td style="width: 10%;">
+
+        <button hx-get="{% url 'stock_update' object.pk %}" hx-taget="#databatch{{object.pk}}"><i class="fa fa-pencil"
+            aria-hidden="true"></i>
+        </button>
+        <span class="">
+          {%include 'dorganism/deleteForm/Stock_del.html'%}
+        </span>
+
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+<div id="createStockModal" class="modal fade" role="dialog"></div>
+
+<script>
+  $(document).ready(function () {
+    let my_modal = $("#createStockModal");
+
+    $("#createStock").click(function () {
+      my_modal.load("{%url 'stock_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
+    });
+  });
+</script>

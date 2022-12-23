@@ -1,7 +1,7 @@
 <!--prettier-ignore-->
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} mysite{% endblock %}
+{% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 <div class="mx-2 border border-2">
@@ -43,14 +43,14 @@
 
         </script>
 
-        <script>
+        <!-- <script>
             $(document).ready(function () {
                 let my_modal = $('#OrganismUpdateModal');
                 if (document.formHasErrors) {
                     my_modal.modal('show');
                 }
             })
-        </script>
+        </script> -->
 
     </div>
     <div class="accordion" id="organism-detail">
@@ -67,7 +67,7 @@
                 </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample">
+                data-bs-parent="#organism-detail">
                 <div class="accordion-body">
 
                     <!-- <p>{{Organism_Name}}</p> -->
@@ -103,7 +103,7 @@
                 </button>
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample">
+                data-bs-parent="#organism-batch-detail">
                 <div class="accordion-body">
                     <h5>{%include 'utils/message.html'%}</h5>
 
@@ -118,12 +118,14 @@
                                     <th>{{th}}</th>
                                     {%endfor%}
                                     <th style="width: 10em;">EDIT</th>
+                                    <th>Stock</th>
                                     <!-- <th>update</th> -->
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for object in batch_obj %}
+
                                 <tr id="databatch{{object.pk}}">
                                     <!-- ORGANISM_BATCH_modelFIELDs = ["orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","biologist"] -->
                                     {%include 'dorganism/updateForm/batch_tr.html'%}

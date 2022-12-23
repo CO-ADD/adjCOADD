@@ -79,8 +79,7 @@
                         <th scope="row" class="table-light"> Panel</th>
                         <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_panel">
 
-                            <div class="detail">
-
+                            <div class="detail border" style="white-space:pre; padding:0">
                                 {%for i in object.strain_panel%}
                                 <span style="font-size: 12px;">{{i}} |</span>
                                 {%endfor%}
@@ -331,11 +330,15 @@
     <div class="row border">
         <div class=" d-flex flex-row flex-wrap">
 
-            <div class="p-2 bd-highlight">Created at: {{object.acreated_at}}</div>
-            <div class="p-2 bd-highlight">Created by: {{object.acreated_by}}</div>
+            <div class="p-2 bd-highlight">Created at: {{object.acreated_at |date:"d M, Y" }}
+                <!--  -->
+                {{object.acreated_at|time:"H:i" }} AEST
+            </div>
+            <div class="p-2 bd-highlight">by: {{object.acreated}}</div>
             {%if object.aupdated_at%}
-            <div class="p-2 bd-highlight">Modified at: {{object.aupdated_at}}</div>
-            <div class="p-2 bd-highlight">Modified by: {{object.aupdated_by}}</div>
+            <div class="p-2 bd-highlight">Modified at: {{object.aupdated_at |date:"d M, Y" }}{{
+                object.aupdated_at|time:"H:i" }} AEST</div>
+            <div class="p-2 bd-highlight">Modified by: {{object.aupdated}}</div>
             {%endif%}
         </div>
 

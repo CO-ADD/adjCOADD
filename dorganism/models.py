@@ -125,6 +125,7 @@ class Organism(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
     growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
     strain_notes= models.CharField(max_length=250, blank=True, verbose_name = "Strain Notes")
+    # tax_id contains a link, check django link field or class
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
@@ -389,6 +390,21 @@ class OrgBatch_Stock(AuditModel):
                 print(f"[OrgBatch Not Found] {StockID}")
             retInstance = None
         return(retInstance)
+
+      #------------------------------------------------
+    #Method Get Fields, Values List
+    @classmethod
+    def get_fields(self):
+        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_STOCK_FIELDs]
+        return select_fields
+    #------------------------------------------------
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.verbose_name in ORGANISM_STOCK_FIELDs:    
+                value_list.append(field.value_to_string(self))
+        print(value_list)
+        return value_list
 
 #=================================================================================================
 class Organism_Culture(AuditModel):
