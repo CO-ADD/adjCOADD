@@ -125,7 +125,6 @@
                             </thead>
                             <tbody>
                                 {% for object in batch_obj %}
-
                                 <tr id="databatch{{object.pk}}">
                                     <!-- ORGANISM_BATCH_modelFIELDs = ["orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","biologist"] -->
                                     {%include 'dorganism/updateForm/batch_tr.html'%}

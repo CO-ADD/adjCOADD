@@ -360,7 +360,7 @@ class StockListView(LoginRequiredMixin, ListView):
         context["object_list"]=project
         context["stock_fields"]=OrgBatch_Stock.get_fields()
         return context
-    
+
 
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -440,12 +440,6 @@ def deleteStock(req, pk):
     except Exception as err:
         print(err)
     return redirect('/')
-
-
-
-
-
-
 
 ############################################### Import CSV View ###########################################
 import pandas as pd

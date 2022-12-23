@@ -11,8 +11,8 @@
       <th style="width: fit-content; height: fit-content; padding: 0">
         {{th}}
       </th>
+
       {%endfor%}
-      <th>Update</th>
     </tr>
   </thead>
 
@@ -22,26 +22,20 @@
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
-      <td>
-        <a href="{%url 'batch_update' object.pk %}">Edit</a>
-      </td>
     </tr>
+    <form action="">
+      <tr class="tableform-view not-visible">
 
+        {%for value in object.get_values%}
+        <td>{{value}}</td>
+        {%endfor%}
+      </tr>
+    </form>
 
     {%endfor%}
   </tbody>
 </table>
-<form action="{%url 'batch_update' object.pk %}" class="">
-  <tr class="tableform-view">
 
-    {%for field in form %}
-    <td>{{form.field}}</td>
-    {%endfor%}
-    <td><input type="submit" value="Submit"></td>
-    <!-- <td><input type="submit" value="Submit"></td> -->
-
-  </tr>
-</form>
 <div id="createBatchModal" class="modal fade" role="dialog"></div>
 
 <script>
