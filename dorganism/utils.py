@@ -17,7 +17,6 @@ def search_organism(req):
         searchInput=req.POST.get('inputtext')
         print(searchInput)
         qs=Taxonomy.objects.filter(organism_name__istartswith=searchInput)
-        print(qs)
         if len(qs)>0 and len(searchInput)>0:
             data=[]
             for i in qs:
@@ -43,9 +42,7 @@ def search_organism_id(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
         res=None
         searchInput=req.POST.get('inputtext')
-        print(searchInput)
         qs=Organism.objects.filter(organism_id__istartswith=searchInput)
-        print(qs)
         if len(qs)>0 and len(searchInput)>0:
             data=[]
             for i in qs:
