@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
-    "psqlextra",
+    # "psqlextra",
     'apputil.apps.ApptilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
@@ -96,65 +96,65 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-        'default': {
-     #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'default': {
+    #  #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD':'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
-        'dorganism': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD':'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     },
+    #     'dorganism': {
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD': 'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     },
 
-        'ddrug': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        }
+    #     'ddrug': {
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD': 'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     }
 
    
     # ==================For Local Test===========================================
-#    'default': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
+   'default': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
 
-#       'PORT': '5432',
-#     },
-#     'dorganism': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-#       'NAME': 'orgdb',
+      'PORT': '5432',
+    },
+    'dorganism': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+      'NAME': 'orgdb',
 
-#       'TEST': {
-#           'NAME': 'mytestdatabase2',
-#       },
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#    },
-#     'ddrug': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     }
+      'TEST': {
+          'NAME': 'mytestdatabase2',
+      },
+      'HOST': 'Localhost',
+      'PORT': '5432',
+   },
+    'ddrug': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    }
 
 
 }
@@ -196,6 +196,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS=[BASE_DIR/"static",]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -224,10 +226,11 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 # CSRF_COOKIE_SECURE=True
 
 # Django Session timeout setting
-INACTIVE_TIME= 10
-SESSION_COOKIE_AGE=60
-SESSION_EXPIRE_SECONDS = 10   
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
+INACTIVE_TIME= 180
+# SESSION_COOKIE_AGE=120
+# SESSION_EXPIRE_SECONDS = 120   
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_IDLE_TIMEOUT = 10
+# SESSION_IDLE_TIMEOUT = 120
+LOGOUT_REDIRECT_URL="/"
 

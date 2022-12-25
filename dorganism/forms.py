@@ -77,13 +77,13 @@ class Batch_form(forms.ModelForm):
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_modelFIELDs+["organism_id"]
-        exclude=['orgbatch_id']
+        exclude=['orgbatch_id', 'stock_level']
 
 class Batchupdate_form(forms.ModelForm):
-    
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_modelFIELDs
+        exclude=['stock_level']
 
     def __init__(self, user, *args, **kwargs): 
         user=user
@@ -92,9 +92,12 @@ class Batchupdate_form(forms.ModelForm):
 
 
 # ===============================Stock Form-------------------------------
-class Stock_form(Batchupdate_form):
-
-   
+class Stock_form(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs): 
+        user=user
+        super().__init__(*args, **kwargs)
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+  
     class Meta:
         model =OrgBatch_Stock
         fields=ORGANISM_STOCK_modelFIELDs

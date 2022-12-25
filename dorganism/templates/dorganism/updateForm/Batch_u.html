@@ -1,6 +1,31 @@
-<form id="BatchUpdateForm" method="POST" action="{%url 'batch_update' object.pk %}" style="width:100%;">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="update">
-    <input type="submit" value="cancel" name="cancel">
-</form>
+<tr hx-trigger='cancel' class='editing' hx-get="{%url 'org_detail' object.organism_id.pk %}">
+    <td></td>
+    <td>{{form.orgbatch_id}}
+    </td>
+    <td>
+
+        {{form.supplier}}
+    </td>
+    <td>{{form.stock_date}}</td>
+    <td>{{form.stock_level}}</td>
+    <td>{{form.biologist}}</td>
+
+
+    <td>
+        <input type="submit" value="update" hx-put="{%url 'batch_update' pk=object.pk%}" hx-include="closest tr"
+            hx-trigger="click">
+        <a href="{% url 'org_detail' object.organism_id.pk %}">Back</a>
+    </td>
+
+</tr>
+
+<script>
+    $(document).ready(function () {
+        console.log("ready...")
+        $('input[name="update"]').click(() => {
+            console.log(form.body)
+        })
+    })
+
+
+</script>

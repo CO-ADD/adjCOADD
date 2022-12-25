@@ -43,6 +43,15 @@
 
         </script>
 
+        <!-- <script>
+            $(document).ready(function () {
+                let my_modal = $('#OrganismUpdateModal');
+                if (document.formHasErrors) {
+                    my_modal.modal('show');
+                }
+            })
+        </script> -->
+
     </div>
     <div class="accordion" id="organism-detail">
         <div class="accordion-item">
@@ -85,57 +94,20 @@
         </div>
     </div>
 
-    <div class="accordion" id="organism-batch-detail">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Organism Batch
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#organism-batch-detail">
-                <div class="accordion-body">
-                    <h5>{%include 'utils/message.html'%}</h5>
-
-                    <div class="table-responsive">
-                        <a id="createBatch" class="card-link text-success" style="float: right">Add New
-                            <i class="bi bi-plus"></i>
-                        </a>
-
-                        <table id="datatable_batch" class="cell-border" style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th>Stock</th>
-                                    {%for th in batch_fields %}
-                                    <th>{{th}}</th>
-                                    {%endfor%}
-                                    <th style="width: 10em;">EDIT</th>
 
 
-                                </tr>
-                            </thead>
-                            <tbody hx-target="closest tr" hx-swap="outerHTML">
-                                {% for object_batch in batch_obj %}
-
-
-                                {%include 'dorganism/updateForm/batch_tr.html'%}
-
-
-                                {%endfor%}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div>
+        {% for object in batch_obj %}
+        <div id="batch{{object.pk}}">
+            {%include 'dorganism/partial/batch_div.html'%}
 
 
         </div>
 
 
+        {%endfor%}
+
     </div>
-
-
     {% load static %}
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
     <script src="{% static 'js/editableTable.js' %}" type="text/javascript"></script>
@@ -157,11 +129,7 @@
         integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
         crossorigin="anonymous"></script>
 
-    <script>
-        document.body.addEventListener('htmx:configRequest', (event) => {
-            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-        })
-    </script>
+
     <div id="createBatchModal" class="modal fade" role="dialog"></div>
 
     <script>

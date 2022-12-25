@@ -148,7 +148,6 @@ def createOrganism(req):
     '''  
     kwargs={}
     kwargs['user']=req.user
-    print(f"in view: {req.user}")
 
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
@@ -183,11 +182,13 @@ def detailOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
     form=UpdateOrganism_form(user,instance=object_)
-    print(pk)
     context["object"]=object_
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id)
     context["batch_fields"]=Organism_Batch.get_fields()
+
+
+
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================
@@ -298,39 +299,38 @@ def createBatch(req):
 
     return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
 
+from django.http import QueryDict
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateBatch(req, pk):
+    print(req.method)
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
     kwargs={}
     kwargs['user']=req.user
    
     form=Batchupdate_form(req.user, instance=object_)
-    #-------------------------------------------------------------------------
-    if req.method=='POST':
-        form=Batchupdate_form(req.user, req.POST, instance=object_)
-        if "cancel" in req.POST:
-            return redirect(req.META['HTTP_REFERER'])
-        else:
-
-            try:
-                with transaction.atomic(using='dorganism'):        # testing!
-                    obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
-                    try:
-                        if form.is_valid():                  
-                            instance=form.save(commit=False)
-                            instance.save(**kwargs)
-                            return redirect(req.META['HTTP_REFERER'])
-                    except Exception as err:
-                        print(err)
-                   
-            except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-                return redirect(req.META['HTTP_REFERER'])
+   
     context={
         "form":form,
         "object":object_,
     }
+    #-------------------------------------------------------------------------
+    
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()
+        print(qd)
+        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
+        form=Batchupdate_form(req.user, data=qd, instance=object_batch, )
+        print(qd)
+        
+        if form.is_valid():
+            kwargs={}
+            kwargs['user']=req.user                  
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            return render(req, "dorganism/updateForm/Batch_u.html", context)
+            # return render(req, "dorganism/updateForm/Batch_u.html", context)  
+                
    
     return render(req, "dorganism/updateForm/Batch_u.html", context)
 
