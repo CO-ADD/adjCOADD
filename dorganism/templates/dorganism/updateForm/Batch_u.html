@@ -14,18 +14,7 @@
     <td>
         <input type="submit" value="update" hx-put="{%url 'batch_update' pk=object.pk%}" hx-include="closest tr"
             hx-trigger="click">
-        <a href="{% url 'org_detail' object.organism_id.pk %}">Back</a>
+        <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
     </td>
 
 </tr>
-
-<script>
-    $(document).ready(function () {
-        console.log("ready...")
-        $('input[name="update"]').click(() => {
-            console.log(form.body)
-        })
-    })
-
-
-</script>

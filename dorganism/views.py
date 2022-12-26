@@ -328,7 +328,11 @@ def updateBatch(req, pk):
             kwargs['user']=req.user                  
             instance=form.save(commit=False)
             instance.save(**kwargs)
-            return render(req, "dorganism/updateForm/Batch_u.html", context)
+            context={
+                "object_batch":object_batch,
+                'object':object_batch  # this object refer to the same entry of object_batch
+            }
+            return render(req, "dorganism/updateForm/batch_tr.html", context)
             # return render(req, "dorganism/updateForm/Batch_u.html", context)  
                 
    

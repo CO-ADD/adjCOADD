@@ -136,40 +136,40 @@
 </script>
 
 <script>
-    // let darkMode_screen = localStorage.getItem('darkMode');
-    // const darkModeToggle = document.querySelector('#dark-mode');
+    let darkMode_screen = localStorage.getItem('darkMode');
+    const darkModeToggle = document.querySelector('#dark-mode');
 
-    // // check if dark mode enabled
-    // // if off turn on
-    // // if on turn off
+    // check if dark mode enabled
+    // if off turn on
+    // if on turn off
 
-    // const enabledarkMode = () => {
-    //     // darkModeToggle.checked = true;
-    //     document.body.classList.add('darkMode');
-    //     localStorage.setItem('darkMode', 'enabled');
-    // }
-    // const disabledarkMode = () => {
-    //     document.body.classList.remove('darkMode');
+    const enabledarkMode = () => {
+        // darkModeToggle.checked = true;
+        document.body.classList.add('darkMode');
+        localStorage.setItem('darkMode', 'enabled');
+    }
+    const disabledarkMode = () => {
+        document.body.classList.remove('darkMode');
 
-    //     localStorage.setItem('darkMode', null);
-    // }
+        localStorage.setItem('darkMode', null);
+    }
 
-    // if (darkMode_screen === 'enabled') {
-    //     darkModeToggle.checked = true;
-    //     enabledarkMode();
-    // }
+    if (darkMode_screen === 'enabled') {
+        darkModeToggle.checked = true;
+        enabledarkMode();
+    }
 
-    // darkModeToggle.addEventListener('click', (e) => {
-    //     darkMode_screen = localStorage.getItem('darkMode');
-    //     if (darkMode_screen !== 'enabled') {
-    //         enabledarkMode();
-    //         e.target.checked = true;
-    //         console.log(e.target.checked)
-    //     } else {
-    //         console.log(e.target.checked)
-    //         disabledarkMode();
-    //         e.target.checked = false;
-    //     }
-    // });
+    darkModeToggle.addEventListener('click', (e) => {
+        darkMode_screen = localStorage.getItem('darkMode');
+        if (darkMode_screen !== 'enabled') {
+            enabledarkMode();
+            e.target.checked = true;
+            console.log(e.target.checked)
+        } else {
+            console.log(e.target.checked)
+            disabledarkMode();
+            e.target.checked = false;
+        }
+    });
 
 </script>
