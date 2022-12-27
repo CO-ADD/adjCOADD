@@ -136,19 +136,19 @@
 </script>
 
 <script>
-    let darkMode_screen = localStorage.getItem('darkMode');
-    const darkModeToggle = document.querySelector('#dark-mode');
+    var darkMode_screen = localStorage.getItem('darkMode');
+    var darkModeToggle = document.querySelector('#dark-mode');
 
     // check if dark mode enabled
     // if off turn on
     // if on turn off
 
-    const enabledarkMode = () => {
+    function enabledarkMode() {
         // darkModeToggle.checked = true;
         document.body.classList.add('darkMode');
         localStorage.setItem('darkMode', 'enabled');
     }
-    const disabledarkMode = () => {
+    function disabledarkMode() {
         document.body.classList.remove('darkMode');
 
         localStorage.setItem('darkMode', null);

@@ -9,7 +9,6 @@
         {%include 'utils/datatable_stock.html'%}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
         <button type="button" class="btn m-auto mt-5" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
       </div>
     </div>
@@ -19,21 +18,7 @@
 {%load static%}
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
-<script>
-  function closeModal() {
-    var container = document.getElementById("modals-here")
-    var backdrop = document.getElementById("modal-backdrop")
-    var modal = document.getElementById("modal")
 
-    modal.classList.remove("show")
-    backdrop.classList.remove("show")
-
-    setTimeout(function () {
-      container.removeChild(backdrop)
-      container.removeChild(modal)
-    }, 200)
-  }
-</script>
 
 <script>
   $(document).ready(function () {

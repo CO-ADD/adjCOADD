@@ -1,11 +1,11 @@
 <!-- trigger modal -->
-<a class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<a class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#modal{{object.pk}}">
     <i class="fa-solid fa-trash"></i>
 </a>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal{{object.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal{{object.pk}}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

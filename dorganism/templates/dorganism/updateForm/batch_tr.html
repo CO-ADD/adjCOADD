@@ -1,11 +1,10 @@
 <tr>
 
     <td>
-        <button hx-get="{% url 'stock_list' object_batch.pk %}" hx-target="#modals-here" hx-trigger="click"
-            _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i
-                class="bi bi-box-arrow-up-left"></i></button>
-
-        <div id="modals-here"></div>
+        <div id="modal{{object_batch.pk}}">
+            <a class=""><i class="bi bi-box-arrow-up-left"></i></a>
+        </div>
+        <div id="Stock{{object_batch.pk}}" class="modal fade " role="dialog" data-bs-backdrop="static"></div>
     </td>
     {%for value in object_batch.get_values%}
     <td> {{value}}</td>
@@ -21,3 +20,27 @@
 
     </td>
 </tr>
+
+
+
+{%load static%}
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        console.log("batchlist...")
+        btn = "#" + "modal{{object_batch.pk}}"
+        let my_modal = $('#Stock{{object_batch.pk}}');
+        $(`${btn} a`).click(function () {
+            my_modal.load("{% url 'stock_list' object_batch.pk %}", function (response) {
+                if (response == "Permission Not Granted") {
+                    alert("permission!")
+
+                } else {
+                    my_modal.modal("show"); // Open Modal
+                }
+            });
+        });
+
+    });
+
+</script>

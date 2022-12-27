@@ -184,7 +184,7 @@ def detailOrganism(req, pk):
     form=UpdateOrganism_form(user,instance=object_)
     context["object"]=object_
     context["form"]=form
-    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id)
+    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields()
 
 
@@ -286,7 +286,7 @@ def createBatch(req):
                     instance=form.save(commit=False) 
                     # print(instance.organism_id)                 
                     instance.save(**kwargs)
-                    print("saved--view info")
+                    print("new Batch saved--view info")
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -342,6 +342,7 @@ def updateBatch(req, pk):
 def deleteBatch(req, pk):
     kwargs={}
     kwargs['user']=req.user
+    print(f'batchID {pk}')
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
     try:
         object_.delete(**kwargs)
@@ -360,7 +361,8 @@ class StockListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'))
+        project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'), astatus__gte=0)
+        
         context["object_list"]=project
         context["stock_fields"]=OrgBatch_Stock.get_fields()
         return context
@@ -400,12 +402,13 @@ def createStock(req):
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateStock(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+    print(object_)
     kwargs={}
     kwargs['user']=req.user
    
     form=Stock_form(req.user, instance=object_)
     #-------------------------------------------------------------------------
-    if req.method=='POST':
+    if req.method=='PUT':
         form=Stock_form(req.user, req.POST, instance=object_)
         if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])

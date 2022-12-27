@@ -60,6 +60,7 @@ class Taxonomy_form(forms.ModelForm):
 
 #========================================Batch Form================================================================
 class Batch_form(forms.ModelForm):
+    Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
    
     def __init__(self, user, organism_id=None, *args, **kwargs):
@@ -76,13 +77,14 @@ class Batch_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_modelFIELDs+["organism_id"]
+        # fields=ORGANISM_BATCH_FIELDs.keys()
+        # +["organism_id"]
         exclude=['orgbatch_id', 'stock_level']
 
 class Batchupdate_form(forms.ModelForm):
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_modelFIELDs
+        fields=ORGANISM_BATCH_FIELDs.keys()
         exclude=['stock_level']
 
     def __init__(self, user, *args, **kwargs): 
@@ -100,4 +102,4 @@ class Stock_form(forms.ModelForm):
   
     class Meta:
         model =OrgBatch_Stock
-        fields=ORGANISM_STOCK_modelFIELDs
+        fields=ORGANISM_STOCK_FIELDs.keys()

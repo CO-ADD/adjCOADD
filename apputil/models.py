@@ -147,6 +147,7 @@ class AuditModel(models.Model):
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
         self.astatus = self.DELETED
+        print(f'delete item {self.astatus}')
         self.adeleted_id = appuser
         self.adeleted_at = timezone.now()
         super(AuditModel,self).save(**kwargs)

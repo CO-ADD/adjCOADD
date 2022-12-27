@@ -1,3 +1,7 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+{% block content %}
 <table id="datatable_stock" class="cell-border" style="width: 100%">
   <thead>
     <tr>
@@ -13,25 +17,22 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody hx-target="closest tr" hx-swap="outerHTML">
+    {%if object_list%}
     {% for object in object_list %}
-    <tr class="tablerow-view" id="datastock{{object.pk}}">
-      {%for value in object.get_values%}
-      <td>{{value}}</td>
-      {%endfor%}
-
-      <td style="width: 10%;">
-
-        <button hx-get="{% url 'stock_update' object.pk %}" hx-taget="#databatch{{object.pk}}"><i class="fa fa-pencil"
-            aria-hidden="true"></i>
-        </button>
-        <span class="">
-          {%include 'dorganism/deleteForm/Stock_del.html'%}
-        </span>
-
-      </td>
-    </tr>
+    {%include 'dorganism/updateForm/Stock_tr.html'%}
     {%endfor%}
+    {%else%}
+    <tr>
+
+      {%for th in stock_fields %}
+      <td>
+        No data
+      </td>
+      {%endfor%}
+      <td>Update</td>
+    </tr>
+    {%endif%}
   </tbody>
 </table>
 
@@ -52,3 +53,5 @@
     });
   });
 </script>
+
+{%endblock%}

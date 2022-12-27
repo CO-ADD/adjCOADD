@@ -111,17 +111,11 @@
                                     <th>{{th}}</th>
                                     {%endfor%}
                                     <th style="width: 10em;">EDIT</th>
-
-
                                 </tr>
                             </thead>
                             <tbody hx-target="closest tr" hx-swap="outerHTML">
                                 {% for object_batch in batch_obj %}
-
-
                                 {%include 'dorganism/updateForm/batch_tr.html'%}
-
-
                                 {%endfor%}
                             </tbody>
                         </table>
@@ -153,15 +147,7 @@
             });
         });
     </script>
-    <script src="https://unpkg.com/htmx.org@1.8.4"
-        integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
-        crossorigin="anonymous"></script>
 
-    <script>
-        document.body.addEventListener('htmx:configRequest', (event) => {
-            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-        })
-    </script>
     <div id="createBatchModal" class="modal fade" role="dialog"></div>
 
     <script>

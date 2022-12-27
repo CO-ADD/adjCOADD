@@ -24,6 +24,10 @@
   <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
+  <script src="https://unpkg.com/htmx.org@1.8.4"
+    integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+    crossorigin="anonymous"></script>
+
   {%load static%}
   <link href="{% static 'css/app.css' %}" id="app-style" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
@@ -35,6 +39,14 @@
   <div class="" style="margin-top: 120px">
     {% block content %} {% endblock %}
   </div>
+
+
+
+  <script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+      event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
+  </script>
 </body>
 
 </html>
