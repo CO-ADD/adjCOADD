@@ -103,22 +103,7 @@
                             <i class="bi bi-plus"></i>
                         </a>
 
-                        <table id="datatable_batch" class="cell-border" style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th>Stock</th>
-                                    {%for th in batch_fields %}
-                                    <th>{{th}}</th>
-                                    {%endfor%}
-                                    <th style="width: 10em;">EDIT</th>
-                                </tr>
-                            </thead>
-                            <tbody hx-target="closest tr" hx-swap="outerHTML">
-                                {% for object_batch in batch_obj %}
-                                {%include 'dorganism/readForm/Batch_tr.html'%}
-                                {%endfor%}
-                            </tbody>
-                        </table>
+                        {%include 'utils/datatable_batch.html'%}
                     </div>
                 </div>
             </div>
@@ -137,19 +122,11 @@
     <!-- <script src="{% static 'js/table-edits.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/table-editable.int.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/js_utils/getCookie.js'%}"></script> -->
-    <script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/js_utils/dataTables.js'%}"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#datatable_batch").DataTable({
-                searching: false,
-                paging: false,
-            });
-        });
-    </script>
-
+    
+<!-- Create New Batch -->
     <div id="createBatchModal" class="modal fade" role="dialog"></div>
-
     <script>
         $(document).ready(function () {
             let my_modal = $("#createBatchModal");

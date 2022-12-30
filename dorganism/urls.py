@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, createOrganism, detailOrganism,
                         updateOrganism, updateBatch, TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy,updateTaxonomy, deleteTaxonomy, 
-                       OrganismListView,OrganismCardView, BatchCardView, createBatch, deleteOrganism, deleteBatch, createStock, updateStock, StockListView) 
+                       OrganismListView,OrganismCardView, BatchCardView, createBatch, deleteOrganism, deleteBatch, createStock, updateStock, stockList) #StockListView 
 from .utils import search_organism, search_organism_id
 
 
@@ -16,7 +16,7 @@ urlpatterns = [
     path('organism_list', OrganismListView.as_view(), name="org_list"),
     path('organism/<str:pk>', detailOrganism, name="org_detail"),
     path('organism-batch_card', BatchCardView.as_view(), name="batch_card"),
-    path('organism-stock_list/<str:pk>', StockListView.as_view(), name="stock_list"),
+    path('stocklist/<str:pk>', stockList, name="stock_list"),
 
     path('search_organism/', search_organism, name="search_organism"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),

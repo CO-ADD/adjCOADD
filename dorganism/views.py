@@ -354,18 +354,46 @@ def deleteBatch(req, pk):
 
 
 ############################################### Stock View ###########################################
-class StockListView(LoginRequiredMixin, ListView):
-    login_url = '/'
-    model=OrgBatch_Stock
-    template_name = 'dorganism/readForm/OrganismStock_list.html' 
+# class StockListView(LoginRequiredMixin, ListView):
+#     login_url = '/'
+#     model=OrgBatch_Stock
+#     template_name = 'dorganism/readForm/OrganismStock_list.html' 
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'), astatus__gte=0)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'), astatus__gte=0)
         
-        context["object_list"]=project
-        context["stock_fields"]=OrgBatch_Stock.get_fields()
-        return context
+#         context["object_list"]=project
+#         context["stock_fields"]=OrgBatch_Stock.get_fields()
+#         return context
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def stockList(req, pk):
+    # if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+    res=None
+    if req.method == 'GET':
+        batch_id=req.GET.get('Batch_id')
+        print(f"StockList with ID = {batch_id}")
+        object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0)
+        if len(qs)>0:
+            data=[]
+            for i in qs:
+                item={
+                    "orgbatch_id":i.orgbatch_id.orgbatch_id,
+                    "stock_id":i.stock_id,
+                    "stock_note":i.stock_note,
+                    "stock_type":i.stock_type.dict_value,
+                    "stock_date":i.stock_date,
+                    # "biologist":i.biologist.name
+                }
+                data.append(item)
+            res=data
+            print(res)
+        else:
+            res='No Data'
+        return JsonResponse({'data':res})
+    return JsonResponse({})
+
     
 
 # @login_required
