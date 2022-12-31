@@ -21,7 +21,7 @@ from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form, Stock_form
+from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form, Stock_form, Culture_form
 
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
@@ -469,14 +469,14 @@ def deleteStock(req, pk):
    
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def createBatch(req):
+def createCulture(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Batch_form(req.user)
+    form=Culture_form(req.user)
 
     if req.method=='POST':
         Organism_Id=req.POST.get('search_organism')
-        form=Batch_form(req.user, Organism_Id, req.POST)
+        form=Culture_form(req.user, Organism_Id, req.POST)
         if form.is_valid():
             print("form is valid")  
             try:
@@ -484,7 +484,7 @@ def createBatch(req):
                     instance=form.save(commit=False) 
                     # print(instance.organism_id)                 
                     instance.save(**kwargs)
-                    print("new Batch saved--view info")
+                    print("new Culture saved--view info")
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -495,18 +495,18 @@ def createBatch(req):
             return redirect(req.META['HTTP_REFERER'])      
         
 
-    return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/createForm/Culture_c.html', { 'form':form, }) 
 
 from django.http import QueryDict
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def updateBatch(req, pk):
+def updateCulture(req, pk):
     print(req.method)
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
     kwargs={}
     kwargs['user']=req.user
    
-    form=Batchupdate_form(req.user, instance=object_)
+    form=Cultureupdate_form(req.user, instance=object_)
    
     context={
         "form":form,
@@ -517,8 +517,8 @@ def updateBatch(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         print(qd)
-        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
-        form=Batchupdate_form(req.user, data=qd, instance=object_batch, )
+        object_culture=get_object_or_404(Organism_Culture, pk=qd["pk"])
+        form=Cultureupdate_form(req.user, data=qd, instance=object_culture, )
         print(qd)
         
         if form.is_valid():
@@ -527,21 +527,21 @@ def updateBatch(req, pk):
             instance=form.save(commit=False)
             instance.save(**kwargs)
             context={
-                "object_batch":object_batch,
-                'object':object_batch  # this object refer to the same entry of object_batch
+                "object_culture":object_culture,
+                'object':object_culture  # this object refer to the same entry of object_batch
             }
-            return render(req, "dorganism/readForm/Batch_tr.html", context)
+            return render(req, "dorganism/readForm/Culture_tr.html", context)
             # return render(req, "dorganism/updateForm/Batch_u.html", context)  
                 
    
-    return render(req, "dorganism/updateForm/Batch_u.html", context)
+    return render(req, "dorganism/updateForm/Culture_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
-def deleteBatch(req, pk):
+def deleteCulture(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    print(f'batchID {pk}')
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    print(f'cultureID {pk}')
+    object_=get_object_or_404(Organism_Culture, pk=pk)
     try:
         object_.delete(**kwargs)
         print("deleted")
