@@ -333,9 +333,6 @@ def updateBatch(req, pk):
                 'object':object_batch  # this object refer to the same entry of object_batch
             }
             return render(req, "dorganism/readForm/Batch_tr.html", context)
-            # return render(req, "dorganism/updateForm/Batch_u.html", context)  
-                
-   
     return render(req, "dorganism/updateForm/Batch_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
@@ -354,18 +351,7 @@ def deleteBatch(req, pk):
 
 
 ############################################### Stock View ###########################################
-# class StockListView(LoginRequiredMixin, ListView):
-#     login_url = '/'
-#     model=OrgBatch_Stock
-#     template_name = 'dorganism/readForm/OrganismStock_list.html' 
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'), astatus__gte=0)
-        
-#         context["object_list"]=project
-#         context["stock_fields"]=OrgBatch_Stock.get_fields()
-#         return context
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def stockList(req, pk):
     # if req.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -478,7 +464,91 @@ def deleteStock(req, pk):
     return render(req, "dorganism/deleteForm/Stock_del.html", context)
 
 
+############################################Culture ##################################33
+# ==========List View================================Read===========================================
+   
+# @login_required
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def createBatch(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Batch_form(req.user)
 
+    if req.method=='POST':
+        Organism_Id=req.POST.get('search_organism')
+        form=Batch_form(req.user, Organism_Id, req.POST)
+        if form.is_valid():
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    # print(instance.organism_id)                 
+                    instance.save(**kwargs)
+                    print("new Batch saved--view info")
+                    return redirect(req.META['HTTP_REFERER']) 
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'something wrong...{form.errors}')
+            return redirect(req.META['HTTP_REFERER'])      
+        
+
+    return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
+
+from django.http import QueryDict
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateBatch(req, pk):
+    print(req.method)
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Batchupdate_form(req.user, instance=object_)
+   
+    context={
+        "form":form,
+        "object":object_,
+    }
+    #-------------------------------------------------------------------------
+    
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()
+        print(qd)
+        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
+        form=Batchupdate_form(req.user, data=qd, instance=object_batch, )
+        print(qd)
+        
+        if form.is_valid():
+            kwargs={}
+            kwargs['user']=req.user                  
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            context={
+                "object_batch":object_batch,
+                'object':object_batch  # this object refer to the same entry of object_batch
+            }
+            return render(req, "dorganism/readForm/Batch_tr.html", context)
+            # return render(req, "dorganism/updateForm/Batch_u.html", context)  
+                
+   
+    return render(req, "dorganism/updateForm/Batch_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteBatch(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    print(f'batchID {pk}')
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
 
 
 
