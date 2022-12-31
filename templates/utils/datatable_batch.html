@@ -16,16 +16,21 @@
     {%endfor%}
   </tbody>
 </table>
-
+<script
+  src="https://unpkg.com/htmx.org@1.8.4"
+  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+  crossorigin="anonymous"
+></script>
 {%load static%}
 <script src="{% static 'js/js_utils/getCookie.js'%}"></script>
 <script>
   $(document).ready(function () {
+    // Table Batch
     var table = $("#datatable_batch").DataTable({
       searching: false,
       paging: false,
     });
-    console.log("{{object_batch}}");
+
     const csrftoken = getCookie("csrftoken");
     $("#datatable_batch tbody").on("click", "td.dt-control", function (e) {
       var tr = $(this).closest("tr");
@@ -45,15 +50,15 @@
   });
   function createChild(row) {
     // This is the table we'll convert into a DataTable
-    var table = $('<table class="display" width="100%"/>');
+    var Batch_id = row.data()[1];
+    var table = $('<table id="example" class="display" width="100%"/>');
+
     // Display it the child row
     row.child(table).show();
     // Initialise as a DataTable
-    var Batch_id = row.data()[1];
-    console.log(Batch_id);
     var usersTable = table.DataTable({
       dom: "Bfrtip",
-      pageLength: 5,
+      pageLength: 1,
       ajax: {
         url: `/stocklist/${Batch_id}`,
         type: "GET",
@@ -61,14 +66,78 @@
         data: { Batch_id },
       },
       columns: [
-        { title: "Orgbatch ID", data: "orgbatch_id" },
+        {
+          title: "Add",
+          data: null,
+          defaultContent:
+            `<button id="create_stock">Click!</button>` +
+            '<div id="createStockModal" class="modal fade" role="dialog"></div>',
+        },
         { title: "Stock ID", data: "stock_id" },
+        { title: "Stock Created", data: "stock_created" },
+        { title: "Stock Left", data: "stock_left" },
         { title: "Stock Note", data: "stock_note" },
         { title: "Stock Type", data: "stock_type" },
-        { title: "Stock Date", data: "stock_date" },
-        // { title: "Biologist", data: "biologist" },
+        { title: "Stock Date", data: "stock_date", type: "datetime" },
+        {
+          title: "Update",
+          data: null,
+          defaultContent:
+            `<button id="update_stock">Click!</button>` +
+            `<button id="delete_stock">Delete!</button>` +
+            '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
+            '<div id="deleteStockModal" class="modal fade" role="dialog"></div>',
+        },
+        // { title: "Biologist", data: "biologist" },defaultContent: '<button>Click!</button>',
       ],
-      select: true,
+      // select: true,
+      searching: false,
+      paging: false,
+    });
+
+    $("#example tbody").on("click", `#create_stock`, function () {
+      var data = usersTable.row($(this).parents("tr")).data();
+      let my_modal = $("#createStockModal");
+      console.log(data);
+      var pk = data["stock_id"];
+      console.log(pk);
+      my_modal.load("{%url 'stock_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
+    });
+
+    $("#example tbody").on("click", `#delete_stock`, function () {
+      var data = usersTable.row($(this).parents("tr")).data();
+      let my_modal = $("#deleteStockModal");
+      console.log(data);
+      var pk = data["stock_id"].toString();
+      console.log(pk);
+      my_modal.load(`deleteStock/${pk}`, function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
+    });
+
+    $("#example tbody").on("click", `#update_stock`, function () {
+      var data = usersTable.row($(this).parents("tr")).data();
+      let my_modal = $("#updateStockModal");
+      console.log(data);
+      var pk = data["stock_id"].toString();
+      console.log(pk);
+      my_modal.load(`updateStock/${pk}`, function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
     });
   }
   function destroyChild(row) {
@@ -81,19 +150,4 @@
   }
 
   const csrftoken = getCookie("csrftoken");
-  // function getStockData(Batch_id) {
-  //   console.log(Batch_id);
-  //   $.ajax({
-  //     url: `/stocklist/${Batch_id}`,
-  //     type: "GET",
-  //     headers: { "X-CSRFToken": csrftoken },
-  //     data: { Batch_id },
-  //     success: (res) => {
-  //       table_data_stock = res.data[0];
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     },
-  //   });
-  // }
 </script>

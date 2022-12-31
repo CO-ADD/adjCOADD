@@ -379,12 +379,12 @@ def stockList(req, pk):
             data=[]
             for i in qs:
                 item={
-                    "orgbatch_id":i.orgbatch_id.orgbatch_id,
-                    "stock_id":i.stock_id,
+                    "stock_id":i.pk,
+                    "stock_created":i.n_created,
+                    "stock_left":i.n_left,
                     "stock_note":i.stock_note,
                     "stock_type":i.stock_type.dict_value,
                     "stock_date":i.stock_date,
-                    # "biologist":i.biologist.name
                 }
                 data.append(item)
             res=data
