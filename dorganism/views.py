@@ -436,7 +436,7 @@ def updateStock(req, pk):
    
     form=Stock_form(req.user, instance=object_)
     #-------------------------------------------------------------------------
-    if req.method=='PUT':
+    if req.method=='POST':
         form=Stock_form(req.user, req.POST, instance=object_)
         if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])
@@ -451,7 +451,7 @@ def updateStock(req, pk):
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
                     except Exception as err:
-                        print(err)
+                        print(f'form erroro is {form.errors} and error {err}')
                    
             except Exception as err:
                 messages.warning(req, f'Update failed due to {err} error')
@@ -468,13 +468,13 @@ def deleteStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
-    try:
+    context={'object':object_}
+    # if request.method == 'GET':
+    if req.method=='POST':
         object_.delete(**kwargs)
         print("deleted")
-            
-    except Exception as err:
-        print(err)
-    return redirect('/')
+        return redirect(req.META['HTTP_REFERER'])
+    return render(req, "dorganism/deleteForm/Stock_del.html", context)
 
 
 

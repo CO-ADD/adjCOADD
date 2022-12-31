@@ -2,17 +2,36 @@
   <div class="modal-content" style="width: 50rem">
     <div class="modal-header">
       <h5 class="modal-title" id="staticBackdropLabel">Create Stock</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
     </div>
     <div class="card mt-3 text-left">
       <hr />
-      <form method="POST" class="post-form" name="create" action="{%url 'stock_create'%}">
+      <form
+        method="POST"
+        style="width: fit-content"
+        name="create"
+        action="{%url 'stock_create'%}"
+      >
         {% csrf_token %}
         <!-- ignore prettier -->
         {{form.as_p}}
 
-        <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <input
+          type="submit"
+          class="btn btn-outline-secondary"
+          value="Add"
+          name="note"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
           Close
         </button>
       </form>

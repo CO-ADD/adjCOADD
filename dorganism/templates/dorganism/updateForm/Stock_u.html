@@ -1,16 +1,22 @@
-<tr hx-trigger='cancel' class='editing' hx-get="{%url 'stock_list' object.pk %}">
-
-    <td>{{form.orgbatch_id}}</td>
-    <td>{{form.stock_id}}</td>
-    <td>{{form.stock_note}}</td>
-    <td>{{form.stock_type}}</td>
-    <td>{{form.stock_date}}</td>
-    <td>{{form.biologist}}</td>
-
-    <td>
-        <input type="submit" value="update" hx-put="{%url 'stock_update' object.pk %}" hx-include="closest tr"
-            hx-trigger="click">
-        <a href="{% url 'stock_list' object.pk %}">Cancel</a>
-    </td>
-
-</tr>
+<div class="modal-dialog">
+  <div class="modal-content" style="width: 50rem">
+    <div class="card mx-5 mt-3">
+      <form
+        id="StockUpdateForm"
+        method="POST"
+        action="{%url 'stock_update' object.pk %}"
+        style="width: fit-content"
+      >
+        {% csrf_token %} {{form.as_p}}
+        <input type="submit" value="update" />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

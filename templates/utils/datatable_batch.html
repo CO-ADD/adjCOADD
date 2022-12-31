@@ -70,7 +70,7 @@
           title: "Add",
           data: null,
           defaultContent:
-            `<button id="create_stock">Click!</button>` +
+            `<button id="create_stock">Create</button>` +
             '<div id="createStockModal" class="modal fade" role="dialog"></div>',
         },
         { title: "Stock ID", data: "stock_id" },
@@ -83,12 +83,16 @@
           title: "Update",
           data: null,
           defaultContent:
-            `<button id="update_stock">Click!</button>` +
-            `<button id="delete_stock">Delete!</button>` +
-            '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
-            '<div id="deleteStockModal" class="modal fade" role="dialog"></div>',
+            `<button id="update_stock">Update</button>` +
+            '<div id="updateStockModal" class="modal fade" role="dialog"></div>',
         },
-        // { title: "Biologist", data: "biologist" },defaultContent: '<button>Click!</button>',
+        {
+          title: "Delete",
+          data: null,
+          defaultContent:
+            `<button id="delete_stock">Delete!</button>` +
+            '<div id="deleteStockModal" class="modal" role="dialog"></div>',
+        },
       ],
       // select: true,
       searching: false,

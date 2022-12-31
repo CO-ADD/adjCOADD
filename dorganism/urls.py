@@ -29,13 +29,13 @@ urlpatterns = [
     path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
     path('updateBat/<str:pk>', updateBatch, name="batch_update"),
-    path('updateStock/<str:pk>', updateStock, name="stock_update"),
+    path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
    
 
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
     path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
     path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
-    path('deleteStock/<str:pk>', deleteStock, name="stock_delete"),
+    path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
   
     #=======================Data Export/Import ===================================================================
     path('exportData/', exportCSV, name="dataexport"),
