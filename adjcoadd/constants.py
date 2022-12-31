@@ -42,4 +42,10 @@ ORGANISM_BATCH_FIELDs = {
     "biologist":"Biologist"
 }
 
+ORGANISM_CULTR_FIELDs = {
+    
+    "organism_id":"Organism ID",
+    "biologist":"Biologist"
+}
+
 # -dDrug Settings ---------------------------------------------------

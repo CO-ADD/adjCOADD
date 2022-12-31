@@ -17,12 +17,12 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
-from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
+from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form, Stock_form, Culture_form
-
+from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
+                    Batch_form, Batchupdate_form, Stock_form, Culture_form, Cultureupdate_form)
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
 class FilteredListView(ListView):
@@ -186,8 +186,8 @@ def detailOrganism(req, pk):
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields()
-
-
+    context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
+    context["cultr_fields"]=Organism_Culture.get_fields()
 
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
@@ -502,7 +502,7 @@ from django.http import QueryDict
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateCulture(req, pk):
     print(req.method)
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    object_=get_object_or_404(Organism_Culture, id=pk)
     kwargs={}
     kwargs['user']=req.user
    
@@ -517,7 +517,7 @@ def updateCulture(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         print(qd)
-        object_culture=get_object_or_404(Organism_Culture, pk=qd["pk"])
+        object_culture=get_object_or_404(Organism_Culture, pk=pk)
         form=Cultureupdate_form(req.user, data=qd, instance=object_culture, )
         print(qd)
         
@@ -527,7 +527,7 @@ def updateCulture(req, pk):
             instance=form.save(commit=False)
             instance.save(**kwargs)
             context={
-                "object_culture":object_culture,
+                "object_cultr":object_culture,
                 'object':object_culture  # this object refer to the same entry of object_batch
             }
             return render(req, "dorganism/readForm/Culture_tr.html", context)

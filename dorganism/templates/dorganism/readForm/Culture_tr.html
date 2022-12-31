@@ -1,0 +1,14 @@
+<tr>
+  {%for value in object_cultr.get_values%}
+  <td>{{value}}</td>
+  {%endfor%}
+  <td style="width: 10%">
+    <button
+      hx-get="{% url 'cultr_update' object_cultr.pk %}"
+      hx-trigger="click"
+    >
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
+    <span class=""> {%include 'dorganism/deleteForm/Culture_del.html'%} </span>
+  </td>
+</tr>

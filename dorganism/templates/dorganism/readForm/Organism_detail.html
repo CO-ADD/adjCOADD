@@ -133,7 +133,7 @@
                             <i class="bi bi-plus"></i>
                         </a>
 
-                        <!-- here include 'utils/datatable_culture.html'-->
+                        {% include 'utils/datatable_cultr.html' %}
                     </div>
                 </div>
             </div>
@@ -172,6 +172,25 @@
             });
         });
     </script>
+
+    <div id="createCultureModal" class="modal fade" role="dialog"></div>
+    <script>
+        $(document).ready(function () {
+            let my_modal = $("#createCultureModal");
+
+            $("#createCulture").click(function () {
+                my_modal.load("{%url 'cultr_create'%}", function (response) {
+                    if (response == "Permission Not Granted") {
+                        alert("permission!");
+                    } else {
+                        my_modal.modal("show"); // Open Modal
+                    }
+                });
+            });
+        });
+    </script>
+
+    
 
 
     {%endblock%}

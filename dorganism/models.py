@@ -443,3 +443,17 @@ class Organism_Culture(AuditModel):
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
+
+    #Method Get Fields, Values List
+    @classmethod
+    def get_fields(self):
+        select_fields=[ORGANISM_CULTR_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_CULTR_FIELDs.keys()]
+        return select_fields
+    #------------------------------------------------
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.name in ORGANISM_CULTR_FIELDs.keys():    
+                value_list.append(field.value_to_string(self))
+        print(value_list)
+        return value_list
