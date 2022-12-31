@@ -401,11 +401,11 @@ def stockList(req, pk):
 def createStock(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Stock_form(req.user)
+    form=Stock_form()
 
     if req.method=='POST':
         
-        form=Stock_form(req.user, req.POST)
+        form=Stock_form(req.POST)
         if form.is_valid():
             print("form is valid")  
             try:
@@ -434,10 +434,10 @@ def updateStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
    
-    form=Stock_form(req.user, instance=object_)
+    form=Stock_form(instance=object_)
     #-------------------------------------------------------------------------
     if req.method=='POST':
-        form=Stock_form(req.user, req.POST, instance=object_)
+        form=Stock_form(req.POST, instance=object_)
         if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])
         else:
@@ -449,6 +449,7 @@ def updateStock(req, pk):
                         if form.is_valid():                  
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
+                            print('updated')
                             return redirect(req.META['HTTP_REFERER'])
                     except Exception as err:
                         print(f'form erroro is {form.errors} and error {err}')

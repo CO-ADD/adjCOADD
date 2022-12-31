@@ -7,7 +7,9 @@
         action="{%url 'stock_update' object.pk %}"
         style="width: fit-content"
       >
-        {% csrf_token %} {{form.as_p}}
+        {% csrf_token %}
+        <!--  -->
+        {{form.as_p}}
         <input type="submit" value="update" />
         <button
           type="button"

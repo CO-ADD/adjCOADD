@@ -51,7 +51,7 @@
   function createChild(row) {
     // This is the table we'll convert into a DataTable
     var Batch_id = row.data()[1];
-    var table = $('<table id="example" class="display" width="100%"/>');
+    var table = $('<table id="Stock" class="display" width="100%"/>');
 
     // Display it the child row
     row.child(table).show();
@@ -99,7 +99,7 @@
       paging: false,
     });
 
-    $("#example tbody").on("click", `#create_stock`, function () {
+    $("#Stock tbody").on("click", `#create_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#createStockModal");
       console.log(data);
@@ -114,7 +114,7 @@
       });
     });
 
-    $("#example tbody").on("click", `#delete_stock`, function () {
+    $("#Stock tbody").on("click", `#delete_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#deleteStockModal");
       console.log(data);
@@ -129,7 +129,7 @@
       });
     });
 
-    $("#example tbody").on("click", `#update_stock`, function () {
+    $("#Stock tbody").on("click", `#update_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#updateStockModal");
       console.log(data);

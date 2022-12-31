@@ -6,7 +6,7 @@ from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
-from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
+from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from adjcoadd.constants import *
 
 #=======================================Organism Create Form=============================================================
@@ -94,12 +94,13 @@ class Batchupdate_form(forms.ModelForm):
 
 
 # ===============================Stock Form-------------------------------
-class Stock_form(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs): 
-        user=user
-        super().__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
-  
+class Stock_form(forms.ModelForm):  
     class Meta:
         model =OrgBatch_Stock
         fields=ORGANISM_STOCK_FIELDs.keys()
+
+# ===============================Culture Form-------------------------------
+class Culture_form(forms.ModelForm):  
+    class Meta:
+        model =Organism_Culture
+        fields=['culture_type']
