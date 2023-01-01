@@ -2,7 +2,7 @@
 $(document).ready(() => {
   console.log("document ready!");
 });
-const csrftoken = getCookie('csrftoken');
+const csrftoken = getCookie("csrftoken");
 // Function to call the function run_task in Views.py
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
@@ -17,8 +17,8 @@ $(".button").on("click", function () {
     .done((res) => {
       console.log(res);
       if (jQuery.isEmptyObject(res)) {
-        console.log("reloading.")
-        window.location.reload("/import/")
+        console.log("reloading.");
+        window.location.reload("/import/");
       }
       const html = `
       <tr>
@@ -49,7 +49,7 @@ $("#save_Proceed").on("click", function () {
     url: "/tasks/proceed",
     data: {},
     method: "POST",
-    headers: { 'X-CSRFToken': csrftoken },
+    headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
       $("#preLoader").fadeOut();
@@ -73,21 +73,21 @@ $("#stop_Proceed").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
-
 });
 
 save_data = (res) => {
+  console.log(res);
+  window.alert(res);
   $.ajax({
     url: "/tasks/cancel",
     data: {},
     method: "POST",
   })
     .done((res) => {
-      window.alert("Data Saved!");
-      location.reload();
+      window.alert("clear!");
+      // location.reload();
     })
     .fail((err) => {
       console.log(err);
     });
-
 };

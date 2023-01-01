@@ -159,9 +159,21 @@ from django import forms
 import json
 from django.core import serializers
 import os
+from .forms import FileValidator
+from django.core.exceptions import ValidationError
+from django.db import transaction, IntegrityError
+
+# set filefield Validator
+validate_file = FileValidator(max_size=1024 * 100, 
+                             content_types=('text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+# create array for files if infected
+# infected_files = []
+# setup unix socket to scan stream
+# cd = clamd.ClamdUnixSocket()
 
 class FileUploadForm(forms.Form):
-    excel_file = forms.FileField(required=False)
+    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
+    file_field = forms.FileField(validators=[validate_file])
 
 class Importhandler(View):
     template_name='apputil/importdata.html'
@@ -175,10 +187,12 @@ class Importhandler(View):
     def post(self, request):
         form = FileUploadForm(request.POST, request.FILES)
         context = {}
+        context['form'] = form
 
         try:
             if form.is_valid():
-                myfile=request.FILES['myfile']
+                myfile=request.FILES['file_field']
+                # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 fs=FileSystemStorage()
                 filename=fs.save(myfile.name, myfile)
                 self.file_url=fs.url(filename)
@@ -189,7 +203,6 @@ class Importhandler(View):
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
-        context['form'] = form
         return render(request, 'apputil/importdata.html', context)
     
     #delete task
@@ -235,13 +248,20 @@ class Importhandler(View):
     @staticmethod
     def proceed_save(request):
         errList=[]
-        print(Importhandler.data_list)
-        for obj in Importhandler.data_list:
-            try:
-                obj.save()
-            except Exception as err:
-                print(err)
-                errList.append[err]
+        # print(Importhandler.data_list)
+        with transaction.atomic(using='dorganism'):
+            for obj in Importhandler.data_list:
+                print(obj.pk)
+                if Taxonomy.objects.filter(pk=obj.pk):
+                    return JsonResponse({'status':'DATA exists'}) 
+                try:
+                    obj.save()
+                    print('save')
+                except Exception as err:
+                    print(err)
+                    errList.append[err]
+                    return JsonResponse({"status":errList})
+                    
         return JsonResponse({"status":"SUCCESS"}, status=200)
 
     
