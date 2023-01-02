@@ -668,18 +668,23 @@ def import_excel_organism(req):
 ############################################### Export CSV View ###########################################
 import csv
 import datetime 
+from adjcoadd.constants import *
 
 @login_required
 @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def exportCSV(req):
-    queryset=Taxonomy.objects.all()
-    query= Taxonomyfilter(req.GET, queryset=queryset).qs
-    response = HttpResponse(content_type='text/csv')
-    file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
+    if req.method=="POST":
+        print(req.POST.items())
+        queryset=Taxonomy.objects.all()
+        query= Taxonomyfilter(req.GET, queryset=queryset).qs
+        response = HttpResponse(content_type='text/csv')
+        file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
 
-    writer = csv.writer(response)
-    writer.writerow(['name', 'class','lineage',])
-    for i in query.values_list('organism_name','org_class', 'lineage',):
-        writer.writerow(i)
-    response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
-    return response
+        writer = csv.writer(response)
+        writer.writerow(['organism_name','org_class', 'lineage',])
+        for i in query.values_list('organism_name','org_class', 'lineage',):
+        # for i in fieldlist:
+            # writer.writerow(query.values_list(i))
+            writer.writerow(i)
+        response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
+        return response

@@ -5,9 +5,9 @@
 <!-- Start upload datafiles, scanne virus -->
 <div class="container">
     <div id="progressbar" class="d-flex bg-secondary" style="height: 20px;">
-    <span class="flex-fill">1</span>
-    <span class="flex-fill">2</span>
-    <span class="flex-fill">3</span>
+    <span class="flex-fill"></span>
+    <span class="flex-fill"></span>
+    <span class="flex-fill"></span>
     </div>
     <section class="row border " id="Import_step1">
         <div class="card mt-5 border">
@@ -16,7 +16,7 @@
                 <!--  -->
                 {{form.as_p}}
                     
-                        <button id="data_upload" type="submit" class="btn btn-success m-2"> Upload
+                        <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
                         </button>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
 </section>
 <hr>
 <section id="Import_step4" class="not-visible">
-    <h4 id="mesg_save_Proceed"></h4>
+    <h4 id="mesg_save_Proceed" class="bg-danger"></h4>
       <div>Next actions:</div>
         <ul>
             <li>
@@ -108,7 +108,7 @@
             </li>
           
             <li>
-                 <button id="confirm-save"  type="submit" class="btn btn-sm" data-type="Save-Data">Saved!</button>
+                 <button id="confirm-save"  type="submit" class="btn btn-sm" data-type="Save-Data">Continue Save...</button>
             </li>
         </ul>
 </section>

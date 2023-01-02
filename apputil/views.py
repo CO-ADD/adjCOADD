@@ -216,12 +216,7 @@ class Importhandler(View):
             if process_name=='Validation':
                 file_path=request.POST.get("filepath")
                 data_model=request.POST.get("datamodel")
-                print(f'datamodel is {data_model}')
-            # validate fields
-            #return status=error, warning, or pass
-            #return result=ErrorList
-                Importhandler.data_list=import_excel(file_path, data_model)
-            
+                Importhandler.data_list=import_excel(file_path, data_model)           
                 if isinstance(Importhandler.data_list, Exception):
                     result=str(Importhandler.data_list)
                     status='Form Errors'
@@ -254,6 +249,7 @@ class Importhandler(View):
                 return JsonResponse({"status":"SUCCESS"}, status=200)
                   
             elif process_name=='Save-Data':
+                print(Importhandler.data_list)
                 with transaction.atomic(using='dorganism'):
                     for obj in Importhandler.data_list:
                         try:

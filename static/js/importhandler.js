@@ -3,7 +3,9 @@ $(document).ready(() => {
   console.log("document ready!");
 });
 const csrftoken = getCookie("csrftoken");
-
+if ($("#filepath").text()) {
+  $("#progressbar span:first-child").toggleClass("bg-success");
+}
 // Function to call the function run_task in Views.py
 
 $(".button").on("click", function () {
@@ -42,7 +44,7 @@ $(".button").on("click", function () {
       }
       if (res.task_status === "Form is Valid") {
         $("#Import_step3").toggleClass("visible");
-        $("#progressbar span:first-child").toggleClass("bg-success");
+        $("#progressbar span:nth-child(2)").toggleClass("bg-success");
       }
       const taskStatus = res.status;
       $("#preLoader").fadeOut();
@@ -67,7 +69,7 @@ $("#save_Proceed").on("click", function () {
       console.log(res);
       // if (res.task_status === "Form is Valid") {
       $("#Import_step4").toggleClass("visible");
-      $("#progressbar span:nth-child(2)").toggleClass("bg-success");
+      $("#progressbar span:nth-child(3)").toggleClass("bg-success");
       // }
       const html = `<p>${res.status}</p>`;
       $("#mesg_save_Proceed").append(html);
@@ -107,7 +109,6 @@ $("#confirm-save").on("click", function () {
       $("#Import_step3").toggleClass("visible");
       $("#Import_step4").toggleClass("visible");
       window.alert(res.status);
-      window.location.href = "/import/";
     })
     .fail((err) => {
       console.log(err);
