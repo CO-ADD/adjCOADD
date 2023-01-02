@@ -164,8 +164,8 @@ from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 
 # set filefield Validator
-validate_file = FileValidator(max_size=1024 * 100, 
-                             content_types=('text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+# validate_file = FileValidator(max_size=1024 * 100, 
+#                              content_types=('text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
 # create array for files if infected
 # infected_files = []
 # setup unix socket to scan stream
@@ -173,7 +173,7 @@ validate_file = FileValidator(max_size=1024 * 100,
 
 class FileUploadForm(forms.Form):
     file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
-    file_field = forms.FileField(validators=[validate_file])
+    file_field = forms.FileField()#(validators=[validate_file])
 
 class Importhandler(View):
     template_name='apputil/importdata.html'

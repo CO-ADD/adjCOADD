@@ -155,7 +155,7 @@ DATABASES = {
 #       'HOST': 'Localhost',
 #       'PORT': '5432',
 #     }
-
+# 
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
