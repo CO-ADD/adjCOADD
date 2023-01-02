@@ -40,7 +40,8 @@ class Login_form(AuthenticationForm):
         return self.cleaned_data
 
 # ==============Validators=======================================================
-import magic
+# import magic
+
 
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
@@ -79,14 +80,14 @@ class FileValidator(object):
             raise ValidationError(self.error_messages['min_size'], 
                                    'min_size', params)
 
-        if self.content_types:
-            content_type = magic.from_buffer(data.read(), mime=True)
-            data.seek(0)
+        # if self.content_types:
+        #     content_type = magic.from_buffer(data.read(), mime=True)
+        #     data.seek(0)
 
-            if content_type not in self.content_types:
-                params = { 'content_type': content_type }
-                raise ValidationError(self.error_messages['content_type'],
-                                   'content_type', params)
+        #     if content_type not in self.content_types:
+        #         params = { 'content_type': content_type }
+        #         raise ValidationError(self.error_messages['content_type'],
+        #                            'content_type', params)
 
     def __eq__(self, other):
         return (

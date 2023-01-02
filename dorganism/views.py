@@ -392,12 +392,13 @@ def createStock(req):
     if req.method=='POST':
         
         form=Stock_form(req.POST)
+
         if form.is_valid():
             print("form is valid")  
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    # print(instance.organism_id)                 
+                    print("form save")                 
                     instance.save(**kwargs)
                     print("saved--view info")
                     return redirect(req.META['HTTP_REFERER']) 
@@ -550,99 +551,6 @@ def deleteCulture(req, pk):
         print(err)
     return redirect('/')
 
-
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def updateBatch(req, pk):
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
-    kwargs={}
-    kwargs['user']=req.user
-   
-    form=Batchupdate_form(req.user, instance=object_)
-    #-------------------------------------------------------------------------
-    if req.method=='POST':
-        form=Batchupdate_form(req.user, req.POST, instance=object_)
-        if "cancel" in req.POST:
-            return redirect(req.META['HTTP_REFERER'])
-        else:
-
-            try:
-                with transaction.atomic(using='dorganism'):        # testing!
-                    obj = Organism_Batch.objects.select_for_update().get(orgbatch_id=pk)
-                    try:
-                        if form.is_valid():                  
-                            instance=form.save(commit=False)
-                            instance.save(**kwargs)
-                            return redirect(req.META['HTTP_REFERER'])
-                    except Exception as err:
-                        print(err)
-                   
-            except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-                return redirect(req.META['HTTP_REFERER'])
-    context={
-        "form":form,
-        "object":object_,
-    }
-   
-    return render(req, "dorganism/updateForm/Batch_u.html", context)
-
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
-def deleteBatch(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
-    try:
-        object_.delete(**kwargs)
-        print("deleted")
-            
-    except Exception as err:
-        print(err)
-    return redirect('/')
-
-
-############################################### Stock View ###########################################
-class StockListView(LoginRequiredMixin, ListView):
-    login_url = '/'
-    model=OrgBatch_Stock
-    template_name = 'dorganism/readForm/OrganismStock_list.html' 
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        project = OrgBatch_Stock.objects.filter(orgbatch_id=self.kwargs.get('pk'))
-        context["object_list"]=project
-        context["stock_fields"]=OrgBatch_Stock.get_fields()
-        return context
-
-
-# @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
-def createStock(req):
-    kwargs={}
-    kwargs['user']=req.user 
-    form=Stock_form(req.user)
-
-    if req.method=='POST':
-        
-        form=Stock_form(req.user, req.POST)
-        if form.is_valid():
-            print("form is valid")  
-            try:
-                with transaction.atomic(using='dorganism'):
-                    instance=form.save(commit=False) 
-                    print("form save")                 
-                    instance.save(**kwargs)
-                    print("saved--view info")
-                    return redirect(req.META['HTTP_REFERER']) 
-
-            except IntegrityError as err:
-                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-                    return redirect(req.META['HTTP_REFERER'])                
-        else:
-            print(f'something wrong...{form.errors}')
-            return redirect(req.META['HTTP_REFERER'])      
-        
-
-    return render(req, 'dorganism/createForm/Stock_c.html', { 'form':form, }) 
 
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 

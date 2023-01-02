@@ -155,7 +155,7 @@ DATABASES = {
 #       'HOST': 'Localhost',
 #       'PORT': '5432',
 #     }
-
+# 
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
@@ -233,5 +233,4 @@ INACTIVE_TIME= 180
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 120
 LOGOUT_REDIRECT_URL="/"
-
 
