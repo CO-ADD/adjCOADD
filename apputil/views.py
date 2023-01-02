@@ -177,21 +177,25 @@ class FileUploadForm(forms.Form):
 
 class Importhandler(View):
     template_name='apputil/importdata.html'
+    form_class=FileUploadForm
     file_url=''
     data_list=[]
+    data_type='default'
 
     def get(self, request):
-        form = FileUploadForm()
+        form = self.form_class
         return render(request, 'apputil/importdata.html', { 'form': form, })
 
     def post(self, request):
-        form = FileUploadForm(request.POST, request.FILES)
+        form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
 
         try:
             if form.is_valid():
                 myfile=request.FILES['file_field']
+                self.data_type=request.POST.get('file_data')
+                print(self.data_type)
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 fs=FileSystemStorage()
                 filename=fs.save(myfile.name, myfile)
@@ -200,6 +204,14 @@ class Importhandler(View):
                 return render(request,'apputil/importdata.html', context)
             else:
                 messages.warning(request, f'There is {form.errors} error, upload again')
+
+
+            if request.POST.get=='RUN':
+                try:
+                    run_task(request, self.data_type)
+                except Exception as err:
+                    print(err)             
+
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
@@ -207,7 +219,6 @@ class Importhandler(View):
     
     #delete task
     @csrf_exempt
-    @staticmethod
     def delete_task(request):
         print(Importhandler.file_url)
         for filename in os.listdir("uploads"):
@@ -248,6 +259,7 @@ class Importhandler(View):
     @staticmethod
     def proceed_save(request):
         errList=[]
+        print(f'data type: {Importhandler.data_type}')
         # print(Importhandler.data_list)
         with transaction.atomic(using='dorganism'):
             for obj in Importhandler.data_list:
