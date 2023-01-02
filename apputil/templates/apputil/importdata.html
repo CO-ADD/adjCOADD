@@ -4,37 +4,41 @@
 {% block content %}
 <!-- Start upload datafiles, scanne virus -->
 <div class="container">
-    <div class="row bg-secondary " style="height: 20px;">progress bar</div>
-    <section class="row border ">
+    <div id="progressbar" class="d-flex bg-secondary" style="height: 20px;">
+    <span class="flex-fill"></span>
+    <span class="flex-fill"></span>
+    <span class="flex-fill"></span>
+    </div>
+    <section class="row border " id="Import_step1">
         <div class="card mt-5 border">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" class="form-control">
                 {% csrf_token %}
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Excel Data Upload</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-                            </label>
-                        </div>
-                        <input type="file" name="myfile" class="form-control">
-                        <button id="data_upload" type="submit" class="btn btn-success m-2"> Upload
+                <!--  -->
+                {{form.as_p}}
+                    
+                        <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
                         </button>
                     </div>
                 </div>
             </form>
+   
         </div>
     </section>
 
     <!-- Run check entries in .csv or excel file -->
     <hr><br>
-    <section id="down">
-        <h3 class="title is-2" id="filepath">{{message}}</h3>
+    <section id="Import_step2">
         <h3 class="text-danger">
             {%include 'utils/message.html'%}
         </h3>
-        {%if message %}
+        {%if file_path %}
+        <div>
+
+            Uploaded File stored in 
+            <h3 class="title is-2" id="filepath">{{file_path}}</h3>
+            Uploaded Data Model is:
+            <h3 class="title is-2" id="datamodel">{{data_model}}</h3>
+        </div>
         <div class="field is-grouped">
             <p class="control">
                 Form uploaded, you can:
@@ -42,7 +46,7 @@
 
                 <li>
                     validate form before you import it into DB
-                    <button class="button" data-type="Validation">Form Validation</button>
+                    <button class="button" type="submit" name="RUN" data-type="Validation">Form Validation</button>
                     or
                 </li>
                 <li>
@@ -62,9 +66,10 @@
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>UserName</th>
                         <th>Status</th>
                         <th>Result</th>
+                        <!-- <th> others...</th> -->
                     </tr>
                 </thead>
                 <tbody id="tasks">
@@ -76,34 +81,46 @@
     {%include 'utils/preloader.html'%}
 
     <!-- Proceeding Save data -->
-    <section id="next_to_confirm" class="not-visible">
+    <section id="Import_step3" class="not-visible">
         <p>
 
         <div>Next availabe actions:</div>
         <ul>
             <li>
                 if validation passed, you can try to save your file in DB
-                <button id="save_Proceed" class="btn btn-sm">Database Validation</button>
+                <button id="save_Proceed" type="submit" class="btn btn-sm" data-type="DB_Validation">Database Validation</button>
             </li>
-            <li>if not, you can..
-                cancel and clean task, re load another file
-                <button id="stop_Proceed" class="btn btn-sm" href="{%url 'import'%}">Cancel Task</button>
-            </li>
+          
             <li>
                 or back to first step
-                <a class="btn btn-sm" href="{%url 'import'%}">Reset</a>
+                <a class="btn btn-sm" href="{%url 'import'%}">Discard Changes</a>
             </li>
         </ul>
-        </p>
-    </section>
+    </p>
+</section>
+<hr>
+<section id="Import_step4" class="not-visible">
+    <h4 id="mesg_save_Proceed" class="bg-danger"></h4>
+      <div>Next actions:</div>
+        <ul>
+            <li>
+                <a class="btn btn-sm" href="{%url 'import'%}">Discard Changes</a>
+            </li>
+          
+            <li>
+                 <button id="confirm-save"  type="submit" class="btn btn-sm" data-type="Save-Data">Continue Save...</button>
+            </li>
+        </ul>
+</section>
+
 
     <!-- confirm save or cancel task-->
     <section id="final_to_confirm" class="not-visible">
         <h1>
 
             <div>Last Step</div>
-            <button id="confirmSave" class="btn btn-sm">Confirm Save</button>
-            <button id="rollBack" class="btn btn-sm">RollBack Transaction</button>
+            <button id="confirmSave" class="btn btn-sm" data-type="Confirm">Confirm Save</button>
+            <button id="rollBack" class="btn btn-sm" data-type="RollBack">RollBack Transaction</button>
         </h1>
     </section>
 </div>

@@ -6,7 +6,7 @@ from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
-from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
+from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from adjcoadd.constants import *
 
 #=======================================Organism Create Form=============================================================
@@ -60,6 +60,7 @@ class Taxonomy_form(forms.ModelForm):
 
 #========================================Batch Form================================================================
 class Batch_form(forms.ModelForm):
+    # Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
    
     def __init__(self, user, organism_id=None, *args, **kwargs):
@@ -76,14 +77,15 @@ class Batch_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_modelFIELDs+["organism_id"]
-        exclude=['orgbatch_id']
+        # fields=ORGANISM_BATCH_FIELDs.keys()
+        # +["organism_id"]
+        exclude=['orgbatch_id', 'stock_level']
 
 class Batchupdate_form(forms.ModelForm):
-    
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_modelFIELDs
+        fields=ORGANISM_BATCH_FIELDs.keys()
+        exclude=['stock_level']
 
     def __init__(self, user, *args, **kwargs): 
         user=user
@@ -92,9 +94,38 @@ class Batchupdate_form(forms.ModelForm):
 
 
 # ===============================Stock Form-------------------------------
-class Stock_form(Batchupdate_form):
-
-   
+class Stock_form(forms.ModelForm):  
     class Meta:
         model =OrgBatch_Stock
-        fields=ORGANISM_STOCK_modelFIELDs
+        fields=ORGANISM_STOCK_FIELDs.keys()
+
+# ===============================Culture Form-------------------------------
+class Culture_form(forms.ModelForm):
+    organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
+   
+    def __init__(self, user, organism_id=None, *args, **kwargs):
+        self.organism_id=organism_id
+        user=user
+        super(Culture_form, self).__init__(*args, **kwargs)
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+              
+    def clean_organism_id(self):       
+        data=self.cleaned_data['organism_id']
+        # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
+        data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
+        return data
+
+    class Meta:
+        model =Organism_Culture
+        fields=ORGANISM_CULTR_FIELDs
+
+class Cultureupdate_form(forms.ModelForm):
+
+    def __init__(self, user, *args, **kwargs): 
+        user=user
+        super(Cultureupdate_form, self).__init__(*args, **kwargs)
+        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+
+    class Meta:
+        model =Organism_Culture
+        fields=ORGANISM_CULTR_FIELDs

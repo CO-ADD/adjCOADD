@@ -17,6 +17,7 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     #========================appusers URL==========================================================================
     path('', login_user, name='login' ),
+    path('accounts/login/', login_user, name='login'),
     path('accounts/logout/', logout_user, name='logout' ), 
     path('permission_not_granted/', permission_not_granted, name='permission_not_granted'),
     path('', include('apputil.urls')),

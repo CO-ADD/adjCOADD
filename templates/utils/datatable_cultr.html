@@ -1,0 +1,31 @@
+<table id="datatable_culture" class="cell-border" style="width: 100%">
+  <thead>
+    <tr>
+      {%for th in cultr_fields %}
+      <th>{{th}}</th>
+      {%endfor%}
+      <th style="width: 10em">EDIT</th>
+    </tr>
+  </thead>
+  <tbody hx-target="closest tr" hx-swap="outerHTML">
+    {% for object_cultr in cultr_obj %}
+    <!--  -->
+    {%include 'dorganism/readForm/Culture_tr.html'%}
+    <!--  -->
+    {%endfor%}
+  </tbody>
+</table>
+<script
+  src="https://unpkg.com/htmx.org@1.8.4"
+  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+  crossorigin="anonymous"
+></script>
+<script>
+  $(document).ready(function () {
+    // Table Batch
+    var table = $("#datatable_culture").DataTable({
+      searching: false,
+      paging: false,
+    });
+  });
+</script>

@@ -128,7 +128,7 @@ DATABASES = {
         }
 
    
-    # ==================For Local Test===========================================
+#     # ==================For Local Test===========================================
 #    'default': {
 #       "ENGINE": 'django.db.backends.postgresql_psycopg2',
 #       'OPTIONS':{'options': '-c search_path=apputil,public'},
@@ -196,6 +196,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS=[BASE_DIR/"static",]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -224,10 +226,12 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 # CSRF_COOKIE_SECURE=True
 
 # Django Session timeout setting
-INACTIVE_TIME= 10
-SESSION_COOKIE_AGE=60
-SESSION_EXPIRE_SECONDS = 10   
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
+INACTIVE_TIME= 180
+# SESSION_COOKIE_AGE=120
+# SESSION_EXPIRE_SECONDS = 120   
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_IDLE_TIMEOUT = 10
+# SESSION_IDLE_TIMEOUT = 120
+LOGOUT_REDIRECT_URL="/"
+
 

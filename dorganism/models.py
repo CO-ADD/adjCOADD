@@ -81,13 +81,13 @@ class Taxonomy(AuditModel):
     #Method Get Fields, Values List
     @classmethod
     def get_fields(self):
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in TAXONOMY_FIELDs]
+        select_fields=[TAXONOMY_FIELDs[f.name] for f in self._meta.fields if f.name in TAXONOMY_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in TAXONOMY_FIELDs:    
+            if field.name in TAXONOMY_FIELDs.keys():    
                 value_list.append(field.value_to_string(self))
         return value_list
         
@@ -215,13 +215,13 @@ class Organism(AuditModel):
     #Method Get Fields, Values List
     @classmethod
     def get_fields(self):
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_FIELDs]
+        select_fields=[ORGANISM_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ORGANISM_FIELDs:    
+            if field.name in ORGANISM_FIELDs.keys():    
                 value_list.append(field.value_to_string(self))
                 print(value_list)
         return value_list
@@ -304,12 +304,12 @@ class Organism_Batch(AuditModel):
     def save(self, *args, **kwargs):
         if not self.orgbatch_id: #Object does not exists
             try:
-                print(self.organism_id.organism_id)
+                print(f'find orgbatchID with {self.organism_id.organism_id}')
             except Exception as err:
                 print(err)
             Next_BatchNo = self.find_Next_BatchNo(self.organism_id.organism_id)
             if Next_BatchNo:
-                self.Batch_No = Next_BatchNo
+                self.batch_no = Next_BatchNo
                 self.orgbatch_id = self.str_OrgBatchID(self.organism_id.organism_id,Next_BatchNo)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
@@ -319,13 +319,13 @@ class Organism_Batch(AuditModel):
     #Method Get Fields, Values List
     @classmethod
     def get_fields(self):
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_BATCH_FIELDs]
+        select_fields=[ORGANISM_BATCH_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_BATCH_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ORGANISM_BATCH_FIELDs:    
+            if field.name in ORGANISM_BATCH_FIELDs.keys():    
                 value_list.append(field.value_to_string(self))
         print(value_list)
         return value_list
@@ -395,13 +395,13 @@ class OrgBatch_Stock(AuditModel):
     #Method Get Fields, Values List
     @classmethod
     def get_fields(self):
-        select_fields=[f.verbose_name for f in self._meta.fields if f.verbose_name in ORGANISM_STOCK_FIELDs]
+        select_fields=[ORGANISM_STOCK_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_STOCK_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
-            if field.verbose_name in ORGANISM_STOCK_FIELDs:    
+            if field.name in ORGANISM_STOCK_FIELDs.keys():    
                 value_list.append(field.value_to_string(self))
         print(value_list)
         return value_list
@@ -443,3 +443,17 @@ class Organism_Culture(AuditModel):
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
+
+    #Method Get Fields, Values List
+    @classmethod
+    def get_fields(self):
+        select_fields=[ORGANISM_CULTR_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_CULTR_FIELDs.keys()]
+        return select_fields
+    #------------------------------------------------
+    def get_values(self):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.name in ORGANISM_CULTR_FIELDs.keys():    
+                value_list.append(field.value_to_string(self))
+        print(value_list)
+        return value_list

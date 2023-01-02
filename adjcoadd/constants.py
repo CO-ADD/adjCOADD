@@ -8,13 +8,44 @@ ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
 # column name can be edited here 
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
-TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
-ORGANISM_FIELDs = ['Organism ID', 'Organism Name',  'Risk Group',  'Pathogen', 'Strain Code']
-ORGANISM_BATCH_FIELDs = ["OrgBatch ID", "Batch No","Batch Notes","Supplier","Biologist"]
-ORGANISM_BATCH_modelFIELDs=["orgbatch_id","batch_no","batch_notes","supplier","biologist"]
-ORGANISM_STOCK_FIELDs=["OrgBatch ID","Stock ID","Stock Note","Stock Type","Stock Date","Biologist"]
-ORGANISM_STOCK_modelFIELDs=["orgbatch_id","stock_id","stock_note","stock_type","stock_date","biologist"]
-# ORGANISM_BATCH_FIELDs = ["OrgBatch ID","Organism ID","Batch No","Batch Notes","QC Notes","QC Records","Supplier","Supplier Code","Supplier PO","Stock Date","Stock Levels","Biologist"]
-# ORGANISM_BATCH_modelFIELDs = ["orgbatch_id","organism_id","batch_no","batch_notes","qc_status","qc_record","supplier","supplier_code","supplier_po","stock_date","biologist"]
+# TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
+TAXONOMY_FIELDs = {
+    'organism_name':'Specie_test',  
+    'code':'Code_test',  
+    'org_class':'Class_test',
+    'tax_rank':'Taxonomy Rank',
+    'division':'Division', 
+    }
+
+ORGANISM_FIELDs = {
+    'organism_id':'Organism ID', 
+    'organism_name':'Organism Name',  
+    'risk_group':'Risk Group',  
+    'pathogen_group':'Pathogen', 
+    'strain_code':'Strain Code'
+    }
+
+ORGANISM_STOCK_FIELDs={
+    "orgbatch_id":"OrgBatch ID",
+    "stock_id":"Stock ID",
+    "stock_note":"Stock Note",
+    "stock_type":"Stock Type",
+    "stock_date":"Stock Date",
+    "biologist":"Biologist"
+}
+
+ORGANISM_BATCH_FIELDs = {
+    "orgbatch_id":"OrgBatch ID",
+    "supplier":"Supplier",
+    "stock_date":"Stock Date",
+    "stock_level":"Stock Levels",
+    "biologist":"Biologist"
+}
+
+ORGANISM_CULTR_FIELDs = {
+    
+    "organism_id":"Organism ID",
+    "biologist":"Biologist"
+}
 
 # -dDrug Settings ---------------------------------------------------

@@ -2,27 +2,37 @@
 $(document).ready(() => {
   console.log("document ready!");
 });
-const csrftoken = getCookie('csrftoken');
+const csrftoken = getCookie("csrftoken");
+if ($("#filepath").text()) {
+  $("#progressbar span:first-child").toggleClass("bg-success");
+}
 // Function to call the function run_task in Views.py
+
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
   console.log("button clicked");
   const filepath = $("#filepath").text() ? $("#filepath").text() : "none";
+  const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
   console.log(filepath);
   $.ajax({
-    url: "/tasks/",
-    data: { type: $(this).data("type"), filepath: filepath.toString() },
+    url: "/import/",
+    data: {
+      type: $(this).data("type"),
+      filepath: filepath.toString(),
+      datamodel: datamodel.toString(),
+    },
     method: "POST",
+    headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
       console.log(res);
-      if (jQuery.isEmptyObject(res)) {
-        console.log("reloading.")
-        window.location.reload("/import/")
-      }
+      // if (jQuery.isEmptyObject(res)) {
+      //   console.log("reloading.");
+      //   window.location.reload("/import/");
+      // }
       const html = `
       <tr>
-      <td>${res.task_num}</td>
+      <td>${res.task_user}</td>
       <td>${res.task_status}</td>
       <td>${res.task_result}</td>
       </tr>`;
@@ -33,7 +43,8 @@ $(".button").on("click", function () {
         $("#next_to_confirm").toggleClass("visible");
       }
       if (res.task_status === "Form is Valid") {
-        $("#next_to_confirm").toggleClass("visible");
+        $("#Import_step3").toggleClass("visible");
+        $("#progressbar span:nth-child(2)").toggleClass("bg-success");
       }
       const taskStatus = res.status;
       $("#preLoader").fadeOut();
@@ -46,14 +57,23 @@ $(".button").on("click", function () {
 $("#save_Proceed").on("click", function () {
   $("#preLoader").fadeIn();
   $.ajax({
-    url: "/tasks/proceed",
-    data: {},
+    url: "/import/",
     method: "POST",
-    headers: { 'X-CSRFToken': csrftoken },
+    data: {
+      type: $(this).data("type"),
+    },
+    headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
       $("#preLoader").fadeOut();
-      save_data(res);
+      console.log(res);
+      // if (res.task_status === "Form is Valid") {
+      $("#Import_step4").toggleClass("visible");
+      $("#progressbar span:nth-child(3)").toggleClass("bg-success");
+      // }
+      const html = `<p>${res.status}</p>`;
+      $("#mesg_save_Proceed").append(html);
+      // save_data(res);
     })
     .fail((err) => {
       console.log(err);
@@ -62,7 +82,7 @@ $("#save_Proceed").on("click", function () {
 
 $("#stop_Proceed").on("click", function () {
   $.ajax({
-    url: "/tasks/cancel",
+    url: "/import/",
     data: {},
     method: "POST",
   })
@@ -73,21 +93,24 @@ $("#stop_Proceed").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
-
 });
 
-save_data = (res) => {
+$("#confirm-save").on("click", function () {
   $.ajax({
-    url: "/tasks/cancel",
+    url: "/import/",
     data: {},
     method: "POST",
+    data: {
+      type: $(this).data("type"),
+    },
+    headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
-      window.alert("Data Saved!");
-      location.reload();
+      $("#Import_step3").toggleClass("visible");
+      $("#Import_step4").toggleClass("visible");
+      window.alert(res.status);
     })
     .fail((err) => {
       console.log(err);
     });
-
-};
+});

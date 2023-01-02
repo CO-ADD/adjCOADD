@@ -1,30 +1,116 @@
 <div class="d-flex bg-dark justify-content-between mb-0">
-  <button id="hidefilter" class="btn btn-sm"><i class="fas fa-sync fa-spin"></i></button>
+  <button id="hidefilter" class="btn btn-sm">
+    <i class="fas fa-sync fa-spin"></i>
+  </button>
   <div>
-    <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight">
+    <button
+      class="btn btn-sm"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight"
+    >
       <i class="fas fa-cog fa-spin"></i>
     </button>
 
-    <div class="offcanvas offcanvas-end" tabindex="1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-      data-bs-backdrop="false" style="width: 120px; margin-top: 8%;">
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="1"
+      id="offcanvasRight"
+      aria-labelledby="offcanvasRightLabel"
+      data-bs-backdrop="false"
+      style="width: 200px; margin-top: 8%"
+    >
       <div class="offcanvas-header">
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <a class="btn btn-sm m-3 bg-warning" href="{%url 'dataexport'%}" data-bs-toggle="tooltip"
-          data-bs-placement="top" title="Export Data">
-          <i class="fa fa-file-export"></i>
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fa fa-file-export">Taxonomy</i>
+          </button>
+          <ul class="dropdown-menu">
+            <form action="/exportData/" method="POST" id="TaxonomyDL">
+              {% csrf_token %}
+              <!--  -->
+              <ul>
+                {%for field in fields%}
+                <li>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="{{field}}"
+                    id="{{field}}ID"
+                    name="{{field}}"
+                  />
+                  <label class="form-check-label" for="flexCheckDefault">
+                    {{field}}
+                  </label>
+                </li>
+                {%endfor%}
+              </ul>
+
+              <button type="submit">Download</button>
+            </form>
+          </ul>
+        </div>
+
+        <a
+          class="btn btn-sm m-3 bg-warning"
+          href="{%url 'import'%}"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Import Data"
+          ><i class="fa fa-file-import">To Import</i>
         </a>
-        <a class="btn btn-sm m-3 bg-warning" href="{%url 'import'%}" data-bs-toggle="tooltip" data-bs-placement="top"
-          title="Import Data"><i class="fa fa-file-import"></i> </a>
-        <a class="btn btn-sm m-3" href="{%url 'batch_card'%}" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+        <a
+          class="btn btn-sm m-3"
+          href="{%url 'batch_card'%}"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title=""
+        >
           ORGANISM Batch
         </a>
-        <a class="btn btn-sm disabled m-3" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
+        <a
+          class="btn btn-sm disabled m-3"
+          href="#"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Refresh"
+        >
           <i class="fa-solid fa-arrows-rotate"></i>
         </a>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    const csrftoken = getCookie("csrftoken");
+    formdata = $("#TaxonomyDL").serialize();
+    console.log(formdata);
+    $(".Download").on("click", function () {
+      $.ajax({
+        url: "/exportData/",
+        type: "POST",
+        headers: { "X-CSRFToken": csrf },
+        data: formdata,
+      })
+        .done((response) => {
+          console.log(response);
+          // window.location.reload()
+        })
+        .fail(() => {
+          console.log("Error occured");
+        });
+    });
+  });
+</script>

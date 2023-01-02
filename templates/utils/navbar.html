@@ -1,176 +1,206 @@
 <nav class="navbar fixed-top navbar-expand-lg">
-    <div class="container-fluid">
-
-        <div class="brand d-flex flex-column">
-
-            <a class="navbar-brand " href="{%url 'index'%}">
-                {%load static%}
-                <img width="100%" class="d-inline-block align-text-top"
-                    src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
-            </a>
-            <ul class="navbar-nav justify-content-around ml-0 ">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{%url 'index'%}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="">Contact</a>
-                </li>
-
-            </ul>
-        </div>
-
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto fs-5">
-                <li class="nav-item">
-                    <div class="dropdown d-inline-block">
-                        <button type="button" class="btn header-item waves-effect border-0"
-                            id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <span class="d-xl-inline-block">MODELS</span>
-                            <!-- <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i> -->
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item" href="{%url 'org_list' %}">
-                                ORGANISM
-                            </a>
-                            <a class="dropdown-item" href="{%url 'taxo_card' %}">
-                                TAXONOMY
-                            </a>
-
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="dropdown d-inline-block">
-                        <button type="button" class="btn header-item waves-effect border-0"
-                            id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <span class="d-xl-inline-block">IMPORT DATA</span>
-                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <div>
-
-                                <a class="dropdown-item" href="{%url 'importOrg'%}" class=""><i
-                                        class="bi bi-cloud-arrow-up"></i>import
-                                    organism</a>
-                            </div>
-                            <div>
-
-                                <a class="dropdown-item" href="{%url 'importTaxo'%}" class=""><i
-                                        class="bi bi-cloud-arrow-up"></i>import
-                                    Taxonomy</a>
-                            </div>
-
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item d-flex">
-                    {% if user.is_authenticated %}
-                    <div class="dropdown d-inline-block">
-                        <button type="button" class="btn header-item waves-effect border-0"
-                            id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-
-                            <img class="rounded-circle header-profile-user" src="" alt="Avatar">
-                            <span class="d-xl-inline-block">{{user.username}}</span>
-                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i>
-                                <span key="t-profile">Profile</span></a>
-                            <a class="dropdown-item" href="#"> <input class="form-check-input" type="checkbox"
-                                    id="dark-mode">
-                                <label class="form-check-label" for="flexSwitchCheckChecked">Switch to Dark</label> </a>
-
-                            <a class="dropdown-item d-block disabled" href="{%url 'dataexport'%}"><span
-                                    class="badge bg-success float-end">11</span><i
-                                    class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                                    key="t-settings">Download</span></a>
-
-                            <div class="dropdown-divider"></div>
-                            {%if user.is_superuser %}
-
-                            <a class="dropdown-item" href="{%url 'userslist' %}">Users List</a>
-                            <a class="dropdown-item" href="{%url 'dict_view'%}">DICTIONARY</a>
-                            {%endif%}
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="{%url 'logout'%}"><i
-                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                    key="t-logout">Logout</span></a>
-
-                        </div>
-                    </div>
-                    {%else%}
-
-                    <a class="nav-link active" href="{%url 'login'%}">Log In</a>
-                    {%endif%}
-                </li>
-            </ul>
-        </div>
+  <div class="container-fluid">
+    <div class="brand d-flex flex-column">
+      <a class="navbar-brand" href="{%url 'index'%}">
+        {%load static%}
+        <img
+          width="100%"
+          class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
+          alt="CoADD Logo"
+        />
+      </a>
+      <ul class="navbar-nav justify-content-around ml-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="{%url 'index'%}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="">Contact</a>
+        </li>
+      </ul>
     </div>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto fs-5">
+        <li class="nav-item">
+          <div class="dropdown d-inline-block">
+            <button
+              type="button"
+              class="btn header-item waves-effect border-0"
+              id="page-header-user-dropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="d-xl-inline-block">MODELS</span>
+              <!-- <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i> -->
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <!-- item-->
+              <a class="dropdown-item" href="{%url 'org_list' %}"> ORGANISM </a>
+              <a class="dropdown-item" href="{%url 'taxo_card' %}">
+                TAXONOMY
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="dropdown d-inline-block">
+            <button
+              type="button"
+              class="btn header-item waves-effect border-0"
+              id="page-header-user-dropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="d-xl-inline-block">IMPORT DATA</span>
+              <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <!-- item-->
+              <div>
+                <a class="dropdown-item" href="{%url 'importOrg'%}" class=""
+                  ><i class="bi bi-cloud-arrow-up"></i>import organism</a
+                >
+              </div>
+              <div>
+                <a class="dropdown-item" href="{%url 'importTaxo'%}" class=""
+                  ><i class="bi bi-cloud-arrow-up"></i>import Taxonomy</a
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item d-flex">
+          {% if user.is_authenticated %}
+          <div class="dropdown d-inline-block">
+            <button
+              type="button"
+              class="btn header-item waves-effect border-0"
+              id="page-header-user-dropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img
+                class="rounded-circle header-profile-user"
+                src="{%static 'images/app/avatar.png'%}"
+                alt="Avatar"
+              />
+              <span class="d-xl-inline-block">{{user.username}}</span>
+              <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <!-- item-->
+              <a class="dropdown-item" href="#"
+                ><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                <span key="t-profile">Profile</span></a
+              >
+              <a class="dropdown-item" href="#">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="dark-mode"
+                />
+                <label class="form-check-label" for="flexSwitchCheckChecked"
+                  >Switch to Dark</label
+                >
+              </a>
+
+              <a
+                class="dropdown-item d-block disabled"
+                href="{%url 'dataexport'%}"
+                ><span class="badge bg-success float-end">11</span
+                ><i class="bx bx-wrench font-size-16 align-middle me-1"></i>
+                <span key="t-settings">Download</span></a
+              >
+
+              <div class="dropdown-divider"></div>
+              {%if user.is_superuser %}
+
+              <a class="dropdown-item" href="{%url 'userslist' %}"
+                >Users List</a
+              >
+              <a class="dropdown-item" href="{%url 'dict_view'%}">DICTIONARY</a>
+              {%endif%}
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-danger" href="{%url 'logout'%}"
+                ><i
+                  class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
+                ></i>
+                <span key="t-logout">Logout</span></a
+              >
+            </div>
+          </div>
+          {%else%}
+
+          <a class="nav-link active" href="{%url 'login'%}">Log In</a>
+          {%endif%}
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-
 <script>
-
-    $(window).scroll(function () {
-        if ($(document).scrollTop() > 50) {
-            $('nav').addClass('shrink');
-            $('nav').find('form').addClass('not-visible');
-        } else {
-            $('nav').removeClass('shrink');
-            $('nav').find('form').removeClass('not-visible');
-
-        }
-    });
+  $(window).scroll(function () {
+    if ($(document).scrollTop() > 50) {
+      $("nav").addClass("shrink");
+      $("nav").find("form").addClass("not-visible");
+    } else {
+      $("nav").removeClass("shrink");
+      $("nav").find("form").removeClass("not-visible");
+    }
+  });
 </script>
 
 <script>
-    let darkMode = localStorage.getItem('darkMode');
-    const darkModeToggle = document.querySelector('#dark-mode');
+  var darkMode_screen = localStorage.getItem("darkMode");
+  var darkModeToggle = document.querySelector("#dark-mode");
 
-    // check if dark mode enabled
-    // if off turn on
-    // if on turn off
+  // check if dark mode enabled
+  // if off turn on
+  // if on turn off
 
-    const enabledarkMode = () => {
-        // darkModeToggle.checked = true;
-        document.body.classList.add('darkMode');
-        localStorage.setItem('darkMode', 'enabled');
+  function enabledarkMode() {
+    // darkModeToggle.checked = true;
+    document.body.classList.add("darkMode");
+    localStorage.setItem("darkMode", "enabled");
+  }
+  function disabledarkMode() {
+    document.body.classList.remove("darkMode");
+
+    localStorage.setItem("darkMode", null);
+  }
+
+  if (darkMode_screen === "enabled") {
+    darkModeToggle.checked = true;
+    enabledarkMode();
+  }
+
+  darkModeToggle.addEventListener("click", (e) => {
+    darkMode_screen = localStorage.getItem("darkMode");
+    if (darkMode_screen !== "enabled") {
+      enabledarkMode();
+      e.target.checked = true;
+      console.log(e.target.checked);
+    } else {
+      console.log(e.target.checked);
+      disabledarkMode();
+      e.target.checked = false;
     }
-    const disabledarkMode = () => {
-        document.body.classList.remove('darkMode');
-
-        localStorage.setItem('darkMode', null);
-    }
-
-    if (darkMode === 'enabled') {
-        darkModeToggle.checked = true;
-        enabledarkMode();
-    }
-
-    darkModeToggle.addEventListener('click', (e) => {
-        darkMode = localStorage.getItem('darkMode');
-        if (darkMode !== 'enabled') {
-            enabledarkMode();
-            e.target.checked = true;
-            console.log(e.target.checked)
-            console.log(darkMode);
-        } else {
-            console.log(e.target.checked)
-            disabledarkMode();
-            e.target.checked = false;
-        }
-    });
-
+  });
 </script>

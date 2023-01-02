@@ -17,12 +17,12 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
-from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock
+from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
-from .forms import CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Batch_form, Batchupdate_form, Stock_form
-
+from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
+                    Batch_form, Batchupdate_form, Stock_form, Culture_form, Cultureupdate_form)
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
 class FilteredListView(ListView):
@@ -148,7 +148,6 @@ def createOrganism(req):
     '''  
     kwargs={}
     kwargs['user']=req.user
-    print(f"in view: {req.user}")
 
     form=CreateOrganism_form(req.user)
     if req.method=='POST':
@@ -183,11 +182,13 @@ def detailOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
     form=UpdateOrganism_form(user,instance=object_)
-    print(pk)
     context["object"]=object_
     context["form"]=form
-    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id)
+    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields()
+    context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
+    context["cultr_fields"]=Organism_Culture.get_fields()
+
     return render(req, "dorganism/readForm/Organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================
@@ -285,7 +286,7 @@ def createBatch(req):
                     instance=form.save(commit=False) 
                     # print(instance.organism_id)                 
                     instance.save(**kwargs)
-                    print("saved--view info")
+                    print("new Batch saved--view info")
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -297,6 +298,257 @@ def createBatch(req):
         
 
     return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
+
+from django.http import QueryDict
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateBatch(req, pk):
+    print(req.method)
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Batchupdate_form(req.user, instance=object_)
+   
+    context={
+        "form":form,
+        "object":object_,
+    }
+    #-------------------------------------------------------------------------
+    
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()
+        print(qd)
+        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
+        form=Batchupdate_form(req.user, data=qd, instance=object_batch, )
+        print(qd)
+        
+        if form.is_valid():
+            kwargs={}
+            kwargs['user']=req.user                  
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            context={
+                "object_batch":object_batch,
+                'object':object_batch  # this object refer to the same entry of object_batch
+            }
+            return render(req, "dorganism/readForm/Batch_tr.html", context)
+    return render(req, "dorganism/updateForm/Batch_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteBatch(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    print(f'batchID {pk}')
+    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
+
+
+############################################### Stock View ###########################################
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def stockList(req, pk):
+    # if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+    res=None
+    if req.method == 'GET':
+        batch_id=req.GET.get('Batch_id')
+        print(f"StockList with ID = {batch_id}")
+        object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0)
+        if len(qs)>0:
+            data=[]
+            for i in qs:
+                item={
+                    "stock_id":i.pk,
+                    "stock_created":i.n_created,
+                    "stock_left":i.n_left,
+                    "stock_note":i.stock_note,
+                    "stock_type":i.stock_type.dict_value,
+                    "stock_date":i.stock_date,
+                }
+                data.append(item)
+            res=data
+            print(res)
+        else:
+            res='No Data'
+        return JsonResponse({'data':res})
+    return JsonResponse({})
+
+    
+
+# @login_required
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def createStock(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Stock_form()
+
+    if req.method=='POST':
+        
+        form=Stock_form(req.POST)
+        if form.is_valid():
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    # print(instance.organism_id)                 
+                    instance.save(**kwargs)
+                    print("saved--view info")
+                    return redirect(req.META['HTTP_REFERER']) 
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'something wrong...{form.errors}')
+            return redirect(req.META['HTTP_REFERER'])      
+        
+
+    return render(req, 'dorganism/createForm/Stock_c.html', { 'form':form, }) 
+
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateStock(req, pk):
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+    print(object_)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Stock_form(instance=object_)
+    #-------------------------------------------------------------------------
+    if req.method=='POST':
+        form=Stock_form(req.POST, instance=object_)
+        if "cancel" in req.POST:
+            return redirect(req.META['HTTP_REFERER'])
+        else:
+
+            try:
+                with transaction.atomic(using='dorganism'):        # testing!
+                    obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
+                    try:
+                        if form.is_valid():                  
+                            instance=form.save(commit=False)
+                            instance.save(**kwargs)
+                            print('updated')
+                            return redirect(req.META['HTTP_REFERER'])
+                    except Exception as err:
+                        print(f'form erroro is {form.errors} and error {err}')
+                   
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+                return redirect(req.META['HTTP_REFERER'])
+    context={
+        "form":form,
+        "object":object_,
+    }
+   
+    return render(req, "dorganism/updateForm/Stock_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteStock(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+    context={'object':object_}
+    # if request.method == 'GET':
+    if req.method=='POST':
+        object_.delete(**kwargs)
+        print("deleted")
+        return redirect(req.META['HTTP_REFERER'])
+    return render(req, "dorganism/deleteForm/Stock_del.html", context)
+
+
+############################################Culture ##################################33
+# ==========List View================================Read===========================================
+   
+# @login_required
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def createCulture(req):
+    kwargs={}
+    kwargs['user']=req.user 
+    form=Culture_form(req.user)
+
+    if req.method=='POST':
+        Organism_Id=req.POST.get('search_organism')
+        form=Culture_form(req.user, Organism_Id, req.POST)
+        if form.is_valid():
+            print("form is valid")  
+            try:
+                with transaction.atomic(using='dorganism'):
+                    instance=form.save(commit=False) 
+                    # print(instance.organism_id)                 
+                    instance.save(**kwargs)
+                    print("new Culture saved--view info")
+                    return redirect(req.META['HTTP_REFERER']) 
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'something wrong...{form.errors}')
+            return redirect(req.META['HTTP_REFERER'])      
+        
+
+    return render(req, 'dorganism/createForm/Culture_c.html', { 'form':form, }) 
+
+from django.http import QueryDict
+
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateCulture(req, pk):
+    print(req.method)
+    object_=get_object_or_404(Organism_Culture, id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Cultureupdate_form(req.user, instance=object_)
+   
+    context={
+        "form":form,
+        "object":object_,
+    }
+    #-------------------------------------------------------------------------
+    
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()
+        print(qd)
+        object_culture=get_object_or_404(Organism_Culture, pk=pk)
+        form=Cultureupdate_form(req.user, data=qd, instance=object_culture, )
+        print(qd)
+        
+        if form.is_valid():
+            kwargs={}
+            kwargs['user']=req.user                  
+            instance=form.save(commit=False)
+            instance.save(**kwargs)
+            context={
+                "object_cultr":object_culture,
+                'object':object_culture  # this object refer to the same entry of object_batch
+            }
+            return render(req, "dorganism/readForm/Culture_tr.html", context)
+            # return render(req, "dorganism/updateForm/Batch_u.html", context)  
+                
+   
+    return render(req, "dorganism/updateForm/Culture_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteCulture(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    print(f'cultureID {pk}')
+    object_=get_object_or_404(Organism_Culture, pk=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
 
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -556,18 +808,24 @@ def import_excel_organism(req):
 ############################################### Export CSV View ###########################################
 import csv
 import datetime 
+from adjcoadd.constants import *
 
 @login_required
 @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def exportCSV(req):
-    queryset=Taxonomy.objects.all()
-    query= Taxonomyfilter(req.GET, queryset=queryset).qs
-    response = HttpResponse(content_type='text/csv')
-    file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
+    if req.method=="POST":
+        print(req.POST.items())
+        queryset=Taxonomy.objects.all()
+        query= Taxonomyfilter(req.GET, queryset=queryset).qs
+        response = HttpResponse(content_type='text/csv')
+        file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
 
-    writer = csv.writer(response)
-    writer.writerow(['name', 'class','lineage',])
-    for i in query.values_list('organism_name','org_class', 'lineage',):
-        writer.writerow(i)
-    response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
-    return response
+        writer = csv.writer(response)
+        writer.writerow(['organism_name','org_class', 'lineage',])
+        for i in query.values_list('organism_name','org_class', 'lineage',):
+        # for i in fieldlist:
+            # writer.writerow(query.values_list(i))
+            writer.writerow(i)
+        response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
+        return response
+

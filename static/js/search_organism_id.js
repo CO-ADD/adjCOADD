@@ -29,12 +29,9 @@ function sendSearchData(inputtext) {
             // alert(this.id)
             // let Texonomy = this.innerText.split(" | ");
             let organism_id = this.innerText;
-            console.log("working");
             searchInput.value = organism_id;
             var setMicro = document.getElementById("microorg");
             setMicro.value = organism_id;
-            console.log(setMicrovalue);
-
             resultsBox.innerHTML = "";
             resultsBox.classList.remove("scrollbar");
           });

@@ -94,12 +94,12 @@ tr {
 .navbar-light {
   background-color: var(--bs-topnav-bg);
   opacity: 0.8;
-  color: white;
+  color: var(--bs-light);
 }
 
 .navbar-brand,
 .nav-link {
-  color: white !important;
+  color: var(--bs-light) !important;
   border: 2px solid transparent;
 }
 
@@ -163,7 +163,7 @@ body {
   height: 20rem;
   padding: 10px;
   flex-wrap: wrap;
-  background-color: rgb(248, 241, 241);
+  background-color: var(--bs-light);
 }
 
 button,
@@ -173,19 +173,19 @@ button,
 }
 
 .btn:hover {
-  color: white;
-  background-color: var(--orange, orange);
+  color: var(--bs-light);
+  background-color: var(--orange);
   transition: 0.5s ease-out;
 }
 
 .btn2 {
   width: 6rem;
   background-color: var(--orange);
-  color: white;
+  color: var(--bs-light);
 }
 
 .btn2:hover {
-  border: 2px solid white;
+  border: 2px solid var(--bs-light);
 }
 
 .home-banner {
@@ -200,7 +200,7 @@ button,
 
   border-radius: 50%;
   margin: 1rem;
-  color: white;
+  color: var(--bs-light);
   font-weight: bolder;
 }
 
@@ -234,7 +234,7 @@ button,
 .landp-img-03:hover {
   transform: scale(1.1);
   transition: 0.3s ease-in;
-  color: white;
+  color: var(--bs-light);
 }
 
 /* =============================Drag to resize sidebar start ===================================== */
@@ -243,7 +243,7 @@ button,
   position: relative;
   z-index: 2;
   cursor: col-resize;
-  background: #b7b8b9;
+  background: var(--bs-boxed-body-bg);
   margin-right: 3px;
   margin-left: 0;
   padding: 0;
@@ -274,7 +274,7 @@ button,
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
-  color: white;
+  color: var(--bs-light);
   bottom: 0 !important;
 }
 
@@ -299,17 +299,17 @@ footer {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
+  border-bottom: 1px dotted var(--bs-dark);
 }
 
 .tooltip .tooltiptext {
   width: 120px;
-  background-color: black;
-  color: #fff;
+  background-color: var(--bs-dark);
+  color: var(--bs-body-bg);
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-  border: 3px solid black;
+  border: 3px solid var(--bs-dark);
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
@@ -320,7 +320,7 @@ footer {
 } */
 
 .all_comps {
-  background-color: #ddd3d0;
+  background-color: var(--bs-body-bg);
 }
 
 .compounds {
@@ -328,7 +328,7 @@ footer {
 }
 
 .compounds:hover {
-  border: 3px solid white;
+  border: 3px solid var(--bs-light);
   /* box-shadow: 5px 10px rgb(199, 188, 188); */
   transition: 0.2s ease-out;
   box-shadow: 0px 5px 12px 0px var(--grey), 0px -5px 12px 0px var(--grey);
@@ -425,7 +425,7 @@ select option {
 .btnok {
   border: none;
   background-color: #ff6e00;
-  color: white;
+  color: var(--bs-light);
 }
 
 .btnok:hover {
@@ -438,7 +438,7 @@ span {
 
 td button {
   border: none;
-  background-color: white;
+  background-color: var(--bs-light);
   color: var(--teal);
   margin: 5px 2px 5px 2px;
 }
@@ -456,7 +456,7 @@ td .btnsave {
 }
 
 td button:hover {
-  color: white;
+  color: var(--bs-light);
   background-color: #ff6e00;
 }
 
