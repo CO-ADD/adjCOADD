@@ -42,6 +42,7 @@ urlpatterns = [
     path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
     path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
     path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
+
   
     #=======================Data Export/Import ===================================================================
     path('exportData/', exportCSV, name="dataexport"),
