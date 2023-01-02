@@ -392,6 +392,7 @@ def createStock(req):
     if req.method=='POST':
         
         form=Stock_form(req.POST)
+
         if form.is_valid():
             print("form is valid")  
             try:
@@ -552,6 +553,53 @@ def deleteCulture(req, pk):
 
 
 
+@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+def updateStock(req, pk):
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+    kwargs={}
+    kwargs['user']=req.user
+   
+    form=Stock_form(req.user, instance=object_)
+    #-------------------------------------------------------------------------
+    if req.method=='POST':
+        form=Stock_form(req.user, req.POST, instance=object_)
+        if "cancel" in req.POST:
+            return redirect(req.META['HTTP_REFERER'])
+        else:
+
+            try:
+                with transaction.atomic(using='dorganism'):        # testing!
+                    obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
+                    try:
+                        if form.is_valid():                  
+                            instance=form.save(commit=False)
+                            instance.save(**kwargs)
+                            return redirect(req.META['HTTP_REFERER'])
+                    except Exception as err:
+                        print(err)
+                   
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+                return redirect(req.META['HTTP_REFERER'])
+    context={
+        "form":form,
+        "object":object_,
+    }
+   
+    return render(req, "dorganism/updateForm/Stock_u.html", context)
+
+@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+def deleteStock(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+    try:
+        object_.delete(**kwargs)
+        print("deleted")
+            
+    except Exception as err:
+        print(err)
+    return redirect('/')
 
 ############################################### Import CSV View ###########################################
 import pandas as pd
@@ -688,3 +736,4 @@ def exportCSV(req):
             writer.writerow(i)
         response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
         return response
+
