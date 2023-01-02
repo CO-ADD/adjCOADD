@@ -180,7 +180,7 @@ class Importhandler(View):
     form_class=FileUploadForm
     file_url=''
     data_list=[]
-    data_type='default'
+    data_model='default'
 
     def get(self, request):
         form = self.form_class
@@ -194,27 +194,76 @@ class Importhandler(View):
         try:
             if form.is_valid():
                 myfile=request.FILES['file_field']
-                self.data_type=request.POST.get('file_data')
-                print(self.data_type)
+                self.data_model=request.POST.get('file_data')
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 fs=FileSystemStorage()
                 filename=fs.save(myfile.name, myfile)
                 self.file_url=fs.url(filename)
-                context['message']=self.file_url
+                context['file_path']=self.file_url
+                context['data_model']=self.data_model
                 return render(request,'apputil/importdata.html', context)
             else:
-                messages.warning(request, f'There is {form.errors} error, upload again')
-
-
-            if request.POST.get=='RUN':
-                try:
-                    run_task(request, self.data_type)
-                except Exception as err:
-                    print(err)             
+                messages.warning(request, f'There is {form.errors} error, upload again')          
 
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+            process_name=request.POST.get('type')
+            print(f'step is {process_name}')
+            #type: Validation, Cancel, DB_Validation, Confirm, RollBack, Save-Data
+            if process_name=='Validation':
+                file_path=request.POST.get("filepath")
+                data_model=request.POST.get("datamodel")
+                print(f'datamodel is {data_model}')
+            # validate fields
+            #return status=error, warning, or pass
+            #return result=ErrorList
+                Importhandler.data_list=import_excel(file_path, data_model)
+            
+                if isinstance(Importhandler.data_list, Exception):
+                    result=str(Importhandler.data_list)
+                    status='Form Errors'
+                else:
+                    result='pass'
+                    status='Form is Valid'
+                return JsonResponse({"task_user": request.user.pk, 'task_status':status, 'task_result': result})
+            elif process_name=='Cancel':
+                # Cancel Task
+                Importhandler.delete_task(request)
+                return JsonResponse({})
+            elif process_name=='DB_Validation':
+                # import data to DB
+                print(f'save data {Importhandler.data_list} to db')
+                errList=[]
+                #  save to db function
+                
+                for obj in Importhandler.data_list:
+                    print(obj.pk)
+                    if Taxonomy.objects.filter(pk=obj.pk):
+                        return JsonResponse({'status':'DATA exists'}) 
+                    try:
+                        obj.save(commit=False)
+                        print('save')
+                    except Exception as err:
+                        print(err)
+                        errList.append[err]
+                        return JsonResponse({"status":errList})
+            
+                return JsonResponse({"status":"SUCCESS"}, status=200)
+                  
+            elif process_name=='Save-Data':
+                with transaction.atomic(using='dorganism'):
+                    for obj in Importhandler.data_list:
+                        try:
+                            obj.save()
+                            print('save')
+                        except Exception as err:
+                            print(err)
+                            errList.append[err]
+                            return JsonResponse({"status":errList})
+                return JsonResponse({"status":"Data Saved!"}, status=200)
         return render(request, 'apputil/importdata.html', context)
     
     #delete task
@@ -230,57 +279,5 @@ class Importhandler(View):
                     print(err)
         return JsonResponse({})
 
-    @csrf_exempt
-    @staticmethod
-    def run_task(request):
-        task_type = request.POST.get("type")
-        Importhandler.file_url=request.POST.get("filepath")
-        
-        if task_type =='Validation':
-            # read file from self.file_url
-            # validate fields
-            #return status=error, warning, or pass
-            #return result=ErrorList
-            
-            Importhandler.data_list=import_excel(Importhandler.file_url)
-            print(import_excel(Importhandler.file_url))
-            if isinstance(Importhandler.data_list, Exception):
-                result=str(Importhandler.data_list)
-                status='Form Errors'
-            else:
-                result='pass'
-                status='Form is Valid'
-            return JsonResponse({"task_num": "somehash", 'task_status':status, 'task_result': result})
-        elif task_type=='Cancel':
-            Importhandler.delete_task(request)
-            return JsonResponse({})
 
-    @csrf_exempt
-    @staticmethod
-    def proceed_save(request):
-        errList=[]
-        print(f'data type: {Importhandler.data_type}')
-        # print(Importhandler.data_list)
-        with transaction.atomic(using='dorganism'):
-            for obj in Importhandler.data_list:
-                print(obj.pk)
-                if Taxonomy.objects.filter(pk=obj.pk):
-                    return JsonResponse({'status':'DATA exists'}) 
-                try:
-                    obj.save()
-                    print('save')
-                except Exception as err:
-                    print(err)
-                    errList.append[err]
-                    return JsonResponse({"status":errList})
-                    
-        return JsonResponse({"status":"SUCCESS"}, status=200)
-
-    
-    # create entries
-    @csrf_exempt
-    @staticmethod
-    def save_task(request):
-        # call save object funtion 
-        pass
-    
+  
