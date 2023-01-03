@@ -45,15 +45,29 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields()
-        print(context['fields'])
         return context
 
     def get_paginate_by(self, queryset):
         qs=super().get_queryset()
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
+    
+    def qs_download(self, request, **kwargs):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            print("ajax call")
+            qs=super().get_queryset()
+            response = HttpResponse(content_type='text/csv')
+            file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
 
-
+            writer = csv.writer(response)
+            writer.writerow(['organism_name','org_class', 'lineage',])
+            for i in query.values_list('organism_name','org_class', 'lineage',):
+        # for i in fieldlist:
+            # writer.writerow(query.values_list(i))
+                writer.writerow(i)
+            response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
+            return response 
+          
 # #############################TAXONOMY View############################################
 # ==========List View================================Read===========================================
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
@@ -65,6 +79,7 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
  
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/readForm/Taxonomy_card.html'
+    
 # ===========Detail View=============================Read============================================
 @login_required
 def detailTaxonomy(req, slug=None):
@@ -672,11 +687,13 @@ from adjcoadd.constants import *
 
 @login_required
 @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
-def exportCSV(req):
-    if req.method=="POST":
-        print(req.POST.items())
-        queryset=Taxonomy.objects.all()
-        query= Taxonomyfilter(req.GET, queryset=queryset).qs
+def exportCSV(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+        arr = request.POST.getlist('arr[]')
+        print(arr)
+        # return JsonResponse({'res': arr})
+        query=Taxonomy.objects.filter(pk__in=arr)
+        # query= Taxonomyfilter(request.GET, queryset=queryset).qs
         response = HttpResponse(content_type='text/csv')
         file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
 

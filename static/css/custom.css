@@ -258,7 +258,7 @@ nav.shrink {
 }
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
-/* =====Drag to resize sidebar start ======== */
+/* ===== 1 Drag to resize sidebar start ======== */
 .resizer {
   flex-basis: 0;
   position: relative;
@@ -284,21 +284,7 @@ nav.shrink {
   /* min-width: 70%; */
 }
 
-/* ==================== */
-
-/* =========================================================== */
-
-.list-view {
-  display: flex;
-  flex-direction: row;
-}
-
-.grid-view {
-  display: flex;
-  flex-direction: colum;
-}
-
-/* ==============edit table/form ==================================== */
+/* ============== 2 edit table/form =========== */
 .results-card {
   max-height: 300px;
   width: 50%;
@@ -356,59 +342,11 @@ nav.shrink {
   display: none;
 }
 
-.btnok {
-  border: none;
-  background-color: #ff6e00;
-  color: var(--bs-light);
-}
-
-.btnok:hover {
-  border: 2px solid #ff6e00;
-}
-
-td button {
-  border: none;
-  background-color: var(--bs-light);
-  color: var(--teal);
-  margin: 5px 2px 5px 2px;
-}
-
-td .btncancel {
-  position: absolute;
-  top: 0;
-  right: 30px;
-}
-
-td .btnsave {
-  position: absolute;
-  top: 0;
-  right: 0px;
-}
-
-td button:hover {
-  color: var(--bs-light);
-  background-color: #ff6e00;
-}
-
-td select option:hover,
-td:hover {
-  background-color: #ff6e00;
-}
-
-.toLeft {
-  left: 0 !important;
-}
-
-.special,
-.special option {
-  font-size: 14px !important;
-}
-
 .updateformshow {
   margin: auto;
   width: 50%;
 }
-
+/* =========================================================================== */
 /********************  Preloader *******************/
 #preLoader {
   height: 100px;

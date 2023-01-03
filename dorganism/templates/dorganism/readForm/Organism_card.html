@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title%}COADD{% endblock %}
 {% block content %}
-{%include 'utils/topbar.html'%}
+{%include 'utils/topbar.html' %}
 <div class="d-flex flex-row bg-transparent justify-content-between vh-100">
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
@@ -29,9 +29,13 @@
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
+        
         <div class="col-md-2 vh-80 m-0 p-1">
           <div class="card ms-3 px-1">
-
+                <div class="checkbox-container">
+                 <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
+                 <label for=""></label>
+                </div>
             <p class="card-title px-1 fw-bold text-uppercase"><a class="card-link"
                 href="{%url 'org_detail' object.pk %}">
                 {{object.organism_id}}</a>
