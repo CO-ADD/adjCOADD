@@ -68,13 +68,14 @@
       type="text/css"
       href="{% static 'css/custom.css' %}"
     />
-    <script src="{%static 'js/js_utils/color-mode.js'%}"></script>
   </head>
 
   <body>
     {%include "utils/navbar.html"%}
 
-    <div style="margin-top: 120px">{% block content %} {% endblock %}</div>
+    <div class="base-content" style="margin-top: 120px">
+      {% block content %} {% endblock %}
+    </div>
 
     <script>
       document.body.addEventListener("htmx:configRequest", (event) => {
