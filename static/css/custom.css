@@ -65,7 +65,9 @@
 /* table.dataTable td {
   font-style: normal;
 } */
-
+.bg-white {
+  background-color: black;
+}
 .dataTables_wrapper {
   font-style: normal;
 }
@@ -137,16 +139,16 @@ a {
   text-decoration: none;
 }
 
-body {
+/* body {
   font-family: sans-serif !important;
   letter-spacing: 00px;
   color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg); */
 
-  /* var(--bs-body-bg); */
-  font-size: small;
-  /* text-transform: uppercase; */
-}
+/* var(--bs-body-bg); */
+/* font-size: small; */
+/* text-transform: uppercase; */
+/* } */
 
 /* #top-alert {
   width: 100%;
