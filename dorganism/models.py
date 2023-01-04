@@ -255,9 +255,7 @@ class Organism_Batch(AuditModel):
 
     #------------------------------------------------
     def find_Next_BatchNo(self, OrganismID) -> int:
-    def find_Next_BatchNo(self, OrganismID) -> int:
         next_BatchNo = 1
-        while Organism_Batch.objects.filter(organism_id=OrganismID, batch_no=next_BatchNo).exists():
         while Organism_Batch.objects.filter(organism_id=OrganismID, batch_no=next_BatchNo).exists():
             next_BatchNo = next_BatchNo + 1
         return(next_BatchNo)    

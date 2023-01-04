@@ -2,9 +2,6 @@
   <button id="hidefilter" class="btn btn-sm">
     <i class="fas fa-sync fa-spin"></i>
   </button>
-  <button id="hidefilter" class="btn btn-sm">
-    <i class="fas fa-sync fa-spin"></i>
-  </button>
   <div>
     <button
       class="btn btn-sm"
@@ -14,17 +11,14 @@
       aria-controls="offcanvasRight"
     >
       <i class="fas fa-cog fa-spin"></i>
-      <i class="fas fa-cog fa-spin"></i>
     </button>
 
     <div
       class="offcanvas offcanvas-end"
       tabindex="1"
-      tabindex="1"
       id="offcanvasRight"
       aria-labelledby="offcanvasRightLabel"
       data-bs-backdrop="false"
-      style="width: 200px; margin-top: 8%"
       style="width: 200px; margin-top: 8%"
     >
       <div class="offcanvas-header">
@@ -66,37 +60,27 @@
         <a
           class="btn btn-sm m-3 bg-warning"
           href="{%url 'import'%}"
-          class="btn btn-sm m-3 bg-warning"
-          href="{%url 'import'%}"
           data-bs-toggle="tooltip"
           data-bs-placement="top"
           title="Import Data"
-          ><i class="fa fa-file-import">To Import</i> title="Import Data" ><i
-            class="fa fa-file-import"
-            >To Import</i
-          >
+          ><i class="fa fa-file-import">To Import</i>
         </a>
         <a
-          class="btn btn-sm m-3"
-          href="{%url 'batch_card'%}"
           class="btn btn-sm m-3"
           href="{%url 'batch_card'%}"
           data-bs-toggle="tooltip"
           data-bs-placement="top"
           title=""
         >
-          ORGANISM Batch ORGANISM Batch
+          ORGANISM Batch
         </a>
         <a
-          class="btn btn-sm disabled m-3"
           class="btn btn-sm disabled m-3"
           href="#"
           data-bs-toggle="tooltip"
           data-bs-placement="top"
           title="Refresh"
-          title="Refresh"
         >
-          <i class="fa-solid fa-arrows-rotate"></i>
           <i class="fa-solid fa-arrows-rotate"></i>
         </a>
       </div>

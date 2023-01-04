@@ -180,12 +180,10 @@ button,
   background-color: var(--bs-topnav-bg);
   opacity: 0.8;
   color: var(--bs-light);
-  color: var(--bs-light);
 }
 
 .navbar-brand,
 .nav-link {
-  color: var(--bs-light) !important;
   color: var(--bs-light) !important;
   border: 2px solid transparent;
 }
@@ -229,7 +227,6 @@ nav.shrink {
   border-radius: 50%;
   margin: 1rem;
   color: var(--bs-light);
-  color: var(--bs-light);
   font-weight: bolder;
 }
 
@@ -258,7 +255,6 @@ nav.shrink {
   transform: scale(1.1);
   transition: 0.3s ease-in;
   color: var(--bs-light);
-  color: var(--bs-light);
 }
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
@@ -268,7 +264,6 @@ nav.shrink {
   position: relative;
   z-index: 2;
   cursor: col-resize;
-  background: var(--bs-boxed-body-bg);
   background: var(--bs-boxed-body-bg);
   margin-right: 3px;
   margin-left: 0;

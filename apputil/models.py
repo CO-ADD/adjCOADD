@@ -195,7 +195,7 @@ class AuditModel(models.Model):
             model_fields=None
         return model_fields
  
- 
+    #--------------------------------------------------    
     def get_values(self, fields=None):
         value_list=[]
         for field in self._meta.fields:
