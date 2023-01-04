@@ -1,0 +1,321 @@
+<form
+  id="OrganismUpdateForm"
+  method="POST"
+  action="{%url 'organism_update' object.pk %}"
+>
+  {% csrf_token %}
+  <!-- {{form.as_table}} -->
+  <div class="row">
+    <div class="col-md-3 updateformshow not-visible">
+      <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}"
+        >Discard Changes</a
+      >
+      <input
+        style="float: right"
+        type="submit"
+        class="btn btn-sm"
+        value="Update Changes"
+        name="note"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 table-responsive">
+      <table class="table table-sm align-middle table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" class="">Organism Name</th>
+            <td>
+              <a href="{%url 'taxo_detail' object.organism_name.urlname %}"
+                >{{object.organism_name}}</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Strain IDs</th>
+            <td class="editable" data-id="{{object.pk}}" data-type="strain_id">
+              <div class="detail">{{object.strain_ids}}</div>
+              <div class="input-group select">{{form.strain_id}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Strain Code</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_code"
+            >
+              <div class="detail">{{object.strain_code}}</div>
+              <div class="input-group select">{{form.strain_code}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row" class="">Strain Notes</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_notes"
+            >
+              <div class="detail">{{object.strain_notes}}</div>
+              <div class="input-group select">{{form.strain_notes}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row" class="">Strain_Type</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="strain_type"
+            >
+              <div class="detail">
+                {%for i in object.strain_type%}
+                <span>{{i}}</span>
+                {%endfor%}
+              </div>
+              <div class="form-control select col-12 fs-6">
+                {{form.strain_type}}
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row" class="">Panel</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="strain_panel"
+            >
+              <div class="detail">
+                {%for i in object.strain_panel%}
+                <span style="font-size: 12px">{{i}} |</span>
+                {%endfor%}
+              </div>
+              <div class="form-control select col-12 fs-6">
+                {{form.strain_panel}}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Strain Origin</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_origin"
+            >
+              <div class="detail" style="width: 300px; overflow: auto">
+                {{object.strain_origin}}
+              </div>
+              <div class="input-group select">{{form.strain_origin}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Strain Identification</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_identification"
+            >
+              <div class="detail">{{object.strain_identification}}</div>
+              <div class="input-group select">
+                {{form.strain_identification}}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4 table-responsive">
+      <table class="table table-sm align-middle table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" class="">Resistance Properties</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="res_property"
+            >
+              <div class="detail">{{object.res_property}}</div>
+              <div class="input-group select">{{form.res_property}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Gene Properties</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="gen_property"
+            >
+              <div class="detail">{{object.gen_property}}</div>
+              <div class="input-group select">{{form.gen_property}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Sequence</th>
+            <td class="editable" data-id="{{object.pk}}" data-type="sequence">
+              <div class="detail">{{object.sequence}}</div>
+              <div class="input-group select">{{form.sequence}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Sequence Link</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="sequence_link"
+            >
+              <div class="detail">{{object.sequence_link}}</div>
+              <div class="input-group select">{{form.sequence_link}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Oxygen Pref</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="oxygen_pref"
+            >
+              <div class="detail">{{object.oxygen_pref}}</div>
+              <div class="form-control select">{{form.oxygen_pref}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Atmosphere Pref</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="atmosphere_pref"
+            >
+              <div class="detail">{{object.atmosphere_pref}}</div>
+              <div class="input-group select">{{form.atmosphere_pref}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Nutrient Pref</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="nutrient_pref"
+            >
+              <div class="detail">{{object.nutrient_pref}}</div>
+              <div class="input-group select">{{form.nutrient_pref}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Biofilm Pref</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="biofilm_pref"
+            >
+              <div class="detail">{{object.biofilm_pref}}</div>
+              <div class="input-group select">{{form.biofilm_pref}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">MTA Status</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="mta_status"
+            >
+              <div class="detail">{{object.mta_status}}</div>
+              <div class="form-control select">{{form.mta_status}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">MTA Document</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="mta_document"
+            >
+              <div class="detail">{{object.mta_document}}</div>
+              <div class="input-group select">{{form.mta_document}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4 table-responsive">
+      <table class="table table-sm align-middle table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" class="">
+              <label for="id_risk_group">Risk Group</label>
+            </th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="risk_group"
+            >
+              <div class="detail">{{object.risk_group}}</div>
+              <div class="form-control select">{{form.risk_group }}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row" class="">Pathogen</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="pathogen_group"
+            >
+              <div class="detail">{{object.pathogen_group}}</div>
+              <div class="form-control select">{{form.pathogen_group}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Lab Restriction</th>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="lab_restriction"
+            >
+              <div class="detail">{{object.lab_restriction}}</div>
+              <div class="input-group select">{{form.lab_restriction}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row" class="">Biologist</th>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="biologist"
+            >
+              <div class="detail">{{object.biologist}}</div>
+              <div class="form-control select">{{form.biologist}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Tax ID</th>
+            <td class="editable" data-id="{{object.pk}}" data-type="tax_id">
+              <div class="detail">{{object.tax_id}}</div>
+              <div class="input-group select">{{form.tax_id}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row border">
+    <div class="d-flex flex-row flex-wrap">
+      <div class="p-2 bd-highlight">
+        Created at: {{object.acreated_at |date:"d M, Y" }}
+        <!--  -->
+        {{object.acreated_at|time:"H:i" }} AEST
+      </div>
+      <div class="p-2 bd-highlight">by: {{object.acreated}}</div>
+      {%if object.aupdated_at%}
+      <div class="p-2 bd-highlight">
+        Modified at: {{object.aupdated_at |date:"d M, Y" }}
+        <!--  -->
+        {{object.aupdated_at|time:"H:i" }} AEST
+      </div>
+      <div class="p-2 bd-highlight">Modified by: {{object.aupdated}}</div>
+      {%endif%}
+    </div>
+  </div>
+</form>

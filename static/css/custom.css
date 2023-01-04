@@ -4,19 +4,19 @@
   --teal: #2c7a84;
   --orange: #ff6e00;
   --grey: #625e5d;
-
+  --bs-card-border: black;
   --bs-heading-bg: var(--teal);
   --bs-topbar-search-bg: #f3f3f9;
   --bs-header-item-color: #555b6d;
   --bs-boxed-body-bg: #ebebf4;
   --bs-topnav-bg: #2c7a84;
-  --bs-menu-item-c0olor: #545a6d;
+  --bs-menu-item-color: #545a6d;
   --bs-heading-dark-bg: #2a3042;
   --bs-input-border-color: #ced4da;
   --bs-input-focus-border-color: #b1bbc4;
   --bs-form-check-input-border: #ff6e00;
   --bs-inform-color: #ff6e00;
-  --bs-form-item-color: #625e5d;
+  --bs-form-item-color: #f0f3f5;
   --bs-footer-bg: #f2f2f5;
   --bs-footer-color: #74788d;
   --bs-custom-white: #fff;
@@ -27,10 +27,11 @@
 }
 
 .darkMode {
+  --bs-card-border: #f6f6f6;
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
   --bs-gray-300: #32394e;
-  --bs-gray-400: 0#a6b0cf;
+  --bs-gray-400: #a6b0cf;
   --bs-gray-500: #bfc8e2;
   --bs-gray-600: #c3cbe4;
   --bs-gray-700: #f6f6f6;
@@ -43,7 +44,7 @@
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
   --bs-custom-white: #2a3042;
-  --bs-input-border-color: #32394e;
+  /* --bs-input-border-color: #32394e; */
   --bs-input-focus-border-color: #3a425a;
   --bs-hr-border-color: #32394e;
   --bs-form-check-input-border: #3a425a;
@@ -58,31 +59,115 @@
   --bs-boxed-body-bg: #32394f;
   --bs-topnav-bg: #282e3f;
   --bs-menu-item-color: #878c9b;
+  --bs-form-item-color: #3a425a;
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
 }
+/* html elements custom style -----------------------------*/
 
-/* table.dataTable td {
-  font-style: normal;
-} */
-
-.dataTables_wrapper {
-  font-style: normal;
+a {
+  text-decoration: none;
 }
 
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+footer {
+  /* border: 2px solid wheat; */
+  background-color: var(--grey);
+  color: var(--bs-light);
+  bottom: 0 !important;
+}
+input,
+select,
+option {
+  background-color: var(--bs-form-item-color) !important;
+  color: var(--bs-body-color) !important;
+}
+option {
+  font-size: 16px !important;
+}
+
+select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  margin: 0;
+}
+
+select option {
+  width: 100%;
+  height: 100%;
+  border: none;
+  margin: 0;
+}
+span {
+  font-size: 16px;
+  background-color: var(--bs-body-bg);
+}
 th,
 td {
   white-space: nowrap;
+  background-color: var(--bs-gray-300);
+  color: var(--bs-body-color);
 }
 
 tr {
   height: 30px;
+  background-color: var(--bs-grey-300);
+  color: var(--bs-body-color);
+}
+/* -------------------------------------------------- */
+/*---- block content div custom style */
+.base-content {
+  background-color: var(--bs-body-bg);
 }
 
+/* ----Button custom style */
+button,
+.btn {
+  border: 2px solid var(--bs-border-color);
+  color: var(--bs-inform-color);
+}
+
+.btn:hover {
+  color: var(--bs-light);
+  background-color: var(--orange);
+  transition: 0.5s ease-out;
+}
+
+.btn2 {
+  width: 6rem;
+  background-color: var(--orange);
+  color: var(--bs-light);
+}
+
+.btn2:hover {
+  border: 2px solid var(--bs-light);
+}
+/* ------------------------------ */
+/* ----custom Card Style */
+.card-link {
+  cursor: pointer !important;
+}
+
+.card-img-bottom {
+  /* width: 100%; */
+  height: 20vw;
+  object-fit: cover;
+}
+/* bootstrap override */
+.card {
+  background-color: var(--bs-body-bg) !important;
+  border: 2px solid var(--bs-input-border-color) !important;
+}
+/* ------------------- */
+/* ----Navbar custom style */
 .navbar {
   background-color: var(--bs-heading-bg);
 }
-
 .navbar-toggler {
   background-color: var(--bs-inform-color);
 }
@@ -132,69 +217,10 @@ nav.shrink .brand .navbar-brand {
 nav.shrink {
   padding: 4px 5px;
 }
-
-a {
-  text-decoration: none;
-}
-
-body {
-  font-family: sans-serif !important;
-  letter-spacing: 00px;
-  color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
-
-  /* var(--bs-body-bg); */
-  font-size: small;
-  /* text-transform: uppercase; */
-}
-
-/* #top-alert {
-  width: 100%;
-  background-color: rgb(160, 160, 160);
-  height: 35px;
-  display: flex;
-  justify-content: space-between;
-} */
-
-.info {
-  color: var(--bs-inform-color);
-  font-weight: bold;
-  font-size: 1rem;
-  height: 20rem;
-  padding: 10px;
-  flex-wrap: wrap;
-  background-color: var(--bs-light);
-}
-
-button,
-.btn {
-  border: 2px solid var(--bs-border-color);
-  color: var(--bs-inform-color);
-}
-
-.btn:hover {
-  color: var(--bs-light);
-  background-color: var(--orange);
-  transition: 0.5s ease-out;
-}
-
-.btn2 {
-  width: 6rem;
-  background-color: var(--orange);
-  color: var(--bs-light);
-}
-
-.btn2:hover {
-  border: 2px solid var(--bs-light);
-}
-
-.home-banner {
-  border-radius: 10% 25% 15% 25%;
-}
-
+/* ------------------- */
+/* ----Landing page badges custom style */
 .landp-img-01,
-.landp-img-02,
-.landp-img-03 {
+.landp-img-02 {
   height: 8rem;
   width: 8rem;
 
@@ -214,11 +240,6 @@ button,
   animation: fadeIn 1.5s;
 }
 
-.landp-img-03 {
-  animation: fadeIn 2s;
-  background-color: var(--orange, orange);
-}
-
 @keyframes fadeIn {
   0% {
     transform: scale(0);
@@ -230,14 +251,14 @@ button,
 }
 
 .landp-img-01:hover,
-.landp-img-02:hover,
-.landp-img-03:hover {
+.landp-img-02:hover {
   transform: scale(1.1);
   transition: 0.3s ease-in;
   color: var(--bs-light);
 }
-
-/* =============================Drag to resize sidebar start ===================================== */
+/* ---------------------------------- */
+/* =================Css style in JS Func========================================= */
+/* ===== 1 Drag to resize sidebar start ======== */
 .resizer {
   flex-basis: 0;
   position: relative;
@@ -257,101 +278,20 @@ button,
   min-width: 20%;
 }
 
-/* .mol-container {
-  width: 60%;
-  height: 400px;
-  position: relative;
-} */
-
 .main {
   /* flex-basis: 0; */
   flex-grow: 1;
   /* min-width: 70%; */
 }
 
-/* =============================Drag to resize sidebar end ===================================== */
-
-footer {
-  /* border: 2px solid wheat; */
-  background-color: var(--grey);
-  color: var(--bs-light);
-  bottom: 0 !important;
-}
-
-/* =========================================================== */
-
-.list-view {
-  display: flex;
-  flex-direction: row;
-}
-
-.grid-view {
-  display: flex;
-  flex-direction: colum;
-}
-
-.card-img-bottom {
-  /* width: 100%; */
-  height: 20vw;
-  object-fit: cover;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted var(--bs-dark);
-}
-
-.tooltip .tooltiptext {
-  width: 120px;
-  background-color: var(--bs-dark);
-  color: var(--bs-body-bg);
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  border: 3px solid var(--bs-dark);
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-}
-
-/* .tooltip:hover .tooltiptext {
-  visibility: visible;
-} */
-
-.all_comps {
-  background-color: var(--bs-body-bg);
-}
-
-.compounds {
-  box-shadow: 0 8px 6px -6px var(--grey);
-}
-
-.compounds:hover {
-  border: 3px solid var(--bs-light);
-  /* box-shadow: 5px 10px rgb(199, 188, 188); */
-  transition: 0.2s ease-out;
-  box-shadow: 0px 5px 12px 0px var(--grey), 0px -5px 12px 0px var(--grey);
-}
-
-.card-link {
-  cursor: pointer !important;
-}
-
-/* ===============================================table==================================== */
-.table {
-  background-color: var(--bs-footer-bg);
-}
-
+/* ============== 2 edit table/form =========== */
 .results-card {
-  /* display: flex;
-  flex-direction: column; */
   max-height: 300px;
   width: 50%;
   box-shadow: 0 8px 8px 0 var(--grey);
   transition: 0.5s;
 }
-
+/* Js editablechoices */
 .tdclass {
   position: relative;
 }
@@ -374,20 +314,6 @@ footer {
   /* width: 100%;
   height: 100%;
   border: none; */
-}
-
-select {
-  width: 100%;
-  height: 100%;
-  border: none;
-  margin: 0;
-}
-
-select option {
-  width: 100%;
-  height: 100%;
-  border: none;
-  margin: 0;
 }
 
 .resultslist {
@@ -416,73 +342,11 @@ select option {
   display: none;
 }
 
-#id_Strain_Type {
-  /* display: block;
-  height: 200px !important; */
-  overflow: scroll;
-}
-
-.btnok {
-  border: none;
-  background-color: #ff6e00;
-  color: var(--bs-light);
-}
-
-.btnok:hover {
-  border: 2px solid #ff6e00;
-}
-
-span {
-  font-size: 16px;
-}
-
-td button {
-  border: none;
-  background-color: var(--bs-light);
-  color: var(--teal);
-  margin: 5px 2px 5px 2px;
-}
-
-td .btncancel {
-  position: absolute;
-  top: 0;
-  right: 30px;
-}
-
-td .btnsave {
-  position: absolute;
-  top: 0;
-  right: 0px;
-}
-
-td button:hover {
-  color: var(--bs-light);
-  background-color: #ff6e00;
-}
-
-td select option:hover,
-td:hover {
-  background-color: #ff6e00;
-}
-
-.toLeft {
-  left: 0 !important;
-}
-
-.special,
-.special option {
-  font-size: 14px !important;
-}
-
 .updateformshow {
   margin: auto;
   width: 50%;
 }
-
-option {
-  font-size: 16px !important;
-}
-
+/* =========================================================================== */
 /********************  Preloader *******************/
 #preLoader {
   height: 100px;

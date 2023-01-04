@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from adjcoadd.utils import import_excel
+from adjcoadd.utils_dataimport import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -24,6 +24,7 @@ def permission_not_granted(req):
 
 
 ## =================================APP Home========================================
+@login_required(login_url='/')
 @login_required(login_url='/')
 def index(req):
     object_1=Organism.objects.count()
@@ -50,6 +51,7 @@ def login_user(req):
             else:
                 messages.warning(req, ' no permission for this application, please contact Admin!')
                 return redirect("/")
+                return redirect("/")
         else:
             form = Login_form()
         return render(req, 'registration/login.html', {'form': form})    
@@ -63,16 +65,19 @@ def logout_user(req):
 ## =========================Application Users View====================================
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     login_url = '/'
+    login_url = '/'
 
     def test_func(self):
         return self.request.user.is_superuser
 
+@login_required(login_url='/')
 @login_required(login_url='/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
 
 class AppUserListView(LoginRequiredMixin, ListView):
+    login_url = '/'
     login_url = '/'
     model=ApplicationUser
     fields='__all__'
@@ -117,6 +122,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 class DictionaryView(LoginRequiredMixin, ListView):
     login_url = '/'
+    login_url = '/'
     model=Dictionary
     fields="__all__"
     template_name='apputil/dictList.html'
@@ -159,7 +165,7 @@ from django import forms
 import json
 from django.core import serializers
 import os
-from .forms import FileValidator
+from adjcoadd.utils_dataimport import FileValidator
 from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 
@@ -174,25 +180,35 @@ from django.db import transaction, IntegrityError
 class FileUploadForm(forms.Form):
     file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
     file_field = forms.FileField()#(validators=[validate_file])
+    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
+    file_field = forms.FileField()#(validators=[validate_file])
 
 class Importhandler(View):
     template_name='apputil/importdata.html'
     form_class=FileUploadForm
+    form_class=FileUploadForm
     file_url=''
     data_list=[]
     data_model='default'
+    data_model='default'
 
     def get(self, request):
+        form = self.form_class
         form = self.form_class
         return render(request, 'apputil/importdata.html', { 'form': form, })
 
     def post(self, request):
         form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(request.POST, request.FILES)
         context = {}
+        context['form'] = form
         context['form'] = form
 
         try:
             if form.is_valid():
+                myfile=request.FILES['file_field']
+                self.data_model=request.POST.get('file_data')
+                # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 myfile=request.FILES['file_field']
                 self.data_model=request.POST.get('file_data')
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
@@ -201,13 +217,16 @@ class Importhandler(View):
                 self.file_url=fs.url(filename)
                 context['file_path']=self.file_url
                 context['data_model']=self.data_model
+                context['file_path']=self.file_url
+                context['data_model']=self.data_model
                 return render(request,'apputil/importdata.html', context)
             else:
                 messages.warning(request, f'There is {form.errors} error, upload again')          
 
+                messages.warning(request, f'There is {form.errors} error, upload again')          
+
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
-
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
             process_name=request.POST.get('type')
@@ -275,5 +294,7 @@ class Importhandler(View):
                     print(err)
         return JsonResponse({})
 
+
+  
 
   

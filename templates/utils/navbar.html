@@ -43,7 +43,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span class="d-xl-inline-block">MODELS</span>
+              <p class="d-xl-inline-block">MODELS</p>
               <!-- <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i> -->
             </button>
             <div class="dropdown-menu dropdown-menu-end">
@@ -65,18 +65,18 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span class="d-xl-inline-block">IMPORT DATA</span>
+              <p class="d-xl-inline-block">IMPORT DATA</p>
               <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-end">
               <!-- item-->
               <div>
-                <a class="dropdown-item" href="{%url 'importOrg'%}" class=""
+                <a class="dropdown-item" href="" class=""
                   ><i class="bi bi-cloud-arrow-up"></i>import organism</a
                 >
               </div>
               <div>
-                <a class="dropdown-item" href="{%url 'importTaxo'%}" class=""
+                <a class="dropdown-item" href="" class=""
                   ><i class="bi bi-cloud-arrow-up"></i>import Taxonomy</a
                 >
               </div>
@@ -100,14 +100,14 @@
                 src="{%static 'images/app/avatar.png'%}"
                 alt="Avatar"
               />
-              <span class="d-xl-inline-block">{{user.username}}</span>
+              <p class="d-xl-inline-block">{{user.username}}</p>
               <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-end">
               <!-- item-->
               <a class="dropdown-item" href="#"
                 ><i class="bx bx-user font-size-16 align-middle me-1"></i>
-                <span key="t-profile">Profile</span></a
+                <p key="t-profile">Profile</p></a
               >
               <a class="dropdown-item" href="#">
                 <input
@@ -123,9 +123,9 @@
               <a
                 class="dropdown-item d-block disabled"
                 href="{%url 'dataexport'%}"
-                ><span class="badge bg-success float-end">11</span
-                ><i class="bx bx-wrench font-size-16 align-middle me-1"></i>
-                <span key="t-settings">Download</span></a
+                ><p class="badge bg-success float-end">11</p>
+                <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
+                <p key="t-settings">Download</p></a
               >
 
               <div class="dropdown-divider"></div>
@@ -141,7 +141,7 @@
                 ><i
                   class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
                 ></i>
-                <span key="t-logout">Logout</span></a
+                <p key="t-logout">Logout</p></a
               >
             </div>
           </div>

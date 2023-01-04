@@ -19,7 +19,7 @@
       <!-- End---------------------- -->
 
       {% include 'utils/pagination.html'%}
-
+      {%include 'utils/selectAllExp.html'%}
       <!-- Swich Table/Card View -->
       <div class="m-0">
         <a href="{%url 'taxo_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></a>
@@ -33,6 +33,10 @@
         {% for object in page_obj %}
         <div class="col-md-2 vh-80  m-0 p-1">
           <div class="card ms-3 px-1">
+            <div class="checkbox-container-export" data-type="Taxonomy">
+                 <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
+                 <label for=""></label>
+            </div>
             <p class="card-title px-1 fw-bold text-uppercase">
               <a class="card-link" href="{%url 'taxo_detail' object.urlname %}" target="_blank">
 

@@ -7,6 +7,8 @@ from django.urls import reverse
 from django import forms
 from django.utils import timezone
 import logging
+
+from adjcoadd.constants import *
 # Create your models here.
 
 
@@ -62,12 +64,6 @@ class ApplicationUser(AbstractUser):
     def __str__(self) -> str:
         return f"{self.name}" 
 
-
-#-------------------------------------------------------------------------------------------------
-class AuditModel(models.Model):
-    """
-    An abstract base class model that provides audit informations 
-    """
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
     """
@@ -181,6 +177,31 @@ class AuditModel(models.Model):
                  
         super(AuditModel,self).save(*args, **kwargs)
 
+    #------------------------------------------------
+    #Method Get Fields, Values List
+    @classmethod
+    def get_fields(self, fields=None):
+        if fields:
+            select_fields=[fields[f.name] for f in self._meta.fields if f.name in fields.keys()]
+        else:
+            select_fields=None
+        return select_fields
+    #------------------------------------------------
+    @classmethod
+    def get_modelfields(self, fields=None):
+        if fields:
+            model_fields=[f.name for f in self._meta.fields if f.name in fields.keys()]
+        else:
+            model_fields=None
+        return model_fields
+ 
+    #--------------------------------------------------    
+    def get_values(self, fields=None):
+        value_list=[]
+        for field in self._meta.fields:
+            if field.name in fields.keys():    
+                value_list.append(field.value_to_string(self))
+        return value_list
 #-------------------------------------------------------------------------------------------------
 
 
