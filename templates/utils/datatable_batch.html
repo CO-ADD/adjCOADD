@@ -1,7 +1,11 @@
 <table id="datatable_batch" class="cell-border" style="width: 100%">
   <thead>
     <tr>
-      <th>Stock</th>
+      <th>
+        Stock
+        <a class="card-link" id="create_stock"><i class="bi bi-plus"></i>New</a>
+        <div id="createStockModal" class="modal fade" role="dialog"></div>
+      </th>
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
@@ -11,7 +15,7 @@
   <tbody hx-target="closest tr" hx-swap="outerHTML">
     {% for object_batch in batch_obj %}
     <!--  -->
-    {%include 'dorganism/readForm/Batch_tr.html'%}
+    {%include 'dorganism/organism/batch/batch_tr.html'%}
     <!--  -->
     {%endfor%}
   </tbody>
@@ -23,6 +27,23 @@
 ></script>
 {%load static%}
 <script src="{% static 'js/js_utils/getCookie.js'%}"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#create_stock").on("click", function () {
+      let my_modal = $("#createStockModal");
+
+      my_modal.load("{%url 'stock_create'%}", function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
+    });
+  });
+</script>
+
 <script>
   $(document).ready(function () {
     // Table Batch
@@ -66,13 +87,6 @@
         data: { Batch_id },
       },
       columns: [
-        {
-          title: "Add",
-          data: null,
-          defaultContent:
-            `<button id="create_stock">Create</button>` +
-            '<div id="createStockModal" class="modal fade" role="dialog"></div>',
-        },
         { title: "Stock ID", data: "stock_id" },
         { title: "Stock Created", data: "stock_created" },
         { title: "Stock Left", data: "stock_left" },
@@ -97,21 +111,6 @@
       // select: true,
       searching: false,
       paging: false,
-    });
-
-    $("#Stock tbody").on("click", `#create_stock`, function () {
-      var data = usersTable.row($(this).parents("tr")).data();
-      let my_modal = $("#createStockModal");
-      console.log(data);
-      var pk = data["stock_id"];
-      console.log(pk);
-      my_modal.load("{%url 'stock_create'%}", function (response) {
-        if (response == "Permission Not Granted") {
-          alert("permission!");
-        } else {
-          my_modal.modal("show"); // Open Modal
-        }
-      });
     });
 
     $("#Stock tbody").on("click", `#delete_stock`, function () {

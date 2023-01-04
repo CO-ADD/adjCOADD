@@ -16,7 +16,7 @@
             <div id="{{object.pk}}">
                 <a class="btn btn-sm">Update Organism Name</a>
             </div>
-            {%include 'dorganism/deleteForm/Organism_del.html'%}
+            {%include 'dorganism/organism/organism_d.html'%}
         </div>
 
         <div id="OrganismUpdateModal" class="modal fade " role="dialog" data-bs-backdrop="static">
@@ -75,7 +75,7 @@
                     <b>
                         {%include 'utils/message.html'%}
                     </b>
-                    {%include '../updateForm/Organism_u_withoutname.html'%}
+                    {%include 'dorganism/organism/organism_u_withoutname.html'%}
 
 
                 </div>
@@ -99,7 +99,7 @@
                     <h5>{%include 'utils/message.html'%}</h5>
 
                     <div class="table-responsive">
-                        <a id="createBatch" class="card-link text-success" style="float: right">Add New
+                        <a id="createBatch" class="card-link text-success">New Batch
                             <i class="bi bi-plus"></i>
                         </a>
 

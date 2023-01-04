@@ -207,7 +207,6 @@ class Importhandler(View):
 
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
-
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
             process_name=request.POST.get('type')

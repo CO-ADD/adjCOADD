@@ -32,12 +32,12 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Taxonomy  
-    template_name = 'dorganism/readForm/Taxonomy_list.html' 
+    template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
     model_fields=TAXONOMY_FIELDs
  
 class TaxonomyCardView(TaxonomyListView):
-    template_name = 'dorganism/readForm/Taxonomy_card.html'
+    template_name = 'dorganism/taxonomy/taxonomy_card.html'
     
 # ===========Detail View=============================Read============================================
 @login_required
@@ -46,7 +46,7 @@ def detailTaxonomy(req, slug=None):
     object_=get_object_or_404(Taxonomy, urlname=slug)
     context["object"]=object_
     context['form']=Taxonomy_form(instance=object_)
-    return render(req, "dorganism/readForm/Taxonomy_detail.html", context)
+    return render(req, "dorganism/taxonomy/taxonomy_detail.html", context)
 
 # ====================================================Create===========================================
 # @login_required
@@ -64,7 +64,7 @@ def createTaxonomy(req):
         else:
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/createForm/Taxonomy_c.html', {'form':form})
+    return render(req, 'dorganism/taxonomy/taxonomy_c.html', {'form':form})
     
 # ====================================================Update in Form===========================================
 @login_required
@@ -82,7 +82,7 @@ def updateTaxonomy(req, slug=None):
             return redirect(req.META['HTTP_REFERER']) 
         else:
             print(form.errors)
-    return render(req, 'dorganism/updateForm/Taxonomy_u.html', {'form':form, 'object':object_})
+    return render(req, 'dorganism/taxonomy/taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
@@ -102,12 +102,12 @@ def deleteTaxonomy(req, slug=None):
 class OrganismListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism  
-    template_name = 'dorganism/readForm/Organism_list.html'
+    template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
     model_fields=ORGANISM_FIELDs
     
 class OrganismCardView(OrganismListView):
-    template_name = 'dorganism/readForm/Organism_card.html'
+    template_name = 'dorganism/organism/organism_card.html'
 
 # ======================================================================CREATE==========================================#
     # ==Step1. Ajax Call(def search_organism in utils) search Taxonomy(for all models using Taxonomy as ForeignKey)=====#
@@ -140,7 +140,7 @@ def createOrganism(req):
             return redirect(req.META['HTTP_REFERER'])      
         
 
-    return render(req, 'dorganism/createForm/Organism_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 
 
 #=========================================Organism detail table with updating in detail table========================================================================================
@@ -157,7 +157,7 @@ def detailOrganism(req, pk):
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["cultr_fields"]=Organism_Culture.get_fields(fields=ORGANISM_CULTR_FIELDs)
 
-    return render(req, "dorganism/readForm/Organism_detail.html", context)
+    return render(req, "dorganism/organism/organism_detail.html", context)
 
 #======================================================================Update Organism=================================================================================
 @login_required
@@ -209,7 +209,7 @@ def updateOrganism(req, pk):
         "object":object_,
     }
    
-    return render(req, "dorganism/updateForm/Organism_u.html", context)
+    return render(req, "dorganism/organism/organism_u.html", context)
 
 # ==============================Delete  ===============================================================
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
@@ -228,7 +228,7 @@ def deleteOrganism(req, pk):
 class BatchCardView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
-    template_name = 'dorganism/readForm/OrganismBatch_card.html' 
+    template_name = 'dorganism/organism/batch/batch_card.html' 
     filterset_class=Batchfilter
     model_fields=ORGANISM_BATCH_FIELDs
 
@@ -259,7 +259,7 @@ def createBatch(req):
             return redirect(req.META['HTTP_REFERER'])      
         
 
-    return render(req, 'dorganism/createForm/Batch_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, }) 
 
 from django.http import QueryDict
 
@@ -288,8 +288,8 @@ def updateBatch(req, pk):
                 "object_batch":object_batch,
                 'object':object_batch  # this object refer to the same entry of object_batch
             }
-            return render(req, "dorganism/readForm/Batch_tr.html", context)
-    return render(req, "dorganism/updateForm/Batch_u.html", context)
+            return render(req, "dorganism/organism/batch/batch_tr.html", context)
+    return render(req, "dorganism/organism/batch/batch_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteBatch(req, pk):
@@ -313,21 +313,19 @@ def stockList(req, pk):
         batch_id=req.GET.get('Batch_id')
         object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
         qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0)
-        if len(qs)>0:
-            data=[]
-            for i in qs:
-                item={
-                    "stock_id":i.pk,
-                    "stock_created":i.n_created,
-                    "stock_left":i.n_left,
-                    "stock_note":i.stock_note,
-                    "stock_type":i.stock_type.dict_value,
-                    "stock_date":i.stock_date,
-                }
-                data.append(item)
-            res=data
-        else:
-            res='No Data'
+        data=[]
+        for i in qs:
+            item={
+                "stock_id":i.pk or None,
+                "stock_created":i.n_created or None,
+                "stock_left":i.n_left or None,
+                "stock_note":i.stock_note or None,
+                "stock_type":i.stock_type.dict_value or None,
+                "stock_date":i.stock_date or None,
+            }
+            data.append(item)
+        res=data
+        
         return JsonResponse({'data':res})
     return JsonResponse({})
 
@@ -355,7 +353,7 @@ def createStock(req):
             return redirect(req.META['HTTP_REFERER'])      
         
 
-    return render(req, 'dorganism/createForm/Stock_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, }) 
 
 
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -389,7 +387,7 @@ def updateStock(req, pk):
         "object":object_,
     }
    
-    return render(req, "dorganism/updateForm/Stock_u.html", context)
+    return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteStock(req, pk):
@@ -400,7 +398,7 @@ def deleteStock(req, pk):
     if req.method=='POST':
         object_.delete(**kwargs)
         return redirect(req.META['HTTP_REFERER'])
-    return render(req, "dorganism/deleteForm/Stock_del.html", context)
+    return render(req, "dorganism/organism/batch_stock/stock_d.html", context)
 
 ############################################Culture ##################################33
 # ==========List View================================Read===========================================
@@ -427,7 +425,7 @@ def createCulture(req):
         else:
             print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/createForm/Culture_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, }) 
 
 from django.http import QueryDict
 
@@ -456,8 +454,8 @@ def updateCulture(req, pk):
                 "object_cultr":object_culture,
                 'object':object_culture  # this object refer to the same entry of object_batch
             }
-            return render(req, "dorganism/readForm/Culture_tr.html", context)
-    return render(req, "dorganism/updateForm/Culture_u.html", context)
+            return render(req, "dorganism/organism/culture/culture_tr.html", context)
+    return render(req, "dorganism/organism/culture/culture_u.html", context)
 
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteCulture(req, pk):
