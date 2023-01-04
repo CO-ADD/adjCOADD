@@ -31,6 +31,7 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
 # ==========List View================================Read===========================================
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
+    login_url = '/'
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
@@ -100,6 +101,7 @@ def deleteTaxonomy(req, slug=None):
 ############################################### ORGANISM View ###########################################
 # ==============================List View ================================
 class OrganismListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
     login_url = '/'
     model=Organism  
     template_name = 'dorganism/organism/organism_list.html'
@@ -226,6 +228,7 @@ def deleteOrganism(req, pk):
 # #############################BATCH View############################################
 # ==========List View================================Read===========================================
 class BatchCardView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
     login_url = '/'
     model=Organism_Batch 
     template_name = 'dorganism/organism/batch/batch_card.html' 

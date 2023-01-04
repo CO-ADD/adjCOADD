@@ -19,6 +19,26 @@
         </li>
       </ul>
     </div>
+  <div class="container-fluid">
+    <div class="brand d-flex flex-column">
+      <a class="navbar-brand" href="{%url 'index'%}">
+        {%load static%}
+        <img
+          width="100%"
+          class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
+          alt="CoADD Logo"
+        />
+      </a>
+      <ul class="navbar-nav justify-content-around ml-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="{%url 'index'%}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="">Contact</a>
+        </li>
+      </ul>
+    </div>
 
     <button
       class="navbar-toggler"
@@ -130,6 +150,8 @@
 
               <div class="dropdown-divider"></div>
               {%if user.is_superuser %}
+              <div class="dropdown-divider"></div>
+              {%if user.is_superuser %}
 
               <a class="dropdown-item" href="{%url 'userslist' %}"
                 >Users List</a
@@ -153,9 +175,24 @@
       </ul>
     </div>
   </div>
+          <a class="nav-link active" href="{%url 'login'%}">Log In</a>
+          {%endif%}
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
 <script>
+  $(window).scroll(function () {
+    if ($(document).scrollTop() > 50) {
+      $("nav").addClass("shrink");
+      $("nav").find("form").addClass("not-visible");
+    } else {
+      $("nav").removeClass("shrink");
+      $("nav").find("form").removeClass("not-visible");
+    }
+  });
   $(window).scroll(function () {
     if ($(document).scrollTop() > 50) {
       $("nav").addClass("shrink");
@@ -170,7 +207,12 @@
 <script>
   var darkMode_screen = localStorage.getItem("darkMode");
   var darkModeToggle = document.querySelector("#dark-mode");
+  var darkMode_screen = localStorage.getItem("darkMode");
+  var darkModeToggle = document.querySelector("#dark-mode");
 
+  // check if dark mode enabled
+  // if off turn on
+  // if on turn off
   // check if dark mode enabled
   // if off turn on
   // if on turn off
@@ -182,10 +224,23 @@
   }
   function disabledarkMode() {
     document.body.classList.remove("darkMode");
+  function enabledarkMode() {
+    // darkModeToggle.checked = true;
+    document.body.classList.add("darkMode");
+    localStorage.setItem("darkMode", "enabled");
+  }
+  function disabledarkMode() {
+    document.body.classList.remove("darkMode");
 
     localStorage.setItem("darkMode", null);
   }
+    localStorage.setItem("darkMode", null);
+  }
 
+  if (darkMode_screen === "enabled") {
+    darkModeToggle.checked = true;
+    enabledarkMode();
+  }
   if (darkMode_screen === "enabled") {
     darkModeToggle.checked = true;
     enabledarkMode();
@@ -203,4 +258,17 @@
       e.target.checked = false;
     }
   });
+  darkModeToggle.addEventListener("click", (e) => {
+    darkMode_screen = localStorage.getItem("darkMode");
+    if (darkMode_screen !== "enabled") {
+      enabledarkMode();
+      e.target.checked = true;
+      console.log(e.target.checked);
+    } else {
+      console.log(e.target.checked);
+      disabledarkMode();
+      e.target.checked = false;
+    }
+  });
 </script>
+

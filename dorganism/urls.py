@@ -20,8 +20,10 @@ urlpatterns = [
     path('organism/<str:pk>', detailOrganism, name="org_detail"),
     path('organism-batch_card', BatchCardView.as_view(), name="batch_card"),
     path('stocklist/<str:pk>', stockList, name="stock_list"),
+    path('stocklist/<str:pk>', stockList, name="stock_list"),
 
     path('search_organism/', search_organism, name="search_organism"),
+    path('search_organism_id/', search_organism_id, name="search_organism_id"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),
     path('createOrg/', createOrganism, name="org_create"),
     path('createTaxo/', createTaxonomy, name="taxo_create"),
@@ -29,9 +31,15 @@ urlpatterns = [
     path('createCulture/', createCulture, name="cultr_create"),
     path('createStock/', createStock, name="stock_create"),
     
+    path('createCulture/', createCulture, name="cultr_create"),
+    path('createStock/', createStock, name="stock_create"),
+    
 
     path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
+    path('updateBat/<str:pk>', updateBatch, name="batch_update"),
+    path('updateCulture/<str:pk>', updateCulture, name="cultr_update"),
+    path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
     path('updateBat/<str:pk>', updateBatch, name="batch_update"),
     path('updateCulture/<str:pk>', updateCulture, name="cultr_update"),
     path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
@@ -42,7 +50,11 @@ urlpatterns = [
     path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
     path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
     path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
+    path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
+    path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
+    path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
   
+    #=======================Data Export/Import ===================================================================
     #=======================Data Export/Import ===================================================================
     path('exportData/', exportCSV, name="dataexport"),
     # path('import_organism/', import_excel_organism, name="importOrg"),

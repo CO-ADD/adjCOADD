@@ -1,0 +1,20 @@
+<tr
+  hx-trigger="cancel"
+  class="editing"
+  hx-get="{%url 'org_detail' object.organism_id.pk %}"
+>
+  <td></td>
+  <td>{{form.organism_id}}</td>
+  <td>{{form.biologist}}</td>
+
+  <td>
+    <input
+      type="submit"
+      value="update"
+      hx-put="{%url 'cultr_update' pk=object.pk%}"
+      hx-include="closest tr"
+      hx-trigger="click"
+    />
+    <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
+  </td>
+</tr>

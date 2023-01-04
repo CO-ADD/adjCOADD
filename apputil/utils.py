@@ -14,6 +14,7 @@ from .models import Dictionary
 
 
 
+
 # ===================================Dictionary query convert to choice Tuples========================================================================#
 
 def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):

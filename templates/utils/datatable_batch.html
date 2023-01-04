@@ -8,7 +8,9 @@
       </th>
       {%for th in batch_fields %}
       <th>{{th}}</th>
+      <th>{{th}}</th>
       {%endfor%}
+      <th style="width: 10em">EDIT</th>
       <th style="width: 10em">EDIT</th>
     </tr>
   </thead>
@@ -41,7 +43,32 @@
         }
       });
     });
-  });
+
+    $("#Stock tbody").on("click", `#update_stock`, function () {
+      var data = usersTable.row($(this).parents("tr")).data();
+      let my_modal = $("#updateStockModal");
+      console.log(data);
+      var pk = data["stock_id"].toString();
+      console.log(pk);
+      my_modal.load(`updateStock/${pk}`, function (response) {
+        if (response == "Permission Not Granted") {
+          alert("permission!");
+        } else {
+          my_modal.modal("show"); // Open Modal
+        }
+      });
+    });
+  }
+  function destroyChild(row) {
+    var table = $("table", row.child());
+    table.detach();
+    table.DataTable().destroy();
+
+    // And then hide the row
+    row.child.hide();
+  }
+
+  const csrftoken = getCookie("csrftoken");
 </script>
 
 <script>

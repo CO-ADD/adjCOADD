@@ -1,0 +1,24 @@
+<div class="modal-dialog">
+  <div class="modal-content" style="width: 50rem">
+    <div class="card mx-5 mt-3">
+      <form
+        id="StockUpdateForm"
+        method="POST"
+        action="{%url 'stock_update' object.pk %}"
+        style="width: fit-content"
+      >
+        {% csrf_token %}
+        <!--  -->
+        {{form.as_p}}
+        <input type="submit" value="update" />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
