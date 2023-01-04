@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from adjcoadd.utils import import_excel
+from adjcoadd.utils_dataimport import import_excel
 from dorganism.models import Organism, Taxonomy
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
@@ -159,7 +159,7 @@ from django import forms
 import json
 from django.core import serializers
 import os
-from .forms import FileValidator
+from adjcoadd.utils_dataimport import FileValidator
 from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 

@@ -419,7 +419,6 @@ def createCulture(req):
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    # print(instance.organism_id)                 
                     instance.save(**kwargs)
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
@@ -471,12 +470,6 @@ def deleteCulture(req, pk):
     except Exception as err:
         print(err)
     return redirect('/')
-
-############################################### Import CSV View ###########################################
-import pandas as pd
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-#=======================================================================================================
 
 ############################################### Export CSV View ###########################################
 import csv
