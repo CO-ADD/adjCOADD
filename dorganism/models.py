@@ -84,6 +84,12 @@ class Taxonomy(AuditModel):
         select_fields=[TAXONOMY_FIELDs[f.name] for f in self._meta.fields if f.name in TAXONOMY_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
+    @classmethod
+    def get_modelfields(self):
+        model_fields=[f.name for f in self._meta.fields if f.name in TAXONOMY_FIELDs.keys()]
+        return model_fields
+ 
+ 
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
@@ -204,11 +210,9 @@ class Organism(AuditModel):
         #print(f"[save_Organism] ..")
         if not self.organism_id: #Object does not exists
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
-            #print(f"[save_Organism] .. NEW {self.organism_id} ")
             if self.organism_id: 
                 super(Organism, self).save(*args, **kwargs)
         else:
-            #print(f"[save_Organism] .. existing {self.organism_id} ")
             super(Organism, self).save(*args, **kwargs)
 
     #------------------------------------------------
@@ -218,6 +222,12 @@ class Organism(AuditModel):
         select_fields=[ORGANISM_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
+    @classmethod
+    def get_modelfields(self):
+        model_fields=[f.name for f in self._meta.fields if f.name in ORGANISM_FIELDs.keys()]
+        print(model_fields)
+        return model_fields
+ 
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:
@@ -322,6 +332,12 @@ class Organism_Batch(AuditModel):
         select_fields=[ORGANISM_BATCH_FIELDs[f.name] for f in self._meta.fields if f.name in ORGANISM_BATCH_FIELDs.keys()]
         return select_fields
     #------------------------------------------------
+    @classmethod
+    def get_modelfields(self):
+        model_fields=[f.name for f in self._meta.fields if f.name in ORGANISM_BATCH_FIELDs.keys()]
+        print(model_fields)
+        return model_fields
+
     def get_values(self):
         value_list=[]
         for field in self._meta.fields:

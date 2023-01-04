@@ -7,6 +7,8 @@ from django.urls import reverse
 from django import forms
 from django.utils import timezone
 import logging
+
+from adjcoadd.constants import *
 # Create your models here.
 
 
@@ -181,6 +183,8 @@ class AuditModel(models.Model):
                  
         super(AuditModel,self).save(*args, **kwargs)
 
+    #------------------------------------------------
+    
 #-------------------------------------------------------------------------------------------------
 
 

@@ -37,33 +37,24 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i class="fa fa-file-export">Taxonomy</i>
+            <i class="fa fa-file-export">Download</i>
           </button>
-          <ul class="dropdown-menu" data-bs-theme="dark">
-            <form action="/exportData/" method="POST" id="TaxonomyDL">
-              {% csrf_token %}
-              <!--  -->
-              <ul>
-                {%for field in fields%}
-                <li>
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="{{field}}"
-                    id="{{field}}ID"
-                    name="{{field}}"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    {{field}}
-                  </label>
-                </li>
-                {%endfor%}
-              </ul>
+          <ul class="dropdown-menu">
+            <!--  -->
 
-              <button type="submit">Download</button>
-            </form>
+            {%for field in model_fields%}
+            <li>
+              <input
+                class="filled-in"
+                type="checkbox"
+                value="{{field}}"
+                name="model_field_select"
+              />
+              <label for=""> {{field}} </label>
+            </li>
+            {%endfor%}
+            <button class="Download">Button</button>
           </ul>
-          <button class="Download">Button</button>
         </div>
 
         <a
@@ -100,26 +91,45 @@
 {%load static %}
 <script src="{%static 'js/jquery-3.6.1.min.js'%}"></script>
 <script src="{%static 'js/js_utils/getCookie.js'%}"></script>
+
+<script>
+  // $(document).ready(function () {
+  //   $("input:checkbox[name=selectAll]").change(function () {
+  //     $(".checkbox-container-export input").prop("checked", this.checked);
+  //     console.log("checked all");
+  //   });
+  // });
+</script>
 <script>
   $(document).ready(function () {
-    var selected_data = [];
-    $("input:checkbox[name=type]:checked").each(function () {
-      selected_data.push($(this).val());
-    });
-    var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
     const csrftoken = getCookie("csrftoken");
 
     $(".Download").on("click", function () {
+      // select wanted data to export
       var selected_data = [];
+
       $("input:checkbox[name=type]:checked").each(function () {
         selected_data.push($(this).val().toString());
       });
+
+      // select wanted model fields
+      var selected_fields = [];
+      $("input:checkbox[name=model_field_select]:checked").each(function () {
+        selected_fields.push($(this).val().toString());
+      });
+      console.log(selected_fields);
+      // export model
+      var model_name = $(".checkbox-container-export").data("type");
       console.log(selected_data);
       $.ajax({
         url: "/exportData/",
         type: "POST",
         headers: { "X-CSRFToken": csrftoken },
-        data: { arr: selected_data },
+        data: {
+          data_arr: selected_data,
+          fields: selected_fields,
+          model_name: model_name,
+        },
       })
         .done((response) => {
           console.log(response);

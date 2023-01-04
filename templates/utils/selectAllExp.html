@@ -1,0 +1,17 @@
+<div>
+  <input
+    type="checkbox"
+    name="selectAll"
+    class="filled-in"
+    value="Select All"
+  />
+  <label for="">select all</label>
+</div>
+<script>
+  $(document).ready(function () {
+    $("input:checkbox[name=selectAll]").change(function () {
+      $(".checkbox-container-export input").prop("checked", this.checked);
+      console.log("checked all");
+    });
+  });
+</script>

@@ -16,6 +16,9 @@
       <!-- End---------------------- -->
 
       {% include 'utils/pagination.html'%}
+      
+      {%include 'utils/selectAllExp.html'%}
+      
       <!-- Swich Table/Card View -->
       <div class="m-0">
         <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
@@ -32,9 +35,9 @@
         
         <div class="col-md-2 vh-80 m-0 p-1">
           <div class="card ms-3 px-1">
-                <div class="checkbox-container">
-                 <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
-                 <label for=""></label>
+                <div class="checkbox-container-export" data-type="Organism">
+                    <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
+                    <label for=""></label>
                 </div>
             <p class="card-title px-1 fw-bold text-uppercase"><a class="card-link"
                 href="{%url 'org_detail' object.pk %}">

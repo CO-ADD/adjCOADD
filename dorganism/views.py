@@ -17,10 +17,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
-from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
-from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from apputil.models import Dictionary, ApplicationUser
 from apputil.views import permission_not_granted
+from adjcoadd.constants import *
+from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
+from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
                     Batch_form, Batchupdate_form, Stock_form, Culture_form, Cultureupdate_form)
 #  #####################Django Filter View#################
@@ -45,6 +46,7 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields()
+        context['model_fields']=self.model.get_modelfields()
         return context
 
     def get_paginate_by(self, queryset):
@@ -52,21 +54,6 @@ class FilteredListView(ListView):
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
     
-    def qs_download(self, request, **kwargs):
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            print("ajax call")
-            qs=super().get_queryset()
-            response = HttpResponse(content_type='text/csv')
-            file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
-
-            writer = csv.writer(response)
-            writer.writerow(['organism_name','org_class', 'lineage',])
-            for i in query.values_list('organism_name','org_class', 'lineage',):
-        # for i in fieldlist:
-            # writer.writerow(query.values_list(i))
-                writer.writerow(i)
-            response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
-            return response 
           
 # #############################TAXONOMY View############################################
 # ==========List View================================Read===========================================
@@ -683,25 +670,22 @@ def import_excel_organism(req):
 ############################################### Export CSV View ###########################################
 import csv
 import datetime 
-from adjcoadd.constants import *
+from django.apps import apps
 
 @login_required
 @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
 def exportCSV(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-        arr = request.POST.getlist('arr[]')
-        print(arr)
-        # return JsonResponse({'res': arr})
-        query=Taxonomy.objects.filter(pk__in=arr)
-        # query= Taxonomyfilter(request.GET, queryset=queryset).qs
+        data_arr = request.POST.getlist('data_arr[]')
+        data_fields = request.POST.getlist('fields[]')
+        model_name=request.POST.get('model_name')
+        model=apps.get_model('dorganism', model_name)
+        query=model.objects.filter(pk__in=data_arr)
         response = HttpResponse(content_type='text/csv')
         file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
-
         writer = csv.writer(response)
-        writer.writerow(['organism_name','org_class', 'lineage',])
-        for i in query.values_list('organism_name','org_class', 'lineage',):
-        # for i in fieldlist:
-            # writer.writerow(query.values_list(i))
+        writer.writerow(data_fields)
+        for i in query.values_list(*data_fields):
             writer.writerow(i)
         response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
         return response
