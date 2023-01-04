@@ -117,7 +117,6 @@ class Organism(AuditModel):
     growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
     strain_notes= models.CharField(max_length=250, blank=True, verbose_name = "Strain Notes")
     # tax_id contains a link, check django link field or class
-    # tax_id contains a link, check django link field or class
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
@@ -287,14 +286,7 @@ class Organism_Batch(AuditModel):
             except Exception as err:
                 print(err)
             Next_BatchNo = self.find_Next_BatchNo(self.organism_id.organism_id)
-            try:
-                print(f'find orgbatchID with {self.organism_id.organism_id}')
-            except Exception as err:
-                print(err)
-            Next_BatchNo = self.find_Next_BatchNo(self.organism_id.organism_id)
             if Next_BatchNo:
-                self.batch_no = Next_BatchNo
-                self.orgbatch_id = self.str_OrgBatchID(self.organism_id.organism_id,Next_BatchNo)
                 self.batch_no = Next_BatchNo
                 self.orgbatch_id = self.str_OrgBatchID(self.organism_id.organism_id,Next_BatchNo)
                 super(Organism_Batch,self).save(*args, **kwargs)
