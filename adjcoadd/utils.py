@@ -71,3 +71,64 @@ def import_excel(file_path, data_model):
             return err  
     # return 'something wrong'
 
+# =========================================================
+# @login_required
+# @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+# def import_excel_dict(req):
+#     print('importing....')
+#     try:
+#         if req.method=='POST' and req.FILES['myfile']:
+#             myfile=req.FILES['myfile']
+#             fs=FileSystemStorage()
+#             filename=fs.save(myfile.name, myfile)
+#             uploaded_file_url=fs.url(filename)
+#             excel_file=uploaded_file_url
+#             print(excel_file)
+#             exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
+#             print(type(exmpexceldata))
+#             dbframe=exmpexceldata
+#             for dbframe in dbframe.itertuples():                   
+#                 obj, created=Dictionary.objects.get_or_create(dict_class=dbframe.Class, dict_value=dbframe.Term, dict_desc =dbframe.Name, )
+#                 print(type(obj))
+          
+#             return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
+#     except Exception as err:
+#         print(f'import failed because {err}')
+#     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})
+
+# #==================================================================import Organism================================================
+# @login_required
+# @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
+# def import_excel_organism(req):
+#     print('importing....')
+#     try:
+#         if req.method=='POST' and req.FILES['myfile']:
+#             myfile=req.FILES['myfile']
+#             fs=FileSystemStorage()
+#             filename=fs.save(myfile.name, myfile)
+#             uploaded_file_url=fs.url(filename)
+#             excel_file=uploaded_file_url
+#             print(excel_file)
+#             exmpexceldata=pd.read_csv("."+excel_file, )
+#             print(exmpexceldata.itertuples)
+#             dbframe=exmpexceldata
+#             for dbframe in dbframe.itertuples():
+#                 taxID=int('0'+dbframe[22])
+#                 screen_panel=dbframe[26].split(';')
+#                 organism_fkey=Taxonomy.objects.filter(organism_name=dbframe[1])
+#                 print(organism_fkey[0])   
+#                 try:
+#                     obj, created=Organism.objects.get_or_create(organism_id=dbframe[0], organism_name=organism_fkey[0],  strain_id=dbframe[3], 
+#                                     strain_code=dbframe[5], strain_notes=dbframe[7], 
+#                                     strain_tissue=dbframe[25], strain_type=dbframe[4], sequence=dbframe[28], sequence_link=dbframe[29], 
+#                                     strain_panel=screen_panel, 
+#                                     tax_id =taxID,risk_group=dbframe[9], pathogen_group =dbframe[10],import_permit =dbframe[12],bio_approval =dbframe[23],special_precaution =dbframe[24],lab_restriction =dbframe[27],mta_document =dbframe[31],
+#                                     mta_status =dbframe[32],oxygen_pref =dbframe[13],atmosphere_pref ='containSpecialCHA', nutrient_pref =dbframe[15],biofilm_pref =dbframe[16], acreated_by=req.user )
+#                 except Exception as err:
+#                     print(err)
+#                 # obj.save()
+            
+#             return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {'uploaded_file_url': uploaded_file_url})
+#     except Exception as err:
+#         print(err)
+#     return render(req, 'dorganism/createForm/importDataForm/importexcel.html', {})

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (exportCSV, import_excel_taxo,import_excel_dict, import_excel_organism, 
+from .views import  (exportCSV,
                      TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy, updateTaxonomy, deleteTaxonomy, 
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      updateBatch, BatchCardView, createBatch, deleteBatch,
@@ -45,8 +45,8 @@ urlpatterns = [
   
     #=======================Data Export/Import ===================================================================
     path('exportData/', exportCSV, name="dataexport"),
-    path('import_organism/', import_excel_organism, name="importOrg"),
-    path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),
+    # path('import_organism/', import_excel_organism, name="importOrg"),
+    # path('import_Taxonomy/', import_excel_taxo, name="importTaxo"),
     
-    path('import_dictionary/', import_excel_dict, name="importDict"),
+    # path('import_dictionary/', import_excel_dict, name="importDict"),
 ]
