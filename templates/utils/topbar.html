@@ -3,84 +3,42 @@
     <i class="fas fa-sync fa-spin"></i>
   </button>
   <div>
-    <button
-      class="btn btn-sm"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight"
-    >
+    <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">
       <i class="fas fa-cog fa-spin"></i>
     </button>
 
-    <div
-      class="offcanvas offcanvas-end"
-      tabindex="1"
-      id="offcanvasRight"
-      aria-labelledby="offcanvasRightLabel"
-      data-bs-backdrop="false"
-      style="width: 200px; margin-top: 8%"
-    >
+    <div class="offcanvas offcanvas-end" tabindex="1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+      data-bs-backdrop="false" style="width: 200px; margin-top: 8%">
       <div class="offcanvas-header">
-        <button
-          type="button"
-          class="btn-close text-reset"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-secondary dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="fa fa-file-export">Download</i>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa fa-file-export">Export</i>
           </button>
           <ul class="dropdown-menu">
             <!--  -->
 
             {%for field in model_fields%}
             <li>
-              <input
-                class="filled-in"
-                type="checkbox"
-                value="{{field}}"
-                name="model_field_select"
-              />
+              <input class="filled-in" type="checkbox" value="{{field}}" name="model_field_select" />
               <label for=""> {{field}} </label>
             </li>
             {%endfor%}
-            <button class="Download">Button</button>
+            <button class="Download">Click Download</button>
           </ul>
         </div>
 
-        <a
-          class="btn btn-sm m-3 bg-warning"
-          href="{%url 'import'%}"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Import Data"
-          ><i class="fa fa-file-import">To Import</i>
+        <a class="btn btn-sm m-3 bg-warning" href="{%url 'import'%}" data-bs-toggle="tooltip" data-bs-placement="top"
+          title="Import Data"><i class="fa fa-file-import">To Import</i>
         </a>
-        <a
-          class="btn btn-sm m-3"
-          href="{%url 'batch_card'%}"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title=""
-        >
+        <a class="btn btn-sm m-3" href="{%url 'batch_card'%}" data-bs-toggle="tooltip" data-bs-placement="top" title="">
           ORGANISM Batch
         </a>
-        <a
-          class="btn btn-sm disabled m-3"
-          href="#"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Refresh"
-        >
+        <a class="btn btn-sm disabled m-3" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
           <i class="fa-solid fa-arrows-rotate"></i>
         </a>
       </div>

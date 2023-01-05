@@ -202,6 +202,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 AUTH_USER_MODEL = 'apputil.ApplicationUser'
+LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import ldap
@@ -232,5 +233,4 @@ INACTIVE_TIME= 180
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 120
-LOGOUT_REDIRECT_URL="/"
 

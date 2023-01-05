@@ -268,7 +268,7 @@ def updateBatch(req, pk):
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=Batchupdate_form(req.user, instance=object_)
+    form=Batchupdate_form(instance=object_)
     context={
         "form":form,
         "object":object_,
@@ -277,7 +277,7 @@ def updateBatch(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
-        form=Batchupdate_form(req.user, data=qd, instance=object_batch, )
+        form=Batchupdate_form(data=qd, instance=object_batch, )
         
         if form.is_valid():
             kwargs={}
@@ -434,7 +434,7 @@ def updateCulture(req, pk):
     object_=get_object_or_404(Organism_Culture, id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=Cultureupdate_form(req.user, instance=object_)
+    form=Cultureupdate_form(instance=object_)
     context={
         "form":form,
         "object":object_,
@@ -443,7 +443,7 @@ def updateCulture(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         object_culture=get_object_or_404(Organism_Culture, pk=pk)
-        form=Cultureupdate_form(req.user, data=qd, instance=object_culture, )
+        form=Cultureupdate_form(data=qd, instance=object_culture, )
         
         if form.is_valid():
             kwargs={}

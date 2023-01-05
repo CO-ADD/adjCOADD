@@ -87,10 +87,7 @@ class Batchupdate_form(forms.ModelForm):
         fields=ORGANISM_BATCH_FIELDs.keys()
         exclude=['stock_level']
 
-    def __init__(self, user, *args, **kwargs): 
-        user=user
-        super(Batchupdate_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+
 
 
 # ===============================Stock Form-------------------------------
@@ -120,11 +117,6 @@ class Culture_form(forms.ModelForm):
         fields=ORGANISM_CULTR_FIELDs
 
 class Cultureupdate_form(forms.ModelForm):
-
-    def __init__(self, user, *args, **kwargs): 
-        user=user
-        super(Cultureupdate_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
 
     class Meta:
         model =Organism_Culture
