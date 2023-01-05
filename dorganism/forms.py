@@ -87,10 +87,7 @@ class Batchupdate_form(forms.ModelForm):
         fields=ORGANISM_BATCH_FIELDs.keys()
         exclude=['stock_level']
 
-    def __init__(self, user, *args, **kwargs): 
-        user=user
-        super(Batchupdate_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+
 
 
 # ===============================Stock Form-------------------------------
@@ -125,11 +122,6 @@ class Cultureupdate_form(forms.ModelForm):
     culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
 
-
-    def __init__(self, user, *args, **kwargs): 
-        user=user
-        super(Cultureupdate_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
 
     class Meta:
         model =Organism_Culture
