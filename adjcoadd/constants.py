@@ -45,6 +45,12 @@ ORGANISM_BATCH_FIELDs = {
 ORGANISM_CULTR_FIELDs = {
     
     "organism_id":"Organism ID",
+    "culture_type":"Culture Type",
+    "media_use":"Media Use",
+    "atmosphere":"Atmosphere",
+    "temperature":"Temperature",
+    "labware":"Labware",
+    "notes":"Media",
     "biologist":"Biologist"
 }
 

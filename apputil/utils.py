@@ -56,6 +56,7 @@ class FilteredListView(ListView):
     filterset_class = None
     paginate_by=50
     model_fields=None
+    # form_class=None
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -80,4 +81,5 @@ class FilteredListView(ListView):
         qs=super().get_queryset()
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
- 
+
+    

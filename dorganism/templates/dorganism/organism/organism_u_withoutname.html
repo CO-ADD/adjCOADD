@@ -310,6 +310,7 @@
       <div class="p-2 bd-highlight">by: {{object.acreated}}</div>
       {%if object.aupdated_at%}
       <div class="p-2 bd-highlight">
+        <strong> | </strong>
         Modified at: {{object.aupdated_at |date:"d M, Y" }}
         <!--  -->
         {{object.aupdated_at|time:"H:i" }} AEST

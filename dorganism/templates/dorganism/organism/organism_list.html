@@ -1,48 +1,51 @@
 {% extends "base.html" %}
+<!--  -->
 {% block title%} COADD{% endblock %}
+<!--  -->
 {% block content %}
+<!--  -->
 {%include 'utils/topbar.html'%}
 <div class="position-relative w-100 bg-transparent">
-
   <div class="d-flex flex-row justify-content-between vh-100">
     {%include "utils/sidebar.html"%}
-    <div class="main d-flex flex-column" style="height: fit-content;">
+    <div class="main d-flex flex-column" style="height: fit-content">
       <div class="d-flex flex-wrap justify-content-between m-0">
-
         {% include 'utils/pagination.html'%}
         <div>
           <!-- -----------------------------------------View Switch-------------------------------------------------------------------- -->
-          <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
-          <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
+          <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
+            ><i class="bi bi-list"></i
+          ></a>
+          <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"
+            ><i class="bi bi-grid-fill"></i
+          ></a>
         </div>
       </div>
 
-      <div class="row d-flex flex-wrap  m-0 border">
+      <div class="row d-flex flex-wrap m-0 border">
         <!-- object_list -->
 
-        <a id="createOrganism" class="card-link text-success" style="float: right">Add New
+        <a
+          id="createOrganism"
+          class="card-link text-success"
+          style="float: right"
+          >Add New
           <i class="bi bi-plus"></i>
         </a>
-        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
+        <div
+          id="createOrganismModal"
+          class="modal fade"
+          role="dialog"
+          data-bs-backdrop="static"
+        ></div>
         {%include 'utils/datatable_general.html' %}
-        <script>
-          $(document).ready(function () {
-            let my_modal = $("#createOrganismModal");
-
-            $("#createOrganism").click(function () {
-              my_modal.load("{%url 'org_create'%}", function (response) {
-                if (response == "Permission Not Granted") {
-                  alert("permission!");
-                } else {
-                  my_modal.modal("show");
-                }
-              });
-            });
-          });
-        </script>
       </div>
     </div>
   </div>
 </div>
-
-{% endblock %}
+{%load static%}
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_organism.js'%}"
+></script>
+{%endblock%}
