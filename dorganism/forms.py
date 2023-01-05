@@ -102,7 +102,9 @@ class Stock_form(forms.ModelForm):
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
-   
+    culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+
     def __init__(self, user, organism_id=None, *args, **kwargs):
         self.organism_id=organism_id
         user=user
@@ -120,6 +122,9 @@ class Culture_form(forms.ModelForm):
         fields=ORGANISM_CULTR_FIELDs
 
 class Cultureupdate_form(forms.ModelForm):
+    culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+
 
     def __init__(self, user, *args, **kwargs): 
         user=user

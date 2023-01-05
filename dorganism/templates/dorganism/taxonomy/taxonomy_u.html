@@ -1,33 +1,57 @@
-<a class="card-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Update</a>
+<a
+  class="card-link"
+  data-bs-toggle="modal"
+  data-bs-target="#taxonomy_detail_update"
+  >Update</a
+>
 
-
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-
+<div
+  class="modal fade"
+  id="taxonomy_detail_update"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
-
       <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-
         <h4 class="my-0">{{object.pk}}</h4>
-        <hr>
-        <form method="POST" class="post-form" action="{%url 'taxonomy_update' object.urlname %}">
-          {% csrf_token %}
-          {{form.as_p}}
+        <hr />
+        <form
+          method="POST"
+          class="post-form"
+          action="{%url 'taxonomy_update' object.urlname %}"
+        >
+          {% csrf_token %} {{form.as_p}}
           <div class="m-auto">
+            <input
+              type="submit"
+              class="btn m-auto mt-5"
+              value="Updated"
+              name="note"
+            />
 
-            <input type="submit" class="btn m-auto mt-5" value="Updated" name="note" />
-
-            <button type="button" class="btn m-auto mt-5" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+            <button
+              type="button"
+              class="btn m-auto mt-5"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
-
     </div>
   </div>
 </div>

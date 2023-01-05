@@ -35,9 +35,11 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
     model_fields=TAXONOMY_FIELDs
+
  
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/taxonomy/taxonomy_card.html'
+
     
 # ===========Detail View=============================Read============================================
 @login_required

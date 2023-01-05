@@ -23,33 +23,20 @@
 
       <div class="row d-flex flex-wrap m-0 border">
 
-        <a id="createTaxo" class="card-link text-success" style="float: right">Add New
+        <div>
+        <a id="createTaxo" class="card-link" style="float:right;">Add New
           <i class="bi bi-plus"></i>
         </a>
-
-        <div id="createTaxoModal" class="modal fade" role="dialog"></div>
+        <div id="createTaxoModal" class="modal fade" role="dialog">
+        </div>
+      </div>
         {%include 'utils/datatable_taxo.html'%}
-        <script>
-          $(document).ready(function () {
-            let my_modal = $("#createTaxoModal");
-
-            $("#createTaxo").click(function () {
-              my_modal.load("{%url 'taxo_create'%}", function (response) {
-                if (response == "Permission Not Granted") {
-                  alert("permission!");
-                } else {
-                  my_modal.modal("show"); // Open Modal
-                }
-              });
-            });
-          });
-        </script>
       </div>
     </div>
   </div>
 </div>
 
-
-
+{%load static%}
+<script type="text/javascript" src="{%static 'js/modal/create_taxonomy.js'%}"></script>
 <!--prettier-ignore-->
 {% endblock%}
