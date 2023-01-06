@@ -1,0 +1,42 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+{%include 'utils/topbar.html'%}
+<div class="position-relative w-100 bg-transparent">
+
+  <div class="d-flex flex-row  justify-content-between vh-100">
+    {%include "utils/sidebar.html"%}
+
+    <div class="main d-flex flex-column" style="height: fit-content;">
+      <div class="d-flex flex-wrap justify-content-between m-0">
+
+        {% include 'utils/pagination.html'%}
+        <div>
+
+          <a href="{%url 'taxo_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></a>
+          <a href="{%url 'taxo_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
+        </div>
+      </div>
+
+      <div class="row d-flex flex-wrap m-0 border">
+
+        <div>
+        <a id="createTaxo" class="card-link" style="float:right;">Add New
+          <i class="bi bi-plus"></i>
+        </a>
+        <div id="createTaxoModal" class="modal fade" role="dialog">
+        </div>
+      </div>
+        {%include 'utils/datatable_taxo.html'%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%load static%}
+<script type="text/javascript" src="{%static 'js/modal/create_taxonomy.js'%}"></script>
+<!--prettier-ignore-->
+{% endblock%}

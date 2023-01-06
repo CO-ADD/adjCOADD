@@ -1,0 +1,95 @@
+{% extends 'base.html'%}
+{% block title%} COADD{% endblock %}
+{% block content%}
+{%include 'utils/topbar.html'%}
+<div class="d-flex flex-row justify-content-between vh-100">
+  <!-- Sidebar View -->
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="main d-flex flex-column">
+    <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+      <!-- Call Create Taxonomy  Modal-->
+      <div>
+        <a id="createTaxo" class="card-link" style="float:right;">Add New
+          <i class="bi bi-plus"></i>
+        </a>
+        <div id="createTaxoModal" class="modal fade" role="dialog">
+        </div>
+      </div>
+      <!-- End---------------------- -->
+
+      {% include 'utils/pagination.html'%}
+      {%include 'utils/selectAllExp.html'%}
+      <!-- Swich Table/Card View -->
+      <div class="m-0">
+        <a href="{%url 'taxo_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></a>
+        <a href="{%url 'taxo_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
+      </div>
+      <!-- End -->
+    </div>
+    <!-- Card View Content -->
+    <div class="contain-fluid">
+      <div class="row d-flex flex-wrap mx-2">
+        {% for object in page_obj %}
+        <div class="col-md-2 vh-80  m-0 p-1">
+          <div class="card ms-3 px-1">
+            <div class="checkbox-container-export" data-type="Taxonomy">
+                 <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
+                 <label for=""></label>
+            </div>
+            <p class="card-title px-1 fw-bold text-uppercase">
+              <a class="card-link" href="{%url 'taxo_detail' object.urlname %}" target="_blank">
+
+                {{object.organism_name}}
+              </a>
+            </p>
+            <p class=" card-text m-0 fst-normal">
+              {{object.division}}
+            </p>
+            <p class="card-text m-0 fst-normal">
+              {% if object.org_class %}
+              {{object.org_class}}
+              {%endif%}
+            </p>
+            <p class="card-text m-0 fst-normal">
+              <a class="card-link" style="float: right;"
+                href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}" target="_blank">
+
+                {{object.tax_id}}
+              </a>
+            </p>
+
+            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.urlname}}"
+              aria-expanded="false" aria-controls="{{object.urlname}}">
+              <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+            </div>
+
+            <div class="collapse" id="{{object.urlname}}">
+
+              <div class="fst-normal d-flex flex-column align-items-start">
+
+                <p class="card-text" style="font-size: xx-small;">
+                  {%for item in object.lineage%}
+                  <li>{{item}}</li>
+                  {%endfor%}
+                </p>
+                <!--prettier-ignore-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+
+        <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+        {%endfor%}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<!--prettier-ignore-->
+{%load static%}
+<script type="text/javascript" src="{%static 'js/modal/create_taxonomy.js'%}"></script>
+{% endblock%}
