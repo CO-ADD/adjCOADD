@@ -1,7 +1,11 @@
 from model_utils import Choices
 from sequences import Sequence
+from rdkit import Chem
 from django_rdkit import models
+from django_rdkit.models import *
+
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GistIndex
 from django.db import transaction, IntegrityError
 
 from apputil.models import AuditModel, Dictionary
@@ -18,158 +22,262 @@ class Drug(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
-        'Drug_Type':'Drug_Type',
-        'Max_Phase':'Max_Phase',
+        'drug_type':'Drug_Type',
+        'max_phase':'Max_Phase',
     }
 
-    Drug_ID = models.CharField(primary_key=True, max_length=15, verbose_name = "Drug ID")
-    Drug_Name = models.CharField(blank=False, null=False, unique=True, max_length=50, verbose_name = "Drug Name")
-    Drug_OtherName = models.CharField(blank=True, null=True, max_length=150, verbose_name = "Drug OtherName")
-    Drug_Code = models.CharField(blank=True, null=True, unique=True, max_length=10, verbose_name = "Drug Code")
-    Drug_Type = models.CharField(blank=True, null=True, max_length=15, verbose_name = "Drug Type")
-    Drug_Note = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Drug Notes")
+    drug_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
+    drug_name = models.CharField(max_length=50, unique=True, verbose_name = "Drug Name")
+    drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True)
+    drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True)
+    drug_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Drug Type", on_delete=models.DO_NOTHING,
+        db_column="drug_type", related_name="%(class)s_DrugType+")
+    drug_note = models.CharField(max_length=50, blank=True, verbose_name = "Drug Notes")
+    drug_panel=ArrayField(models.CharField(max_length=20, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
 
-    ATC_CODE = models.CharField(blank=True, null=True, max_length=50, verbose_name = "ATC Code")
-    Drug_Target = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Target")
-    Drug_SubTarget = models.CharField(blank=True, null=True, max_length=50, verbose_name = "SubTraget")
-    Drug_Class = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Class")
-    Drug_SubClass = models.CharField(blank=True, null=True, max_length=50, verbose_name = "SubClass")
+    drug_target = models.CharField(max_length=50, blank=True,  verbose_name = "Target")
+    drug_subtarget = models.CharField (max_length=50, blank=True,  verbose_name = "SubTarget")
+    moa = models.CharField(blank=True, max_length=50, verbose_name = "MoA")
+    drug_class = models.CharField(max_length=50, blank=True,  verbose_name = "Class")
+    drug_subclass = models.CharField(max_length=50, blank=True, verbose_name = "SubClass")
 
-    Mode_Action = models.CharField(blank=True, null=True, max_length=50, verbose_name = "MoA")
-    Antimicro = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Antimicro")
-    Antimicro_Type = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Antimicro Type")
+    antimicro = models.CharField(max_length=25, blank=True, verbose_name = "Antimicro")
+    antimicro_class = models.CharField(max_length=80, blank=True, verbose_name = "Antimicro Type")
 
-    Max_Phase = models.CharField(blank=True, null=True, max_length=2, verbose_name = "max Approval")
-    Approval_Note = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Approval Notes")
-    Admin_Route = models.CharField(blank=True, null=True, max_length=50, verbose_name = "Administration")
-    Application =  models.CharField(blank=True, null=True, max_length=50, verbose_name = "Application")
+    max_phase = models.CharField(max_length=2, default="0", blank=True, verbose_name = "max Approval")
+    approval_note = models.CharField(max_length=50, blank=True, verbose_name = "Approval Note")
+    admin_routes = models.CharField(max_length=50, blank=True, verbose_name = "Administrations")
+    application =  models.CharField(max_length=50, blank=True, verbose_name = "Application")
 
-    N_Compounds = models.IntegerField(blank=True, null=True, verbose_name = "#Cmpds")	
-    ChEMBL =    models.CharField(blank=True, null=True, max_length=15, verbose_name = "ChEMBL")	
-    DrugBank =  models.CharField(blank=True, null=True, max_length=15, verbose_name = "DrugBank")	
-    CAS	=       models.CharField(blank=True, null=True, max_length=15, verbose_name = "CAS")	
-    PubChem	=   models.CharField(blank=True, null=True, max_length=15, verbose_name = "PubChem")	
-    ChemSpider= models.CharField(blank=True, null=True, max_length=15, verbose_name = "ChemSpider")	
-    UNII = 	    models.CharField(blank=True, null=True, max_length=15, verbose_name = "UNII")	
-    KEGG = 	    models.CharField(blank=True, null=True, max_length=15, verbose_name = "KEGG")	
-    CompTox	=   models.CharField(blank=True, null=True, max_length=15, verbose_name = "CompTox")	
-    ECHA = 	    models.CharField(blank=True, null=True, max_length=15, verbose_name = "ECHA")	
-    ChEBI =     models.CharField(blank=True, null=True, max_length=15, verbose_name = "ChEBI")	
-    UQ_IMB =    models.CharField(blank=True, null=True, max_length=15, verbose_name = "IMB")	
-    Vendor =    models.CharField(blank=True, null=True, max_length=15, verbose_name = "Vendor")	
-    Vendor_CatNo = models.CharField(blank=True, null=True, max_length=15, verbose_name = "CatNo")	
-    Salt_Form = models.CharField(blank=True, null=True, max_length=15, verbose_name = "SaltForm")	
-    MW = models.DecimalField(blank=True, null=True, max_digits=12, decimal_places=2, verbose_name = "MW")	
-    MW_Full = models.DecimalField(blank=True, null=True, max_digits=12, decimal_places=2, verbose_name = "MW Full")
-    MF = models.CharField(blank=True, null=True, max_length=15, verbose_name = "MF")	
-    MF_Full = models.CharField(blank=True, null=True, max_length=15, verbose_name = "MF Full")	
-    SMILES = models.CharField(blank=True, null=True, max_length=2048, verbose_name = "SMILES")	
+    n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cmpds")	
+    chembl =    models.CharField(max_length=15, blank=True, verbose_name = "ChEMBL")	
+    drugbank =  models.CharField(max_length=10, blank=True, verbose_name = "DrugBank")	
+    cas	=       models.CharField(max_length=15, blank=True, verbose_name = "CAS")	
+    pubchem	=   models.CharField(max_length=15, blank=True, verbose_name = "PubChem")	
+    chemspider= models.CharField(max_length=15, blank=True, verbose_name = "ChemSpider")	
+    unii = 	    models.CharField(max_length=12, blank=True, verbose_name = "UNII")	
+    kegg = 	    models.CharField(max_length=10, blank=True, verbose_name = "KEGG")	
+    comptox	=   models.CharField(max_length=20, blank=True, verbose_name = "CompTox")	
+    echa = 	    models.CharField(max_length=15, blank=True, verbose_name = "ECHA")	
+    chebi =     models.CharField(max_length=15, blank=True, verbose_name = "ChEBI")	
+    uq_imb =    models.CharField(max_length=15, blank=True, verbose_name = "IMB")	
+    vendor =    models.CharField(max_length=15, blank=True, verbose_name = "Vendor")	
+    vendor_catno = models.CharField(max_length=15, blank=True, verbose_name = "CatNo")	
+    mw = models.DecimalField(default=0, max_digits=12, decimal_places=2, blank=True, verbose_name = "MW")	
+    mf = models.CharField(max_length=25, blank=True, verbose_name = "MF")	
+    smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")	
     smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
-    ffp2 = models.BfpField(null=True)
+    ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
+    #salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
 
-    def __str__(self) -> str:
-        return f"{self.Drug_Name} ({self.Drug_Code})"
-    
+    #------------------------------------------------
     class Meta:
-        app_label = "ddrug"
-        db_table ="drug"
+        app_label = 'ddrug'
+        db_table = 'drug'
+        ordering=['drug_name']
+        indexes = [
+            models.Index(name="drug_dname_idx", fields=['drug_name']),
+            GistIndex(name="drug_smol_idx",fields=['smol']),
+            GistIndex(name="drug_ffp2_idx",fields=['ffp2'])
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.drug_name} ({self.drug_id})"
+
+    #------------------------------------------------
+    @classmethod
+    def exists(self,DrugName,DrugID=None,verbose=0):
+    #
+    # Returns an instance by drug_name or durg_id
+    #
+        try:
+            if DrugName:
+                retInstance = self.objects.get(drug_name=DrugName)
+            elif DrugID:
+                retInstance = self.objects.get(drug_id=DrugID)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if DrugName:
+                    print(f"[Drug Not Found] {DrugName} ")
+                elif DrugID:
+                    print(f"[Drug Not Found] {DrugID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def update_all_fp(self):
+        self.objects.update(ffp2=FEATMORGANBV_FP('smol'))
+
+    #------------------------------------------------
+    @classmethod
+    def smiles2mol(self,Smiles,verbose=0):
+        try:
+            xmol = Chem.MolFromSiles(Smiles)
+        except:
+            xmol = None
+            if verbose:
+                print(f"[Invalid SMILES] {Smiles} ")
+        return(xmol)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'))
+        super(Drug, self).save(*args, **kwargs)
+            
+
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):
-    """
-    List of VITEK Cards
-    """
-#-------------------------------------------------------------------------------------------------
+#     """
+#     List of VITEK Cards
+#     """
+# #-------------------------------------------------------------------------------------------------
     Choice_Dictionary= {
-        'Card_Type':'Card_Type',
+        'card_type':'Card_Type',
     }
 
-    Card_Barcode = models.CharField(primary_key=True, max_length=25, verbose_name = "Card Barcode") 
-    OrgBatch_ID = models.ForeignKey(Organism_Batch, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
-    Card_Type = models.CharField(blank=False, null=False, max_length=5, verbose_name = "Card Type")
-    Card_Code = models.CharField(blank=False, null=False, max_length=15, verbose_name = "Card Code") 
-    Expiry_Date = models.DateField(null=True, blank=True, verbose_name = "Expiry Date")
-    Instrument = models.CharField(blank=True, null=True, unique=True, max_length=50, verbose_name = "Vitek SN") 
-    Proc_Date = models.DateField(null=False, blank=False, verbose_name = "Processing Date")
-    Analysis_Time = models.CharField(blank=True, null=True, unique=True, max_length=15, verbose_name = "Analysis Time") 
+    card_barcode = models.CharField(max_length=25, primary_key=True, verbose_name = "Card Barcode") 
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
+    card_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Card Type", on_delete=models.DO_NOTHING,
+        db_column="card_type", related_name="%(class)s_CardType+")
+    card_code = models.CharField(max_length=15, blank=False, verbose_name = "Card Code") 
+    expiry_date = models.DateField(blank=True, verbose_name = "Expiry Date")
+    instrument = models.CharField(max_length=50, blank=True, verbose_name = "Vitek SN") 
+    proc_date = models.DateField(blank=False, verbose_name = "Processing Date")
+    analysis_time = models.CharField(max_length=15, blank=True, verbose_name = "Analysis Time") 
 
+    #------------------------------------------------
     class Meta:
-        app_label = "ddrug"
-        db_table='vitek_card'
-        ordering=['Card_Type','Card_Code','Card_Barcode']
+        app_label = 'ddrug'
+        db_table = 'vitek_card'
+        ordering=['card_type','card_code','card_barcode']
         indexes = [
-            models.Index(name="vcard_ctype_idx",fields=['Card_Type']),
-            models.Index(name="vcard_ccode_idx",fields=['Card_Code']),
-            models.Index(name="vcard_bcode_idx",fields=['Card_Barcode']),
-            models.Index(name="vcard_orgbatch_idx",fields=['OrgBatch_ID']),
+            models.Index(name="vcard_ctype_idx",fields=['card_type']),
+            models.Index(name="vcard_ccode_idx",fields=['card_code']),
+            models.Index(name="vcard_bcode_idx",fields=['card_barcode']),
+            models.Index(name="vcard_orgbatch_idx",fields=['orgbatch_id']),
         ]
 
+    #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.OrgBatch_ID} {self.Stock_Type} {self.N_Left}"
+        return f"{self.orgbatch_id} {self.card_type} {self.card_code}"
+
+   #------------------------------------------------
+    @classmethod
+    def exists(self,CardBarcode,verbose=0):
+    #
+    # Returns an instance if found by Card Barcode
+    #
+        try:
+            retInstance = self.objects.get(card_barcode=CardBarcode)
+        except:
+            if verbose:
+                print(f"[Vitek Card Not Found] {CardBarcode}")
+            retInstance = None
+        return(retInstance)
+
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_AST(AuditModel):
-    """
-     Antimicrobial Susceptibility Testing (AST) data from VITEK Cards
-    """
-#-------------------------------------------------------------------------------------------------
+#     """
+#      Antimicrobial Susceptibility Testing (AST) data from VITEK Cards
+#     """
+# #-------------------------------------------------------------------------------------------------
 
-    Card_Barcode = models.ForeignKey(VITEK_Card, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING) 
-    #OrgBatch_ID = models.ForeignKey(Organism_Batch, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
-    #Card_Code = models.CharField(blank=False, null=False, max_length=15, verbose_name = "Card Code") 
-    Process = models.CharField(blank=True, null=True, unique=True, max_length=50, verbose_name = "Vitek Process")
+    card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
+        db_column="card_barcode", related_name="%(class)s_card_barcode+") 
+    drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
+        db_column="drug_id", related_name="%(class)s_drug_id+")
+    mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
+    process = models.CharField(max_length=50, blank=True, verbose_name = "Vitek Process")
+    bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
+    bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
+    bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
+    selection = models.CharField(max_length=20, blank=True, verbose_name = "Selection")
+    organism = models.CharField(max_length=120, blank=True, verbose_name = "Organism")
+    filename = models.CharField(max_length=120, blank=True, verbose_name = "PDF Filename")
+    page_no = models.IntegerField(default=0, blank=True, verbose_name = "PDF PageNo")  
 
-    Drug_ID = models.ForeignKey(Drug, verbose_name = "Drug ID", on_delete=models.DO_NOTHING)
-    MIC = models.CharField(null=True, blank=True, max_length=50, verbose_name = "MIC")
-    BP_Profile = models.CharField(null=True, blank=True, max_length=5, verbose_name = "Break Point")
-    BP_Comment = models.CharField(null=True, blank=True, max_length=120, verbose_name = "Comment")
-    Selection = models.CharField(null=True, blank=True, max_length=20, verbose_name = "Selection")
-    Organism = models.CharField(null=True, blank=True, max_length=120, verbose_name = "Organism")
-    Filename = models.CharField(blank=True, null=True, max_length=120, verbose_name = "PDF Filename")
-    Page_No = models.IntegerField(blank=True, null=True, verbose_name = "PDF PageNo")  
-
+    #------------------------------------------------
     class Meta:
-        app_label = "ddrug"
-        db_table='vitek_ast'
-        # ordering=['OrgBatch']
+        app_label = 'ddrug'
+        db_table = 'vitek_ast'
+        ordering=['drug_id','card_barcode']
         indexes = [
-            models.Index(name="vast_drugid_idx",fields=['Drug_ID']),
-            models.Index(name="vast_mic_idx",fields=['MIC']),
-            models.Index(name="vast_bprofile_idx",fields=['BP_Profile']),
-            models.Index(name="vast_org_idx",fields=['Organism']),
-            models.Index(name="vast_fname_idx",fields=['Filename']),
+            models.Index(name="vast_drugid_idx",fields=['drug_id']),
+            models.Index(name="vast_mic_idx",fields=['mic']),
+            models.Index(name="vast_bprofile_idx",fields=['bp_profile']),
+            models.Index(name="vast_fname_idx",fields=['filename']),
         ]
 
+    #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.Card_Barcode} {self.ID_Organism}"
+        return f"{self.drug_id} {self.card_barcode.orgbatch_id} {self.card_barcode.card_code}"
 
-#-------------------------------------------------------------------------------------------------
+   #------------------------------------------------
+    @classmethod
+    def exists(self,CardBarcode,DrugID,verbose=0):
+    #
+    # Returns an instance if found by CardBarcode and DrugID
+    #
+        try:
+            retInstance = self.objects.get(card_barcode=CardBarcode,drug_id=DrugID)
+        except:
+            if verbose:
+                print(f"[Vitek AST Not Found] {CardBarcode} {DrugID}")
+            retInstance = None
+        return(retInstance)
+
+# #-------------------------------------------------------------------------------------------------
 class VITEK_ID(AuditModel):
-    """
-     Identification Testing (ID) data from VITEK Cards
-    """
-#-------------------------------------------------------------------------------------------------
+#     """
+#      Identification Testing (ID) data from VITEK Cards
+#     """
+# #-------------------------------------------------------------------------------------------------
 
-    Card_Barcode = models.ForeignKey(VITEK_Card, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING) 
-    #OrgBatch_ID = models.ForeignKey(Organism_Batch, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING) 
-    #Card_Code = models.CharField(blank=False, null=False, max_length=15, verbose_name = "Card Code") 
-    Process = models.CharField(blank=True, null=True, unique=True, max_length=50, verbose_name = "Vitek Process") 
-    ID_Organism = models.CharField(null=True, blank=True, max_length=120, verbose_name = "ID Organism")
-    ID_Probability = models.CharField(null=True, blank=True,  max_length=120, verbose_name = "ID Organism")
-    ID_Confidence = models.CharField(null=True, blank=True,  max_length=120, verbose_name = "ID Organism")
-    Filename = models.CharField(blank=True, null=True, max_length=120, verbose_name = "PDF Filename")
-    Page_No = models.IntegerField(blank=True, null=True, verbose_name = "PDF PageNo")  
+    card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
+        db_column="card_barcode", related_name="%(class)s_card_barcode+") 
+    process = models.CharField(max_length=50, blank=True, verbose_name = "Vitek Process")
+    id_organism = models.CharField(max_length=120,  blank=True, verbose_name = "ID Organism")
+    id_probability = models.CharField(max_length=120, blank=True,  verbose_name = "ID Organism")
+    id_confidence = models.CharField(max_length=120, blank=True,  verbose_name = "ID Organism")
+    id_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
+    filename = models.CharField(max_length=120, blank=True, verbose_name = "PDF Filename")
+    page_no = models.IntegerField(default=0, blank=True, verbose_name = "PDF PageNo")  
 
+    #------------------------------------------------
     class Meta:
-        app_label = "ddrug"
-        db_table='vitek_id'
-        # ordering=['OrgBatch']
+        app_label = 'ddrug'
+        db_table = 'vitek_id'
+        #ordering=['card_barcode']
         indexes = [
-            models.Index(name="vid_idorg_idx",fields=['ID_Organism']),
-            models.Index(name="vid_idprob_idx",fields=['ID_Probability']),
-            models.Index(name="vid_idconf_idx",fields=['ID_Confidence']),
-            models.Index(name="vid_fname_idx",fields=['Filename']),
+            models.Index(name="vid_idorg_idx",fields=['id_organism']),
+            models.Index(name="vid_idprob_idx",fields=['id_probability']),
+            models.Index(name="vid_idconf_idx",fields=['id_confidence']),
+            models.Index(name="vid_fname_idx",fields=['filename']),
         ]
+
+    #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.Card_Barcode}"
+        return f"{self.id_organism} {self.card_barcode.orgbatch_id} {self.card_barcode.card_code}"
+
+   #------------------------------------------------
+    @classmethod
+    def exists(self,CardBarcode,verbose=0):
+    #
+    # Returns an instance if found by CardBarcode and DrugID
+    #
+        try:
+            retInstance = self.objects.get(card_barcode=CardBarcode)
+        except:
+            if verbose:
+                print(f"[Vitek AST Not Found] {CardBarcode} ")
+            retInstance = None
+        return(retInstance)
+
 #-------------------------------------------------------------------------------------------------

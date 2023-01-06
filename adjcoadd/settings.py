@@ -225,12 +225,16 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008/"]
 
 # Django Session timeout setting
 INACTIVE_TIME= 180
 # SESSION_COOKIE_AGE=120
-# SESSION_EXPIRE_SECONDS = 120   
+SESSION_EXPIRE_SECONDS = 120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 120
 
+# RDKit Settings
+
+DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
