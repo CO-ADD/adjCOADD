@@ -62,14 +62,7 @@ def search_organism_id(req):
 
 #==================================Filters======================================
 class Filterbase(django_filters.FilterSet):
-    organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    org_class=django_filters.ChoiceFilter(field_name='org_class', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
-
-
-    class Meta:
-        model=Taxonomy
-        fields=['organism_name']
-
+   
     @property
     def qs(self):
         parent = super().qs
