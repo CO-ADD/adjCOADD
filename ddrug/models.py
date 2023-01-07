@@ -8,6 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GistIndex
 from django.db import transaction, IntegrityError
 
+from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
 from dorganism.models import Organism, Organism_Batch
 
@@ -128,7 +129,11 @@ class Drug(AuditModel):
         self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'))
         super(Drug, self).save(*args, **kwargs)
             
-
+    # -------------------------------------------------
+    def get_values(self, fields=DRUG_FIELDs):
+        value_list=super(Drug, self).get_values(fields)
+        return value_list
+        
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):

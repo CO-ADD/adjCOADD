@@ -62,14 +62,7 @@ def search_organism_id(req):
 
 #==================================Filters======================================
 class Filterbase(django_filters.FilterSet):
-    organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    org_class=django_filters.ChoiceFilter(field_name='org_class', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
-
-
-    class Meta:
-        model=Taxonomy
-        fields=['organism_name']
-
+   
     @property
     def qs(self):
         parent = super().qs
@@ -81,7 +74,7 @@ class Filterbase(django_filters.FilterSet):
 
 
 class Organismfilter(Filterbase):
-    organism_id=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
+    organism_id=django_filters.CharFilter(lookup_expr='icontains')
     organism_name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
     organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class']))
     strain_type=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
@@ -92,7 +85,7 @@ class Organismfilter(Filterbase):
     pathogen_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']))
     class Meta:
         model=Organism
-        fields=['organism_id', 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
+        fields=[ 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
        
 
 

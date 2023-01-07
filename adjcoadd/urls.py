@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
     path('', include('dorganism.urls')),
+    # path('', include('ddrug.urls')),
 ]
 
 if settings.DEBUG:

@@ -21,7 +21,7 @@ from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug
-# from .utils import 
+from .utils import Drug_filter
 from .forms import Drug_form
    
           
@@ -31,8 +31,8 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Drug  
     template_name = 'ddrug/drug/drug_list.html' 
-    filterset_class=None
-    model_fields=None
+    filterset_class=Drug_filter
+    model_fields=DRUG_FIELDs
 
  
 class DrugCardView(DrugListView):
@@ -40,13 +40,6 @@ class DrugCardView(DrugListView):
 
     
 # ===========Detail View=============================Read============================================
-@login_required
-def detailDrug(req, pk):
-    context={}
-    object_=get_object_or_404(Drug,pk=pk)
-    context["object"]=object_
-    context['form']=Drug_form(instance=object_)
-    return render(req, "ddrug/drug/drug_detail.html", context)
 
 # ====================================================Create===========================================
 # @login_required
@@ -85,17 +78,6 @@ def updateDrug(req, pk):
     return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
-def deleteDrug(req, pk=pk):
-    kwargs={}
-    kwargs['user']=req.user 
-    object_=get_object_or_404(Drug, pk=pk)
-    try:
-        if req.method=='POST':
-            object_.delete(**kwargs)
-    except Exception as err:
-        print(err) 
-    return redirect("drug_card")
 
 # Create your views here.
 #===================== A Example =================================================================================#
