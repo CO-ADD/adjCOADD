@@ -32,7 +32,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
  #   raise RuntimeError("Could not find a SECRET_KEY in environment") from e
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -197,7 +197,7 @@ STATIC_URL = 'static/'
 if DEBUG:
     STATICFILES_DIRS=[BASE_DIR/"static",]
 else:
-    STATIC_ROOT = BASE_DIR / 'static'
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
