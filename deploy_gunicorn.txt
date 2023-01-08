@@ -1,0 +1,52 @@
+#
+# Deploy new version of adjCOADD from github 
+#  currently applicable to imb-coadd-work
+#
+
+#------------------------------------------------------
+# login as django linux user
+>sudo su - django
+
+#------------------------------------------------------
+# change to django delpoyment folder
+(base)>cd /opt/django
+
+#------------------------------------------------------
+# stop django server (gunicorn application server)
+#  nginx (http server can keep-on running)
+(base)>./etc/dj_stop.sh
+
+#------------------------------------------------------
+# archive current project
+(base)>cd project
+(base)>tar czf 00_Archive/adjCOADD_v<version_number>_<date of archiving>.tgz adjCOADD
+       example: tar czf 00_Archive/adjCOADD_v02_20230108.tgz adjCOADD
+(base)>mv adjCOADD adjCOADD_v02_20230108 # or rm -rf adjCOADD
+
+(base)>tar czf 00_Archive/static_v<version_number>_<date of archiving>.tgz static
+       example: tar czf 00_Archive/static_v02_20230108.tgz static
+(base)>mv static static_v02_20230108 # or rm -rf static
+
+#------------------------------------------------------
+# Create new project file
+(base)>git clone https://github.com/CO-ADD/adjCOADD
+
+#------------------------------------------------------
+# Create new static
+(base)>cd adjCOADD
+(base)>conda activate dj41py310
+(dj41py310)>python manage.py collectstatic
+(dj41py310)>mv staticfiles ../static
+(dj41py310)>cd ..
+(dj41py310)>chmod 775 -R static
+(dj41py310)>cd ..
+
+#------------------------------------------------------
+# start django server (gunicorn application server)
+(base)>./etc/dj_start.sh
+
+#------------------------------------------------------
+# check running instance
+(base)>more var/log/gunicorn_error.log
+(base)>curl localhost:8009 # gunicorn reply
+(base)>curl localhost:8008 # nginx reply
