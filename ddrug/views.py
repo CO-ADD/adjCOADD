@@ -21,7 +21,7 @@ from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug
-from .utils import Drug_filter
+from .utils import Drug_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
    
           
@@ -33,6 +33,15 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     template_name = 'ddrug/drug/drug_list.html' 
     filterset_class=Drug_filter
     model_fields=DRUG_FIELDs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        clearIMGfolder()
+        for object_ in context["object_list"]:
+            m=Chem.MolFromSmiles(object_.smiles)
+            molecule_to_svg(m, object_.pk)
+        return context
+
 
  
 class DrugCardView(DrugListView):

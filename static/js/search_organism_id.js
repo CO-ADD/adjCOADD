@@ -1,11 +1,11 @@
-var scheduled_function = false;
+var scheduled_function_id = false;
 var searchForm = document.getElementById("id_search-form");
 var searchInput = document.getElementById("search-id-input");
 var resultsBox = document.getElementById("id_results-box");
 
 var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
-function sendSearchData(inputtext) {
+function sendSearchData_id(inputtext) {
   $.ajax({
     type: "POST",
     url: "/search_organism_id/",
@@ -56,14 +56,13 @@ searchInput.addEventListener("keyup", (e) => {
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
-  sendSearchData(e.target.value);
+  // sendSearchData(e.target.value);
 
-  // if (scheduled_function) {
-  //   clearTimeout(scheduled_function);
-  // }
+  if (scheduled_function_id) {
+    clearTimeout(scheduled_function_id);
+  }
 
-  // scheduled_function = setTimeout(function () {
-  //   sendSearchData(e.target.value);
-  // }, 500);
-  // sendSearchData(e.target.value)
+  scheduled_function_id = setTimeout(function () {
+    sendSearchData_id(e.target.value);
+  }, 500);
 });

@@ -1,51 +1,13 @@
 <div class="modal-dialog">
   <div class="modal-content" style="width: 50rem">
-    <div class="modal-header">
-      <h5 class="modal-title" id="staticBackdropLabel">Create New Batch</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-
     <div class="card mt-3 text-left">
-      <h4 class="my-0">Create Organism</h4>
+      <p><strong>Find Organim</strong></p>
       {% include 'utils/search_organism.html' %}
       <!-- ===================================================================================== -->
       <hr />
-      <form
-        method="POST"
-        class="post-form"
-        name="create"
-        action="{%url 'org_create'%}"
-      >
-        {% csrf_token %}
-        <!--  -->
-        {{form.as_p}}
-        <input
-          type="text"
-          id="taxo-name"
-          name="search_organism"
-          style="display: none"
-        />
-
-        <hr />
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          value="Add"
-          name="note"
-        />
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-      </form>
+      {% url 'org_crteate' as createurl %}
+      <!--prettier-ignore-->
+      {%include 'utils/modal/create.html' with title='Create Organism' urlname=createurl %}
     </div>
   </div>
 </div>

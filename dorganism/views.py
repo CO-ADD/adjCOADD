@@ -221,6 +221,7 @@ def deleteOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
         object_.delete(**kwargs)
+        print('delete Org')
     except Exception as err:
         print(err)
     return redirect('/')
@@ -399,6 +400,7 @@ def deleteStock(req, pk):
     context={'object':object_}
     if req.method=='POST':
         object_.delete(**kwargs)
+        print("deleted this stock")
         return redirect(req.META['HTTP_REFERER'])
     return render(req, "dorganism/organism/batch_stock/stock_d.html", context)
 

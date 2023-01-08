@@ -1,34 +1,6 @@
 <div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">Create Taxonomy</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <form
-        id="createTaxoForm"
-        method="POST"
-        class="post-form"
-        name="create-taxo"
-        action="{%url 'taxo_create'%}"
-      >
-        {% csrf_token %} {{ form.as_p }}
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-outline-secondary" value="Add" />
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <!--prettier-ignore-->
+  {% url 'drug_create' as createurl %}
+  {%include 'utils/modal/create.html' with title='Create Drug' urlname=createurl %}
+  <!--  -->
 </div>

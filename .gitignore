@@ -383,6 +383,7 @@ dmypy.json
 
 #images
 /static/images/brand/*.*
+/static/images/drugs/*.*
 
 #csv
 /zbackup/
