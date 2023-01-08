@@ -18,7 +18,7 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
     """Save substance structure as SVG"""
 
     # Define full path name
-    file_path = f"static/images/drugs/{file_name}.svg"
+    file_path = f"static/images/{file_name}.svg"
 
     # Render high resolution molecule
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
@@ -35,8 +35,8 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
 #=================================================Clear IMGFolder===========================================================#
 
 def clearIMGfolder():
-    for filename in os.listdir("static/images/drugs"):
-                file_path=os.path.join("static/images/drugs", filename)
+    for filename in os.listdir("static/images/"):
+                file_path=os.path.join("static/images/", filename)
                 try:
                     os.unlink(file_path)
                     print("removed!")
