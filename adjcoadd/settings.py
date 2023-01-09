@@ -20,25 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT=os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL=('uploads/')
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
-# SECRET_KEY = os.environ["SECRET_KEY"]
-    
-#except KeyError as e:
- #   raise RuntimeError("Could not find a SECRET_KEY in environment") from e
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,72 +82,67 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
 
-    #     'default': {
-    #  #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'default': {
+     #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-    #         "ENGINE": "psqlextra.backend",
-    #         'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #         'NAME': 'orgdb',
-    #         'USER': 'orgdb', #os.environ.get('db_user'),
-    #         'PASSWORD':'orgdb',
-    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #         'PORT': '5432',
-    #     },
-    #     'dorganism': {
-    #         "ENGINE": "psqlextra.backend",
-    #         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #         'NAME': 'orgdb',
-    #         'USER': 'orgdb', #os.environ.get('db_user'),
-    #         'PASSWORD': 'orgdb',
-    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #         'PORT': '5432',
-    #     },
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=apputil,public'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD':'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        },
+        'dorganism': {
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD': 'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        },
 
-    #     'ddrug': {
-    #         "ENGINE": "psqlextra.backend",
-    #         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-    #         'NAME': 'orgdb',
-    #         'USER': 'orgdb', #os.environ.get('db_user'),
-    #         'PASSWORD': 'orgdb',
-    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #         'PORT': '5432',
-    #     }
-
+        'ddrug': {
+            "ENGINE": "psqlextra.backend",
+            'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+            'NAME': 'orgdb',
+            'USER': 'orgdb', #os.environ.get('db_user'),
+            'PASSWORD': 'orgdb',
+            'HOST': 'imb-coadd-work.imb.uq.edu.au',
+            'PORT': '5432',
+        }
    
 #     # ==================For Local Test===========================================
-   'default': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-
-      'PORT': '5432',
-    },
-    'dorganism': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-      'NAME': 'orgdb',
-
-      'TEST': {
-          'NAME': 'mytestdatabase2',
-      },
-      'HOST': 'Localhost',
-      'PORT': '5432',
-   },
-    'ddrug': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
-    }
-
+#    'default': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#     },
+#     'dorganism': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+#       'NAME': 'orgdb',
+#       'TEST': {
+#           'NAME': 'mytestdatabase2',
+#       },
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#    },
+#     'ddrug': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#     }
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
@@ -163,41 +151,25 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Australia/Brisbane'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
-if DEBUG:
-    STATICFILES_DIRS=[BASE_DIR/"static",]
-else:
-    STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS=[BASE_DIR/"static",]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -208,20 +180,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-
 #LDAP AUthen
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
     ]
 AUTH_LDAP_SERVER_URI = "ldap://ldap.uq.edu.au"
-
 AUTH_LDAP_BIND_DN = ""
-
 AUTH_LDAP_BIND_PASSWORD = ""
-
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
@@ -236,5 +203,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 120
 
 # RDKit Settings
-
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
