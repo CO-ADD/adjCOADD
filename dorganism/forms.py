@@ -15,7 +15,6 @@ class CreateOrganism_form(ModelForm):
     strain_ids= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    strain_tissue=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']), widget=forms.Select(attrs={'class':'form-select'}))
     risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']), widget=forms.Select(attrs={'class':'form-select'}))
     pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']), widget=forms.Select(attrs={'class':'form-select'}))

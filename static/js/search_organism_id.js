@@ -26,8 +26,6 @@ function sendSearchData_id(inputtext) {
           block.innerText = data[i]["name"];
           resultsBox.appendChild(block);
           block.addEventListener("click", function () {
-            // alert(this.id)
-            // let Texonomy = this.innerText.split(" | ");
             let organism_id = this.innerText;
             searchInput.value = organism_id;
             let setMicro = document.getElementById("microorg");

@@ -4,7 +4,13 @@
       <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}" />
       <label for="">{{datatype}}</label>
     </div>
+    <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">{{object.pk}}</p>
+    <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">
+      {%load static%}
+      <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="100%"
+        style="background-color: transparent !important;" />
 
+    </p>
     <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.pk}}"
       aria-expanded="false" aria-controls="{{object.pk}}">
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
@@ -12,13 +18,8 @@
 
     <div class="collapse" id="{{object.pk}}">
       <div class="fst-normal d-flex flex-column align-items-start">
-        <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">
+        <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">{{object.drug_type}}</p>
 
-          {%load static%}
-          <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="100%"
-            style="background-color: transparent !important;" />
-
-        </p>
         <!--prettier-ignore-->
       </div>
     </div>

@@ -62,5 +62,6 @@ DRUG_FIELDs = {
     "drug_othernames":"Other Name",
     "drug_codes":"Drug Code",
     "drug_type":"Drug Type",
+    "drug_note":"Drug Note"
    
 }

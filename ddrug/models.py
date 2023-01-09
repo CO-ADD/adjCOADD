@@ -132,6 +132,7 @@ class Drug(AuditModel):
     # -------------------------------------------------
     def get_values(self, fields=DRUG_FIELDs):
         value_list=super(Drug, self).get_values(fields)
+        print(value_list)
         return value_list
         
 
