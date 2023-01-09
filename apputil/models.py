@@ -206,10 +206,8 @@ class AuditModel(models.Model):
                     for i in obj:
                         array_to_string+=str(i)+", "
                     value_list.append(array_to_string)
-                    print(value_list)
                 else:   
                     value_list.append(field.value_to_string(self))
-                    print(value_list)
         return value_list
 #-------------------------------------------------------------------------------------------------
 

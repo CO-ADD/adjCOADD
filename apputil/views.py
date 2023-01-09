@@ -84,6 +84,24 @@ class AppUserListView(LoginRequiredMixin, ListView):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.all()
         return context
+        
+from django.http import QueryDict
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def updateApplicationuser(req, pk):
+    object_=get_object_or_404(ApplicationUser, pk=pk)
+    form=ApplicationUser_form(instance=object_)
+    context={
+        "form":form,
+        "object":object_,
+        }
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()       
+        form=ApplicationUser_form(data=qd, instance=object_)
+        if form.is_valid():
+            instance=form.save()
+            context={"object":object_}
+            return render(req, "apputil/appuser_tr.html", context)
+    return render(req, "apputil/appUsersUpdate.html", context)
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
@@ -94,13 +112,8 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.all()
-        return context
+        return 
 
-class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
-    model=ApplicationUser
-    fields=['name', 'permission', ]
-    template_name = 'apputil/appUsersUpdate.html'
-    success_url = reverse_lazy('userslist')
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser

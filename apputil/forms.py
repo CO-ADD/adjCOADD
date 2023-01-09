@@ -5,8 +5,9 @@ from django.contrib.auth import authenticate
 
 
 class ApplicationUser_form(forms.ModelForm):
-    pass
-    
+    class Meta:
+        model=ApplicationUser
+        fields=['username', 'initials','email', 'permission']
 
 # #=======================================Dictionary Form===========================================================
 class Dictionary_form(forms.ModelForm):

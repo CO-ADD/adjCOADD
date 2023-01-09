@@ -1,0 +1,14 @@
+<tr>
+  <td>{{object.name}}</td>
+  <td>{{object.username}}</td>
+  <td>{{object.initials}}</td>
+  <td>{{object.email}}</td>
+  <td>{{object.permission}}</td>
+
+  <td style="width: 10%">
+    <button hx-get="{% url 'updateAppUser' object.name %}" hx-trigger="click">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
+    <span class=""> {%include 'apputil/appUsersDel.html'%} </span>
+  </td>
+</tr>
