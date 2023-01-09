@@ -1,37 +1,23 @@
 <div class="col-md-2 vh-80 m-0 p-1">
   <div class="card ms-3 px-1">
     <div class="checkbox-container-export" data-type="{{datatype}}">
-      <input
-        type="checkbox"
-        name="type"
-        class="filled-in"
-        value="{{object.pk}}"
-      />
+      <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}" />
       <label for="">{{datatype}}</label>
     </div>
 
-    <div
-      class="text-center"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#{{object.pk}}"
-      aria-expanded="false"
-      aria-controls="{{object.pk}}"
-    >
+    <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.pk}}"
+      aria-expanded="false" aria-controls="{{object.pk}}">
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
     </div>
 
     <div class="collapse" id="{{object.pk}}">
       <div class="fst-normal d-flex flex-column align-items-start">
-        <p class="card-text" style="font-size: xx-small">
-          <li>
-            {%load static%}
-            <img
-              src="{%static 'images/'%}{{object.pk}}.svg"
-              alt="structure"
-              width="200px"
-            />
-          </li>
+        <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">
+
+          {%load static%}
+          <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="100%"
+            style="background-color: transparent !important;" />
+
         </p>
         <!--prettier-ignore-->
       </div>

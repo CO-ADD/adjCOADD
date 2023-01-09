@@ -25,8 +25,8 @@ MEDIA_URL=('uploads/')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+# SECRET_KEY = os.environ["SECRET_KEY"]
     
 #except KeyError as e:
  #   raise RuntimeError("Could not find a SECRET_KEY in environment") from e
@@ -95,65 +95,65 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-        'default': {
-     #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'default': {
+    #  #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD':'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
-        'dorganism': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD':'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     },
+    #     'dorganism': {
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD': 'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     },
 
-        'ddrug': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        }
+    #     'ddrug': {
+    #         "ENGINE": "psqlextra.backend",
+    #         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #         'NAME': 'orgdb',
+    #         'USER': 'orgdb', #os.environ.get('db_user'),
+    #         'PASSWORD': 'orgdb',
+    #         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #         'PORT': '5432',
+    #     }
 
    
 #     # ==================For Local Test===========================================
-#    'default': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
+   'default': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
 
-#       'PORT': '5432',
-#     },
-#     'dorganism': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-#       'NAME': 'orgdb',
+      'PORT': '5432',
+    },
+    'dorganism': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+      'NAME': 'orgdb',
 
-#       'TEST': {
-#           'NAME': 'mytestdatabase2',
-#       },
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#    },
-#     'ddrug': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     }
+      'TEST': {
+          'NAME': 'mytestdatabase2',
+      },
+      'HOST': 'Localhost',
+      'PORT': '5432',
+   },
+    'ddrug': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    }
 
 
 }
@@ -197,7 +197,7 @@ STATIC_URL = 'static/'
 if DEBUG:
     STATICFILES_DIRS=[BASE_DIR/"static",]
 else:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    STATIC_ROOT = BASE_DIR / 'static'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

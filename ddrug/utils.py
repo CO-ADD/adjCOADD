@@ -1,4 +1,5 @@
 import os
+os.environ['path']+=r';C:\Program Files\UniConvertor-2.0rc5\dlls'
 import django_filters
 from rdkit.Chem import Draw
 from rdkit import RDConfig

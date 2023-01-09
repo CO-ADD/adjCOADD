@@ -172,7 +172,7 @@ from django.db import transaction, IntegrityError
 # cd = clamd.ClamdUnixSocket()
 
 class FileUploadForm(forms.Form):
-    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
+    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),('Dictionary', 'Dictionary'),))
     file_field = forms.FileField()#(validators=[validate_file])
 
 class Importhandler(View):
@@ -238,7 +238,7 @@ class Importhandler(View):
                     if Taxonomy.objects.filter(pk=obj.pk):
                         return JsonResponse({'status':'DATA exists'}) 
                     try:
-                        obj.save(commit=False)
+                        obj.save()
                         print('save')
                     except Exception as err:
                         print(err)
