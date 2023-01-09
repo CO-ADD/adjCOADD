@@ -22,15 +22,15 @@ class CreateOrganism_form(ModelForm):
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all())
    
-    def __init__(self, user, organism_name=None, *args, **kwargs): 
+    def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
-        user=user
+        
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         self.fields['strain_type'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.initial['biologist']= get_object_or_404(ApplicationUser, name=user)
+       
               
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
@@ -47,6 +47,7 @@ class UpdateOrganism_form(CreateOrganism_form):
     class Meta:
         model=Organism
         exclude = ['organism_id']
+    
 
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
@@ -62,11 +63,10 @@ class Batch_form(forms.ModelForm):
     # Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
    
-    def __init__(self, user, organism_id=None, *args, **kwargs):
+    def __init__(self, organism_id=None, *args, **kwargs):
         self.organism_id=organism_id
-        user=user
         super(Batch_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+      
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']
@@ -101,11 +101,11 @@ class Culture_form(forms.ModelForm):
     culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
 
-    def __init__(self, user, organism_id=None, *args, **kwargs):
+    def __init__(self,  organism_id=None, *args, **kwargs):
         self.organism_id=organism_id
-        user=user
+        
         super(Culture_form, self).__init__(*args, **kwargs)
-        self.initial['biologist']=get_object_or_404(ApplicationUser, name=user)
+        
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']

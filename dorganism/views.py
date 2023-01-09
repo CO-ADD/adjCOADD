@@ -123,10 +123,10 @@ def createOrganism(req):
     kwargs={}
     kwargs['user']=req.user
 
-    form=CreateOrganism_form(req.user)
+    form=CreateOrganism_form()
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism')
-        form=CreateOrganism_form( req.user, Organism_Name, req.POST,)
+        form=CreateOrganism_form( Organism_Name, req.POST,)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
@@ -151,7 +151,7 @@ def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     user=req.user
-    form=UpdateOrganism_form(user,instance=object_)
+    form=UpdateOrganism_form(instance=object_)
     context["object"]=object_
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
@@ -183,14 +183,14 @@ def updateOrganism(req, pk):
                 if  req.POST.get('search_organism'):
                     Organism_Name_str=req.POST.get('search_organism')
                     Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
-                    form=UpdateOrganism_form(req.user, Organism_Name_str, req.POST, instance=obj)
+                    form=UpdateOrganism_form(Organism_Name_str, req.POST, instance=obj)
                     #-----------------------Not allow to update name in different class--------
                     if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                     #-----------------------Not allow to update name in different class--------
                 #------------------------If update Organism Name-----------------------------------
                 else:
-                    form=UpdateOrganism_form(req.user, object_.organism_name, req.POST, instance=obj) 
+                    form=UpdateOrganism_form(object_.organism_name, req.POST, instance=obj) 
                 try:
                     if form.is_valid():                  
                         instance=form.save(commit=False)
@@ -204,7 +204,7 @@ def updateOrganism(req, pk):
             return redirect(req.META['HTTP_REFERER'])
   
     else:
-        form=UpdateOrganism_form(req.user,instance=object_)
+        form=UpdateOrganism_form(instance=object_)
 
     context={
         "form":form,
@@ -241,11 +241,11 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
 def createBatch(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Batch_form(req.user)
+    form=Batch_form()
 
     if req.method=='POST':
         Organism_Id=req.POST.get('search_organism')
-        form=Batch_form(req.user, Organism_Id, req.POST)
+        form=Batch_form(Organism_Id, req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
@@ -412,11 +412,11 @@ def deleteStock(req, pk):
 def createCulture(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Culture_form(req.user)
+    form=Culture_form()
 
     if req.method=='POST':
         Organism_Id=req.POST.get('search_organism')
-        form=Culture_form(req.user, Organism_Id, req.POST)
+        form=Culture_form(Organism_Id, req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):

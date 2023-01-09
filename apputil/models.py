@@ -199,8 +199,17 @@ class AuditModel(models.Model):
     def get_values(self, fields=None):
         value_list=[]
         for field in self._meta.fields:
-            if field.name in fields.keys():    
-                value_list.append(field.value_to_string(self))
+            if field.name in fields.keys():
+                obj=getattr(self, field.name)
+                if isinstance(obj, list):
+                    array_to_string=""
+                    for i in obj:
+                        array_to_string+=str(i)+", "
+                    value_list.append(array_to_string)
+                    print(value_list)
+                else:   
+                    value_list.append(field.value_to_string(self))
+                    print(value_list)
         return value_list
 #-------------------------------------------------------------------------------------------------
 
