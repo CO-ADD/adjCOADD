@@ -82,14 +82,13 @@ class Batch_form(forms.ModelForm):
         # fields=ORGANISM_BATCH_FIELDs.keys()
         # +["organism_id"]
         exclude=['orgbatch_id', 'stock_level']
-
+        
+# ---------------------------------------------------------------------------------------------
 class Batchupdate_form(forms.ModelForm):
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_FIELDs.keys()
         exclude=['stock_level']
-
-
 
 
 # ===============================Stock Form-------------------------------
@@ -119,6 +118,7 @@ class Culture_form(forms.ModelForm):
         model =Organism_Culture
         fields=ORGANISM_CULTR_FIELDs
 
+# ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
     culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)

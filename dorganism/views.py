@@ -225,7 +225,7 @@ def deleteOrganism(req, pk):
     return redirect('/')
    
 # #############################BATCH View############################################
-# ==========List View================================Read===========================================
+# ---------------------------------------------------------------------------------------------
 class BatchCardView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
@@ -233,7 +233,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     filterset_class=Batchfilter
     model_fields=ORGANISM_BATCH_FIELDs
 
-    
+# ---------------------------------------------------------------------------------------------    
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createBatch(req):
@@ -260,8 +260,9 @@ def createBatch(req):
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, }) 
 
+# ---------------------------------------------------------------------------------------------
 from django.http import QueryDict
-
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateBatch(req, pk):
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
@@ -272,7 +273,6 @@ def updateBatch(req, pk):
         "form":form,
         "object":object_,
     }
-    #-------------------------------------------------------------------------
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
@@ -290,6 +290,7 @@ def updateBatch(req, pk):
             return render(req, "dorganism/organism/batch/batch_tr.html", context)
     return render(req, "dorganism/organism/batch/batch_u.html", context)
 
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteBatch(req, pk):
     kwargs={}
@@ -328,9 +329,7 @@ def stockList(req, pk):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-    
-
-# @login_required
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def createStock(req):
     kwargs={}
@@ -354,7 +353,7 @@ def createStock(req):
 
     return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, }) 
 
-
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateStock(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
@@ -388,6 +387,7 @@ def updateStock(req, pk):
    
     return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
 
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteStock(req, pk):
     kwargs={}
@@ -456,6 +456,7 @@ def updateCulture(req, pk):
             return render(req, "dorganism/organism/culture/culture_tr.html", context)
     return render(req, "dorganism/organism/culture/culture_u.html", context)
 
+# ---------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
 def deleteCulture(req, pk):
     kwargs={}

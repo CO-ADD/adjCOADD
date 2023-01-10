@@ -58,5 +58,11 @@ searchInput.addEventListener("keyup", (e) => {
     resultsBox.classList.remove("not-visible");
   }
 
-  sendSearchData(e.target.value);
+  if (scheduled_function) {
+    clearTimeout(scheduled_function);
+  }
+
+  scheduled_function = setTimeout(function () {
+    sendSearchData(e.target.value);
+  }, 500);
 });

@@ -1,11 +1,10 @@
-var scheduled_function_id = false;
 var searchForm = document.getElementById("id_search-form");
 var searchInput = document.getElementById("search-id-input");
 var resultsBox = document.getElementById("id_results-box");
 
 var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
-function sendSearchData_id(inputtext) {
+function sendSearch_orgid(inputtext) {
   $.ajax({
     type: "POST",
     url: "/search_organism_id/",
@@ -54,5 +53,5 @@ searchInput.addEventListener("keyup", (e) => {
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
-  sendSearchData(e.target.value);
+  sendSearch_orgid(e.target.value);
 });
