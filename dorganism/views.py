@@ -483,7 +483,10 @@ def exportCSV(request):
         data_arr = request.POST.getlist('data_arr[]')
         data_fields = request.POST.getlist('fields[]')
         model_name=request.POST.get('model_name')
-        model=apps.get_model('dorganism', model_name)
+        try:
+            model=apps.get_model('dorganism', model_name)
+        except:
+            model=apps.get_model('ddrug', model_name)
         query=model.objects.filter(pk__in=data_arr)
         response = HttpResponse(content_type='text/csv')
         file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"

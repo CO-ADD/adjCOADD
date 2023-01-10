@@ -42,7 +42,7 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
             molecule_to_svg(m, object_.pk)
         return context
 
-
+# editable graphic , molblock, 3D, py3Dmol 
  
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'

@@ -46,7 +46,7 @@ def clearIMGfolder():
 
 
 class Drug_filter(Filterbase):
-    # organism_name = django_filters.CharFilter(lookup_expr='icontains')
+    drug_name = django_filters.CharFilter(lookup_expr='icontains')
     # lineage = django_filters.MultipleChoiceFilter( choices= "")
     # django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['lineage'], ' | '))
     # division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))

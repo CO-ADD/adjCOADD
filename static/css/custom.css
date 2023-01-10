@@ -8,7 +8,7 @@
   --bs-heading-bg: var(--teal);
   --bs-topbar-search-bg: #f3f3f9;
   --bs-header-item-color: #555b6d;
-  --bs-boxed-body-bg: #ebebf4;
+  --bs-boxed-body-bg: #e3e3ec;
   --bs-topnav-bg: #2c7a84;
   --bs-menu-item-color: #545a6d;
   --bs-heading-dark-bg: #2a3042;
@@ -49,7 +49,7 @@
   --bs-hr-border-color: #32394e;
   --bs-form-check-input-border: #3a425a;
   --bs-light: #32394e;
-  --bs-light-rgb: 50, 57, 78;
+  --bs-light-rgb: rgb(50, 57, 78);
   --bs-dark: #f6f6f6;
   --bs-dark-rgb: 246, 246, 246;
   --bs-heading-bg: #262b3c;
@@ -63,6 +63,7 @@
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
 }
+
 /* html elements custom style -----------------------------*/
 
 a {
@@ -74,18 +75,25 @@ body {
   color: var(--bs-body-color);
 }
 
+.label {
+  background-color: var(--bs-boxed-body-bg);
+  color: var(--bs-dark);
+}
+
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
   color: var(--bs-light);
   bottom: 0 !important;
 }
+
 input,
 select,
 option {
   background-color: var(--bs-form-item-color) !important;
   color: var(--bs-body-color) !important;
 }
+
 option {
   font-size: 16px !important;
 }
@@ -103,10 +111,12 @@ select option {
   border: none;
   margin: 0;
 }
+
 span {
   font-size: 16px;
   background-color: var(--bs-body-bg);
 }
+
 th,
 td {
   white-space: nowrap;
@@ -119,6 +129,7 @@ tr {
   background-color: var(--bs-grey-300);
   color: var(--bs-body-color);
 }
+
 /* -------------------------------------------------- */
 /*---- block content div custom style */
 .base-content {
@@ -147,6 +158,7 @@ button,
 .btn2:hover {
   border: 2px solid var(--bs-light);
 }
+
 /* ------------------------------ */
 /* ----custom Card Style */
 .card-link {
@@ -158,16 +170,28 @@ button,
   height: 20vw;
   object-fit: cover;
 }
+
 /* bootstrap override */
 .card {
   background-color: var(--bs-body-bg) !important;
   border: 2px solid var(--bs-input-border-color) !important;
 }
+
+.label {
+  background-color: var(--bs-boxed-body-bg);
+  color: var(--bs-dark);
+}
+
 /* ------------------- */
 /* ----Navbar custom style */
 .navbar {
   background-color: var(--bs-heading-bg);
 }
+
+.nav-title {
+  color: white;
+}
+
 .navbar-toggler {
   background-color: var(--bs-inform-color);
 }
@@ -217,6 +241,7 @@ nav.shrink .brand .navbar-brand {
 nav.shrink {
   padding: 4px 5px;
 }
+
 /* ------------------- */
 /* ----Landing page badges custom style */
 .landp-img-01,
@@ -256,6 +281,7 @@ nav.shrink {
   transition: 0.3s ease-in;
   color: var(--bs-light);
 }
+
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
@@ -291,6 +317,7 @@ nav.shrink {
   box-shadow: 0 8px 8px 0 var(--grey);
   transition: 0.5s;
 }
+
 /* Js editablechoices */
 .tdclass {
   position: relative;
@@ -346,6 +373,7 @@ nav.shrink {
   margin: auto;
   width: 50%;
 }
+
 /* =========================================================================== */
 /********************  Preloader *******************/
 #preLoader {
