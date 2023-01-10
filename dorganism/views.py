@@ -407,11 +407,11 @@ def deleteStock(req, pk):
 def createCulture(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Culture_form(req.user)
+    form=Culture_form()
 
     if req.method=='POST':
         Organism_Id=req.POST.get('search_organism')
-        form=Culture_form(req.user, Organism_Id, req.POST)
+        form=Culture_form(Organism_Id, req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
