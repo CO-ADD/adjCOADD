@@ -54,13 +54,5 @@ searchInput.addEventListener("keyup", (e) => {
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
-  // sendSearchData(e.target.value);
-
-  if (scheduled_function_id) {
-    clearTimeout(scheduled_function_id);
-  }
-
-  scheduled_function_id = setTimeout(function () {
-    sendSearchData_id(e.target.value);
-  }, 500);
+  sendSearchData(e.target.value);
 });

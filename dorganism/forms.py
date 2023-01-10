@@ -63,15 +63,18 @@ class Batch_form(forms.ModelForm):
     # Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
    
-    def __init__(self, organism_id=None, *args, **kwargs):
-        self.organism_id=organism_id
+    def __init__(self, organism_id_str=None, *args, **kwargs):
+        self.organism_id_str=organism_id_str
         super(Batch_form, self).__init__(*args, **kwargs)
       
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']
         # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
-        data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
+        try:
+            data=get_object_or_404(Organism, organism_id=self.organism_id_str)#self.organism_name
+        except Exception as err:
+            print(err)
         return data
 
     class Meta:
@@ -98,19 +101,18 @@ class Stock_form(forms.ModelForm):
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
-    culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-    media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    # culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    # media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
 
-    def __init__(self,  organism_id=None, *args, **kwargs):
-        self.organism_id=organism_id
-        
+    def __init__(self,  organism_id_str=None, *args, **kwargs):
+        self.organism_id_str=organism_id_str    
         super(Culture_form, self).__init__(*args, **kwargs)
         
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']
         # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
-        data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
+        data=get_object_or_404(Organism, organism_id=self.organism_id_str)#self.organism_name
         return data
 
     class Meta:

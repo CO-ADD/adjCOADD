@@ -42,14 +42,13 @@
         </div>
         <input type="text" id="taxo-name" name="search_organism" style="display: none;">
         <div class="d-flex m-auto">
-          <button
-          type="button"
+          <a
+          href="{%url 'org_detail' object.pk%}"
           class="btn m-auto mt-5"
-          data-bs-dismiss="modal"
-          aria-label="Close"
+          
         >
           Cancel
-        </button>
+        </a>
           <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
 
         </div>

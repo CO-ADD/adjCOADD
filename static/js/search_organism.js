@@ -52,24 +52,11 @@ function sendSearchData(inputtext) {
   });
 }
 
-function myFunc(val) {
-  console.log(val);
-  searchInput.value = val;
-  var setTaxo = document.getElementById("taxo-name");
-  setTaxo.value = val;
-  resultsBox.innerHTML = "";
-}
 searchInput.addEventListener("keyup", (e) => {
   resultsBox.innerHTML = "";
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
-  if (scheduled_function) {
-    clearTimeout(scheduled_function);
-  }
 
-  scheduled_function = setTimeout(function () {
-    sendSearchData(e.target.value);
-  }, 500);
-
+  sendSearchData(e.target.value);
 });
