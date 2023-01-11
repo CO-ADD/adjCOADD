@@ -13,7 +13,7 @@ This document includes two parts: Developing and Using the Application
 
 create a conda environment
 
-1. create conda env <your env name> 
+1. create conda env <your env name>
 2. activate env
 3. install the following:
    3.1 conda install -c anaconda postgresql
@@ -43,7 +43,7 @@ Install all the following packages in the conda environment.
 6. pip install git+https://github.com/rdkit/django-rdkit.git
 7. sudo apt-get install postgresql postgresql-contrib
    sudo apt-get install libpq-dev python3-dev
-8.   pip install psycopg2
+8. pip install psycopg2
 9. for chemical drawing install the following:
    pip install ipython  
    pip install CairoSVG
@@ -51,21 +51,86 @@ Install all the following packages in the conda environment.
 11. pip install django-model-utils
 12. pip install django-filter
 13. pip install django-postgres-extra
-...
-
+    ...
 
 ### Module Introduction
+
+In this section will give a structurely overview of adjCOADD firstly and then explain the main functions: authentication system and data handling(filter, crud, export and import)
+
 #### Project and Applications:
-project name: adjCOADD.
-Applications:
-1. apputil-- for utility service and users model
+
+This section provides overally introduction of functions and models of the whole project.
+the adjCOADD is a Django app to screening organism database and contains 3 Applications and some util folders. A directory tree structure simply with folders is displayed below.
+
+```
+./adjCOADD
+├── adjcoadd
+├── apputil
+│   ├── migrations
+│   └── templates
+│   └── apputil
+├── ddrug
+│   ├── migrations
+│   └── templates
+│   └── ddrug
+│   └── drug
+├── dorganism
+│   ├── migrations
+│   ├── templates
+│   │   └── dorganism
+│   │   ├── organism
+│   │   │   ├── batch
+│   │   │   ├── batch_stock
+│   │   │   └── culture
+│   │   └── taxonomy
+│   └── templatetags
+├── static
+│   ├── css
+│   ├── images
+│   │   ├── app
+│   │   └── brand
+│   └── js
+│   ├── js_utils
+│   └── modal
+├── templates
+│   ├── registration
+│   └── utils
+│   └── modal
+└── z_docs
+```
+
+More detailed structures will be presented in the following paragraphs and the last section.
+Based on the folder structure, there are 7 main branches under project root:
+
+1. adjcoadd -- the project core folder contains globally used constants and settings.
+
+```
+./adjCOADD
+├── adjcoadd
+│   ├── asgi.py
+│   ├── constants.py
+│   ├── __init__.py
+│   ├── prod_settings.py
+│   ├── routers.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── utils_dataimport.py
+│   └── wsgi.py
+```
+
+following core folder, there are 3 projects applications:
+
+1. apputil-- prject application for utility service and users model
    models: ApplicationUser, Audit, Dictionary,
-2. dorganism--for all chemical componds model
+2. dorganism -- application for micro organism database
    contains:...
+3. ddrug -- application for ...
 
- 
+The static folder is where image resources, style and interactive codes are stored under the sub-folder images, css, js respectively.
 
-(used techniques, connections, codes etc..)
+The repeated template folder followed static is contained globally used templates, e.g., base.html, nav.html...
+
+The last folder z-doc contains help and information documents.
 
 #### Authentication System
 
@@ -73,25 +138,265 @@ Authentication backend authenticates against an LDAP service.
 To realize this include 3 steps:
 
 1. configuration in settings.py :
-2. customize django build-in AbstractUser Model to Applicationuser Model 
+2. customize django build-in AbstractUser Model to Applicationuser Model
 3. import signals to sub-app. Building signal model to assign user with permissions(appuser, read, write, admin )
 4. superusers are able to modify users and permissions
 
-#### Data visualization
+#### Data handling
 
 rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
 
-
-
-
 ## User Guide section
 
-### Get start
+(introduction based on UI sheets)
 
-(basic functions)
+## Full view of project - tree
 
-#### User Data Management
+```
+./adjCOADD
+├── adjcoadd
+│   ├── asgi.py
+│   ├── constants.py
+│   ├── __init__.py
+│   ├── prod_settings.py
+│   ├── routers.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── utils_dataimport.py
+│   └── wsgi.py
+├── apputil
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_auto_20221205_1616.py
+│   │   ├── 0003_auto_20221207_1106.py
+│   │   ├── 0004_alter_dictionary_dict_desc.py
+│   │   ├── 0005_alter_dictionary_acreated_alter_dictionary_adeleted_and_more.py
+│   │   ├── 0006_delete_auditmodel.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── templates
+│   │   └── apputil
+│   │       ├── appUsersCreate.html
+│   │       ├── appUsersDel.html
+│   │       ├── appUsers.html
+│   │       ├── appUsersUpdate.html
+│   │       ├── appuser_tr.html
+│   │       ├── dictCreate.html
+│   │       ├── dictionary_del.html
+│   │       ├── dictionaryUpdate.html
+│   │       ├── dictList.html
+│   │       └── importdata.html
+│   ├── urls.py
+│   ├── utils.py
+│   └── views.py
+├── ddrug
+│   ├── admin.py
+│   ├── apps.py
+│   ├── dbRouter.py
+│   ├── forms.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── templates
+│   │   └── ddrug
+│   │       ├── ddrug_home.html
+│   │       └── drug
+│   │           ├── drug_card.html
+│   │           ├── drug_c.html
+│   │           ├── drug_detail.html
+│   │           ├── drug_d.html
+│   │           ├── drug_list.html
+│   │           └── drug_u.html
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils.py
+│   └── views.py
+├── deploy_gunicorn.txt
+├── dorganism
+│   ├── admin.py
+│   ├── apps.py
+│   ├── dbRouter.py
+│   ├── forms.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_auto_20221207_0912.py
+│   │   ├── 0003_taxonomy_urlname.py
+│   │   ├── 0004_auto_20221207_1342.py
+│   │   ├── 0005_alter_organism_options.py
+│   │   ├── 0006_auto_20221215_1503.py
+│   │   ├── 0007_alter_organism_options_and_more.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── templates
+│   │   └── dorganism
+│   │       ├── home.html
+│   │       ├── organism
+│   │       │   ├── batch
+│   │       │   │   ├── batch_card.html
+│   │       │   │   ├── batch_c.html
+│   │       │   │   ├── batch_d.html
+│   │       │   │   ├── batch_tr.html
+│   │       │   │   └── batch_u.html
+│   │       │   ├── batch_stock
+│   │       │   │   ├── stock_c.html
+│   │       │   │   ├── stock_d.html
+│   │       │   │   └── stock_u.html
+│   │       │   ├── culture
+│   │       │   │   ├── culture_c.html
+│   │       │   │   ├── culture_d.html
+│   │       │   │   ├── culture_tr.html
+│   │       │   │   └── culture_u.html
+│   │       │   ├── organism_card.html
+│   │       │   ├── organism_c.html
+│   │       │   ├── organism_detail.html
+│   │       │   ├── organism_d.html
+│   │       │   ├── organism_list.html
+│   │       │   ├── organism_u.html
+│   │       │   └── organism_u_withoutname.html
+│   │       └── taxonomy
+│   │           ├── taxonomy_card.html
+│   │           ├── taxonomy_c.html
+│   │           ├── taxonomy_detail.html
+│   │           ├── taxonomy_d.html
+│   │           ├── taxonomy_list.html
+│   │           └── taxonomy_u.html
+│   ├── templatetags
+│   │   ├── __init__.py
+│   │   └── myapp_extras.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils.py
+│   └── views.py
+├── .git
+│   ├── branches
+│   ├── config
+│   ├── description
+│   ├── HEAD
+│   ├── hooks
+│   │   ├── applypatch-msg.sample
+│   │   ├── commit-msg.sample
+│   │   ├── fsmonitor-watchman.sample
+│   │   ├── post-update.sample
+│   │   ├── pre-applypatch.sample
+│   │   ├── pre-commit.sample
+│   │   ├── pre-merge-commit.sample
+│   │   ├── prepare-commit-msg.sample
+│   │   ├── pre-push.sample
+│   │   ├── pre-rebase.sample
+│   │   ├── pre-receive.sample
+│   │   ├── push-to-checkout.sample
+│   │   └── update.sample
+│   ├── index
+│   ├── info
+│   │   └── exclude
+│   ├── logs
+│   │   ├── HEAD
+│   │   └── refs
+│   │       ├── heads
+│   │       │   └── main
+│   │       └── remotes
+│   │           └── origin
+│   │               └── HEAD
+│   ├── objects
+│   │   ├── info
+│   │   └── pack
+│   │       ├── pack-07f70b75598eb68898d16b5b8d990a9bc5714c80.idx
+│   │       └── pack-07f70b75598eb68898d16b5b8d990a9bc5714c80.pack
+│   ├── packed-refs
+│   └── refs
+│       ├── heads
+│       │   └── main
+│       ├── remotes
+│       │   └── origin
+│       │       └── HEAD
+│       └── tags
+├── .gitignore
+├── manage.py
+├── MANIFEST.in
+├── README.rst
+├── requirements.txt
+├── setup.cfg
+├── setup.py
+├── static
+│   ├── css
+│   │   ├── app.css
+│   │   ├── bootstrap.min.css
+│   │   ├── bulma.min.css
+│   │   ├── custom.css
+│   │   └── main.css
+│   ├── images
+│   │   ├── app
+│   │   │   ├── avatar.png
+│   │   │   └── favicon-16x16.png
+│   │   └── brand
+│   │       ├── CO-ADD_Baseline_White.png
+│   │       ├── coaddbg01.png
+│   │       ├── CO-ADD_Logo_Baseline.jpg
+│   │       ├── CO-ADD logo no background.png
+│   │       ├── CO-ADD_Logo_White_NoBackground_Baseline1500x375.png
+│   │       ├── CO-ADD_Logo_White_NoBackground_CMYK.png
+│   │       ├── CO-ADD only logo.jpg
+│   │       └── logo-fullsize.png
+│   └── js
+│       ├── editableTablechoices.js
+│       ├── editableTable.js
+│       ├── importhandler.js
+│       ├── index.js
+│       ├── jquery-3.6.1.min.js
+│       ├── js_utils
+│       │   ├── ajax_submit.js
+│       │   ├── ajax_update.js
+│       │   ├── dataTables.js
+│       │   ├── dataTables.min.js
+│       │   └── getCookie.js
+│       ├── modal
+│       │   ├── create_batch.js
+│       │   ├── create_culture.js
+│       │   ├── create_drug.js
+│       │   ├── create_organism.js
+│       │   ├── create_stock.js
+│       │   └── create_taxonomy.js
+│       ├── resizebar.js
+│       ├── resizebar_t.js
+│       ├── search_organism_id.js
+│       ├── search_organism.js
+│       ├── table-editable.int.js
+│       └── table-edits.min.js
+├── templates
+│   ├── base.html
+│   ├── registration
+│   │   └── login.html
+│   └── utils
+│       ├── alertnav.html
+│       ├── card.html
+│       ├── datatable_batch.html
+│       ├── datatable_cultr.html
+│       ├── datatable_drug.html
+│       ├── datatable_general.html
+│       ├── datatable_taxo.html
+│       ├── editable_tr.html
+│       ├── message.html
+│       ├── modal
+│       │   ├── create.html
+│       │   ├── delete.html
+│       │   └── update.html
+│       ├── multichoice.html
+│       ├── navbar.html
+│       ├── pagination.html
+│       ├── preloader.html
+│       ├── search_organism.html
+│       ├── search_organism_id.html
+│       ├── selectAllExp.html
+│       ├── sidebar.html
+│       └── topbar.html
+└── z_docs
+    └── GetStartwithCoAdd.md
 
-(User Group and setting up permissions for superuser and staff)
-
-#### Data Access
+```
