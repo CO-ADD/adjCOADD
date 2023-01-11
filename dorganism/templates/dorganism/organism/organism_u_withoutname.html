@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4 table-responsive">
+    <div class="col-md-4">
       <table class="table table-sm align-middle table-bordered">
         <tbody>
           <tr>
@@ -88,7 +88,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-4 table-responsive">
+    <div class="col-md-4">
       <table class="table table-sm align-middle table-bordered">
         <tbody>
           <tr>
@@ -150,21 +150,23 @@
           <tr>
             <th scope="row" class="">MTA Status</th>
             <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="mta_status">
-              <div class="detail">{{object.mta_status}}</div>
+              <div class="detail">{{object.mta_status|default_if_none:"&nbsp;"}}</div>
               <div class="form-control select">{{form.mta_status}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">MTA Document</th>
             <td class="editable" data-id="{{object.pk}}" data-type="mta_document">
-              <div class="detail">{{object.mta_document}}</div>
+              <div class="detail">
+                {{object.mta_document}}
+              </div>
               <div class="input-group select">{{form.mta_document}}</div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="col-md-4 table-responsive">
+    <div class="col-md-4">
       <table class="table table-sm align-middle table-bordered">
         <tbody>
           <tr>

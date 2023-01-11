@@ -109,11 +109,6 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        return 
-
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser

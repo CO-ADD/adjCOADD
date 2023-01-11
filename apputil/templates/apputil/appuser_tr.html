@@ -1,9 +1,14 @@
 <tr>
   <td>{{object.name}}</td>
   <td>{{object.username}}</td>
+  <td>{{object.first_name}}</td>
+  <td>{{object.last_name}}</td>
+
   <td>{{object.initials}}</td>
   <td>{{object.email}}</td>
   <td>{{object.permission}}</td>
+  <td>{{object.is_appuser}}</td>
+  <td>{{object.is_active}}</td>
 
   <td style="width: 10%">
     <button hx-get="{% url 'updateAppUser' object.name %}" hx-trigger="click">

@@ -1,18 +1,10 @@
 <tr>
-  <td></td>
-  <td>{{form.username}}</td>
-  <td>{{form.initials}}</td>
-
-  <td>{{form.email}}</td>
-  <td>{{form.permission}}</td>
+  {%for field in form%}
+  <td>{{field}}</td>
+  {%endfor%}
   <td>
-    <input
-      type="submit"
-      value="update"
-      hx-put="{%url 'updateAppUser' pk=object.name%}"
-      hx-include="closest tr"
-      hx-trigger="click"
-    />
+    <input type="submit" value="update" hx-put="{%url 'updateAppUser' pk=object.name%}" hx-include="closest tr"
+      hx-trigger="click" />
     <a href="{% url 'userslist' %}">Cancel</a>
   </td>
 </tr>

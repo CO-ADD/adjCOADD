@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 class ApplicationUser_form(forms.ModelForm):
     class Meta:
         model=ApplicationUser
-        fields=['username', 'initials','email', 'permission']
+        fields=['name','username', 'first_name','last_name','initials','email', 'permission', 'is_appuser','is_active']
 
 # #=======================================Dictionary Form===========================================================
 class Dictionary_form(forms.ModelForm):

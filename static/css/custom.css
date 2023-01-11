@@ -75,10 +75,7 @@ body {
   color: var(--bs-body-color);
 }
 
-.label {
-  background-color: var(--bs-boxed-body-bg);
-  color: var(--bs-dark);
-}
+
 
 footer {
   /* border: 2px solid wheat; */
@@ -119,9 +116,11 @@ span {
 
 th,
 td {
-  white-space: nowrap;
+  white-space: wrap;
+  word-wrap: break-word;
   background-color: var(--bs-gray-300);
   color: var(--bs-body-color);
+  padding: 0;
 }
 
 tr {
