@@ -142,19 +142,13 @@ To realize this include 3 steps:
 3. import signals to sub-app. Building signal model to assign user with permissions(appuser, read, write, admin )
 4. superusers are able to modify users and permissions
 
-#### Data visualization
+#### Data handling
 
 rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
 
 ## User Guide section
 
-### Get start
-
-(basic functions)
-
-#### User Data Management
-
-(User Group and setting up permissions for superuser and staff)
+(introduction based on UI sheets)
 
 ## Full view of project - tree
 
