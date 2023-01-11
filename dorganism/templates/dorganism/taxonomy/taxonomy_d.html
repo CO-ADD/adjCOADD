@@ -18,42 +18,8 @@
   aria-hidden="true"
 >
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete Form</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form
-          method="POST"
-          class="post-form"
-          action="{% url 'taxonomy_delete' object.urlname %}"
-        >
-          <!--prettier-ignore-->
-          {% csrf_token %}
-
-          <p>Are you sure you want to delete "{{ object }}"?</p>
-
-          <input
-            class="btn btn-outline-secondary"
-            type="submit"
-            value="Confirm"
-          />
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </form>
-      </div>
-      <div class="modal-footer"></div>
-    </div>
+    <!--prettier-ignore-->
+    {% url 'taxonomy_delete' slug=object.urlname as deleteurl %}
+  {%include 'utils/modal/delete.html' with title='Delete Taxonomy' urlname=deleteurl %}
   </div>
 </div>

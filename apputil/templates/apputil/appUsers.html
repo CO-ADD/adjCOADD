@@ -38,82 +38,23 @@
       <thead>
         <tr>
 
+          <th scope="col">Name</th>
           <th scope="col">Username</th>
-          <th scope="col">User Initial</th>
-          <th scope="col">Description</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Initial</th>
 
           <th scope="col">Email</th>
-          <th scope="col">User Permissions</th>
-          <th scope="col">Update</th>
-          <th scope="col">Delete</th>
+          <th scope="col">Permissions</th>
+          <th scope="col">AppUser</th>
+          <th scope="col">Active</th>
+          <th scope="col">Edit</th>
         </tr>
       </thead>
-      <tbody>
-        {% for user in objects %}
-        {%if user.is_appuser%}
-        <tr>
-          <th scope="row">{{user.username}}</th>
-          <td>{{user.initials}}</td>
-          <td>{{user.title_name}}</td>
-          <td>
-            {{user.email}}
+      <tbody hx-target="closest tr" hx-swap="outerHTML">
+        {% for object in objects %}
+        {%include 'apputil/appuser_tr.html'%}
 
-          </td>
-          <td>
-            {{user.permission}}
-          </td>
-
-          <td>
-            {%if request.user.is_superuser%}
-            <div id="{{user.pk}}">
-              <a class="btn btn-success btn-sm">Update</a>
-            </div>
-
-            <div id="AppUserUpdateModal" class="modal fade" role="dialog">
-            </div>
-            <script>
-
-              $(document).ready(function () {
-                btn = "#" + "{{user.pk}}"
-                let my_modal = $('#AppUserUpdateModal');
-                $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'updateAppUser' user.pk %}", function () {
-                    my_modal.modal("show");
-                  });
-                });
-              });
-
-            </script>
-            {%endif%}
-
-          </td>
-          <td>
-            {%if request.user.is_superuser%}
-            <div id="d{{user.pk}}">
-              <a class="btn btn-success btn-sm">delete</a>
-            </div>
-
-            <div id="AppUserDelModal" class="modal fade" role="dialog">
-            </div>
-            <script>
-
-              $(document).ready(function () {
-                btn = "#d" + "{{user.pk}}"
-                console.log(btn)
-                let my_modal = $('#AppUserDelModal');
-                $(`${btn} a`).click(function () {
-                  my_modal.load("{% url 'deleteAppUser' user.pk %}", function () {
-                    my_modal.modal("show");
-
-                  });
-                });
-              });
-
-            </script>
-            {%endif%}
-          </td>
-        </tr>
-        {%endif%}
         {%endfor%}
       </tbody>
     </table>

@@ -1,0 +1,25 @@
+<!-- trigger modal -->
+<a
+  class="card-link text-danger"
+  data-bs-toggle="modal"
+  data-bs-target="#drug_detail_del"
+>
+  <i class="fa fa-trash"></i>
+</a>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="drug_detail_del"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'drug_delete' pk=object.pk as deleteurl %}
+  {%include 'utils/modal/delete.html' with title='Delete Drug' urlname=deleteurl %}
+  </div>
+</div>

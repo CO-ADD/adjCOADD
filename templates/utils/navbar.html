@@ -10,14 +10,8 @@
           alt="CoADD Logo"
         />
       </a>
-      <ul class="navbar-nav justify-content-around ml-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="{%url 'index'%}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="">Contact</a>
-        </li>
-      </ul>
+
+      <p class="nav-title">VERSION 0.1</p>
     </div>
 
     <button
@@ -33,64 +27,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto fs-5">
-        <li class="nav-item">
-          <div class="dropdown d-inline-block">
-            <button
-              type="button"
-              class="btn header-item waves-effect border-0"
-              id="page-header-user-dropdown"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <p class="d-xl-inline-block">MODELS</p>
-              <!-- <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i> -->
-            </button>
-            <div class="dropdown-menu dropdown-menu-end">
-              <!-- item-->
-              <a class="dropdown-item" href="{%url 'org_list' %}"> ORGANISM </a>
-              <a class="dropdown-item" href="{%url 'taxo_card' %}">
-                TAXONOMY
-              </a>
-            </div>
-          </div>
-        </li>
-        <li class="nav-item">
-          <div class="dropdown d-inline-block">
-            <button
-              type="button"
-              class="btn header-item waves-effect border-0"
-              id="page-header-user-dropdown"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <p class="d-xl-inline-block">IMPORT DATA</p>
-              <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end">
-              <!-- item-->
-              <div>
-                <a class="dropdown-item" href="" class=""
-                  ><i class="bi bi-cloud-arrow-up"></i>import organism</a
-                >
-              </div>
-              <div>
-                <a class="dropdown-item" href="" class=""
-                  ><i class="bi bi-cloud-arrow-up"></i>import Taxonomy</a
-                >
-              </div>
-            </div>
-          </div>
-        </li>
-
         <li class="nav-item d-flex">
           {% if user.is_authenticated %}
           <div class="dropdown d-inline-block">
-            <button
+            <a
               type="button"
-              class="btn header-item waves-effect border-0"
-              id="page-header-user-dropdown"
+              class="nav-link active"
               data-bs-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
@@ -100,15 +42,15 @@
                 src="{%static 'images/app/avatar.png'%}"
                 alt="Avatar"
               />
-              <p class="d-xl-inline-block">{{user.username}}</p>
-              <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-            </button>
+              <p class="d-xl-inline-block nav-title">{{user.username}}</p>
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
             <div class="dropdown-menu dropdown-menu-end">
               <!-- item-->
               <a class="dropdown-item" href="#"
                 ><i class="bx bx-user font-size-16 align-middle me-1"></i>
-                <p key="t-profile">Profile</p></a
-              >
+                <p key="t-profile">Profile</p>
+              </a>
               <a class="dropdown-item" href="#">
                 <input
                   class="form-check-input"
@@ -123,10 +65,11 @@
               <a
                 class="dropdown-item d-block disabled"
                 href="{%url 'dataexport'%}"
-                ><p class="badge bg-success float-end">11</p>
-                <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
-                <p key="t-settings">Download</p></a
               >
+                <p class="badge bg-success float-end">11</p>
+                <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
+                <p key="t-settings">Download</p>
+              </a>
 
               <div class="dropdown-divider"></div>
               {%if user.is_superuser %}
@@ -141,8 +84,8 @@
                 ><i
                   class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
                 ></i>
-                <p key="t-logout">Logout</p></a
-              >
+                <p key="t-logout">Logout</p>
+              </a>
             </div>
           </div>
           {%else%}

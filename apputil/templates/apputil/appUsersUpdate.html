@@ -1,15 +1,10 @@
-<div class="modal-dialog">
-  <div class="modal-content">
-    <form id="updateAppUserForm" method="POST" class="post-form" name="update-AppUser"
-      action="{% url 'updateAppUser' object.pk%}">
-      {% csrf_token %}
-      <div class="modal-header">
-        <h4 class="modal-title">Update AppUser</h4>
-      </div>
-
-      {{ form.as_p }}
-
-      <input type="submit" class="btn btn-success" value="update" />
-    </form>
-  </div>
-</div>
+<tr>
+  {%for field in form%}
+  <td>{{field}}</td>
+  {%endfor%}
+  <td>
+    <input type="submit" value="update" hx-put="{%url 'updateAppUser' pk=object.name%}" hx-include="closest tr"
+      hx-trigger="click" />
+    <a href="{% url 'userslist' %}">Cancel</a>
+  </td>
+</tr>

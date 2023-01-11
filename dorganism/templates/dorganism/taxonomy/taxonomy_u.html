@@ -15,43 +15,8 @@
   aria-hidden="true"
 >
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <h4 class="my-0">{{object.pk}}</h4>
-        <hr />
-        <form
-          method="POST"
-          class="post-form"
-          action="{%url 'taxonomy_update' object.urlname %}"
-        >
-          {% csrf_token %} {{form.as_p}}
-          <div class="m-auto">
-            <input
-              type="submit"
-              class="btn m-auto mt-5"
-              value="Updated"
-              name="note"
-            />
-
-            <button
-              type="button"
-              class="btn m-auto mt-5"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <!--prettier-ignore-->
+    {% url 'taxonomy_update' pk=object.pk as updateurl %}
+  {%include 'utils/modal/update.html' with title='Update Taxonomy' urlname=updateurl %}
   </div>
 </div>

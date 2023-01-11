@@ -42,7 +42,13 @@
         </div>
         <input type="text" id="taxo-name" name="search_organism" style="display: none;">
         <div class="d-flex m-auto">
-          <a class="btn m-auto mt-5" href="{% url 'org_detail' object.pk %}">Discard Update</a>
+          <a
+          href="{%url 'org_detail' object.pk%}"
+          class="btn m-auto mt-5"
+          
+        >
+          Cancel
+        </a>
           <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
 
         </div>

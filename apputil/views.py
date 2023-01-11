@@ -24,8 +24,10 @@ def permission_not_granted(req):
 
 
 ## =================================APP Home========================================
+# import setup
 @login_required(login_url='/')
 def index(req):
+    # print(setup.version)
     object_1=Organism.objects.count()
     object_2=Taxonomy.objects.count()
     return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2})
@@ -82,6 +84,24 @@ class AppUserListView(LoginRequiredMixin, ListView):
         context=super().get_context_data(**kwargs)
         context["objects"]=self.model.objects.all()
         return context
+        
+from django.http import QueryDict
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def updateApplicationuser(req, pk):
+    object_=get_object_or_404(ApplicationUser, pk=pk)
+    form=ApplicationUser_form(instance=object_)
+    context={
+        "form":form,
+        "object":object_,
+        }
+    if req.method=='PUT':
+        qd=QueryDict(req.body).dict()       
+        form=ApplicationUser_form(data=qd, instance=object_)
+        if form.is_valid():
+            instance=form.save()
+            context={"object":object_}
+            return render(req, "apputil/appuser_tr.html", context)
+    return render(req, "apputil/appUsersUpdate.html", context)
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
@@ -89,16 +109,6 @@ class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        return context
-
-class AppUserUpdateView(SuperUserRequiredMixin, UpdateView):
-    model=ApplicationUser
-    fields=['name', 'permission', ]
-    template_name = 'apputil/appUsersUpdate.html'
-    success_url = reverse_lazy('userslist')
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
@@ -172,7 +182,7 @@ from django.db import transaction, IntegrityError
 # cd = clamd.ClamdUnixSocket()
 
 class FileUploadForm(forms.Form):
-    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),))
+    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),('Dictionary', 'Dictionary'),))
     file_field = forms.FileField()#(validators=[validate_file])
 
 class Importhandler(View):
@@ -238,7 +248,7 @@ class Importhandler(View):
                     if Taxonomy.objects.filter(pk=obj.pk):
                         return JsonResponse({'status':'DATA exists'}) 
                     try:
-                        obj.save(commit=False)
+                        obj.save()
                         print('save')
                     except Exception as err:
                         print(err)

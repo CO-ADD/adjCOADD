@@ -1,11 +1,10 @@
-var scheduled_function = false;
 var searchForm = document.getElementById("id_search-form");
 var searchInput = document.getElementById("search-id-input");
 var resultsBox = document.getElementById("id_results-box");
 
 var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
-function sendSearchData(inputtext) {
+function sendSearch_orgid(inputtext) {
   $.ajax({
     type: "POST",
     url: "/search_organism_id/",
@@ -26,8 +25,6 @@ function sendSearchData(inputtext) {
           block.innerText = data[i]["name"];
           resultsBox.appendChild(block);
           block.addEventListener("click", function () {
-            // alert(this.id)
-            // let Texonomy = this.innerText.split(" | ");
             let organism_id = this.innerText;
             searchInput.value = organism_id;
             let setMicro = document.getElementById("microorg");
@@ -56,14 +53,5 @@ searchInput.addEventListener("keyup", (e) => {
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
-  sendSearchData(e.target.value);
-
-  // if (scheduled_function) {
-  //   clearTimeout(scheduled_function);
-  // }
-
-  // scheduled_function = setTimeout(function () {
-  //   sendSearchData(e.target.value);
-  // }, 500);
-  // sendSearchData(e.target.value)
+  sendSearch_orgid(e.target.value);
 });

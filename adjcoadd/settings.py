@@ -27,9 +27,9 @@ MEDIA_URL=('uploads/')
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -87,36 +87,36 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-        'default': {
+    'default': {
      #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD':'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
-        'dorganism': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        },
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'PORT': '5432',
+    },
+    'dorganism': {
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'PORT': '5432',
+    },
 
-        'ddrug': {
-            "ENGINE": "psqlextra.backend",
-            'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-            'NAME': 'orgdb',
-            'USER': 'orgdb', #os.environ.get('db_user'),
-            'PASSWORD': 'orgdb',
-            'HOST': 'imb-coadd-work.imb.uq.edu.au',
-            'PORT': '5432',
-        }
+    'ddrug': {
+        "ENGINE": "psqlextra.backend",
+        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': 'imb-coadd-work.imb.uq.edu.au',
+        'PORT': '5432',
+    }
    
 #     # ==================For Local Test===========================================
 #    'default': {
@@ -192,15 +192,26 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008/"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.imb-coadd-work.imb.uq.edu.au:8008"]
+CORS_REPLACE_HTTPS_REFERER      = True
+HOST_SCHEME                     = "https://"
+SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT             = True
+SESSION_COOKIE_SECURE           = True
+CSRF_COOKIE_SECURE              = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+SECURE_HSTS_SECONDS             = 1000000
+SECURE_FRAME_DENY               = True
+
 
 # Django Session timeout setting
-INACTIVE_TIME= 180
-# SESSION_COOKIE_AGE=120
-SESSION_EXPIRE_SECONDS = 120   
+# INACTIVE_TIME= 120
+SESSION_COOKIE_AGE=120
+# SESSION_EXPIRE_SECONDS =  120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 120
+SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"

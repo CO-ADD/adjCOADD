@@ -1,15 +1,18 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_taxonomy" class="display cell-border" style="width: 100%">
+<table
+  id="{{datatable_taxonomy}}"
+  class="display cell-border"
+  style="width: 100%"
+>
   <thead>
-
     <tr>
       {%for field in fields%}
       <th>{{field}}</th>
       {%endfor%}
       <th>NCBI Tax ID</th>
-      <th style="width: 20%;">Lineage</th>
+      <th style="width: 20%">Lineage</th>
     </tr>
   </thead>
 
@@ -20,14 +23,16 @@
       <td>{{value}}</td>
       {%endfor%}
       <!-- Check Django Link Field -->
-      <td><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
-          target="_blank">{{object.tax_id}}</a></td>
       <td>
-        <div style="width:300px ; overflow: auto; margin:0; padding:0">
-
-          {% for i in object.lineage%}
-          {{i}},
-          {%endfor%}
+        <a
+          href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+          target="_blank"
+          >{{object.tax_id}}</a
+        >
+      </td>
+      <td>
+        <div style="width: 300px; overflow: auto; margin: 0; padding: 0">
+          {% for i in object.lineage%} {{i}}, {%endfor%}
         </div>
       </td>
     </tr>
@@ -36,16 +41,19 @@
 </table>
 
 {%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{% static 'js/js_utils/dataTables.min.js'%}"
+></script>
 
 <script>
   $(document).ready(function () {
-    $("#datatable_taxonomy").DataTable({
+    $("#{{datatable_taxonomy}}").DataTable({
       searching: false,
       paging: false,
       fixedColumns: {
-        heightMatch: 'none'
-      }
+        heightMatch: "none",
+      },
     });
   });
 </script>

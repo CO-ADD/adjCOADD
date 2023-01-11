@@ -55,3 +55,13 @@ ORGANISM_CULTR_FIELDs = {
 }
 
 # -dDrug Settings ---------------------------------------------------
+DRUG_FIELDs = {
+    
+    "drug_id":"Drug ID",
+    "drug_name":"Drug Name",
+    "drug_othernames":"Other Name",
+    "drug_codes":"Drug Code",
+    "drug_type":"Drug Type",
+    "drug_note":"Drug Note"
+   
+}

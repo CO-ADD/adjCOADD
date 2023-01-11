@@ -1,0 +1,41 @@
+{%include './preloader.html'%}
+
+<h5>{%include 'utils/message.html'%}</h5>
+<table id="datatable_drug" class="display cell-border" style="width: 100%">
+  <thead>
+    <tr>
+      {%for field in fields%}
+      <th>{{field}}</th>
+      {%endfor%}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in page_obj%}
+    <tr>
+
+      <td>{{object.drug_id}}</td>
+      <td>{{object.durg_name}}</td>
+      <td>{{object.drug_othername}}</td>
+      <td>{{object.drug_codes}}</td>
+      <td>{{object.drug_type}}</td>
+      <td>{{object.drug_note}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#datatable_drug").DataTable({
+      searching: false,
+      paging: false,
+      fixedColumns: {
+        heightMatch: "none",
+      },
+    });
+  });
+</script>

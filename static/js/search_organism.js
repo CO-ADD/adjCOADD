@@ -27,11 +27,11 @@ function sendSearchData(inputtext) {
           resultsBox.appendChild(block);
           block.addEventListener("click", function () {
             // alert(this.id)
-            let Texonomy = this.innerText.split(" | ");
-            console.log("working");
-            searchInput.value = Texonomy[0];
+            let Taxonomy = this.innerText.split(" | ");
+            console.log(Taxonomy);
+            searchInput.value = Taxonomy[0];
             var setTaxo = document.getElementById("taxo-name");
-            setTaxo.value = Texonomy[0];
+            setTaxo.value = Taxonomy[0];
             console.log(setTaxo.value);
 
             resultsBox.innerHTML = "";
@@ -52,18 +52,12 @@ function sendSearchData(inputtext) {
   });
 }
 
-function myFunc(val) {
-  console.log(val);
-  searchInput.value = val;
-  var setTaxo = document.getElementById("taxo-name");
-  setTaxo.value = val;
-  resultsBox.innerHTML = "";
-}
 searchInput.addEventListener("keyup", (e) => {
   resultsBox.innerHTML = "";
   if (resultsBox.classList.contains("not-visible")) {
     resultsBox.classList.remove("not-visible");
   }
+
   if (scheduled_function) {
     clearTimeout(scheduled_function);
   }
@@ -71,5 +65,4 @@ searchInput.addEventListener("keyup", (e) => {
   scheduled_function = setTimeout(function () {
     sendSearchData(e.target.value);
   }, 500);
-  // sendSearchData(e.target.value)
 });

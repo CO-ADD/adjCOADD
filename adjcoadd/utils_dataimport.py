@@ -139,7 +139,7 @@ def validate_Dictionary(dbframe):
     object_list=[]
     for dbframe in dbframe.itertuples():
         try:
-            object_list.append(Dictionary(dict_class=dbframe.Class, dict_value=dbframe.Term, dict_desc =dbframe.Name, ))
+            object_list.append(Dictionary( dict_value=dbframe.dict_value, dict_class=dbframe.dict_class, dict_desc =dbframe.dict_desc ))
         except Exception as err:
             print(err)
             return err
