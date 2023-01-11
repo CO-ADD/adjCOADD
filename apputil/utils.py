@@ -11,6 +11,7 @@ from django.db import transaction
 from django.views.generic import ListView
 
 from .models import Dictionary
+from adjcoadd.constants import *
 
 
 
@@ -56,7 +57,7 @@ class FilteredListView(ListView):
     filterset_class = None
     paginate_by=50
     model_fields=None
-    # form_class=None
+    order_by=None
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -64,8 +65,13 @@ class FilteredListView(ListView):
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
+        order=self.get_order_by()
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         # Return the filtered queryset
+        if order:
+            print(order)
+            return self.filterset.qs.distinct().order_by(order)
+        print("no order")
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
@@ -75,12 +81,18 @@ class FilteredListView(ListView):
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
-        print(f'this is filtered context {context["object_list"]}')
         return context
 
     def get_paginate_by(self, queryset):
         qs=super().get_queryset()
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
+
+    def get_order_by(self):
+        # qs=super().get_queryset()
+        order_by=self.request.GET.get("order_by", self.order_by)
+        print(f'getorder: {order_by}')
+        
+        return order_by
 
     

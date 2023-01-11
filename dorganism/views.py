@@ -36,6 +36,23 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Taxonomyfilter
     model_fields=TAXONOMY_FIELDs
 
+    def get_order_by(self):
+        # qs=super().get_queryset()
+        order_by = super().get_order_by()
+        print(f"origin oder is {order_by}")
+        if order_by:
+            acs_decs=order_by[0]
+            order_field=order_by[1:]
+            print(order_field)
+            if order_field in TAXONOMY_FIELDs.values():
+                order_by = list(TAXONOMY_FIELDs.keys())[list(TAXONOMY_FIELDs.values()).index(order_field)]
+            else:
+                order_by=order_field
+            if acs_decs=="-":
+                order_by=acs_decs+order_by
+                return order_by
+            return order_by
+
  
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/taxonomy/taxonomy_card.html'
@@ -107,6 +124,23 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
     model_fields=ORGANISM_FIELDs
+
+    def get_order_by(self):
+        # qs=super().get_queryset()
+        order_by = super().get_order_by()
+        print(f"origin oder is {order_by}")
+        if order_by:
+            acs_decs=order_by[0]
+            order_field=order_by[1:]
+            print(order_field)
+            if order_field in ORGANISM_FIELDs.values():
+                order_by = list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_field)]
+            else:
+                order_by=order_field
+            if acs_decs=="-":
+                order_by=acs_decs+order_by
+                return order_by
+            return order_by
     
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/organism/organism_card.html'

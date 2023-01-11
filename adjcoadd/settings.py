@@ -193,15 +193,15 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 # Security Setting
 # CSRF_COOKIE_SECURE=True
 CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.imb-coadd-work.imb.uq.edu.au:8008"]
-CORS_REPLACE_HTTPS_REFERER      = True
-HOST_SCHEME                     = "https://"
-SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT             = True
-SESSION_COOKIE_SECURE           = True
-CSRF_COOKIE_SECURE              = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
-SECURE_HSTS_SECONDS             = 1000000
-SECURE_FRAME_DENY               = True
+# CORS_REPLACE_HTTPS_REFERER      = True
+# HOST_SCHEME                     = "https://"
+# SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT             = True
+# SESSION_COOKIE_SECURE           = True
+# CSRF_COOKIE_SECURE              = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+# SECURE_HSTS_SECONDS             = 1000000
+# SECURE_FRAME_DENY               = True
 
 
 # Django Session timeout setting

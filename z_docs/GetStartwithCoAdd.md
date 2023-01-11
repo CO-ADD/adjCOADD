@@ -56,11 +56,11 @@ Install all the following packages in the conda environment.
 
 ### Module Introduction
 #### Project and Applications:
-project name: coadd_web contains  project setting, developing&deploying needed files and urls for all urls.
+project name: adjCOADD.
 Applications:
-1. aa_chem--for all chemical componds model
-   contains:...
-2. app-- for utility service and users model
+1. apputil-- for utility service and users model
+   models: ApplicationUser, Audit, Dictionary,
+2. dorganism--for all chemical componds model
    contains:...
 
  
