@@ -107,6 +107,15 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
     model_fields=ORGANISM_FIELDs
+
+    def get_order_by(self):
+        # qs=super().get_queryset()
+        order_by = super().get_order_by()
+        
+        if order_by in ORGANISM_FIELDs.values():
+            order_by = list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_by)]
+            print(order_by)
+        return order_by
     
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/organism/organism_card.html'

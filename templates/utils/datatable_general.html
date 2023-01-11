@@ -1,14 +1,14 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_general" class="cell-border" style="width: 100%">
+<table id="datatable_general" class="table cell-border" style="width: 100%">
   <thead>
 
     <tr>
       {%for field in fields%}
-      <th>{{field}}</th>
+      <th>{{field}} <button class="order_button" data-name="{{field}}">order</button></th>
       {%endfor%}
-      <th>NCBI Tax ID</th>
+      <th>NCBI Tax ID <button data-name="tax_id">order</button></th>
     </tr>
   </thead>
 
@@ -34,9 +34,22 @@
 
 <script>
   $(document).ready(function () {
-    $("#datatable_general").DataTable({
-      searching: false,
-      paging: false,
-    });
+    $(".order_button").click(function () {
+      var order_name = $(this).data("name");
+      console.log(order_name);
+      $("input[data-name='order_input']").value = order_name;
+      $("#django-filter-siderbar").submit();
+      // console.log("submit form")
+
+    })
+
+
+
+    //   $("#datatable_general").DataTable({
+    //     searching: true,
+    //     paging: false,
+    //     order: [[3, 'desc']],
+    //   });
   });
+
 </script>
