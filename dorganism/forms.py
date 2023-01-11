@@ -15,14 +15,14 @@ class CreateOrganism_form(ModelForm):
     strain_ids= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']), widget=forms.Select(attrs={'style':'width: fit-content'}))
-    risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']),widget=forms.Select(attrs={'style':'width: fit-content'}))
-    pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']),widget=forms.Select(attrs={'style':'width: fit-content'}))
-    mta_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']),widget=forms.Select(attrs={'style':'width: fit-content'}) )
-    lab_restriction = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction']), widget=forms.Select(attrs={'style':'width: fit-content'}) )
+    oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']), widget=forms.Select(attrs={'style':'width: fit-content'}), required=False,)
+    risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']),widget=forms.Select(attrs={'style':'width: fit-content'}), required=False,)
+    pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']),widget=forms.Select(attrs={'style':'width: fit-content'}),required=False,)
+    mta_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']),widget=forms.Select(attrs={'style':'width: fit-content'}),required=False, )
+    lab_restriction = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction']), widget=forms.Select(attrs={'style':'width: fit-content'}),required=False, )
 
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
-    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all())
+    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False,)
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name

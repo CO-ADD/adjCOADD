@@ -1,18 +1,25 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table
-  id="{{datatable_taxonomy}}"
-  class="display cell-border"
-  style="width: 100%"
->
+<table id="{{datatable_taxonomy}}" class="table table-bordered" style="width: 100%">
   <thead>
     <tr>
       {%for field in fields%}
-      <th>{{field}}</th>
+      <th>{{field}}
+        <div class="order_button d-inline" width="0.5em !important" data-name="+{{field}}"><i
+            class="fa-solid fa-arrow-up"></i></div>
+        <div class="order_button d-inline" width="0.5em !important" data-name="-{{field}}"><i
+            class="fa-solid fa-arrow-down"></i></div>
+      </th>
       {%endfor%}
-      <th>NCBI Tax ID</th>
-      <th style="width: 20%">Lineage</th>
+      <th>NCBI Tax ID
+        <div class="order_button d-inline" width="0.5em !important" data-name="+tax_id"><i
+            class="fa-solid fa-arrow-up"></i></div>
+        <div class="order_button d-inline" width="0.5em !important" data-name="-tax_id"><i
+            class="fa-solid fa-arrow-down"></i></div>
+      </th>
+      <th style="width: 20%; overflow: hidden; text-overflow: ellipsis; white-space:nowrap !important">
+        Lineage</th>
     </tr>
   </thead>
 
@@ -24,16 +31,13 @@
       {%endfor%}
       <!-- Check Django Link Field -->
       <td>
-        <a
-          href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
-          target="_blank"
-          >{{object.tax_id}}</a
-        >
+        <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+          target="_blank">{{object.tax_id}}</a>
       </td>
-      <td>
-        <div style="width: 300px; overflow: auto; margin: 0; padding: 0">
-          {% for i in object.lineage%} {{i}}, {%endfor%}
-        </div>
+      <td style="max-width: 100px; overflow-x:scroll;white-space:nowrap">
+
+        {% for i in object.lineage%} {{i}}, {%endfor%}
+
       </td>
     </tr>
     {%endfor%}
@@ -41,19 +45,21 @@
 </table>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{% static 'js/js_utils/dataTables.min.js'%}"
-></script>
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
 
 <script>
   $(document).ready(function () {
-    $("#{{datatable_taxonomy}}").DataTable({
-      searching: false,
-      paging: false,
-      fixedColumns: {
-        heightMatch: "none",
-      },
-    });
+    $(".order_button").click(function () {
+      var order_name = $(this).data("name");
+      console.log("which name...")
+      console.log(order_name);
+      $("#order_input").val(order_name);
+      // console.log($("input[data-name='order_input']").val())
+      $("#django-filter-siderbar").submit();
+      // console.log("submit form")
+
+    })
+
   });
+
 </script>

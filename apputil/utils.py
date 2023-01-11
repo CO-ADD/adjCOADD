@@ -92,6 +92,7 @@ class FilteredListView(ListView):
     def get_order_by(self):
         # qs=super().get_queryset()
         order_by=self.request.GET.get("order_by", self.order_by)
+        print(f'getorder: {order_by}')
         
         return order_by
 

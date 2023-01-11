@@ -1,14 +1,25 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_general" class="table cell-border" style="width: 100%">
+<table id="datatable_general" class="table table-bordered" style="width: 100%">
   <thead>
 
     <tr>
       {%for field in fields%}
-      <th>{{field}} <button class="order_button" data-name="{{field}}">order</button></th>
+      <th> {{field}}
+
+        <div class="order_button d-inline" width="0.5em !important" data-name="+{{field}}"><i
+            class="fa-solid fa-arrow-up"></i></div>
+        <div class="order_button d-inline" width="0.5em !important" data-name="-{{field}}"><i
+            class="fa-solid fa-arrow-down"></i></div>
+
+      </th>
       {%endfor%}
-      <th>NCBI Tax ID <button data-name="tax_id">order</button></th>
+      <th>NCBI Tax ID <div class="order_button d-inline" width="0.5em !important" data-name="+tax_id"><i
+            class="fa-solid fa-arrow-up"></i></div>
+        <div class="order_button d-inline" width="0.5em !important" data-name="-tax_id"><i
+            class="fa-solid fa-arrow-down"></i></div>
+      </th>
     </tr>
   </thead>
 
@@ -36,20 +47,15 @@
   $(document).ready(function () {
     $(".order_button").click(function () {
       var order_name = $(this).data("name");
+      console.log("which name...")
       console.log(order_name);
-      $("input[data-name='order_input']").value = order_name;
+      $("#order_input").val(order_name);
+      // console.log($("input[data-name='order_input']").val())
       $("#django-filter-siderbar").submit();
       // console.log("submit form")
 
     })
 
-
-
-    //   $("#datatable_general").DataTable({
-    //     searching: true,
-    //     paging: false,
-    //     order: [[3, 'desc']],
-    //   });
   });
 
 </script>
