@@ -224,7 +224,6 @@ def updateOrganism(req, pk):
                 #------------------------If update Organism Name-----------------------------------
                 else:
                     form=UpdateOrganism_form(object_.organism_name, req.POST, instance=obj) 
-                    print("ready update")
                 try:
                     if form.is_valid():                  
                         instance=form.save(commit=False)
