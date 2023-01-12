@@ -21,8 +21,8 @@
   --bs-footer-color: #74788d;
   --bs-custom-white: #fff;
   --bs-border-color: #625e5d;
-  --bs-body-bg: #fff;
-  --bs-light: #f6f6f6;
+  --bs-body-bg: rgb(235, 235, 235);
+  --bs-light: #e4e4e4;
   --bs-dark: #32394e;
 }
 
@@ -74,8 +74,6 @@ body {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
 }
-
-
 
 footer {
   /* border: 2px solid wheat; */
@@ -162,6 +160,7 @@ button,
 /* ----custom Card Style */
 .card-link {
   cursor: pointer !important;
+  color: var(--bs-menu-item-color);
 }
 
 .card-img-bottom {
@@ -172,10 +171,13 @@ button,
 
 /* bootstrap override */
 .card {
-  background-color: var(--bs-body-bg) !important;
-  border: 2px solid var(--bs-input-border-color) !important;
+  background-color: var(--bs-light) !important;
+  border: 1px solid var(--bs-card-border) !important;
+  transition: 1s;
 }
-
+.card:hover {
+  box-shadow: 0 0 20px var(--bs-body-color);
+}
 .label {
   background-color: var(--bs-boxed-body-bg);
   color: var(--bs-dark);
