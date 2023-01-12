@@ -1,6 +1,5 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
   {% csrf_token %}
-  <!-- {{form.as_table}} -->
   <div class="row">
     <div class="col-md-3 updateformshow not-visible">
       <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
@@ -9,12 +8,15 @@
   </div>
   <div class="row">
     <div class="col-md-4">
+      <input type="text" id="taxo-name" name="search_organism" style="display: none;">
       <table class="table table-sm align-middle table-bordered">
         <tbody>
           <tr>
             <th scope="row" class="">Organism Name</th>
-            <td>
-              <a href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a>
+            <td class="editable" data-id="{{object.pk}}" data-type="organism_name">
+              <div class="detail"> <a
+                  href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a> </div>
+              <div class="input-group select">{% include 'utils/search_organism.html' %}</div>
             </td>
           </tr>
           <tr>

@@ -34,18 +34,20 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=DRUG_FIELDs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        clearIMGfolder()
-        for object_ in context["object_list"]:
-            m=Chem.MolFromSmiles(object_.smiles)
-            molecule_to_svg(m, object_.pk)
-        return context
+    
 
 # editable graphic , molblock, 3D, py3Dmol 
  
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # clearIMGfolder()
+        for object_ in context["object_list"]:
+            m=Chem.MolFromSmiles(object_.smiles)
+            molecule_to_svg(m, object_.pk)
+        return context
 
     
 # ===========Detail View=============================Read============================================
