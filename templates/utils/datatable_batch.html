@@ -6,10 +6,11 @@
         <a class="card-link" id="create_stock"><i class="bi bi-plus"></i></a>
         <div id="createStockModal" class="modal fade" role="dialog"></div>
       </th>
-      <th style="width: 10em">EDIT</th>
+     
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
+      <th style="width: 10em">EDIT</th>
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
