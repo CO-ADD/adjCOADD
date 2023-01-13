@@ -25,6 +25,7 @@ MEDIA_URL=('uploads/')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
+# SECRET_KEY='8a3d222be5d37591a8cb10e3cd4c44da7dcd2e225211c34604ba6d0c566efda9c657bb9a4b1f8a52'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
