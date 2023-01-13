@@ -27,6 +27,7 @@ MEDIA_URL=('uploads/')
 SECRET_KEY = os.environ["SECRET_KEY"]
 # SECRET_KEY='8a3d222be5d37591a8cb10e3cd4c44da7dcd2e225211c34604ba6d0c566efda9c657bb9a4b1f8a52'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DEVELOPMENT=False
@@ -89,62 +90,62 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-    'default': {
-     #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # 'default': {
+    #  #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-        "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=apputil,public'},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD':'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-        'PORT': '5432',
-    },
-    'dorganism': {
-        "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-        'PORT': '5432',
-    },
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD':'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # },
+    # 'dorganism': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD': 'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # },
 
-    'ddrug': {
-        "ENGINE": "psqlextra.backend",
-        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
-        'HOST': 'imb-coadd-work.imb.uq.edu.au',
-        'PORT': '5432',
-    }
+    # 'ddrug': {
+    #     "ENGINE": "psqlextra.backend",
+    #     'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+    #     'NAME': 'orgdb',
+    #     'USER': 'orgdb', #os.environ.get('db_user'),
+    #     'PASSWORD': 'orgdb',
+    #     'HOST': 'imb-coadd-work.imb.uq.edu.au',
+    #     'PORT': '5432',
+    # }
    
 #     # ==================For Local Test===========================================
-#    'default': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     },
-#     'dorganism': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-#       'NAME': 'orgdb',
-#       'TEST': {
-#           'NAME': 'mytestdatabase2',
-#       },
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#    },
-#     'ddrug': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     }
+   'default': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    },
+    'dorganism': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+      'NAME': 'orgdb',
+      'TEST': {
+          'NAME': 'mytestdatabase2',
+      },
+      'HOST': 'Localhost',
+      'PORT': '5432',
+   },
+    'ddrug': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    }
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
