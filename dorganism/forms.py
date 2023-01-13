@@ -48,9 +48,8 @@ class UpdateOrganism_form(CreateOrganism_form):
     
     class Meta:
         model=Organism
-        exclude = ['organism_id']
-    
-
+        exclude = ['organism_id']  
+   
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
     org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']), widget=forms.Select(attrs={'class':'form-select'}))

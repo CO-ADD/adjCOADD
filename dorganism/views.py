@@ -185,8 +185,10 @@ def createOrganism(req):
 def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
-    form=UpdateOrganism_form(instance=object_)
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     context["object"]=object_
+    context["strain_type"]=",".join(object_.strain_type)
+    context["strain_panel"]=",".join(object_.strain_panel)
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
@@ -203,6 +205,7 @@ def updateOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
     #This can be minimized when all organism have classes... ----------------
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     if object_.organism_name.org_class:
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -237,8 +240,7 @@ def updateOrganism(req, pk):
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
-    else:
-        form=UpdateOrganism_form(instance=object_)
+    
 
     context={
         "form":form,

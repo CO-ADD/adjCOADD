@@ -118,7 +118,8 @@ DATABASES = {
          'HOST': 'imb-coadd-work.imb.uq.edu.au',
          'PORT': '5432',
      }
-   
+
+ 
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  

@@ -46,7 +46,7 @@
             <th scope="row" class="">Strain_Type</th>
             <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
               <div class="detail">
-                {{object.strain_type|default_if_none:"&nbsp;"}}
+                {{strain_type | default_if_none:"&nbsp;"}}
               </div>
               <div class="form-control select col-12 fs-6">
                 {{form.strain_type}}
@@ -58,7 +58,7 @@
             <th scope="row" class="">Panel</th>
             <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_panel">
               <div class="detail">
-                {{object.strain_panel|default_if_none:" | "}}
+                {{strain_panel|default_if_none:"&nbsp;"}}
               </div>
               <div class="form-control select col-12 fs-6">
                 {{form.strain_panel}}
