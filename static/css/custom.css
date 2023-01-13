@@ -21,8 +21,8 @@
   --bs-footer-color: #74788d;
   --bs-custom-white: #fff;
   --bs-border-color: #625e5d;
-  --bs-body-bg: #fff;
-  --bs-light: #f6f6f6;
+  --bs-body-bg: rgb(235, 235, 235);
+  --bs-light: #e4e4e4;
   --bs-dark: #32394e;
 }
 
@@ -75,8 +75,6 @@ body {
   color: var(--bs-body-color);
 }
 
-
-
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
@@ -114,8 +112,38 @@ span {
   background-color: var(--bs-body-bg);
 }
 
-th,
+/* th {
+  width: fit-content;
+} */
+.sorting_table th {
+  padding-right: 18px;
+  position: relative;
+}
+
+.sorting_table th:before,
+.sorting_table th:after {
+  border: 4px solid transparent;
+  content: "";
+  display: block;
+  height: 0;
+  right: 5px;
+  top: 50%;
+  position: absolute;
+  width: 0;
+}
+
+.sorting_table th:before {
+  border-bottom-color: #666;
+  margin-top: -9px;
+}
+
+.sorting_table th:after {
+  border-top-color: #666;
+  margin-top: 1px;
+}
+
 td {
+  max-width: 200px;
   white-space: wrap;
   word-wrap: break-word;
   background-color: var(--bs-gray-300);
@@ -158,10 +186,25 @@ button,
   border: 2px solid var(--bs-light);
 }
 
+
+
+.order_button {
+  float: right;
+  width: fit-content;
+
+  padding: 0;
+  margin: 0;
+}
+
+.order_button i {
+  font-size: x-small;
+}
+
 /* ------------------------------ */
 /* ----custom Card Style */
 .card-link {
   cursor: pointer !important;
+  color: var(--bs-menu-item-color);
 }
 
 .card-img-bottom {
@@ -172,8 +215,13 @@ button,
 
 /* bootstrap override */
 .card {
-  background-color: var(--bs-body-bg) !important;
-  border: 2px solid var(--bs-input-border-color) !important;
+  background-color: var(--bs-light) !important;
+  border: 1px solid var(--bs-card-border) !important;
+  transition: 1s;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px var(--bs-body-color);
 }
 
 .label {
@@ -475,4 +523,9 @@ nav.shrink {
   100% {
     transform: rotate(-360deg) translateX(60px);
   }
+}
+
+/* -------------datatable-------- */
+.dataTables_info {
+  float: right !important;
 }

@@ -1,6 +1,5 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
   {% csrf_token %}
-  <!-- {{form.as_table}} -->
   <div class="row">
     <div class="col-md-3 updateformshow not-visible">
       <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
@@ -9,12 +8,15 @@
   </div>
   <div class="row">
     <div class="col-md-4">
+      <input type="text" id="taxo-name" name="search_organism" style="display: none;">
       <table class="table table-sm align-middle table-bordered">
         <tbody>
           <tr>
             <th scope="row" class="">Organism Name</th>
-            <td>
-              <a href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a>
+            <td class="editable" data-id="{{object.pk}}" data-type="organism_name">
+              <div class="detail"> <a
+                  href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a> </div>
+              <div class="input-group select">{% include 'utils/search_organism.html' %}</div>
             </td>
           </tr>
           <tr>
@@ -44,9 +46,7 @@
             <th scope="row" class="">Strain_Type</th>
             <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
               <div class="detail">
-                {%for i in object.strain_type%}
-                <span>{{i}}</span>
-                {%endfor%}
+                {{object.strain_type|default_if_none:"&nbsp;"}}
               </div>
               <div class="form-control select col-12 fs-6">
                 {{form.strain_type}}
@@ -58,9 +58,7 @@
             <th scope="row" class="">Panel</th>
             <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_panel">
               <div class="detail">
-                {%for i in object.strain_panel%}
-                <span style="font-size: 12px">{{i}} |</span>
-                {%endfor%}
+                {{object.strain_panel|default_if_none:" | "}}
               </div>
               <div class="form-control select col-12 fs-6">
                 {{form.strain_panel}}

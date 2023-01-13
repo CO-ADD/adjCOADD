@@ -1,27 +1,39 @@
 {% extends "base.html" %}
+<!--  -->
 {% block title%}COADD{% endblock %}
-{% block content %}
+<!--  -->
+{% block content%}
+<!--  -->
 {%include 'utils/topbar.html' %}
 <div class="d-flex flex-row bg-transparent justify-content-between vh-100">
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+    <div
+      class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline"
+    >
       <!-- Call Create Taxonomy  Modal-->
-      <a id="createOrganism" class="card-link" style="float:right;">Add<i class="bi bi-plus"></i>
+      <a id="createOrganism" class="card-link" style="float: right"
+        >Add<i class="bi bi-plus"></i>
       </a>
-      <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static">
-      </div>
+      <div
+        id="createOrganismModal"
+        class="modal fade"
+        role="dialog"
+        data-bs-backdrop="static"
+      ></div>
       <!-- End---------------------- -->
 
       {% include 'utils/pagination.html'%}
-      
+      <!--  -->
       {%include 'utils/selectAllExp.html'%}
-      
+
       <!-- Swich Table/Card View -->
       <div class="m-0">
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
+          ><i class="bi bi-list"></i
+        ></a>
         <a href="{%url 'org_card'%}" class="btn btn-outline-secondary">
           <i class="bi bi-grid-fill"></i>
         </a>
@@ -32,59 +44,19 @@
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
-        
-        <div class="col-md-2 vh-80 m-0 p-1">
-          <div class="card ms-3 px-1">
-                <div class="checkbox-container-export" data-type="Organism">
-                    <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}">
-                    <label for=""></label>
-                </div>
-            <p class="card-title px-1 fw-bold text-uppercase"><a class="card-link"
-                href="{%url 'org_detail' object.pk %}">
-                {{object.organism_id}}</a>
-            </p>
-
-            <p class=" card-text m-0 fst-normal" style="font-size: x-small;">{{object.strain_code}}</p>
-            <p class=" card-text m-0 fst-italic">
-              {{object.organism_name}}
-            </p>
-            <p class=" card-text m-0 fst-normal">{{object.strain_ids}}</p>
-
-
-
-            <p class="card-text m-0 fst-normal">
-              <a class="card-link" style="float: right" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}
-            " target="_blank"> {{object.tax_id}}</a>
-            </p>
-            <p class=" card-text m-0 fst-normal fs-6">
-
-              {%for type in object.strain_type%}
-              {{type}},
-              {%endfor%}
-
-            </p>
-            <p>
-            <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.pk}}"
-              aria-expanded="false" aria-controls="{{object.pk}}">
-              <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
-            </div>
-
-            </p>
-            <div class="collapse" id="collapse{{object.pk}}">
-              <p class=" card-text m-0 fst-normal">{{object.res_property}}</p>
-              <br>
-              <p class=" card-text m-0 fst-normal">{{object.gen_property}}</p>
-            </div>
-          </div>
-        </div>
+        <!--  -->
+        {% url 'org_detail' object.pk as url_name %}
+        <!--prettier-ignore-->
+        {%include 'utils/card.html' with url_name=url_name object_id=object.organism_id datatype='Organism' object_var1=object.strain_code object_var2=object.organism_name object_var3=object.strain_ids object_var5_label="Type" object_var5=object.strain_type object_id_slug=object.organism_id object_var6_label="Phenotype" object_var6=object.res_property object_var7_label="Genotype" object_var7=object.gen_property %}
+        <!--  -->
         {%endfor%}
-
       </div>
-
     </div>
-
   </div>
 </div>
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_organism.js'%}"
+></script>
 {%endblock%}

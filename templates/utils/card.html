@@ -1,27 +1,90 @@
 <div class="col-md-2 vh-80 m-0 p-1">
-  <div class="card ms-3 px-1">
-    <div class="checkbox-container-export" data-type="{{datatype}}">
-      <input type="checkbox" name="type" class="filled-in" value="{{object.pk}}" />
-      <label for="">{{object.drug_name}}</label>
+  <div class="card ms-3 px-1 rounded-3">
+    <div class="d-flex justify-content-between border-bottom border-dark">
+      <p class="card-title px-1 fw-bold text-uppercase mb-0">
+        <a class="card-link" href="{{url_name}}"> {{object_id}}</a>
+      </p>
+      <p class="card-text m-0 fst-normal mb-0" style="font-size: x-small">
+        {{object_var1}}
+      </p>
+      <div class="checkbox-container-export mb-0" data-type="{{datatype}}">
+        <input
+          type="checkbox"
+          name="type"
+          class="filled-in"
+          value="{{object_id}}"
+        />
+        <label for=""></label>
+      </div>
     </div>
-    <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">{{object.pk}}</p>
-    <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">
+    <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
+      {%if object_img%}
+      <!--  -->
       {%load static%}
-      <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="100%"
-        style="background-color: transparent !important;" />
-
+      <img
+        src="{%static 'images/'%}{{object_img}}.svg"
+        alt="structure"
+        width="100%"
+        style="background-color: transparent !important"
+      />
+      {%endif%}
     </p>
-    <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object.pk}}"
-      aria-expanded="false" aria-controls="{{object.pk}}">
+    <p class="card-text m-0 fst-italic">{{object_var2}}</p>
+    <p class="card-text m-0 fst-normal">{{object_var3}}</p>
+    <p class="card-text m-0 fst-normal">
+      <strong> {{object_var_link_label}} </strong>
+      <a
+        class="card-link"
+        style="float: right"
+        href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object_var_link}}"
+        target="_blank"
+      >
+        {{object_var_link}}
+      </a>
+    </p>
+
+    <br />
+    <p class="card-text m-0 fst-normal" style="font-size: small">
+      <strong>{{object_var5_label}}</strong> <br />
+
+      <!--  -->
+      {{object_var5 | join:","}}
+      <!--  -->
+    </p>
+    <br />
+    <div
+      class="text-center bg-light"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#{{object_id_slug}}"
+      aria-expanded="false"
+      aria-controls="{{object_id_slug}}"
+    >
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
     </div>
 
-    <div class="collapse" id="{{object.pk}}">
-      <div class="fst-normal d-flex flex-column align-items-start">
-        <p class="card-text m-auto" style="font-size: xx-small; width: 190px; ">{{object.drug_type}}</p>
+    <div class="collapse" id="{{object_id_slug}}">
+      <br />
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var6_label}}</strong><br />
+        {{object_var6}}
+      </p>
 
-        <!--prettier-ignore-->
-      </div>
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var7_label}}</strong> <br />
+        {{object_var7}}
+      </p>
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var8_label}}</strong> <br />
+
+        <!--  -->
+        {{object_var8 | join:","}}
+        <!--  -->
+      </p>
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var9_label}}</strong> <br />
+        {{object_var9}}
+      </p>
     </div>
   </div>
 </div>

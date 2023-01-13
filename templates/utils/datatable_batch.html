@@ -3,13 +3,13 @@
     <tr>
       <th>
         Stock
-        <a class="card-link" id="create_stock"><i class="bi bi-plus"></i>New</a>
+        <a class="card-link" id="create_stock"><i class="bi bi-plus"></i></a>
         <div id="createStockModal" class="modal fade" role="dialog"></div>
       </th>
+      <th style="width: 10em">EDIT</th>
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
-      <th style="width: 10em">EDIT</th>
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
@@ -20,11 +20,8 @@
     {%endfor%}
   </tbody>
 </table>
-<script
-  src="https://unpkg.com/htmx.org@1.8.4"
-  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
-  crossorigin="anonymous"
-></script>
+<script src="https://unpkg.com/htmx.org@1.8.4"
+  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
 {%load static%}
 <script src="{% static 'js/js_utils/getCookie.js'%}"></script>
 

@@ -1,62 +1,46 @@
-<a
-  class="card-link"
-  data-bs-toggle="modal"
-  data-bs-target="#organism_detail_update"
-  >Update Organism Name</a
->
+<a class="card-link" data-bs-toggle="modal" data-bs-target="#organism_detail_update">Update Organism Name</a>
 
-<div
-  class="modal fade"
-  id="organism_detail_update"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="organism_detail_update" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
 
-<div class="modal-dialog">
-  <div class="modal-content" style="width: 50rem;">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 50rem;">
 
-    <div class="card mx-5 mt-3">
-      <h4 class="my-0">Update Organism: {{object.organism_name}}</h4>
-      <h5>Class: {{object.organism_name.org_class.dict_value}}</h5>
-      <!-- <p>{{Organism_Name}}</p> -->
-      {% include 'utils/search_organism.html' %}
-      {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-          {% endfor %}
-      </ul>
-      {% endif %}
-      <!-- ===================================================================================== -->
-      <hr>
-      <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
-        action="{%url 'organism_update' object.pk %}">
-        {% csrf_token %}
-        <div style="display: none;">
+      <div class="card mx-5 mt-3">
+        <h4 class="my-0">Update Organism: {{object.organism_name}}</h4>
+        <h5>Class: {{object.organism_name.org_class.dict_value}}</h5>
 
-          {{form.as_p}}
-        </div>
-        <input type="text" id="taxo-name" name="search_organism" style="display: none;">
-        <div class="d-flex m-auto">
-          <a
-          href="{%url 'org_detail' object.pk%}"
-          class="btn m-auto mt-5"
-          
-        >
-          Cancel
-        </a>
-          <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
+        {% include 'utils/search_organism.html' %}
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <!-- ===================================================================================== -->
+        <hr>
+        <form id="OrganismUpdateForm" method="POST" class="post-form" name="create"
+          action="{%url 'organism_update' object.pk %}">
+          {% csrf_token %}
+          <div style="display: none;">
 
-        </div>
+            {{form.as_p}}
+          </div>
+          <input type="text" id="taxo-name" name="search_organism" style="display: none;">
+          <div class="d-flex m-auto">
+            <a href="{%url 'org_detail' object.pk%}" class="btn m-auto mt-5">
+              Cancel
+            </a>
+            <input type="submit" class="btn m-auto mt-5" value="Update Organism Name" name="note" />
 
-      </form>
+          </div>
+
+        </form>
+      </div>
+
+
     </div>
-
-
   </div>
-</div>
 </div>

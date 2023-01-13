@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 # os.environ['path']+=r';C:\Program Files\UniConvertor-2.0rc5\dlls'
 import django_filters
 from rdkit.Chem import Draw
@@ -13,13 +14,19 @@ import cairosvg
 from dorganism.utils import Filterbase
 from .models import Drug
 from adjcoadd.constants import *
-
+from django.conf import settings
 # ======================================Util Func. (To SVG)=====================================================#
 def molecule_to_svg(mol, file_name, width=500, height=500):
     """Save substance structure as SVG"""
-
+   
     # Define full path name
-    file_path = f"static/images/{file_name}.svg"
+    if settings.DEVELOPMENT:
+        file_path = f"static/images/{file_name}.svg"
+    # print(f'path1: {file_path1}')
+    else:
+        Base_dir = Path(__file__).resolve().parent.parent.parent
+        FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+        file_path=os.path.join(FILES_DIR, f"{file_name}.svg") 
 
     # Render high resolution molecule
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
@@ -27,22 +34,25 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
     drawer.FinishDrawing()
 
     # Export to png
+ 
     cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=file_path)
-
-
-
-
+  
 
 #=================================================Clear IMGFolder===========================================================#
 
 def clearIMGfolder():
-    for filename in os.listdir("static/images/"):
-                file_path=os.path.join("static/images/", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
+    if settings.DEVELOPMENT:
+        path='static/images'
+    else:
+        Base_dir = Path(__file__).resolve().parent.parent.parent
+        path=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+    for filename in os.listdir(path): # os.listdir("static/images/"):
+        file_path=os.path.join(path, filename)
+        try:
+            os.unlink(file_path)
+            print("removed!")
+        except Exception as err:
+            print(err)
 
 
 class Drug_filter(Filterbase):

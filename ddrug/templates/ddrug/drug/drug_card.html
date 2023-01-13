@@ -31,7 +31,7 @@
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
-        {%include 'utils/card.html' with datatype='drug'%}
+        {%include 'utils/card.html' with object_id=object.pk datatype='Drug' object_var1=object.drug_name object_img=object.pk object_id_slug=object.pk %}
         <!-- ------------------------------------------------------------------------------------------------------- -->
 
         <!-- ------------------------------------------------------------------------------------------------------------------------------- -->

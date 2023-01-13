@@ -74,18 +74,26 @@ class Filterbase(django_filters.FilterSet):
 
 
 class Organismfilter(Filterbase):
-    organism_id=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
-    organism_name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
-    organism_class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class']))
-    strain_type=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
-    strain_panel=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
-    risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
-    mta_status=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']))
-    oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
-    pathogen_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']))
+    ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
+    Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
+    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
+    Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
+    Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
+    Type=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
+    MTA=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']))
+    Panel=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
+    # risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
+    # oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
+    # pathogen_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.filters:
+            self.filters[i].label=i
+         
     class Meta:
         model=Organism
-        fields=['organism_id', 'strain_code', 'strain_ids', 'strain_type', 'mta_document', 'strain_panel', 'risk_group', 'mta_status', 'oxygen_pref', 'pathogen_group', ]
+        fields=['ID', 'Name', 'Class', 'Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
        
 
 
@@ -95,9 +103,20 @@ class Taxonomyfilter(Filterbase):
     lineage = django_filters.MultipleChoiceFilter( choices= "")
     # django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['lineage'], ' | '))
     division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['organism_name'].label='Organism Name'
+        self.filters['code'].label='Code'
+        self.filters['lineage'].label='Lineage'
+        self.filters['tax_rank'].label='Rank'
+        self.filters['division'].label='Division'
+        self.filters['org_class'].label='Class'
+        self.filters['tax_id'].label='Tax ID'
+
     class Meta:
         model=Taxonomy
-        fields=['organism_name', 'code', 'org_class', 'tax_id', 'parent_tax_id', 'tax_rank', 'division', 'lineage']
+        fields=['organism_name', 'code', 'lineage', 'tax_rank','division', 'org_class', 'tax_id', ]
 
 
 

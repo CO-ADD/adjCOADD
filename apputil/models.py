@@ -201,13 +201,14 @@ class AuditModel(models.Model):
         for field in self._meta.fields:
             if field.name in fields.keys():
                 obj=getattr(self, field.name)
-                if isinstance(obj, list):
-                    array_to_string=""
-                    for i in obj:
-                        array_to_string+=str(i)+", "
-                    value_list.append(array_to_string)
-                else:   
-                    value_list.append(field.value_to_string(self))
+                if obj:
+                    if isinstance(obj, list):
+                        array_to_string=','.join(str(e) for e in obj)
+                        value_list.append(array_to_string)
+                    else:   
+                        value_list.append(field.value_to_string(self))
+                else:
+                    value_list.append(" ")
         return value_list
 #-------------------------------------------------------------------------------------------------
 
