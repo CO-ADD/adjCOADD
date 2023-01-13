@@ -10,21 +10,36 @@ ORGBATCH_SEP = "_"
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
 # TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
 TAXONOMY_FIELDs = {
-    'organism_name':'Specie_test',  
-    'code':'Code_test',  
-    'org_class':'Class_test',
-    'tax_rank':'Taxonomy Rank',
+    'organism_name':'Organism Name',  
+    'code':'Code', 
+    'lineage':'Lineage', 
+    'tax_rank':'Rank',
     'division':'Division', 
+    'org_class':'Class',
     }
 
 ORGANISM_FIELDs = {
+    'organism_name':'Organism Name',
+    'strain_ids':'Strain IDs',
+    'strain_type':'Strain Type',
+    'strain_panel':'Panel',
+    'res_property':'Phenotype',  
+    'gen_property':'Genotype', 
+    'biologist':'Biologist',
+    'strain_origin':'Origin',
     'organism_id':'Organism ID', 
-    'organism_name':'Organism Name',  
-    'risk_group':'Risk Group',  
-    'pathogen_group':'Pathogen', 
-    'strain_code':'Strain Code'
     }
 
+ORGANISM_BATCH_FIELDs = {
+    "orgbatch_id":"OrgBatch ID",
+    "supplier":"Supplier",
+    "supplier_code":"Supplier Code",
+    "stock_date":"Stock Date",
+    "stock_level":"Stock Levels",
+    "qc_status":"QC_Status",
+    "batch_notes":"Batch Notes",
+    "biologist":"Biologist"
+}
 ORGANISM_STOCK_FIELDs={
     "orgbatch_id":"OrgBatch ID",
     "stock_id":"Stock ID",
@@ -34,13 +49,6 @@ ORGANISM_STOCK_FIELDs={
     "biologist":"Biologist"
 }
 
-ORGANISM_BATCH_FIELDs = {
-    "orgbatch_id":"OrgBatch ID",
-    "supplier":"Supplier",
-    "stock_date":"Stock Date",
-    "stock_level":"Stock Levels",
-    "biologist":"Biologist"
-}
 
 ORGANISM_CULTR_FIELDs = {
     

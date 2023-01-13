@@ -37,20 +37,20 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     model_fields=TAXONOMY_FIELDs
 
     def get_order_by(self):
-        # qs=super().get_queryset()
         order_by = super().get_order_by()
         print(f"origin oder is {order_by}")
+        acs_decs=""
         if order_by:
-            acs_decs=order_by[0]
-            order_field=order_by[1:]
-            print(order_field)
-            if order_field in TAXONOMY_FIELDs.values():
-                order_by = list(TAXONOMY_FIELDs.keys())[list(TAXONOMY_FIELDs.values()).index(order_field)]
+            order_field=""
+            if order_by[0]=="-":
+                acs_decs=order_by[0]
+                order_field=order_by[1:]
             else:
-                order_by=order_field
-            if acs_decs=="-":
-                order_by=acs_decs+order_by
-                return order_by
+                order_field=order_by
+                print(order_field)
+            if order_field in TAXONOMY_FIELDs.values():
+                order_by=acs_decs+ list(TAXONOMY_FIELDs.keys())[list(TAXONOMY_FIELDs.values()).index(order_field)]
+           
             return order_by
 
  
@@ -129,17 +129,18 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
         # qs=super().get_queryset()
         order_by = super().get_order_by()
         print(f"origin oder is {order_by}")
+        acs_decs=""
         if order_by:
-            acs_decs=order_by[0]
-            order_field=order_by[1:]
-            print(order_field)
-            if order_field in ORGANISM_FIELDs.values():
-                order_by = list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_field)]
+            order_field=""
+            if order_by[0]=="-":
+                acs_decs=order_by[0]
+                order_field=order_by[1:]
             else:
-                order_by=order_field
-            if acs_decs=="-":
-                order_by=acs_decs+order_by
-                return order_by
+                order_field=order_by
+                print(order_field)
+            if order_field in ORGANISM_FIELDs.values():
+                order_by=acs_decs+ list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_field)]
+           
             return order_by
     
 class OrganismCardView(OrganismListView):

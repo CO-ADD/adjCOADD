@@ -1,25 +1,22 @@
 <tr>
-  <td class="dt-control">
-    <div id="modal{{object_batch.pk}}">
-      <!-- <a class=""><i class="bi bi-box-arrow-up-left"></i></a> -->
-    </div>
-    <div
+  <td class="dt-control" width="15px">
+    <!-- <div id="modal{{object_batch.pk}}"> -->
+    <!-- <a class=""><i class="bi bi-box-arrow-up-left"></i></a> -->
+    <!-- </div> -->
+    <!-- <div
       id="Stock{{object_batch.pk}}"
       class="modal fade"
       role="dialog"
       data-bs-backdrop="static"
-    ></div>
-  </td>
-  {%for value in object_batch.get_values%}
-  <td>{{value}}</td>
-  {%endfor%}
+    ></div> -->
   <td style="width: 10%">
-    <button
-      hx-get="{% url 'batch_update' object_batch.pk %}"
-      hx-trigger="click"
-    >
+    <button hx-get="{% url 'batch_update' object_batch.pk %}" hx-trigger="click">
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
     <span class=""> {%include 'dorganism/organism/batch/batch_d.html'%} </span>
   </td>
+  </td>
+  {%for value in object_batch.get_values%}
+  <td>{{value}}</td>
+  {%endfor%}
 </tr>

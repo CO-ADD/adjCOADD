@@ -1,25 +1,14 @@
 {%include './preloader.html'%}
 
 <h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_general" class="table table-bordered" style="width: 100%">
+<table id="datatable_general" class="table table-bordered sorting_table" style="width: 100%">
   <thead>
 
     <tr>
       {%for field in fields%}
-      <th> {{field}}
-
-        <div class="order_button d-inline" width="0.5em !important" data-name="+{{field}}"><i
-            class="fa-solid fa-arrow-up"></i></div>
-        <div class="order_button d-inline" width="0.5em !important" data-name="-{{field}}"><i
-            class="fa-solid fa-arrow-down"></i></div>
-
-      </th>
+      <th class="order_field" style="width: fit-content;">{{field}}</th>
       {%endfor%}
-      <th>NCBI Tax ID <div class="order_button d-inline" width="0.5em !important" data-name="+tax_id"><i
-            class="fa-solid fa-arrow-up"></i></div>
-        <div class="order_button d-inline" width="0.5em !important" data-name="-tax_id"><i
-            class="fa-solid fa-arrow-down"></i></div>
-      </th>
+
     </tr>
   </thead>
 
@@ -29,33 +18,11 @@
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
-      <td>
-        <a class="card-link" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}
-        " target="_blank"> {{object.tax_id}}</a>
-
-        </a>
-      </td>
     </tr>
     {%endfor%}
   </tbody>
 </table>
 
 {%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
-
-<script>
-  $(document).ready(function () {
-    $(".order_button").click(function () {
-      var order_name = $(this).data("name");
-      console.log("which name...")
-      console.log(order_name);
-      $("#order_input").val(order_name);
-      // console.log($("input[data-name='order_input']").val())
-      $("#django-filter-siderbar").submit();
-      // console.log("submit form")
-
-    })
-
-  });
-
-</script>
+<!-- <script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script> -->
+<script src="{%static 'js/sorting_table.js'%}"></script>
