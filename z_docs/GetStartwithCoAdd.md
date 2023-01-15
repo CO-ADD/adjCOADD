@@ -134,17 +134,15 @@ The last folder z-doc contains help and information documents.
 
 #### Authentication System
 
-Authentication backend authenticates against an LDAP service.
-To realize this include 3 steps:
+The authentication login system will use Ldap username and password. Once successfully log in, the applicationUser model will grant read-, write-, admin-level permissions to users.
 
-1. configuration in settings.py :
-2. customize django build-in AbstractUser Model to Applicationuser Model
-3. import signals to sub-app. Building signal model to assign user with permissions(appuser, read, write, admin )
-4. superusers are able to modify users and permissions
+In settings.py will set up Ldap Authentication_backend, then import Ldap and a few Ldap configuration parameters.
+When user click login url, the login_user function will be called the Login_form(Django AutenticationForm) to varify if username existed in Application user datatable, then login with "django_auth_ldap.backend.LDAPBackend" backend as request user.
+After login, users' permission, which has been set up previously in ApplicationUser datatable, will be granted to the login request user.
 
-#### Data handling
+#### Data screening
 
-rdMolDraw2D.MolDraw2DSVG and cairosvg.svg2png
+For
 
 ## User Guide section
 

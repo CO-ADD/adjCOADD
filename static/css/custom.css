@@ -68,6 +68,7 @@
 
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 body {
@@ -185,8 +186,6 @@ button,
 .btn2:hover {
   border: 2px solid var(--bs-light);
 }
-
-
 
 .order_button {
   float: right;
@@ -419,6 +418,17 @@ nav.shrink {
 .updateformshow {
   margin: auto;
   width: 50%;
+}
+/* ==============toggle up down arrow============ */
+
+.fa-chevron-down {
+  transform: rotate(0deg);
+  transition: transform 0.5s linear;
+}
+
+.fa-chevron-down.open {
+  transform: rotate(180deg);
+  transition: transform 0.5s linear;
 }
 
 /* =========================================================================== */

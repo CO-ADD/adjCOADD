@@ -47,7 +47,6 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
                 order_field=order_by[1:]
             else:
                 order_field=order_by
-                print(order_field)
             if order_field in TAXONOMY_FIELDs.values():
                 order_by=acs_decs+ list(TAXONOMY_FIELDs.keys())[list(TAXONOMY_FIELDs.values()).index(order_field)]
            
@@ -126,7 +125,6 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model_fields=ORGANISM_FIELDs
 
     def get_order_by(self):
-        # qs=super().get_queryset()
         order_by = super().get_order_by()
         print(f"origin oder is {order_by}")
         acs_decs=""
@@ -137,7 +135,6 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
                 order_field=order_by[1:]
             else:
                 order_field=order_by
-                print(order_field)
             if order_field in ORGANISM_FIELDs.values():
                 order_by=acs_decs+ list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_field)]
            
@@ -185,8 +182,10 @@ def createOrganism(req):
 def detailOrganism(req, pk):
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
-    form=UpdateOrganism_form(instance=object_)
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     context["object"]=object_
+    context["strain_type"]=",".join(object_.strain_type)
+    context["strain_panel"]=",".join(object_.strain_panel)
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
@@ -203,6 +202,7 @@ def updateOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
     #This can be minimized when all organism have classes... ----------------
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     if object_.organism_name.org_class:
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -237,8 +237,7 @@ def updateOrganism(req, pk):
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
-    else:
-        form=UpdateOrganism_form(instance=object_)
+    
 
     context={
         "form":form,
@@ -351,12 +350,17 @@ def stockList(req, pk):
         data=[]
         for i in qs:
             item={
-                "stock_id":i.pk or None,
-                "stock_created":i.n_created or None,
-                "stock_left":i.n_left or None,
-                "stock_note":i.stock_note or None,
-                "stock_type":i.stock_type.dict_value or None,
-                "stock_date":i.stock_date or None,
+                "stock_id":i.pk,
+                "stock_type": str(i.stock_type.dict_value) or 'no data',
+                "location_freezer":str(i.location_freezer) or 'no data',
+                "location_rack": str(i.location_rack),
+                "location_col": str(i.location_column),
+                "location_slot": str(i.location_slot),
+                "stock_date": str(i.stock_date),
+                "n_left": str(i.n_left) if i.n_left >1 else " ",
+                "n_created": str(i.n_created),
+                "stock_notes":str(i.stock_note),
+                "biologist": str(i.biologist),
             }
             data.append(item)
         res=data
@@ -500,9 +504,10 @@ def deleteCulture(req, pk):
     object_=get_object_or_404(Organism_Culture, pk=pk)
     try:
         object_.delete(**kwargs)
+        print("delete")
     except Exception as err:
         print(err)
-    return redirect('/')
+    return redirect(req.META['HTTP_REFERER'])  
 
 ############################################### Export CSV View ###########################################
 import csv

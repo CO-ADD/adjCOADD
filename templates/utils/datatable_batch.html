@@ -6,11 +6,11 @@
         <a class="card-link" id="create_stock"><i class="bi bi-plus"></i></a>
         <div id="createStockModal" class="modal fade" role="dialog"></div>
       </th>
-     
+      <!-- <th style="width: 10em">EDIT</th> -->
+
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
-      <th style="width: 10em">EDIT</th>
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
@@ -21,8 +21,11 @@
     {%endfor%}
   </tbody>
 </table>
-<script src="https://unpkg.com/htmx.org@1.8.4"
-  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
+<script
+  src="https://unpkg.com/htmx.org@1.8.4"
+  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+  crossorigin="anonymous"
+></script>
 {%load static%}
 <script src="{% static 'js/js_utils/getCookie.js'%}"></script>
 
@@ -37,7 +40,7 @@
     });
 
     const csrftoken = getCookie("csrftoken");
-    $("#datatable_batch tbody").on("click", "td.dt-control", function (e) {
+    $("#datatable_batch tbody").on("click", "a.dt-control", function (e) {
       var tr = $(this).closest("tr");
       var row = table.row(tr);
 
@@ -71,26 +74,28 @@
         data: { Batch_id },
       },
       columns: [
-        { title: "Stock ID", data: "stock_id" },
-        { title: "Stock Created", data: "stock_created" },
-        { title: "Stock Left", data: "stock_left" },
-        { title: "Stock Note", data: "stock_note" },
-        { title: "Stock Type", data: "stock_type" },
+        // { title: "Stock ID", data: "stock_id" },
+        {
+          title: "Edit",
+          data: null,
+          defaultContent:
+            `<button id="update_stock"> <i class="fa fa-pencil" aria-hidden="true"></i></button>` +
+            '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
+            "&nbsp; " +
+            `<button id="delete_stock"> <i class="fa fa-trash"></i></button>` +
+            '<div id="deleteStockModal" class="modal " role="dialog"></div>',
+        },
+        { title: "Type", data: "stock_type" },
+        { title: "Freezer", data: "location_freezer" },
+        { title: "Rack", data: "location_rack" },
+        { title: "Col", data: "location_col" },
+        { title: "Slot", data: "location_slot" },
+
         { title: "Stock Date", data: "stock_date", type: "datetime" },
-        {
-          title: "Update",
-          data: null,
-          defaultContent:
-            `<button id="update_stock">Update</button>` +
-            '<div id="updateStockModal" class="modal fade" role="dialog"></div>',
-        },
-        {
-          title: "Delete",
-          data: null,
-          defaultContent:
-            `<button id="delete_stock">Delete!</button>` +
-            '<div id="deleteStockModal" class="modal" role="dialog"></div>',
-        },
+        { title: "Left", data: "n_left" },
+        { title: "Created", data: "n_created" },
+        { title: "Note", data: "stock_notes" },
+        { title: "Biologist", data: "biologist" },
       ],
       // select: true,
       searching: false,

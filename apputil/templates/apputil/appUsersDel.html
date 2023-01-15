@@ -1,13 +1,13 @@
 <a
   class="card-link text-danger fs-6"
   data-bs-toggle="modal"
-  data-bs-target="#user_del"
+  data-bs-target="#user_del{{object.pk}}"
 >
   <i class="fa fa-trash"></i>
 </a>
 <div
   class="modal fade"
-  id="user_del"
+  id="user_del{{object.pk}}"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"

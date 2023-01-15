@@ -34,6 +34,23 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=DRUG_FIELDs
 
+    def get_order_by(self):
+        order_by = super().get_order_by()
+        print(f"origin oder is {order_by}")
+        acs_decs=""
+        if order_by:
+            order_field=""
+            if order_by[0]=="-":
+                acs_decs=order_by[0]
+                order_field=order_by[1:]
+            else:
+                order_field=order_by
+                print(order_field)
+            if order_field in DRUG_FIELDs.values():
+                order_by=acs_decs+ list(DRUG_FIELDs.keys())[list(DRUG_FIELDs.values()).index(order_field)]
+           
+            return order_by
+
     
 
 # editable graphic , molblock, 3D, py3Dmol 
