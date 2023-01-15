@@ -61,9 +61,9 @@ class DrugCardView(DrugListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # clearIMGfolder()
-        # for object_ in context["object_list"]:
-        #     m=Chem.MolFromSmiles(object_.smiles)
-        #     molecule_to_svg(m, object_.pk)
+        for object_ in context["object_list"]:
+            m=Chem.MolFromSmiles(object_.smiles)
+            molecule_to_svg(m, object_.pk)
         return context
 
     

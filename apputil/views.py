@@ -24,12 +24,14 @@ def permission_not_granted(req):
 
 
 ## =================================APP Home========================================
+
 # import setup
 @login_required(login_url='/')
 def index(req):
     # print(setup.version)
     object_1=Organism.objects.count()
     object_2=Taxonomy.objects.count()
+    # messages.info(request, 'Updated') #updating infor
     return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2})
 ## =================================APP Home======================================##
 

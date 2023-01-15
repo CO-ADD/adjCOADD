@@ -63,7 +63,7 @@ class Taxonomy_form(forms.ModelForm):
 class Batch_form(forms.ModelForm):
     # Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
-   
+    qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status']),required=False,)
     def __init__(self, organism_id_str=None, *args, **kwargs):
         self.organism_id_str=organism_id_str
         super(Batch_form, self).__init__(*args, **kwargs)
@@ -86,6 +86,8 @@ class Batch_form(forms.ModelForm):
         
 # ---------------------------------------------------------------------------------------------
 class Batchupdate_form(forms.ModelForm):
+    qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status']),required=False,)
+
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_FIELDs.keys()

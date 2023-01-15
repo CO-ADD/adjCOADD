@@ -47,7 +47,6 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
                 order_field=order_by[1:]
             else:
                 order_field=order_by
-                print(order_field)
             if order_field in TAXONOMY_FIELDs.values():
                 order_by=acs_decs+ list(TAXONOMY_FIELDs.keys())[list(TAXONOMY_FIELDs.values()).index(order_field)]
            
@@ -126,7 +125,6 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model_fields=ORGANISM_FIELDs
 
     def get_order_by(self):
-        # qs=super().get_queryset()
         order_by = super().get_order_by()
         print(f"origin oder is {order_by}")
         acs_decs=""
@@ -137,7 +135,6 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
                 order_field=order_by[1:]
             else:
                 order_field=order_by
-                print(order_field)
             if order_field in ORGANISM_FIELDs.values():
                 order_by=acs_decs+ list(ORGANISM_FIELDs.keys())[list(ORGANISM_FIELDs.values()).index(order_field)]
            
@@ -353,17 +350,17 @@ def stockList(req, pk):
         data=[]
         for i in qs:
             item={
-                "stock_id":i.pk or None,
-                "stock_type": i.stock_type.dict_value or None,
-                "location_freezer":i.location_freezer or None,
-                "location_rack": i.location_rack,
-                "location_col": i.location_column,
-                "location_slot": i.location_slot,
-                "stock_date": i.stock_date,
-                "n_left": i.n_left,
-                "n_created": i.n_created,
-                "stock_notes":i.stock_note,
-                "biologist": i.biologist,
+                "stock_id":i.pk,
+                "stock_type": str(i.stock_type.dict_value) or 'no data',
+                "location_freezer":str(i.location_freezer) or 'no data',
+                "location_rack": str(i.location_rack),
+                "location_col": str(i.location_column),
+                "location_slot": str(i.location_slot),
+                "stock_date": str(i.stock_date),
+                "n_left": str(i.n_left) if i.n_left >1 else " ",
+                "n_created": str(i.n_created),
+                "stock_notes":str(i.stock_note),
+                "biologist": str(i.biologist),
             }
             data.append(item)
         res=data
@@ -507,9 +504,10 @@ def deleteCulture(req, pk):
     object_=get_object_or_404(Organism_Culture, pk=pk)
     try:
         object_.delete(**kwargs)
+        print("delete")
     except Exception as err:
         print(err)
-    return redirect('/')
+    return redirect(req.META['HTTP_REFERER'])  
 
 ############################################### Export CSV View ###########################################
 import csv

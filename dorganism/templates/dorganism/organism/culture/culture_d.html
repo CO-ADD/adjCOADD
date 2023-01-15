@@ -2,7 +2,7 @@
 <button
   class="card-link text-danger fs-6"
   data-bs-toggle="modal"
-  data-bs-target="#modal-default{{object_cultr}}"
+  data-bs-target="#modal-default{{object_cultr.pk}}"
 >
   <i class="fa-solid fa-trash"></i>
 </button>
@@ -10,7 +10,7 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="modal-default{{object_cultr}}"
+  id="modal-default{{object_cultr.pk}}"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
@@ -19,7 +19,7 @@
 >
   <div class="modal-dialog">
     <!--prettier-ignore-->
-    {% url 'culture_delete' pk=object_cultr.pk as deleteurl %}
-  {%include 'utils/modal/delete.html' with title='Delete Culture' urlname=deleteurl %}
+    {% url 'cultr_delete' pk=object_cultr.pk as deleteurl %}
+  {%include 'utils/modal/delete.html' with title='Delete Culture' urlname=deleteurl entry=object_cultr%}
   </div>
 </div>
