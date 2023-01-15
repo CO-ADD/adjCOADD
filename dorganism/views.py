@@ -354,11 +354,16 @@ def stockList(req, pk):
         for i in qs:
             item={
                 "stock_id":i.pk or None,
-                "stock_created":i.n_created or None,
-                "stock_left":i.n_left or None,
-                "stock_note":i.stock_note or None,
-                "stock_type":i.stock_type.dict_value or None,
-                "stock_date":i.stock_date or None,
+                "stock_type": i.stock_type.dict_value or None,
+                "location_freezer":i.location_freezer or None,
+                "location_rack": i.location_rack,
+                "location_col": i.location_column,
+                "location_slot": i.location_slot,
+                "stock_date": i.stock_date,
+                "n_left": i.n_left,
+                "n_created": i.n_created,
+                "stock_notes":i.stock_note,
+                "biologist": i.biologist,
             }
             data.append(item)
         res=data

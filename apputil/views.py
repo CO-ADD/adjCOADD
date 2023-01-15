@@ -105,7 +105,7 @@ def updateApplicationuser(req, pk):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    fields=['name', 'username', 'permission']
+    fields=['name', 'username', 'permission',]
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 

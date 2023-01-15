@@ -96,7 +96,8 @@ class Batchupdate_form(forms.ModelForm):
 class Stock_form(forms.ModelForm):  
     class Meta:
         model =OrgBatch_Stock
-        fields=ORGANISM_STOCK_FIELDs.keys()
+        # fields=ORGANISM_STOCK_FIELDs.keys()
+        exclude=["n_left"]
 
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):

@@ -181,6 +181,7 @@ class AuditModel(models.Model):
     #Method Get Fields, Values List
     @classmethod
     def get_fields(self, fields=None):
+        print(self._meta.get_fields())
         if fields:
             select_fields=[fields[f.name] for f in self._meta.fields if f.name in fields.keys()]
         else:

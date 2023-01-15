@@ -6,7 +6,7 @@
         <a class="card-link" id="create_stock"><i class="bi bi-plus"></i></a>
         <div id="createStockModal" class="modal fade" role="dialog"></div>
       </th>
-     
+
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
@@ -21,8 +21,11 @@
     {%endfor%}
   </tbody>
 </table>
-<script src="https://unpkg.com/htmx.org@1.8.4"
-  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
+<script
+  src="https://unpkg.com/htmx.org@1.8.4"
+  integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+  crossorigin="anonymous"
+></script>
 {%load static%}
 <script src="{% static 'js/js_utils/getCookie.js'%}"></script>
 
@@ -72,11 +75,17 @@
       },
       columns: [
         { title: "Stock ID", data: "stock_id" },
-        { title: "Stock Created", data: "stock_created" },
-        { title: "Stock Left", data: "stock_left" },
-        { title: "Stock Note", data: "stock_note" },
-        { title: "Stock Type", data: "stock_type" },
-        { title: "Stock Date", data: "stock_date", type: "datetime" },
+        // { title: "Type", data: "stock_type" },
+        // { title: "Freezer", data: "location_freezer" },
+        // { title: "Rack", data: "location_rack" },
+        // { title: "Col", data: "location_col" },
+        // { title: "Slot", data: "location_slot" },
+
+        // { title: "Stock Date", data: "stock_date", type: "datetime" },
+        // { title: "Left", data: "n_left" },
+        // { title: "Created", data: "n_created" },
+        // { title: "Note", data: "stock_notes" },
+        { title: "Biologist", data: "biologist" },
         {
           title: "Update",
           data: null,
