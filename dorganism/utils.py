@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Organism, Taxonomy, Organism_Batch
 from apputil.models import Dictionary
-from apputil.utils import get_DictonaryChoices_byDictClass
+from apputil.utils import get_DictonaryChoices_byDictClass, get_DictonaryChoicesValue_byDictClass
 
 #=====================================search_organism===============================================================
 
@@ -84,9 +84,9 @@ class Organismfilter(Filterbase):
     Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  widget=forms.RadioSelect, choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))# choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
     Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
     Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
-    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
+    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
     MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']))
-    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
+    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
     # risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
     # oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
     # pathogen_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group']))

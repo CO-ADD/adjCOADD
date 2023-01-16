@@ -25,6 +25,15 @@ def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
     else:
         choices=(('--', 'empty'),)
     return choices
+# ------------------------Only use dict_value
+def get_DictonaryChoicesValue_byDictClass(ModelName, DictClass, sep='|'):
+    options=ModelName.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
+    if options:
+        choices_values=tuple([tuple(d.values()) for d in options])
+        choices=tuple((a[0], a[0]) for a in choices_values)
+    else:
+        choices=(('--', 'empty'),)
+    return choices
 
 #-----------------------------------------------------------------------------------
 def slugify(value, lower=False, allow_unicode=False):
