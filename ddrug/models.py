@@ -132,7 +132,6 @@ class Drug(AuditModel):
     # -------------------------------------------------
     def get_values(self, fields=DRUG_FIELDs):
         value_list=super(Drug, self).get_values(fields)
-        print(value_list)
         return value_list
         
 
@@ -186,7 +185,10 @@ class VITEK_Card(AuditModel):
                 print(f"[Vitek Card Not Found] {CardBarcode}")
             retInstance = None
         return(retInstance)
-
+ # -------------------------------------------------
+    def get_values(self, fields=VITEKCARD_FIELDs):
+        value_list=super(VITEK_Card, self).get_values(fields)
+        return value_list
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_AST(AuditModel):
@@ -238,6 +240,11 @@ class VITEK_AST(AuditModel):
                 print(f"[Vitek AST Not Found] {CardBarcode} {DrugID}")
             retInstance = None
         return(retInstance)
+ # -------------------------------------------------
+    def get_values(self, fields=VITEKAST_FIELDs):
+        value_list=super(VITEK_AST, self).get_values(fields)
+        return value_list
+        
 
 # #-------------------------------------------------------------------------------------------------
 class VITEK_ID(AuditModel):
@@ -285,5 +292,11 @@ class VITEK_ID(AuditModel):
                 print(f"[Vitek AST Not Found] {CardBarcode} ")
             retInstance = None
         return(retInstance)
+    
+     # -------------------------------------------------
+    def get_values(self, fields=VITEKID_FIELDs):
+        value_list=super(VITEK_ID, self).get_values(fields)
+        return value_list
+        
 
 #-------------------------------------------------------------------------------------------------

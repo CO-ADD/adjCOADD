@@ -134,267 +134,29 @@ The last folder z-doc contains help and information documents.
 
 #### Authentication System
 
-The authentication login system will use Ldap username and password. Once successfully log in, the applicationUser model will grant read-, write-, admin-level permissions to users.
+The authentication login system will use Ldap username and password. Once successfully log in, the applicationUser model will be given read-, write-, admin-level permissions to users.
 
 In settings.py will set up Ldap Authentication_backend, then import Ldap and a few Ldap configuration parameters.
 When user click login url, the login_user function will be called the Login_form(Django AutenticationForm) to varify if username existed in Application user datatable, then login with "django_auth_ldap.backend.LDAPBackend" backend as request user.
 After login, users' permission, which has been set up previously in ApplicationUser datatable, will be granted to the login request user.
 
 #### Data screening
-
-For
+All data tables are sorting table type. And in project settings.py, the Django-Filter packages has been implemented and it is used to get filtered queryset from database for the main models(Organism, Taxonomy, Drug, Vitek_Card).
+To display one to many relationship, the child table will be displayed under the parent table's detail view.
 
 ## User Guide section
 
-(introduction based on UI sheets)
+### Login
+The adjCOADD is started with login using ldap authentication.
 
-## Full view of project - tree
+<img src="https://github.com/CO-ADD/adjCOADD/blob/main/static/images/app/CoAdd_Login.png" />
 
-```
-./adjCOADD
-├── adjcoadd
-│   ├── asgi.py
-│   ├── constants.py
-│   ├── __init__.py
-│   ├── prod_settings.py
-│   ├── routers.py
-│   ├── settings.py
-│   ├── urls.py
-│   ├── utils_dataimport.py
-│   └── wsgi.py
-├── apputil
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── __init__.py
-│   ├── migrations
-│   │   ├── 0001_initial.py
-│   │   ├── 0002_auto_20221205_1616.py
-│   │   ├── 0003_auto_20221207_1106.py
-│   │   ├── 0004_alter_dictionary_dict_desc.py
-│   │   ├── 0005_alter_dictionary_acreated_alter_dictionary_adeleted_and_more.py
-│   │   ├── 0006_delete_auditmodel.py
-│   │   └── __init__.py
-│   ├── models.py
-│   ├── templates
-│   │   └── apputil
-│   │       ├── appUsersCreate.html
-│   │       ├── appUsersDel.html
-│   │       ├── appUsers.html
-│   │       ├── appUsersUpdate.html
-│   │       ├── appuser_tr.html
-│   │       ├── dictCreate.html
-│   │       ├── dictionary_del.html
-│   │       ├── dictionaryUpdate.html
-│   │       ├── dictList.html
-│   │       └── importdata.html
-│   ├── urls.py
-│   ├── utils.py
-│   └── views.py
-├── ddrug
-│   ├── admin.py
-│   ├── apps.py
-│   ├── dbRouter.py
-│   ├── forms.py
-│   ├── __init__.py
-│   ├── migrations
-│   │   ├── 0001_initial.py
-│   │   └── __init__.py
-│   ├── models.py
-│   ├── templates
-│   │   └── ddrug
-│   │       ├── ddrug_home.html
-│   │       └── drug
-│   │           ├── drug_card.html
-│   │           ├── drug_c.html
-│   │           ├── drug_detail.html
-│   │           ├── drug_d.html
-│   │           ├── drug_list.html
-│   │           └── drug_u.html
-│   ├── tests.py
-│   ├── urls.py
-│   ├── utils.py
-│   └── views.py
-├── deploy_gunicorn.txt
-├── dorganism
-│   ├── admin.py
-│   ├── apps.py
-│   ├── dbRouter.py
-│   ├── forms.py
-│   ├── __init__.py
-│   ├── migrations
-│   │   ├── 0001_initial.py
-│   │   ├── 0002_auto_20221207_0912.py
-│   │   ├── 0003_taxonomy_urlname.py
-│   │   ├── 0004_auto_20221207_1342.py
-│   │   ├── 0005_alter_organism_options.py
-│   │   ├── 0006_auto_20221215_1503.py
-│   │   ├── 0007_alter_organism_options_and_more.py
-│   │   └── __init__.py
-│   ├── models.py
-│   ├── templates
-│   │   └── dorganism
-│   │       ├── home.html
-│   │       ├── organism
-│   │       │   ├── batch
-│   │       │   │   ├── batch_card.html
-│   │       │   │   ├── batch_c.html
-│   │       │   │   ├── batch_d.html
-│   │       │   │   ├── batch_tr.html
-│   │       │   │   └── batch_u.html
-│   │       │   ├── batch_stock
-│   │       │   │   ├── stock_c.html
-│   │       │   │   ├── stock_d.html
-│   │       │   │   └── stock_u.html
-│   │       │   ├── culture
-│   │       │   │   ├── culture_c.html
-│   │       │   │   ├── culture_d.html
-│   │       │   │   ├── culture_tr.html
-│   │       │   │   └── culture_u.html
-│   │       │   ├── organism_card.html
-│   │       │   ├── organism_c.html
-│   │       │   ├── organism_detail.html
-│   │       │   ├── organism_d.html
-│   │       │   ├── organism_list.html
-│   │       │   ├── organism_u.html
-│   │       │   └── organism_u_withoutname.html
-│   │       └── taxonomy
-│   │           ├── taxonomy_card.html
-│   │           ├── taxonomy_c.html
-│   │           ├── taxonomy_detail.html
-│   │           ├── taxonomy_d.html
-│   │           ├── taxonomy_list.html
-│   │           └── taxonomy_u.html
-│   ├── templatetags
-│   │   ├── __init__.py
-│   │   └── myapp_extras.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── utils.py
-│   └── views.py
-├── .git
-│   ├── branches
-│   ├── config
-│   ├── description
-│   ├── HEAD
-│   ├── hooks
-│   │   ├── applypatch-msg.sample
-│   │   ├── commit-msg.sample
-│   │   ├── fsmonitor-watchman.sample
-│   │   ├── post-update.sample
-│   │   ├── pre-applypatch.sample
-│   │   ├── pre-commit.sample
-│   │   ├── pre-merge-commit.sample
-│   │   ├── prepare-commit-msg.sample
-│   │   ├── pre-push.sample
-│   │   ├── pre-rebase.sample
-│   │   ├── pre-receive.sample
-│   │   ├── push-to-checkout.sample
-│   │   └── update.sample
-│   ├── index
-│   ├── info
-│   │   └── exclude
-│   ├── logs
-│   │   ├── HEAD
-│   │   └── refs
-│   │       ├── heads
-│   │       │   └── main
-│   │       └── remotes
-│   │           └── origin
-│   │               └── HEAD
-│   ├── objects
-│   │   ├── info
-│   │   └── pack
-│   │       ├── pack-07f70b75598eb68898d16b5b8d990a9bc5714c80.idx
-│   │       └── pack-07f70b75598eb68898d16b5b8d990a9bc5714c80.pack
-│   ├── packed-refs
-│   └── refs
-│       ├── heads
-│       │   └── main
-│       ├── remotes
-│       │   └── origin
-│       │       └── HEAD
-│       └── tags
-├── .gitignore
-├── manage.py
-├── MANIFEST.in
-├── README.rst
-├── requirements.txt
-├── setup.cfg
-├── setup.py
-├── static
-│   ├── css
-│   │   ├── app.css
-│   │   ├── bootstrap.min.css
-│   │   ├── bulma.min.css
-│   │   ├── custom.css
-│   │   └── main.css
-│   ├── images
-│   │   ├── app
-│   │   │   ├── avatar.png
-│   │   │   └── favicon-16x16.png
-│   │   └── brand
-│   │       ├── CO-ADD_Baseline_White.png
-│   │       ├── coaddbg01.png
-│   │       ├── CO-ADD_Logo_Baseline.jpg
-│   │       ├── CO-ADD logo no background.png
-│   │       ├── CO-ADD_Logo_White_NoBackground_Baseline1500x375.png
-│   │       ├── CO-ADD_Logo_White_NoBackground_CMYK.png
-│   │       ├── CO-ADD only logo.jpg
-│   │       └── logo-fullsize.png
-│   └── js
-│       ├── editableTablechoices.js
-│       ├── editableTable.js
-│       ├── importhandler.js
-│       ├── index.js
-│       ├── jquery-3.6.1.min.js
-│       ├── js_utils
-│       │   ├── ajax_submit.js
-│       │   ├── ajax_update.js
-│       │   ├── dataTables.js
-│       │   ├── dataTables.min.js
-│       │   └── getCookie.js
-│       ├── modal
-│       │   ├── create_batch.js
-│       │   ├── create_culture.js
-│       │   ├── create_drug.js
-│       │   ├── create_organism.js
-│       │   ├── create_stock.js
-│       │   └── create_taxonomy.js
-│       ├── resizebar.js
-│       ├── resizebar_t.js
-│       ├── search_organism_id.js
-│       ├── search_organism.js
-│       ├── table-editable.int.js
-│       └── table-edits.min.js
-├── templates
-│   ├── base.html
-│   ├── registration
-│   │   └── login.html
-│   └── utils
-│       ├── alertnav.html
-│       ├── card.html
-│       ├── datatable_batch.html
-│       ├── datatable_cultr.html
-│       ├── datatable_drug.html
-│       ├── datatable_general.html
-│       ├── datatable_taxo.html
-│       ├── editable_tr.html
-│       ├── message.html
-│       ├── modal
-│       │   ├── create.html
-│       │   ├── delete.html
-│       │   └── update.html
-│       ├── multichoice.html
-│       ├── navbar.html
-│       ├── pagination.html
-│       ├── preloader.html
-│       ├── search_organism.html
-│       ├── search_organism_id.html
-│       ├── selectAllExp.html
-│       ├── sidebar.html
-│       └── topbar.html
-└── z_docs
-    └── GetStartwithCoAdd.md
+### Homepage
+Once login successfully, will direct to the homepage:
 
-```
+<img src="https://github.com/CO-ADD/adjCOADD/blob/main/static/images/app/CoAdd_Home.png" />
+
+With main datatables' access.
+
+
+

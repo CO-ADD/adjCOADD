@@ -16,7 +16,7 @@
         {% include 'utils/pagination.html'%}
         <div>
 
-          <a href="{%url 'drug_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></a>
+          <a href="{%url 'drug_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
           <a href="{%url 'drug_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
         </div>
       </div>
@@ -30,7 +30,9 @@
         <div id="createDrugModal" class="modal fade" role="dialog">
         </div>
       </div>
-        {%include 'utils/datatable_drug.html' with datatable_drug='datatable_drug'%}
+      {%include 'utils/preloader.html'%}
+      <!--prettier-ignore-->
+        {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_drug'%}
       </div>
     </div>
   </div>

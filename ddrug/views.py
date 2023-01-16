@@ -20,8 +20,8 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
-from .models import  Drug
-from .utils import Drug_filter, molecule_to_svg, clearIMGfolder
+from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
+from .utils import get_filewithpath, Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
    
           
@@ -34,22 +34,9 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=DRUG_FIELDs
 
-    def get_order_by(self):
-        order_by = super().get_order_by()
-        print(f"origin oder is {order_by}")
-        acs_decs=""
-        if order_by:
-            order_field=""
-            if order_by[0]=="-":
-                acs_decs=order_by[0]
-                order_field=order_by[1:]
-            else:
-                order_field=order_by
-                print(order_field)
-            if order_field in DRUG_FIELDs.values():
-                order_by=acs_decs+ list(DRUG_FIELDs.keys())[list(DRUG_FIELDs.values()).index(order_field)]
-           
-            return order_by
+    def get_order_by(self, model_constants_field=DRUG_FIELDs):
+        order_by = super().get_order_by(model_constants_field)
+        return order_by
 
     
 
@@ -62,8 +49,13 @@ class DrugCardView(DrugListView):
         context = super().get_context_data(**kwargs)
         # clearIMGfolder()
         for object_ in context["object_list"]:
-            m=Chem.MolFromSmiles(object_.smiles)
-            molecule_to_svg(m, object_.pk)
+            filepath=get_filewithpath(file_name=object_.pk)
+            if os.path.exists(filepath):
+                return context
+            else:
+                print("generate img")
+                m=Chem.MolFromSmiles(object_.smiles)
+                molecule_to_svg(m, object_.pk)
         return context
 
     
@@ -105,33 +97,28 @@ def updateDrug(req, pk):
             print(form.errors)
     return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
 
-# ====================================================Delete===========================================
+# ================Vitek Card===========================================#
+class VitekcardListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=VITEK_Card  
+    template_name = 'ddrug/vitek_card/vitekcard_list.html' 
+    filterset_class=Vitekcard_filter
+    model_fields=VITEKCARD_FIELDs
 
-# Create your views here.
-#===================== A Example =================================================================================#
-# def home(req): 
-#     clearIMGfolder()
-#     # search function
-#     if req.method=='POST':
-#         search =req.POST.get('search')
-#         field=req.POST.get('field')
-#         if field=='Organism_Name':
-#             result=Taxonomy.objects.filter(astatus=1, Organism_Name__contains=search)
-#     else:
-#         result=Taxonomy.objects.filter(astatus=1)
-        
-#     objects_all=result
-#     p=Paginator(objects_all, 24)
-#     page_number = req.GET.get('page')
-#     page_obj=p.get_page(page_number)
-#     for object_ in page_obj:
-#         m=Chem.MolFromSmiles('Cc1cc(NC(=O)c2cc(Cl)cc(Cl)c2O)ccc1Sc1nc2ccccc2s1')
-#         molecule_to_svg(m, object_.Organism_Name)
-    
-#     context={
-#         'page_obj':page_obj,
-#         'chose':Taxonomy.Choice_Dictionary   
-       
-#     }
-  
-#     return render(req, 'organism/chem.html', context)
+    def get_order_by(self, model_constants_field=VITEKCARD_FIELDs):
+        order_by = super().get_order_by(model_constants_field)
+        return order_by
+
+# ==============Vitek Card Detail===================================#
+@login_required
+def detailVitekcard(req, pk):
+    context={}
+    object_=get_object_or_404(VITEK_Card, pk=pk)
+    context["object"]=object_
+    context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
+    context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEKID_FIELDs)
+    context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
+    print(context["vitekast_obj"])
+    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEKAST_FIELDs)
+
+    return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)

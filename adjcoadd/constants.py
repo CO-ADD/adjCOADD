@@ -73,3 +73,45 @@ DRUG_FIELDs = {
     "drug_note":"Drug Note"
    
 }
+
+VITEKCARD_FIELDs = {
+    
+    "orgbatch_id":"Organism Batch",
+    "card_barcode":"Barcode",
+    "card_type":"Card Type",
+    "card_code":"Card Code",
+    "expiry_date":"Expiried on",
+    "instrument":"Instrument",
+    "proc_date":"Processed on",
+    "analysis_time":"Analysis with"
+   
+}
+
+VITEKID_FIELDs = {
+    
+    "card_barcode":"Barcode",
+    "process":"Process",
+    "id_organism":"ID organism",
+    "id_probability":"ID Probability",
+    "id_confidence":"ID Confidence",
+    "id_source":"Source",
+    "filename":"PDF Name",
+    "page_no":"PDF PageNo"
+   
+}
+
+VITEKAST_FIELDs = {
+    
+    "card_barcode":"Barcode",
+    "drug_id":"Drug",
+    "mic":"MIC",
+    "process":"Vitek Process",
+    "bp_profile":"Break Point",
+    "bp_comment":"Comment",
+    "bp_source":"Source",
+    "selection":"Selection",
+    "organism":"Organism",
+    "filename":"PDF Filename",
+    "page_no":"PDF pageNo"
+   
+}

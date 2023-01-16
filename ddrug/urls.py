@@ -2,7 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (DrugListView, DrugCardView, createDrug, updateDrug)
+from .views import  (DrugListView, DrugCardView, createDrug, updateDrug, 
+    detailVitekcard, VitekcardListView)
 
 
 
@@ -13,4 +14,6 @@ urlpatterns = [
     path('createDrug/', createDrug, name="drug_create"),
     path('updateDrug/<str:pk>', updateDrug, name="drug_update"),
     # path('deleteDrug/<str:pk>', deleteDrug, name="drug_delete"),
+    path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
+    path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),
 ]

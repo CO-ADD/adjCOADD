@@ -310,7 +310,14 @@ nav.shrink {
   background-color: var(--teal, teal);
   animation: fadeIn 1.5s;
 }
-
+.landp-div{
+  animation: fadeIn 2s;
+  margin-left:0;
+  height: 9.8rem;
+  width: 8rem;
+  font-size: medium;
+  /* border: 1px solid black; */
+}
 @keyframes fadeIn {
   0% {
     transform: scale(0);
