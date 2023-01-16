@@ -4,7 +4,7 @@ const hidefilter = document.getElementById("hidefilter")
 
 
 resizer.addEventListener("mousedown", (event) => {
-    console.log(hidefilter)
+    console.log("MosseDown event...")
     document.addEventListener("mousemove", resize, false);
     document.addEventListener(
         "mouseup",
@@ -23,6 +23,6 @@ function resize(e) {
 
 hidefilter.addEventListener("click", () => {
     hidefilter.classList.toggle("text-danger")
-    sidebar.classList.toggle("not-visible");
+    sidebar.classList.toggle("visible");
     resizer.classList.toggle("toLeft")
 })

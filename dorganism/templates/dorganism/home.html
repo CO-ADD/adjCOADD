@@ -12,12 +12,8 @@
 
   <div class="card-body d-flex flex-column align-items-center mt-0 gap-2">
     {%load static%}
-    <img
-      class="card-img-top"
-      style="width: 40rem"
-      src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png' %}"
-      alt=""
-    />
+    <img class="card-img-top" style="width: 40rem"
+      src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png' %}" alt="" />
     <h1 class="card-title" style="color: var(--orange)">
       Open-access Antimicrobial Screening Database
     </h1>
@@ -31,33 +27,34 @@
 </div>
 <div class="card m-auto mt-5" style="width: 36rem">
   <div class="card-head">
-    <label
-      for="Label-OrganismModel"
-      class="ms-2 position-absolute"
-      style="margin-top: -1rem !important"
-    >
+    <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
       <span class="fs-4 text-muted px-1">Organisms</span>
     </label>
   </div>
   <!-- <input type="text" class="form-control mt-2" id="input1" /> -->
-  <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
-    <a
-      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'org_card' %}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      title="{{objects_org}} organims"
-    >
+  <div  class="card-body d-flex justify-content-center">
+    <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_card' %}"
+      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims">
       ORGANISM
     </a>
+    <div class="landp-div position-relative">
+      <a class="btn border-0 position-absolute top-0 start-0 mb-5 " href="{%url 'org_card_FG' %}">
+        FG
+      </a>
+      
+      <a class="btn border-0 position-absolute bottom-50 end-50 " href="{%url 'org_card_GN' %}">
+        GN
+      </a>
+      <a class="btn border-0  position-absolute top-50 end-50" href="{%url 'org_card_GP' %}">
+        GP
+      </a>
+      <a class="btn border-0  position-absolute bottom-0 start-0" href="{%url 'org_card_AB' %}">
+        AB
+      </a>
+    </div>
 
-    <a
-      class="landp-img-02 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'taxo_card' %}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      title="{{objects_taxo}} spieces"
-    >
+    <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="{%url 'taxo_card' %}"
+      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_taxo}} spieces">
       TAXONOMY
     </a>
   </div>

@@ -12,7 +12,7 @@ import cairosvg
 # import py3Dmol
 
 from dorganism.utils import Filterbase
-from .models import Drug
+from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from adjcoadd.constants import *
 from django.conf import settings
 # ======================================Util Func. (To SVG)=====================================================#
@@ -63,3 +63,14 @@ class Drug_filter(Filterbase):
     class Meta:
         model=Drug
         fields=['drug_name']
+
+
+
+class Vitekcard_filter(Filterbase):
+    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    # lineage = django_filters.MultipleChoiceFilter( choices= "")
+    # django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['lineage'], ' | '))
+    # division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
+    class Meta:
+        model=VITEK_Card
+        fields=['card_barcode']

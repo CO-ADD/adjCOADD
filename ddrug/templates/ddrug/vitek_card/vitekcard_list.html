@@ -1,0 +1,26 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+{%include 'utils/topbar.html'%}
+<div class="position-relative w-100 bg-transparent">
+
+  <div class="d-flex flex-row  justify-content-between vh-100">
+    {%include "utils/sidebar.html"%}
+
+    <div class="main d-flex flex-column" style="height: fit-content;">
+      <div class="d-flex flex-wrap justify-content-between m-0">
+        
+        {% include 'utils/pagination.html'%}
+      </div>
+      <!-- {% url 'vitekcard_detail' object.pk as url_name %} -->
+      <!--prettier-ignore-->
+      {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekcard' url_name='vitekcard_detail'%}
+      </div>
+    </div>
+</div>
+
+<!--prettier-ignore-->
+{% endblock%}
