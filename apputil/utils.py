@@ -87,10 +87,10 @@ class FilteredListView(ListView):
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
 
-    def get_order_by(self, model_constants_field=None):
+    def get_order_by(self):
         # qs=super().get_queryset()
         order_by=self.request.GET.get("order_by", self.order_by) or None
-        
+        model_constants_field=self.model_fields
         acs_decs=""
         if order_by:
             order_field=""

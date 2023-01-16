@@ -34,13 +34,8 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=DRUG_FIELDs
 
-    def get_order_by(self, model_constants_field=DRUG_FIELDs):
-        order_by = super().get_order_by(model_constants_field)
-        return order_by
-
-    
-
-# editable graphic , molblock, 3D, py3Dmol 
+# =============================Card View=====================================
+    # editable graphic , molblock, 3D, py3Dmol 
  
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
@@ -57,8 +52,6 @@ class DrugCardView(DrugListView):
                 m=Chem.MolFromSmiles(object_.smiles)
                 molecule_to_svg(m, object_.pk)
         return context
-
-    
 # ===========Detail View=============================Read============================================
 
 # ====================================================Create===========================================
@@ -104,10 +97,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
-
-    def get_order_by(self, model_constants_field=VITEKCARD_FIELDs):
-        order_by = super().get_order_by(model_constants_field)
-        return order_by
 
 # ==============Vitek Card Detail===================================#
 @login_required

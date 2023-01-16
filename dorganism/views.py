@@ -36,11 +36,8 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Taxonomyfilter
     model_fields=TAXONOMY_FIELDs
 
-    def get_order_by(self, model_constants_field=TAXONOMY_FIELDs):
-        order_by = super().get_order_by(model_constants_field)
-        return order_by
+# =============================Card View=====================================
 
- 
 class TaxonomyCardView(TaxonomyListView):
     template_name = 'dorganism/taxonomy/taxonomy_card.html'
 
@@ -112,9 +109,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Organismfilter
     model_fields=ORGANISM_FIELDs
     
-    def get_order_by(self, model_constants_field=ORGANISM_FIELDs):
-        order_by = super().get_order_by(model_constants_field)
-        return order_by
+# =============================Card View=====================================
     
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/organism/organism_card.html'
@@ -213,8 +208,6 @@ def updateOrganism(req, pk):
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
-    
-
     context={
         "form":form,
         "object":object_,
