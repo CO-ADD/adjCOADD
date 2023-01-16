@@ -21,7 +21,7 @@ from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
+from .utils import get_filewithpath, Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
    
           
@@ -48,9 +48,14 @@ class DrugCardView(DrugListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # clearIMGfolder()
-        # for object_ in context["object_list"]:
-        #     m=Chem.MolFromSmiles(object_.smiles)
-        #     molecule_to_svg(m, object_.pk)
+        for object_ in context["object_list"]:
+            filepath=get_filewithpath(file_name=object_.pk)
+            if os.path.exists(filepath):
+                return context
+            else:
+                print("generate img")
+                m=Chem.MolFromSmiles(object_.smiles)
+                molecule_to_svg(m, object_.pk)
         return context
 
     

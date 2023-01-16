@@ -1,5 +1,6 @@
 import os
 import django_filters
+# from django import forms
 
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
@@ -61,6 +62,10 @@ def search_organism_id(req):
 
 
 #==================================Filters======================================
+
+from django import forms
+
+
 class Filterbase(django_filters.FilterSet):
    
     @property
@@ -76,7 +81,7 @@ class Filterbase(django_filters.FilterSet):
 class Organismfilter(Filterbase):
     ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
     Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
-    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
+    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  widget=forms.RadioSelect, choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
     Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
     Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
     Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
@@ -159,3 +164,5 @@ class Batchfilter(Filterbase):
 #             print(err)
    
 #     return JsonResponse({"success": "updated!"})
+
+

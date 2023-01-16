@@ -69,7 +69,6 @@ class FilteredListView(ListView):
         # Return the filtered queryset
         order=self.get_order_by()
         if order:
-            print(order)
             return self.filterset.qs.distinct().order_by(order)
         print("no order")
         return self.filterset.qs.distinct()
@@ -91,7 +90,7 @@ class FilteredListView(ListView):
     def get_order_by(self, model_constants_field=None):
         # qs=super().get_queryset()
         order_by=self.request.GET.get("order_by", self.order_by) or None
-        print("field")
+        
         acs_decs=""
         if order_by:
             order_field=""
@@ -100,7 +99,7 @@ class FilteredListView(ListView):
                 order_field=order_by[1:]
             else:
                 order_field=order_by
-                print(order_field)
+                
             if order_field in model_constants_field.values():
                 order_by=acs_decs+ list(model_constants_field.keys())[list(model_constants_field.values()).index(order_field)]
            

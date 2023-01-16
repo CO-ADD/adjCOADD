@@ -72,13 +72,7 @@
                 <div class="accordion-body">
                     <h5>{%include 'utils/message.html'%}</h5>
                     <div class="table-responsive">
-                        {%if vitekast_obj%}
-                       {%for obj in vitekast_obj%}
-                       <div>obj.pk</div>
-                       {%endfor%}
-                       {%else%}
-                       <div>no data</div>
-{%endif%}
+                        {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekast' page_obj=vitekast_obj fields=vitekast_fields %}
                     </div>
                 </div>
             </div>
