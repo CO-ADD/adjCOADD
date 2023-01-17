@@ -5,6 +5,9 @@
   <thead>
 
     <tr>
+      {%if url_name%}
+      <th></th>
+      {%endif%}
       {%for field in fields%}
       <th class="order_field" style="width: fit-content;">{{field}}</th>
       {%endfor%}
@@ -15,6 +18,9 @@
   <tbody>
     {% for object in page_obj%}
     <tr>
+      {%if url_name%}
+      <td><a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
+      {%endif%}
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}

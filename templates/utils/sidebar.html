@@ -1,4 +1,4 @@
-<div class="sidebar text-secondary not-visible" style="overflow: scroll">
+<div class="sidebar text-secondary" style="overflow: scroll">
     <form id="django-filter-siderbar" method="get" class="form-group mx-5">
         <div class="d-flex justify-content-evenly">
 
@@ -49,6 +49,7 @@
 <script>
     $(document).ready(function () {
         console.log("working...")
+        $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
         $("#filter-apply").on("click", function () {
             console.log("working...")
             var value = $("form").cleaned_data;

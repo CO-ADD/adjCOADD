@@ -26,7 +26,7 @@ urlpatterns = [
     path('organism_card?&Class=FG', OrganismCardView.as_view(), name="org_card_FG"),
     path('organism_card?&Class=GN', OrganismCardView.as_view(), name="org_card_GN"),
     path('organism_card?&Class=GP', OrganismCardView.as_view(), name="org_card_GP"),
-    path('organism_card?&Class=AB', OrganismCardView.as_view(), name="org_card_AB"),
+    path('organism_card?&Class=MB', OrganismCardView.as_view(), name="org_card_MB"),
     # ------------------------------------------------------------------
     path('organism_list', OrganismListView.as_view(), name="org_list"),
     path('organism/<str:pk>', detailOrganism, name="org_detail"),

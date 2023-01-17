@@ -25,6 +25,15 @@ def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
     else:
         choices=(('--', 'empty'),)
     return choices
+# ------------------------Only use dict_value
+def get_DictonaryChoicesValue_byDictClass(ModelName, DictClass, sep='|'):
+    options=ModelName.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
+    if options:
+        choices_values=tuple([tuple(d.values()) for d in options])
+        choices=tuple((a[0], a[0]) for a in choices_values)
+    else:
+        choices=(('--', 'empty'),)
+    return choices
 
 #-----------------------------------------------------------------------------------
 def slugify(value, lower=False, allow_unicode=False):
@@ -87,10 +96,10 @@ class FilteredListView(ListView):
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
 
-    def get_order_by(self, model_constants_field=None):
+    def get_order_by(self):
         # qs=super().get_queryset()
         order_by=self.request.GET.get("order_by", self.order_by) or None
-        
+        model_constants_field=self.model_fields
         acs_decs=""
         if order_by:
             order_field=""
