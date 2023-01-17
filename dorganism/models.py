@@ -138,7 +138,7 @@ class Organism(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism'
-        ordering=['organism_name']
+        ordering=['organism_id']
         indexes = [
             models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),

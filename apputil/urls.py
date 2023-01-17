@@ -15,6 +15,7 @@ urlpatterns = [
     path('user_delete/<str:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
     path('dict/create', createDictionary, name='dict_create' ),
+    path('dict/update', createDictionary, name='dict_update' ),
     path("import/", Importhandler.as_view(), name="import"),
     
 ]

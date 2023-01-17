@@ -16,6 +16,9 @@ from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
 from adjcoadd.utils_dataimport import import_excel
 from dorganism.models import Organism, Taxonomy
+from apputil.utils import FilteredListView
+from dorganism.utils import Dictionaryfilter
+from adjcoadd.constants import *
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
 def permission_not_granted(req):
@@ -127,16 +130,18 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 ## ========================Dictionary View===========================================
 
-class DictionaryView(LoginRequiredMixin, ListView):
+class DictionaryView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Dictionary
-    fields="__all__"
     template_name='apputil/dictList.html'
+    filterset_class = Dictionaryfilter
+    model_fields=DICTIONARY_FIELDs
+
     
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.filter(astatus__gte=0)
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context=super().get_context_data(**kwargs)
+    #     context["objects"]=self.model.objects.filter(astatus__gte=0)
+    #     return context
 # 
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def createDictionary(req):

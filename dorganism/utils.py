@@ -98,7 +98,7 @@ class Organismfilter(Filterbase):
          
     class Meta:
         model=Organism
-        fields=['ID', 'Name', 'Class', 'Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
+        fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
        
 
 
@@ -165,4 +165,9 @@ class Batchfilter(Filterbase):
    
 #     return JsonResponse({"success": "updated!"})
 
+
+class Dictionaryfilter(Filterbase):
+      class Meta:
+        model=Dictionary
+        fields=['dict_class', 'dict_value', 'dict_desc']
 

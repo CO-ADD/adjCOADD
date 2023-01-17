@@ -548,3 +548,18 @@ nav.shrink {
 .dataTables_info {
   float: right !important;
 }
+
+/* -----filter class style in Organism view */
+#id_Class{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin:0;
+  padding:0;
+
+}
+form p{
+  margin:0;
+  padding:0;
+  margin-top:10px;
+}
