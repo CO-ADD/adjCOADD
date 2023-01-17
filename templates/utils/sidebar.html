@@ -33,8 +33,13 @@
 
 </div>
 <div class="resizer">-</div>
+
+
+
+
 {%load static%}
 <script src="{%static 'js/resizebar.js'%}"></script>
+
 <script>
     function myfun() {
 
@@ -42,6 +47,7 @@
         form = document.getElementById("django-filter-siderbar")
         form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
         form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
+        form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"))
         form.submit();
     }
 </script>

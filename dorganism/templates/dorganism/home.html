@@ -34,7 +34,7 @@
   <!-- <input type="text" class="form-control mt-2" id="input1" /> -->
   <div  class="card-body d-flex justify-content-center">
     <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_card' %}"
-      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims">
+      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims" >
       ORGANISM
     </a>
     <!-- <div class="landp-div position-relative">
@@ -59,4 +59,14 @@
     </a>
   </div>
 </div>
-{%include 'ddrug/ddrug_home.html'%} {%endblock%}
+{%include 'ddrug/ddrug_home.html'%} 
+<script>
+ $(document).ready(function () {
+console.log("remove")
+
+   window.sessionStorage.removeItem('fist_load_modal1');
+ })
+</script>
+<!--  -->
+{%endblock%}
+
