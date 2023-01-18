@@ -6,7 +6,7 @@
 <div style="margin: auto; color: red; text-align: center">
   {%include 'utils/message.html'%}
 </div>
-{%include 'utils/messagebox.html'%}
+
 <div class="row gx-3 justify-content-center">
   <!-- <div class="col"> -->
 
@@ -34,24 +34,9 @@
   <!-- <input type="text" class="form-control mt-2" id="input1" /> -->
   <div  class="card-body d-flex justify-content-center">
     <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_card' %}"
-      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims">
+      data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_org}} organims" >
       ORGANISM
     </a>
-    <!-- <div class="landp-div position-relative">
-      <a class="btn border-0 position-absolute top-0 start-0 mb-5 " href="{%url 'org_card_FG' %}">
-        FG
-      </a>
-      
-      <a class="btn border-0 position-absolute bottom-50 end-50 " href="{%url 'org_card_GN' %}">
-        GN
-      </a>
-      <a class="btn border-0  position-absolute top-50 end-50" href="{%url 'org_card_GP' %}">
-        GP
-      </a>
-      <a class="btn border-0  position-absolute bottom-0 start-0" href="{%url 'org_card_MB' %}">
-        MB
-      </a>
-    </div> -->
 
     <a class="landp-img-02 d-flex align-items-center justify-content-center h4 lead" href="{%url 'taxo_card' %}"
       data-bs-toggle="tooltip" data-bs-placement="top" title="{{objects_taxo}} spieces">
@@ -59,4 +44,46 @@
     </a>
   </div>
 </div>
-{%include 'ddrug/ddrug_home.html'%} {%endblock%}
+{%include 'ddrug/ddrug_home.html'%} 
+
+
+
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">SELECT CLASS TYPE </h5>
+       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {%include 'utils/messagebox.html'%}
+       <!-- <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GN')">GN</button>
+        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GP')">GP</button>
+        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('FG')">FG</button>
+        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('MB')">MB</button> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(window).on('load', function() {
+    if(window.sessionStorage.fist_load_modal1 === undefined){
+        $('#exampleModalToggle').modal('show');
+        window.sessionStorage.fist_load_modal1 = true
+    }
+
+
+    
+});
+        
+</script>
+<!--  -->
+{%endblock%}
+

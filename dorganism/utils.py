@@ -98,7 +98,7 @@ class Organismfilter(Filterbase):
          
     class Meta:
         model=Organism
-        fields=['ID', 'Name', 'Class', 'Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
+        fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
        
 
 
@@ -132,6 +132,15 @@ class Batchfilter(Filterbase):
         model=Organism_Batch
         fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
 
+class Dictionaryfilter(Filterbase):
+      dict_class = django_filters.CharFilter(lookup_expr='icontains')
+      dict_value = django_filters.CharFilter(lookup_expr='icontains')
+      dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+
+      class Meta:
+        model=Dictionary
+        fields=['dict_class', 'dict_value', 'dict_desc']
+
 
 
 # -------------------editable tables utility function--------------------------------
@@ -164,5 +173,3 @@ class Batchfilter(Filterbase):
 #             print(err)
    
 #     return JsonResponse({"success": "updated!"})
-
-

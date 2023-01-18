@@ -8,6 +8,14 @@ ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
 # column name can be edited here 
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
+DICTIONARY_FIELDs = {
+    'dict_value':'Value', 
+    'dict_class':'Class',  
+    'dict_desc':'Description', 
+    
+    }
+
+
 # TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
 TAXONOMY_FIELDs = {
     'organism_name':'Organism Name',  

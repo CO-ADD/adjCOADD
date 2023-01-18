@@ -25,7 +25,8 @@
                 entries on one Page
             </span>
         </div>
-        <input id="order_input" type="text" name="order_by" class="not-visible">
+        
+        <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <hr>
         {{filter.form.as_p}}
     </form>
@@ -33,8 +34,13 @@
 
 </div>
 <div class="resizer">-</div>
+
+
+
+
 {%load static%}
 <script src="{%static 'js/resizebar.js'%}"></script>
+
 <script>
     function myfun() {
 
@@ -42,6 +48,7 @@
         form = document.getElementById("django-filter-siderbar")
         form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
         form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
+        form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"))
         form.submit();
     }
 </script>

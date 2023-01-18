@@ -16,12 +16,13 @@ from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
 from adjcoadd.utils_dataimport import import_excel
 from dorganism.models import Organism, Taxonomy
+from apputil.utils import FilteredListView
+from dorganism.utils import Dictionaryfilter
+from adjcoadd.constants import *
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
 def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
-
-
 
 ## =================================APP Home========================================
 
@@ -127,16 +128,14 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 ## ========================Dictionary View===========================================
 
-class DictionaryView(LoginRequiredMixin, ListView):
+class DictionaryView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Dictionary
-    fields="__all__"
     template_name='apputil/dictList.html'
-    
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.filter(astatus__gte=0)
-        return context
+    filterset_class = Dictionaryfilter
+    model_fields=DICTIONARY_FIELDs
+
+
 # 
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def createDictionary(req):
@@ -160,7 +159,26 @@ def createDictionary(req):
     
     return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
 ## ============================Dictionary View======================================##
-
+@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
+def updateDictionary(req):
+    kwargs={}
+    kwargs['user']=req.user
+    if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
+        dict_value=req.POST.get("dict_value")
+        dict_class=req.POST.get("dict_class")
+        dict_desc=req.POST.get("dict_desc")
+        object_=get_object_or_404(Dictionary, dict_value=dict_value)
+        try:
+            if object_:
+                object_.dict_class=dict_class
+                object_.dict_desc=dict_desc
+                print(object_.dict_desc)
+                object_.save(**kwargs)
+                return JsonResponse({"result": "Saved"})
+        except Exception as err:
+            return JsonResponse({"result": err})
+    
+    return JsonResponse({})
 
 
 # ==========================File Process=====================================

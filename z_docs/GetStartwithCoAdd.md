@@ -120,7 +120,7 @@ Based on the folder structure, there are 7 main branches under project root:
 
 following core folder, there are 3 projects applications:
 
-1. apputil-- prject application for utility service and users model
+1. apputil-- project application for utility service and users model
    models: ApplicationUser, Audit, Dictionary,
 2. dorganism -- application for micro organism database
    contains:...
@@ -143,6 +143,11 @@ After login, users' permission, which has been set up previously in ApplicationU
 #### Data screening
 All data tables are sorting table type. And in project settings.py, the Django-Filter packages has been implemented and it is used to get filtered queryset from database for the main models(Organism, Taxonomy, Drug, Vitek_Card).
 To display one to many relationship, the child table will be displayed under the parent table's detail view.
+
+#### Data CRUD
+To create data in database, A bootstrap modal form containing "django ModelForm (for create)" is used to create a new entry for each model. 
+For browsing all the data in main tables, there are list- and cardview for each model displaying entries per page via django pagination.
+To update entries editable tables and modal form are both used. Models updated by editable tables are: Organism, Batch, Culture, Applicationusers. Models updated by modal forms are: Stock, Taxonomy.
 
 ## User Guide section
 

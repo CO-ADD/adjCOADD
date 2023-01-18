@@ -4,61 +4,54 @@
 {% block content %}
 
 <!-- Include -->
-<div class="container vh-100">
+{%include 'utils/topbar.html'%}
+<div class="d-flex flex-row justify-content-between vh-100">
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="main d-flex flex-column" style="height: fit-content; overflow-y: scroll; ">  
+    <div>
 
-  <div id="createDict">
-    <a style="float:right" class="btn">
-      <i class="bi bi-plus"></i>
-      <span>Add New Dict</span>
-      {%include 'utils/message.html'%}
-    </a>
-  </div>
-
-  <div id="createDictModal" class="modal fade" role="dialog">
-  </div>
-  <script>
-
-    $(document).ready(function () {
-
-      let my_modal = $("#createDictModal");
-
-      $("#createDict a").click(function () {
-        my_modal.load("{%url 'dict_create'%}", function () {
-          my_modal.modal("show"); // Open Modal
-
-        });
-      });
-    });
-
-  </script>
-
-  <hr>
-  <div class="w-75 h-75 m-auto">
-
-    <table class="table table-hover bg-light">
-      <thead>
-        <tr>
-          <th scope="col">Class</th>
-          <th scope="col">name</th>
-          <th scope="col">description</th>
-
-
-        </tr>
-      </thead>
-      <tbody>
-        {% for dict in objects %}
-        <tr>
-          <th scope="row"> {{dict.dict_class}}</th>
-          <td>{{dict.dict_value}}</td>
-          <td>{{dict.dict_desc}}</td>
-
-
-        </tr>
+      {% include 'utils/pagination.html'%}    
+  
+    </div>   
+    <div class="fixTableHead">
+      
+   
+      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+        <thead>
+          <tr>
+            <th>Edit
+                  
+        <a id="createDict" class="bg-light">
+          <i class="bi bi-plus"></i>
+          
+        </a>
+        </th>
+        {%for field in fields%}
+        <th class="order_field" style="width: fit-content;">{{field}}</th>
         {%endfor%}
-      </tbody>
-    </table>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in page_obj %}
+      {%include './dictionary_tr.html'%}
+      {%endfor%}
+    </tbody>
+  </table>
+</div> 
   </div>
 </div>
 <!--prettier-ignore-->
+
+<div id="createDictModal" class="modal fade" role="dialog">
 </div>
+
+{%load static%}
+<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
+
+
+
+
 {%endblock%}

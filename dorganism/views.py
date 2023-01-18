@@ -155,8 +155,14 @@ def detailOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     context["object"]=object_
-    context["strain_type"]=",".join(object_.strain_type)
-    context["strain_panel"]=",".join(object_.strain_panel)
+    if object_.strain_type:
+        context["strain_type"]=",".join(object_.strain_type)
+    else:
+        context["strain_type"]=" "
+    if object_.strain_panel:
+        context["strain_panel"]=",".join(object_.strain_panel)
+    else:
+        context["strain_panel"]=" "
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
@@ -315,7 +321,7 @@ def stockList(req, pk):
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
         object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
-        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1)
         data=[]
         for i in qs:
             item={
