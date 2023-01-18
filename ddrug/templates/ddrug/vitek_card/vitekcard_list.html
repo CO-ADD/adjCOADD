@@ -16,11 +16,12 @@
         {% include 'utils/pagination.html'%}
       </div>
       {%include 'utils/preloader.html'%}
-    
+      <div class="fixTableHead">
       <!--prettier-ignore-->
       {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekcard' url_name='vitekcard_detail'%}
       </div>
     </div>
+  </div>
 </div>
 
 <!--prettier-ignore-->
