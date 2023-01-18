@@ -4,122 +4,116 @@
 {% block content %}
 
 <!-- Include -->
-<div class="container vh-100">
+{%include 'utils/topbar.html'%}
+<div class="d-flex flex-row justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
-  <div id="createDict">
-    <a style="float:right" class="btn">
-      <i class="bi bi-plus"></i>
-      <span>Add New Dict</span>
-      {%include 'utils/message.html'%}
-    </a>
-  </div>
-  <div id="createDictModal" class="modal fade" role="dialog">
-  </div>
-  <script>
-    
-    $(document).ready(function () {
+  <!-- Main View -->
+  <div class="main d-flex flex-column" style="height: fit-content; overflow-y: scroll; ">  
+    <div>
+
+      {% include 'utils/pagination.html'%}    
+  
+    </div>   
+    <div class="fixTableHead">
       
-      let my_modal = $("#createDictModal");
-      
-      $("#createDict a").click(function () {
-        my_modal.load("{%url 'dict_create'%}", function () {
-          my_modal.modal("show"); // Open Modal
+   
+      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+        <thead>
+          <tr>
+            <th>Edit
+                  
+        <a id="createDict" class="bg-light">
+          <i class="bi bi-plus"></i>
           
-        });
-      });
-    });
-    
-    </script>
-
-<hr>
-  <div class="w-75 h-75 m-auto">
-    {% include 'utils/pagination.html'%}
-
-    <table class="table table-hover bg-light" id="id_dictionary_table">
-      <thead>
-        <tr>
-          <th scope="col">Class</th>
-          <th scope="col">name</th>
-          <th scope="col">description</th>
-
-        </tr>
-      </thead>
-      <tbody hx-target="closest tr" hx-swap="outerHTML">
-        {% for object in objects %}
-        {%include './dictionary_tr.html'%}
+        </a>
+        </th>
+        {%for field in fields%}
+        <th class="order_field" style="width: fit-content;">{{field}}</th>
         {%endfor%}
-      </tbody>
-    </table>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in page_obj %}
+      {%include './dictionary_tr.html'%}
+      {%endfor%}
+    </tbody>
+  </table>
+</div> 
   </div>
 </div>
 <!--prettier-ignore-->
+
+<div id="createDictModal" class="modal fade" role="dialog">
 </div>
 
-
 {%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
 
 <script>
- $(document).ready(function () {
-    // Setup - add a text input to each footer cell
-    $('#id_dictionary_table thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#id_dictionary_table thead');
- 
-    var table = $('#id_dictionary_table').DataTable({
-        orderCellsTop: true,
-        fixedHeader: true,
-        initComplete: function () {
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" placeholder="' + title + '" />');
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('change', function (e) {
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
-                        })
-                        .on('keyup', function (e) {
-                            e.stopPropagation();
- 
-                            $(this).trigger('change');
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
-        },
+  $(document).ready(function () {
+    $(document).on("dblclick", ".editablerow", function () {
+        console.log("editable...")
+       var value=$(this).text();
+       var input="<input type='text' class='input-data' value='"+value+"' />";
+       $(this).html(input);
+       $(this).removeClass("editablerow");
     });
-});
+   
+    $(document).on("blur", ".input-data", function(){
+         var value=$(this).val();
+         var td= $(this).parent("td");
+         $(this).remove();
+         td.html(value);
+         td.addClass("editablerow");
+    });
+    $(document).on("keypress", ".input-data", function(e){
+     
+      if(e.keyCode===13 ){
+
+        var value=$(this).val();
+        var td= $(this).parent("td");
+        $(this).remove();
+        td.html(value);
+        td.addClass("editablerow");
+      }
+    })
+
+    $(document).on("click", ".sendToserver", function () {
+        console.log("to server...")
+
+        var $row = $(this).closest("tr"),       // Finds the closest row <tr> 
+            $td_2 = $row.find("td:nth-child(2)").data("value").toString();
+            $td_3= $row.find("td:nth-child(3)").text().toString();
+            $td_4= $row.find("td:nth-child(4)").text().toString();
+            data={"dict_value": $td_2, "dict_class":$td_3, "dict_desc":$td_4}
+            console.log(data)
+            sendToServer(data)
+    });
+
+    const csrftoken = getCookie('csrftoken');
+    const sendToServer = (data) => {
+    $.ajax({
+        url: '{%url "dict_update"%}', 
+        type: "POST",
+        headers: { 'X-CSRFToken': csrftoken },
+        data: data,
+
+    })
+        .done((response) => {
+            console.log(response)
+            // window.location.reload()
+        })
+        .fail(() => {
+            console.log("Error occured")
+        })
+}
+
+  })
+
+
 </script>
+
+
+
 {%endblock%}

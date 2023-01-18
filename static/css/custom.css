@@ -24,6 +24,7 @@
   --bs-body-bg: rgb(235, 235, 235);
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
+  --bs-th-bg:#cacece;
 }
 
 .darkMode {
@@ -62,6 +63,8 @@
   --bs-form-item-color: #3a425a;
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
+  --bs-inform-color:#f1ca81;
+  --bs-th-bg:#226770;;
 }
 
 /* html elements custom style -----------------------------*/
@@ -115,12 +118,8 @@ span {
   background-color: var(--bs-body-bg);
 }
 
-/* th {
-  width: fit-content;
-} */
 .sorting_table th {
   padding-right: 18px;
-  position: relative;
 }
 
 .sorting_table th:before,
@@ -563,3 +562,23 @@ form p{
   padding:0;
   margin-top:10px;
 }
+
+/* fixed table header */
+.fixTableHead { 
+  overflow-y: auto; 
+  height: 100vh; 
+} 
+.fixTableHead thead th { 
+  position: sticky; 
+  top: 0; 
+  background-color: var(--bs-th-bg);
+} 
+table { 
+  border-collapse: collapse;         
+  width: 100%; 
+} 
+th, 
+td { 
+  padding: 8px 15px; 
+  /* border: 2px solid #529432;  */
+} 
