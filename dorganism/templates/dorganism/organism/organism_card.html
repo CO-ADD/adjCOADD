@@ -49,45 +49,9 @@
 </div>
 
 
-<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel">SELECT CLASS TYPE </h5>
-       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GN')">GN</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GP')">GP</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('FG')">FG</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('MB')">MB</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 {%load static%}
 <script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
 
-<script>
-    function myfun_class(x){
-    form = document.getElementById("django-filter-siderbar")
-    
-    form.querySelectorAll(`input[value=${x}]`).forEach(item => item.setAttribute("checked", "true"))
-    form.submit();
-}
-
-  $(window).on('load', function() {
-      if(window.sessionStorage.fist_load_modal1 === undefined){
-          $('#exampleModalToggle').modal('show');
-          window.sessionStorage.fist_load_modal1 = true
-      }
-      
-  });
-          
-</script>
 
 {%endblock%}
