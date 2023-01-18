@@ -24,8 +24,7 @@ MEDIA_URL=('uploads/')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ["SECRET_KEY"]
-SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -90,62 +89,36 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 DATABASES = {
 
-    #  'default': {
-    #   #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+     'default': {
+      #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
-    #      "ENGINE": "psqlextra.backend",
-    #      'OPTIONS':{'options': '-c search_path=apputil,public'},
-    #      'NAME': 'orgdb',
-    #      'USER': 'orgdb', #os.environ.get('db_user'),
-    #      'PASSWORD':'orgdb',
-    #      'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #      'PORT': '5432',
-    #  },
-    #  'dorganism': {
-    #      "ENGINE": "psqlextra.backend",
-    #      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-    #      'NAME': 'orgdb',
-    #      'USER': 'orgdb', #os.environ.get('db_user'),
-    #      'PASSWORD': 'orgdb',
-    #      'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #      'PORT': '5432',
-    #  },
+         "ENGINE": "psqlextra.backend",
+         'OPTIONS':{'options': '-c search_path=apputil,public'},
+         'NAME': 'orgdb',
+         'USER': 'orgdb', #os.environ.get('db_user'),
+         'PASSWORD':'orgdb',
+         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+         'PORT': '5432',
+     },
+     'dorganism': {
+         "ENGINE": "psqlextra.backend",
+         'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+         'NAME': 'orgdb',
+         'USER': 'orgdb', #os.environ.get('db_user'),
+         'PASSWORD': 'orgdb',
+         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+         'PORT': '5432',
+     },
 
-    #  'ddrug': {
-    #      "ENGINE": "psqlextra.backend",
-    #      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-    #      'NAME': 'orgdb',
-    #      'USER': 'orgdb', #os.environ.get('db_user'),
-    #      'PASSWORD': 'orgdb',
-    #      'HOST': 'imb-coadd-work.imb.uq.edu.au',
-    #      'PORT': '5432',
-    #  }
-#     # ==================For Local Test===========================================
-   'default': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
-    },
-    'dorganism': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-      'NAME': 'orgdb',
-      'TEST': {
-          'NAME': 'mytestdatabase2',
-      },
-      'HOST': 'Localhost',
-      'PORT': '5432',
-   },
-    'ddrug': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
-    }
-
+     'ddrug': {
+         "ENGINE": "psqlextra.backend",
+         'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+         'NAME': 'orgdb',
+         'USER': 'orgdb', #os.environ.get('db_user'),
+         'PASSWORD': 'orgdb',
+         'HOST': 'imb-coadd-work.imb.uq.edu.au',
+         'PORT': '5432',
+     }
 
 
 }
@@ -210,7 +183,7 @@ CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.
 
 # Django Session timeout setting
 # INACTIVE_TIME= 120
-# SESSION_COOKIE_AGE=300
+SESSION_COOKIE_AGE=300
 # SESSION_EXPIRE_SECONDS =  120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
