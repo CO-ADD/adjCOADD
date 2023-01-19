@@ -6,14 +6,15 @@
 {% block content%}
 {%include 'utils/topbar.html'%}
 <div class="position-relative w-100 bg-transparent">
-
   <div class="d-flex flex-row  justify-content-between vh-100">
     {%include "utils/sidebar.html"%}
-
+    
     <div class="main d-flex flex-column" style="height: fit-content;">
       <div class="d-flex flex-wrap justify-content-between m-0">
         
         {% include 'utils/pagination.html'%}
+        {%include 'utils/selectAllExp.html'%}
+        <a href="{%url 'vitekcard_pivot'%}">PivotTable</a>
       </div>
       {%include 'utils/preloader.html'%}
       <div class="fixTableHead">

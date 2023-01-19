@@ -1,6 +1,8 @@
 import os
 from rdkit import Chem
 from django_filters.views import FilterView
+import pandas as pd
+import numpy as np
 
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -97,6 +99,32 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     print(context["page_obj"])
+    #     # df=pd.DataFrame()
+
+
+class VitekcardPivotView(VitekcardListView):
+    template_name='ddrug/vitek_card/vitekcard_pivotable.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context["object_list"])
+        data=list(context["object_list"].values())
+        
+        df=pd.DataFrame(data)
+        print(df)
+        table=pd.pivot_table(df, values='card_barcode', index=['acreated_id','analysis_time', 'orgbatch_id_id', ],
+                    columns=['card_type_id'], aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+        
+        context['table']=table
+        context['columns']= 'card_type_id'
+       
+        return context
+        # df=pd.DataFrame()
 
 # ==============Vitek Card Detail===================================#
 @login_required

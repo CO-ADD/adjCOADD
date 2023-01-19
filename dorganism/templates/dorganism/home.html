@@ -46,8 +46,9 @@
 </div>
 {%include 'ddrug/ddrug_home.html'%} 
 
-
-
+<div>
+  {{table | safe}}
+</div>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -58,10 +59,6 @@
       </div>
       <div class="modal-body">
         {%include 'utils/messagebox.html'%}
-       <!-- <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GN')">GN</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('GP')">GP</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('FG')">FG</button>
-        <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun_class('MB')">MB</button> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -78,12 +75,12 @@ $(window).on('load', function() {
         $('#exampleModalToggle').modal('show');
         window.sessionStorage.fist_load_modal1 = true
     }
-
-
-    
+   
 });
         
 </script>
-<!--  -->
+
+
+
 {%endblock%}
 

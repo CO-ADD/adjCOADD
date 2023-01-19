@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth import logout, login
@@ -32,8 +34,19 @@ def index(req):
     # print(setup.version)
     object_1=Organism.objects.count()
     object_2=Taxonomy.objects.count()
+    df = pd.DataFrame({"A": ["foo", "foo", "foo", "foo", "foo",
+                         "bar", "bar", "bar", "bar"],
+                   "B": ["one", "one", "one", "two", "two",
+                         "one", "one", "two", "two"],
+                   "C": ["small", "large", "large", "small",
+                         "small", "large", "small", "small",
+                         "large"],
+                   "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+                   "E": [2, 4, 5, 5, 6, 6, 8, 9, 9]})
+    table = pd.pivot_table(df, values='D', index=['A', 'B'],
+                    columns=['C'], aggfunc=np.sum).to_html()
     # messages.info(request, 'Updated') #updating infor
-    return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2})
+    return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2, 'table':table})
 ## =================================APP Home======================================##
 
 ## =================================APP Log in/out =================================
@@ -192,6 +205,8 @@ import os
 from adjcoadd.utils_dataimport import FileValidator
 from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
+from pathlib import Path
+from django.conf import settings
 
 # set filefield Validator
 # validate_file = FileValidator(max_size=1024 * 100, 
@@ -201,11 +216,25 @@ from django.db import transaction, IntegrityError
 # setup unix socket to scan stream
 # cd = clamd.ClamdUnixSocket()
 
-class FileUploadForm(forms.Form):
+
+    # #delete task
+def delete_file(file_path):
+    file_name=file_path.split("/")[2]
+    print(file_name)
+    file_full_path=os.path.join(settings.MEDIA_ROOT, file_name)
+    print(file_full_path)
+    try:
+        os.unlink(file_full_path)
+        print("removed!")
+    except Exception as err:
+        print(err)
+
+
+class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),('Dictionary', 'Dictionary'),))
     file_field = forms.FileField()#(validators=[validate_file])
 
-class Importhandler(View):
+class Importhandler(SuperUserRequiredMixin, View):
     template_name='apputil/importdata.html'
     form_class=FileUploadForm
     file_url=''
@@ -240,11 +269,12 @@ class Importhandler(View):
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
             process_name=request.POST.get('type')
+            file_path=request.POST.get("filepath")
+            data_model=request.POST.get("datamodel")
             print(f'step is {process_name}')
+            print(f'file path {self.file_url}')
             #type: Validation, Cancel, DB_Validation, Confirm, RollBack, Save-Data
             if process_name=='Validation':
-                file_path=request.POST.get("filepath")
-                data_model=request.POST.get("datamodel")
                 Importhandler.data_list=import_excel(file_path, data_model)           
                 if isinstance(Importhandler.data_list, Exception):
                     result=str(Importhandler.data_list)
@@ -255,8 +285,10 @@ class Importhandler(View):
                 return JsonResponse({"task_user": request.user.pk, 'task_status':status, 'task_result': result})
             elif process_name=='Cancel':
                 # Cancel Task
-                Importhandler.delete_task(request)
-                return JsonResponse({})
+                
+                delete_file(file_path)
+                return JsonResponse({"task_user": request.user.pk, 'task_status':'Cancelled', 'task_result': 'Uploaded file removed! you can reupload'})
+
             elif process_name=='DB_Validation':
                 # import data to DB
                 print(f'save data {Importhandler.data_list} to db')
@@ -291,18 +323,7 @@ class Importhandler(View):
                 return JsonResponse({"status":"Data Saved!"}, status=200)
         return render(request, 'apputil/importdata.html', context)
     
-    #delete task
-    @csrf_exempt
-    def delete_task(request):
-        print(Importhandler.file_url)
-        for filename in os.listdir("uploads"):
-                file_path=os.path.join("uploads", filename)
-                try:
-                    os.unlink(file_path)
-                    print("removed!")
-                except Exception as err:
-                    print(err)
-        return JsonResponse({})
+      
 
 
   

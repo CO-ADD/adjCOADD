@@ -7,15 +7,8 @@
       <p class="card-text m-0 fst-normal mb-0" style="font-size: x-small">
         {{object_var1}}
       </p>
-      <div class="checkbox-container-export mb-0" data-type="{{datatype}}">
-        <input
-          type="checkbox"
-          name="type"
-          class="filled-in"
-          value="{{object_id}}"
-        />
-        <label for=""></label>
-      </div>
+      <!-- Select Box -->
+     {%include 'utils/selectbox.html' with datatype=datatype object_id=object_id%}
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}

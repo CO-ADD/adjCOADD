@@ -226,7 +226,7 @@ class Dictionary(AuditModel):
     class Meta:
         app_label = 'apputil'
         db_table = 'app_dictionary'
-        ordering=['dict_value']
+        ordering=['dict_class','dict_value']
         indexes = [
             models.Index(name="dict_class_idx",fields=['dict_class']),
         ]
