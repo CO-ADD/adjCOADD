@@ -89,17 +89,16 @@ class FilteredListView(ListView):
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
-        # print(f"context is {context['object_list']}")
+      
         return context
 
     def get_paginate_by(self, queryset):
         qs=super().get_queryset()
-        print(qs)
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
 
     def get_order_by(self):
-        # qs=super().get_queryset()
+       
         order_by=self.request.GET.get("order_by", self.order_by) or None
         model_constants_field=self.model_fields
         acs_decs=""

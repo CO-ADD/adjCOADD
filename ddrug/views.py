@@ -112,17 +112,37 @@ class VitekcardPivotView(VitekcardListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context["object_list"])
         data=list(context["object_list"].values())
         
-        df=pd.DataFrame(data)
-        print(df)
-        table=pd.pivot_table(df, values='card_barcode', index=['acreated_id','analysis_time', 'orgbatch_id_id', ],
-                    columns=['card_type_id'], aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+        values_str=self.request.GET.get("values") or None
+        columns_str=self.request.GET.get("columns") or None
+        indexs_str=self.request.GET.get("index") or None
+        # if (indexs_str):
+        values=values_str or None
+        if values:
+            df=pd.DataFrame(data)
+            columns=columns_str.split[","] 
+            index=index_str.split[","] 
+
+            table=pd.pivot_table(df, values=values, index=index,
+                    columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
         
+        else:
+            #example default pivottable
+            data_example=list(VITEK_Card.objects.filter(proc_date='2021-06-01').values())
+            df_example=pd.DataFrame(data_example)
+            values_example='analysis_time' 
+            columns_example=['card_type_id','card_barcode', ] 
+            index_example=['acreated_id',  'orgbatch_id_id',] 
+            table_example=pd.pivot_table(df_example, values=values_example, index=index_example,
+                    columns=columns_example, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+            
+            context['columns']=columns_example
+            context['table']=table_example
+            return context
+
+        context['columns']= columns
         context['table']=table
-        context['columns']= 'card_type_id'
-       
         return context
         # df=pd.DataFrame()
 

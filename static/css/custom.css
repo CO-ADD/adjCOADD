@@ -582,3 +582,47 @@ td {
   padding: 8px 15px; 
   /* border: 2px solid #529432;  */
 } 
+
+/* pivottable */
+.dataframe thead th{
+  
+  text-align:center;
+  white-space:nowrap;
+  transform-origin:50% 50%;
+  transform: rotate(15deg);
+
+  height: fit-content;
+
+}
+.dataframe thead th:before {
+  content:'';
+  padding-top:20%;
+  /* takes width as reference, + 10% for faking some extra padding */
+  display:inline-block;
+  vertical-align:middle;
+}
+.dataframe thead th[colspan]{
+  transform: rotate(0deg);
+  
+  height: fit-content;
+}
+.dataframe thead th:before {
+  content:'';
+  padding-top:0;
+  /* takes width as reference, + 10% for faking some extra padding */
+  display:inline;
+  vertical-align:middle;
+}
+
+.dataframe td{
+  width: fit-content !important;
+  /* padding:0;
+  margin:0; */
+  white-space:nowrap;
+}
+.dataframe {
+  text-align:center;
+  /* table-layout : fixed; */
+  width:fit-content;
+  height: fit-content
+}
