@@ -82,7 +82,7 @@ class FilteredListView(ListView):
         print("no order")
         return self.filterset.qs.distinct()
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
@@ -115,5 +115,7 @@ class FilteredListView(ListView):
            
             return order_by
         return order_by
+
+    
 
     

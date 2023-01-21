@@ -84,13 +84,13 @@ DRUG_FIELDs = {
 
 VITEKCARD_FIELDs = {
     
-    "orgbatch_id":"Organism Batch",
+    "orgbatch_id_pk":"orgbatch_id",
     "card_barcode":"Barcode",
     "card_type":"Card Type",
     "card_code":"Card Code",
-    "expiry_date":"Expiried on",
-    "instrument":"Instrument",
-    "proc_date":"Processed on",
+    "expiry_date":"expiry_date",
+    "instrument":"instrument",
+    "proc_date":"proc_date",
     "analysis_time":"Analysis with"
    
 }

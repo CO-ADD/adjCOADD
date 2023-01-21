@@ -100,51 +100,54 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     print(context["page_obj"])
-    #     # df=pd.DataFrame()
-
-
-class VitekcardPivotView(VitekcardListView):
-    template_name='ddrug/vitek_card/vitekcard_pivotable.html'
-
-
     def get_context_data(self, **kwargs):
+        # get data:
         context = super().get_context_data(**kwargs)
-        data=list(context["object_list"].values())
+      
+        # initial columns, index, and values:
+        data_example=list(VITEK_Card.objects.filter(proc_date='2023-01-21').values())
+        df=pd.DataFrame(data_example)
+        values='analysis_time' 
+        columns=['card_type_id','card_barcode', ] 
+        index=['acreated_id',  'orgbatch_id_id',] 
+        table=pd.pivot_table(df, values=values, index=index,
+                        columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+      
+       
+        context["table"]=table
         
-        values_str=self.request.GET.get("values") or None
-        columns_str=self.request.GET.get("columns") or None
-        indexs_str=self.request.GET.get("index") or None
-        # if (indexs_str):
-        values=values_str or None
-        if values:
-            df=pd.DataFrame(data)
-            columns=columns_str.split[","] 
-            index=index_str.split[","] 
-
-            table=pd.pivot_table(df, values=values, index=index,
-                    columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-        
-        else:
-            #example default pivottable
-            data_example=list(VITEK_Card.objects.filter(proc_date='2021-06-01').values())
-            df_example=pd.DataFrame(data_example)
-            values_example='analysis_time' 
-            columns_example=['card_type_id','card_barcode', ] 
-            index_example=['acreated_id',  'orgbatch_id_id',] 
-            table_example=pd.pivot_table(df_example, values=values_example, index=index_example,
-                    columns=columns_example, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-            
-            context['columns']=columns_example
-            context['table']=table_example
-            return context
-
-        context['columns']= columns
-        context['table']=table
+        print(context)
         return context
-        # df=pd.DataFrame()
+    
+    def post(self, request, *args, **kwargs ):
+        queryset = self.get_queryset(**kwargs)
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+            print("received call")
+            selected_data=request.POST.getlist("selected_data[]") or None
+            values_str=request.POST.get("values") or None
+            columns_str=request.POST.get("columns") or None
+            index_str=request.POST.get("index") or None
+            print(f"index={index_str}, values={values_str}, columns={columns_str}")
+        # if (indexs_str):
+            if selected_data:
+                querydata=queryset.filter(pk__in=selected_data)
+            else:
+                querydata=queryset
+
+            values=values_str or None
+            if values:
+                data=list(querydata.values())
+                df=pd.DataFrame(data)
+                columns=columns_str.split(",") 
+                index=index_str.split(",") 
+
+                table=pd.pivot_table(df, values=values, index=index,
+                    columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+                print(table)
+                return JsonResponse({"table":table,})
+        return JsonResponse({})
+
 
 # ==============Vitek Card Detail===================================#
 @login_required

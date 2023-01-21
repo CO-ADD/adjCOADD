@@ -180,6 +180,14 @@ class AuditModel(models.Model):
     #------------------------------------------------
     #Method Get Fields, Values List
     @classmethod
+    def get_databasefields(self, fields=None):
+        if fields:
+            databasefields=fields.keys()
+        else:
+            databasefields=None
+        return databasefields
+
+    @classmethod
     def get_fields(self, fields=None):
         if fields:
             select_fields=[fields[f.name] for f in self._meta.fields if f.name in fields.keys()]

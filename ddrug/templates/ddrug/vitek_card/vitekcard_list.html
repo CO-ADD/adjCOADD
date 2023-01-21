@@ -6,24 +6,63 @@
 {% block content%}
 {%include 'utils/topbar.html'%}
 <div class="position-relative w-100 bg-transparent">
-  <div class="d-flex flex-row  justify-content-between vh-100">
+  <div class="d-flex flex-row justify-content-between vh-100">
     {%include "utils/sidebar.html"%}
-    
-    <div class="main d-flex flex-column" style="height: fit-content;">
+
+    <div class="main d-flex flex-column" style="height: fit-content">
       <div class="d-flex flex-wrap justify-content-between m-0">
-        
         {% include 'utils/pagination.html'%}
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Launch static backdrop modal
+        </button>
+        <!--  -->
         {%include 'utils/selectAllExp.html'%}
-        <a href="{%url 'vitekcard_pivot'%}">PivotTable</a>
       </div>
       {%include 'utils/preloader.html'%}
       <div class="fixTableHead">
-      <!--prettier-ignore-->
-      {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekcard' url_name='vitekcard_detail'%}
+        <!--prettier-ignore-->
+        {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekcard' url_name='vitekcard_detail'%}
       </div>
     </div>
   </div>
 </div>
 
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">{%include './vitekcard_datamap.html'%}</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!--prettier-ignore-->
+
 {% endblock%}
