@@ -29,18 +29,20 @@
   </div>
   <hr />
   <div class="row border">
-    <div class="d-flex flex-row justify-content-between vh-100">
-      <div>{%include 'utils/selectivedrag_vt.html'%}</div>
+    <div class="d-flex flex-row justify-content-center vh-100">
+      <div class="border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
 
       <div
         id="pivotable"
-        style="width: 1000px; overflow: scroll; font-size: small"
+        style="
+          width: 1500px;
+          overflow: scroll;
+          font-size: small;
+          margin-left: 0;
+        "
       >
         {{table | safe}}
       </div>
-    </div>
-    <div class="d-flex flex-wrap justify-content-between m-0">
-      {% include 'utils/pagination.html'%}
     </div>
   </div>
 </div>
