@@ -82,13 +82,14 @@ class FilteredListView(ListView):
         print("no order")
         return self.filterset.qs.distinct()
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
+      
         return context
 
     def get_paginate_by(self, queryset):
@@ -97,7 +98,7 @@ class FilteredListView(ListView):
         return paginate_by
 
     def get_order_by(self):
-        # qs=super().get_queryset()
+       
         order_by=self.request.GET.get("order_by", self.order_by) or None
         model_constants_field=self.model_fields
         acs_decs=""
@@ -114,5 +115,7 @@ class FilteredListView(ListView):
            
             return order_by
         return order_by
+
+    
 
     

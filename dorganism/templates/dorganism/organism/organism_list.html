@@ -5,35 +5,54 @@
 {% block content %}
 <!--  -->
 {%include 'utils/topbar.html'%}
-<!-- <div class="position-relative w-100 bg-transparent"> -->
 <div class="d-flex flex-row justify-content-between vh-100">
+  <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column" style="height: fit-content">
-    <div class="d-flex flex-wrap justify-content-between m-0">
-      {% include 'utils/pagination.html'%}
-      <div>
-        <!-- -----------------------------------------View Switch-------------------------------------------------------------------- -->
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
-        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
+  <div class="main d-flex flex-column">
+    <div
+      class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
+    >
+      <div class="d-flex align-items-baseline">
+        {% include 'utils/pagination.html'%}
+        <!-- Create New Entry Modal-->
+        <a
+          id="createOrganism"
+          class="card-link text-success"
+          style="float: right"
+        >
+          <i class="bi bi-plus"></i>New
+        </a>
+        <div
+          id="createOrganismModal"
+          class="modal fade"
+          role="dialog"
+          data-bs-backdrop="static"
+        ></div>
+      </div>
+      <!--  -->
+      {%include 'utils/selectAllExp.html'%}
+      <!-- Swich Table/Card View -->
+      <div class="m-0">
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
+          ><i class="bi bi-list"></i
+        ></a>
+        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"
+          ><i class="bi bi-grid-fill"></i
+        ></a>
       </div>
     </div>
-
-    <div class="row d-flex flex-wrap m-0 border">
-      <!-- object_list -->
-
-      <a id="createOrganism" class="card-link text-success" style="float: right">Add New
-        <i class="bi bi-plus"></i>
-      </a>
-      <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
-      <div class="fixTableHead">
-      {%include 'utils/datatable_general.html' with url_name='org_detail' %}
-    </div>
-
+    <!-- list View Content -->
+    <div class="fixTableHead">
+      <!-- prettier-ignore -->
+      {%include 'utils/datatable_general.html' with url_name='org_detail' modelname='Organism'%}
     </div>
   </div>
 </div>
-<!-- </div> -->
+
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_organism.js'%}"
+></script>
 {%endblock%}

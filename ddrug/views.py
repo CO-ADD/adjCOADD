@@ -1,6 +1,8 @@
 import os
 from rdkit import Chem
 from django_filters.views import FilterView
+import pandas as pd
+import numpy as np
 
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -97,6 +99,55 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
+
+    def get_context_data(self, **kwargs):
+        # get data:
+        context = super().get_context_data(**kwargs)
+      
+        # # initial columns, index, and values:
+        # data_example=list(VITEK_Card.objects.filter(proc_date='2022-01-25').values())
+        # df=pd.DataFrame(data_example)
+        # values='analysis_time' 
+        # columns=['card_type_id','card_barcode', ] 
+        # index=['acreated_id',  'orgbatch_id_id',] 
+        # table=pd.pivot_table(df, values=values, index=index,
+        #                 columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+       
+        # context["table"]=table
+        return context
+    
+    def post(self, request, *args, **kwargs ):
+        queryset = self.get_queryset(**kwargs)
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+            print("received call")
+            selected_data=request.POST.getlist("selected_data[]") or None
+            values_str=request.POST.get("values") or None
+            columns_str=request.POST.get("columns") or None
+            index_str=request.POST.get("index") or None
+            print(f"index={index_str}, values={values_str}, columns={columns_str}")
+        # if (indexs_str):
+            if selected_data:
+                querydata=queryset.filter(pk__in=selected_data)
+            else:
+                querydata=queryset
+
+            values=values_str or None
+            if values:
+                try:
+                    data=list(querydata.values())
+                    df=pd.DataFrame(data)
+                    columns=columns_str.split(",") 
+                    index=index_str.split(",") 
+                    table=pd.pivot_table(df, values=values, index=index,
+                        columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+                    print(table)
+                    return JsonResponse({"table":table,})
+                except Exception as err:
+                    error_message=str(err)
+                    return JsonResponse({"table":error_message,})
+        return JsonResponse({})
+
 
 # ==============Vitek Card Detail===================================#
 @login_required

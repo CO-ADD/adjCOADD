@@ -6,23 +6,58 @@
 {% block content%}
 {%include 'utils/topbar.html'%}
 <div class="position-relative w-100 bg-transparent">
-
-  <div class="d-flex flex-row  justify-content-between vh-100">
+  <div class="d-flex flex-row justify-content-between vh-100">
     {%include "utils/sidebar.html"%}
 
-    <div class="main d-flex flex-column" style="height: fit-content;">
-      <div class="d-flex flex-wrap justify-content-between m-0">
-        
+    <div class="main d-flex flex-column">
+      <div
+        class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
+      >
         {% include 'utils/pagination.html'%}
+        <!--  -->
+        {%include 'utils/selectAllExp.html'%}
+        <!-- Button trigger modal -->
+        <a
+          class="btn btn-sm border-0"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          <i class="fa-regular fa-chart-bar"></i>
+        </a>
+        <!--  -->
       </div>
       {%include 'utils/preloader.html'%}
       <div class="fixTableHead">
-      <!--prettier-ignore-->
-      {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekcard' url_name='vitekcard_detail'%}
+        <!--prettier-ignore-->
+        {%include 'utils/datatable_general.html' with modelname='VITEK_Card' url_name='vitekcard_detail'%}
       </div>
     </div>
   </div>
 </div>
 
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Table and Chart</h5>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+      <div class="modal-body">{%include './vitekcard_datamap.html'%}</div>
+    </div>
+  </div>
+</div>
 <!--prettier-ignore-->
+
 {% endblock%}

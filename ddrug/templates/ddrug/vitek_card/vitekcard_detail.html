@@ -5,77 +5,98 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="mx-2 border border-2">
+  <div class="row border label">
+    <div class="d-flex p-0 bd-highlight" style="font-size: x-small">
+      <div>Card: {{object.pk}} &nbsp;</div>
+      <div>
+        <strong>Created </strong>
+        {{object.acreated_at |date:"d M, Y" }}
+        <!--  -->
+        {{object.acreated_at|time:"H:i" }} AEST
+      </div>
+      <div>
+        <strong> &nbsp; by </strong>
+        {{object.acreated}}
+      </div>
+      {%if object.aupdated_at%}
+      <div>&nbsp; | &nbsp;</div>
+      <div>
+        <strong> &nbsp;Modified </strong>
+        {{object.aupdated_at |date:"d M, Y" }}
+        <!--  -->
+        {{object.aupdated_at|time:"H:i" }} AEST
+      </div>
+      <div>
+        <strong> &nbsp; by </strong>
 
-    
-    <div class="row border label">
-        <div class="d-flex p-0 bd-highlight" style="font-size: x-small;">
-            <div>Card: {{object.pk}} &nbsp;</div>
-            <div>
-                <strong>Created </strong>
-                {{object.acreated_at |date:"d M, Y" }}
-                <!--  -->
-                {{object.acreated_at|time:"H:i" }} AEST
-            </div>
-            <div> <strong> &nbsp; by </strong>
-                {{object.acreated}}
-            </div>
-            {%if object.aupdated_at%}
-            <div>&nbsp; | &nbsp;</div>
-            <div>
-                <strong> &nbsp;Modified </strong>
-                {{object.aupdated_at |date:"d M, Y" }}
-                <!--  -->
-                {{object.aupdated_at|time:"H:i" }} AEST
-            </div>
-            <div>
-                <strong> &nbsp; by </strong>
-
-                {{object.aupdated}}
-            </div>
-            {%endif%}
-        </div>
+        {{object.aupdated}}
+      </div>
+      {%endif%}
     </div>
+  </div>
 
-
-    <!-- ID -->
-    <div class="accordion" id="vitek_id">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    VITEK ID
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
-                data-bs-parent="#vitek_id">
-                <div class="accordion-body">
-                    <h5>{%include 'utils/message.html'%}</h5>
-                    <div class="table-responsive">
-                        {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekid' page_obj=vitekid_obj fields=vitekid_fields %}
-                    </div>
-                </div>
-            </div>
+  <!-- ID -->
+  <div class="accordion" id="vitek_id">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="true"
+          aria-controls="collapseTwo"
+        >
+          VITEK ID
+        </button>
+      </h2>
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#vitek_id"
+      >
+        <div class="accordion-body">
+          <h5>{%include 'utils/message.html'%}</h5>
+          <div class="table-responsive">
+            <!-- prettier-ignore -->
+            {%include 'utils/datatable_general.html' with page_obj=vitekid_obj fields=vitekid_fields %}
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- AST -->
-    <div class="accordion" id="vitek_ast">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                    VITEK AST
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
-                data-bs-parent="#vitek_ast">
-                <div class="accordion-body">
-                    <h5>{%include 'utils/message.html'%}</h5>
-                    <div class="table-responsive">
-                        {%include 'utils/datatable_ddrug.html' with datatable_ddrug='datatable_vitekast' page_obj=vitekast_obj fields=vitekast_fields %}
-                    </div>
-                </div>
-            </div>
+  <!-- AST -->
+  <div class="accordion" id="vitek_ast">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+          aria-expanded="true"
+          aria-controls="collapseThree"
+        >
+          VITEK AST
+        </button>
+      </h2>
+      <div
+        id="collapseThree"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingThree"
+        data-bs-parent="#vitek_ast"
+      >
+        <div class="accordion-body">
+          <h5>{%include 'utils/message.html'%}</h5>
+          <div class="table-responsive">
+            <!-- prettier-ignore -->
+            {%include 'utils/datatable_general.html' with page_obj=vitekast_obj fields=vitekast_fields %}
+          </div>
         </div>
+      </div>
     </div>
-    {%endblock%}
+  </div>
+  {%endblock%}
+</div>

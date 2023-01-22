@@ -180,8 +180,15 @@ class AuditModel(models.Model):
     #------------------------------------------------
     #Method Get Fields, Values List
     @classmethod
+    def get_databasefields(self, fields=None):
+        if fields:
+            databasefields=fields.keys()
+        else:
+            databasefields=None
+        return databasefields
+
+    @classmethod
     def get_fields(self, fields=None):
-        print(self._meta.get_fields())
         if fields:
             select_fields=[fields[f.name] for f in self._meta.fields if f.name in fields.keys()]
         else:
@@ -226,7 +233,7 @@ class Dictionary(AuditModel):
     class Meta:
         app_label = 'apputil'
         db_table = 'app_dictionary'
-        ordering=['dict_value']
+        ordering=['dict_class','dict_value']
         indexes = [
             models.Index(name="dict_class_idx",fields=['dict_class']),
         ]
