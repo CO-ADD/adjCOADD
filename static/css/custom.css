@@ -65,7 +65,6 @@
   --bs-footer-color: #a6b0cf;
   --bs-inform-color: #f1ca81;
   --bs-th-bg: #226770;
-  ;
 }
 
 /* html elements custom style -----------------------------*/
@@ -562,7 +561,6 @@ nav.shrink {
   justify-content: space-between;
   margin: 0;
   padding: 0;
-
 }
 
 form p {
@@ -596,18 +594,16 @@ td {
 
 /* pivottable */
 .dataframe thead th {
-
   text-align: center;
   white-space: nowrap;
   transform-origin: 50% 50%;
   transform: rotate(15deg);
 
   height: fit-content;
-
 }
 
 .dataframe thead th:before {
-  content: '';
+  content: "";
   padding-top: 20%;
   /* takes width as reference, + 10% for faking some extra padding */
   display: inline-block;
@@ -621,7 +617,7 @@ td {
 }
 
 .dataframe thead th:before {
-  content: '';
+  content: "";
   padding-top: 0;
   /* takes width as reference, + 10% for faking some extra padding */
   display: inline;
@@ -639,7 +635,7 @@ td {
   text-align: center;
   /* table-layout : fixed; */
   width: fit-content;
-  height: fit-content
+  height: fit-content;
 }
 
 /* draggable */
@@ -658,5 +654,45 @@ td {
   padding: 0.5em;
   float: left;
   margin: 10px;
-  border: 1px solid black
+  border: 1px solid black;
+}
+
+/* Functional CSS */
+/* Draggable and Dropable */
+
+#sortable1,
+#sortable2,
+#sortable3 {
+  border: 1px solid var(--bs-card-border);
+  background-color: var(--bs-body-bg);
+  max-width: fit-content;
+  min-width: 20px;
+  min-height: 200px;
+  list-style-type: none;
+  margin: auto;
+  padding: 5px;
+  /* float: left; */
+  margin-right: 10px;
+  font-size: small;
+}
+#sortable1 {
+  background-color: var(--bs-custom-white);
+}
+#sortable3 {
+  min-height: fit-content;
+  min-width: 200px;
+}
+#sortable1 li,
+#sortable2 li,
+#sortable3 li {
+  margin: 2px;
+  padding: 2px;
+  margin-left: 2px;
+  /* font-size: 1.2em; */
+  width: fit-content;
+}
+
+.ui-state-default {
+  padding: 0;
+  border: 2px solid darkblue;
 }

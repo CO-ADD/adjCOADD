@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <ul id="sortable1" class="connectedSortable bg-secondary">
+  <ul id="sortable1" class="connectedSortable">
     {%for field in model_fields %}
     <li id="{{field}}" class="draggable ui-state-default">{{field}}</li>
     {%endfor%}
@@ -7,7 +7,7 @@
     <li class="ui-state-default">Item 5</li> -->
   </ul>
 
-  <ul id="sortable2" class="connectedSortable bg-info">
+  <ul id="sortable2" class="connectedSortable">
     Column
   </ul>
 </div>

@@ -134,15 +134,18 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
 
             values=values_str or None
             if values:
-                data=list(querydata.values())
-                df=pd.DataFrame(data)
-                columns=columns_str.split(",") 
-                index=index_str.split(",") 
-
-                table=pd.pivot_table(df, values=values, index=index,
-                    columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-                print(table)
-                return JsonResponse({"table":table,})
+                try:
+                    data=list(querydata.values())
+                    df=pd.DataFrame(data)
+                    columns=columns_str.split(",") 
+                    index=index_str.split(",") 
+                    table=pd.pivot_table(df, values=values, index=index,
+                        columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+                    print(table)
+                    return JsonResponse({"table":table,})
+                except Exception as err:
+                    error_message=str(err)
+                    return JsonResponse({"table":error_message,})
         return JsonResponse({})
 
 

@@ -9,8 +9,8 @@
         >
           <option selected>Select Data Map type</option>
           <option value="1">Pivot table</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <option value="2">Pie Chart</option>
+          <option value="3">Plot</option>
         </select>
         <select
           data-name="data_process_value"
@@ -18,13 +18,13 @@
           aria-label=".form-select-sm example"
         >
           <option selected>Select Value</option>
-          {%for field in fields %}
+          {%for field in model_fields %}
           <option value="{{field}}">{{field}}</option>
           {%endfor%}
         </select>
       </form>
-      <button class="submit"></button>
-      <div class="m-auto">{%include 'utils/selectivedrag_hr.html'%}</div>
+      <button class="submit_data">Generate Table/Chart</button>
+      <div class="m-2">{%include 'utils/selectivedrag_hr.html'%}</div>
     </div>
   </div>
   <hr />

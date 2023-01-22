@@ -1,7 +1,7 @@
 $(document).ready(function () {
   console.log("loading data vitek");
 
-  $("[data-name=data_process_value]").change(function (e) {
+  $(".submit_data").click(function () {
     //selected objects
     var selected_data = [];
 
@@ -10,7 +10,10 @@ $(document).ready(function () {
     });
 
     // plot value
-    var value_str = $(this).val().toString();
+    var value_str = $("[data-name=data_process_value] option:selected")
+      .val()
+      .toString();
+    console.log(value_str);
     // plot type
     var data_map_str = $("[data-name=data_map_type] option:selected").val()
       .toString;
