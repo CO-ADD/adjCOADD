@@ -1,51 +1,39 @@
-
-
-
-<table id="{{datatable_ddrug}}" class="table table-bordered sorting_table" style="width: 100%">
+<table class="table table-bordered sorting_table" style="width: 100%">
   <thead>
     <tr>
       {%if url_name%}
       <th></th>
-      {%endif%}
-      {%for field in fields%}
-      <th class='order_field'>{{field}}</th>
+      {%endif%} {%for field in fields%}
+      <th class="order_field">{{field}}</th>
       {%endfor%}
     </tr>
   </thead>
 
   <tbody>
     {%if page_obj%}
+    <!--  -->
     {% for object in page_obj%}
     <tr>
       <td>
+        <!--prettier-ignore  -->
         {%include 'utils/selectbox.html' with datatype='Vitekcard' object_id=object.pk%}
+        <!--  -->
         {%if url_name%}
-        <a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a href="{%url url_name object.pk%}"
+          ><i class="fa fa-external-link" aria-hidden="true"></i
+        ></a>
         {%endif%}
       </td>
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
-      
     </tr>
     {%endfor%}
+    <!--  -->
     {%else%}
-    <tr>No Data</tr>
+    <tr>
+      No Data
+    </tr>
     {%endif%}
   </tbody>
 </table>
-
-{%load static%}
-<script type="text/javascript" src="{% static 'js/js_utils/dataTables.min.js'%}"></script>
-
-<script>
-  // $(document).ready(function () {
-  //   $("#{{datatable_ddrug}}").DataTable({
-  //     searching: false,
-  //     paging: false,
-  //     fixedColumns: {
-  //       heightMatch: "none",
-  //     },
-  //   });
-  // });
-</script>

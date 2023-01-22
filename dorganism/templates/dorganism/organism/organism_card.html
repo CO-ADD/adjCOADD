@@ -1,8 +1,6 @@
-<!--prettier-ignore-->
 {% extends "base.html" %}
 <!--prettier-ignore-->
 {% block title%}COADD{% endblock %}
-<!--  -->
 {% block content%}
 <!--  -->
 {%include 'utils/topbar.html' %}
@@ -11,27 +9,37 @@
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
-      {% include 'utils/pagination.html'%}
+    <div
+      class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
+    >
+      <div class="d-flex align-items-baseline">
+        {% include 'utils/pagination.html'%}
+        <!-- Create New Entry Modal-->
+        <a
+          id="createOrganism"
+          class="card-link text-success"
+          style="float: right"
+        >
+          <i class="bi bi-plus"></i>New
+        </a>
+        <div
+          id="createOrganismModal"
+          class="modal fade"
+          role="dialog"
+          data-bs-backdrop="static"
+        ></div>
+      </div>
+      <!--  -->
+      {%include 'utils/selectAllExp.html'%}
       <!-- Swich Table/Card View -->
       <div class="m-0">
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
+          ><i class="bi bi-list"></i
+        ></a>
         <a href="{%url 'org_card'%}" class="btn btn-outline-secondary">
           <i class="bi bi-grid-fill"></i>
         </a>
       </div>
-      <!-- End -->
-      <!-- Call Create Taxonomy  Modal-->
-      <div class="row d-flex flex-wrap m-0 border">
-        <a id="createOrganism" class="card-link" style="float: right">Add<i class="bi bi-plus"></i>
-        </a>
-        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
-      </div>
-      <!-- End---------------------- -->
-
-      <!--  -->
-      {%include 'utils/selectAllExp.html'%}
-
     </div>
     <!-- Card View Content -->
     <div class="contain-fluid">
@@ -48,10 +56,10 @@
   </div>
 </div>
 
-
-
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
-
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_organism.js'%}"
+></script>
 
 {%endblock%}

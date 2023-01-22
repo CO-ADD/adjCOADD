@@ -1,30 +1,64 @@
-{%include './preloader.html'%}
-
-<h5>{%include 'utils/message.html'%}</h5>
-<table id="datatable_general" class="table table-bordered sorting_table" style="width: 100%">
+<table class="table table-bordered sorting_table" style="width: 100%">
   <thead>
-
     <tr>
+      <!-- detail view link name if exists -->
       {%if url_name%}
       <th></th>
       {%endif%}
+      <!-- customized/verbose model fields name -->
       {%for field in fields%}
-      <th class="order_field" style="width: fit-content;">{{field}}</th>
+      <th class="order_field" style="width: fit-content">{{field}}</th>
       {%endfor%}
-
+      <!--field with web link if exists  -->
+      {%if tax_id %}
+      <th>Tax ID</th>
+      {%endif%}
     </tr>
   </thead>
 
   <tbody>
+    {%if page_obj%}
+    <!--  -->
     {% for object in page_obj%}
     <tr>
-      {%if url_name%}
-      <td><a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
-      {%endif%}
+      <td class="d-flex justify-content-between" style="width: 2.5em">
+        <!--prettier-ignore  -->
+        {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
+        <!--  -->
+        {%if url_name%}
+        <!--  -->
+        {%if object.urlname%}
+        <a href="{%url url_name object.urlname%}"
+          ><i class="fa fa-external-link" aria-hidden="true"></i
+        ></a>
+        {%else%}
+        <a href="{%url url_name object.pk%}"
+          ><i class="fa fa-external-link" aria-hidden="true"></i
+        ></a>
+        {%endif%}
+        <!--  -->
+        {%endif%}
+      </td>
       {%for value in object.get_values%}
       <td>{{value}}</td>
       {%endfor%}
+      <!-- Special for Taxonomy Tax_id web Link -->
+      {%if object.tax_id %}
+      <td>
+        <a
+          href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+          target="_blank"
+          >{{object.tax_id}}</a
+        >
+      </td>
+      {%endif%}
     </tr>
     {%endfor%}
+    <!--  -->
+    {%else%}
+    <tr>
+      No Data
+    </tr>
+    {%endif%}
   </tbody>
 </table>
