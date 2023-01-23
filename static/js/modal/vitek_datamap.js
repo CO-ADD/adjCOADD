@@ -1,14 +1,17 @@
 $(document).ready(function () {
   console.log("loading data vitek");
-
+  var a = "{{defaultvalues}}"
+  console.log(a)
   $(".submit_data").click(function () {
     //selected objects
+    console.log(a)
+
     var selected_data = [];
 
     $("input:checkbox[name=type]:checked").each(function () {
       selected_data.push($(this).val().toString());
     });
-
+    var card_barcode = $("input[name=card_barcode]").val()
     // plot value
     var value_str = $("[data-name=data_process_value] option:selected")
       .val()
@@ -32,10 +35,12 @@ $(document).ready(function () {
     // all data
     var data = {
       // data_map: data_map_str,
+
       selected_data: selected_data,
       values: value_str,
       columns: column_value_str,
       index: index_values_str,
+      card_barcode: card_barcode,
     };
     console.log(data);
     // ajax send data to server, receive data from server

@@ -67,6 +67,8 @@ class FilteredListView(ListView):
     paginate_by=50
     model_fields=None
     order_by=None
+    context_list=''
+
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
@@ -79,11 +81,13 @@ class FilteredListView(ListView):
         order=self.get_order_by()
         if order:
             return self.filterset.qs.distinct().order_by(order)
-        print("no order")
+        # print(self.filterset.qs.distinct())
         return self.filterset.qs.distinct()
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.context_list=context['object_list']
+        # print(context)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)

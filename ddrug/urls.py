@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import  (DrugListView, DrugCardView, createDrug, updateDrug, 
-    detailVitekcard, VitekcardListView)
+    detailVitekcard,  VitekcardListView)#VitekcardListView,
 
 
 

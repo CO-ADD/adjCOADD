@@ -99,38 +99,44 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
+    context_list=''
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,  **kwargs):
         # get data:
-        context = super().get_context_data(**kwargs)
-      
-        # # initial columns, index, and values:
-        # data_example=list(VITEK_Card.objects.filter(proc_date='2022-01-25').values())
-        # df=pd.DataFrame(data_example)
-        # values='analysis_time' 
-        # columns=['card_type_id','card_barcode', ] 
-        # index=['acreated_id',  'orgbatch_id_id',] 
-        # table=pd.pivot_table(df, values=values, index=index,
-        #                 columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-       
-        # context["table"]=table
+
+        context = super().get_context_data( **kwargs)
+
+        print(f'from get context data {self.context_list}')
+        context['defaultcolumns1']='expiry_date'
+        context['defaultcolumns2']='card_barcode'
+        context['defaultindex1']='analysis_time'
+        context['defaultindex2']='proc_date'
+        context['defaultvalues']='instrument'
+        
+    
         return context
     
-    def post(self, request, *args, **kwargs ):
-        queryset = self.get_queryset(**kwargs)
+    
 
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-            print("received call")
+    def post(self, request, *args, **kwargs ):
+        queryset=self.get_queryset()#
+        print(f'from pivoteable {queryset}')
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
             selected_data=request.POST.getlist("selected_data[]") or None
             values_str=request.POST.get("values") or None
             columns_str=request.POST.get("columns") or None
             index_str=request.POST.get("index") or None
+            card_barcode=request.POST.get("card_barcode")
             print(f"index={index_str}, values={values_str}, columns={columns_str}")
         # if (indexs_str):
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
-                querydata=queryset
+                querydata=queryset.filter(card_barcode__contains=card_barcode)
+
+            if querydata.count() > 1000 :
+                warn_message="Handling more 1000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
+                return JsonResponse({"table":warn_message,})
 
             values=values_str or None
             if values:
@@ -141,12 +147,14 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     index=index_str.split(",") 
                     table=pd.pivot_table(df, values=values, index=index,
                         columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-                    print(table)
+                    # print(table)
                     return JsonResponse({"table":table,})
                 except Exception as err:
                     error_message=str(err)
                     return JsonResponse({"table":error_message,})
         return JsonResponse({})
+
+
 
 
 # ==============Vitek Card Detail===================================#
