@@ -1,45 +1,77 @@
 <div class="container m-2">
-
-  <div class="row border">
-    <div class="d-flex align-items-stretch">
-      <form action="#" class="m-2 d-flex">
-        <select data-name="data_map_type" class="form-select form-select-sm" aria-label=".form-select-sm example">
-          <option value="1" selected>Pivot table</option>
-          <option value="2">Pie Chart</option>
-          <option value="3">Plot</option>
-        </select>
-        <div class="d-flex">
-
-          <label for="">Select Table Values</label>
-          <select data-name="data_process_value" class="form-select form-select-sm"
-            aria-label=".form-select-sm example">
-            <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
-            {%for field in model_fields %}
-            <option value="{{field}}">{{field}}</option>
-            {%endfor%}
-          </select>
-        </div>
-      </form>
-      <button class="submit_data">Generate Table/Chart</button>
-      <div class="m-2">{%include 'utils/selectivedrag_hr.html'%}</div>
+  <!-- <div class="row border"> -->
+  <div class="d-flex align-items-baseline">
+    <!-- <form action="#" class=""> -->
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Data visualization type--</span>
+      <select
+        data-name="data_map_type"
+        class="form-select form-select-sm"
+        aria-label="form-select-sm example"
+        style="width: fit-content"
+      >
+        <option value="1" selected>Pivot table</option>
+        <option value="2">Pie Chart</option>
+        <option value="3">Plot</option>
+      </select>
     </div>
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Select Table Values--</span>
+      <select
+        data-name="data_process_value"
+        class="form-select form-select-sm"
+        aria-label=".form-select-sm example"
+        style="width: fit-content"
+      >
+        <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
+        {%for field in model_fields %}
+        <option value="{{field}}">{{field}}</option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Aggregate Functions--</span>
+      <select
+        data-name="data_function_type"
+        class="form-select form-select-sm"
+        aria-label=".form-select-sm example"
+        style="width: fit-content"
+      >
+        <option value="Sum" selected>Sum</option>
+        <option value="Mean">Mean</option>
+        <option value="Std">Std</option>
+      </select>
+    </div>
+    <!-- </form> -->
   </div>
+
+  <hr />
+  <div class="d-flex align-items-center my-0">
+    <button class="submit_data btn btn-sm mx-5">Start...</button>
+    <div class="mx-2">{%include 'utils/selectivedrag_hr.html'%}</div>
+  </div>
+  <!-- </div> -->
   <hr />
   <div class="row border">
     <div class="d-flex flex-row justify-content-center vh-100">
       <div class="border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
 
-      <div id="pivotable" style="
+      <div
+        id="pivotable"
+        style="
           width: 1500px;
           overflow: scroll;
           font-size: medium;
           margin-left: 0;
-          color: Blue
-        ">
-        Make sure using <strong>Filter and Select Data </strong>before creating table. (currently not support data more
-        than 1000)
-        <br>Click <strong>"Generate..."</strong> Button create pivotable with default column, index and value.<br>
-        Change default setting via drag n drop <strong>"Dark-BLUE"</strong> square.
+          color: Blue;
+        "
+      >
+        Make sure using <strong>Filter and Select Data </strong>before creating
+        table. (currently not support data more than 2000) <br />Click
+        <strong>"Start..."</strong> Button create pivotable with default column,
+        index and value by default aggfunc np.sum.<br />
+        Change default setting via drag n drop
+        <strong>"Dark-BLUE"</strong> squares and selective options.
       </div>
     </div>
   </div>
@@ -57,4 +89,4 @@
   });
 </script>
 {%load static%}
-<script src="{% static 'js/modal/vitek_datamap.js' %}"></script>
+<script src="{% static 'js/vitek_datamap.js' %}"></script>

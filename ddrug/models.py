@@ -126,14 +126,14 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'))
         super(Drug, self).save(*args, **kwargs)
+        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'))
             
     # -------------------------------------------------
     def get_values(self, fields=DRUG_FIELDs):
         value_list=super(Drug, self).get_values(fields)
         return value_list
-        
+
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):
@@ -157,6 +157,7 @@ class VITEK_Card(AuditModel):
     analysis_time = models.CharField(max_length=15, blank=True, verbose_name = "Analysis Time") 
 
     #------------------------------------------------
+    validStatus = True
     class Meta:
         app_label = 'ddrug'
         db_table = 'vitek_card'
@@ -185,10 +186,57 @@ class VITEK_Card(AuditModel):
                 print(f"[Vitek Card Not Found] {CardBarcode}")
             retInstance = None
         return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def check_from_dict(self,cDict,valLog):
+    #
+    # Returns an instance from dictionary 
+    #  with Validation_Log for validation check
+    #  .validStatus if validated 
+    #
+        validStatus = True
+
+        retInstance = self.exists(cDict['CARD_BARCODE'])
+        if retInstance is None:
+            retInstance = self()
+            retInstance.card_barcode = cDict['CARD_BARCODE']
+            valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']} [{cDict['CARD_CODE']}]",'-')
+        else:
+            valLog.add_log('Info','Update VITEK card',f"{retInstance} [{cDict['CARD_CODE']}]",'-')
+
+        OrgBatch = Organism_Batch.exists(cDict['ORGBATCH_ID']) 
+        if OrgBatch is None:
+            valLog.add_log('Error','Organism Batch does not Exists',cDict['ORGBATCH_ID'],'Use existing OrganismBatch ID')
+            validStatus = False
+        retInstance.orgbatch_id = OrgBatch
+
+        retInstance.card_type = Dictionary.exists(retInstance.Choice_Dictionary["card_type"],cDict['CARD_TYPE'])
+        if retInstance.card_type is None:
+            valLog.add_log('Error','Vitek Card Type not Correct',cDict['CARD_TYPE'],'-')
+            validStatus = False
+
+        retInstance.card_code = cDict['CARD_CODE']
+        retInstance.instrument = cDict['INSTRUMENT']
+        retInstance.expiry_date = cDict['EXPIRY_DATE']
+        retInstance.proc_date = cDict['PROCESSING_DATE']
+        retInstance.analysis_time = cDict['ANALYSIS_TIME']
+
+        retInstance.clean_Fields()
+        validDict = retInstance.validate()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k,'-')
+        retInstance.validStatus = validStatus
+        return(retInstance)
+
+
  # -------------------------------------------------
     def get_values(self, fields=VITEKCARD_FIELDs):
         value_list=super(VITEK_Card, self).get_values(fields)
         return value_list
+
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_AST(AuditModel):
@@ -212,39 +260,102 @@ class VITEK_AST(AuditModel):
     page_no = models.IntegerField(default=0, blank=True, verbose_name = "PDF PageNo")  
 
     #------------------------------------------------
+    validStatus = True
     class Meta:
         app_label = 'ddrug'
         db_table = 'vitek_ast'
-        ordering=['drug_id','card_barcode']
+        ordering=['drug_id','bp_source','card_barcode']
         indexes = [
             models.Index(name="vast_drugid_idx",fields=['drug_id']),
             models.Index(name="vast_mic_idx",fields=['mic']),
             models.Index(name="vast_bprofile_idx",fields=['bp_profile']),
+            models.Index(name="vast_bpsource_idx",fields=['bp_source']),
             models.Index(name="vast_fname_idx",fields=['filename']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.drug_id} {self.card_barcode.orgbatch_id} {self.card_barcode.card_code}"
+        retStr = ""
+        if self.drug_id:    
+            if self.drug_id is not None:
+                retStr += f"{self.drug_id.drug_name} "
+            else:
+                retStr += f"{self.drug_id} "
+        if self.card_barcode:
+            if self.card_barcode is not None:
+                retStr += f"{self.card_barcode.orgbatch_id} {self.card_barcode.card_code}"
+            else:
+                retStr += f"{self.card_barcode} "
+        return(retStr)
 
    #------------------------------------------------
     @classmethod
-    def exists(self,CardBarcode,DrugID,verbose=0):
+    def exists(self,CardBarcode,DrugID,Source,verbose=0):
     #
     # Returns an instance if found by CardBarcode and DrugID
     #
         try:
-            retInstance = self.objects.get(card_barcode=CardBarcode,drug_id=DrugID)
+            retInstance = self.objects.get(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source)
         except:
             if verbose:
-                print(f"[Vitek AST Not Found] {CardBarcode} {DrugID}")
+                print(f"[Vitek AST Not Found] {CardBarcode} {DrugID} {Source}")
             retInstance = None
         return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def check_from_dict(self,cDict,valLog):
+    #
+    # Returns an instance from dictionary 
+    #  with Validation_Log for validation check
+    #  .validStatus if validated 
+    #
+        validStatus = True
+        Barcode = VITEK_Card.exists(cDict['CARD_BARCODE']) 
+        if Barcode is None:
+            validStatus = False
+            valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
+
+        DrugID = Drug.exists(cDict['DRUG_NAME'])
+        if DrugID is None:
+            validStatus = False
+            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
+
+        if validStatus:
+            retInstance = self.exists(Barcode,DrugID,cDict['BP_SOURCE'])
+        else:
+            retInstance = None
+               
+        if retInstance is None:
+            retInstance = self()
+            retInstance.card_barcode = Barcode
+            retInstance.drug_id = DrugID
+            retInstance.bp_source = cDict['BP_SOURCE']
+            valLog.add_log('Info','New VITEK AST',f"{Barcode} {DrugID} {cDict['BP_SOURCE']}",'-')
+        
+        retInstance.mic = cDict['MIC']
+        retInstance.process = cDict['VITEK_PROCESS']
+        retInstance.bp_profile = cDict['BP_PROFILE']
+        retInstance.bp_comment = cDict['BP_COMMENT']
+        retInstance.selection = cDict['ORGANISM_ORIGIN']
+        retInstance.organism = cDict['SELECTED_ORGANISM']
+        retInstance.filename = cDict['FILENAME']
+        retInstance.page_no = cDict['PAGENO']  
+
+        retInstance.clean_Fields()
+        validDict = retInstance.validate()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k,'-')
+
+        retInstance.validStatus = validStatus
+        return(retInstance)
+
  # -------------------------------------------------
     def get_values(self, fields=VITEKAST_FIELDs):
         value_list=super(VITEK_AST, self).get_values(fields)
         return value_list
-        
 
 # #-------------------------------------------------------------------------------------------------
 class VITEK_ID(AuditModel):
@@ -257,18 +368,20 @@ class VITEK_ID(AuditModel):
         db_column="card_barcode", related_name="%(class)s_card_barcode+") 
     process = models.CharField(max_length=50, blank=True, verbose_name = "Vitek Process")
     id_organism = models.CharField(max_length=120,  blank=True, verbose_name = "ID Organism")
-    id_probability = models.CharField(max_length=120, blank=True,  verbose_name = "ID Organism")
-    id_confidence = models.CharField(max_length=120, blank=True,  verbose_name = "ID Organism")
+    id_probability = models.CharField(max_length=120, blank=True,  verbose_name = "ID Probability")
+    id_confidence = models.CharField(max_length=120, blank=True,  verbose_name = "ID Confidence")
     id_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
     filename = models.CharField(max_length=120, blank=True, verbose_name = "PDF Filename")
     page_no = models.IntegerField(default=0, blank=True, verbose_name = "PDF PageNo")  
 
     #------------------------------------------------
+    validStatus = True
     class Meta:
         app_label = 'ddrug'
         db_table = 'vitek_id'
         #ordering=['card_barcode']
         indexes = [
+            models.Index(name="vid_barcode_idx",fields=['card_barcode']),
             models.Index(name="vid_idorg_idx",fields=['id_organism']),
             models.Index(name="vid_idprob_idx",fields=['id_probability']),
             models.Index(name="vid_idconf_idx",fields=['id_confidence']),
@@ -292,11 +405,51 @@ class VITEK_ID(AuditModel):
                 print(f"[Vitek AST Not Found] {CardBarcode} ")
             retInstance = None
         return(retInstance)
-    
+
+   #------------------------------------------------
+    @classmethod
+    def check_from_dict(self,cDict,valLog):
+    #
+    # Returns an instance from dictionary 
+    #  with Validation_Log for validation check
+    #  .validStatus if validated 
+    #
+        validStatus = True
+        Barcode = VITEK_Card.exists(cDict['CARD_BARCODE']) 
+        if Barcode is None:
+            validStatus = False
+            valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
+
+        #retInstance = self.exists(cDict['CARD_BARCODE'])
+        retInstance = self.exists(Barcode)
+        if retInstance is None:
+            retInstance = self()
+            retInstance.card_barcode = Barcode
+            valLog.add_log('Info','New VITEK ID',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
+        else:
+            valLog.add_log('Info','Update VITEK ID',f"{cDict['CARD_CODE']} ({Barcode})",'-')
+
+        retInstance.process = cDict['VITEK_PROCESS']
+        retInstance.id_organism = cDict['ID_ORGANISM']
+        retInstance.id_probability = cDict['ID_PROBABILITY']
+        retInstance.id_confidence = cDict['ID_CONFIDENCE']
+        #retInstance.id_source = cDict['CARD_BARCODE']
+        retInstance.filename = cDict['FILENAME']
+        retInstance.page_no = cDict['PAGENO']  
+
+        retInstance.clean_Fields()
+        validDict = retInstance.validate()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k,'-')
+
+        retInstance.validStatus = validStatus
+        return(retInstance)
+
+
      # -------------------------------------------------
     def get_values(self, fields=VITEKID_FIELDs):
         value_list=super(VITEK_ID, self).get_values(fields)
         return value_list
-        
-
 #-------------------------------------------------------------------------------------------------

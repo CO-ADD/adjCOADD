@@ -1,25 +1,27 @@
 $(document).ready(function () {
   console.log("loading data vitek");
-  var a = "{{defaultvalues}}"
-  console.log(a)
+  var a = "{{defaultvalues}}";
+  console.log(a);
   $(".submit_data").click(function () {
     //selected objects
-    console.log(a)
+    console.log(a);
 
     var selected_data = [];
 
     $("input:checkbox[name=type]:checked").each(function () {
       selected_data.push($(this).val().toString());
     });
-    var card_barcode = $("input[name=card_barcode]").val()
+    var card_barcode = $("input[name=card_barcode]").val();
     // plot value
     var value_str = $("[data-name=data_process_value] option:selected")
       .val()
       .toString();
     console.log(value_str);
-    // plot type
-    var data_map_str = $("[data-name=data_map_type] option:selected").val()
-      .toString;
+    // plot functijon
+    var data_function_str = $("[data-name=data_function_type] option:selected")
+      .val()
+      .toString();
+
     // index value
     var index_value = [];
     $("#sortable3 li").each(function () {
@@ -41,10 +43,11 @@ $(document).ready(function () {
       columns: column_value_str,
       index: index_values_str,
       card_barcode: card_barcode,
+      functions: data_function_str,
     };
     console.log(data);
     // ajax send data to server, receive data from server
-    sendToServer(data, "/vitekcard_list/");
+    sendToServer(data);
     // var table = result ? result : null;
     // console.log(table);
     // $("#pivotable").html = "";
@@ -53,7 +56,7 @@ $(document).ready(function () {
 });
 
 const csrftoken = getCookie("csrftoken");
-const sendToServer = (data, url) => {
+const sendToServer = (data) => {
   console.log("send to server");
   console.log(data);
   var result = "";

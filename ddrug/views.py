@@ -120,33 +120,36 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
 
     def post(self, request, *args, **kwargs ):
         queryset=self.get_queryset()#
-        print(f'from pivoteable {queryset}')
+        # define pivottable functions
+        np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
+        # receive data
         if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
             selected_data=request.POST.getlist("selected_data[]") or None
             values_str=request.POST.get("values") or None
             columns_str=request.POST.get("columns") or None
             index_str=request.POST.get("index") or None
             card_barcode=request.POST.get("card_barcode")
+            aggfunc=np_aggfunc[request.POST.get("functions")]
             print(f"index={index_str}, values={values_str}, columns={columns_str}")
-        # if (indexs_str):
+     
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
 
-            if querydata.count() > 1000 :
-                warn_message="Handling more 1000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
+            if querydata.count() > 2000 :
+                warn_message="Handling more 2000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
                 return JsonResponse({"table":warn_message,})
-
             values=values_str or None
+           
             if values:
                 try:
                     data=list(querydata.values())
                     df=pd.DataFrame(data)
                     columns=columns_str.split(",") 
-                    index=index_str.split(",") 
+                    index=index_str.split(",")
                     table=pd.pivot_table(df, values=values, index=index,
-                        columns=columns, aggfunc=np.sum).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+                        columns=columns, aggfunc=aggfunc).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
                     # print(table)
                     return JsonResponse({"table":table,})
                 except Exception as err:
