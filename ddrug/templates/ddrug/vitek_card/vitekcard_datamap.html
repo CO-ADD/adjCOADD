@@ -1,27 +1,24 @@
 <div class="container m-2">
+
   <div class="row border">
     <div class="d-flex align-items-stretch">
       <form action="#" class="m-2 d-flex">
-        <select
-          data-name="data_map_type"
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-        >
-          <option selected>Select Data Map type</option>
-          <option value="1">Pivot table</option>
+        <select data-name="data_map_type" class="form-select form-select-sm" aria-label=".form-select-sm example">
+          <option value="1" selected>Pivot table</option>
           <option value="2">Pie Chart</option>
           <option value="3">Plot</option>
         </select>
-        <select
-          data-name="data_process_value"
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-        >
-          <option selected>Select Value</option>
-          {%for field in model_fields %}
-          <option value="{{field}}">{{field}}</option>
-          {%endfor%}
-        </select>
+        <div class="d-flex">
+
+          <label for="">Select Table Values</label>
+          <select data-name="data_process_value" class="form-select form-select-sm"
+            aria-label=".form-select-sm example">
+            <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
+            {%for field in model_fields %}
+            <option value="{{field}}">{{field}}</option>
+            {%endfor%}
+          </select>
+        </div>
       </form>
       <button class="submit_data">Generate Table/Chart</button>
       <div class="m-2">{%include 'utils/selectivedrag_hr.html'%}</div>
@@ -32,17 +29,32 @@
     <div class="d-flex flex-row justify-content-center vh-100">
       <div class="border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
 
-      <div
-        id="pivotable"
-        style="
+      <div id="pivotable" style="
           width: 1500px;
           overflow: scroll;
-          font-size: small;
+          font-size: medium;
           margin-left: 0;
-        "
-      >
-        {{table | safe}}
+          color: Blue
+        ">
+        Make sure using <strong>Filter and Select Data </strong>before creating table. (currently not support data more
+        than 1000)
+        <br>Click <strong>"Generate..."</strong> Button create pivotable with default column, index and value.<br>
+        Change default setting via drag n drop <strong>"Dark-BLUE"</strong> square.
       </div>
     </div>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $(function () {
+    $("#sortable1, #sortable2, #sortable3")
+      .sortable({
+        connectWith: ".connectedSortable",
+      })
+      .disableSelection();
+  });
+</script>
+{%load static%}
+<script src="{% static 'js/modal/vitek_datamap.js' %}"></script>

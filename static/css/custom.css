@@ -597,8 +597,8 @@ td {
   text-align: center;
   white-space: nowrap;
   transform-origin: 50% 50%;
-  transform: rotate(15deg);
-
+  /* transform: rotate(90deg); */
+  width: fit-content;
   height: fit-content;
 }
 
@@ -612,7 +612,7 @@ td {
 
 .dataframe thead th[colspan] {
   transform: rotate(0deg);
-
+  width: fit-content;
   height: fit-content;
 }
 
@@ -625,10 +625,10 @@ td {
 }
 
 .dataframe td {
-  width: fit-content !important;
+  /* width: fit-content !important; */
   /* padding:0;
   margin:0; */
-  white-space: nowrap;
+  white-space: wrap;
 }
 
 .dataframe {
@@ -675,13 +675,16 @@ td {
   margin-right: 10px;
   font-size: small;
 }
+
 #sortable1 {
   background-color: var(--bs-custom-white);
 }
+
 #sortable3 {
   min-height: fit-content;
   min-width: 200px;
 }
+
 #sortable1 li,
 #sortable2 li,
 #sortable3 li {

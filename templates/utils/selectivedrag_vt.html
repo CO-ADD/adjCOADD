@@ -3,25 +3,11 @@
     {%for field in model_fields %}
     <li id="{{field}}" class="draggable ui-state-default">{{field}}</li>
     {%endfor%}
-    <!-- <li class="ui-state-default">Item 4</li>
-    <li class="ui-state-default">Item 5</li> -->
   </ul>
 
   <ul id="sortable2" class="connectedSortable">
     Column
+    <li id="{{defaultcolumns1}}" class="draggable ui-state-default">{{defaultcolumns1}}</li>
+    <li id="{{defaultcolumns1}}" class="draggable ui-state-default">{{defaultcolumns2}}</li>
   </ul>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script>
-  $(function () {
-    $("#sortable1, #sortable2, #sortable3")
-      .sortable({
-        connectWith: ".connectedSortable",
-      })
-      .disableSelection();
-  });
-</script>
-{%load static%}
-<script src="{% static 'js/modal/vitek_datamap.js' %}"></script>
