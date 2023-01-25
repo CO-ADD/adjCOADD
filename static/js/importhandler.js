@@ -56,11 +56,15 @@ $(".button").on("click", function () {
 
 $("#save_Proceed").on("click", function () {
   $("#preLoader").fadeIn();
+  const filepath = $("#filepath").text() ? $("#filepath").text() : "none";
+  const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
   $.ajax({
     url: "/import/",
     method: "POST",
     data: {
       type: $(this).data("type"),
+      filepath: filepath.toString(),
+      datamodel: datamodel.toString(),
     },
     headers: { "X-CSRFToken": csrftoken },
   })

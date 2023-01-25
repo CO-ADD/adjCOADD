@@ -1,0 +1,373 @@
+import os,sys
+import shutil
+import datetime
+import csv
+import datetime
+from dateutil import parser
+import pandas as pd
+
+import pdfplumber
+import re
+
+import logging
+logger = logging.getLogger(__name__)
+__version__ = "1.0"
+
+#-----------------------------------------------------------------------------
+def parse_VitekPDF(DirName,PdfName):
+#-----------------------------------------------------------------------------
+    lstVitek = []
+    logging.getLogger().setLevel(logging.WARNING)
+    with pdfplumber.open(os.path.join(DirName,PdfName)) as pdf:
+    # with pdfplumber.open(DirName) as pdf:
+        nPage = 0
+        df = {}
+        for page in pdf.pages:
+            #print(df)
+            df['DirName'] = DirName
+            df['FileName'] = PdfName
+            if_IsolateData = False
+            nPage += 1
+
+            # - Header --------------------------------------------------------------------------------
+            txt_lst = page.extract_text().splitlines()
+            for l in txt_lst:
+                mX = re.search('Isolate:(.+?)\((.+?)\)', l)
+                if mX:
+                    if_IsolateData = True
+                    xName = mX.group(1)
+                    df['VitekProcess'] = mX.group(2)
+                    mOrg = re.search('([a-zA-Z]+)(\d+)B(\d+)(.+)',xName)
+                    if mOrg:
+                        df['OrganismID'] = mOrg.group(1)+f"_{int(mOrg.group(2)):04d}"
+                        df['BatchID'] = int(mOrg.group(3))
+                        df['OrgBatchID'] = df['OrganismID']+f"_{int(df['BatchID']):02d}"
+                    else:
+                        xLst = xName.strip().split('-')
+                        df['OrganismID'] = xLst[0][0:2]+f"_{int(xLst[0][2:]):04d}"
+                        df['BatchID'] = int(xLst[1])
+                        df['OrgBatchID'] = df['OrganismID']+f"_{int(df['BatchID']):02d}"
+                        
+            # If Header contains Isolate/Card data
+            if if_IsolateData:
+                to_be_Saved = False
+                if_VitekID = False
+                prev_col1 = ''
+
+                for l in txt_lst:
+                    if 'Card Type:' in l:
+                        xl = l.split(' ')
+                        if 'AST' in xl[2]:
+                            df['AST_Card'] = xl[2]
+                            df['AST_Card_Barcode'] = xl[5]
+                            df['AST_Instrument'] = " ".join(xl[8:])
+                        else:    
+                            df['ID_Card'] = xl[2]
+                            df['ID_Card_Barcode'] = xl[5]
+                            df['ID_Instrument'] = " ".join(xl[8:])
+
+                # Iterate through all the tables on that page
+                for table in page.extract_tables():
+                    if_MIC_Section = False
+                    if_ID_Section = False
+                    if_AST_Section = False
+                    for row in table:
+                        #print(row)
+                        if row[0]:
+                            col1 = row[0].replace("\n", "")
+                        else:
+                            col1 = prev_col1
+                            prev_col1 = ''
+
+                        # - Comment Table -----------------------------
+                        #if 'Comments:' == col1:
+                        #    to_be_Saved = True
+
+                        # - Indentification Section (2 rows) -----------------------------
+                        if if_ID_Section:
+                            df['ID_Analysis'] = row[2].replace('Analysis Time: ','')
+                            if_ID_Section = False
+                        if 'Identification Information' == col1:
+                            if row[1] != '':
+                                if_ID_Section = True
+
+                                #df['ID_Card'] = row[1].split(' ')[1]
+                                df['ID_Card_LotN'] = row[2].split(' ')[1]
+                                dt = parser.parse(row[3].replace('Expires: ',''),tzinfos={'AEST':10 * 3600})
+                                df['ID_Expiry'] = dt.date()
+                                prev_col1 = 'ID'
+
+                        # - Organism Origin Section (1 row)-----------------------------
+                        if 'Organism Origin' == col1:
+                            df['Organism_Origin'] = row[1]
+                            if 'VITEK 2' == row[1]:
+                                if_VitekID = True
+
+                        # - Selected Organism Section (2 rows) -----------------------------
+                        if 'Selected Organism' == col1:
+                            if if_VitekID:
+                                sOrg = {}
+                                xcell = [x.split(' ') for x in row[1].splitlines()]
+                                #print(xcell)
+                                if len(xcell[0])>2:
+                                    if 'Probability' in xcell[0][1]:
+                                        sOrg['Organism'] = " ".join(xcell[0][2:])
+                                        sOrg['Probability'] = xcell[0][0]
+                                    else:
+                                        sOrg['Organism'] = " ".join(xcell[0])
+                                        sOrg['Probability'] = 0
+
+                                else:
+                                    sOrg['Organism'] = xcell[0][0] + " " + xcell[0][1]
+                                    sOrg['Probability'] = 0
+                                if len(xcell[1])>2:
+                                    if 'Confidence' in xcell[1][2]:
+                                        sOrg['Confidence'] = " ".join(xcell[1][3:])
+                                    else:
+                                        sOrg['Confidence'] = "-"
+
+                                #print(sOrg['Organism'])
+                                df['ID'] = sOrg
+                                df['Organism'] = sOrg['Organism']
+                            else:
+                                df['ID'] = None
+                                df['Organism'] = row[1]
+
+                       # - Analysis Organisms and Tests to Separate Section (n rows) -----------------------------
+                        #print(f"{row} -> {col1}")
+                        if 'Contraindicating Typical Biopattern' in col1:
+#                        if 'Analysis Organisms and Tests to Separate' in col1:
+                            lowLst =[]
+                            for r in row[0].split('\n'):
+                                lowLst.append(" ".join(r.split(',')[0].split(' ')[:2]))
+                            if len(lowLst)>1:
+                                df['ID']['Organism'] = ", ".join(lowLst[1:])
+
+                        # - Susceptibility Information Section (2 rows) -----------------------------
+                        if if_AST_Section:
+                            df['AST_Analysis'] = row[2].replace('Analysis Time: ','')
+                            if_AST_Section = False     
+                        if 'Susceptibility Information' == col1:
+                            #to_be_Saved = True
+                            if_AST_Section = True 
+                            #df['AST_Card'] = row[1].split(' ')[1]
+                            df['AST_Card_LotN'] = row[2].split(' ')[1]
+                            df['AST'] = {}
+                            dt = parser.parse(row[3].replace('Expires: ',''),tzinfos={'AEST':10 * 3600})
+                            df['AST_Expiry'] = dt.date()
+                            prev_col1 = 'AST'
+
+                        if 'AST' == col1:
+                            dt = parser.parse(row[3].replace('Completed: ',''),tzinfos={'AEST':10 * 3600})
+                            df['AST_Date'] = dt.date()
+                        if 'ID' == col1:
+                            dt = parser.parse(row[3].replace('Completed: ',''),tzinfos={'AEST':10 * 3600})
+                            df['ID_Date'] = dt.date()
+
+                        # - AES Findings Section --------------------------------------------    
+                        if 'AES Findings:' == col1:
+                            if 'EUCAST' in row[1]:
+                                df['AST_Interpretation'] = 'EUCAST'
+                            elif 'CSLI' in row[1]:
+                                df['AST_Interpretation'] = 'CSLI'
+                            else:
+                                df['AST_Interpretation'] = 'Other'       
+                            if_MIC_Section = False
+                            to_be_Saved = True
+
+                        # - MIC Section -----------------------------------------------------   
+                        if if_MIC_Section:
+                            if row[1] != '':
+                                df['AST'][row[0].replace("\n", "")] = {'MIC': row[1], 'Interpretation': row[2]}
+                            if row[4] != '':
+                                df['AST'][row[3].replace("\n", "")] = {'MIC': row[4], 'Interpretation': row[5]}
+                        if 'Antimicrobial' == col1:
+                            if_MIC_Section = True
+
+                #print(f"{to_be_Saved} - {df}")
+                if to_be_Saved:
+                    df['PageNo'] = nPage
+                    lstVitek.append(df)
+                    df = {}
+            else:
+                # Last Isolate page and still Data
+                if df:
+                    df['PageNo'] = nPage - 1
+                    lstVitek.append(df)
+                    df = {}
+
+        # Last Page and still Isolate Data
+        if if_IsolateData:
+            if df:
+                df['PageNo'] = nPage - 1
+                lstVitek.append(df)
+                df = {}
+
+    logging.getLogger().setLevel(logging.INFO)
+    #print(lstVitek) 
+    return(lstVitek)
+
+# --------------------------------------------------------------------
+def dict_Vitek_Card(pCard,card_type):
+# --------------------------------------------------------------------
+    if card_type == 'AST':
+        if 'AST_Card_Barcode' in pCard:
+            dfCard = {}
+            dfCard['CARD_TYPE'] = 'AST'
+            dfCard['CARD_CODE'] = pCard['AST_Card']
+            dfCard['CARD_BARCODE'] = pCard['AST_Card_Barcode']
+            dfCard['INSTRUMENT'] = pCard['AST_Instrument']
+            dfCard['EXPIRY_DATE'] = pCard['AST_Expiry']
+            dfCard['PROCESSING_DATE'] = pCard['AST_Date']
+            dfCard['ANALYSIS_TIME'] = pCard['AST_Analysis']
+            dfCard['ORGANISM_ID'] = pCard['OrganismID']
+            dfCard['BATCH_ID'] = pCard['BatchID']
+            dfCard['ORGBATCH_ID'] = pCard['OrgBatchID']
+            return([dfCard])         
+        else:
+            return([])
+    if card_type == 'ID':
+        if 'ID_Card_Barcode' in pCard:
+            dfCard = {}
+            dfCard['ORGANISM_ID'] = pCard['OrganismID']
+            dfCard['BATCH_ID'] = pCard['BatchID']
+            dfCard['ORGBATCH_ID'] = pCard['OrgBatchID']         
+            dfCard['CARD_TYPE'] = 'ID'
+            dfCard['CARD_CODE'] = pCard['ID_Card']
+            dfCard['CARD_BARCODE'] = pCard['ID_Card_Barcode']
+            dfCard['INSTRUMENT'] = pCard['ID_Instrument']
+            if 'ID_Expiry' in pCard:
+                dfCard['EXPIRY_DATE'] = pCard['ID_Expiry']
+                dfCard['PROCESSING_DATE'] = pCard['ID_Date']
+                dfCard['ANALYSIS_TIME'] = pCard['ID_Analysis']
+            return([dfCard])         
+        else:
+            return([])
+    return([])
+
+# --------------------------------------------------------------------
+def dict_Vitek_ID(pCard):
+# --------------------------------------------------------------------
+    dfID = {}
+    dfID['CARD_CODE'] = pCard['ID_Card']
+    dfID['CARD_BARCODE'] = pCard['ID_Card_Barcode']
+    dfID['VITEK_PROCESS'] = pCard['VitekProcess']
+    dfID['FILENAME'] = pCard['FileName']
+    dfID['PAGENO'] = pCard['PageNo']
+    dfID['ORGANISM_ID'] = pCard['OrganismID']
+    dfID['BATCH_ID'] = pCard['BatchID']
+    dfID['ORGBATCH_ID'] = pCard['OrgBatchID']         
+    xID = pCard['ID']
+    dfID['ID_ORGANISM'] = xID['Organism']
+    dfID['ID_PROBABILITY'] = xID['Probability']
+    dfID['ID_CONFIDENCE'] = xID['Confidence'].replace(' identification','')
+    return([dfID])
+
+
+# --------------------------------------------------------------------
+def dict_Vitek_AST(pCard):
+# --------------------------------------------------------------------
+    xAST = pCard['AST']
+    lAST = []
+    for pAST in xAST:
+        dfAST = {}
+        dfAST['CARD_CODE'] = pCard['AST_Card']
+        dfAST['CARD_BARCODE'] = pCard['AST_Card_Barcode']
+        dfAST['VITEK_PROCESS'] = pCard['VitekProcess']
+        dfAST['FILENAME'] = pCard['FileName']
+        dfAST['PAGENO'] = pCard['PageNo']
+        dfAST['ORGANISM_ID'] = pCard['OrganismID']
+        dfAST['SELECTED_ORGANISM'] = pCard['Organism']
+        dfAST['ORGANISM_ORIGIN'] = pCard['Organism_Origin']
+        dfAST['BATCH_ID'] = pCard['BatchID']
+        dfAST['ORGBATCH_ID'] = pCard['OrgBatchID']         
+
+        xComment = []
+        #dfAST['BP_COMMENT'] = ''
+        dfAST['BP_PROFILE'] = xAST[pAST]['Interpretation']
+        dfAST['BP_SOURCE'] = pCard['AST_Interpretation']
+
+        nDrug = pAST.replace('/','|').replace(' Acid',' acid')
+        if '#' in nDrug:
+            nDrug = nDrug.replace('#','')
+            xComment.append('Disabled bioART Limitation Rule')
+            #dfAST['BP_COMMENT'] = 'Disabled bioART Limitation Rule'
+        dfAST['DRUG_NAME'] = nDrug
+
+        dfAST['MIC'] = xAST[pAST]['MIC']
+        if dfAST['MIC'] == 'TRM':
+            xComment.append('Insufficient incubation time for analysis')
+            #dfAST['BP_COMMENT'] = 'Insufficient incubation time for analysis'
+            dfAST['MIC'] = ''
+        elif dfAST['MIC'] == '(-)':
+            xComment.append('Susceptibility testing not recommended')
+            #dfAST['BP_COMMENT'] = 'Susceptibility testing not recommended'
+            dfAST['MIC'] = ''
+            dfAST['BP_PROFILE'] = ''
+        elif '**' in dfAST['MIC']:
+            xComment.append('User modified')
+            dfAST['BP_COMMENT'] = 'User modified'
+            #dfAST['MIC'] = dfAST['MIC'].replace('**','')
+        elif '*' in dfAST['MIC']:
+            xComment.append('AES modified')
+            #dfAST['BP_COMMENT'] = 'AES modified'
+            dfAST['MIC'] = dfAST['MIC'].replace('*','')
+
+        if dfAST['DRUG_NAME'] == 'ESBL':
+            xComment.append('(FEP 1, CTX 0.5, CAZ 0.5, FEP/CA 1/10, CTX/CA 0.5/4, CAZ/CA 0.5/4)')
+            #dfAST['BP_COMMENT'] = dfAST['BP_COMMENT'] + " (FEP 1, CTX 0.5, CAZ 0.5, FEP/CA 1/10, CTX/CA 0.5/4, CAZ/CA 0.5/4)"
+        elif dfAST['DRUG_NAME'] == 'Inducible Clindamycin Resistance':
+            xComment.append('(CM 0.5, CM/E 0.25/0.5)')
+            #dfAST['BP_COMMENT'] = dfAST['BP_COMMENT']+ " (CM 0.5, CM/E 0.25/0.5)"
+
+        if len(xComment)>0:
+            dfAST['BP_COMMENT'] = "; ".join(xComment)
+        else:
+            dfAST['BP_COMMENT'] = ''
+
+        lAST.append(dfAST)
+    return(lAST)
+
+
+#-----------------------------------------------------------------------------
+def process_VitekPDF(DirName,PdfName):
+#-----------------------------------------------------------------------------
+
+    pVitek = parse_VitekPDF(DirName,PdfName)
+
+    lstCards = []
+    lstID = []
+    lstAST = []
+    for pv in pVitek:
+        k = pv.keys()
+        #print(f"\n**\n {pv}\n**\n")
+
+        # if any('Barcode' in x for x in k):
+        # #if 'ID_Card_Barcode' in pv or 'AST_Card_Barcode' in pv:
+        #     lstCards.append(dict_Vitek_Card(pv))
+        #     print("Card")
+
+        if 'ID' in k :
+            if pv['ID']:
+                print(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
+                xCard = dict_Vitek_Card(pv,'ID')
+                for x in xCard:
+                    lstCards.append(x)
+                xID = dict_Vitek_ID(pv)
+                for x in xID:
+                    lstID.append(x)
+
+        if 'AST' in k :
+            if pv['AST']:
+                print(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
+                xCard = dict_Vitek_Card(pv,'AST')
+                for x in xCard:
+                    lstCards.append(x)
+                xAST = dict_Vitek_AST(pv)
+                for x in xAST:
+                    lstAST.append(x)
+    print(f"[Vitek    ] {len(lstCards):4d} - {len(lstID):4d} - {len(lstAST):4d} ")
+    # print(f"{len(lstCards)} {lstCards} \n")
+    # print(f"{len(lstID)} {lstID} \n")
+    # print(f"{len(lstAST)} {lstAST} \n")
+    return(lstCards,lstID,lstAST)

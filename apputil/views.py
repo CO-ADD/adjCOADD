@@ -19,6 +19,7 @@ from dorganism.models import Organism, Taxonomy
 from apputil.utils import FilteredListView
 from dorganism.utils import Dictionaryfilter
 from adjcoadd.constants import *
+from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
 def permission_not_granted(req):
@@ -69,7 +70,7 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     login_url = '/'
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.has_permission('Admin')
 
 @login_required(login_url='/')
 def userprofile(req, id):
@@ -193,6 +194,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from pathlib import Path
 from django.conf import settings
+from .utils import instance_dict, Validation_Log
 
 # set filefield Validator
 # validate_file = FileValidator(max_size=1024 * 100, 
@@ -217,7 +219,7 @@ def delete_file(file_path):
 
 
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
-    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),('Dictionary', 'Dictionary'),))
+    file_data= forms.ChoiceField(choices=(('Taxonomy', 'Taxonomy'),('Organism', 'Organism'),('Dictionary', 'Dictionary'),('Vitek', 'Vitek'),))
     file_field = forms.FileField()#(validators=[validate_file])
 
 class Importhandler(SuperUserRequiredMixin, View):
@@ -235,6 +237,12 @@ class Importhandler(SuperUserRequiredMixin, View):
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
+        vLog = Validation_Log('VITEK PDF')
+        kwargs={}
+        kwargs['user']=request.user
+        vCards=[]
+        vID=[]
+        vAST=[]
 
         try:
             if form.is_valid():
@@ -244,6 +252,15 @@ class Importhandler(SuperUserRequiredMixin, View):
                 fs=FileSystemStorage()
                 filename=fs.save(myfile.name, myfile)
                 self.file_url=fs.url(filename)
+                
+                try:
+                    vCards,vID,vAst=import_excel(self.file_url, self.data_model)
+                    # vID=import_excel(self.file_url, self.data_model)[1]
+                    # vAST=import_excel(self.file_url, self.data_model)[2]
+                    print(vCards)
+                except Exception as err:
+                    # return messages.warning(request, f'There is {err} error, upload again')
+                    print(err)
                 context['file_path']=self.file_url
                 context['data_model']=self.data_model
                 return render(request,'apputil/importdata.html', context)
@@ -254,46 +271,88 @@ class Importhandler(SuperUserRequiredMixin, View):
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+            table_name=[","]
+            validate_result=[","]
+            file_report=[","]
             process_name=request.POST.get('type')
             file_path=request.POST.get("filepath")
             data_model=request.POST.get("datamodel")
-            print(f'step is {process_name}')
-            print(f'file path {self.file_url}')
+           
             #type: Validation, Cancel, DB_Validation, Confirm, RollBack, Save-Data
+            # print(Importhandler.data_list)          
             if process_name=='Validation':
-                Importhandler.data_list=import_excel(file_path, data_model)           
-                if isinstance(Importhandler.data_list, Exception):
-                    result=str(Importhandler.data_list)
-                    status='Form Errors'
-                else:
-                    result='pass'
-                    status='Form is Valid'
-                return JsonResponse({"task_user": request.user.pk, 'task_status':status, 'task_result': result})
+                # models objects list coming from parsed file
+                vCards,vID,vAst=import_excel(file_path, data_model)
+                print(f'vcards is {vCards}')
+                # validating each objectslist 
+                if vCards:
+                    table_name.append("Vitek_card")
+                    for e in vCards:
+                        djCard=VITEK_Card.check_from_dict(e, vLog)
+                    validate_result.append(str(djCard.validStatus))
+                    file_report.append(str(vLog.show()))
+                
+                if vID:
+                    table_name.append("Vitek_id")
+                    for e in vID:
+                        djID=VITEK_ID.check_from_dict(e, vLog)
+                    validate_result.append(str(djID.validStatus))
+                    file_report.append(str(vLog.show()))
+                
+                if vAst:
+                    table_name.append("Vitek_ast")
+                    for e in vAst:
+                        djAst=VITEK_AST.check_from_dict(e, vLog)
+                    validate_result.append(str(djAst.validStatus))
+                    file_report.append(str(vLog.show()))               
+                
+                return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})                                   
+                # Importhandler.data_list=import_excel(file_path, data_model)
+                # if isinstance(Importhandler.data_list, Exception):
+                #     result=str(Importhandler.data_list)
+                #     status='Form Errors'
+                # else:
+                #     result=str(Importhandler.data_list)
+                #     status='Form is Valid'
+                # return JsonResponse({"task_user": request.user.pk, 'task_status':status, 'task_result': result})
             elif process_name=='Cancel':
                 # Cancel Task
                 
                 delete_file(file_path)
-                return JsonResponse({"task_user": request.user.pk, 'task_status':'Cancelled', 'task_result': 'Uploaded file removed! you can reupload'})
+                return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})
 
             elif process_name=='DB_Validation':
-                # import data to DB
-                print(f'save data {Importhandler.data_list} to db')
-                errList=[]
-                #  save to db function
+                # import data to DB             
+                vCards,vID,vAst=import_excel(file_path, data_model)
+                # validating each objectslist 
+                if vCards:
+                    table_name.append("Vitek_card")
+                    for e in vCards:
+                        djCard=VITEK_Card.check_from_dict(e, vLog)
+                        if djCard.validStatus:
+                            djCard.save(**kwargs)
+                    validate_result.append(str(djCard.validStatus))
+                    file_report.append(str(vLog.show()))
                 
-                for obj in Importhandler.data_list:
-                    print(obj.pk)
-                    if Taxonomy.objects.filter(pk=obj.pk):
-                        return JsonResponse({'status':'DATA exists'}) 
-                    try:
-                        obj.save()
-                        print('save')
-                    except Exception as err:
-                        print(err)
-                        errList.append[err]
-                        return JsonResponse({"status":errList})
-            
-                return JsonResponse({"status":"SUCCESS"}, status=200)
+                if vID:
+                    table_name.append("Vitek_id")
+                    for e in vID:
+                        djID=VITEK_ID.check_from_dict(e, vLog)
+                        if djCard.validStatus:
+                            djCard.save(**kwargs)
+                    validate_result.append(str(djID.validStatus))
+                    file_report.append(str(vLog.show()))
+                
+                if vAst:
+                    table_name.append("Vitek_ast")
+                    for e in vAst:
+                        djAst=VITEK_AST.check_from_dict(e, vLog)
+                        if djCard.validStatus:
+                            djCard.save(**kwargs)
+                    validate_result.append(str(djAst.validStatus))
+                    file_report.append(str(vLog.show()))               
+                
+                return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})
                   
             elif process_name=='Save-Data':
                 print(Importhandler.data_list)

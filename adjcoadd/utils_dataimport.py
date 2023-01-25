@@ -11,6 +11,8 @@ from django.db import transaction
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture
 from apputil.models import Dictionary
+from apputil.utils import Validation_Log, instance_dict
+from ddrug.Vitek import *
 
 # -----------------------Start Utility Functions-----------------------------------
 
@@ -143,9 +145,11 @@ def validate_Dictionary(dbframe):
         except Exception as err:
             print(err)
             return err
+    print(object_list)
     return object_list
 
 # =========================================================
+from django.conf import settings
 @transaction.atomic
 def import_excel(file_path, data_model):
     print('importing....')
@@ -153,6 +157,12 @@ def import_excel(file_path, data_model):
     excel_file=file_path
     print(excel_file)
     # object_list=[]
+    file_name=file_path.split("/")[2]
+    dirname=settings.MEDIA_ROOT
+    
+    if model=='Vitek':
+        print("working on Vitek pdf")
+        return process_VitekPDF(DirName=dirname, PdfName=file_name) #DirName,PdfName
     
     try:
         exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
@@ -166,6 +176,7 @@ def import_excel(file_path, data_model):
         return validate_Organism(dbframe)
     elif model=='Dictionary':
         return validate_Dictionary(dbframe)
+    
 
     else:
         raise Exception('No Model Found, Please Choose Model: Taxonomy, Organism...')

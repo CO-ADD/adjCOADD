@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import re
 import unicodedata
 import django_filters
@@ -14,6 +15,49 @@ from .models import Dictionary
 from adjcoadd.constants import *
 
 
+# Model Validation utilities  =====================================================================================
+
+class Validation_Log():
+
+    def __init__(self,logProcess,logTypes= ['Error','Warning','Info']):
+        self.logProcess = logProcess
+        self.logTypes = logTypes
+        self.nLogs = {}
+        self.Logs = {}
+
+        for t in self.logTypes:
+            self.nLogs[t] = 0
+            self.Logs[t] = []
+           
+
+    def add_log(self, logType, logDesc, logItem, logHelp):
+        lDict = {
+            'Process': self.logProcess, 
+            'Description': logDesc, 
+            'Item': str(logItem), 
+            'Help': logHelp,
+            'Time': datetime.now() }
+        logType = logType[0].upper()+logType[1:].lower()
+        if logType in self.logTypes:
+            self.Logs[logType].append(lDict)
+            self.nLogs[logType] = self.nLogs[logType] + 1
+        
+    def show(self,logTypes= ['Error','Warning','Info']):
+        info=[]
+        for t in logTypes:
+            print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+            for l in self.Logs[t]:
+                print(f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} ")
+                print_info=f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} "
+                info.append(print_info)
+        return info
+
+#-----------------------------------------------------------------------------------
+def instance_dict(instance, key_format=None):
+    "Returns a dictionary containing field names and values for the given instance"
+#-----------------------------------------------------------------------------------
+    from django.forms.models import model_to_dict
+    model_to_dict(instance, fields=[field.name for field in instance._meta.fields]) 
 
 # ===================================Dictionary query convert to choice Tuples========================================================================#
 
@@ -60,6 +104,9 @@ def slugify(value, lower=False, allow_unicode=False):
     else:
         return value
 #-----------------------------------------------------------------------------------
+ 
+
+
 #  #####################Django Filter View#################
 # Base Class for all models list/card view
 class FilteredListView(ListView):

@@ -593,6 +593,15 @@ td {
 }
 
 /* pivottable */
+
+.dataframe th,
+.dataframe td {
+  padding: 2px;
+  margin: 0;
+  font-size: small;
+  color: var(--bs-body-color) !important;
+}
+
 .dataframe thead th {
   text-align: center;
   white-space: nowrap;
@@ -600,6 +609,8 @@ td {
   /* transform: rotate(90deg); */
   width: fit-content;
   height: fit-content;
+  background-color: var(--bs-footer-bg);
+
 }
 
 .dataframe thead th:before {
@@ -636,6 +647,8 @@ td {
   /* table-layout : fixed; */
   width: fit-content;
   height: fit-content;
+  padding: 0;
+  border: 1px solid;
 }
 
 /* draggable */
