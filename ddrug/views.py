@@ -105,14 +105,18 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         # get data:
 
         context = super().get_context_data( **kwargs)
-
-        print(f'from get context data {self.context_list}')
+       
         context['defaultcolumns1']='expiry_date'
         context['defaultcolumns2']='card_barcode'
         context['defaultindex1']='analysis_time'
         context['defaultindex2']='proc_date'
         context['defaultvalues']='instrument'
-        
+      
+        data=list(context["object_list"].values())
+        df=pd.DataFrame(data)
+        table=pd.pivot_table(df, values=["instrument"], index=["proc_date", "analysis_time"],
+                        columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
+        context['table']=table
     
         return context
     

@@ -50,7 +50,7 @@ Install all the following packages in the conda environment.
 10. django-sequences
 11. pip install django-model-utils
 12. pip install django-filter
-13. pip install django-postgres-extra
+13. pip install pdfplumber
     ...
 
 ### Module Introduction

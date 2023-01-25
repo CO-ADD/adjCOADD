@@ -45,7 +45,7 @@ $(document).ready(function () {
       card_barcode: card_barcode,
       functions: data_function_str,
     };
-    console.log(data);
+    // console.log(data);
     // ajax send data to server, receive data from server
     sendToServer(data);
     // var table = result ? result : null;
@@ -58,7 +58,7 @@ $(document).ready(function () {
 const csrftoken = getCookie("csrftoken");
 const sendToServer = (data) => {
   console.log("send to server");
-  console.log(data);
+  // console.log(data);
   var result = "";
   $.ajax({
     url: "/vitekcard_list", //url,
@@ -68,7 +68,7 @@ const sendToServer = (data) => {
   })
     .done((response) => {
       data = response["table"];
-      console.log(data);
+      // console.log(data);
       $("#pivotable").html("");
       $("#pivotable").append(data);
     })

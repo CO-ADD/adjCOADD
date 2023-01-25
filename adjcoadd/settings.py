@@ -17,7 +17,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_ROOT=os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT=os.path.join(BASE_DIR.parent, 'uploads')
 MEDIA_URL=('uploads/')
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +25,7 @@ MEDIA_URL=('uploads/')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
-# SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -120,6 +120,7 @@ DATABASES = {
           'HOST': 'imb-coadd-work.imb.uq.edu.au',
           'PORT': '5432',
       }
+
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  

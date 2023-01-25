@@ -11,6 +11,10 @@ from django.db import transaction
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture
 from apputil.models import Dictionary
+from apputil.utils import Validation_Log, instance_dict
+from ddrug.Vitek import *
+from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
+from .utils import instance_dict, Validation_Log
 
 # -----------------------Start Utility Functions-----------------------------------
 
@@ -39,30 +43,30 @@ class FileValidator(object):
         self.content_types = content_types
 
     def __call__(self, data):
-        if self.max_size is not None and data.size > self.max_size:
-            params = {
-                'max_size': filesizeformat(self.max_size), 
-                'size': filesizeformat(data.size),
-            }
-            raise ValidationError(self.error_messages['max_size'],
-                                   'max_size', params)
+        # if self.max_size is not None and data.size > self.max_size:
+        #     params = {
+        #         'max_size': filesizeformat(self.max_size), 
+        #         'size': filesizeformat(data.size),
+        #     }
+        #     raise ValidationError(self.error_messages['max_size'],
+        #                            'max_size', params)
 
-        if self.min_size is not None and data.size < self.min_size:
-            params = {
-                'min_size': filesizeformat(self.min_size),
-                'size': filesizeformat(data.size)
-            }
-            raise ValidationError(self.error_messages['min_size'], 
-                                   'min_size', params)
+        # if self.min_size is not None and data.size < self.min_size:
+        #     params = {
+        #         'min_size': filesizeformat(self.min_size),
+        #         'size': filesizeformat(data.size)
+        #     }
+        #     raise ValidationError(self.error_messages['min_size'], 
+        #                            'min_size', params)
 
-        # if self.content_types:
-        #     content_type = magic.from_buffer(data.read(), mime=True)
-        #     data.seek(0)
+        if self.content_types:
+            content_type = magic.from_buffer(data.read(), mime=True)
+            data.seek(0)
 
-        #     if content_type not in self.content_types:
-        #         params = { 'content_type': content_type }
-        #         raise ValidationError(self.error_messages['content_type'],
-        #                            'content_type', params)
+            if content_type not in self.content_types:
+                params = { 'content_type': content_type }
+                raise ValidationError(self.error_messages['content_type'],
+                                   'content_type', params)
 
     def __eq__(self, other):
         return (
@@ -143,9 +147,11 @@ def validate_Dictionary(dbframe):
         except Exception as err:
             print(err)
             return err
+    print(object_list)
     return object_list
 
 # =========================================================
+from django.conf import settings
 @transaction.atomic
 def import_excel(file_path, data_model):
     print('importing....')
@@ -153,6 +159,12 @@ def import_excel(file_path, data_model):
     excel_file=file_path
     print(excel_file)
     # object_list=[]
+    file_name=file_path.split("/")[2]
+    dirname=settings.MEDIA_ROOT
+    
+    if model=='Vitek':
+        print("working on Vitek pdf")
+        return process_VitekPDF(DirName=dirname, PdfName=file_name) #DirName,PdfName
     
     try:
         exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
@@ -166,8 +178,92 @@ def import_excel(file_path, data_model):
         return validate_Organism(dbframe)
     elif model=='Dictionary':
         return validate_Dictionary(dbframe)
+    
 
     else:
         raise Exception('No Model Found, Please Choose Model: Taxonomy, Organism...')
         return err  
     # return 'something wrong'
+
+# file process procedure -- Ajax response Function
+def uploadedfile_process(request,table_name,validate_result, file_report, process_name, file_path, data_model, vLog):
+    kwargs={}
+    kwargs['user']=request.user
+    if process_name=='Validation':
+                # models objects list coming from parsed file
+        vCards,vID,vAst=import_excel(file_path, data_model)
+        print(f'vcards is {vCards}')
+        # validating each objectslist 
+        if vCards:
+            table_name.append("Vitek_card")
+            for e in vCards:
+                djCard=VITEK_Card.check_from_dict(e, vLog)
+                validate_result.append(str(djCard.validStatus))
+                file_report.append(str(vLog.show()))
+        
+        if vID:
+            table_name.append("Vitek_id")
+            for e in vID:
+                djID=VITEK_ID.check_from_dict(e, vLog)
+                validate_result.append(str(djID.validStatus))
+                file_report.append(str(vLog.show()))
+        
+        if vAst:
+            table_name.append("Vitek_ast")
+            for e in vAst:
+                djAst=VITEK_AST.check_from_dict(e, vLog)
+                validate_result.append(str(djAst.validStatus))
+                file_report.append(str(vLog.show()))               
+        
+        return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})                                   
+       
+    elif process_name=='Cancel':
+        # Cancel Task
+        
+        delete_file(file_path)
+        return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})                                   
+    elif process_name=='DB_Validation':
+        # import data to DB             
+        vCards,vID,vAst=import_excel(file_path, data_model)
+        # validating each objectslist 
+        if vCards:
+            table_name.append("Vitek_card")
+            for e in vCards:
+                djCard=VITEK_Card.check_from_dict(e, vLog)
+                if djCard.validStatus:
+                    djCard.save(**kwargs)
+                validate_result.append(str(djCard.validStatus))
+                file_report.append(str(vLog.show()))
+                
+        if vID:
+            table_name.append("Vitek_id")
+            for e in vID:
+                djID=VITEK_ID.check_from_dict(e, vLog)
+                if djID.validStatus:
+                    djID.save(**kwargs)
+                validate_result.append(str(djID.validStatus))
+                file_report.append(str(vLog.show()))
+                
+        if vAst:
+            table_name.append("Vitek_ast")
+            for e in vAst:
+                djAst=VITEK_AST.check_from_dict(e, vLog)
+                if djAst.validStatus:
+                    djAst.save(**kwargs)
+                validate_result.append(str(djAst.validStatus))
+                file_report.append(str(vLog.show()))               
+                
+        return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})
+                  
+    # elif process_name=='Save-Data':
+    #     print(Importhandler.data_list)
+    #     with transaction.atomic(using='dorganism'):
+    #         for obj in Importhandler.data_list:
+    #             try:
+    #                 obj.save()
+    #                 print('save')
+    #             except Exception as err:
+    #                 print(err)
+    #                 errList.append[err]
+    #                 return JsonResponse({"status":errList})
+        return JsonResponse({"status":"Data Saved!"}, status=200)

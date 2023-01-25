@@ -4,7 +4,8 @@
 {% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
-{%include 'utils/topbar.html'%}
+{%url 'import-VITEK' as urlname%}
+{%include 'utils/topbar.html' with import_module=urlname %}
 <div class="position-relative w-100 bg-transparent">
   <div class="d-flex flex-row justify-content-between vh-100">
     {%include "utils/sidebar.html"%}

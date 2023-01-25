@@ -11,42 +11,40 @@ if ($("#filepath").text()) {
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
   console.log("button clicked");
-  const filepath = $("#filepath").text() ? $("#filepath").text() : "none";
+  var filepathlist = [];
+  $("input[name=uploadedfiles_select]:checked").each(function () {
+    filepathlist.push($(this).val().toString());
+  });
+
   const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
-  console.log(filepath);
+
   $.ajax({
-    url: "/import/",
+    url: "/import-VITEK/",
     data: {
       type: $(this).data("type"),
-      filepath: filepath.toString(),
+      filepathlist: filepathlist,
       datamodel: datamodel.toString(),
     },
     method: "POST",
     headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
-      console.log(res);
-      // if (jQuery.isEmptyObject(res)) {
-      //   console.log("reloading.");
-      //   window.location.reload("/import/");
-      // }
       const html = `
       <tr>
-      <td>${res.task_user}</td>
-      <td>${res.task_status}</td>
-      <td>${res.task_result}</td>
+      <td>${res.table_name}</td>
+      <td>${res.validate_result}</td>
+      <td class= "text-truncate">${res.file_report}</td>
       </tr>`;
       $("#tasks").append(html);
-      if (res.task_status === "Form Errors") {
+      if (res.validate_result.includes("True")) {
+        $("#Import_step3").toggleClass("visible");
+        $("#progressbar span:nth-child(2)").toggleClass("bg-success");
+      } else {
         $("#save_Proceed").prop("disabled", true);
         $("#save_Proceed").addClass("disabled");
         $("#next_to_confirm").toggleClass("visible");
       }
-      if (res.task_status === "Form is Valid") {
-        $("#Import_step3").toggleClass("visible");
-        $("#progressbar span:nth-child(2)").toggleClass("bg-success");
-      }
-      const taskStatus = res.status;
+
       $("#preLoader").fadeOut();
     })
     .fail((err) => {
@@ -54,13 +52,20 @@ $(".button").on("click", function () {
     });
 });
 
-$("#save_Proceed").on("click", function () {
+$(".confirmButton").on("click", function () {
   $("#preLoader").fadeIn();
+  var filepathlist = [];
+  $("input[name=uploadedfiles_select]:checked").each(function () {
+    filepathlist.push($(this).val().toString());
+  });
+  const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
   $.ajax({
-    url: "/import/",
+    url: "/import-VITEK/",
     method: "POST",
     data: {
       type: $(this).data("type"),
+      filepathlist: filepathlist,
+      datamodel: datamodel.toString(),
     },
     headers: { "X-CSRFToken": csrftoken },
   })
@@ -74,41 +79,6 @@ $("#save_Proceed").on("click", function () {
       const html = `<p>${res.status}</p>`;
       $("#mesg_save_Proceed").append(html);
       // save_data(res);
-    })
-    .fail((err) => {
-      console.log(err);
-    });
-});
-
-$("#stop_Proceed").on("click", function () {
-  $.ajax({
-    url: "/import/",
-    data: {},
-    method: "POST",
-  })
-    .done((res) => {
-      window.alert("task canceled");
-      location.reload();
-    })
-    .fail((err) => {
-      console.log(err);
-    });
-});
-
-$("#confirm-save").on("click", function () {
-  $.ajax({
-    url: "/import/",
-    data: {},
-    method: "POST",
-    data: {
-      type: $(this).data("type"),
-    },
-    headers: { "X-CSRFToken": csrftoken },
-  })
-    .done((res) => {
-      $("#Import_step3").toggleClass("visible");
-      $("#Import_step4").toggleClass("visible");
-      window.alert(res.status);
     })
     .fail((err) => {
       console.log(err);

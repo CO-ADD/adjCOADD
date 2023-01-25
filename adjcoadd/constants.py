@@ -91,7 +91,8 @@ VITEKCARD_FIELDs = {
     "expiry_date":"expiry_date",
     "instrument":"instrument",
     "proc_date":"proc_date",
-    "analysis_time":"Analysis with"
+    "analysis_time":"Analysis with",
+    "acreated_at":"acreated_at"
    
 }
 
