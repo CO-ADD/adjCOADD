@@ -332,12 +332,12 @@ def dict_Vitek_AST(pCard):
 #-----------------------------------------------------------------------------
 def process_VitekPDF(DirName,PdfName):
 #-----------------------------------------------------------------------------
-
-    pVitek = parse_VitekPDF(DirName,PdfName)
-
     lstCards = []
     lstID = []
     lstAST = []
+
+    pVitek = parse_VitekPDF(DirName,PdfName)
+
     for pv in pVitek:
         k = pv.keys()
         #print(f"\n**\n {pv}\n**\n")

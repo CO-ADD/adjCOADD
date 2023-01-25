@@ -1,7 +1,4 @@
-{% extends 'base.html'%}
-<!--prettier-ignore-->
-{% block title%} mysite{% endblock %}
-{% block content %}
+
 <!-- Start upload datafiles, scanne virus -->
 <div class="container">
     <div id="progressbar" class="d-flex bg-secondary" style="height: 20px;">
@@ -14,7 +11,9 @@
             <form method="POST" enctype="multipart/form-data" class="form-control">
                 {% csrf_token %}
                 <!--  -->
+                <input type="text" value="{{data_model}}" name="file_data">
                 {{form.as_p}}
+                
                     
                         <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
                         </button>
@@ -31,28 +30,39 @@
         <h3 class="text-danger">
             {%include 'utils/message.html'%}
         </h3>
-        {%if file_path %}
+        {%if file_pathlist %}
         <div>
-
             Uploaded File stored in 
-            <h3 class="title is-2" id="filepath">{{file_path}}</h3>
+            <!--  -->
+            {% include 'utils/selectAllExp.html'%}
+            
+                {%for f in file_pathlist%}
+                <li class="checkbox-container-export">
+              <input class="filled-in" type="checkbox" value="{{f}}" name="uploadedfiles_select" />
+              <label for=""> {{f}} </label>
+            </li>
+                {%endfor%}
+            
+            
             Uploaded Data Model is:
             <h3 class="title is-2" id="datamodel">{{data_model}}</h3>
         </div>
+      
         <div class="field is-grouped">
             <p class="control">
-                Form uploaded, you can:
+                Files uploaded successfully, you can:
             <ul>
 
                 <li>
-                    validate form before you import it into DB
+                    Select files and validate form before you import it into DB
                     <button class="button" type="submit" name="RUN" data-type="Validation">Form Validation</button>
                     or
                 </li>
-                <li>
-                    Cancel this task, upload another file
+                <li id="delete_cancel_task">
+                    Select files delete 
+                    <a class="button" data-type="Cancel" href="javascript:void(0);">Delete Files</a>
+                    Then <a href="{% url 'import-VITEK'%}">Refresh Page</a>
                     <!-- <button class="button" data-type="Cancel" >Cancel Task</button> -->
-                    <a class="button" data-type="Cancel" href="javascript:void(0);">Cancel Task</a>
                 </li>
 
             </ul>
@@ -66,7 +76,7 @@
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>UserName</th>
+                        <th>Data Table</th>
                         <th>Status</th>
                         <th>Result</th>
                         <!-- <th> others...</th> -->
@@ -87,13 +97,12 @@
         <div>Next availabe actions:</div>
         <ul>
             <li>
-                if validation passed, you can try to save your file in DB
-                <button id="save_Proceed" type="submit" class="btn btn-sm" data-type="DB_Validation">Database Validation</button>
+                IF Files contain validation==True, you can try to save them in DB
+                <button class="confirmButton btn btn-sm" type="button" data-type="DB_Validation">Save To DB</button>
             </li>
           
             <li>
-                or back to first step
-                <a class="btn btn-sm" href="{%url 'import'%}">Discard Changes</a>
+                <a class="btn btn-sm" type="button" href="#delete_cancel_task"> OR Back to delete/cancel</a>
             </li>
         </ul>
     </p>
@@ -101,34 +110,15 @@
 <hr>
 <section id="Import_step4" class="not-visible">
     <h4 id="mesg_save_Proceed" class="bg-danger"></h4>
-      <div>Next actions:</div>
+      <div></div>
         <ul>
             <li>
-                <a class="btn btn-sm" href="{%url 'import'%}">Discard Changes</a>
+                <a class="btn btn-sm" href="{%url 'import-VITEK'%}">OK (refresh Page)</a>
             </li>
           
-            <li>
-                 <button id="confirm-save"  type="submit" class="btn btn-sm" data-type="Save-Data">Continue Save...</button>
-            </li>
         </ul>
 </section>
 
 
-    <!-- confirm save or cancel task-->
-    <section id="final_to_confirm" class="not-visible">
-        <h1>
-
-            <div>Last Step</div>
-            <button id="confirmSave" class="btn btn-sm" data-type="Confirm">Confirm Save</button>
-            <button id="rollBack" class="btn btn-sm" data-type="RollBack">RollBack Transaction</button>
-        </h1>
-    </section>
-</div>
 
 
-{%load static%}
-<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/js_utils/getCookie.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/importhandler.js' %}"></script>
-
-{%endblock%}

@@ -17,15 +17,15 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_ROOT=os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT=os.path.join(BASE_DIR.parent, 'uploads')
 MEDIA_URL=('uploads/')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ["SECRET_KEY"]
-SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+SECRET_KEY = os.environ["SECRET_KEY"]
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -121,31 +121,6 @@ DATABASES = {
           'PORT': '5432',
       }
 
-#     # ==================For Local Test===========================================
-#    'default': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     },
-#     'dorganism': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
-#       'NAME': 'orgdb',
-#       'TEST': {
-#           'NAME': 'mytestdatabase2',
-#       },
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#    },
-#     'ddrug': {
-#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
-#       'NAME': 'orgdb',
-#       'HOST': 'Localhost',
-#       'PORT': '5432',
-#     }
 
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
