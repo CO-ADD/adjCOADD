@@ -201,6 +201,7 @@ from django.db import transaction, IntegrityError
 from pathlib import Path
 from django.conf import settings
 from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
+
 from asgiref.sync import sync_to_async
 from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 
@@ -218,9 +219,6 @@ if settings.DEVELOPMENT:
 else:
     Base_dir = Path(__file__).resolve().parent.parent.parent
     path=os.path.abspath(os.path.join(Base_dir, 'uploads'))
-
-    # #delete task
-
 
 
 

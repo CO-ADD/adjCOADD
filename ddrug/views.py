@@ -327,6 +327,7 @@ class Importhandler_VITEK(Importhandler):
            
         return render(request, 'ddrug/importdata_vitek.html', context)
 
+
 async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
 async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
 
