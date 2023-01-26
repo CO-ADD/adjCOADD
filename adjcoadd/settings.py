@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 # import cx_Oracle
 # cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
+DEVELOPMENT=False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +31,6 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DEVELOPMENT=False
 
 ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -122,6 +122,7 @@ DATABASES = {
       }
 
 
+
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
 
@@ -184,7 +185,10 @@ CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.
 
 # Django Session timeout setting
 # INACTIVE_TIME= 120
-SESSION_COOKIE_AGE=300
+if DEVELOPMENT:
+    SESSION_COOKIE_AGE=3000
+else:
+    SESSION_COOKIE_AGE=300
 # SESSION_EXPIRE_SECONDS =  120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
