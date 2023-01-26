@@ -10,9 +10,20 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Dictionary
 from adjcoadd.constants import *
+
+
+
+# ==========Super UserRequire Mixin===================================================
+class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = '/'
+
+    def test_func(self):
+        return self.request.user.has_permission('Admin')
+
 
 
 # Model Validation utilities  =====================================================================================
@@ -69,7 +80,8 @@ def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
     else:
         choices=(('--', 'empty'),)
     return choices
-# ------------------------Only use dict_value
+    
+# ------------------------Only use dict_value----------------
 def get_DictonaryChoicesValue_byDictClass(ModelName, DictClass, sep='|'):
     options=ModelName.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
     if options:
