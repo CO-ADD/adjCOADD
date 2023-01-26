@@ -27,6 +27,7 @@ from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from .utils import get_filewithpath, Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
+from .Vitek import *
    
           
 # #############################Drug View############################################
@@ -186,22 +187,27 @@ def detailVitekcard(req, pk):
 
 
 # ---------------------upload file view----------------------------
+from django.conf import settings
 class Importhandler_VITEK(Importhandler):
 
     success_url="/import-VITEK/"
-    template_name='ddrug/importdata_vitek.html'  
+    template_name='ddrug/importdata_vitek.html'
+    upload_model_type="Vitek"
+    
     
     def post(self, request):
+        dirname=settings.MEDIA_ROOT
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
-        vLog = Validation_Log('VITEK PDF')
+        
         kwargs={}
         kwargs['user']=request.user
         vCards=[]
         vID=[]
         vAST=[]
         self.data_model=request.POST.get('file_data')
+        self.log_process=self.data_model
         myfiles=request.FILES.getlist('file_field')
         self.file_url=[]
         try:
@@ -210,16 +216,17 @@ class Importhandler_VITEK(Importhandler):
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 for f in myfiles:
                     fs=FileSystemStorage()
+                    print(f"fs is {fs}")
                     filename=fs.save(f.name, f)
-                    self.file_url.append(fs.url(filename))
-                    print(self.file_url)
+                    
                     try:
-                        vCards,vID,vAst=import_excel(fs.url(filename), self.data_model)
+                        vCards,vID,vAst=process_VitekPDF(DirName=dirname, PdfName=filename)#import_excel(fs.url(filename), self.data_model)
                         print("file checked")
-           
+                        self.file_url.append(fs.url(filename))
                     except Exception as err:
-                        print(f"uploaderror is {err}")
-
+                        self.delete_file(file_path=fs.url(filename))
+                        messages.warning(request, f'{filename} contains {err} erro , cannot to upload, choose a correct file')
+                        
                    
                 context['file_pathlist']=self.file_url
                 context['data_model']=self.data_model     
@@ -228,95 +235,100 @@ class Importhandler_VITEK(Importhandler):
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
         
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-            table_name=[","]
-            validate_result=[","]
-            file_report=[","]
+            
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
             print(f'selected : {file_pathlist}')
             data_model=request.POST.get("datamodel")
-                # uploadedfile_process(request, table_name,validate_result, file_report, process_name, f, data_model, vLog)
+          
             if process_name=='Validation':
                 for f in file_pathlist:
                 # models objects list coming from parsed file
-                    vCards,vID,vAst=import_excel(f, data_model)
+                    filename=f.split("/")[2]
+                    vCards,vID,vAst=process_VitekPDF(DirName=dirname, PdfName=filename)
                 # validating each objectslist 
                     if vCards:
-                        table_name.append("Vitek_card")
+                        self.table_name.append("Vitek_card")
+                        
                         for e in vCards:
-                            djCard=VITEK_Card.check_from_dict(e, vLog)
-                            validate_result.append(f"CARD status: {djCard.validStatus}")
-                            file_report.append(str(vLog.show()))
+                            djCard=VITEK_Card.check_from_dict(e, self.vLog)
+                            self.validate_result.append(f"CARD status: {djCard.validStatus}")
+                            self.file_report.append(str(self.vLog.show()))
         
                     if vID:
-                        table_name.append("Vitek_id")
+                        self.table_name.append("Vitek_id")
                         for e in vID:
-                            djID=VITEK_ID.check_from_dict(e, vLog)
-                            validate_result.append(f"ID status: {djID.validStatus}")
-                            file_report.append(str(vLog.show()))
+                            djID=VITEK_ID.check_from_dict(e, self.vLog)
+                            self.validate_result.append(f"ID status: {djID.validStatus}")
+                            self.file_report.append(str(self.vLog.show()))
         
                     if vAst:
-                        table_name.append("Vitek_ast")
+                        self.table_name.append("Vitek_ast")
                         for e in vAst:
-                            djAst=VITEK_AST.check_from_dict(e, vLog)
-                            validate_result.append(f"AST status: {djAst.validStatus}")
-                            file_report.append(str(vLog.show()))               
+                            djAst=VITEK_AST.check_from_dict(e, self.vLog)
+                            self.validate_result.append(f"AST status: {djAst.validStatus}")
+                            self.file_report.append(str(self.vLog.show()))               
         
-                return JsonResponse({"table name":"VITEK".join(table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})                                   
+                return JsonResponse({"table_name":"VITEK".join(self.table_name), 'validate_result':(",").join(self.validate_result), 'file_report':(",").join(self.file_report)})                                   
        
             elif process_name=='Cancel':
                 # Cancel Task
+                self.file_url=[]
                 for f in file_pathlist:
-                    delete_file(file_path=f)
-                return JsonResponse({"table name":(",").join( table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report)})                                   
+                    self.delete_file(file_path=f)
+                    self.file_url.append(f)
+                return JsonResponse({"table_name":(",").join( self.table_name), 'validate_result':"Deleted", 'file_report':f"delete files: {self.file_url}"})                                   
     
             elif process_name=='DB_Validation':
                 # import data to DB
                 for f in file_pathlist:             
-                    vCards, vID, vAst=import_excel(f, data_model)
+                    filename=f.split("/")[2]
+                    vCards,vID,vAst=process_VitekPDF(DirName=dirname, PdfName=filename)
         # validating each objectslist 
                     if vCards:
-                        table_name.append("Vitek_card")
+                        self.table_name.append("Vitek_card")
                         for e in vCards:
-                            djCard=VITEK_Card.check_from_dict(e, vLog)
+                            djCard=VITEK_Card.check_from_dict(e, self.vLog)
                             if djCard.validStatus:
                                 try:
                                     djCard.save(**kwargs)
                                 except Exception as err:
-                                    validate_result.append(f"catch Exception CARD {err}")
-                            validate_result.append(f"CARD status: {djCard.validStatus}")
-                            file_report.append(str(vLog.show()))
+                                    self.validate_result.append(f"catch Exception CARD {err}")
+                            self.validate_result.append(f"CARD status: {djCard.validStatus}")
+                            self.file_report.append(str(self.vLog.show()))
                 
                     if vID:
-                        table_name.append("Vitek_id")
+                        self.table_name.append("Vitek_id")
                         for e in vID:
-                            djID=VITEK_ID.check_from_dict(e, vLog)
+                            djID=VITEK_ID.check_from_dict(e, self.vLog)
                             if djID.validStatus:
                                 try:
                                     djID.save(**kwargs)
                                 except Exception as err:
-                                    validate_result.append(f"catch Exception ID {err}") 
-                            validate_result.append(f"ID status: {djID.validStatus}")
-                            file_report.append(str(vLog.show()))
+                                    self.validate_result.append(f"catch Exception ID {err}") 
+                            self.validate_result.append(f"ID status: {djID.validStatus}")
+                            self.file_report.append(str(vLog.show()))
                 
                     if vAst:
-                        table_name.append("Vitek_ast")
+                        self.table_name.append("Vitek_ast")
+                        
                         for e in vAst:
                             djAst=VITEK_AST.check_from_dict(e, vLog)
                             if djAst.validStatus:
                                 try:
                                     djAst.save(**kwargs)
                                 except Exception as err:
-                                    validate_result.append(f"catch Exception Ast {err}")    
-                            validate_result.append(f"AST status: {djAst.validStatus}")
-                            file_report.append(str(vLog.show()))               
+                                    self.validate_result.append(f"catch Exception Ast {err}")    
+                            self.validate_result.append(f"AST status: {djAst.validStatus}")
+                            self.file_report.append(str(self.vLog.show()))               
                 
-                return JsonResponse({"table name":"VITEK".join(table_name), 'validate_result':(",").join(validate_result), 'file_report':(",").join(file_report), 'status':"Data Saved!"})
+                return JsonResponse({"table_name":"VITEK".join(self.table_name), 'validate_result':(",").join(self.validate_result), 'file_report':(",").join(self.file_report), 'status':"Data Saved!"})
 
            
         return render(request, 'ddrug/importdata_vitek.html', context)
 
-async_function = sync_to_async(Importhandler_VITEK.get, thread_sensitive=False)
+
+async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
 async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
 
       
