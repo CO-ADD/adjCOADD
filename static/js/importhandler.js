@@ -29,6 +29,7 @@ $(".button").on("click", function () {
     headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
+      console.log(res.table_name);
       const html = `
       <tr>
       <td>${res.table_name}</td>
