@@ -34,7 +34,7 @@ $(".button").on("click", function () {
       <tr>
       <td>${res.table_name}</td>
       <td>${res.validate_result}</td>
-      <td class= "text-truncate">${res.file_report}</td>
+      <td><div id="upload_report">${res.file_report}</div></td>
       </tr>`;
       $("#tasks").append(html);
       if (res.validate_result.includes("True")) {
@@ -84,4 +84,7 @@ $(".confirmButton").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
+
+
+
 });

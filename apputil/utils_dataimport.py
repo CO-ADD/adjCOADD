@@ -19,7 +19,7 @@ from .utils import instance_dict, Validation_Log
 
 
 # ==============Uploading File Validators==============================
-# import magic
+import magic
 
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
@@ -207,8 +207,8 @@ from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 
 
 # set filefield Validator
-# validate_file = FileValidator(#max_size=1024 * 100, 
-#                              content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+validate_file = FileValidator(#max_size=1024 * 100, 
+                             content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
 # create array for files if infected
 # infected_files = []
 # setup unix socket to scan stream
@@ -224,7 +224,7 @@ else:
 
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}), )#validators=[validate_file])
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}), validators=[validate_file])
     
 
 class Importhandler(SuperUserRequiredMixin, FormView):

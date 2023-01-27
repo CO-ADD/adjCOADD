@@ -712,3 +712,15 @@ td {
   padding: 0;
   border: 2px solid darkblue;
 }
+
+/* Error Display */
+.errorlist {
+  font-weight: bold;
+  font-style: italic;
+  color: var(--bs-inform-color);
+}
+
+#upload_report {
+  max-height: 200px;
+  overflow: scroll;
+}

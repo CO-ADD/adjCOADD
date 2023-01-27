@@ -28,7 +28,6 @@ MEDIA_URL=('uploads/')
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -197,3 +196,26 @@ SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
+
+
+# Logging files
+#create log file
+LOG_PATH = 'z_log/'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(str(LOG_PATH), 'fileupload_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
