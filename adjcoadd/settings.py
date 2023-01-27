@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 # import cx_Oracle
 # cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
-DEVELOPMENT=False
+DEVELOPMENT=True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +25,8 @@ MEDIA_URL=('uploads/')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
-
+# SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -197,3 +197,26 @@ SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
+
+
+# Logging files
+#create log file
+LOG_PATH = 'z_log/'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(str(LOG_PATH), 'fileupload_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}

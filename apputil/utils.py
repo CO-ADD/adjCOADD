@@ -34,7 +34,10 @@ class Validation_Log():
         self.logProcess = logProcess
         self.logTypes = logTypes
         self.nLogs = {}
-        self.Logs = {}
+        self.Logs={}
+
+        self.nLogs.clear()
+        self.Logs.clear()
 
         for t in self.logTypes:
             self.nLogs[t] = 0
@@ -53,14 +56,16 @@ class Validation_Log():
             self.Logs[logType].append(lDict)
             self.nLogs[logType] = self.nLogs[logType] + 1
         
-    def show(self,logTypes= ['Error','Warning','Info']):
+    def show(self,logTypes= ['Error','Warning']):
         info=[]
         for t in logTypes:
             print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+
             for l in self.Logs[t]:
                 print(f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} ")
                 print_info=f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} "
                 info.append(print_info)
+        # self.Logs.clear()
         return info
 
 #-----------------------------------------------------------------------------------
