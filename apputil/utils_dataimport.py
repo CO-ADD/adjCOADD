@@ -238,7 +238,7 @@ class Importhandler(SuperUserRequiredMixin, FormView):
     log_process='default'
     vLog = Validation_Log(log_process)
     table_name=[","]
-    validate_result=[","]
+    validate_result={}
     file_report=[","]
     
     def delete_file(self, file_path):
