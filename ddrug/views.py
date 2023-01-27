@@ -210,8 +210,6 @@ class Importhandler_VITEK(Importhandler):
         kwargs={}
         kwargs['user']=request.user
         
-        
-        
         self.data_model=request.POST.get('file_data')
         self.log_process=self.data_model
         myfiles=request.FILES.getlist('file_field')
@@ -251,9 +249,10 @@ class Importhandler_VITEK(Importhandler):
 
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
-        
+
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST": 
-            # result_report={}           
+         
+
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
             print(f'selected : {file_pathlist}')
