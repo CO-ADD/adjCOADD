@@ -90,8 +90,6 @@
         },
       })
         .done((response) => {
-          console.log(response);
-          // window.location.reload()
           saveData(response, "mycsv.csv");
         })
         .fail(() => {

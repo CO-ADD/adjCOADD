@@ -1,14 +1,14 @@
 import os
 import django_filters
-# from django import forms
 
+from django import forms
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Organism, Taxonomy, Organism_Batch
 from apputil.models import Dictionary
-from apputil.utils import get_DictonaryChoices_byDictClass, get_DictonaryChoicesValue_byDictClass
+from apputil.utils import Filterbase, get_DictonaryChoices_byDictClass, get_DictonaryChoicesValue_byDictClass
 
 #=====================================search_organism===============================================================
 
@@ -63,19 +63,8 @@ def search_organism_id(req):
 
 #==================================Filters======================================
 
-from django import forms
 
 
-class Filterbase(django_filters.FilterSet):
-   
-    @property
-    def qs(self):
-        parent = super().qs
-        return parent.filter(astatus__gte=0)
-   
-    def multichoices_filter(self, queryset, name, value):
-        lookup='__'.join([name, 'overlap'])
-        return queryset.filter(**{lookup: value})
 
 
 class Organismfilter(Filterbase):
@@ -132,14 +121,7 @@ class Batchfilter(Filterbase):
         model=Organism_Batch
         fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
 
-class Dictionaryfilter(Filterbase):
-      dict_class = django_filters.CharFilter(lookup_expr='icontains')
-      dict_value = django_filters.CharFilter(lookup_expr='icontains')
-      dict_desc = django_filters.CharFilter(lookup_expr='icontains')
 
-      class Meta:
-        model=Dictionary
-        fields=['dict_class', 'dict_value', 'dict_desc']
 
 
 

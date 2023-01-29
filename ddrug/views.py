@@ -20,12 +20,12 @@ from django.utils.functional import SimpleLazyObject
 from asgiref.sync import sync_to_async
 
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils import FilteredListView
+from apputil.utils import FilteredListView, get_filewithpath
 from apputil.utils_dataimport import Importhandler
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import get_filewithpath, Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
+from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
 from .Vitek import *
    
@@ -99,7 +99,10 @@ def updateDrug(req, pk):
 from apputil.utils import instance_dict, Validation_Log
 from apputil.utils_dataimport import import_excel
 from django.core.files.storage import FileSystemStorage
-
+from pathlib import Path  
+from django.conf import settings
+filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
+import sys
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_Card  
@@ -148,9 +151,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
 
-            if querydata.count() > 2000 :
-                warn_message="Handling more 2000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
-                return JsonResponse({"table":warn_message,})
+            # if querydata.count() >2000:
+            #     warn_message="Handling more 2000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
+            #     return JsonResponse({"table":warn_message,})
             values=values_str or None
            
             if values:
@@ -160,15 +163,24 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     columns=columns_str.split(",") 
                     index=index_str.split(",")
                     table=pd.pivot_table(df, values=values, index=index,
-                        columns=columns, aggfunc=aggfunc).to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-                    # print(table)
-                    return JsonResponse({"table":table,})
+                        columns=columns, aggfunc=aggfunc)#.to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
+                    # table1=table.to_json(orient ='records')
+                    # table2=table.to_html()
+                    # print(f'table to json size is {sys.getsizeof(table1)}')
+                    # print(f'tbale to html size if {sys.getsizeof(table2)}')
+                                                  
+                    if querydata.count() >1000:
+                        response = HttpResponse(content_type='text/csv')
+                        response['Content-Disposition'] = 'attachment; filename=export.csv'
+                        table.to_csv(filepath) 
+                        return response 
+                    else:
+                        table_html=table.to_html()
+                        return JsonResponse({"table":table_html})
                 except Exception as err:
                     error_message=str(err)
                     return JsonResponse({"table":error_message,})
         return JsonResponse({})
-
-
 
 
 # ==============Vitek Card Detail===================================#
@@ -374,6 +386,9 @@ class Importhandler_VITEK(Importhandler):
 
 async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
 async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
+async_function = sync_to_async(VitekcardListView.get_context_data, thread_sensitive=False)
+async_function = sync_to_async(VitekcardListView.post, thread_sensitive=False)
+
 
       
 

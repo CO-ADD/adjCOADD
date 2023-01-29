@@ -25,8 +25,8 @@ MEDIA_URL=('uploads/')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
-
+# SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -120,6 +120,31 @@ DATABASES = {
           'PORT': '5432',
       }
 
+ # ==================For Local Test===========================================
+#    'default': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#     },
+#     'dorganism': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+#       'NAME': 'orgdb',
+#       'TEST': {
+#           'NAME': 'mytestdatabase2',
+#       },
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#    },
+#     'ddrug': {
+#       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#       'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+#       'NAME': 'orgdb',
+#       'HOST': 'Localhost',
+#       'PORT': '5432',
+#     }
 
 
 }

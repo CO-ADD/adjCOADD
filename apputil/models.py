@@ -179,6 +179,7 @@ class AuditModel(models.Model):
 
     #------------------------------------------------
     #Method Get Fields, Values List
+    # get field names in postgres in the order provided by constants.py
     @classmethod
     def get_databasefields(self, fields=None):
         if fields:
@@ -186,7 +187,7 @@ class AuditModel(models.Model):
         else:
             databasefields=None
         return databasefields
-
+    # get field verbose or customized name in the order provided by constants.py
     @classmethod
     def get_fields(self, fields=None):
         if fields:
@@ -195,6 +196,7 @@ class AuditModel(models.Model):
             select_fields=None
         return select_fields
     #------------------------------------------------
+    # get field name in model Class in the order provided by constants.py
     @classmethod
     def get_modelfields(self, fields=None):
         if fields:
@@ -204,6 +206,7 @@ class AuditModel(models.Model):
         return model_fields
  
     #------------------------------------------------
+    # objects values according to fields return from the above class methods
     def get_values(self, fields=None):
         value_list=[]
         for field in self._meta.fields:
@@ -325,27 +328,3 @@ class ApplicationLog(models.Model):
         app_label = 'apputil'
         db_table = 'app_log'
 
-
-#=========================Not used...==============
-class ChoiceArrayField(ArrayField):
-    """
-    A field that allows us to store an array of choices.
-    
-    Uses Django 1.9's postgres ArrayField
-    and a MultipleChoiceField for its formfield.
-    
-    Usage:
-        
-        choices = ChoiceArrayField(models.CharField(max_length=...,
-                                                    choices=(...,)),
-                                   default=[...])
-    """
-#-------------------------------------------------------------------------------------------------
-    def formfield(self, **kwargs):
-        defaults = {
-            'form_class': forms.MultipleChoiceField,
-            'choices': self.base_field.choices,
-        }
-        defaults.update(kwargs)
-  
-        return super(ArrayField, self).formfield(**defaults)

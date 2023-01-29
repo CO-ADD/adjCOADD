@@ -59,7 +59,7 @@ const csrftoken = getCookie("csrftoken");
 const sendToServer = (data) => {
   console.log("send to server");
   // console.log(data);
-  var result = "";
+
   $.ajax({
     url: "/vitekcard_list", //url,
     type: "POST",
@@ -70,7 +70,11 @@ const sendToServer = (data) => {
       data = response["table"];
       // console.log(data);
       $("#pivotable").html("");
-      $("#pivotable").append(data);
+      p_elem = $(
+        "<p>if no table display here due to file size, please click dowload button</p>"
+      );
+      button_elem = $("<button>download</button>");
+      $("#pivotable").append(data, p_elem, button_elem);
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
       console.log(XMLHttpRequest, textStatus, errorThrown);

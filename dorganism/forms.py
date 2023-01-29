@@ -61,7 +61,6 @@ class Taxonomy_form(forms.ModelForm):
 
 #========================================Batch Form================================================================
 class Batch_form(forms.ModelForm):
-    # Batch_form_fields=ORGANISM_BATCH_FIELDs.keys()
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status']),required=False,)
     def __init__(self, organism_id_str=None, *args, **kwargs):
@@ -71,7 +70,6 @@ class Batch_form(forms.ModelForm):
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']
-        # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         try:
             data=get_object_or_404(Organism, organism_id=self.organism_id_str)#self.organism_name
         except Exception as err:
@@ -80,8 +78,6 @@ class Batch_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Batch
-        # fields=ORGANISM_BATCH_FIELDs.keys()
-        # +["organism_id"]
         exclude=['orgbatch_id', 'stock_level']
         
 # ---------------------------------------------------------------------------------------------
