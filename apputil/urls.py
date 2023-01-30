@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import (index, userprofile, AppUserListView, AppUserCreateView, updateApplicationuser, 
-    AppUserDeleteView, AppUserListView, DictionaryView, createDictionary,updateDictionary) #Importhandler_VITEK)
+    AppUserDeleteView, AppUserListView, DictionaryView, createDictionary,updateDictionary, exportCSV) 
 
 
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
     path('dict/create', createDictionary, name='dict_create' ),
     path('dict_update', updateDictionary, name='dict_update' ),
-    # path("import-VITEK/", Importhandler_VITEK.as_view(), name="import-VITEK"),
-    
+    #Data Export/Import 
+    path('exportData/', exportCSV, name="dataexport"),
+   
 ]

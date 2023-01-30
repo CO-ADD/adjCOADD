@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from datetime import datetime
 import re
 import unicodedata
@@ -11,11 +12,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.conf import settings
 
 from .models import Dictionary
 from adjcoadd.constants import *
 
 
+# ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
+def permission_not_granted(req):
+    return HttpResponse("Permission Not Granted")
 
 # ==========Super UserRequire Mixin===================================================
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -125,6 +130,20 @@ def slugify(value, lower=False, allow_unicode=False):
 
 
 #  #####################Django Filter View#################
+class Filterbase(django_filters.FilterSet):
+   
+    @property
+    def qs(self):
+        parent = super().qs
+        return parent.filter(astatus__gte=0)
+   
+    def multichoices_filter(self, queryset, name, value):
+        lookup='__'.join([name, 'overlap'])
+        return queryset.filter(**{lookup: value})
+
+
+
+
 # Base Class for all models list/card view
 class FilteredListView(ListView):
     filterset_class = None
@@ -186,4 +205,25 @@ class FilteredListView(ListView):
 
     
 
-    
+class Dictionaryfilter(Filterbase):
+      dict_class = django_filters.CharFilter(lookup_expr='icontains')
+      dict_value = django_filters.CharFilter(lookup_expr='icontains')
+      dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+
+      class Meta:
+        model=Dictionary
+        fields=['dict_class', 'dict_value', 'dict_desc']
+
+
+#file path on server:
+
+# Define full path name
+def get_filewithpath( file_name=None):
+    if settings.DEVELOPMENT:
+        file_path = f"static/images/{file_name}.svg"
+   
+    else:
+        Base_dir = Path(__file__).resolve().parent.parent.parent
+        FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+        file_path=os.path.join(FILES_DIR, f"{file_name}.svg")
+    return file_path

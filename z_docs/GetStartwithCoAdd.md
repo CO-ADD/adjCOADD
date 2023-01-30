@@ -141,27 +141,30 @@ When user click login url, the login_user function will be called the Login_form
 After login, users' permission, which has been set up previously in ApplicationUser datatable, will be granted to the login request user.
 
 #### Data screening
+
 All data tables are sorting table type. And in project settings.py, the Django-Filter packages has been implemented and it is used to get filtered queryset from database for the main models(Organism, Taxonomy, Drug, Vitek_Card).
 To display one to many relationship, the child table will be displayed under the parent table's detail view.
 
 #### Data CRUD
-To create data in database, A bootstrap modal form containing "django ModelForm (for create)" is used to create a new entry for each model. 
+
+To create data in database, A bootstrap modal form containing "django ModelForm (for create)" is used to create a new entry for each model.
 For browsing all the data in main tables, there are list- and cardview for each model displaying entries per page via django pagination.
 To update entries editable tables and modal form are both used. Models updated by editable tables are: Organism, Batch, Culture, Applicationusers. Models updated by modal forms are: Stock, Taxonomy.
 
 ## User Guide section
 
 ### Login
+
 The adjCOADD is started with login using ldap authentication.
 
 <img src="https://github.com/CO-ADD/adjCOADD/blob/main/static/images/app/CoAdd_Login.png" />
 
 ### Homepage
+
 Once login successfully, will direct to the homepage:
 
 <img src="https://github.com/CO-ADD/adjCOADD/blob/main/static/images/app/CoAdd_Home.png" />
 
 With main datatables' access.
 
-
-
+### Files upload

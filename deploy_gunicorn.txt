@@ -37,9 +37,7 @@
 (base)>conda activate dj41py310
 (dj41py310)>python manage.py collectstatic
 (dj41py310)>cd ..
-(dj41py310)>mkdir uploads
 (dj41py310)>chmod 775 -R static
-(dj41py310)>chmod 775 -R uploads
 (dj41py310)>cd ..
 
 #------------------------------------------------------

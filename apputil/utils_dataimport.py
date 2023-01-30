@@ -1,30 +1,27 @@
+import magic
 import os
-import re
-import unicodedata
-import django_filters
 import pandas as pd
+from pathlib import Path
+from asgiref.sync import sync_to_async
 
-from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from django.http import JsonResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django import forms
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.files.storage import FileSystemStorage
 from django.db import transaction
+from django.template.defaultfilters import filesizeformat
+from django.utils.deconstruct import deconstructible
+from django.views.generic.edit import FormView
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture
 from apputil.models import Dictionary
 from apputil.utils import Validation_Log, instance_dict
 from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
-from .utils import instance_dict, Validation_Log
+from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
 
 # -----------------------Start Utility Functions-----------------------------------
 
-
 # ==============Uploading File Validators==============================
-import magic
-
-from django.utils.deconstruct import deconstructible
-from django.template.defaultfilters import filesizeformat
-from django.core.exceptions import ValidationError
-
 
 @deconstructible
 class FileValidator(object):
@@ -150,7 +147,6 @@ def validate_Dictionary(dbframe):
     return object_list
 
 # =========================================================
-from django.conf import settings
 @transaction.atomic
 def import_excel(file_path, data_model):
     print('importing....')
@@ -188,22 +184,7 @@ def import_excel(file_path, data_model):
 
 # ==========================File Process=====================================
 
-from django.core.files.storage import FileSystemStorage
-from django.views import View
-from django.views.generic.edit import FormView
-from django import forms
-import json
-from django.core import serializers
-import os
-# from .utils_dataimport import FileValidator, uploadedfile_process
-from django.core.exceptions import ValidationError
-from django.db import transaction, IntegrityError
-from pathlib import Path
-from django.conf import settings
-from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
 
-from asgiref.sync import sync_to_async
-from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 
 
 # set filefield Validator
@@ -214,11 +195,6 @@ validate_file = FileValidator(#max_size=1024 * 100,
 # setup unix socket to scan stream
 # cd = clamd.ClamdUnixSocket()
 
-if settings.DEVELOPMENT:
-    path='uploads'
-else:
-    Base_dir = Path(__file__).resolve().parent.parent.parent
-    path=os.path.abspath(os.path.join(Base_dir, 'uploads'))
 
 
 

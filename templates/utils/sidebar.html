@@ -11,13 +11,13 @@
             <span>show</span>
             <span>
 
-                <select class="border" style="width: fit-content;" name="paginate_by" id="pages_set"
-                    onchange="changeFunc();">
+                <select class="border" style="width: fit-content;" name="paginate_by" id="pages_set">
                     <option value=50> {{paginate_by}}</option>
                     <option value=25>25 </option>
                     <option value=50>50 </option>
                     <option value=100>100 </option>
                     <option value=200>200 </option>
+                    <option value=500>500 </option>
                 </select>
             </span>
             <span>
@@ -25,7 +25,7 @@
                 entries on one Page
             </span>
         </div>
-        
+
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <hr>
         {{filter.form.as_p}}

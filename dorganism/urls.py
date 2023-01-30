@@ -2,8 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (exportCSV,
-                     TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy, updateTaxonomy, deleteTaxonomy, 
+from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy, updateTaxonomy, deleteTaxonomy, 
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      updateBatch, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
@@ -54,8 +53,5 @@ urlpatterns = [
     #Json search organism
     path('search_organism/', search_organism, name="search_organism"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),
-  
-    #Data Export/Import 
-    path('exportData/', exportCSV, name="dataexport"),
   
 ]

@@ -49,19 +49,19 @@
           overflow: scroll;
           font-size: medium;
           margin-left: 0;
-          
         ">
-        <span style="color: Blue;">
-          Make sure using <strong>Filter and Select Data </strong>before creating
-          table. (currently not support data more than 2000). Click
-          <strong>"Start..."</strong> Button create pivotable with default column,
-          index and value by default aggfunc np.sum.
-          Change default setting via drag n drop
-          <strong>"Dark-BLUE"</strong> squares and selective options.
+        <span style="color: Blue">
+          Make sure using <strong>Filter and Select Data </strong>Large table (rows > 1000) will be downloaded as
+          <strong>Downloads/pivottable.csv</strong>
+          automatically. Click
+          <strong>"Start..."</strong> Button create pivotable with default
+          column, index and value by default aggfunc np.sum. Change default
+          setting via drag n drop <strong>"Dark-BLUE"</strong> squares and
+          selective options.
         </span>
-        <br>
-        Example Table(data source: the first page of vitek_card normal table view)
-        {{table | safe}}
+        <br />
+        Example Table(data source: the current page of "vitek_card" table view
+        (left tab)) {{table | safe}}
       </div>
     </div>
   </div>

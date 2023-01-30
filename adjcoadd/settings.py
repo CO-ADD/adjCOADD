@@ -120,8 +120,6 @@ DATABASES = {
           'PORT': '5432',
       }
 
-
-
 }
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
 

@@ -59,7 +59,7 @@ const csrftoken = getCookie("csrftoken");
 const sendToServer = (data) => {
   console.log("send to server");
   // console.log(data);
-  var result = "";
+
   $.ajax({
     url: "/vitekcard_list", //url,
     type: "POST",
@@ -67,10 +67,15 @@ const sendToServer = (data) => {
     data: data,
   })
     .done((response) => {
-      data = response["table"];
-      // console.log(data);
       $("#pivotable").html("");
-      $("#pivotable").append(data);
+      if (response["msg"]) {
+        saveData(response["table"], "pivottable.csv");
+        $("#pivotable").append(response["msg"])
+      } else {
+        data = response["table"];
+        // console.log(data);
+        $("#pivotable").append(data);
+      }
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
       console.log(XMLHttpRequest, textStatus, errorThrown);
