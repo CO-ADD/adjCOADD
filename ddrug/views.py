@@ -100,8 +100,10 @@ from apputil.utils import instance_dict, Validation_Log
 from apputil.utils_dataimport import import_excel
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
-from django.conf import settings
-filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
+def get_file(filename):
+    from django.conf import settings
+    filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
+    return filepath
 import sys
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -171,12 +173,12 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                                                   
                     if querydata.count() >1000:
                         response = HttpResponse(content_type='text/csv')
-                        response['Content-Disposition'] = 'attachment; filename=export.csv'
-                        table.to_csv(filepath) 
-                        return response 
+                        response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
+                        table_csv=table.to_csv()
+                        return JsonResponse({"table":table_csv, "msg":"large datatable automatically convert to .csv file to download..."})
                     else:
                         table_html=table.to_html()
-                        return JsonResponse({"table":table_html})
+                        return JsonResponse({"table":table_html, "msg":None})
                 except Exception as err:
                     error_message=str(err)
                     return JsonResponse({"table":error_message,})

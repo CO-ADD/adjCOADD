@@ -4,12 +4,8 @@
     <!-- <form action="#" class=""> -->
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Data visualization type--</span>
-      <select
-        data-name="data_map_type"
-        class="form-select form-select-sm"
-        aria-label="form-select-sm example"
-        style="width: fit-content"
-      >
+      <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
+        style="width: fit-content">
         <option value="1" selected>Pivot table</option>
         <option value="2">Pie Chart</option>
         <option value="3">Plot</option>
@@ -17,12 +13,8 @@
     </div>
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Select Table Values--</span>
-      <select
-        data-name="data_process_value"
-        class="form-select form-select-sm"
-        aria-label=".form-select-sm example"
-        style="width: fit-content"
-      >
+      <select data-name="data_process_value" class="form-select form-select-sm" aria-label=".form-select-sm example"
+        style="width: fit-content">
         <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
         {%for field in model_fields %}
         <option value="{{field}}">{{field}}</option>
@@ -31,12 +23,8 @@
     </div>
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Aggregate Functions--</span>
-      <select
-        data-name="data_function_type"
-        class="form-select form-select-sm"
-        aria-label=".form-select-sm example"
-        style="width: fit-content"
-      >
+      <select data-name="data_function_type" class="form-select form-select-sm" aria-label=".form-select-sm example"
+        style="width: fit-content">
         <option value="Sum" selected>Sum</option>
         <option value="Mean">Mean</option>
         <option value="Std">Std</option>
@@ -56,18 +44,16 @@
     <div class="d-flex flex-row justify-content-center vh-100">
       <div class="border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
 
-      <div
-        id="pivotable"
-        style="
+      <div id="pivotable" style="
           width: 1500px;
           overflow: scroll;
           font-size: medium;
           margin-left: 0;
-        "
-      >
+        ">
         <span style="color: Blue">
-          Make sure using <strong>Filter and Select Data </strong>before
-          creating table. (currently not support data more than 2000). Click
+          Make sure using <strong>Filter and Select Data </strong>Large table (rows > 1000) will be downloaded as
+          <strong>Downloads/pivottable.csv</strong>
+          automatically. Click
           <strong>"Start..."</strong> Button create pivotable with default
           column, index and value by default aggfunc np.sum. Change default
           setting via drag n drop <strong>"Dark-BLUE"</strong> squares and

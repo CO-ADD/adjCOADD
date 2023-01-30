@@ -67,14 +67,15 @@ const sendToServer = (data) => {
     data: data,
   })
     .done((response) => {
-      data = response["table"];
-      // console.log(data);
       $("#pivotable").html("");
-      p_elem = $(
-        "<p>if no table display here due to file size, please click dowload button</p>"
-      );
-      button_elem = $("<button>download</button>");
-      $("#pivotable").append(data, p_elem, button_elem);
+      if (response["msg"]) {
+        saveData(response["table"], "pivottable.csv");
+        $("#pivotable").append(response["msg"])
+      } else {
+        data = response["table"];
+        // console.log(data);
+        $("#pivotable").append(data);
+      }
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
       console.log(XMLHttpRequest, textStatus, errorThrown);

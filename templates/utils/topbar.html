@@ -49,15 +49,8 @@
 {%load static %}
 <script src="{%static 'js/jquery-3.6.1.min.js'%}"></script>
 <script src="{%static 'js/js_utils/getCookie.js'%}"></script>
+<script src="{%static 'js/js_utils/saveData.js'%}"></script>
 
-<script>
-  // $(document).ready(function () {
-  //   $("input:checkbox[name=selectAll]").change(function () {
-  //     $(".checkbox-container-export input").prop("checked", this.checked);
-  //     console.log("checked all");
-  //   });
-  // });
-</script>
 <script>
   $(document).ready(function () {
     const csrftoken = getCookie("csrftoken");
@@ -98,17 +91,5 @@
     });
   });
 
-  const saveData = (function () {
-    const a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function (data, fileName) {
-      const blob = new Blob([data], { type: "octet/stream" }),
-        url = window.URL.createObjectURL(blob);
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    };
-  })();
+
 </script>
