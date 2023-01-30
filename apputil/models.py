@@ -1,4 +1,7 @@
-# Create your models here.
+import pandas as pd
+import numpy as np
+from asgiref.sync import sync_to_async
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
@@ -222,6 +225,19 @@ class AuditModel(models.Model):
                     value_list.append(" ")
         return value_list
 #-------------------------------------------------------------------------------------------------
+    # data-visulization
+    @classmethod
+    # @sync_to_async
+    def get_pivottable(self, querydata, columns_str, index_str,aggfunc, values):
+        np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
+        data=list(querydata.values())
+        df=pd.DataFrame(data)
+        columns=columns_str.split(",") 
+        index=index_str.split(",")
+        table=pd.pivot_table(df, values=values, index=index,
+                        columns=columns, aggfunc=np_aggfunc[aggfunc])
+        return table
+
 
 
 #-------------------------------------------------------------------------------------------------

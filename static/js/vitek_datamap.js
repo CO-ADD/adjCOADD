@@ -36,7 +36,6 @@ $(document).ready(function () {
     var column_value_str = column_value.toString();
     // all data
     var data = {
-      // data_map: data_map_str,
 
       selected_data: selected_data,
       values: value_str,
@@ -45,13 +44,9 @@ $(document).ready(function () {
       card_barcode: card_barcode,
       functions: data_function_str,
     };
-    // console.log(data);
-    // ajax send data to server, receive data from server
+
     sendToServer(data);
-    // var table = result ? result : null;
-    // console.log(table);
-    // $("#pivotable").html = "";
-    // $("#pivotable").html += table;
+
   });
 });
 
@@ -71,9 +66,12 @@ const sendToServer = (data) => {
       if (response["msg"]) {
         saveData(response["table"], "pivottable.csv");
         $("#pivotable").append(response["msg"])
+        var data = JSON.parse(response["table_tofront"])
+        console.log(typeof (data));
+        var data1 = [{ "astatus": 0, "acreated_at": "2023-01-06T04:27:39.511Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0751_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "9.08 hours" }, { "astatus": 0, "acreated_at": "2023-01-06T04:27:39.426Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0750_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "11.00 hours" }, { "astatus": 0, "acreated_at": "2023-01-06T04:27:39.338Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0749_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "8.60 hours" }]
+        create_pivottable(data)
       } else {
         data = response["table"];
-        // console.log(data);
         $("#pivotable").append(data);
       }
     })
@@ -81,3 +79,15 @@ const sendToServer = (data) => {
       console.log(XMLHttpRequest, textStatus, errorThrown);
     });
 };
+
+function create_pivottable(data) {
+  $('#output').pivot(
+    data, {
+    cols: ['expiry_date'],
+    rows: ["analysis_time"],
+    aggregatorName: "intSum",
+    vals: ["proc_date"],
+    rendererName: "Table"
+  }
+  )
+}

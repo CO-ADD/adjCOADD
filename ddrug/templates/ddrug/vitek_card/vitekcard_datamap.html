@@ -42,26 +42,34 @@
   <hr />
   <div class="row border">
     <div class="d-flex flex-row justify-content-center vh-100">
-      <div class="border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
+      <div class="d-flex border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
+      <div class="d-flex flex-column">
 
-      <div id="pivotable" style="
+        <div id="pivotable" style="
           width: 1500px;
           overflow: scroll;
           font-size: medium;
           margin-left: 0;
-        ">
-        <span style="color: Blue">
-          Make sure using <strong>Filter and Select Data </strong>Large table (rows > 1000) will be downloaded as
-          <strong>Downloads/pivottable.csv</strong>
-          automatically. Click
-          <strong>"Start..."</strong> Button create pivotable with default
-          column, index and value by default aggfunc np.sum. Change default
-          setting via drag n drop <strong>"Dark-BLUE"</strong> squares and
-          selective options.
-        </span>
-        <br />
-        Example Table(data source: the current page of "vitek_card" table view
-        (left tab)) {{table | safe}}
+          ">
+          <span style="color: Blue">
+            Make sure using <strong>Filter and Select Data </strong>Large table (rows > 1000) will be downloaded as
+            <strong>Downloads/pivottable.csv</strong>
+            automatically. Click
+            <strong>"Start..."</strong> Button create pivotable with default
+            column, index and value by default aggfunc np.sum. Change default
+            setting via drag n drop <strong>"Dark-BLUE"</strong> squares and
+            selective options.
+          </span>
+          <br />
+          Example Table(data source: the current page of "vitek_card" table view
+          (left tab)) {{table | safe}}
+        </div>
+        <div id="output" style="
+        width: 1500px;
+        overflow: scroll;
+        font-size: medium;
+        margin-left: 0;
+        "></div>
       </div>
     </div>
   </div>
@@ -69,6 +77,10 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"
+  integrity="sha512-XgJh9jgd6gAHu9PcRBBAp0Hda8Tg87zi09Q2639t0tQpFFQhGpeCgaiEFji36Ozijjx9agZxB0w53edOFGCQ0g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
   $(function () {
     $("#sortable1, #sortable2, #sortable3")

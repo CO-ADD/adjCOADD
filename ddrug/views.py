@@ -1,9 +1,13 @@
+import json
 import os
+import asyncio
 from rdkit import Chem
 from django_filters.views import FilterView
 import pandas as pd
 import numpy as np
+from django.core.serializers.json import DjangoJSONEncoder
 
+from django.utils.decorators import classonlymethod
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -29,6 +33,10 @@ from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolde
 from .forms import Drug_form
 from .Vitek import *
    
+# async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
+# async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
+# async_function = sync_to_async(VitekcardListView.get_context_data, thread_sensitive=False)
+# async_function = sync_to_async(VitekcardListView.post, thread_sensitive=False)
           
 # #############################Drug View############################################
 # ==========List View================================Read===========================================
@@ -100,6 +108,7 @@ from apputil.utils import instance_dict, Validation_Log
 from apputil.utils_dataimport import import_excel
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
+from django.core import serializers
 def get_file(filename):
     from django.conf import settings
     filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
@@ -112,11 +121,23 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
     context_list=''
+    
+    # @classonlymethod
+    # def as_view(cls, **initkwargs):
+    #     view = super().as_view(**initkwargs)
+    #     view._is_coroutine = asyncio.coroutines._is_coroutine
+    #     return view
 
+    # @sync_to_async
+    # def get(self, request, *args, **kwargs):
+      
+    #     return super().get(request, *args, **kwargs)
+
+    # @sync_to_async
     def get_context_data(self,  **kwargs):
         # get data:
 
-        context = super().get_context_data( **kwargs)
+        context =super().get_context_data( **kwargs)
        
         context['defaultcolumns1']='expiry_date'
         context['defaultcolumns2']='card_barcode'
@@ -133,11 +154,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         return context
     
     
-
+    # @sync_to_async
     def post(self, request, *args, **kwargs ):
         queryset=self.get_queryset()#
-        # define pivottable functions
-        np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
         # receive data
         if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
             selected_data=request.POST.getlist("selected_data[]") or None
@@ -145,39 +164,26 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             columns_str=request.POST.get("columns") or None
             index_str=request.POST.get("index") or None
             card_barcode=request.POST.get("card_barcode")
-            aggfunc=np_aggfunc[request.POST.get("functions")]
-            print(f"index={index_str}, values={values_str}, columns={columns_str}")
+            aggfunc_name=request.POST.get("functions")
      
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
+                print(querydata.values())
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
-
-            # if querydata.count() >2000:
-            #     warn_message="Handling more 2000 data objects will cause long response time, are you sure? please using filter or select objects to reduce amount of data"
-            #     return JsonResponse({"table":warn_message,})
+                query_send=json.dumps(list(querydata.values()), cls=DjangoJSONEncoder) 
+            # get table values  
             values=values_str or None
-           
             if values:
                 try:
-                    data=list(querydata.values())
-                    df=pd.DataFrame(data)
-                    columns=columns_str.split(",") 
-                    index=index_str.split(",")
-                    table=pd.pivot_table(df, values=values, index=index,
-                        columns=columns, aggfunc=aggfunc)#.to_html(classes=["table-bordered", "table-striped", "table-hover"]) 
-                    # table1=table.to_json(orient ='records')
-                    # table2=table.to_html()
-                    # print(f'table to json size is {sys.getsizeof(table1)}')
-                    # print(f'tbale to html size if {sys.getsizeof(table2)}')
-                                                  
+                    table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
                     if querydata.count() >1000:
                         response = HttpResponse(content_type='text/csv')
                         response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
                         table_csv=table.to_csv()
-                        return JsonResponse({"table":table_csv, "msg":"large datatable automatically convert to .csv file to download..."})
+                        return JsonResponse({"table":table_csv, "msg":"large datatable automatically convert to .csv file to download...",  "table_tofront":query_send},)
                     else:
-                        table_html=table.to_html()
+                        table_html=table.to_html(classes=["table-bordered",])
                         return JsonResponse({"table":table_html, "msg":None})
                 except Exception as err:
                     error_message=str(err)
@@ -194,7 +200,6 @@ def detailVitekcard(req, pk):
     context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
     context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEKID_FIELDs)
     context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    print(context["vitekast_obj"])
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEKAST_FIELDs)
 
     return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)
@@ -386,10 +391,6 @@ class Importhandler_VITEK(Importhandler):
         return render(request, 'ddrug/importhandler_vitek.html', context)
 
 
-async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
-async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
-async_function = sync_to_async(VitekcardListView.get_context_data, thread_sensitive=False)
-async_function = sync_to_async(VitekcardListView.post, thread_sensitive=False)
 
 
       

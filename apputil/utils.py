@@ -5,7 +5,7 @@ import re
 import unicodedata
 import django_filters
 import pandas as pd
-
+from asgiref.sync import sync_to_async
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -152,7 +152,7 @@ class FilteredListView(ListView):
     order_by=None
     context_list=''
 
-
+   
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
@@ -183,7 +183,7 @@ class FilteredListView(ListView):
         qs=super().get_queryset()
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
-
+ 
     def get_order_by(self):
        
         order_by=self.request.GET.get("order_by", self.order_by) or None
