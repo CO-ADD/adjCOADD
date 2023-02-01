@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Async View</h1>
+    {% if user.is_authenticated %}
+    <p>{{context}}</p>
+    {%endif%}
+
+    <section class="row border " id="Import_step1">
+        <div class="card mt-5 border">
+            <form method="POST" enctype="multipart/form-data" class="form-control">
+                {% csrf_token %}
+                <!--  -->
+                <input type="text" value="{{data_model}}" name="file_data">
+                {{form.as_p}}
+
+
+                <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
+                </button>
+        </div>
+        </div>
+        </form>
+
+        </div>
+    </section>
+</body>
+
+</html>

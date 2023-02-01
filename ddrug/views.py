@@ -1,6 +1,5 @@
 import json
 import os
-import asyncio
 from rdkit import Chem
 from django_filters.views import FilterView
 import pandas as pd
@@ -21,7 +20,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
-from asgiref.sync import sync_to_async
+
 
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView, get_filewithpath
@@ -33,10 +32,7 @@ from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolde
 from .forms import Drug_form
 from .Vitek import *
    
-# async_function = sync_to_async(Importhandler_VITEK.delete_file, thread_sensitive=False)
-# async_function = sync_to_async(Importhandler_VITEK.post, thread_sensitive=False)
-# async_function = sync_to_async(VitekcardListView.get_context_data, thread_sensitive=False)
-# async_function = sync_to_async(VitekcardListView.post, thread_sensitive=False)
+
           
 # #############################Drug View############################################
 # ==========List View================================Read===========================================
@@ -121,19 +117,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekcard_filter
     model_fields=VITEKCARD_FIELDs
     context_list=''
+   
+
     
-    # @classonlymethod
-    # def as_view(cls, **initkwargs):
-    #     view = super().as_view(**initkwargs)
-    #     view._is_coroutine = asyncio.coroutines._is_coroutine
-    #     return view
-
-    # @sync_to_async
-    # def get(self, request, *args, **kwargs):
-      
-    #     return super().get(request, *args, **kwargs)
-
-    # @sync_to_async
     def get_context_data(self,  **kwargs):
         # get data:
 
@@ -153,8 +139,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     
         return context
     
-    
-    # @sync_to_async
+   
     def post(self, request, *args, **kwargs ):
         queryset=self.get_queryset()#
         # receive data
