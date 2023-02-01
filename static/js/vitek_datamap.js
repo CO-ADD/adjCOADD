@@ -36,7 +36,6 @@ $(document).ready(function () {
     var column_value_str = column_value.toString();
     // all data
     var data = {
-
       selected_data: selected_data,
       values: value_str,
       columns: column_value_str,
@@ -46,7 +45,6 @@ $(document).ready(function () {
     };
 
     sendToServer(data);
-
   });
 });
 
@@ -65,11 +63,10 @@ const sendToServer = (data) => {
       $("#pivotable").html("");
       if (response["msg"]) {
         saveData(response["table"], "pivottable.csv");
-        $("#pivotable").append(response["msg"])
-        var data = JSON.parse(response["table_tofront"])
-        console.log(typeof (data));
-        var data1 = [{ "astatus": 0, "acreated_at": "2023-01-06T04:27:39.511Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0751_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "9.08 hours" }, { "astatus": 0, "acreated_at": "2023-01-06T04:27:39.426Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0750_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "11.00 hours" }, { "astatus": 0, "acreated_at": "2023-01-06T04:27:39.338Z", "aupdated_at": null, "adeleted_at": null, "acreated": "orgdb", "aupdated": null, "adeleted": null, "orgbatch_id": "GN_0749_01", "card_type": "AST", "card_code": "AST-GN96", "expiry_date": "2022-10-08", "instrument": "00001A0FD535 (IMB Vitek)", "proc_date": "2022-02-25", "analysis_time": "8.60 hours" }]
-        create_pivottable(data)
+        $("#pivotable").append(response["msg"]);
+        var data = JSON.parse(response["table_tofront"]);
+        console.log(typeof data);
+        create_pivottable(data);
       } else {
         data = response["table"];
         $("#pivotable").append(data);
@@ -81,13 +78,22 @@ const sendToServer = (data) => {
 };
 
 function create_pivottable(data) {
-  $('#output').pivot(
-    data, {
-    cols: ['expiry_date'],
-    rows: ["analysis_time"],
+  var index_value = [];
+  $("#sortable3 li").each(function () {
+    index_value.push($(this).text());
+  });
+  var column_value = [];
+  $("#sortable2 li").each(function () {
+    column_value.push($(this).text());
+  });
+  var value_str = $("[data-name=data_process_value] option:selected")
+    .val()
+    .toString();
+  $("#output").pivot(data, {
+    cols: column_value,
+    rows: index_value,
     aggregatorName: "intSum",
-    vals: ["proc_date"],
-    rendererName: "Table"
-  }
-  )
+    vals: [value_str],
+    rendererName: "Table",
+  });
 }

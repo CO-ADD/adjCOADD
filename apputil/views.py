@@ -13,12 +13,10 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-# from .utils_dataimport import import_excel
 from dorganism.models import Organism, Taxonomy
 from .utils import FilteredListView
 from .utils import Dictionaryfilter
 from adjcoadd.constants import *
-# from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 from .utils import SuperUserRequiredMixin, permission_not_granted
 
 

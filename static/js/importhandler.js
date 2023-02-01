@@ -37,13 +37,11 @@ $(".button").on("click", function () {
       <td><div id="upload_report">${res.file_report}</div></td>
       </tr>`;
       $("#tasks").append(html);
+      $("#Import_step3").addClass("visible");
       if (res.validate_result.includes("True")) {
-        $("#Import_step3").toggleClass("visible");
         $("#progressbar span:nth-child(2)").toggleClass("bg-success");
       } else {
-        $("#save_Proceed").prop("disabled", true);
-        $("#save_Proceed").addClass("disabled");
-        $("#next_to_confirm").toggleClass("visible");
+        $(".confirmButton").prop("disabled", true);
       }
 
       $("#preLoader").fadeOut();
@@ -74,7 +72,7 @@ $(".confirmButton").on("click", function () {
       $("#preLoader").fadeOut();
       console.log(res);
       // if (res.task_status === "Form is Valid") {
-      $("#Import_step4").toggleClass("visible");
+      $("#Import_step4").addClass("visible");
       $("#progressbar span:nth-child(3)").toggleClass("bg-success");
       // }
       const html = `<p>${res.status}</p>`;
@@ -84,7 +82,4 @@ $(".confirmButton").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
-
-
-
 });

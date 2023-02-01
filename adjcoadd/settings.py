@@ -87,7 +87,37 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+if DEVELOPMENT:
+    DATABASES={
+            # ==================For Local Test===========================================
+   'default': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    },
+    'dorganism': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+      'NAME': 'orgdb',
+      'TEST': {
+          'NAME': 'mytestdatabase2',
+      },
+      'HOST': 'Localhost',
+      'PORT': '5432',
+   },
+    'ddrug': {
+      "ENGINE": 'django.db.backends.postgresql_psycopg2',
+      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+      'NAME': 'orgdb',
+      'HOST': 'Localhost',
+      'PORT': '5432',
+    }
+
+    }
+else:
+    DATABASES = {
 
       'default': {
        #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',

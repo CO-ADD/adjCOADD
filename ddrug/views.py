@@ -101,7 +101,6 @@ def updateDrug(req, pk):
 
 # ================Vitek Card===========================================#
 from apputil.utils import instance_dict, Validation_Log
-from apputil.utils_dataimport import import_excel
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
 from django.core import serializers
@@ -150,10 +149,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             index_str=request.POST.get("index") or None
             card_barcode=request.POST.get("card_barcode")
             aggfunc_name=request.POST.get("functions")
-     
+            print(f'columns_str is {columns_str}')
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
-                print(querydata.values())
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
                 query_send=json.dumps(list(querydata.values()), cls=DjangoJSONEncoder) 
@@ -235,7 +233,7 @@ class Importhandler_VITEK(Importhandler):
                     filename=fs.save(str(request.user)+"_"+f.name, f)
                     
                     try:
-                        vCards, vID, vAst=process_VitekPDF(DirName=dirname, PdfName=filename)#import_excel(fs.url(filename), self.data_model)
+                        vCards, vID, vAst=process_VitekPDF(DirName=dirname, PdfName=filename)
                         print("file checked")
                         self.lCards[filename]=vCards
                         self.lID[filename]=vID
@@ -254,14 +252,10 @@ class Importhandler_VITEK(Importhandler):
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST": 
-         
-
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
+            # steps for validation, cancel/delete or savetoDB 
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
-            print(f'selected : {file_pathlist}')
-            # for f in file_pathlist:
-            print(f"cardlist is: {self.lCards}")
             data_model=request.POST.get("datamodel")
           
             if process_name=='Validation':
@@ -277,8 +271,6 @@ class Importhandler_VITEK(Importhandler):
                             else:
                                 self.validate_result[key]=[("Card-"+str(djCard.validStatus))]
                             
-                                # result_report["key"]=["Card-"+str(djCard.validStatus)]
-                            
                             self.file_report.append(key+str(self.vLog.show()))
                 
                 if any(self.lID.values()):
@@ -290,7 +282,6 @@ class Importhandler_VITEK(Importhandler):
                                 self.validate_result[key].append("ID-"+str(djID.validStatus))
                             else:
                                 self.validate_result[key]=[("ID-"+str(djID.validStatus))]
-                            # self.validate_result.append(f"{key}+ID status: {djID.validStatus}")
                             self.file_report.append(str(self.vLog.show()))
                 
                 if any(self.lAst.values()):
@@ -302,10 +293,7 @@ class Importhandler_VITEK(Importhandler):
                                 self.validate_result[key].append("Ast-"+str(djAst.validStatus))
                             else:
                                 self.validate_result[key]=[("Ast-"+str(djAst.validStatus))]
-                            # self.validate_result.append(f"{key}+Ast status: {djAst.validStatus}")
                             self.file_report.append(key+str(self.vLog.show()))
-
-                       
         
                 return JsonResponse({"table_name":" ||Vitek| ".join(self.table_name), 'validate_result':str(self.validate_result), 'file_report':"," .join(self.table_name)})                                   
        
@@ -335,10 +323,15 @@ class Importhandler_VITEK(Importhandler):
                             if djCard.validStatus:
                                 try:
                                     djCard.save(**kwargs)
+                                    e['validStatus']=True
                                 except Exception as err:
                                     self.validate_result[key].append(f"catch Exception Card {err}")
+                            else:
+                                e['validStatus']=False
                             self.validate_result[key].append(f"CARD status: {djCard.validStatus}")
                             self.file_report.append(str(self.vLog.show()))
+
+                        self.lCards[key][:]=[e for e in self.lCards[key] if e['validStatus']==False]
                 
                 if any(self.lID.values()):
                     for key in self.lID:
@@ -348,11 +341,15 @@ class Importhandler_VITEK(Importhandler):
                             if djID.validStatus:
                                 try:
                                     djID.save(**kwargs)
+                                    e['validStatus']=True
                                 except Exception as err:
                                     self.validate_result[key].append(f"catch Exception ID {err}")
+                            else:
+                                e['validStatus']=False
                             self.validate_result[key].append(f"ID status: {djID.validStatus}")
                             self.file_report.append(str(self.vLog.show()))
-                
+                        self.lID[key][:]=[e for e in self.lID[key] if e['validStatus']==False]
+
                 if any(self.lAst.values()):
                     for key in self.lAst:
                         self.table_name.append(key)
@@ -361,12 +358,15 @@ class Importhandler_VITEK(Importhandler):
                             if djAst.validStatus:
                                 try:
                                     djAst.save(**kwargs)
+                                    e['validStatus']=True
                                 except Exception as err:
                                     self.validate_result[key].append(f"catch Exception Ast {err}")
+                            else:
+                                e['validStatus']=False
                             self.validate_result[key].append(f"Ast status: {djAst.validStatus}")
                             self.file_report.append(str(self.vLog.show()))
-                
-                print(f'lcards clear is {self.lCards}')
+                    self.lAst[key][:]=[e for e in self.lAst[key] if e['validStatus']==False]
+
                 for f in file_pathlist:
                     self.delete_file(file_path=f)
                                
