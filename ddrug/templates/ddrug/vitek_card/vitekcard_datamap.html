@@ -4,8 +4,12 @@
     <!-- <form action="#" class=""> -->
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Data visualization type--</span>
-      <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
-        style="width: fit-content">
+      <select
+        data-name="data_map_type"
+        class="form-select form-select-sm"
+        aria-label="form-select-sm example"
+        style="width: fit-content"
+      >
         <option value="1" selected>Pivot table</option>
         <option value="2">Pie Chart</option>
         <option value="3">Plot</option>
@@ -13,8 +17,12 @@
     </div>
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Select Table Values--</span>
-      <select data-name="data_process_value" class="form-select form-select-sm" aria-label=".form-select-sm example"
-        style="width: fit-content">
+      <select
+        data-name="data_process_value"
+        class="form-select form-select-sm"
+        aria-label=".form-select-sm example"
+        style="width: fit-content"
+      >
         <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
         {%for field in model_fields %}
         <option value="{{field}}">{{field}}</option>
@@ -23,8 +31,12 @@
     </div>
     <div class="d-flex flex-column mx-2">
       <span style="font-size: small">--Aggregate Functions--</span>
-      <select data-name="data_function_type" class="form-select form-select-sm" aria-label=".form-select-sm example"
-        style="width: fit-content">
+      <select
+        data-name="data_function_type"
+        class="form-select form-select-sm"
+        aria-label=".form-select-sm example"
+        style="width: fit-content"
+      >
         <option value="Sum" selected>Sum</option>
         <option value="Mean">Mean</option>
         <option value="Std">Std</option>
@@ -42,17 +54,22 @@
   <hr />
   <div class="row border">
     <div class="d-flex flex-row justify-content-center vh-100">
-      <div class="d-flex border-2">{%include 'utils/selectivedrag_vt.html'%}</div>
+      <div class="d-flex border-2">
+        {%include 'utils/selectivedrag_vt.html'%}
+      </div>
       <div class="d-flex flex-column">
-
-        <div id="pivotable" style="
-          width: 1500px;
-          overflow: scroll;
-          font-size: medium;
-          margin-left: 0;
-          ">
+        <div
+          id="pivotable"
+          style="
+            width: 1500px;
+            overflow: scroll;
+            font-size: medium;
+            margin-left: 0;
+          "
+        >
           <span style="color: Blue">
-            Make sure using <strong>Filter and Select Data </strong>Large table (rows > 1000) will be downloaded as
+            Make sure using <strong>Filter and Select Data </strong>Large table
+            (rows > 1000) will be downloaded as
             <strong>Downloads/pivottable.csv</strong>
             automatically. Click
             <strong>"Start..."</strong> Button create pivotable with default
@@ -64,12 +81,15 @@
           Example Table(data source: the current page of "vitek_card" table view
           (left tab)) {{table | safe}}
         </div>
-        <div id="output" style="
-        width: 1500px;
-        overflow: scroll;
-        font-size: medium;
-        margin-left: 0;
-        "></div>
+        <div
+          id="output"
+          style="
+            width: 1500px;
+            overflow: scroll;
+            font-size: medium;
+            margin-left: 0;
+          "
+        ></div>
       </div>
     </div>
   </div>
@@ -77,9 +97,12 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"
   integrity="sha512-XgJh9jgd6gAHu9PcRBBAp0Hda8Tg87zi09Q2639t0tQpFFQhGpeCgaiEFji36Ozijjx9agZxB0w53edOFGCQ0g=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 
 <script>
   $(function () {
