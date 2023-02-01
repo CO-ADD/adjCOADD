@@ -68,8 +68,10 @@ const sendToServer = (data) => {
         console.log(typeof data);
         create_pivottable(data);
       } else {
+        json_data = response["table_json"];
         data = response["table"];
         $("#pivotable").append(data);
+        console.log(json_data);
       }
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
@@ -96,4 +98,20 @@ function create_pivottable(data) {
     vals: [value_str],
     rendererName: "Table",
   });
+}
+function json_table(json_data) {
+  const dbParam = JSON.stringify({ table: "customers", limit: 20 });
+  const xmlhttp = new XMLHttpRequest();
+  xmlhttp.onload = function () {
+    myObj = json_data; //JSON.parse(this.responseText);
+    let text = "<table border='1'>";
+    for (let x in myObj) {
+      text += "<tr><td>" + myObj[x].name + "</td></tr>";
+    }
+    text += "</table>";
+    document.getElementById("demo").innerHTML = text;
+  };
+  // xmlhttp.open("POST", "json_demo_html_table.php");
+  // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  // xmlhttp.send("x=" + dbParam);
 }

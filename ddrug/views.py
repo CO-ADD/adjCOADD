@@ -169,7 +169,8 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                         return JsonResponse({"table":table_csv, "msg":"large datatable automatically convert to .csv file to download...",  "table_tofront":query_send},)
                     else:
                         table_html=table.to_html(classes=["table-bordered",])
-                        return JsonResponse({"table":table_html, "msg":None})
+                        table_json=table.to_json()
+                        return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
                 except Exception as err:
                     error_message=str(err)
                     return JsonResponse({"table":error_message,})

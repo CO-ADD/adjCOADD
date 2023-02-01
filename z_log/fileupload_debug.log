@@ -2,3 +2,13 @@ Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11284
 Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11284
+Not Found: /json_demo_html_table.php
+"POST /json_demo_html_table.php HTTP/1.1" 404 11324
+Not Found: /json_demo_html_table.php
+"POST /json_demo_html_table.php HTTP/1.1" 404 11324
+Not Found: /json_demo_html_table.php
+"POST /json_demo_html_table.php HTTP/1.1" 404 11324
+Not Found: /json_demo_html_table.php
+"GET /json_demo_html_table.php HTTP/1.1" 404 11323
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11284
