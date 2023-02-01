@@ -30,8 +30,8 @@
         {%include 'utils/message.html'%}
     </h3>
     {%if file_pathlist %}
-    <div>
-        Uploaded File stored in
+    <div class="card m-5">
+        Uploaded Files and your old files listed here:
         <!--  -->
         {% include 'utils/selectAllExp.html'%}
 
@@ -52,7 +52,7 @@
         <ul>
 
             <li>
-                Select files and validate form before you import it into DB
+                Select uploaded files or old files to validate before you import it into DB
                 <button class="button" type="submit" name="RUN" data-type="Validation">Form Validation</button>
                 or
             </li>
@@ -60,7 +60,7 @@
                 Select files delete
                 <a class="button" data-type="Cancel" href="javascript:void(0);">Delete Files</a>
                 Then <a href="{% url 'import-VITEK'%}">Refresh Page</a>
-                <!-- <button class="button" data-type="Cancel" >Cancel Task</button> -->
+                
             </li>
 
         </ul>
@@ -71,20 +71,36 @@
     <div>
         <h2 class="title is-2">Task Status</h2>
         <br>
+       
         <table class="table is-fullwidth">
             <thead>
                 <tr>
                     <th>Module: File names</th>
                     <th>Status</th>
-                    <th>Report Issues <button class="btn btn-sm" type="button" id="report-issues"
-                            onclick="downloadFile()">Download
-                            Report</button> </th>
-                    <!-- <th> others...</th> -->
+                    
+                
                 </tr>
             </thead>
             <tbody id="tasks">
             </tbody>
         </table>
+        <hr>
+        <div>
+            <button class="btn btn-sm" type="button" id="report-issues"
+                            onclick="downloadFile()">Download
+                            Report</button> 
+                        
+             <a class="btn btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Open Report
+                     </a>           
+        </div>
+                            
+  <div class="collapse" id="collapseExample">
+  <div class="card card-body" id="tasksreport" >
+   
+  </div>
+</div>
+                            
     </div>
     {%endif %}
 </section>
@@ -97,7 +113,7 @@
     <div>Next availabe actions:</div>
     <ul>
         <li>
-            IF Files contain validation==True, you can try to save them in DB
+            IF Files contain validation==True and False, you can try to save them in DB firstly and validated again, if some result turns to True you can continue to save. 
             <button class="confirmButton btn btn-sm" type="button" data-type="DB_Validation">Save To DB</button>
         </li>
 
@@ -113,7 +129,8 @@
     <div></div>
     <ul>
         <li>
-            <a class="btn btn-sm" href="{%url 'import-VITEK'%}">OK (refresh Page)</a>
+            <a class="button" data-type="Cancel" href="javascript:void(0);">Please Select and Delete nonusable Files</a>
+            <a class="btn btn-sm" href="{%url 'import-VITEK'%}">And Click Refresh</a>
         </li>
 
     </ul>

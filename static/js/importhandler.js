@@ -29,14 +29,27 @@ $(".button").on("click", function () {
     headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
-      console.log(res.table_name);
-      const html = `
+      var file_list = $.grep(
+        res.validatefile_name.split(","),
+        (n) => n == 0 || n
+      );
+
+      var validateResult = JSON.parse(res.validate_result.replace(/'/g, '"'));
+      // var validateReport = JSON.parse(
+      //   res.file_report.replace(/'/g, '"').replace(/\\/g, "")
+      // );
+      // JSON.parse;
+      for (let i = 0; i < file_list.length; i++) {
+        const tr = `
       <tr>
-      <td>${res.table_name}</td>
-      <td>${res.validate_result}</td>
-      <td><div id="upload_report">${res.file_report}</div></td>
+      <td>${file_list[i]}</td>
+      <td>${validateResult[file_list[i]]}</td>
       </tr>`;
-      $("#tasks").append(html);
+        $("#tasks").append(tr);
+      }
+      $("#tasksreport").append(`
+        <div id="upload_report">${res.file_report}</div>`);
+
       $("#Import_step3").addClass("visible");
       if (res.validate_result.includes("True")) {
         $("#progressbar span:nth-child(2)").toggleClass("bg-success");

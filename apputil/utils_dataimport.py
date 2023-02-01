@@ -1,5 +1,4 @@
 import magic
-import magic
 import os
 import pandas as pd
 from pathlib import Path
@@ -9,24 +8,13 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
-from django import forms
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.core.files.storage import FileSystemStorage
-from django.db import transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils.deconstruct import deconstructible
-from django.views.generic.edit import FormView
-from django.template.defaultfilters import filesizeformat
-from django.utils.deconstruct import deconstructible
-from django.views.generic.edit import FormView
+from django.views import View
+from django.shortcuts import render
 
-from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture
-from apputil.models import Dictionary
-from apputil.utils import Validation_Log, instance_dict
-from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
-from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
+
 
 # -----------------------Start Utility Functions-----------------------------------
 
@@ -99,7 +87,7 @@ class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}), validators=[validate_file])
     
 
-class Importhandler(SuperUserRequiredMixin, FormView):
+class Importhandler(SuperUserRequiredMixin, View):
     
     form_class=FileUploadForm
     file_url=[]
@@ -109,21 +97,59 @@ class Importhandler(SuperUserRequiredMixin, FormView):
     template_name='default'
     log_process='default'
     vLog = Validation_Log(log_process)
-    table_name=[","]
+    validatefile_name=["|"]
     validate_result={}
-    file_report=[","]
-    
-    def delete_file(self, file_path):
-        file_name=file_path.split("/")[2]
-        print(file_name)
-        file_full_path=os.path.join(settings.MEDIA_ROOT, file_name)
+    file_report={}
+    dirname=settings.MEDIA_ROOT
+
+    #---------------------------------------------------------------------------------- 
+    # Use to delete uploaded files
+    def delete_file(self, file_name):
+       
+        file_full_path=os.path.join(self.dirname, file_name)
         print(file_full_path)
         try:
             os.unlink(file_full_path)
             print("removed!")
         except Exception as err:
             print(err)
- 
+
+    #---------------------------------------------------------------------------------- 
+    # use to validate records
+    def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
+       
+        if any(newentry_dict.values()):
+            for key in newentry_dict:
+                for e in newentry_dict[key]:
+                    djCard=app_model.check_from_dict(e, vlog)
+                    if save:
+                        if djCard.validStatus:
+                            try:
+                                djCard.save(**kwargs)
+                                e['validStatus']=True
+                            except Exception as err:
+                                self.validate_result[key].append(f"catch Exception Card {err}")
+                        else:
+                            e['validStatus']=False
+                    if report_result.get(key, None):
+                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(djCard.validStatus))
+                    else:
+                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(djCard.validStatus)]
+                    if report_filelog.get(key, None):
+                        report_filelog[key].append(str(vlog.show()))
+                    else:
+                        report_filelog[key]=[str(vlog.show())]
+                if save:
+                    newentry_dict[key][:]=[e for e in newentry_dict[key] if e['validStatus']==False]
+                    
+    #---------------------------------------------------------------------------------- 
+    def get(self, request):
+        form = self.form_class
+        template=self.template_name
+        chars_lookup=str(request.user)
+        # filesinUploads_list=[file for file in os.listdir(self.dirname) if os.path.isfile(os.path.join(self.dirname, file)) and str(request.user)+"_" in file] 
+               
+        return render(request, 'ddrug/importhandler_vitek.html', { 'form': form,})
 
 
 

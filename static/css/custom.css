@@ -610,7 +610,6 @@ td {
   width: fit-content;
   height: fit-content;
   background-color: var(--bs-footer-bg);
-
 }
 
 .dataframe thead th:before {
@@ -721,6 +720,6 @@ td {
 }
 
 #upload_report {
-  max-height: 200px;
+  max-height: 150px;
   overflow: scroll;
 }
