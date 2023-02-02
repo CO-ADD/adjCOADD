@@ -84,7 +84,7 @@ validate_file = FileValidator(#max_size=1024 * 100,
 
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}), validators=[validate_file])
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
     
 
 class Importhandler(SuperUserRequiredMixin, View):
@@ -95,9 +95,9 @@ class Importhandler(SuperUserRequiredMixin, View):
     data_model='default'
     success_url="default"
     template_name='default'
-    log_process='default'
-    vLog = Validation_Log(log_process)
-    validatefile_name=["|"]
+    # log_process='default'
+    vLog = Validation_Log("")
+    # validatefile_name=["|"]
     validate_result={}
     file_report={}
     dirname=settings.MEDIA_ROOT
@@ -122,8 +122,8 @@ class Importhandler(SuperUserRequiredMixin, View):
             for key in newentry_dict:
                 for e in newentry_dict[key]:
                     djCard=app_model.check_from_dict(e, vlog)
-                    if save:
-                        if djCard.validStatus:
+                    if djCard.validStatus:
+                        if save:
                             try:
                                 djCard.save(**kwargs)
                                 e['validStatus']=True

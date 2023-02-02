@@ -29,7 +29,20 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.has_permission('Admin')
 
+# ============Override filename in FileStorage========================================
+from django.core.files.storage import FileSystemStorage
 
+class OverwriteStorage(FileSystemStorage):
+    
+    def get_available_name(self, name, max_length=None):
+        """
+        Returns a filename that's free on the target storage system, and
+        available for new content to be written to.
+        """
+        # If the filename already exists, remove it as if it was a true file system
+        if self.exists(name):
+            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+        return name
 
 # Model Validation utilities  =====================================================================================
 
@@ -62,16 +75,28 @@ class Validation_Log():
             self.nLogs[logType] = self.nLogs[logType] + 1
         
     def show(self,logTypes= ['Error','Warning', 'Info']):
-        info=[]
+        info={} #info=[]
         for t in logTypes:
             # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
-
+            info[t]=[]
             for l in self.Logs[t]:
-                # print(f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} ")
-                print_info=f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} "
-                info.append(print_info)
+                print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
+                print_info=f"{l['Process']}_{l['Description']}_{l['Item']}_{l['Help']}"
+                info[t].append(print_info) # info.append(print_info)
         # self.Logs.clear()
         return info
+    
+    # def show_flags(self,logTypes= ['Error','Warning']):
+    #     info={} #info=[]
+    #     for t in logTypes:
+    #         # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+    #         info[t]=[]
+    #         for l in self.Logs[t]:
+    #             print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
+    #             print_info=f"{l['Process']}_{l['Description']}_{l['Item']}_{l['Help']}"
+    #             info[t].append(print_info) # info.append(print_info)
+    #     # self.Logs.clear()
+    #     return info
 
 #-----------------------------------------------------------------------------------
 def instance_dict(instance, key_format=None):

@@ -1,7 +1,25 @@
 // custom javascript
 $(document).ready(() => {
+
   console.log("document ready!");
 });
+var output_files = $("#output")
+
+$("#id_file_field").change(function () {
+  output_files.empty();
+  var files = $(this).prop('files');
+  var htmls = ``
+  jQuery.each(files, function (i, val) {
+    htmls += `<p>${i + 1}-${val.name}</p>`
+  });
+  output_files.append(htmls);
+
+  // var htmls = ""
+  // for (let file in files) {
+  //   htmls += `<p>${file.name}</p>`
+  // }
+  // output_files.append(htmls)
+})
 const csrftoken = getCookie("csrftoken");
 if ($("#filepath").text()) {
   $("#progressbar span:first-child").toggleClass("bg-success");
@@ -10,7 +28,7 @@ if ($("#filepath").text()) {
 
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
-  console.log("button clicked");
+
   var filepathlist = [];
   $("input[name=uploadedfiles_select]:checked").each(function () {
     filepathlist.push($(this).val().toString());
@@ -29,21 +47,41 @@ $(".button").on("click", function () {
     headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
-      var file_list = $.grep(
-        res.validatefile_name.split(","),
-        (n) => n == 0 || n
-      );
 
       var validateResult = JSON.parse(res.validate_result.replace(/'/g, '"'));
-      // var validateReport = JSON.parse(
-      //   res.file_report.replace(/'/g, '"').replace(/\\/g, "")
-      // );
+      var validateReport = JSON.parse(
+        res.file_report.replace(/'/g, '"').replace(/"{/g, '{').replace(/}"/g, '}')
+      );
+
+      for (let key in validateReport) {
+        console.log(key)
+        console.log(validateReport[key])
+      }
       // JSON.parse;
-      for (let i = 0; i < file_list.length; i++) {
+      var f_list = Object.keys(validateResult)
+      console.log(f_list)
+      for (let i = 0; i < f_list.length; i++) {
+        var error_num = 0;
+        var warning_num = 0;
+        var ew_description = { 'Error': [], 'Warning': [] };
+        validateReport[f_list[i]].forEach((el) => {
+          if (el['Error']) {
+            error_num++;
+            ew_description['Error'].push(el['Error'].toString())
+          }
+          if (el['Warning']) {
+            warning_num++;
+            console.log(el['Warning'])
+            ew_description['Warning'].push(el['Warning'].toString())
+          }
+        })
         const tr = `
       <tr>
-      <td>${file_list[i]}</td>
-      <td>${validateResult[file_list[i]]}</td>
+      <td>${f_list[i]}</td>
+      <td>${validateResult[f_list[i]]}</td>
+      <td>${error_num.toString()}</td>
+      <td>${warning_num.toString()}</td>
+      <td>${ew_description.toString()}</td>
       </tr>`;
         $("#tasks").append(tr);
       }

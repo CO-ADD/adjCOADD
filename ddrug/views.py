@@ -25,12 +25,10 @@ from django.utils.functional import SimpleLazyObject
 
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView, get_filewithpath
-from apputil.utils import FilteredListView, get_filewithpath
 from apputil.utils_dataimport import Importhandler
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
 from .Vitek import *
@@ -103,7 +101,7 @@ def updateDrug(req, pk):
     return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
 
 # ================Vitek Card===========================================#
-from apputil.utils import instance_dict, Validation_Log
+from apputil.utils import instance_dict, Validation_Log, OverwriteStorage
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
 from django.core import serializers
@@ -202,6 +200,7 @@ class Importhandler_VITEK(Importhandler):
     lCards={}
     lID={}
     lAst={}
+    vLog = Validation_Log("Vitek-pdf")
     
     def post(self, request):
                 
@@ -214,9 +213,9 @@ class Importhandler_VITEK(Importhandler):
         kwargs={}
         kwargs['user']=request.user
         
-        self.file_url=[file for file in os.listdir(self.dirname) if os.path.isfile(os.path.join(self.dirname, file)) and str(request.user)+"_" in file]
+        self.file_url=[]
         self.data_model=request.POST.get('file_data')
-        self.log_process=self.data_model
+        # self.log_process=self.data_model
         myfiles=request.FILES.getlist('file_field')
       
         try:
@@ -229,9 +228,9 @@ class Importhandler_VITEK(Importhandler):
                 print(self.file_report)
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 for f in myfiles:
-                    fs=FileSystemStorage()
+                    fs=OverwriteStorage()
                     print(f"fs is {fs}")
-                    filename=fs.save(strftime("%Y-%m-%d %H:%M:%S", localtime())+"_user_"+str(request.user)+"_"+f.name, f)
+                    filename=fs.save(str(request.user)+"_"+f.name, f)
                     
                     try:
                         vCards, vID, vAst=process_VitekPDF(DirName=self.dirname, PdfName=filename)
@@ -255,16 +254,17 @@ class Importhandler_VITEK(Importhandler):
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
             # steps for validation, cancel/delete or savetoDB 
+            print(self.file_url)
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
             data_model=request.POST.get("datamodel")
-            self.validatefile_name.clear()
+            # self.validatefile_name.clear()
             self.validate_result.clear()
             self.file_report.clear()
           
             if process_name=='Validation':
                 for f in file_pathlist:
-                    self.validatefile_name.append(f)
+                    # self.validatefile_name.append(f)
                     if self.lCards.get(f, None):
                         pass
                     else:
@@ -281,8 +281,9 @@ class Importhandler_VITEK(Importhandler):
                 self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(self.lID, VITEK_ID, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
-        
-                return JsonResponse({"validatefile_name":",".join(self.validatefile_name), 'validate_result':str(self.validate_result), 'file_report':str(self.file_report)})                                   
+        # "validatefile_name":",".join(self.validatefile_name),
+                print(str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"))
+                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_")})                                   
        
             elif process_name=='Cancel':
                 # Cancel Task
@@ -293,8 +294,8 @@ class Importhandler_VITEK(Importhandler):
                 self.lCards.clear()
                 self.lID.clear()
                 self.lAst.clear()
-                
-                return JsonResponse({"validatefile_name":(",").join( self.validatefile_name), 'validate_result':"Deleted", 'file_report':f"delete files: {self.file_url}"})                                   
+                # "validatefile_name":(",").join( self.validatefile_name), 
+                return JsonResponse({'validate_result':"Deleted", 'file_report':f"delete files: {self.file_url}"})                                   
     
             elif process_name=='DB_Validation':
                 
@@ -304,8 +305,8 @@ class Importhandler_VITEK(Importhandler):
                 self.validates(self.lID, VITEK_ID, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
                
-                               
-                return JsonResponse({"validatefile_name":" ||Vitek| ".join(self.validatefile_name), 'validate_result': json.dumps(self.validate_result), 'file_report':json.dumps(self.file_report), 'status':"Data Saved! uploaded files clear!"})
+                #   "validatefile_name":" ||Vitek| ".join(self.validatefile_name),          
+                return JsonResponse({ 'validate_result': json.dumps(self.validate_result), 'file_report':json.dumps(self.file_report), 'status':"Data Saved! uploaded files clear!"})
 
            
         return render(request, 'ddrug/importhandler_vitek.html', context)

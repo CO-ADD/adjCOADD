@@ -723,3 +723,16 @@ td {
   max-height: 150px;
   overflow: scroll;
 }
+
+#dropzone {
+  border: 1px solid;
+  width: 90vw;
+  height: 90vh;
+  margin: 2vmin;
+  padding: 2vmin;
+  overflow: auto;
+}
+
+#dropzone.over {
+  background-color: rgba(0, 0, 0, .2);
+}
