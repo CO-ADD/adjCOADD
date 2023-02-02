@@ -1,7 +1,20 @@
 // custom javascript
 $(document).ready(() => {
+
   console.log("document ready!");
 });
+var output_files = $("#output")
+
+$("#id_file_field").change(function () {
+  output_files.empty();
+  var files = $(this).prop('files');
+  var htmls = ``
+  jQuery.each(files, function (i, val) {
+    htmls += `<p>${i + 1}-${val.name}</p>`
+  });
+  output_files.append(htmls);
+
+})
 const csrftoken = getCookie("csrftoken");
 if ($("#filepath").text()) {
   $("#progressbar span:first-child").toggleClass("bg-success");
@@ -10,7 +23,7 @@ if ($("#filepath").text()) {
 
 $(".button").on("click", function () {
   $("#preLoader").fadeIn();
-  console.log("button clicked");
+
   var filepathlist = [];
   $("input[name=uploadedfiles_select]:checked").each(function () {
     filepathlist.push($(this).val().toString());
@@ -29,22 +42,52 @@ $(".button").on("click", function () {
     headers: { "X-CSRFToken": csrftoken },
   })
     .done((res) => {
-      console.log(res.table_name);
-      const html = `
+
+      var validateResult = JSON.parse(res.validate_result.replace(/'/g, '"'));
+      var validateReport = JSON.parse(
+        res.file_report.replace(/'/g, '"').replace(/"{/g, '{').replace(/}"/g, '}')
+      );
+      console.log(validateReport)
+      // JSON.parse;
+      var f_list = Object.keys(validateResult)
+      // ------------
+      for (let i = 0; i < f_list.length; i++) {
+        var error_num = 0;
+        var warning_num = 0;
+        var ew_description = { 'Error': [], 'Warning': [] };
+        validateReport[f_list[i]].forEach((el) => {
+          if (el['Error']) {
+            error_num++;
+            ew_description['Error'].push(el['Error'].toString())
+          }
+          if (el['Warning']) {
+            warning_num++;
+            ew_description['Warning'].push(el['Warning'].toString())
+          }
+        })
+
+        const tr = `
       <tr>
-      <td>${res.table_name}</td>
-      <td>${res.validate_result}</td>
-      <td><div id="upload_report">${res.file_report}</div></td>
+      <td>${f_list[i]}</td>
+      <td>${validateResult[f_list[i]]}</td>
+      <td>${error_num.toString()}</td>
+      <td>${warning_num.toString()}</td>
+      <td>${JSON.stringify(ew_description)}</td>
       </tr>`;
-      $("#tasks").append(html);
-      if (res.validate_result.includes("True")) {
-        $("#Import_step3").toggleClass("visible");
-        $("#progressbar span:nth-child(2)").toggleClass("bg-success");
-      } else {
-        $("#save_Proceed").prop("disabled", true);
-        $("#save_Proceed").addClass("disabled");
-        $("#next_to_confirm").toggleClass("visible");
+        $("#tasks").append(tr);
+
+        if (error_num === 0) {
+          $("#progressbar span:nth-child(2)").toggleClass("bg-success");
+        } else {
+          $(".confirmButton").prop("disabled", true);
+        }
       }
+      // --------------
+      $("#tasksreport").append(`
+        <div id="upload_report">${res.file_report}</div>`);
+
+      $("#Import_step3").addClass("visible");
+
 
       $("#preLoader").fadeOut();
     })
@@ -74,7 +117,7 @@ $(".confirmButton").on("click", function () {
       $("#preLoader").fadeOut();
       console.log(res);
       // if (res.task_status === "Form is Valid") {
-      $("#Import_step4").toggleClass("visible");
+      $("#Import_step4").addClass("visible");
       $("#progressbar span:nth-child(3)").toggleClass("bg-success");
       // }
       const html = `<p>${res.status}</p>`;
@@ -84,7 +127,4 @@ $(".confirmButton").on("click", function () {
     .fail((err) => {
       console.log(err);
     });
-
-
-
 });

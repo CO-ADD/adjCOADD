@@ -5,7 +5,7 @@ import re
 import unicodedata
 import django_filters
 import pandas as pd
-
+from asgiref.sync import sync_to_async
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,7 +29,20 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.has_permission('Admin')
 
+# ============Override filename in FileStorage========================================
+from django.core.files.storage import FileSystemStorage
 
+class OverwriteStorage(FileSystemStorage):
+    
+    def get_available_name(self, name, max_length=None):
+        """
+        Returns a filename that's free on the target storage system, and
+        available for new content to be written to.
+        """
+        # If the filename already exists, remove it as if it was a true file system
+        if self.exists(name):
+            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+        return name
 
 # Model Validation utilities  =====================================================================================
 
@@ -61,18 +74,19 @@ class Validation_Log():
             self.Logs[logType].append(lDict)
             self.nLogs[logType] = self.nLogs[logType] + 1
         
-    def show(self,logTypes= ['Error','Warning']):
-        info=[]
+    def show(self,logTypes= ['Error','Warning', 'Info']):
+        info={} #info=[]
         for t in logTypes:
-            print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
-
+            # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+            info[t]=[]
             for l in self.Logs[t]:
-                print(f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} ")
-                print_info=f"[{l['Process']}] {l['Description']} ({l['Item']}) {l['Help']} "
-                info.append(print_info)
+                print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
+                description=str(l['Description']).replace("'", "").replace('"', '')
+                print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
+                info[t].append(print_info) # info.append(print_info)
         # self.Logs.clear()
         return info
-
+    
 #-----------------------------------------------------------------------------------
 def instance_dict(instance, key_format=None):
     "Returns a dictionary containing field names and values for the given instance"
@@ -152,7 +166,7 @@ class FilteredListView(ListView):
     order_by=None
     context_list=''
 
-
+   
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
@@ -183,7 +197,7 @@ class FilteredListView(ListView):
         qs=super().get_queryset()
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
-
+ 
     def get_order_by(self):
        
         order_by=self.request.GET.get("order_by", self.order_by) or None

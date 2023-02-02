@@ -2,22 +2,19 @@ import magic
 import os
 import pandas as pd
 from pathlib import Path
-from asgiref.sync import sync_to_async
+
 
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
-from django.db import transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils.deconstruct import deconstructible
-from django.views.generic.edit import FormView
+from django.views import View
+from django.shortcuts import render
 
-from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture
-from apputil.models import Dictionary
-from apputil.utils import Validation_Log, instance_dict
-from ddrug.models import VITEK_Card, VITEK_ID, VITEK_AST
 from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
+
 
 # -----------------------Start Utility Functions-----------------------------------
 
@@ -72,120 +69,7 @@ class FileValidator(object):
             self.content_types == other.content_types
         )
 
-
-def has_special_char(text: str) -> bool:
-    return any(c for c in text if not c.isalnum() and not c.isspace())
-# ----------------------------------------------------------------------------------
-# =========================================================
-def validate_Taxonomy(dbframe):
-    object_list=[]
-    for dbframe in dbframe.itertuples():
-            try:
-                print(str(dbframe.ORGANISM_CLASS))
-                if has_special_char(str(dbframe.ORGANISM_NAME)):
-                    print("speical")
-                    raise Exception('datatype')
-                class_fkey=Dictionary.objects.filter(dict_value=dbframe.ORGANISM_CLASS)
-                if class_fkey:
-                    class_fkey=class_fkey[0]
-                else:
-                    class_fkey=None
-                print(class_fkey)
-                division_fkey=Dictionary.objects.filter(dict_value=dbframe.DIVISION)
-                if division_fkey:
-                    division_fkey=division_fkey[0]
-                else:
-                    division_fkey=None
-                linea=str(dbframe.LINEAGE).split(";")
-                print(division_fkey)
-                try:
-                    object_list.append(Taxonomy(organism_name=dbframe.ORGANISM_NAME, other_names=dbframe.ORGANISM_NAME_OTHER, code=dbframe.ORGANISM_CODE, 
-                        org_class=class_fkey, tax_id=dbframe.TAX_ID, parent_tax_id=dbframe.PARENT_TAX_ID, 
-                        tax_rank=dbframe.TAX_RANK, division=division_fkey, lineage=linea, 
-                        ))
-                except Exception as err:
-                    print(err)
-                    # obj.save()
-            
-            except Exception as err:
-                print(err)
-                return err
-    return object_list
-
-# =========================================================
-def validate_Organism(dbframe):
-    object_list=[]
-    for dbframe in dbframe.itertuples():
-        try:
-            taxID=int('0'+dbframe[22])
-            screen_panel=dbframe[26].split(';')
-            organism_fkey=Taxonomy.objects.filter(organism_name=dbframe[1])
-            print(organism_fkey[0])   
-            try:
-                object_list.append(Organism(organism_id=dbframe[0], organism_name=organism_fkey[0],  strain_id=dbframe[3], 
-                                    strain_code=dbframe[5], strain_notes=dbframe[7], 
-                                    strain_tissue=dbframe[25], strain_type=dbframe[4], sequence=dbframe[28], sequence_link=dbframe[29], 
-                                    strain_panel=screen_panel, 
-                                    tax_id =taxID,risk_group=dbframe[9], pathogen_group =dbframe[10],import_permit =dbframe[12],bio_approval =dbframe[23],special_precaution =dbframe[24],lab_restriction =dbframe[27],mta_document =dbframe[31],
-                                    mta_status =dbframe[32],oxygen_pref =dbframe[13],atmosphere_pref ='containSpecialCHA', nutrient_pref =dbframe[15],biofilm_pref =dbframe[16],))
-            except Exception as err:
-                print(err)
-        except Exception as err:
-            print(err)
-            return err
-    return object_list
-# =========================================================
-def validate_Dictionary(dbframe):
-    object_list=[]
-    for dbframe in dbframe.itertuples():
-        try:
-            object_list.append(Dictionary( dict_value=dbframe.dict_value, dict_class=dbframe.dict_class, dict_desc =dbframe.dict_desc ))
-        except Exception as err:
-            print(err)
-            return err
-    print(object_list)
-    return object_list
-
-# =========================================================
-@transaction.atomic
-def import_excel(file_path, data_model):
-    print('importing....')
-    model=data_model
-    excel_file=file_path
-    print(excel_file)
-    # object_list=[]
-    file_name=file_path.split("/")[2]
-    dirname=settings.MEDIA_ROOT
-    
-    if model=='Vitek':
-        print("working on Vitek pdf")
-        return process_VitekPDF(DirName=dirname, PdfName=file_name) #DirName,PdfName
-    
-    try:
-        exmpexceldata=pd.read_csv("."+excel_file, encoding='utf-8')
-    except Exception as err:
-        return err
-    dbframe=exmpexceldata
-
-    if model == 'Taxonomy':
-        return validate_Taxonomy(dbframe)
-    elif model == 'Organism':
-        return validate_Organism(dbframe)
-    elif model=='Dictionary':
-        return validate_Dictionary(dbframe)
-    
-
-    else:
-        raise Exception('No Model Found, Please Choose Model: Taxonomy, Organism...')
-        return err  
-    # return 'something wrong'
-
-
-
 # ==========================File Process=====================================
-
-
-
 
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
@@ -200,10 +84,10 @@ validate_file = FileValidator(#max_size=1024 * 100,
 
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}), validators=[validate_file])
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
     
 
-class Importhandler(SuperUserRequiredMixin, FormView):
+class Importhandler(SuperUserRequiredMixin, View):
     
     form_class=FileUploadForm
     file_url=[]
@@ -211,23 +95,61 @@ class Importhandler(SuperUserRequiredMixin, FormView):
     data_model='default'
     success_url="default"
     template_name='default'
-    log_process='default'
-    vLog = Validation_Log(log_process)
-    table_name=[","]
+    # log_process='default'
+    vLog = Validation_Log("")
+    # validatefile_name=["|"]
     validate_result={}
-    file_report=[","]
-    
-    def delete_file(self, file_path):
-        file_name=file_path.split("/")[2]
-        print(file_name)
-        file_full_path=os.path.join(settings.MEDIA_ROOT, file_name)
+    file_report={}
+    dirname=settings.MEDIA_ROOT
+
+    #---------------------------------------------------------------------------------- 
+    # Use to delete uploaded files
+    def delete_file(self, file_name):
+       
+        file_full_path=os.path.join(self.dirname, file_name)
         print(file_full_path)
         try:
             os.unlink(file_full_path)
             print("removed!")
         except Exception as err:
             print(err)
- 
+
+    #---------------------------------------------------------------------------------- 
+    # use to validate records
+    def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
+       
+        if any(newentry_dict.values()):
+            for key in newentry_dict:
+                for e in newentry_dict[key]:
+                    djCard=app_model.check_from_dict(e, vlog)
+                    if djCard.validStatus:
+                        if save:
+                            try:
+                                djCard.save(**kwargs)
+                                e['validStatus']=True
+                            except Exception as err:
+                                self.validate_result[key].append(f"catch Exception Card {err}")
+                        else:
+                            e['validStatus']=False
+                    if report_result.get(key, None):
+                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(djCard.validStatus))
+                    else:
+                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(djCard.validStatus)]
+                    if report_filelog.get(key, None):
+                        report_filelog[key].append(str(vlog.show()))
+                    else:
+                        report_filelog[key]=[str(vlog.show())]
+                if save:
+                    newentry_dict[key][:]=[e for e in newentry_dict[key] if e['validStatus']==False]
+                    
+    #---------------------------------------------------------------------------------- 
+    def get(self, request):
+        form = self.form_class
+        template=self.template_name
+        chars_lookup=str(request.user)
+        # filesinUploads_list=[file for file in os.listdir(self.dirname) if os.path.isfile(os.path.join(self.dirname, file)) and str(request.user)+"_" in file] 
+               
+        return render(request, 'ddrug/importhandler_vitek.html', { 'form': form,})
 
 
 

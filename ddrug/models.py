@@ -201,9 +201,9 @@ class VITEK_Card(AuditModel):
         if retInstance is None:
             retInstance = self()
             retInstance.card_barcode = cDict['CARD_BARCODE']
-            valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']} [{cDict['CARD_CODE']}]",'-')
+            valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
         else:
-            valLog.add_log('Info','Update VITEK card',f"{retInstance} [{cDict['CARD_CODE']}]",'-')
+            valLog.add_log('Info','Update VITEK card',f"{retInstance} -{cDict['CARD_CODE']}",'-')
 
         OrgBatch = Organism_Batch.exists(cDict['ORGBATCH_ID']) 
         if OrgBatch is None:
