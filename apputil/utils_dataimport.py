@@ -13,7 +13,8 @@ from django.utils.deconstruct import deconstructible
 from django.views import View
 from django.shortcuts import render
 
-from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin
+from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin, file_location
+
 
 
 # -----------------------Start Utility Functions-----------------------------------
@@ -100,13 +101,13 @@ class Importhandler(SuperUserRequiredMixin, View):
     # validatefile_name=["|"]
     validate_result={}
     file_report={}
-    dirname=settings.MEDIA_ROOT
+    
 
     #---------------------------------------------------------------------------------- 
     # Use to delete uploaded files
     def delete_file(self, file_name):
-       
-        file_full_path=os.path.join(self.dirname, file_name)
+        location=file_location(self.request)
+        file_full_path=os.path.join(location, file_name)
         print(file_full_path)
         try:
             os.unlink(file_full_path)
@@ -117,7 +118,7 @@ class Importhandler(SuperUserRequiredMixin, View):
     #---------------------------------------------------------------------------------- 
     # use to validate records
     def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
-       
+
         if any(newentry_dict.values()):
             for key in newentry_dict:
                 for e in newentry_dict[key]:

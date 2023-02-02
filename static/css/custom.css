@@ -324,16 +324,6 @@ nav.shrink {
   /* border: 1px solid black; */
 }
 
-@keyframes fadeIn {
-  0% {
-    transform: scale(0);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 .landp-img-01:hover,
 .landp-img-02:hover {
   transform: scale(1.1);
@@ -734,5 +724,42 @@ td {
 }
 
 #dropzone.over {
-  background-color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.blink {
+  animation: blink-animation 0.5s steps(5, start);
+  -webkit-animation: blink-animation 1s steps(5, start);
+}
+@keyframes blink-animation {
+  to {
+    color: rgb(255, 167, 4);
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    color: rgb(255, 167, 4);
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+}
+
+@keyframes twinkle {
+  20% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
 }

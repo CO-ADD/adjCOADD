@@ -17,6 +17,10 @@ from django.conf import settings
 from .models import Dictionary
 from adjcoadd.constants import *
 
+# ==========utilized in Create User folder under /uploads ==========
+def file_location(req):
+    location=settings.MEDIA_ROOT+'/'+str(req.user)
+    return location
 
 # ==========utilized in Decoration has_permissions, an Alert on Permissions ==========
 def permission_not_granted(req):
@@ -40,8 +44,9 @@ class OverwriteStorage(FileSystemStorage):
         available for new content to be written to.
         """
         # If the filename already exists, remove it as if it was a true file system
+    
         if self.exists(name):
-            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+            os.remove(os.path.join(self.location, name))
         return name
 
 # Model Validation utilities  =====================================================================================
@@ -53,9 +58,6 @@ class Validation_Log():
         self.logTypes = logTypes
         self.nLogs = {}
         self.Logs={}
-
-        self.nLogs.clear()
-        self.Logs.clear()
 
         for t in self.logTypes:
             self.nLogs[t] = 0
@@ -84,8 +86,11 @@ class Validation_Log():
                 description=str(l['Description']).replace("'", "").replace('"', '')
                 print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
                 info[t].append(print_info) # info.append(print_info)
-        # self.Logs.clear()
+       
         return info
+
+
+
     
 #-----------------------------------------------------------------------------------
 def instance_dict(instance, key_format=None):
