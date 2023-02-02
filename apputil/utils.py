@@ -81,23 +81,12 @@ class Validation_Log():
             info[t]=[]
             for l in self.Logs[t]:
                 print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
-                print_info=f"{l['Process']}_{l['Description']}_{l['Item']}_{l['Help']}"
+                description=str(l['Description']).replace("'", "").replace('"', '')
+                print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
                 info[t].append(print_info) # info.append(print_info)
         # self.Logs.clear()
         return info
     
-    # def show_flags(self,logTypes= ['Error','Warning']):
-    #     info={} #info=[]
-    #     for t in logTypes:
-    #         # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
-    #         info[t]=[]
-    #         for l in self.Logs[t]:
-    #             print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
-    #             print_info=f"{l['Process']}_{l['Description']}_{l['Item']}_{l['Help']}"
-    #             info[t].append(print_info) # info.append(print_info)
-    #     # self.Logs.clear()
-    #     return info
-
 #-----------------------------------------------------------------------------------
 def instance_dict(instance, key_format=None):
     "Returns a dictionary containing field names and values for the given instance"

@@ -261,11 +261,14 @@ class Importhandler_VITEK(Importhandler):
             # self.validatefile_name.clear()
             self.validate_result.clear()
             self.file_report.clear()
-          
+            self.lCards.clear()
+            self.lID.clear()
+            self.lAst.clear()
             if process_name=='Validation':
                 for f in file_pathlist:
                     # self.validatefile_name.append(f)
                     if self.lCards.get(f, None):
+                        print(self.lCards)
                         pass
                     else:
                         try:
@@ -281,8 +284,8 @@ class Importhandler_VITEK(Importhandler):
                 self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(self.lID, VITEK_ID, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
-        # "validatefile_name":",".join(self.validatefile_name),
-                print(str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"))
+       
+               
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_")})                                   
        
             elif process_name=='Cancel':
@@ -295,7 +298,7 @@ class Importhandler_VITEK(Importhandler):
                 self.lID.clear()
                 self.lAst.clear()
                 # "validatefile_name":(",").join( self.validatefile_name), 
-                return JsonResponse({'validate_result':"Deleted", 'file_report':f"delete files: {self.file_url}"})                                   
+                return JsonResponse({})                                   
     
             elif process_name=='DB_Validation':
                 
@@ -306,7 +309,7 @@ class Importhandler_VITEK(Importhandler):
                 self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
                
                 #   "validatefile_name":" ||Vitek| ".join(self.validatefile_name),          
-                return JsonResponse({ 'validate_result': json.dumps(self.validate_result), 'file_report':json.dumps(self.file_report), 'status':"Data Saved! uploaded files clear!"})
+                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':"Data Saved! uploaded files clear!"})
 
            
         return render(request, 'ddrug/importhandler_vitek.html', context)

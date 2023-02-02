@@ -201,11 +201,11 @@ class VITEK_Card(AuditModel):
         if retInstance is None:
             retInstance = self()
             retInstance.card_barcode = cDict['CARD_BARCODE']
-            valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'_')
+            valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
         else:
-            valLog.add_log('Info','Update VITEK card',f"{retInstance} -{cDict['CARD_CODE']}",'_')
+            valLog.add_log('Info','Update VITEK card',f"{retInstance} -{cDict['CARD_CODE']}",'-')
 
-        OrgBatch = Organism_Batch.exists(cDilogct['ORGBATCH_ID']) 
+        OrgBatch = Organism_Batch.exists(cDict['ORGBATCH_ID']) 
         if OrgBatch is None:
             valLog.add_log('Error','Organism Batch does not Exists',cDict['ORGBATCH_ID'],'Use existing OrganismBatch ID')
             validStatus = False
@@ -213,7 +213,7 @@ class VITEK_Card(AuditModel):
 
         retInstance.card_type = Dictionary.exists(retInstance.Choice_Dictionary["card_type"],cDict['CARD_TYPE'])
         if retInstance.card_type is None:
-            valLog.add_log('Error','Vitek Card Type not Correct',cDict['CARD_TYPE'],'_')
+            valLog.add_log('Error','Vitek Card Type not Correct',cDict['CARD_TYPE'],'-')
             validStatus = False
 
         retInstance.card_code = cDict['CARD_CODE']
@@ -227,7 +227,7 @@ class VITEK_Card(AuditModel):
         if validDict:
             validStatus = False
             for k in validDict:
-                valLog.add_log('Warning',validDict[k],k,'_')
+                valLog.add_log('Warning',validDict[k],k,'-')
         retInstance.validStatus = validStatus
         return(retInstance)
 
