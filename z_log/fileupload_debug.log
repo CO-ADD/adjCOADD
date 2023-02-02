@@ -488,3 +488,213 @@ Traceback (most recent call last):
                                     ^^^^^^^^
 NameError: name 'cDilogct' is not defined
 "POST /import-VITEK/ HTTP/1.1" 500 103818
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 284, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 124, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 206, in check_from_dict
+    valLog.add_log('Info','Update VITEK card',f"{retInstance} -{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110481
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11284
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 284, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 121, in validates
+    vlog.__init__()
+TypeError: Validation_Log.__init__() missing 1 required positional argument: 'logProcess'
+"POST /import-VITEK/ HTTP/1.1" 500 99669
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 284, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 125, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110434
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 284, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 126, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110430
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 284, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 126, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110420
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 267, in post
+    self.vlog.clear_log()
+AttributeError: 'Importhandler_VITEK' object has no attribute 'vlog'
+"POST /import-VITEK/ HTTP/1.1" 500 91703
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 285, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 126, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110422
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 285, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 126, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110422
+Internal Server Error: /import-VITEK/
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/adjCOADD/ddrug/views.py", line 285, in post
+    self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+  File "/home/wz/adjCOADD/apputil/utils_dataimport.py", line 124, in validates
+    djCard=app_model.check_from_dict(e, vlog)
+  File "/home/wz/adjCOADD/ddrug/models.py", line 204, in check_from_dict
+    valLog.add_log('Info','New VITEK card',f"{cDict['CARD_BARCODE']}-{cDict['CARD_CODE']}",'-')
+  File "/home/wz/adjCOADD/apputil/utils.py", line 74, in add_log
+    self.Logs[logType].append(lDict)
+KeyError: 'Info'
+"POST /import-VITEK/ HTTP/1.1" 500 110498
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11284

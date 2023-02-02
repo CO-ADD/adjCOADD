@@ -1,13 +1,9 @@
+var savecsv = null;
 $(document).ready(function () {
   console.log("loading data vitek");
-  var a = "{{defaultvalues}}";
-  console.log(a);
+
   $(".submit_data").click(function () {
-    //selected objects
-    console.log(a);
-
     var selected_data = [];
-
     $("input:checkbox[name=type]:checked").each(function () {
       selected_data.push($(this).val().toString());
     });
@@ -61,57 +57,39 @@ const sendToServer = (data) => {
   })
     .done((response) => {
       $("#pivotable").html("");
-      if (response["msg"]) {
-        saveData(response["table"], "pivottable.csv");
-        $("#pivotable").append(response["msg"]);
-        var data = JSON.parse(response["table_tofront"]);
-        console.log(typeof data);
-        create_pivottable(data);
-      } else {
-        json_data = response["table_json"];
-        data = response["table"];
-        $("#pivotable").append(data);
-        console.log(json_data);
-      }
+      savecsv = response["table_csv"];
+
+      json_data = response["table_json"];
+      data = response["table_html"];
+      $("#pivotable").append(data);
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
       console.log(XMLHttpRequest, textStatus, errorThrown);
     });
 };
 
-function create_pivottable(data) {
-  var index_value = [];
-  $("#sortable3 li").each(function () {
-    index_value.push($(this).text());
-  });
-  var column_value = [];
-  $("#sortable2 li").each(function () {
-    column_value.push($(this).text());
-  });
-  var value_str = $("[data-name=data_process_value] option:selected")
-    .val()
-    .toString();
-  $("#output").pivot(data, {
-    cols: column_value,
-    rows: index_value,
-    aggregatorName: "intSum",
-    vals: [value_str],
-    rendererName: "Table",
-  });
-}
-function json_table(json_data) {
-  const dbParam = JSON.stringify({ table: "customers", limit: 20 });
-  const xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function () {
-    myObj = json_data; //JSON.parse(this.responseText);
-    let text = "<table border='1'>";
-    for (let x in myObj) {
-      text += "<tr><td>" + myObj[x].name + "</td></tr>";
-    }
-    text += "</table>";
-    document.getElementById("demo").innerHTML = text;
-  };
-  // xmlhttp.open("POST", "json_demo_html_table.php");
-  // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  // xmlhttp.send("x=" + dbParam);
-}
+$("#download_pt_as_csv").click(function () {
+  console.log("clicked!");
+  saveData(savecsv, "pivottable.csv");
+});
+// function create_pivottable(data) {
+//   var index_value = [];
+//   $("#sortable3 li").each(function () {
+//     index_value.push($(this).text());
+//   });
+//   var column_value = [];
+//   $("#sortable2 li").each(function () {
+//     column_value.push($(this).text());
+//   });
+//   var value_str = $("[data-name=data_process_value] option:selected")
+//     .val()
+//     .toString();
+//   $("#output").pivot(data, {
+//     cols: column_value,
+//     rows: index_value,
+//     aggregatorName: "intSum",
+//     vals: [value_str],
+//     rendererName: "Table",
+//   });
+// }
+//

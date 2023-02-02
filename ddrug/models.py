@@ -196,7 +196,7 @@ class VITEK_Card(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
-
+       
         retInstance = self.exists(cDict['CARD_BARCODE'])
         if retInstance is None:
             retInstance = self()

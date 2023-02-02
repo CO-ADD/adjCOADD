@@ -45,7 +45,7 @@
 
         {%for f in file_pathlist%}
         <li class="checkbox-container-export">
-            <input class="filled-in" type="checkbox" value="{{f}}" name="uploadedfiles_select" />
+            <input class="filled-in" type="radio" value="{{f}}" name="uploadedfiles_select" />
             <label for=""> {{f}} </label>
         </li>
         {%endfor%}

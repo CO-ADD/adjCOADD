@@ -24,7 +24,7 @@ from django.utils.functional import SimpleLazyObject
 
 
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils import FilteredListView, get_filewithpath
+from apputil.utils import FilteredListView, get_filewithpath, file_location
 from apputil.utils_dataimport import Importhandler
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
@@ -161,15 +161,15 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             if values:
                 try:
                     table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
-                    if querydata.count() >1000:
-                        response = HttpResponse(content_type='text/csv')
-                        response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
-                        table_csv=table.to_csv()
-                        return JsonResponse({"table":table_csv, "msg":"large datatable automatically convert to .csv file to download...",  "table_tofront":query_send},)
-                    else:
-                        table_html=table.to_html(classes=["table-bordered",])
-                        table_json=table.to_json()
-                        return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
+                    # if querydata.count() >1000:
+                    response = HttpResponse(content_type='text/csv')
+                    response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
+                    table_html=table.head().to_html(classes=["table-bordered",])
+                    table_csv=table.to_csv()
+                    return JsonResponse({"table_html":table_html, "table_csv":table_csv, "table_tofront":query_send},)
+                    # else:
+                    #     table_json=table.to_json()
+                    #     return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
                 except Exception as err:
                     error_message=str(err)
                     return JsonResponse({"table":error_message,})
@@ -200,10 +200,11 @@ class Importhandler_VITEK(Importhandler):
     lCards={}
     lID={}
     lAst={}
-    vLog = Validation_Log("Vitek-pdf")
+    # vLog = Validation_Log("Vitek-pdf")
     
     def post(self, request):
                 
+        location=file_location(request)
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
@@ -224,16 +225,15 @@ class Importhandler_VITEK(Importhandler):
                 self.lID.clear()
                 self.lAst.clear()
                 
-                print(myfiles)
-                print(self.file_report)
                 # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
                 for f in myfiles:
-                    fs=OverwriteStorage()
-                    print(f"fs is {fs}")
-                    filename=fs.save(str(request.user)+"_"+f.name, f)
+                    fs=OverwriteStorage(location=location)
+                    filename=fs.save(f.name, f)
+                    print(f"fs is {fs} location is {location}, filename is {filename}")
+
                     
                     try:
-                        vCards, vID, vAst=process_VitekPDF(DirName=self.dirname, PdfName=filename)
+                        vCards, vID, vAst=process_VitekPDF(DirName=location, PdfName=filename)
                         print("file checked")
                         self.lCards[filename]=vCards
                         self.lID[filename]=vID
@@ -254,6 +254,7 @@ class Importhandler_VITEK(Importhandler):
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
             # steps for validation, cancel/delete or savetoDB 
+            vLog = Validation_Log("Vitek-pdf")
             print(self.file_url)
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
@@ -264,6 +265,7 @@ class Importhandler_VITEK(Importhandler):
             self.lCards.clear()
             self.lID.clear()
             self.lAst.clear()
+        
             if process_name=='Validation':
                 for f in file_pathlist:
                     # self.validatefile_name.append(f)
@@ -272,7 +274,7 @@ class Importhandler_VITEK(Importhandler):
                         pass
                     else:
                         try:
-                            vCards, vID, vAst=process_VitekPDF(DirName=self.dirname, PdfName=f)
+                            vCards, vID, vAst=process_VitekPDF(DirName=location, PdfName=f)
                             print("file checked")
                             self.lCards[f]=vCards
                             self.lID[f]=vID
@@ -281,12 +283,12 @@ class Importhandler_VITEK(Importhandler):
                             self.delete_file(file_name=f)
                             messages.warning(request, f'{filename} contains {err} erro , cannot to upload, choose a correct file')
      
-                self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(self.lID, VITEK_ID, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=False, **kwargs)
+                self.validates(self.lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=False, **kwargs)
+                self.validates(self.lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=False, **kwargs)
+                self.validates(self.lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=False, **kwargs)
        
                
-                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_")})                                   
+                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':'validating'})                                   
        
             elif process_name=='Cancel':
                 # Cancel Task
@@ -298,15 +300,15 @@ class Importhandler_VITEK(Importhandler):
                 self.lID.clear()
                 self.lAst.clear()
                 # "validatefile_name":(",").join( self.validatefile_name), 
-                return JsonResponse({})                                   
+                return JsonResponse({"status":"Delete"})                                   
     
             elif process_name=='DB_Validation':
                 
                 print("start saving to db")
                 print(self.lCards)
-                self.validates(self.lCards, VITEK_Card, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(self.lID, VITEK_ID, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(self.lAst, VITEK_AST, self.vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                self.validates(self.lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                self.validates(self.lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                self.validates(self.lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                
                 #   "validatefile_name":" ||Vitek| ".join(self.validatefile_name),          
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':"Data Saved! uploaded files clear!"})
