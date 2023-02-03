@@ -151,6 +151,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             card_barcode=request.POST.get("card_barcode")
             aggfunc_name=request.POST.get("functions")
             print(f'columns_str is {columns_str}')
+            print(selected_data)
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
@@ -165,8 +166,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     response = HttpResponse(content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
                     table_html=table.head().to_html(classes=["table-bordered",])
+                    print(table_html)
                     table_csv=table.to_csv()
-                    return JsonResponse({"table_html":table_html, "table_csv":table_csv, "table_tofront":query_send},)
+                    return JsonResponse({"table_html":table_html, "table_csv":table_csv},)
                     # else:
                     #     table_json=table.to_json()
                     #     return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
@@ -255,7 +257,6 @@ class Importhandler_VITEK(Importhandler):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
             # steps for validation, cancel/delete or savetoDB 
             vLog = Validation_Log("Vitek-pdf")
-            print(self.file_url)
             process_name=request.POST.get('type')
             file_pathlist=request.POST.getlist("filepathlist[]")
             data_model=request.POST.get("datamodel")
@@ -290,12 +291,16 @@ class Importhandler_VITEK(Importhandler):
                
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':'validating'})                                   
        
-            elif process_name=='Cancel':
+            elif process_name=='Delete':
                 # Cancel Task
-                self.file_url=[]
+                # self.file_url=[]
+                
                 for f in file_pathlist:
-                    self.delete_file(file_name=f)
-                    self.file_url.append(f)
+                    try:
+                        self.delete_file(file_name=f)
+                    # self.file_url.append(f)
+                    except Exception as err:
+                        return JsonResponse({"status":"Delete", "systemErr":"File not existed!"})
                 self.lCards.clear()
                 self.lID.clear()
                 self.lAst.clear()
@@ -311,7 +316,7 @@ class Importhandler_VITEK(Importhandler):
                 self.validates(self.lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                
                 #   "validatefile_name":" ||Vitek| ".join(self.validatefile_name),          
-                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':"Data Saved! uploaded files clear!"})
+                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':str(file_pathlist)})
 
            
         return render(request, 'ddrug/importhandler_vitek.html', context)

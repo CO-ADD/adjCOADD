@@ -10,7 +10,9 @@
         <pre id="_log"></pre>
     </div> -->
     <section class="row border " id="Import_step1">
-        <div class="card mt-5 border">
+        <h4 class="title is-2" id="datamodel"> <small> Prcoess Name: </small>{{data_model}} PDF</h4>
+        <div class="card border">
+
             <form method="POST" enctype="multipart/form-data" class="form-control">
                 {% csrf_token %}
                 <!--  -->
@@ -23,129 +25,142 @@
             </form>
         </div>
         <div>
-            <div id="output">files will be uploaded:</div>
+            <div id="output"></div>
         </div>
 
-</div>
+    </section>
 
-</div>
-</section>
+    <!-- Run check entries in .csv or excel file -->
+    <section id="Import_step2">
+        <h3 class="text-danger">
+            {%include 'utils/message.html'%}
+        </h3>
+        {%if file_pathlist %}
+        <div class="card mx-5">
+            <div class="card-body">
+                <!-- <div class="card-title text-center">Uploaded Files and your old files listed here </div> -->
+                <!--  -->
+                <ol class="d-flex flex-wrap justify-content-start align-items-start">
+                    {%for f in file_pathlist%}
 
-<!-- Run check entries in .csv or excel file -->
-<hr><br>
-<section id="Import_step2">
-    <h3 class="text-danger">
-        {%include 'utils/message.html'%}
-    </h3>
-    {%if file_pathlist %}
-    <div class="card m-5">
-        Uploaded Files and your old files listed here:
-        <!--  -->
-        {% include 'utils/selectAllExp.html'%}
-
-        {%for f in file_pathlist%}
-        <li class="checkbox-container-export">
-            <input class="filled-in" type="radio" value="{{f}}" name="uploadedfiles_select" />
-            <label for=""> {{f}} </label>
-        </li>
-        {%endfor%}
-
-        Uploaded Data Model is:
-        <h3 class="title is-2" id="datamodel">{{data_model}}</h3>
-    </div>
-
-    <div class="field is-grouped">
-        <p class="control">
-            Files uploaded successfully, you can:
-        <ul>
-
-            <li>
-                Select uploaded files or old files to validate before you import it into DB
-                <button class="button" type="submit" name="RUN" data-type="Validation">Form Validation</button>
-                or
-            </li>
-            <li id="delete_cancel_task">
-                Select files delete
-                <a class="button" data-type="Cancel" href="javascript:void(0);">Delete Files</a>
-                Then <a href="{% url 'import-VITEK'%}">Refresh Page</a>
-
-            </li>
-
-        </ul>
-
-        </p>
-    </div>
-    <br><br>
-    <div>
-        <h2 class="title is-2">Task Status</h2>
-        <br>
-
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th>File names</th>
-                    <th>Status</th>
-                    <th>!!Errors</th>
-                    <th>**Warnings</th>
-                    <th>!!**Description</th>
-
-                </tr>
-            </thead>
-            <tbody id="tasks">
-            </tbody>
-        </table>
-        <hr>
-        <div>
-            <button class="btn btn-sm" type="button" id="report-issues" onclick="downloadFile()">Download
-                Full Report</button>
-
-            <a class="btn btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                aria-controls="collapseExample">
-                Full Report click here
-            </a>
-        </div>
-
-        <div class="collapse" id="collapseExample">
-            <div class="card card-body" id="tasksreport">
-
+                    <li class="checkbox-container-export d-inline-block m-1">
+                        <label for="">
+                            <input class="filled-in" type="radio" value="{{f}}" name="uploadedfiles_select" />
+                            {{f}} </label>
+                    </li>
+                    {%endfor%}
+                </ol>
             </div>
         </div>
 
-    </div>
-    {%endif %}
-</section>
-{%include 'utils/preloader.html'%}
+        <div class="field is-grouped">
+            <p class="control text-success">
+                Files uploaded successfully, you can:
+            <ul>
 
-<!-- Proceeding Save data -->
-<section id="Import_step3" class="not-visible">
-    <p>
+                <li>
+                    Select uploaded files or old files to validate before you import it into DB
+                    <button class="button" type="submit" name="RUN" data-type="Validation">Form Validation</button>
+                    or
+                </li>
+                <li id="delete_cancel_task">
+                    Select files delete
+                    <a class="button" data-type="Delete" href="javascript:void(0);">Delete Files <div class="d-inline">
+                        </div> </a>
 
-    <div>Next availabe actions:</div>
-    <ul>
-        <li>
-            IF Files contain errors, cannot be saved to DB, please look at the !!*Description find a solution.
-            Files contains warning, you can try to save them in DB.
-            <button class="confirmButton btn btn-sm" type="button" data-type="DB_Validation">Save To DB</button>
-        </li>
 
-        <li>
-            <a class="btn btn-sm" type="button" href="#delete_cancel_task"> OR Back to delete/cancel</a>
-        </li>
-    </ul>
-    </p>
-</section>
-<hr>
-<section id="Import_step4" class="not-visible">
-    <h4 id="mesg_save_Proceed" class="bg-danger"></h4>
-    <div></div>
-    <ul>
-        <li>
-            <a class="button" data-type="Cancel" href="javascript:void(0);">Please Select and Delete nonusable Files</a>
-            <a class="btn btn-sm" href="{%url 'import-VITEK'%}">And Click Refresh</a>
-        </li>
+                </li>
+                <li>
+                    Then <a href="{% url 'import-VITEK'%}">Refresh Page</a>
+                </li>
 
-    </ul>
-</section>
+            </ul>
+
+            </p>
+        </div>
+        <br><br>
+        <div>
+            <div class="d-flex justify-content-between">
+                <div class="fs-3">Task Status</div>
+
+                <div>
+
+                    <button class="btn btn-sm" type="button" id="report-issues" onclick="downloadFile()">Download
+                        Full Report</button>
+
+                    <a class="btn btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        Full Report click here
+                    </a>
+
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body" id="tasksreport">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>File names</th>
+                        <th>Status</th>
+                        <th>!!Errors</th>
+                        <th>**Warnings</th>
+                        <th>!!**Description</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tasks">
+                </tbody>
+            </table>
+            <hr>
+
+
+        </div>
+        {%endif %}
+    </section>
+    {%include 'utils/preloader.html'%}
+
+    <!-- Proceeding Save data -->
+    <section id="Import_step3" class="not-visible">
+        <p>
+
+        <div>Next availabe actions:</div>
+        <ul>
+            <li>
+                IF Files contain errors, cannot be saved to DB, please look at the !!*Description find a solution.
+                Files contains warning, you can try to save them in DB.
+                <button class="confirmButton btn btn-sm" type="button" data-type="DB_Validation">Save To DB</button>Then
+                <a class="button" data-type="Delete" href="javascript:void(0);">Delete Files <div class="d-inline">
+                    </div>
+                </a>
+
+            </li>
+
+            <li>
+                <ol id="mesg_save_Proceed" class="text-success"></ol>
+            </li>
+        </ul>
+        </p>
+    </section>
+    <hr>
+    <section id="Import_step4" class="not-visible">
+        <div></div>
+        <ul>
+            <li>
+                <a class="button" data-type="Delete" href="javascript:void(0);">Please Select and Delete nonusable Files
+                    <div class="d-inline"></div>
+                </a>
+                <a class="btn btn-sm" href="{%url 'import-VITEK'%}">And Click Refresh</a>
+            </li>
+
+        </ul>
+    </section>
+</div>
 
 {%load static%}
 <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
@@ -155,7 +170,7 @@
 <script>
 
     function downloadFile() {
-        var textToSave = document.getElementById("upload_report").innerText;
+        var textToSave = document.getElementById("tasksreport").innerText;
         var hiddenElement = document.createElement('a');
         hiddenElement.href = 'data:attachment/text,' + encodeURI(textToSave);
         hiddenElement.target = '_blank';
@@ -163,74 +178,3 @@
         hiddenElement.click();
     }
 </script>
-
-<!-- <script>
-    /* constructs a simple directory view from a filesystem */
-    async function makedir(entries) {
-
-        const systems = entries.map(entry => traverse(entry, {}));
-        return Promise.all(systems);
-
-        async function traverse(entry, fs) {
-            if (entry.isDirectory) {
-                fs[entry.name] = {};
-                let dirReader = entry.createReader();
-                await new Promise((res, rej) => {
-                    dirReader.readEntries(async entries => {
-                        for (let e of entries) {
-                            await traverse(e, fs[entry.name]);
-                        }
-                        res();
-                    }, rej);
-                });
-            } else if (entry.isFile) {
-                await new Promise((res, rej) => {
-                    entry.file(file => {
-                        fs[entry.name] = file;
-                        res();
-                    }, rej);
-                });
-            }
-            return fs;
-        }
-    }
-
-    function readDropped(dT) {
-        const entries = [...dT.items].map(item => {
-            return item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
-        })
-            .filter(entry => entry);
-        if (entries.length) {
-            makedir(entries)
-                .then(output)
-                .catch(handleSecurityLimitation);
-        } else notadir();
-
-    }
-
-    function notadir() {
-        _log.textContent = "wasn't a directory, or webkitdirectory is not supported";
-    }
-
-    dropzone.ondragover = e => {
-        e.preventDefault();
-        dropzone.classList.add('over');
-    }
-    dropzone.ondragexit = dropzone.ondragend = e => dropzone.classList.remove('over');
-    dropzone.ondrop = e => {
-        e.preventDefault();
-        dropzone.classList.remove('over');
-        readDropped(e.dataTransfer);
-    }
-
-    function output(system_trees) {
-        console.log(system_trees);
-        _log.textContent = JSON.stringify(system_trees, checkFile, 2);
-
-        function checkFile(key, value) {
-            if (value instanceof File) {
-                return '{[File] ' + value.name + ', ' + value.size + 'b}';
-            } else return value;
-        }
-    }
-</script> -->

@@ -113,7 +113,7 @@ class Importhandler(SuperUserRequiredMixin, View):
             os.unlink(file_full_path)
             print("removed!")
         except Exception as err:
-            print(err)
+            raise Exception
 
     #---------------------------------------------------------------------------------- 
     # use to validate records

@@ -56,11 +56,11 @@ const sendToServer = (data) => {
     data: data,
   })
     .done((response) => {
-      $("#pivotable").html("");
-      savecsv = response["table_csv"];
-
-      json_data = response["table_json"];
+      console.log(response)
       data = response["table_html"];
+      savecsv = response["table_csv"];
+      console.log(data)
+      $("#pivotable").html("");
       $("#pivotable").append(data);
     })
     .fail((XMLHttpRequest, textStatus, errorThrown) => {
