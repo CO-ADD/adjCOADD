@@ -318,6 +318,7 @@ class Importhandler_VITEK(Importhandler):
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
                 'status':'SavetoDB', 'savefile':str(file_pathlist)})
 
+
            
         return render(request, 'ddrug/importhandler_vitek.html', context)
 
