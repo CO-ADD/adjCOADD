@@ -20,7 +20,7 @@
                 {{form.as_p}}
 
 
-                <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
+                <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload Confirm
                 </button>
             </form>
         </div>
@@ -35,17 +35,17 @@
         <h3 class="text-danger">
             {%include 'utils/message.html'%}
         </h3>
-        {%if file_pathlist %}
+        {%if file_list %}
         <div class="card mx-5">
             <div class="card-body">
                 <!-- <div class="card-title text-center">Uploaded Files and your old files listed here </div> -->
                 <!--  -->
                 <ol class="d-flex flex-wrap justify-content-start align-items-start">
-                    {%for f in file_pathlist%}
+                    {%for f in file_list%}
 
                     <li class="checkbox-container-export d-inline-block m-1">
-                        <label for="">
-                            <input class="filled-in" type="radio" value="{{f}}" name="uploadedfiles_select" />
+                        <label for="" class="text-danger">
+                            <input class="filled-in" type="checkbox" value="{{f}}" name="uploadedfiles_select" />
                             {{f}} </label>
                     </li>
                     {%endfor%}

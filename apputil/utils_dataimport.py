@@ -140,14 +140,15 @@ class Importhandler(SuperUserRequiredMixin, View):
                         report_filelog[key].append(str(vlog.show()))
                     else:
                         report_filelog[key]=[str(vlog.show())]
-                if save:
-                    newentry_dict[key][:]=[e for e in newentry_dict[key] if e['validStatus']==False]
+                # if save:
+                #     newentry_dict[key][:]=[e for e in newentry_dict[key] if e['validStatus']==False]
                     
     #---------------------------------------------------------------------------------- 
     def get(self, request):
         form = self.form_class
         template=self.template_name
-        chars_lookup=str(request.user)
+        # Displaying user saved files in Server/uploads/
+        # chars_lookup=str(request.user)
         # filesinUploads_list=[file for file in os.listdir(self.dirname) if os.path.isfile(os.path.join(self.dirname, file)) and str(request.user)+"_" in file] 
                
         return render(request, 'ddrug/importhandler_vitek.html', { 'form': form,})

@@ -31,9 +31,9 @@ $(".button").on("click", function () {
     if ($(this).data("type") === "Validation") {
       $("#preLoader").fadeIn();
     }
-    var filepathlist = [];
+    var select_file_list = [];
     $("input[name=uploadedfiles_select]:checked").each(function () {
-      filepathlist.push($(this).val().toString());
+      select_file_list.push($(this).val().toString());
     });
 
     const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
@@ -42,7 +42,7 @@ $(".button").on("click", function () {
       url: "/import-VITEK/",
       data: {
         type: $(this).data("type"),
-        filepathlist: filepathlist,
+        select_file_list: select_file_list,
         datamodel: datamodel.toString(),
       },
       method: "POST",
@@ -58,21 +58,11 @@ $(".button").on("click", function () {
             $("#delete_cancel_task a:first-child").addClass("blink");
             $('input[name=uploadedfiles_select]:checked').addClass("not-visible");
             $('input[name=uploadedfiles_select]:checked').parent().addClass("not-visible");
+            $('input[name=uploadedfiles_select]:checked').prop("checked", false)
             $(this).find("div").html("<div id='alert' class='badge bg-primary text-wrap'>file deleted!</div>")
           }
         }
-        // else if (res.status === "SavetoDB") {
-        //   $("#preLoader").fadeOut();
-        //   console.log(res);
-        //   // if (res.task_status === "Form is Valid") {
-        //   $("#Import_step4").addClass("visible");
-        //   $("#progressbar span:nth-child(3)").toggleClass("bg-success");
-        //   // }
-        //   // const html = `<p>${res.status}</p>`;
-        //   $("#mesg_save_Proceed").append(`<li>${res.savefile} saved!</li>`);
-        //   // save_data(res);
 
-        // }
         else {
           var validateResult = JSON.parse(res.validate_result.replace(/'/g, '"'));
           var validateReport = JSON.parse(
@@ -102,7 +92,10 @@ $(".button").on("click", function () {
             });
             // Case SaveToDB without Errors
             if (res.status === "SavetoDB" && error_num === 0) {
-
+              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
+                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
+              }
+              $('input[name=uploadedfiles_select]:checked').parent().addClass('text-success')
               $("#preLoader").fadeOut();
               console.log(res);
               // if (res.task_status === "Form is Valid") {
@@ -115,6 +108,9 @@ $(".button").on("click", function () {
 
             }//Case after Validating without Error 
             else if (res.status === "validating" && error_num === 0) {
+              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
+                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
+              }
               $('input[name=uploadedfiles_select]:checked').parent().addClass('text-success')
               $("#progressbar span:nth-child(2)").toggleClass("bg-success");
               validatepassedfile.push(f_list[i].toString().toLowerCase())
@@ -136,7 +132,10 @@ $(".button").on("click", function () {
             }// Case Validating or Saving with Error occurs 
             else {
               $("#confirmButton").prop("disabled", true);
-
+              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-success')) {
+                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-success')
+              }
+              $('input[name=uploadedfiles_select]:checked').parent().addClass('text-danger')
               const tr = `
               <tr>
               <td>${f_list[i]}</td>
@@ -169,9 +168,11 @@ $(".button").on("click", function () {
   }
 });
 // save button disable when choose file contains error. Meaning Only passing Validtion files can be save. 
-$("input[type=radio]").click(() => {
+$("input[type=checkbox]").click(() => {
   console.log(validatepassedfile)
-  console.log($('input[name=uploadedfiles_select]:checked').val().toString().toLowerCase())
+  // console.log($(this).is(":checked").val().toString().toLowerCase())
+  console.log($('input[name=uploadedfiles_select]:checked').parent())
+
   if (jQuery.inArray($('input[name=uploadedfiles_select]:checked').val().toString().toLowerCase(), validatepassedfile) > -1) {
     $("#confirmButton").prop("disabled", false);
   }
