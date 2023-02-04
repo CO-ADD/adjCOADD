@@ -2,6 +2,7 @@
 $(document).ready(() => {
   console.log("document ready!");
 });
+// ---------validating and uploading---------------------------------------------------//
 var output_files = $("#output");
 //Listing files before uploading
 $("#id_file_field").change(function () {
@@ -19,10 +20,13 @@ if ($("#filepath").text()) {
 }
 // get list of validate passed files and be able to save to DB
 var validatepassedfile = ["0"];
+
+//---------Ajax call for validating, deleting, saving to DB--------------------------//
 // Function to call Importhandler_VITEK in Views.py
+//Button Event: could be validating-objects, deleting, validating-save-objects------//
 $(".button").on("click", function () {
   console.log($("input:checked"))
-
+  // prevent from clicking without choosing a file
   if ($("input:checked").length < 1 || $("input:checked").hasClass('not-visible')) {
     alert("haven't select a file")
     return
@@ -30,13 +34,14 @@ $(".button").on("click", function () {
     if ($(this).data("type") === "Validation") {
       $("#preLoader").fadeIn();
     }
+    // collecting input information: selected files...
     var select_file_list = [];
     $("input[name=uploadedfiles_select]:checked").each(function () {
       select_file_list.push($(this).val().toString());
     });
 
     const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
-
+    // sending input data to server: files, process name, 
     $.ajax({
       url: "/import-VITEK/",
       data: {
@@ -49,6 +54,7 @@ $(".button").on("click", function () {
     })
       .done((res) => {
         console.log(res)
+        // process received DATA
         // ---------IN delete Case-----------
         if (res.status === "Delete") {
           if (res.systemErr) {
@@ -74,7 +80,7 @@ $(".button").on("click", function () {
           // JSON.parse;
           var f_list = Object.keys(validateResult);
           console.log(f_list)
-          // ------------Start single file process----////
+          // ------------Loop and parse each file's result mapping to the report table ----//
           for (let i = 0; i < f_list.length; i++) {
             var error_num = 0;
             var warning_num = 0;
@@ -89,23 +95,21 @@ $(".button").on("click", function () {
                 ew_description["Warning"].push(el["Warning"].toString());
               }
             });
-            // Case SaveToDB without Errors
+            // ----------setting file status: Case validating-save-objects without Errors ---------------
             if (res.status === "SavetoDB" && error_num === 0) {
               if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
                 $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
               }
               $('input[name=uploadedfiles_select]:checked').parent().addClass('text-success')
               $("#preLoader").fadeOut();
-              console.log(res);
-              // if (res.task_status === "Form is Valid") {
-              $("#Import_step4").addClass("visible");
+              console.log(res)
+              if (!$("#Import_step4").hasClass("visible")) {
+                $("#Import_step4").addClass("visible");
+              }
               $("#progressbar span:nth-child(3)").toggleClass("bg-success");
-              // }
-              // const html = `<p>${res.status}</p>`;
               $("#mesg_save_Proceed").append(`<li>${res.savefile} saved!</li>`);
-              // save_
-
-            }//Case after Validating without Error 
+            }
+            //-----------setting file status: Case validating-objects without Error--------- 
             else if (res.status === "validating" && error_num === 0) {
               if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
                 $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
@@ -128,7 +132,8 @@ $(".button").on("click", function () {
               ${res.file_report} *** <br>`);
 
 
-            }// Case Validating or Saving with Error occurs 
+            }
+            //-----------setting file status:  Case validating-objects or validating-save-objects with Error occurs 
             else {
               $("#confirmButton").prop("disabled", true);
               if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-success')) {
@@ -148,13 +153,16 @@ $(".button").on("click", function () {
               ${res.file_report} *** <br>`);
             }
 
+            //--------Single File process fisnish-------------------------------------------//
           }
+          //----------Files Looping End----------------------------------------------------//
           // --------------Case After click Validating
           if (res.status === "validating") {
+            if (!$("#Import_step3").hasClass("visible")) {
 
-            $("#Import_step3").addClass("visible");
+              $("#Import_step3").addClass("visible");
+            }
           }
-          //--------Single File process fisnish
           // ------end preloader displaying 
           $("#preLoader").fadeOut();
         }
@@ -166,7 +174,8 @@ $(".button").on("click", function () {
 
   }
 });
-// save button disable when choose file contains error. Meaning Only passing Validtion files can be save. 
+//------Button Click Event End-------------------------------------------------------------------------//
+// -----save button disable when choose files contains error. Meaning Only passing Validtion files can be save. 
 $("input[type=checkbox]").click(() => {
   console.log(validatepassedfile)
   // console.log($(this).is(":checked").val().toString().toLowerCase())
