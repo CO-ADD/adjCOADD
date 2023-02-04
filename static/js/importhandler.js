@@ -3,7 +3,7 @@ $(document).ready(() => {
   console.log("document ready!");
 });
 var output_files = $("#output");
-
+//Listing files before uploading
 $("#id_file_field").change(function () {
   output_files.empty();
   var files = $(this).prop("files");
@@ -19,8 +19,7 @@ if ($("#filepath").text()) {
 }
 // get list of validate passed files and be able to save to DB
 var validatepassedfile = ["0"];
-// Function to call the function run_task in Views.py
-
+// Function to call Importhandler_VITEK in Views.py
 $(".button").on("click", function () {
   console.log($("input:checked"))
 
