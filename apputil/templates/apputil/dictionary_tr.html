@@ -1,12 +1,21 @@
 <tr>
-    <td>
-      <button class="sendToserver border-0">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-      </button>
-     </td>
-   
-     <td class=""  data-type="dict_value" data-value="{{object.dict_value}}">{{object.dict_value}}</td>
-      <td class="editablerow"  data-type="dict_class" data-value="{{object.dict_class}}">{{object.dict_class}}</td>
-      <td class="editablerow"  data-type="dict_desc" data-value="{{object.dict_desc}}">{{object.dict_desc}}</td>
-  </tr>
-
+  <td class="" data-type="dict_value" data-value="{{object.dict_value}}">
+    {{object.dict_value}}
+  </td>
+  <td
+    class="editablerow"
+    data-name="{{object.dict_value}}"
+    data-type="dict_class"
+    data-value="{{object.dict_class}}"
+  >
+    {{object.dict_class}}
+  </td>
+  <td
+    class="editablerow"
+    data-name="{{object.dict_value}}"
+    data-type="dict_desc"
+    data-value="{{object.dict_desc}}"
+  >
+    {{object.dict_desc}}
+  </td>
+</tr>

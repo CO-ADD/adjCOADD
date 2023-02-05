@@ -8,38 +8,34 @@
 <div class="d-flex flex-row justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column" style="height: fit-content; overflow-y: scroll; ">  
+  <div
+    class="main d-flex flex-column"
+    style="height: fit-content; overflow-y: scroll"
+  >
     <div>
-
-      {% include 'utils/pagination.html'%}    
-  
-    </div>   
+      {% include 'utils/pagination.html'%}
+      <a id="createDict" class="bg-light">
+        <i class="bi bi-plus"></i>
+      </a>
+    </div>
     <div class="fixTableHead">
-      
-   
-      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+      <table
+        class="table table-small table-bordered sorting_table table-hover bg-light"
+        id="id_dictionary_table"
+      >
         <thead>
           <tr>
-            <th>Edit
-                  
-        <a id="createDict" class="bg-light">
-          <i class="bi bi-plus"></i>
-          
-        </a>
-        </th>
-        {%for field in fields%}
-        <th class="order_field" style="width: fit-content;">{{field}}</th>
-        {%endfor%}
-        
-      </tr>
-    </thead>
-    <tbody>
-      {% for object in page_obj %}
-      {%include './dictionary_tr.html'%}
-      {%endfor%}
-    </tbody>
-  </table>
-</div> 
+            {%for field in fields%}
+            <th class="order_field" style="width: fit-content">{{field}}</th>
+            {%endfor%}
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in page_obj %} {%include './dictionary_tr.html'%}
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <!--prettier-ignore-->
@@ -48,10 +44,10 @@
 </div>
 
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_dictionary.js'%}"
+></script>
 <script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
-
-
-
 
 {%endblock%}

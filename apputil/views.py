@@ -139,9 +139,9 @@ def createDictionary(req):
         form=Dictionary_form(req.POST)
         try:
             if form.is_valid:
-                print("form is valid")
                 instance=form.save(commit=False)
                 instance.save(**kwargs)
+                print("save")
                 return redirect("dict_view")
         except Exception as err:
        
@@ -156,14 +156,18 @@ def updateDictionary(req):
     kwargs={}
     kwargs['user']=req.user
     if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
-        dict_value=req.POST.get("dict_value")
-        dict_class=req.POST.get("dict_class")
-        dict_desc=req.POST.get("dict_desc")
+        dict_value=req.POST.get("dict_value") 
+        type=req.POST.get("type") or None
+        print(type)
+        value=req.POST.get("value") or None
+        print(value)
         object_=get_object_or_404(Dictionary, dict_value=dict_value)
         try:
             if object_:
-                object_.dict_class=dict_class
-                object_.dict_desc=dict_desc
+                if type=='dict_class':
+                    object_.dict_class=value
+                if type=='dict_desc':
+                    object_.dict_desc=value
                 print(object_.dict_desc)
                 object_.save(**kwargs)
                 return JsonResponse({"result": "Saved"})
@@ -226,3 +230,42 @@ def exportCSV(request):
         response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
         return response
 
+# ==============Test Site: Combined Queries of Models ==========================#
+from django.core.paginator import Paginator
+# from itertools import chain
+
+def testsite(request):
+    choice_class=Dictionary.objects.order_by().values('dict_class').distinct()
+    a=[tuple(d.values()) for d in choice_class]
+    b=[(x[0], x[0]) for x in a]
+    print(b)
+    context={}
+    # organism = Organism.objects.values_list('organism_name')
+    # taxonomy = Taxonomy.objects.values_list('organism_name')
+    objects=[]#organism.union(taxonomy).order_by('-pk')
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        organism = Organism.objects.filter(organism_name__organism_name__icontains=searched,
+                                   ).values_list("organism_name")
+        taxonomy = Taxonomy.objects.filter(organism_name__icontains=searched,
+                                      ).values_list('organism_name')
+       
+        # objects= [item for item in chain(organism, taxonomy)]
+        objects=organism.union(taxonomy).order_by('-pk')
+        print(objects)
+
+    paginator = Paginator(objects, 2) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    print(page_obj)
+
+    context = {
+        'page_obj': page_obj,
+    }
+
+        
+    
+    return render(request, "utils/test.html", context)
+ 

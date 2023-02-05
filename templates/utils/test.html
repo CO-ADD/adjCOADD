@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
+{% block content %}
+
+<form action="" method="POST">
+  {%csrf_token%}
+  <input type="text" name="searched" />
+  <button type="submit">Submit</button>
+</form>
+<hr />
+<!-- -->
+<ol>
+  {% for item in page_obj %}
+  <!--  -->
+
+  <li>{{item}}</li>
+  <!--  -->
+  <br />
+  {% endfor %}
+</ol>
+
+{%include 'utils/pagination.html'%}
+<!--  -->
+
+{%endblock%}

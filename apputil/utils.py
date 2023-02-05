@@ -222,16 +222,20 @@ class FilteredListView(ListView):
             return order_by
         return order_by
 
-    
 
+a=[tuple(d.values()) for d in Dictionary.objects.order_by().values('dict_class').distinct()]
+choice_class=[(x[0], x[0]) for x in a]
 class Dictionaryfilter(Filterbase):
-      dict_class = django_filters.CharFilter(lookup_expr='icontains')
-      dict_value = django_filters.CharFilter(lookup_expr='icontains')
-      dict_desc = django_filters.CharFilter(lookup_expr='icontains')
-
-      class Meta:
+    dict_class = django_filters.ChoiceFilter(choices=choice_class)
+    #   dict_value = django_filters.CharFilter(lookup_expr='icontains')
+    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['dict_class'].label='Class'
+      
+    class Meta:
         model=Dictionary
-        fields=['dict_class', 'dict_value', 'dict_desc']
+        fields=['dict_class']
 
 
 #file path on server:
