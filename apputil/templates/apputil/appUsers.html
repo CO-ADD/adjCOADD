@@ -5,40 +5,23 @@
 
 <!-- Include -->
 <div class="container vh-100">
-  {%if request.user.is_superuser%}
-  <div id="createAppUser">
-    <a style="float:right" class="btn btn-success btn-sm">
-      <i class="bi bi-plus"></i>
-      <span>Add New AppUser</span>
-    </a>
-  </div>
-
-  <div id="createAppUserModal" class="modal fade" role="dialog">
-  </div>
-  <script>
-
-    $(document).ready(function () {
-
-      let my_modal = $("#createAppUserModal");
-
-      $("#createAppUser a").click(function () {
-        my_modal.load("{%url 'createAppUser' %}", function () {
-          my_modal.modal("show"); // Open Modal
-
-        });
-      });
-    });
-
-  </script>
-  {%endif%}
   <hr>
   <div class="w-75 h-75 m-auto">
 
-    <table class="table table-hover bg-light">
+    <table class="table table-hover bg-light fixTableHead">
       <thead>
         <tr>
 
-          <th scope="col">Name</th>
+          <th scope="col">
+            Name
+            {%if request.user.is_superuser%}
+            <a id="createAppUser" class="card-link text-success">
+              <i class="bi bi-plus">New</i>
+              <!-- <span>Add New AppUser</span> -->
+            </a>
+            {%endif%}
+
+          </th>
           <th scope="col">Username</th>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
@@ -62,4 +45,22 @@
 </div>
 <!--prettier-ignore-->
 </div>
+
+<div id="createAppUserModal" class="modal fade" role="dialog">
+</div>
+<script>
+
+  $(document).ready(function () {
+
+    let my_modal = $("#createAppUserModal");
+
+    $("#createAppUser").click(function () {
+      my_modal.load("{%url 'createAppUser' %}", function () {
+        my_modal.modal("show"); // Open Modal
+
+      });
+    });
+  });
+
+</script>
 {%endblock%}

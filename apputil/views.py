@@ -127,7 +127,7 @@ class DictionaryView(LoginRequiredMixin, FilteredListView):
     filterset_class = Dictionaryfilter
     model_fields=DICTIONARY_FIELDs
 
-
+    
 # 
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def createDictionary(req):
@@ -171,6 +171,23 @@ def updateDictionary(req):
                 print(object_.dict_desc)
                 object_.save(**kwargs)
                 return JsonResponse({"result": "Saved"})
+        except Exception as err:
+            return JsonResponse({"result": err})
+    
+    return JsonResponse({})
+
+
+@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
+def deleteDictionary(req):
+    kwargs={}
+    kwargs['user']=req.user
+    if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
+        dict_value=req.POST.get("dict_value") 
+        object_=get_object_or_404(Dictionary, dict_value=dict_value)
+        try:
+            if object_:
+                object_.delete(**kwargs)
+                return JsonResponse({"result": "Deleted!"})
         except Exception as err:
             return JsonResponse({"result": err})
     

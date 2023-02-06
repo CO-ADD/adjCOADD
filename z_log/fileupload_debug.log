@@ -67,3 +67,11 @@ django.db.utils.IntegrityError: null value in column "urlname" violates not-null
 DETAIL:  Failing row contains (0, 2023-02-05 11:09:00.994572+00, null, null, test, test, test, orgdb, null, null, null).
 
 "POST /admin/apputil/dictionary/add/ HTTP/1.1" 500 200637
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11457
+Not Found: /dict/dict_delete
+"POST /dict/dict_delete HTTP/1.1" 404 11651
+Not Found: /dict_delete
+"POST /dict_delete HTTP/1.1" 404 4430
+Not Found: /dict_delete
+"POST /dict_delete HTTP/1.1" 404 4430

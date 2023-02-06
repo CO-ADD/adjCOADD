@@ -8,30 +8,28 @@
 <div class="d-flex flex-row justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div
-    class="main d-flex flex-column"
-    style="height: fit-content; overflow-y: scroll"
-  >
-    <div>
+  <div class="main d-flex flex-column" style="height: fit-content; overflow-y: scroll">
+    <div class="d-flex">
       {% include 'utils/pagination.html'%}
-      <a id="createDict" class="bg-light">
-        <i class="bi bi-plus"></i>
+      <a id="createDict" class="card-link text-success">
+        <i class="bi bi-plus">New</i>
       </a>
     </div>
     <div class="fixTableHead">
-      <table
-        class="table table-small table-bordered sorting_table table-hover bg-light"
-        id="id_dictionary_table"
-      >
+      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
         <thead>
           <tr>
             {%for field in fields%}
             <th class="order_field" style="width: fit-content">{{field}}</th>
             {%endfor%}
+            <th class="text-danger" style="width: 5px">Delete</th>
           </tr>
         </thead>
         <tbody>
-          {% for object in page_obj %} {%include './dictionary_tr.html'%}
+          {% for object in page_obj %}
+          <!--  -->
+          {%include './dictionary_tr.html'%}
+          <!--  -->
           {%endfor%}
         </tbody>
       </table>
@@ -44,10 +42,35 @@
 </div>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{%static 'js/modal/create_dictionary.js'%}"
-></script>
+<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
 <script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
+
+<script>
+  $(document).ready(function () { })
+  $('[data-type="deleteDict"] a').click(function () {
+    console.log('click')
+    var td = $(this).parent()
+    var dict_value = td.data("name")
+    var data = { dict_value: dict_value, }
+    sendToServerdelete(data)
+
+  })
+  const csrftoken = getCookie("csrftoken");
+  const sendToServerdelete = (data) => {
+    console.log(data);
+    $.ajax({
+      url: "{%url 'dict_delete'%}",
+      type: "POST",
+      headers: { "X-CSRFToken": csrftoken },
+      data: data,
+    })
+      .done((response) => {
+        console.log(response);
+      })
+      .fail(() => {
+        console.log("Error occured");
+      });
+  };
+</script>
 
 {%endblock%}

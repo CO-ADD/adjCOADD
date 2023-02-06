@@ -81,10 +81,10 @@ $(".button").on("click", function () {
           var f_list = Object.keys(validateResult);
           console.log(f_list)
           // ------------Loop and parse each file's result mapping to the report table ----//
+          var error_num = 0;
+          var warning_num = 0;
+          var ew_description = { Error: [], Warning: [] };
           for (let i = 0; i < f_list.length; i++) {
-            var error_num = 0;
-            var warning_num = 0;
-            var ew_description = { Error: [], Warning: [] };
             validateReport[f_list[i]].forEach((el) => {
               if (el["Error"].length > 0) {
                 error_num++;
@@ -97,10 +97,16 @@ $(".button").on("click", function () {
             });
             // ----------setting file status: Case validating-save-objects without Errors ---------------
             if (res.status === "SavetoDB" && error_num === 0) {
-              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
-                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
-              }
-              $('input[name=uploadedfiles_select]:checked').parent().addClass('text-success')
+              $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
+
+                if ($(this).val() === f_list[i]) {
+                  if ($(this).parent().hasClass('text-danger')) {
+                    $(this).parent().removeClass('text-danger')
+                  }
+                  $(this).parent().addClass('text-success')
+                }
+              })
+
               $("#preLoader").fadeOut();
               console.log(res)
               if (!$("#Import_step4").hasClass("visible")) {
@@ -111,14 +117,23 @@ $(".button").on("click", function () {
             }
             //-----------setting file status: Case validating-objects without Error--------- 
             else if (res.status === "validating" && error_num === 0) {
-              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-danger')) {
-                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-danger')
-              }
-              $('input[name=uploadedfiles_select]:checked').parent().addClass('text-success')
+              $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
+
+                if ($(this).val() === f_list[i]) {
+
+                  if ($(this).parent().hasClass('text-danger')) {
+                    $(this).parent().removeClass('text-danger')
+                  }
+                  $(this).parent().addClass('text-success')
+                }
+              })
+              // if ($('input[value=' + f_list[i] + ']').parent().hasClass('text-danger')) {
+              //   $('input[value=' + f_list[i] + ']').parent().removeClass('text-danger')
+              // }
+              // $('input[value=' + f_list[i] + ']').parent().addClass('text-success')
               $("#progressbar span:nth-child(2)").toggleClass("bg-success");
               validatepassedfile.push(f_list[i].toString().toLowerCase())
-              // $("input[value=" + f_list[i] + "]").addClass("validatedfile_db")
-              $("#confirmButton").prop("disabled", false);
+              // $("#confirmButton").prop("disabled", false);
               const tr = `
               <tr>
               <td>${f_list[i]}</td>
@@ -135,11 +150,17 @@ $(".button").on("click", function () {
             }
             //-----------setting file status:  Case validating-objects or validating-save-objects with Error occurs 
             else {
-              $("#confirmButton").prop("disabled", true);
-              if ($('input[name=uploadedfiles_select]:checked').parent().hasClass('text-success')) {
-                $('input[name=uploadedfiles_select]:checked').parent().removeClass('text-success')
-              }
-              $('input[name=uploadedfiles_select]:checked').parent().addClass('text-danger')
+              // $("#confirmButton").prop("disabled", true);
+              $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
+
+                if ($(this).val() === f_list[i]) {
+
+                  if ($(this).parent().hasClass('text-success')) {
+                    $(this).parent().removeClass('text-success')
+                  }
+                  $(this).parent().addClass('text-danger')
+                }
+              })
               const tr = `
               <tr>
               <td>${f_list[i]}</td>
@@ -156,11 +177,15 @@ $(".button").on("click", function () {
             //--------Single File process fisnish-------------------------------------------//
           }
           //----------Files Looping End----------------------------------------------------//
+
           // --------------Case After click Validating
           if (res.status === "validating") {
             if (!$("#Import_step3").hasClass("visible")) {
 
               $("#Import_step3").addClass("visible");
+            }
+            if (error_num === 0) {
+              $("#confirmButton").prop("disabled", false);
             }
           }
           // ------end preloader displaying 
@@ -177,16 +202,13 @@ $(".button").on("click", function () {
 //------Button Click Event End-------------------------------------------------------------------------//
 // -----save button disable when choose files contains error. Meaning Only passing Validtion files can be save. 
 $("input[type=checkbox]").click(() => {
-  console.log(validatepassedfile)
-  // console.log($(this).is(":checked").val().toString().toLowerCase())
-  console.log($('input[name=uploadedfiles_select]:checked').parent())
+  $("#confirmButton").prop("disabled", false);
+  $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
+    if ($(this).parent().hasClass('text-danger')) {
 
-  if (jQuery.inArray($('input[name=uploadedfiles_select]:checked').val().toString().toLowerCase(), validatepassedfile) > -1) {
-    $("#confirmButton").prop("disabled", false);
-  }
-  else {
-    $("#confirmButton").prop("disabled", true);
-  }
+      $("#confirmButton").prop("disabled", true);
+    }
+  })
+
 })
 
-//

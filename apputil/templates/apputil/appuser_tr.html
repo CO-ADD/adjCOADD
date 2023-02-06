@@ -10,10 +10,10 @@
   <td>{{object.is_appuser}}</td>
   <td>{{object.is_active}}</td>
 
-  <td style="width: 10%">
-    <button hx-get="{% url 'updateAppUser' object.name %}" hx-trigger="click">
+  <td class="d-flex" style="width: 10%">
+    <button class="border border-0" hx-get="{% url 'updateAppUser' object.name %}" hx-trigger="click">
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
-    <span class=""> {%include 'apputil/appUsersDel.html'%} </span>
+    <span class="mx-1"> {%include 'apputil/appUsersDel.html'%} </span>
   </td>
 </tr>
