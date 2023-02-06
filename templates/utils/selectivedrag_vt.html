@@ -1,17 +1,13 @@
 <div class="d-flex">
   <ul id="sortable1" class="connectedSortable" style="border: 2px solid black">
     {%for field in model_fields %}
-    <li id="{{field}}" class="draggable ui-state-default">{{field}}</li>
+    <li data-name="{{field}}" class="draggable ui-state-default">{{field}}</li>
     {%endfor%}
   </ul>
 
   <ul id="sortable2" class="connectedSortable">
     Column
-    <li id="{{defaultcolumns1}}" class="draggable ui-state-default">
-      {{defaultcolumns1}}
-    </li>
-    <li id="{{defaultcolumns1}}" class="draggable ui-state-default">
-      {{defaultcolumns2}}
-    </li>
+    <li data-name="{{defaultcolumns1}}" class="draggable ui-state-default">{{defaultcolumns1}}</li>
+    <li data-name="{{defaultcolumns1}}" class="draggable ui-state-default">{{defaultcolumns2}}</li>
   </ul>
 </div>

@@ -22,6 +22,7 @@
   --bs-custom-white: #fff;
   --bs-border-color: #625e5d;
   --bs-body-bg: rgb(235, 235, 235);
+  --bs-body-color: #32394e;
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
   --bs-th-bg: #cacece;
@@ -40,7 +41,7 @@
   --bs-gray-900: #f8f9fa;
   --bs-body-bg: #222736;
   --bs-body-bg-rgb: rgb(34, 39, 54);
-  --bs-body-color-rgb: 166, 176, 207;
+  --bs-body-color-rgb: rgb(166, 176, 207);
   --bs-body-color: #a6b0cf;
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
@@ -359,6 +360,11 @@ nav.shrink {
   /* min-width: 70%; */
 }
 
+.tab-text {
+  color: var(--bs-body-color);
+}
+
+
 /* ============== 2 edit table/form =========== */
 .results-card {
   max-height: 300px;
@@ -669,7 +675,7 @@ td {
 #sortable3 {
   /* border: 1px solid var(--bs-card-border); */
   background-color: var(--bs-topnav-bg);
-  color: var(--bs-custom-white);
+  color: white;
   border-radius: 2%;
   max-width: fit-content;
   min-width: 20px;
@@ -683,7 +689,7 @@ td {
 }
 
 #sortable1 {
-  color: var(--bs-topnav-bg);
+  color: teal;
   background-color: var(--bs-body-bg);
   /* border: 2px solide var(--bs-border-color); */
 }

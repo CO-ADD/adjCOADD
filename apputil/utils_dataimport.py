@@ -92,13 +92,7 @@ class Importhandler(SuperUserRequiredMixin, View):
     
     form_class=FileUploadForm
     file_url=[]
-    data_list=[]
     data_model='default'
-    success_url="default"
-    template_name='default'
-    # log_process='default'
-    vLog = Validation_Log("")
-    # validatefile_name=["|"]
     validate_result={}
     file_report={}
     

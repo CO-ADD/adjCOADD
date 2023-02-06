@@ -14,42 +14,20 @@
       <div>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button
-              class="nav-link active text-dark"
-              id="nav-home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#nav-home"
-              type="button"
-              role="tab"
-              aria-controls="nav-home"
-              aria-selected="true"
-            >
-              <strong class="text-dark">VITEK_Card</strong>
+            <button class="nav-link active border border-2" id="nav-home-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+              <strong class="tab-text">VITEK_Card</strong>
             </button>
-            <button
-              class="nav-link text-dark"
-              id="nav-chart-table-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#nav-chart-table"
-              type="button"
-              role="tab"
-              aria-controls="nav-profile"
-              aria-selected="false"
-            >
-              <strong class="text-dark">Chart/Table</strong>
+            <button class="nav-link border border-2" id="nav-chart-table-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-chart-table" type="button" role="tab" aria-controls="nav-profile"
+              aria-selected="false">
+              <strong class="tab-text">Chart/Table</strong>
             </button>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane fade show active"
-            id="nav-home"
-            role="tabpanel"
-            aria-labelledby="nav-home-tab"
-          >
-            <div
-              class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
-            >
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
               <!--  -->
               {% include 'utils/pagination.html'%}
               <!--  -->
@@ -60,12 +38,7 @@
               {%include 'utils/datatable_general.html' with modelname='VITEK_Card' url_name='vitekcard_detail'%}
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="nav-chart-table"
-            role="tabpanel"
-            aria-labelledby="nav-chart-table-tab"
-          >
+          <div class="tab-pane fade" id="nav-chart-table" role="tabpanel" aria-labelledby="nav-chart-table-tab">
             <div>{%include './vitekcard_datamap.html'%}</div>
           </div>
         </div>

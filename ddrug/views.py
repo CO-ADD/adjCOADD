@@ -174,7 +174,8 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     #     return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
                 except Exception as err:
                     error_message=str(err)
-                    return JsonResponse({"table":error_message,})
+                    print(err)
+                    return JsonResponse({"table_html":error_message,})
         return JsonResponse({})
 
 
