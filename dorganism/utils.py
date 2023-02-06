@@ -94,7 +94,7 @@ class Organismfilter(Filterbase):
 
 class Taxonomyfilter(Filterbase):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
-    lineage = django_filters.MultipleChoiceFilter( choices= "")
+    lineage = django_filters.CharFilter(lookup_expr='icontains')
     org_class=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
     division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
     

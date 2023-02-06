@@ -89,8 +89,8 @@ footer {
 input,
 select,
 option {
-  background-color: var(--bs-form-item-color) !important;
-  color: var(--bs-body-color) !important;
+  background-color: var(--bs-form-item-color);
+  color: var(--bs-body-color);
 }
 
 option {
@@ -557,6 +557,8 @@ form p {
   margin: 0;
   padding: 0;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* fixed table header */
