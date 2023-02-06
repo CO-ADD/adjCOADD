@@ -5,18 +5,28 @@
 
 <!-- <div class="container-fluid"> -->
 <div></div>
-<div class="card text-center border-3"
-  style="border-radius: 30px; width: 36em; position: absolute; top:35%; left: 35%;">
-  <div class="card-body  w-30 h-50 m-auto fs-4 py-5">
-
-
+<div
+  class="card text-center border-3"
+  style="
+    border-radius: 30px;
+    width: 36em;
+    position: absolute;
+    top: 35%;
+    left: 35%;
+  "
+>
+  <div class="card-body w-30 h-50 m-auto fs-4 py-5">
     <h1>Please log in...</h1>
 
     {%include 'utils/message.html'%}
     <form method="POST" action="{% url 'login'%}" class="card-title">
-      {%csrf_token%} {{ form.as_p}}
+      {%csrf_token%}
+      <!--  -->
+      {{ form.as_p}}
 
-      <button type="submit" class="btn btn-outline-secondary btn-lg">Log In</button>
+      <button type="submit" class="btn btn-outline-secondary btn-lg">
+        Log In
+      </button>
     </form>
   </div>
 </div>

@@ -199,18 +199,16 @@ class Importhandler_VITEK(Importhandler):
     success_url="/import-VITEK/"
     template_name='ddrug/importhandler_vitek.html'
     upload_model_type="Vitek"
-    lCards={}
+    lCards={}   # self.lCards, lID and lAst store results parsed by all uploaded files with key-filename, value-parsed result array
     lID={}
     lAst={}
-    # vLog = Validation_Log("Vitek-pdf")
-    
+     
     def post(self, request):
-                
-        location=file_location(request)
+        location=file_location(request) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
-        vCard=[]
+        vCard=[]   # process variables for store parse result from single file
         vID=[]
         vAst=[]
         kwargs={}
@@ -218,22 +216,21 @@ class Importhandler_VITEK(Importhandler):
         
         self.file_url=[]
         self.data_model=request.POST.get('file_data')
-        # self.log_process=self.data_model
         myfiles=request.FILES.getlist('file_field')
       
         try:
+        # Uploading Verifying     
             if form.is_valid():
                 self.lCards.clear()
                 self.lID.clear()
                 self.lAst.clear()
                 
-                # scan_results = cd.instream(myfile) # scan_results['stream'][0] == 'OK' or 'FOUND'
+        # Uploading Parsing 
                 for f in myfiles:
                     fs=OverwriteStorage(location=location)
                     filename=fs.save(f.name, f)
                     print(f"fs is {fs} location is {location}, filename is {filename}")
-
-                    
+              
                     try:
                         vCards, vID, vAst=process_VitekPDF(DirName=location, PdfName=filename)
                         print("file checked")
@@ -244,9 +241,9 @@ class Importhandler_VITEK(Importhandler):
                     except Exception as err:
                         self.delete_file(file_name=filename)
                         messages.warning(request, f'{filename} contains {err} erro , cannot to upload, choose a correct file')
-                        
-                   
-                context['file_pathlist']=self.file_url
+                        return render(request, 'ddrug/importhandler_vitek.html', context)
+                  
+                context['file_list']=self.file_url
                 context['data_model']=self.data_model
                 context['cards']=self.lCards
                 context['ids']=self.lID    
@@ -254,52 +251,35 @@ class Importhandler_VITEK(Importhandler):
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
 
+        # Ajax Call steps for validation, cancel/delete or savetoDB 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
-            # steps for validation, cancel/delete or savetoDB 
-            vLog = Validation_Log("Vitek-pdf")
-            process_name=request.POST.get('type')
-            file_pathlist=request.POST.getlist("filepathlist[]")
+            vLog = Validation_Log("Vitek-pdf") # create process Log instance
+            process_name=request.POST.get('type') # get process type: Validation, Delete, DB_Validation(Save to DB)
+            file_list=request.POST.getlist("select_file_list[]") #get selected fileName List
             data_model=request.POST.get("datamodel")
             # self.validatefile_name.clear()
             self.validate_result.clear()
             self.file_report.clear()
+            lCards={}
+            lID={}
+            lAst={}
+            for f in file_list:
+                lCards[f]=self.lCards[f]
+                lID[f]=self.lID[f]
+                lAst[f]=self.lAst[f]
            
-        
-            if process_name=='Validation':
-                self.lCards.clear()
-                self.lID.clear()
-                self.lAst.clear()
-                for f in file_pathlist:
-                    # self.validatefile_name.append(f)
-                    if self.lCards.get(f, None):
-                        print(self.lCards)
-                        pass
-                    else:
-                        try:
-                            vCards, vID, vAst=process_VitekPDF(DirName=location, PdfName=f)
-                            print("file checked")
-                            self.lCards[f]=vCards
-                            self.lID[f]=vID
-                            self.lAst[f]=vAst    
-                        except Exception as err:
-                            self.delete_file(file_name=f)
-                            messages.warning(request, f'{filename} contains {err} erro , cannot to upload, choose a correct file')
-     
-                self.validates(self.lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(self.lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(self.lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-       
+        # Validating
+            if process_name=='Validation':        
+ 
+                self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=False, **kwargs)
+                self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=False, **kwargs)
+                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=False, **kwargs)
                
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':'validating'})                                   
        
+        # Cancel and deleting Task                
             elif process_name=='Delete':
-                # Cancel Task
-                # self.file_url=[]
-                self.lCards.clear()
-                self.lID.clear()
-                self.lAst.clear()
-                
-                for f in file_pathlist:
+                for f in file_list:
                     try:
                         self.delete_file(file_name=f)
                    
@@ -307,16 +287,16 @@ class Importhandler_VITEK(Importhandler):
                         return JsonResponse({"status":"Delete", "systemErr":"File not existed!"})
                
                 return JsonResponse({"status":"Delete"})                                   
-    
+        # Saving
             elif process_name=='DB_Validation':
                 print("start saving to db")
-                print(self.lCards)
-                self.validates(self.lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(self.lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(self.lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                           
+                self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
+                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                       
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
-                'status':'SavetoDB', 'savefile':str(file_pathlist)})
+                'status':'SavetoDB', 'savefile':str(file_list)})
 
 
            

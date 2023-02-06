@@ -20,7 +20,7 @@
                 {{form.as_p}}
 
 
-                <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload
+                <button id="data_upload" type="submit" class="btn btn-outline-success m-2"> Upload Confirm
                 </button>
             </form>
         </div>
@@ -35,17 +35,17 @@
         <h3 class="text-danger">
             {%include 'utils/message.html'%}
         </h3>
-        {%if file_pathlist %}
+        {%if file_list %}
         <div class="card mx-5">
             <div class="card-body">
                 <!-- <div class="card-title text-center">Uploaded Files and your old files listed here </div> -->
                 <!--  -->
                 <ol class="d-flex flex-wrap justify-content-start align-items-start">
-                    {%for f in file_pathlist%}
+                    {%for f in file_list%}
 
                     <li class="checkbox-container-export d-inline-block m-1">
-                        <label for="">
-                            <input class="filled-in" type="radio" value="{{f}}" name="uploadedfiles_select" />
+                        <label for="" class="text-danger">
+                            <input class="filled-in" type="checkbox" value="{{f}}" name="uploadedfiles_select" />
                             {{f}} </label>
                     </li>
                     {%endfor%}
@@ -87,7 +87,6 @@
 
                     <button class="btn btn-sm" type="button" id="report-issues" onclick="downloadFile()">Download
                         Full Report</button>
-
 
                     <a class="btn btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button"
                         aria-expanded="false" aria-controls="collapseExample">
@@ -137,7 +136,6 @@
                 Files contains warning, you can try to save them in DB.
                 <button id="confirmButton" class="button btn btn-sm" type="button" data-type="DB_Validation">Save To
                     DB</button>Then
-
                 <a class="button" data-type="Delete" href="javascript:void(0);">Delete Files <div class="d-inline">
                     </div>
                 </a>
