@@ -290,13 +290,14 @@ class Importhandler_VITEK(Importhandler):
         # Saving
             elif process_name=='DB_Validation':
                 print("start saving to db")
-                             
+                           
                 self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                       
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
                 'status':'SavetoDB', 'savefile':str(file_list)})
+
 
            
         return render(request, 'ddrug/importhandler_vitek.html', context)
