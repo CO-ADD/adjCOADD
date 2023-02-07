@@ -170,6 +170,7 @@ class FilteredListView(ListView):
     model_fields=None
     order_by=None
     context_list=''
+    filter_request=None
 
    
     def get_queryset(self):
@@ -179,6 +180,7 @@ class FilteredListView(ListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        print(self.request.GET)
         # Return the filtered queryset
         order=self.get_order_by()
         if order:
@@ -189,12 +191,17 @@ class FilteredListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
+        a=self.request.GET.dict()
+        print(a.keys())
+        filterset={key: v for key, v in self.request.GET.dict().items() if v and key!="paginate_by"}
+        print(filterset)
         # print(context)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
+        context['filterset']=filterset
       
         return context
 
