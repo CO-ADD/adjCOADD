@@ -100,6 +100,8 @@ option {
 
 p {
   color: var(--bs-dark);
+  margin: 0;
+  padding: 0;
 }
 
 select {
@@ -266,8 +268,9 @@ button,
 .navbar-brand:hover,
 .nav-item a:hover {
   /* color: var(--orange, orange); */
-  border: 2px solid var(--bs-border-color);
-  /* box-shadow: 0px -5px 10px 0px white; */
+  /* border: 2px solid var(--bs-border-color); */
+
+  box-shadow: 0px 0px 10px 0px white;
   transition: 0.5s ease-in;
 }
 
