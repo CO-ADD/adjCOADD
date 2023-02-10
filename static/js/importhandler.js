@@ -25,6 +25,7 @@ var validatepassedfile = ["0"];
 // Function to call Importhandler_VITEK in Views.py
 //Button Event: could be validating-objects, deleting, validating-save-objects------//
 $(".button").on("click", function () {
+  console.log($("input:checked"))
   // prevent from clicking without choosing a file
   if ($("input:checked").length < 1 || $("input:checked").hasClass('not-visible')) {
     alert("haven't select a file")
@@ -210,3 +211,4 @@ $("input[type=checkbox]").click(() => {
   })
 
 })
+

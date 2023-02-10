@@ -151,7 +151,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             card_barcode=request.POST.get("card_barcode")
             aggfunc_name=request.POST.get("functions")
             print(f'columns_str is {columns_str}')
-            print(selected_data)
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
@@ -166,7 +165,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     response = HttpResponse(content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
                     table_html=table.head().to_html(classes=["table-bordered",])
-                    print(table_html)
                     table_csv=table.to_csv()
                     return JsonResponse({"table_html":table_html, "table_csv":table_csv},)
                     # else:
@@ -174,7 +172,8 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     #     return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
                 except Exception as err:
                     error_message=str(err)
-                    return JsonResponse({"table":error_message,})
+                    print(err)
+                    return JsonResponse({"table_html":error_message,})
         return JsonResponse({})
 
 
@@ -202,7 +201,8 @@ class Importhandler_VITEK(Importhandler):
     lCards={}   # self.lCards, lID and lAst store results parsed by all uploaded files with key-filename, value-parsed result array
     lID={}
     lAst={}
-     
+    # vLog = Validation_Log("Vitek-pdf")
+    
     def post(self, request):
         location=file_location(request) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
@@ -290,14 +290,13 @@ class Importhandler_VITEK(Importhandler):
         # Saving
             elif process_name=='DB_Validation':
                 print("start saving to db")
-                           
+                             
                 self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                       
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
                 'status':'SavetoDB', 'savefile':str(file_list)})
-
 
            
         return render(request, 'ddrug/importhandler_vitek.html', context)

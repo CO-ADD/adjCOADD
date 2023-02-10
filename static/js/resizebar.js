@@ -16,8 +16,9 @@ resizer.addEventListener("mousedown", (event) => {
 });
 
 function resize(e) {
-    var sdsize = Math.min(500, e.x);
+    var sdsize = Math.max(50, e.x);
     var size = `${sdsize}px`;
+    console.log(size)
     sidebar.style.flexBasis = size;
 }
 

@@ -21,13 +21,13 @@ $(document).ready(function () {
     // index value
     var index_value = [];
     $("#sortable3 li").each(function () {
-      index_value.push($(this).text());
+      index_value.push($(this).data('name'));
     });
     var index_values_str = index_value.toString();
     // column value
     var column_value = [];
     $("#sortable2 li").each(function () {
-      column_value.push($(this).text());
+      column_value.push($(this).data('name'));
     });
     var column_value_str = column_value.toString();
     // all data

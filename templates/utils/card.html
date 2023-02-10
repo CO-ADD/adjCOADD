@@ -8,32 +8,22 @@
         {{object_var1}}
       </p>
       <!-- Select Box -->
-     {%include 'utils/selectbox.html' with datatype=datatype object_id=object_id%}
+      {%include 'utils/selectbox.html' with datatype=datatype object_id=object_id%}
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}
       <!--  -->
       {%load static%}
-      <img
-        src="{%static 'images/'%}{{object_img}}.svg"
-        alt="structure"
-        width="100%"
-        class="lazyload"
-        loading="lazy"
-        style="background-color: transparent !important"
-      />
+      <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
+        style="background-color: transparent !important" />
       {%endif%}
     </p>
     <p class="card-text m-0 fst-italic">{{object_var2}}</p>
     <p class="card-text m-0 fst-normal">{{object_var3}}</p>
     <p class="card-text m-0 fst-normal">
       <strong> {{object_var_link_label}} </strong>
-      <a
-        class="card-link"
-        style="float: right"
-        href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object_var_link}}"
-        target="_blank"
-      >
+      <a class="card-link" style="float: right"
+        href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object_var_link}}" target="_blank">
         {{object_var_link}}
       </a>
     </p>
@@ -47,14 +37,8 @@
       <!--  -->
     </p>
     <br />
-    <div
-      class="text-center bg-light"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#{{object_id_slug}}"
-      aria-expanded="false"
-      aria-controls="{{object_id_slug}}"
-    >
+    <div class="text-center bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#{{object_id_slug}}"
+      aria-expanded="false" aria-controls="{{object_id_slug}}">
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
     </div>
 
@@ -71,7 +55,6 @@
       </p>
       <p class="card-text m-0 fst-normal" style="font-size: small">
         <strong>{{object_var8_label}}</strong> <br />
-
         <!--  -->
         {{object_var8 | join:","}}
         <!--  -->

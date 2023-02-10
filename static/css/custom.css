@@ -22,6 +22,7 @@
   --bs-custom-white: #fff;
   --bs-border-color: #625e5d;
   --bs-body-bg: rgb(235, 235, 235);
+  --bs-body-color: #32394e;
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
   --bs-th-bg: #cacece;
@@ -40,7 +41,7 @@
   --bs-gray-900: #f8f9fa;
   --bs-body-bg: #222736;
   --bs-body-bg-rgb: rgb(34, 39, 54);
-  --bs-body-color-rgb: 166, 176, 207;
+  --bs-body-color-rgb: rgb(166, 176, 207);
   --bs-body-color: #a6b0cf;
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
@@ -89,8 +90,8 @@ footer {
 input,
 select,
 option {
-  background-color: var(--bs-form-item-color) !important;
-  color: var(--bs-body-color) !important;
+  background-color: var(--bs-form-item-color);
+  color: var(--bs-body-color);
 }
 
 option {
@@ -99,6 +100,8 @@ option {
 
 p {
   color: var(--bs-dark);
+  margin: 0;
+  padding: 0;
 }
 
 select {
@@ -265,8 +268,9 @@ button,
 .navbar-brand:hover,
 .nav-item a:hover {
   /* color: var(--orange, orange); */
-  border: 2px solid var(--bs-border-color);
-  /* box-shadow: 0px -5px 10px 0px white; */
+  /* border: 2px solid var(--bs-border-color); */
+
+  box-shadow: 0px 0px 10px 0px white;
   transition: 0.5s ease-in;
 }
 
@@ -350,14 +354,19 @@ nav.shrink {
   position: relative;
   margin: 0;
   padding: 0;
-  min-width: 20%;
+  /* min-width: 13%; */
 }
 
 .main {
-  /* flex-basis: 0; */
+  flex-basis: 0;
   flex-grow: 1;
   /* min-width: 70%; */
 }
+
+.tab-text {
+  color: var(--bs-body-color);
+}
+
 
 /* ============== 2 edit table/form =========== */
 .results-card {
@@ -557,6 +566,8 @@ form p {
   margin: 0;
   padding: 0;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* fixed table header */
@@ -667,7 +678,7 @@ td {
 #sortable3 {
   /* border: 1px solid var(--bs-card-border); */
   background-color: var(--bs-topnav-bg);
-  color: var(--bs-custom-white);
+  color: white;
   border-radius: 2%;
   max-width: fit-content;
   min-width: 20px;
@@ -681,7 +692,7 @@ td {
 }
 
 #sortable1 {
-  color: var(--bs-topnav-bg);
+  color: teal;
   background-color: var(--bs-body-bg);
   /* border: 2px solide var(--bs-border-color); */
 }
@@ -791,4 +802,3 @@ td {
   animation: disapear 2s forwards;
   width: 6rem;
 }
-
