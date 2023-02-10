@@ -196,7 +196,6 @@ button,
 .order_button {
   float: right;
   width: fit-content;
-
   padding: 0;
   margin: 0;
 }
@@ -239,6 +238,7 @@ button,
 /* ----Navbar custom style */
 .navbar {
   background-color: var(--bs-heading-bg);
+  height: 120px;
 }
 
 .nav-title {

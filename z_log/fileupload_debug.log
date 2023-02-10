@@ -94,3 +94,5 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'home' not found. 'home' is n
 "GET /index/ HTTP/1.1" 500 197565
 Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 10859
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10859
