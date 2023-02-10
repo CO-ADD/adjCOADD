@@ -1,6 +1,11 @@
-<div class="sidebar text-secondary" style="overflow: scroll">
-    <div style="max-width:300px; height:fit-content">Current filter: {{filterset}}</div>
-    <form id="django-filter-siderbar" method="get" class="form-group mx-5">
+<div class="sidebar text-secondary">
+    <div style="height:fit-content" class="mx-1 bg-light text-primary ">
+        <p style="font-size: small; font-weight: bold;">
+            {{filterset | default_if_none:"&nbsp;"}}
+        </p>
+
+    </div>
+    <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
 
             <input id="filter-apply" class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
@@ -8,8 +13,8 @@
             <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
         </div>
         <hr>
-        <div class="d-flex">
-            <span>show</span>
+        <div class="d-flex justify-content-center">
+
             <span>
 
                 <select class="border" style="width: fit-content;" name="paginate_by" id="pages_set">
@@ -23,7 +28,7 @@
             </span>
             <span>
 
-                entries on one Page
+                &nbsp; entries on one Page
             </span>
         </div>
 

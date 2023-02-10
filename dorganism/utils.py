@@ -59,13 +59,7 @@ def search_organism_id(req):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-
-
 #==================================Filters======================================
-
-
-
-
 
 class Organismfilter(Filterbase):
     ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
@@ -84,13 +78,13 @@ class Organismfilter(Filterbase):
         super().__init__(*args, **kwargs)
         for i in self.filters:
             self.filters[i].label=i
+            # test_i=Organism.objects.filter(oxygen_pref__icontains='Aerobic').count() #Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary[i][0])
+           
          
     class Meta:
         model=Organism
         fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
        
-
-
 
 class Taxonomyfilter(Filterbase):
     organism_name = django_filters.CharFilter(lookup_expr='icontains')
@@ -107,12 +101,11 @@ class Taxonomyfilter(Filterbase):
         self.filters['division'].label='Division'
         self.filters['org_class'].label='Class'
         self.filters['tax_id'].label='Tax ID'
+        print(Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
 
     class Meta:
         model=Taxonomy
         fields=['organism_name', 'code', 'lineage', 'tax_rank','division', 'org_class', 'tax_id', ]
-
-
 
 
 class Batchfilter(Filterbase):
