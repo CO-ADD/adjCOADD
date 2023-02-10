@@ -151,7 +151,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             card_barcode=request.POST.get("card_barcode")
             aggfunc_name=request.POST.get("functions")
             print(f'columns_str is {columns_str}')
-            print(selected_data)
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
@@ -166,7 +165,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                     response = HttpResponse(content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
                     table_html=table.head().to_html(classes=["table-bordered",])
-                    print(table_html)
                     table_csv=table.to_csv()
                     return JsonResponse({"table_html":table_html, "table_csv":table_csv},)
                     # else:
@@ -203,7 +201,8 @@ class Importhandler_VITEK(Importhandler):
     lCards={}   # self.lCards, lID and lAst store results parsed by all uploaded files with key-filename, value-parsed result array
     lID={}
     lAst={}
-     
+    # vLog = Validation_Log("Vitek-pdf")
+    
     def post(self, request):
         location=file_location(request) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
