@@ -167,7 +167,7 @@ class Filterbase(django_filters.FilterSet):
 # =====================Application USers Filterset===================================
 
 class AppUserfilter(django_filters.FilterSet):
-    permission=django_filters.ChoiceFilter(choices=Permission_Choices, widget=forms.RadioSelect,)
+    permission=django_filters.ChoiceFilter(choices=Permission_Choices)
          
     class Meta:
         model=ApplicationUser
