@@ -78,7 +78,7 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     #     context=super().get_context_data(**kwargs)
     #     context["objects"]=self.model.objects.all()
     #     return context
-        
+
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def updateApplicationuser(req, pk):
     object_=get_object_or_404(ApplicationUser, pk=pk)

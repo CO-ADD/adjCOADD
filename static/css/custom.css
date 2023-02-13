@@ -93,8 +93,7 @@ option {
   background-color: var(--bs-form-item-color);
   color: var(--bs-body-color);
 }
-body input {
-  size: 5;
+td > input {
   max-width: 120px !important;
 }
 option {
