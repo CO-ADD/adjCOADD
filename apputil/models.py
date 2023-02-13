@@ -30,6 +30,7 @@ class ApplicationUser(AbstractUser):
 
     class Meta:
         db_table = 'app_user'
+        ordering=['username']
     
     #------------------------------------------------
     @classmethod

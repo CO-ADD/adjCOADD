@@ -49,7 +49,16 @@ def test_concurrently(times):
 #         self.assertEqual(response.status_code, 200)
 
 
+# Test Create View
 
+def test_Organism_create(self):
+    self.client.post('createOrg/', {'author':"manualvarado22", 'title': "Super Important Test", 'content':"This is really important.", 'published_date':timezone.now()})
+    self.assertEqual(Post.objects.last().title, "Super Important Test")
+
+def test_display_post(self):
+    post = Post.objects.create(...whatever...)
+    response = self.client.get(reverse('blog:post_detail', pk=post.pk))
+    self.assertContains(response, "really important")
 
 class CreateTaxonomyTestCase(TestCase):
     def setUp(self):

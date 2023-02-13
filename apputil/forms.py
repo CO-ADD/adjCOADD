@@ -9,7 +9,7 @@ class ApplicationUser_form(forms.ModelForm):
     permission=forms.ChoiceField(choices=Permission_Choices)
     class Meta:
         model=ApplicationUser
-        fields=['name','username', 'first_name','last_name','initials','email', 'permission', 'is_appuser','is_active']
+        fields=['first_name','last_name','email', 'is_active', 'username', 'name', 'initials','permission','is_appuser']
 
 # #=======================================Dictionary Form===========================================================
 class Dictionary_form(forms.ModelForm):
