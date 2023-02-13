@@ -29,19 +29,6 @@
             {%endfor%}
             <th scope="col">Edit</th>
           </tr>
-          <!-- <tr>
-            <th>Name</th>
-            <th scope="col">Username</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Initial</th>
-
-            <th scope="col">Email</th>
-            <th scope="col">Permissions</th>
-            <th scope="col">AppUser</th>
-            <th scope="col">Active</th>
-            <th scope="col">Edit</th>
-          </tr> -->
         </thead>
         <tbody hx-target="closest tr" hx-swap="outerHTML">
           {% for object in page_obj %}

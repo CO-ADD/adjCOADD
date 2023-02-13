@@ -93,8 +93,9 @@ option {
   background-color: var(--bs-form-item-color);
   color: var(--bs-body-color);
 }
-input {
-  border: 0.5px solid var(--bs-body-color);
+body input {
+  size: 5;
+  max-width: 120px !important;
 }
 option {
   font-size: 16px !important;
