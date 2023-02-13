@@ -6,6 +6,8 @@ import unicodedata
 import django_filters
 import pandas as pd
 from asgiref.sync import sync_to_async
+
+from django import forms
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -14,8 +16,10 @@ from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.conf import settings
 
-from .models import Dictionary
 from adjcoadd.constants import *
+
+from .forms import Permission_Choices
+from .models import Dictionary, ApplicationUser
 
 # ==========utilized in Create User folder under /uploads ==========
 def file_location(req):
@@ -160,9 +164,34 @@ class Filterbase(django_filters.FilterSet):
         lookup='__'.join([name, 'overlap'])
         return queryset.filter(**{lookup: value})
 
+# =====================Application USers Filterset===================================
 
+class AppUserfilter(django_filters.FilterSet):
+    permission=django_filters.ChoiceFilter(choices=Permission_Choices, widget=forms.RadioSelect,)
+         
+    class Meta:
+        model=ApplicationUser
+        fields=['username','first_name', 'last_name', 'permission']
 
+# ===========================================================================
 
+# =====================Dictionary Filterset===================================
+
+a=[tuple(d.values()) for d in Dictionary.objects.order_by().values('dict_class').distinct()]
+choice_class=[(x[0], x[0]) for x in a]
+class Dictionaryfilter(Filterbase):
+    dict_class = django_filters.ChoiceFilter(choices=choice_class)
+    #   dict_value = django_filters.CharFilter(lookup_expr='icontains')
+    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['dict_class'].label='Class'
+      
+    class Meta:
+        model=Dictionary
+        fields=['dict_class']
+
+# ===========================================================================
 # Base Class for all models list/card view
 class FilteredListView(ListView):
     filterset_class = None
@@ -228,20 +257,6 @@ class FilteredListView(ListView):
             return order_by
         return order_by
 
-
-a=[tuple(d.values()) for d in Dictionary.objects.order_by().values('dict_class').distinct()]
-choice_class=[(x[0], x[0]) for x in a]
-class Dictionaryfilter(Filterbase):
-    dict_class = django_filters.ChoiceFilter(choices=choice_class)
-    #   dict_value = django_filters.CharFilter(lookup_expr='icontains')
-    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.filters['dict_class'].label='Class'
-      
-    class Meta:
-        model=Dictionary
-        fields=['dict_class']
 
 
 #file path on server:

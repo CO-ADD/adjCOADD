@@ -3,8 +3,10 @@ from .models import  ApplicationUser, Dictionary
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 
+Permission_Choices=[ ("Read","Read"),("Write","Write"),("Delete","Delete"), ("Admin","Admin"), ("No","No")]
 
 class ApplicationUser_form(forms.ModelForm):
+    permission=forms.ChoiceField(choices=Permission_Choices)
     class Meta:
         model=ApplicationUser
         fields=['name','username', 'first_name','last_name','initials','email', 'permission', 'is_appuser','is_active']

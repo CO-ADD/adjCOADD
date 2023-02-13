@@ -1,17 +1,21 @@
 <tr>
-  <td>{{object.name}}</td>
-  <td>{{object.username}}</td>
   <td>{{object.first_name}}</td>
   <td>{{object.last_name}}</td>
+  <td>{{object.email}}</td>
+  <td>{{object.is_active}}</td>
+  <td>{{object.username}}</td>
+  <td>{{object.name}}</td>
 
   <td>{{object.initials}}</td>
-  <td>{{object.email}}</td>
   <td>{{object.permission}}</td>
   <td>{{object.is_appuser}}</td>
-  <td>{{object.is_active}}</td>
 
   <td class="d-flex" style="width: 10%">
-    <button class="border border-0" hx-get="{% url 'updateAppUser' object.name %}" hx-trigger="click">
+    <button
+      class="border border-0"
+      hx-get="{% url 'updateAppUser' object.name %}"
+      hx-trigger="click"
+    >
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
     <span class="mx-1"> {%include 'apputil/appUsersDel.html'%} </span>

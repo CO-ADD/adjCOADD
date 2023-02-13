@@ -64,6 +64,35 @@ class ApplicationUser(AbstractUser):
             return(False)
 
     # --------------------------------------------------------------------------
+    
+    # get field names in postgres in the order provided by constants.py
+    @classmethod
+    def get_databasefields(self, fields=None):
+        if fields:
+            databasefields=fields.keys()
+        else:
+            databasefields=None
+        return databasefields
+    # get field verbose or customized name in the order provided by constants.py
+    @classmethod
+    def get_fields(self, fields=None):
+        if fields:
+            select_fields=[fields[f.name] for f in self._meta.fields if f.name in fields.keys()]
+        else:
+            select_fields=None
+        return select_fields
+
+
+    # get field name in model Class in the order provided by constants.py
+    @classmethod
+    def get_modelfields(self, fields=None):
+        if fields:
+            model_fields=[f.name for f in self._meta.fields if f.name in fields.keys()]
+        else:
+            model_fields=None
+        return model_fields
+    #------------------------------------------------
+    
     def __str__(self) -> str:
         return f"{self.name}" 
 

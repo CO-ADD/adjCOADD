@@ -12,15 +12,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
+from adjcoadd.constants import *
+from dorganism.models import Organism, Taxonomy
+
 from .forms import ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from dorganism.models import Organism, Taxonomy
-from .utils import FilteredListView
-from .utils import Dictionaryfilter
-from .utils import FilteredListView
-from .utils import Dictionaryfilter
-from adjcoadd.constants import *
-from .utils import SuperUserRequiredMixin, permission_not_granted
+from .utils import SuperUserRequiredMixin, permission_not_granted, FilteredListView, AppUserfilter, Dictionaryfilter
 
 
 ## =================================APP Home========================================
@@ -70,16 +67,17 @@ def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
 
-class AppUserListView(LoginRequiredMixin, ListView):
+class AppUserListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=ApplicationUser
-    fields='__all__'
-    template_name = 'apputil/appUsers.html'
+    template_name = 'apputil/appUsers.html'  
+    filterset_class = AppUserfilter
+    model_fields=APPUSER_FIELDs
 
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context["objects"]=self.model.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context=super().get_context_data(**kwargs)
+    #     context["objects"]=self.model.objects.all()
+    #     return context
         
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def updateApplicationuser(req, pk):
