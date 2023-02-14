@@ -13,9 +13,7 @@ urlpatterns = [
     # path('drug/<str:pk>', detailDrug, name="drug_detail"),
     path('createDrug/', createDrug, name="drug_create"),
     path('updateDrug/<str:pk>', updateDrug, name="drug_update"),
-    # path('deleteDrug/<str:pk>', deleteDrug, name="drug_delete"),
     path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
-    # path('vitekcard_pivot', VitekcardPivotView.as_view(), name="vitekcard_pivot"),
     path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),
     path("import-VITEK/", Importhandler_VITEK.as_view(), name="import-VITEK"),
 ]

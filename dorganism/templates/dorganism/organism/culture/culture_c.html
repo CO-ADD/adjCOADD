@@ -1,40 +1,22 @@
 <div class="modal-dialog">
-  <div class="modal-content" style="width: 50rem">
+  <div class="modal-content" style="width: 30rem">
     <div class="modal-header">
-      <h5 class="modal-title" id="staticBackdropLabel">Create Batch</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    {% include 'utils/search_organism_id.html' %}
-    <div class="card mt-3 text-left">
+    <div class="mx-2">
+      <h4 class="my-0">Create Culture</h4>
+      {% include 'utils/search_organism_id.html' %}
       <hr />
-      <form
-        method="POST"
-        class="post-form"
-        name="create"
-        action="{%url 'cultr_create'%}"
-      >
+      <form method="POST" class="post-form" name="create" action="{%url 'cultr_create'%}">
         {% csrf_token %}
         <!-- ignore prettier -->
         {{form.as_p}}
-        <input
-          type="text"
-          id="microorg"
-          name="search_organism"
-          style="display: none"
-        />
+        <input type="text" id="microorg" name="search_organism" style="display: none" />
         <!-- id "taxo-name" used in search_organism.js to assign ajax result -->
 
         <hr />
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          value="Add"
-          name="note"
-        />
-        <a
-          href="#"
-          onclick="window.location.reload(true);"
-          class="btn btn-outline-secondary"
-        >
+        <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />
+        <a href="#" onclick="window.location.reload(true);" class="btn btn-outline-secondary">
           Cancel
         </a>
       </form>

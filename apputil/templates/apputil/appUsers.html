@@ -4,63 +4,55 @@
 {% block content %}
 
 <!-- Include -->
-<div class="container vh-100">
-  <hr>
-  <div class="w-75 h-75 m-auto">
-
-    <table class="table table-hover bg-light fixTableHead">
-      <thead>
-        <tr>
-
-          <th scope="col">
-            Name
-            {%if request.user.is_superuser%}
-            <a id="createAppUser" class="card-link text-success">
-              <i class="bi bi-plus">New</i>
-              <!-- <span>Add New AppUser</span> -->
-            </a>
-            {%endif%}
-
-          </th>
-          <th scope="col">Username</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Initial</th>
-
-          <th scope="col">Email</th>
-          <th scope="col">Permissions</th>
-          <th scope="col">AppUser</th>
-          <th scope="col">Active</th>
-          <th scope="col">Edit</th>
-        </tr>
-      </thead>
-      <tbody hx-target="closest tr" hx-swap="outerHTML">
-        {% for object in objects %}
-        {%include 'apputil/appuser_tr.html'%}
-
-        {%endfor%}
-      </tbody>
-    </table>
+{%include 'utils/topbar.html'%}
+<div class="d-flex flex-row justify-content-between vh-100">
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="main d-flex flex-column">
+    <div class="d-flex">
+      {% include 'utils/pagination.html'%}
+      <!--  -->
+      {%if request.user.is_superuser%}
+      <a id="createAppUser" class="card-link text-success">
+        <i class="bi bi-plus">New</i>
+      </a>
+      {%endif%}
+    </div>
+    <div class="fixTableHead">
+      <table
+        class="table table-small table-bordered sorting_table table-hover bg-light"
+      >
+        <thead>
+          <tr>
+            {%for field in fields%}
+            <th class="order_field" style="width: fit-content">{{field}}</th>
+            {%endfor%}
+            <th scope="col">Edit</th>
+          </tr>
+        </thead>
+        <tbody hx-target="closest tr" hx-swap="outerHTML">
+          {% for object in page_obj %}
+          <!--  -->
+          {%include 'apputil/appuser_tr.html'%}
+          <!--  -->
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-<!--prettier-ignore-->
+  <!--prettier-ignore-->
 </div>
 
-<div id="createAppUserModal" class="modal fade" role="dialog">
-</div>
+<div id="createAppUserModal" class="modal fade" role="dialog"></div>
 <script>
-
   $(document).ready(function () {
-
     let my_modal = $("#createAppUserModal");
 
     $("#createAppUser").click(function () {
       my_modal.load("{%url 'createAppUser' %}", function () {
         my_modal.modal("show"); // Open Modal
-
       });
     });
   });
-
 </script>
 {%endblock%}

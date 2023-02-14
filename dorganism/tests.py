@@ -49,6 +49,7 @@ def test_concurrently(times):
 #         self.assertEqual(response.status_code, 200)
 
 
+# Test Create View
 
 
 class CreateTaxonomyTestCase(TestCase):

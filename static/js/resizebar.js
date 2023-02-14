@@ -3,24 +3,24 @@ const sidebar = document.querySelector(".sidebar");
 const hidefilter = document.getElementById("hidefilter")
 
 
-resizer.addEventListener("mousedown", (event) => {
-    console.log("MosseDown event...")
-    document.addEventListener("mousemove", resize, false);
-    document.addEventListener(
-        "mouseup",
-        () => {
-            document.removeEventListener("mousemove", resize, false);
-        },
-        false
-    );
-});
+// resizer.addEventListener("mousedown", (event) => {
+//     console.log("MosseDown event...")
+//     document.addEventListener("mousemove", resize, false);
+//     document.addEventListener(
+//         "mouseup",
+//         () => {
+//             document.removeEventListener("mousemove", resize, false);
+//         },
+//         false
+//     );
+// });
 
-function resize(e) {
-    var sdsize = Math.max(50, e.x);
-    var size = `${sdsize}px`;
-    console.log(size)
-    sidebar.style.flexBasis = size;
-}
+// function resize(e) {
+//     var sdsize = Math.max(50, e.x);
+//     var size = `${sdsize}px`;
+//     console.log(size)
+//     sidebar.style.flexBasis = size;
+// }
 
 hidefilter.addEventListener("click", () => {
     hidefilter.classList.toggle("text-danger")

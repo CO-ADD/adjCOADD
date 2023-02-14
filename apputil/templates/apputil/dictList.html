@@ -8,7 +8,7 @@
 <div class="d-flex flex-row justify-content-between vh-100">
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column" style="height: fit-content; overflow-y: scroll">
+  <div class="main d-flex flex-column">
     <div class="d-flex">
       {% include 'utils/pagination.html'%}
       <a id="createDict" class="card-link text-success">
@@ -16,7 +16,10 @@
       </a>
     </div>
     <div class="fixTableHead">
-      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+      <table
+        class="table table-small table-bordered sorting_table table-hover bg-light"
+        id="id_dictionary_table"
+      >
         <thead>
           <tr>
             {%for field in fields%}
@@ -42,19 +45,21 @@
 </div>
 
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_dictionary.js'%}"
+></script>
 <script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
 
 <script>
-  $(document).ready(function () { })
+  $(document).ready(function () {});
   $('[data-type="deleteDict"] a').click(function () {
-    console.log('click')
-    var td = $(this).parent()
-    var dict_value = td.data("name")
-    var data = { dict_value: dict_value, }
-    sendToServerdelete(data)
-
-  })
+    console.log("click");
+    var td = $(this).parent();
+    var dict_value = td.data("name");
+    var data = { dict_value: dict_value };
+    sendToServerdelete(data);
+  });
   const csrftoken = getCookie("csrftoken");
   const sendToServerdelete = (data) => {
     console.log(data);

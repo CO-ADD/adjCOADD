@@ -94,7 +94,6 @@ class Batchupdate_form(forms.ModelForm):
 class Stock_form(forms.ModelForm):  
     class Meta:
         model =OrgBatch_Stock
-        # fields=ORGANISM_STOCK_FIELDs.keys()
         exclude=["n_left"]
 
 # ===============================Culture Form-------------------------------
@@ -110,7 +109,6 @@ class Culture_form(forms.ModelForm):
               
     def clean_organism_id(self):       
         data=self.cleaned_data['organism_id']
-        # organism=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
         return data
 
