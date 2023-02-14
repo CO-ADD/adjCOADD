@@ -63,7 +63,15 @@ class DrugCardView(DrugListView):
                 molecule_to_svg(m, object_.pk)
         return context
 # ===========Detail View=============================Read============================================
-
+@login_required
+def detailDrug(req, pk):
+    context={}
+    object_=get_object_or_404(Drug, drug_id=pk)
+    form=Drug_form(instance=object_)
+    context["object"]=object_
+    context["form"]=form
+ 
+    return render(req, "ddrug/drug/drug_detail.html", context)
 # ====================================================Create===========================================
 # @login_required
 @user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
@@ -78,8 +86,10 @@ def createDrug(req):
             instance.save(**kwargs)
             return redirect(req.META['HTTP_REFERER']) 
         else:
-            messages.error(req, form.errors)
-            return redirect(req.META['HTTP_REFERER'])      
+            messages.error(req, "Create new object failed: "+str(form.errors))
+            print(form.errors)
+            # return JsonResponse({"error":form.errors})
+            return redirect(req.META['HTTP_REFERER'])
     return render(req, 'ddrug/drug/drug_c.html', {'form':form})
     
 # ====================================================Update in Form===========================================

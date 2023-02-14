@@ -6,101 +6,74 @@
 {% block content%}
 <div class="mx-2 border border-2">
     <div>
-        <a class="btn btn-sm btn-outline-secondary" href="{%url 'taxo_card' %}"><i class="bi bi-view-list"></i><i
+        <a class="btn btn-sm btn-outline-secondary" href="{%url 'drug_card' %}"><i class="bi bi-view-list"></i><i
                 class="bi bi-arrow-bar-left"></i></a>
     </div>
-    <div class="d-flex justify-content-between my-2">
-        <div class="m-atuo">
-            {%include 'dorganism/taxonomy/taxonomy_u.html'%}
-        </div>
-        <div>
-            {%include 'dorganism/taxonomy/taxonomy_d.html'%}
+    <div class="m-atuo">
+        <div class="d-flex justify-content-between my-2" style="float:right">
+          
         </div>
     </div>
-    <div class="card m-4">
-        <b>
-            {%include 'utils/message.html'%}
-        </b>
-        <div class="card-header">
-            Organism Taxonomy {{object.pk}}
-        </div>
-        <div class="row">
-            <div class="col-md-4 table-responsive-sm">
+    <div class="accordion" id="organism-detail">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="fs-6 my-0">{{object.pk}} |
+                        {{object.organism_name}}
+                    </h5>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#organism-detail">
+                <div class="accordion-body">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                            {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <b>
+                        {%include 'utils/message.html'%}
+                    </b>
+                    {%include 'ddrug/drug/drug_u.html'%}
+                    <div class="row border label">
+                        <div class="d-flex p-0 bd-highlight" style="font-size: x-small;">
+                            <div>
+                                <strong>Created </strong>
+                                {{object.acreated_at |date:"d M, Y" }}
+                                <!--  -->
+                                {{object.acreated_at|time:"H:i" }} AEST
+                            </div>
+                            <div> <strong> &nbsp; by </strong>
+                                {{object.acreated}}
+                            </div>
+                            {%if object.aupdated_at%}
+                            <div>&nbsp; | &nbsp;</div>
+                            <div>
+                                <strong> &nbsp;Modified </strong>
+                                {{object.aupdated_at |date:"d M, Y" }}
+                                <!--  -->
+                                {{object.aupdated_at|time:"H:i" }} AEST
+                            </div>
+                            <div>
+                                <strong> &nbsp; by </strong>
 
-                <table class="table table-bordered m-2">
-
-                    <thead>
-                        <tr>
-                            <th scope="col" class="">Organism Name</th>
-                            <th scope="col" class="">{{object.pk}}</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" class=""> Other Names</th>
-                            <td><a href="">{{object.other_names}}</a>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row" class=""> Class</th>
-                            <td> {{object.org_class.dict_desc}}
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row" class="">Tax_ID</th>
-                            <td class="" data-id="{{object.urlname}}" data-type="tax_id">
-                                {{object.tax_id}} (integer)
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <th scope="row" class="">Parent_Tax_ID</th>
-                            <td class="" data-id="{{object.urlname}}" data-type="parent_tax_id">
-                                {{object.parent_tax_id}} (integer)
-
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row" class="">Tax_Rank</th>
-                            <td class="editable" data-id="{{object.urlname}}" data-type="tax_rank">
-                                {{object.tax_rank}}</td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row" class="">Division</th>
-                            <td class="editable" data-id="{{object.urlname}}" data-type="division">
-                                {{object.division}}</td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row" class="">Lineage</th>
-                            <td class="" data-id="{{object.urlname}}" data-type="lineage">
-                                (object.lineage)
-                                {% for obj in object.lineage %}
-                                <p>* {{obj}} </p>
-                                {%endfor%}
-                                </select>
-
-
-                            </td>
-
-                        </tr>
-
-
-                    </tbody>
-                </table>
+                                {{object.aupdated}}
+                            </div>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
-
         </div>
     </div>
 
-</div>
+   
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/editableTable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/editableTablechoices.js' %}"></script>
+  
 
-{%endblock%}
+    {%endblock%}

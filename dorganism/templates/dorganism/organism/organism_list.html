@@ -10,38 +10,25 @@
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <div
-      class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
-    >
+    {%include 'utils/message.html'%}
+    <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
       <div class="d-flex align-items-baseline">
         {% include 'utils/pagination.html'%}
         <!-- Create New Entry Modal-->
-        <a
-          id="createOrganism"
-          class="card-link text-success"
-          style="float: right"
-        >
+        <a id="createOrganism" class="card-link text-success" style="float: right">
           <i class="bi bi-plus"></i>New
         </a>
-        <div
-          id="createOrganismModal"
-          class="modal fade"
-          role="dialog"
-          data-bs-backdrop="static"
-        ></div>
+        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
       </div>
       <!--  -->
       {%include 'utils/selectAllExp.html'%}
       <!-- Swich Table/Card View -->
       <div class="m-0">
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-list"></i
-        ></a>
-        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-grid-fill"></i
-        ></a>
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
+        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
       </div>
     </div>
+   
     <!-- list View Content -->
     <div class="fixTableHead">
       <!-- prettier-ignore -->
@@ -51,8 +38,5 @@
 </div>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{%static 'js/modal/create_organism.js'%}"
-></script>
+<script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
 {%endblock%}
