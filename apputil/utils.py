@@ -209,21 +209,17 @@ class FilteredListView(ListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        print(self.request.GET)
-        print(queryset)
         # Return the filtered queryset
         order=self.get_order_by()
         if order:
             return self.filterset.qs.distinct().order_by(order)
-        # print(self.filterset.qs.distinct())
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
-        filter_record_dict={key: v for key, v in self.request.GET.dict().items() if v and key!="paginate_by"}
+        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by'}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
-        # print(context)
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)

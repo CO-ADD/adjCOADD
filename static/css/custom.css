@@ -93,9 +93,11 @@ option {
   background-color: var(--bs-form-item-color);
   color: var(--bs-body-color);
 }
-td > input {
-  max-width: 120px !important;
+
+td>input {
+  max-width: 150px !important;
 }
+
 option {
   font-size: 16px !important;
 }
@@ -228,7 +230,7 @@ button,
 }
 
 .card:hover {
-  box-shadow: 0 0 20px var(--bs-body-color);
+  box-shadow: 10px 5px 5px var(--bs-body-color);
 }
 
 .label {
@@ -356,7 +358,7 @@ nav.shrink {
   position: relative;
   margin: 0;
   padding: 0;
-  /* min-width: 13%; */
+  min-width: 10%;
 }
 
 .main {
