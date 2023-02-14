@@ -218,7 +218,7 @@ class FilteredListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
-        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by'}
+        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page'}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset

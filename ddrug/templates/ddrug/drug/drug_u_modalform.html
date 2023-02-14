@@ -1,0 +1,22 @@
+<a
+  class="card-link"
+  data-bs-toggle="modal"
+  data-bs-target="#drugupdate_{{object.pk}}"
+  ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</a
+>
+
+<div
+  class="modal fade"
+  id="drugupdate_{{object.pk}}"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'drug_update' pk=object.pk as updateurl %}
+  {%include 'utils/modal/update.html' with title='Update Drug' urlname=updateurl %}
+  </div>
+</div>

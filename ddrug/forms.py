@@ -15,3 +15,4 @@ class Drug_form(forms.ModelForm):
     class Meta:
         model =Drug
         fields='__all__'
+        exclude=['ffp2']
