@@ -209,6 +209,8 @@ class FilteredListView(ListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        print(self.request.GET)
+        print(queryset)
         # Return the filtered queryset
         order=self.get_order_by()
         if order:
