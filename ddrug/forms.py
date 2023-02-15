@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.postgres.forms import SimpleArrayField
 from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
@@ -12,6 +13,8 @@ from adjcoadd.constants import *
 class Drug_form(forms.ModelForm):
     drug_type = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type']), widget=forms.Select(attrs={'class':'form-select'}))
     max_phase = forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Drug.Choice_Dictionary['max_phase'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    drug_codes= SimpleArrayField(forms.CharField(), required=False)
+    # drug_othernames = forms.CharField(required=False)
     class Meta:
         model =Drug
         fields='__all__'

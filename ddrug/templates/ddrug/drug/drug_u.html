@@ -12,9 +12,17 @@
         <tbody>
           <tr>
             <th scope="row" class="">Drug ID</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="drug_id">
+            <td class="" data-id="{{object.pk}}" data-type="drug_id">
               <div class="detail"> {{object.drug_id}}</div>
               <div class="input-group select">{{form.drug_id}}</div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="">Structure</th>
+            <td class="w-75" data-id="{{object.pk}}" data-type="">
+              {%load static%}
+      <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload" loading="lazy"
+        style="background-color: transparent !important" />
             </td>
           </tr>
           <tr>

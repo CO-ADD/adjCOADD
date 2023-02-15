@@ -86,20 +86,20 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+import psycopg2.extensions
 if DEVELOPMENT:
     DATABASES={
             # ==================For Local Test===========================================
    'default': {
       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=apputil,public'},
+      'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
       'NAME': 'orgdb',
       'HOST': 'Localhost',
       'PORT': '5432',
     },
     'dorganism': {
       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+      'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
       'NAME': 'orgdb',
       'TEST': {
           'NAME': 'mytestdatabase2',
@@ -109,7 +109,7 @@ if DEVELOPMENT:
    },
     'ddrug': {
       "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public','isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
       'NAME': 'orgdb',
       'HOST': 'Localhost',
       'PORT': '5432',
@@ -123,7 +123,7 @@ else:
        #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         
           "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=apputil,public'},
+          'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
           'NAME': 'orgdb',
           'USER': 'orgdb', #os.environ.get('db_user'),
           'PASSWORD':'orgdb',
@@ -132,7 +132,7 @@ else:
       },
       'dorganism': {
           "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=dorganism,apputil'},
+          'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
           'NAME': 'orgdb',
           'USER': 'orgdb', #os.environ.get('db_user'),
           'PASSWORD': 'orgdb',
@@ -142,7 +142,7 @@ else:
 
       'ddrug': {
           "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public'},
+          'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
           'NAME': 'orgdb',
           'USER': 'orgdb', #os.environ.get('db_user'),
           'PASSWORD': 'orgdb',
@@ -236,7 +236,7 @@ LOGGING = {
         'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(str(LOG_PATH), 'fileupload_debug.log'),
+            'filename': os.path.join(str(LOG_PATH), 'debug.log'),
         },
     },
     'loggers': {

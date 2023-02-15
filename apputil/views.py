@@ -74,10 +74,6 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     filterset_class = AppUserfilter
     model_fields=APPUSER_FIELDs
 
-    # def get_context_data(self, **kwargs):
-    #     context=super().get_context_data(**kwargs)
-    #     context["objects"]=self.model.objects.all()
-    #     return context
 
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def updateApplicationuser(req, pk):
@@ -98,7 +94,7 @@ def updateApplicationuser(req, pk):
 
 class AppUserCreateView(SuperUserRequiredMixin, CreateView):
     model=ApplicationUser
-    fields=['name', 'username', 'permission',]
+    form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
     success_url = reverse_lazy('userslist')
 

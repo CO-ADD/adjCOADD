@@ -167,12 +167,19 @@ class Filterbase(django_filters.FilterSet):
 # =====================Application USers Filterset===================================
 
 class AppUserfilter(django_filters.FilterSet):
+    username = django_filters.CharFilter(lookup_expr='icontains')
+    first_name = django_filters.CharFilter(lookup_expr='icontains')
+    last_name = django_filters.CharFilter(lookup_expr='icontains')
     permission=django_filters.ChoiceFilter(choices=Permission_Choices)
          
     class Meta:
         model=ApplicationUser
         fields=['username','first_name', 'last_name', 'permission']
 
+    @property
+    def qs(self):
+        parent = super().qs
+        return parent.filter(is_appuser=True)
 # ===========================================================================
 
 # =====================Dictionary Filterset===================================

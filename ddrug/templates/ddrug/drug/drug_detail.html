@@ -19,8 +19,7 @@
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h5 class="fs-6 my-0">{{object.pk}} |
-                        {{object.organism_name}}
+                    <h5 class="fs-6 my-0">{{object.pk}}
                     </h5>
                 </button>
             </h2>
@@ -69,11 +68,5 @@
             </div>
         </div>
     </div>
-
-   
-    {% load static %}
-    <script type="text/javascript" src="{% static 'js/editableTable.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/editableTablechoices.js' %}"></script>
-  
 
     {%endblock%}
