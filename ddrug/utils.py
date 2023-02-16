@@ -50,11 +50,21 @@ def clearIMGfolder():
             print(err)
 
 
+# def smiles_substructure_query(substructure):
+#     query = Compound.objects.filter(molecule__hassubstruct=substructure)
+#     for cmpd in query.annotate(smiles=MOL_TO_SMILES('molecule'))[:5]:
+#         print(cmpd.name, cmpd.smiles)
+
+# molecular choices:
+mol_choices=[(),(),()]
+
+
 class Drug_filter(Filterbase):
     drug_name = django_filters.CharFilter(lookup_expr='icontains')
+    smol=django_filters.CharFilter(lookup_expr='contains', ) #method='substructure_filter',)
     class Meta:
         model=Drug
-        fields=['drug_name']
+        fields=['drug_name', 'smol']
 
 
 

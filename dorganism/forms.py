@@ -83,7 +83,7 @@ class Batch_form(forms.ModelForm):
 # ---------------------------------------------------------------------------------------------
 class Batchupdate_form(forms.ModelForm):
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status']),required=False,)
-
+    orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     class Meta:
         model =Organism_Batch
         fields=ORGANISM_BATCH_FIELDs.keys()

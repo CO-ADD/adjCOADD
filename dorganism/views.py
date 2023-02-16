@@ -284,6 +284,7 @@ def updateBatch(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
+        print(qd)
         object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
         form=Batchupdate_form(data=qd, instance=object_batch, )
         
