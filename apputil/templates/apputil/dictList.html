@@ -16,10 +16,7 @@
       </a>
     </div>
     <div class="fixTableHead">
-      <table
-        class="table table-small table-bordered sorting_table table-hover bg-light"
-        id="id_dictionary_table"
-      >
+      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
         <thead>
           <tr>
             {%for field in fields%}
@@ -45,14 +42,10 @@
 </div>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{%static 'js/modal/create_dictionary.js'%}"
-></script>
-
+<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
 
 <script>
-  $(document).ready(function () {});
+  $(document).ready(function () { });
   $('[data-type="deleteDict"] a').click(function () {
     console.log("click");
     var td = $(this).parent();
