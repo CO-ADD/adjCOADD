@@ -6,6 +6,7 @@ import unicodedata
 import django_filters
 import pandas as pd
 from asgiref.sync import sync_to_async
+from django_rdkit.models import *
 
 from django import forms
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
@@ -163,6 +164,19 @@ class Filterbase(django_filters.FilterSet):
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
         return queryset.filter(**{lookup: value})
+    
+    # def substructure_filter(self, queryset, name, substructure):
+    #     try:
+    #         # lookup='__'.join([name, 'is_null'])
+    #         return queryset.filter(smol__hassubstruct=QMOL(Value(substructure)))
+    #     except Exception as err:
+    #         print(err)
+    #         messages.error(req, err)
+    #         return  queryset.filter(**{lookup: substructure})
+        
+        # for cmpd in query.annotate(smiles=MOL_TO_SMILES('molecule'))[:5]:
+        # print(cmpd.name, cmpd.smiles)
+    
 
 # =====================Application USers Filterset===================================
 

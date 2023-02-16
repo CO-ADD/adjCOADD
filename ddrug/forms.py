@@ -19,3 +19,8 @@ class Drug_form(forms.ModelForm):
         model =Drug
         fields='__all__'
         exclude=['ffp2']
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field in self.fields: 
+    #         field.wiget.attrs['readonly'] = 'readonly'

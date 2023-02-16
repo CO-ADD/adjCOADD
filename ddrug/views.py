@@ -59,7 +59,8 @@ class DrugCardView(DrugListView):
                 return context
             else:
                 print("generate img")
-                m=Chem.MolFromSmiles(object_.smiles)
+                # m=Chem.MolFromSmiles(object_.smiles)
+                m=object_.smol
                 molecule_to_svg(m, object_.pk)
         return context
 # ===========Detail View=============================Read============================================
@@ -68,6 +69,19 @@ def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     form=Drug_form(instance=object_)
+    # Array display handler
+    if object_.drug_panel:
+        context["drug_panel"]=",".join(object_.drug_panel)
+    else:
+        context["drug_panel"]=""
+    if object_.drug_othernames:
+        context["drug_othernames"]=",".join(object_.drug_othernames)
+    else:
+        context["drug_othernames"]=""
+    if object_.drug_codes:
+        context["drug_codes"]=",".join(object_.drug_codes)
+    else:
+        context["drug_codes"]=""
     context["object"]=object_
     context["form"]=form
  
