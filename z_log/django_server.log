@@ -1,0 +1,234 @@
+django.server INFO 2023-02-21 09:31:03,783 basehttp 20860 7052 "GET / HTTP/1.1" 200 7191
+django.server INFO 2023-02-21 09:31:03,829 basehttp 20860 7052 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-02-21 09:31:03,834 basehttp 20860 7052 "GET / HTTP/1.1" 200 7191
+django.server INFO 2023-02-21 09:31:03,840 basehttp 20860 7052 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-02-21 09:31:03,843 basehttp 20860 7052 "GET /static/js/editablerow.js HTTP/1.1" 200 1546
+django.server INFO 2023-02-21 09:31:03,848 basehttp 20860 7052 "GET /static/js/editableTable.js HTTP/1.1" 200 519
+django.server INFO 2023-02-21 09:31:03,851 basehttp 20860 7052 "GET /static/js/editableTablechoices.js HTTP/1.1" 200 581
+django.server INFO 2023-02-21 09:31:03,861 basehttp 20860 7052 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-02-21 09:31:03,872 basehttp 20860 7052 "GET /static/css/app.css HTTP/1.1" 200 117298
+django.server INFO 2023-02-21 09:31:03,874 basehttp 20860 7052 "GET /static/css/custom.css HTTP/1.1" 200 13661
+django.server INFO 2023-02-21 09:31:03,876 basehttp 20860 7052 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.request WARNING 2023-02-21 09:31:03,942 log 20860 7052 Not Found: /favicon.ico
+django.server WARNING 2023-02-21 09:31:03,942 basehttp 20860 7052 "GET /favicon.ico HTTP/1.1" 404 11045
+django.server INFO 2023-02-21 09:31:05,196 basehttp 20860 7052 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-02-21 09:31:07,082 basehttp 20860 7052 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-21 09:31:07,181 basehttp 20860 7052 "GET /index/ HTTP/1.1" 200 12420
+django.server INFO 2023-02-21 09:31:07,196 basehttp 20860 7052 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-02-21 09:31:07,196 basehttp 20860 28040 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 200 26975
+django.server INFO 2023-02-21 09:31:09,533 basehttp 20860 28040 "GET /drug_card HTTP/1.1" 200 138042
+django.server INFO 2023-02-21 09:31:09,549 basehttp 20860 28040 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-02-21 09:31:09,550 basehttp 20860 7052 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-02-21 09:31:09,560 basehttp 20860 7052 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-02-21 09:31:09,561 basehttp 20860 28040 "GET /static/js/modal/create_drug.js HTTP/1.1" 200 335
+django.server WARNING 2023-02-21 09:31:09,636 basehttp 20860 27212 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,637 basehttp 20860 7052 "GET /static/images/AMD00002b.svg HTTP/1.1" 404 1920
+django.server WARNING 2023-02-21 09:31:09,638 basehttp 20860 22388 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server INFO 2023-02-21 09:31:09,639 basehttp 20860 10680 "GET /static/images/AMD00003.svg HTTP/1.1" 200 30376
+django.server INFO 2023-02-21 09:31:09,639 basehttp 20860 16004 "GET /static/images/AMD00004.svg HTTP/1.1" 200 49548
+django.server INFO 2023-02-21 09:31:09,640 basehttp 20860 28040 "GET /static/images/AMD00002.svg HTTP/1.1" 200 64859
+django.server WARNING 2023-02-21 09:31:09,658 basehttp 20860 10680 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,659 basehttp 20860 16004 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,660 basehttp 20860 28040 "GET /static/images/AMD00178.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,971 basehttp 20860 22732 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,972 basehttp 20860 17804 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,973 basehttp 20860 22892 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,989 basehttp 20860 18148 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,992 basehttp 20860 17420 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:09,992 basehttp 20860 29548 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,296 basehttp 20860 26392 "GET /static/images/AMD00179.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,297 basehttp 20860 26096 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,297 basehttp 20860 9740 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,314 basehttp 20860 26724 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,314 basehttp 20860 24036 "GET /static/images/AMD00216.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,317 basehttp 20860 28480 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,615 basehttp 20860 22144 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,615 basehttp 20860 25620 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,627 basehttp 20860 18612 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,640 basehttp 20860 24536 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,640 basehttp 20860 13816 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,641 basehttp 20860 8000 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,930 basehttp 20860 29372 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,930 basehttp 20860 29268 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,943 basehttp 20860 25316 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,949 basehttp 20860 24516 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,949 basehttp 20860 25100 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:10,949 basehttp 20860 20360 "GET /static/images/AMD00219.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,266 basehttp 20860 9708 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,271 basehttp 20860 928 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,274 basehttp 20860 3148 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,279 basehttp 20860 9940 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,279 basehttp 20860 17732 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,281 basehttp 20860 14724 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,589 basehttp 20860 20132 "GET /static/images/AMD00220.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,592 basehttp 20860 15048 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,608 basehttp 20860 25384 "GET /static/images/AMD00214.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,624 basehttp 20860 28376 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,627 basehttp 20860 5956 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,627 basehttp 20860 22048 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,934 basehttp 20860 12540 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,934 basehttp 20860 3576 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,945 basehttp 20860 14604 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,956 basehttp 20860 19332 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-02-21 09:31:11,956 basehttp 20860 14916 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.utils.autoreload INFO 2023-02-23 10:11:13,827 autoreload 4500 18928 Watching for file changes with StatReloader
+django.server INFO 2023-02-23 10:11:16,973 basehttp 4500 6140 "GET / HTTP/1.1" 200 7191
+django.server INFO 2023-02-23 10:11:17,084 basehttp 4500 6140 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,087 basehttp 4500 12392 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,093 basehttp 4500 6140 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,094 basehttp 4500 8688 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,098 basehttp 4500 10120 "GET /static/js/editableTablechoices.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,099 basehttp 4500 28504 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,106 basehttp 4500 12392 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,116 basehttp 4500 6140 "GET /static/css/app.css HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:17,184 basehttp 4500 6140 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:18,781 basehttp 4500 6140 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-23 10:11:18,884 basehttp 4500 6140 "GET /index/ HTTP/1.1" 200 12420
+django.server INFO 2023-02-23 10:11:18,908 basehttp 4500 12392 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 304 0
+django.server INFO 2023-02-23 10:11:18,908 basehttp 4500 6140 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-02-23 10:12:18,294 autoreload 4500 18928 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-23 10:12:19,403 autoreload 26840 22064 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-23 12:31:52,535 autoreload 26840 22064 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-23 12:31:53,932 autoreload 17080 23820 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-23 13:32:34,798 autoreload 17080 23820 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-23 13:32:36,038 autoreload 16376 19796 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 12:30:49,185 autoreload 25636 28152 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 12:30:52,796 basehttp 25636 22688 "GET / HTTP/1.1" 200 7191
+django.server INFO 2023-02-24 12:30:52,931 basehttp 25636 22688 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,954 basehttp 25636 28580 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,956 basehttp 25636 18712 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,956 basehttp 25636 22688 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,957 basehttp 25636 7204 "GET /static/js/editableTablechoices.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,958 basehttp 25636 22352 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,959 basehttp 25636 29536 "GET /static/css/app.css HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:52,968 basehttp 25636 28580 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:53,023 basehttp 25636 28580 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:55,344 basehttp 25636 28580 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-24 12:30:55,446 basehttp 25636 28580 "GET /index/ HTTP/1.1" 200 12420
+django.server INFO 2023-02-24 12:30:55,468 basehttp 25636 28580 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:55,469 basehttp 25636 29536 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:59,296 basehttp 25636 29536 "GET /dict/ HTTP/1.1" 200 49117
+django.server INFO 2023-02-24 12:30:59,316 basehttp 25636 29536 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:59,316 basehttp 25636 28580 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:59,326 basehttp 25636 29536 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 12:30:59,497 basehttp 25636 28580 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 200 374
+django.utils.autoreload INFO 2023-02-24 12:31:23,554 autoreload 25636 28152 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:31:24,948 autoreload 11304 22680 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 12:31:27,630 basehttp 11304 11272 "GET /dict/ HTTP/1.1" 200 49775
+django.server INFO 2023-02-24 12:31:27,726 basehttp 11304 11272 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-02-24 12:32:07,471 autoreload 11304 22680 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:32:08,755 autoreload 20680 10052 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 12:32:20,557 autoreload 20680 10052 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:32:21,673 autoreload 21064 22460 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 12:32:45,275 autoreload 21064 22460 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:32:46,547 autoreload 17760 11416 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 12:33:03,959 autoreload 17760 11416 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:33:05,274 autoreload 9776 25444 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 12:33:52,396 autoreload 9776 25444 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:33:53,632 autoreload 29608 25840 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 12:34:04,747 basehttp 29608 13216 "GET /dict/ HTTP/1.1" 200 49775
+django.server INFO 2023-02-24 12:37:21,184 basehttp 29608 13216 "GET /dict/?paginate_by=50&order_by=&dict_class=++++++++testtest++ HTTP/1.1" 200 19090
+django.server INFO 2023-02-24 12:37:27,793 basehttp 29608 13216 "GET /dict/?paginate_by=50&order_by=&dict_class=++++++++testtest++ HTTP/1.1" 200 19090
+django.server INFO 2023-02-24 12:37:40,835 basehttp 29608 13216 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19620
+django.server INFO 2023-02-24 12:37:47,631 basehttp 29608 13216 "POST /dict_update HTTP/1.1" 200 19
+django.server INFO 2023-02-24 12:39:06,854 basehttp 29608 13216 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19634
+django.server INFO 2023-02-24 12:39:14,639 basehttp 29608 13216 "POST /dict_update HTTP/1.1" 200 19
+django.server INFO 2023-02-24 12:39:46,930 basehttp 29608 13216 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19644
+django.utils.autoreload INFO 2023-02-24 12:43:27,870 autoreload 29608 25840 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 12:43:29,020 autoreload 12524 16268 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 12:43:35,995 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19624
+django.server INFO 2023-02-24 12:43:41,993 basehttp 12524 14904 "POST /dict_update HTTP/1.1" 200 19
+django.server INFO 2023-02-24 12:44:03,892 basehttp 12524 14904 "POST /dict_update HTTP/1.1" 200 19
+django.server INFO 2023-02-24 12:44:15,533 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19042
+django.server INFO 2023-02-24 12:45:25,950 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=&dict_class= HTTP/1.1" 200 50000
+django.server INFO 2023-02-24 12:45:31,371 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=&dict_class=test HTTP/1.1" 200 19042
+django.server INFO 2023-02-24 12:45:34,146 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=&dict_class= HTTP/1.1" 200 50000
+django.server INFO 2023-02-24 12:45:41,960 basehttp 12524 14904 "GET /dict/?page=3&paginate_by=50&order_by=&dict_class= HTTP/1.1" 200 39835
+django.server INFO 2023-02-24 12:45:47,105 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=-Class&dict_class= HTTP/1.1" 200 49920
+django.server INFO 2023-02-24 12:45:48,508 basehttp 12524 14904 "GET /dict/?paginate_by=50&order_by=Class&dict_class= HTTP/1.1" 200 50070
+django.utils.autoreload INFO 2023-02-24 13:04:17,567 autoreload 12524 16268 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:04:18,866 autoreload 20744 2136 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 13:05:03,033 autoreload 20744 2136 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:05:04,212 autoreload 16052 11952 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 13:11:19,753 basehttp 16052 21028 "GET /dict/?paginate_by=50&order_by=Class&dict_class= HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:11:19,782 basehttp 16052 21028 "GET /?next=/dict/%3Fpaginate_by%3D50%26order_by%3DClass%26dict_class%3D HTTP/1.1" 200 7191
+django.server INFO 2023-02-24 13:11:27,523 basehttp 16052 21028 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:11:27,618 basehttp 16052 21028 "GET /index/ HTTP/1.1" 200 12287
+django.server INFO 2023-02-24 13:11:30,532 basehttp 16052 21028 "GET /dict/ HTTP/1.1" 200 49630
+django.server INFO 2023-02-24 13:11:34,977 basehttp 16052 21028 "GET /dict/?paginate_by=50&order_by=&dict_class=testtest HTTP/1.1" 200 19471
+django.server INFO 2023-02-24 13:11:39,169 basehttp 16052 21028 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:11:39,211 basehttp 16052 21028 "GET /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:11:39,312 basehttp 16052 21028 "GET /index/ HTTP/1.1" 200 12287
+django.server INFO 2023-02-24 13:11:43,033 basehttp 16052 21028 "GET /dict/?paginate_by=50&order_by=&dict_class=testtest HTTP/1.1" 200 19471
+django.utils.autoreload INFO 2023-02-24 13:12:18,286 autoreload 16052 11952 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:12:19,618 autoreload 13204 21656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 13:13:57,467 autoreload 13204 21656 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:13:58,715 autoreload 4596 13340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-02-24 13:14:50,124 autoreload 4596 13340 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:14:51,307 autoreload 3292 11860 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 13:14:57,946 basehttp 3292 17480 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:14:57,966 basehttp 3292 17480 "GET /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:14:58,082 basehttp 3292 17480 "GET /index/ HTTP/1.1" 200 12287
+django.server INFO 2023-02-24 13:15:32,129 basehttp 3292 17480 "GET /dict/?paginate_by=50&order_by=&dict_class=testtest HTTP/1.1" 200 19471
+django.utils.autoreload INFO 2023-02-24 13:16:13,659 autoreload 3292 11860 C:\Users\uqwzhon4\project\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-02-24 13:16:14,929 autoreload 6952 16932 Watching for file changes with StatReloader
+django.server INFO 2023-02-24 13:16:15,909 basehttp 6952 15188 "GET /dict/?paginate_by=50&order_by=&dict_class=testtest HTTP/1.1" 200 19471
+django.server INFO 2023-02-24 13:16:19,454 basehttp 6952 15188 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:16:19,472 basehttp 6952 15188 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:17:37,112 basehttp 6952 12868 "GET /dict/?paginate_by=50&order_by=&dict_class=testtest HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:17:37,121 basehttp 6952 12868 "GET /?next=/dict/%3Fpaginate_by%3D50%26order_by%3D%26dict_class%3Dtesttest HTTP/1.1" 200 7191
+django.server INFO 2023-02-24 13:17:37,417 basehttp 6952 12868 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-02-24 13:17:37,423 basehttp 6952 12868 "GET /static/css/app.css HTTP/1.1" 200 117298
+django.server INFO 2023-02-24 13:17:37,426 basehttp 6952 12868 "GET /static/css/custom.css HTTP/1.1" 200 13661
+django.server INFO 2023-02-24 13:17:37,538 basehttp 6952 27924 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-02-24 13:17:37,538 basehttp 6952 18420 "GET /static/js/editablerow.js HTTP/1.1" 200 1712
+django.server INFO 2023-02-24 13:17:37,590 basehttp 6952 4164 "GET /static/js/editableTablechoices.js HTTP/1.1" 200 581
+django.server INFO 2023-02-24 13:17:37,634 basehttp 6952 13080 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-02-24 13:17:37,636 basehttp 6952 5400 "GET /static/js/editableTable.js HTTP/1.1" 200 519
+django.server INFO 2023-02-24 13:17:37,956 basehttp 6952 13080 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-02-24 13:17:38,574 basehttp 6952 13080 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-02-24 13:17:40,552 basehttp 6952 13080 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:17:40,669 basehttp 6952 13080 "GET /index/ HTTP/1.1" 200 12287
+django.server INFO 2023-02-24 13:17:40,703 basehttp 6952 13080 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 13:17:40,716 basehttp 6952 13080 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-02-24 13:17:40,716 basehttp 6952 5400 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 200 26975
+django.server INFO 2023-02-24 13:17:43,881 basehttp 6952 5400 "GET /dict/ HTTP/1.1" 200 49630
+django.server INFO 2023-02-24 13:17:43,899 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 13:17:43,912 basehttp 6952 13080 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-02-24 13:17:43,912 basehttp 6952 5400 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-02-24 13:17:43,945 basehttp 6952 13080 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 200 374
+django.server INFO 2023-02-24 13:17:43,946 basehttp 6952 5400 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-02-24 13:17:50,633 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:17:50,659 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 13:17:59,925 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:17:59,969 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:18:29,478 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:18:29,495 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1752
+django.server INFO 2023-02-24 13:18:36,785 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:18:36,839 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:19:30,172 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:19:30,185 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1806
+django.server INFO 2023-02-24 13:19:51,781 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:19:51,799 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1845
+django.server INFO 2023-02-24 13:19:58,048 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:19:58,093 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:20:16,079 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:20:16,096 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-02-24 13:20:38,749 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:20:38,763 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1849
+django.server INFO 2023-02-24 13:20:43,754 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:20:43,809 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:21:00,886 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:21:00,900 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1876
+django.server INFO 2023-02-24 13:21:06,523 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:21:06,566 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:22:28,608 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:22:28,625 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1687
+django.server INFO 2023-02-24 13:22:33,705 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:22:33,732 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:24:01,783 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=&dict_class=test++_t HTTP/1.1" 200 19499
+django.server INFO 2023-02-24 13:24:01,809 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1703
+django.server INFO 2023-02-24 13:24:05,627 basehttp 6952 5400 "POST /dict_update HTTP/1.1" 302 0
+django.server INFO 2023-02-24 13:24:05,669 basehttp 6952 5400 "GET /permission_not_granted/?next=/dict_update HTTP/1.1" 200 22
+django.server INFO 2023-02-24 13:24:10,760 basehttp 6952 5400 "GET /dict/?paginate_by=50&order_by=-Class&dict_class=test++_t HTTP/1.1" 200 19549
+django.server INFO 2023-02-24 13:24:10,778 basehttp 6952 5400 "GET /static/js/editablerow.js HTTP/1.1" 304 0

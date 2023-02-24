@@ -20,6 +20,9 @@ from .models import ApplicationUser, Dictionary
 from .utils import SuperUserRequiredMixin, permission_not_granted, FilteredListView, AppUserfilter, Dictionaryfilter
 
 
+
+
+
 ## =================================APP Home========================================
 
 # import setup
@@ -28,6 +31,7 @@ def index(req):
     # print(setup.version)
     object_1=Organism.objects.count()
     object_2=Taxonomy.objects.count()
+    
     return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2,})
 ## =================================APP Home======================================##
 
@@ -36,7 +40,6 @@ def login_user(req):
     if req.user.is_authenticated:
         return redirect("index")
     else:
-
         if req.method=='POST':
             form=Login_form(data=req.POST)
             username_ldap=req.POST.get('username')
@@ -65,7 +68,7 @@ def logout_user(req):
 @login_required(login_url='/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
-    return render(req, 'apputil/userprofile.html', {'currentUser': current_user})
+    return render(req, 'apputil/appUserProfile.html', {'currentUser': current_user})
 
 class AppUserListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -106,9 +109,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     fields=['is_appuser']
 
     def form_valid(self, form):
-
         form.instance.is_appuser==False
-        print(form.instance.is_appuser)
         return super().form_valid(form)
 # =========================Application Users View==================================##
 
@@ -145,29 +146,33 @@ def createDictionary(req):
     
     return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
 ## ============================Dictionary View======================================##
-@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
+@user_passes_test(lambda u: u.has_permission('Admin'),login_url='permission_not_granted')# redirect_field_name=None)
 def updateDictionary(req):
     kwargs={}
     kwargs['user']=req.user
-    if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
-        dict_value=req.POST.get("dict_value") 
-        type=req.POST.get("type") or None
-        print(type)
-        value=req.POST.get("value") or None
-        print(value)
-        object_=get_object_or_404(Dictionary, dict_value=dict_value)
-        try:
-            if object_:
-                if type=='dict_class':
-                    object_.dict_class=value
-                if type=='dict_desc':
-                    object_.dict_desc=value
-                print(object_.dict_desc)
-                object_.save(**kwargs)
-                return JsonResponse({"result": "Saved"})
-        except Exception as err:
-            return JsonResponse({"result": err})
-    
+    if req.user.has_permission('Admin'):
+        print(req.user.has_permission('Admin'))
+
+        if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
+            dict_value=req.POST.get("dict_value") 
+            type=req.POST.get("type") or None
+            print(type)
+            value=req.POST.get("value").strip() or None
+            print(value)
+            object_=get_object_or_404(Dictionary, dict_value=dict_value)
+            try:
+                if object_:
+                    if type=='dict_class':
+                        object_.dict_class=value
+                    if type=='dict_desc':
+                        object_.dict_desc=value
+                    print(object_.dict_desc)
+                    object_.save(**kwargs)
+                    return JsonResponse({"result": "Saved"})
+            except Exception as err:
+                return JsonResponse({"result": err})
+    else:
+        return JsonResponse({"result": "Permission_denied"})
     return JsonResponse({})
 
 

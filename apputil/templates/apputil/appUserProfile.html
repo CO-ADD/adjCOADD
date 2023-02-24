@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} mysite{% endblock %}
+{% block content %}
+
+<!-- Include -->
+{%include 'utils/topbar.html'%}
+<div class="d-flex flex-row justify-content-between vh-100">
+    {%include "utils/sidebar.html"%}
+
+
+</div>
+
+{%endblock%}

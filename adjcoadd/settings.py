@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
     # "psqlextra",
-    'apputil.apps.ApptilConfig',
+    'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
 ]
@@ -232,18 +232,42 @@ LOG_PATH = 'z_log/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(str(LOG_PATH), 'debug.log'),
+    'formatters': {
+        'verbose': {
+            'format': '{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
         },
     },
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(str(LOG_PATH), 'django_server.log'),
+            'formatter': 'verbose',
+        },
+        'user': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(str(LOG_PATH), 'user.log'),
+            # 'maxBytes': 1024 * 1024 * 10,
+            # 'backupCount': 10,
+            'formatter': 'verbose',
+        },
+     
+    },
+    
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'WARNING',
-            'propagate': True,
+            'level': 20, ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+            'propagate': False,
+        },
+    
+        'user_log': {
+            'handlers': ['user'],
+            'level': 'INFO',
         },
     },
 }
