@@ -47,7 +47,7 @@ $(document).ready(function () {
       .done((response) => {
         console.log(response);
         if (!response.result) {
-          td.append('<p class="text-danger"> You have no permission to change. </p>')
+          td.append('<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>')
         }
       })
       .fail(() => {

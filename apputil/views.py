@@ -124,7 +124,7 @@ class DictionaryView(LoginRequiredMixin, FilteredListView):
 
     
 # 
-@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='/')
 def createDictionary(req):
     kwargs={}
     kwargs['user']=req.user
@@ -146,7 +146,7 @@ def createDictionary(req):
     
     return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
 ## ============================Dictionary View======================================##
-@user_passes_test(lambda u: u.has_permission('Admin'),login_url='permission_not_granted')# redirect_field_name=None)
+@user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
     kwargs={}
     kwargs['user']=req.user
