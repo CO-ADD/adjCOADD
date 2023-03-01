@@ -220,7 +220,7 @@ class FilteredListView(ListView):
     paginate_by=50
     model_fields=None
     order_by=None
-    context_list=''
+    # context_list=''
     filter_request=None
 
    

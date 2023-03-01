@@ -20,9 +20,6 @@ from .models import ApplicationUser, Dictionary
 from .utils import SuperUserRequiredMixin, permission_not_granted, FilteredListView, AppUserfilter, Dictionaryfilter
 
 
-
-
-
 ## =================================APP Home========================================
 
 # import setup

@@ -6,7 +6,7 @@
 {%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {%include "utils/sidebar_drugcard.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
     {%include 'utils/message.html'%}
@@ -37,7 +37,7 @@
         <!--  -->
         {% url 'drug_detail' object.pk as url_name %}
         <!--prettier-ignore-->
-          {%include 'utils/card.html' with url_name=url_name object_id=object.pk datatype='Drug' object_var1=object.drug_name object_img=object.pk object_id_slug=object.pk %}
+        {%include 'utils/card.html' with url_name=url_name object_id=object.pk datatype='Drug' object_var1=object.drug_name object_img=object.pk object_id_slug=object.pk object_smiles=object.smiles %}
         <!--prettier-ignore-->
         {%endfor%}
       </div>
@@ -50,9 +50,9 @@
 
 <script>
   $(document).ready(function () {
-    console.log("lazyload...");
     $("img.lazyload").lazyload();
   });
 </script>
+
 
 {% endblock%}

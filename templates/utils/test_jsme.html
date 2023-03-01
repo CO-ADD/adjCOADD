@@ -1,0 +1,83 @@
+<h2>below is JSME drawing </h2>
+
+smiles = {{smiles_id}}
+
+<h1>JSME test page</h1>
+
+<table align="center">
+    <tr>
+        <td id="appletContainer_{{object_id}}"></td>
+    </tr>
+    </tr>
+</table>
+
+
+
+<div align="center">
+    <button TYPE="button" onClick="jsmeApplet.reset()">Clear Editor</button>
+    <button type="button" onclick='JSApplet.JSME.clearFontCache()'>Clear the font cache</button>
+    <button type="button" onclick='jsmeApplet.repaint()'>Repaint the applet</button>
+</div>
+
+
+
+<table align="center">
+    <tr>
+        <td colspan="3" style="font-weight:bold;">Export chemical structure from applet:</td>
+    </tr>
+    <tr>
+
+        <td>
+            <button type="button" onclick='getSmiles();'>Get smiles</button>
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="5">
+            <TEXTAREA id="jme_output" ROWS=20 COLS=80></TEXTAREA>
+        </td>
+    </tr>
+
+</table>
+
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/jsme/jsme.nocache.js' %}"></script>
+
+
+
+<script>
+
+    //this function will be called after the JavaScriptApplet code has been loaded.
+    function jsmeOnLoad() {
+        // glutathione is chiral
+        console.log('smiles'+'{{smiles_id}}')
+
+        var drug_smiles ="CC(CC(=O)N[C@@H](CS)C(=O)NCC(=O)O)[C@H](N)C(=O)O"; //'{{smiles_id}}'//"CC(CC(=O)N[C@@H](CS)C(=O)NCC(=O)O)[C@H](N)C(=O)O";
+
+
+        jsmeApplet = new JSApplet.JSME("appletContainer_{{object_id}}", "600px", "440px", {
+            //optional parameters
+            "options": "query,hydrogens,fullScreenIcon",
+            //"smiles" : glutathione_smiles
+            //"jme" : glutathione_JME
+            //"mol" : glutathione_mol
+            "chem": drug_smiles// glutathione_mol3 // use generic input file format with automatic chemical format detection
+
+        });
+
+        document.JME = jsmeApplet;
+
+    }
+
+    function getSmiles() {
+        var data = document.JME.smiles();
+        document.getElementById("jme_output").value = data;
+
+        sessionStorage.setItem('smiles_query', data.toString())
+        console.log(sessionStorage.getItem('smiles_query'))
+
+    }
+
+
+</script>

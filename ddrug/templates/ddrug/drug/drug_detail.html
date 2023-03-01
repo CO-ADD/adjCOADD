@@ -6,6 +6,35 @@
 {% block content%}
 <div class="mx-2 border border-2">
     <div>
+        <a href="" data-bs-toggle="modal" data-bs-target="#structureEdit_{{object.pk}}">
+           click modal
+          </a>
+    
+          <!-- Modal -->
+        <div class="modal fade" id="structureEdit_{{object.pk}}" data-bs-backdrop="static" tabindex="-1"
+          aria-labelledby="structureEdit_{{object.pk}}Label" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="structureEdit_{{object.pk}}Label">structureEdit_{{object.pk}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                
+    
+                <!-- <div id="chemdrawjs-container" style="height: 400px;">
+                  chemdraw
+                </div> -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div>
         <a class="btn btn-sm btn-outline-secondary" href="{%url 'drug_card' %}"><i class="bi bi-view-list"></i><i
                 class="bi bi-arrow-bar-left"></i></a>
     </div>
@@ -64,6 +93,7 @@
                             {%endif%}
                         </div>
                     </div>
+                   
                 </div>
             </div>
         </div>
