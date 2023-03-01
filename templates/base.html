@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title%}COADD{%endblock%}</title>
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/app/favicon-16x16.png' %}" />
+  <!-- Loading Scripts and links -->
 
   <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
   <script src="{%static 'js/sorting_table.js'%}"></script>
@@ -43,24 +44,25 @@
 </head>
 
 <body>
+  <!-- Navigation bar -->
   {%include "utils/navbar.html"%}
-
+  <!-- Main Body -->
   <div class="base-content" style="margin-top: 120px">
     {% block content %} {% endblock %}
   </div>
-
+  <!-- implement x-csrftoken for htmx form  -->
   <script>
     document.body.addEventListener("htmx:configRequest", (event) => {
       event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
     });
   </script>
-
+  <!-- create Toggle-btn arrow up-down -->
   <script>
     $(".toggle-btn").on("click", function () {
       $(this).find("i").toggleClass("open");
     });
   </script>
-
+  <!-- Create bootstrap Tooltip -->
   <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

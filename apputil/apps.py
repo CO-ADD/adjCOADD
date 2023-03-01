@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class ApptilConfig(AppConfig):
+class ApputilConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apputil'
 
     def ready(self):
-        pass
+        import apputil.signals

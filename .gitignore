@@ -389,4 +389,5 @@ dmypy.json
 /zbackup/
 
 .DJANGO_SECRET_KEY
-
+#help
+/help.py

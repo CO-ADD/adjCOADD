@@ -7,6 +7,7 @@ $(document).ready(function () {
         detail.addClass("not-visible")
         $(this).removeClass("editable")
     });
+
     $(document).keypress(
         function (event) {
             if (event.which == '13') {

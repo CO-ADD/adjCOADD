@@ -199,6 +199,7 @@ class AppUserfilter(django_filters.FilterSet):
 # =====================Dictionary Filterset===================================
 
 a=[tuple(d.values()) for d in Dictionary.objects.order_by().values('dict_class').distinct()]
+# print(a)
 choice_class=[(x[0], x[0]) for x in a]
 class Dictionaryfilter(Filterbase):
     dict_class = django_filters.ChoiceFilter(choices=choice_class)
@@ -219,7 +220,7 @@ class FilteredListView(ListView):
     paginate_by=50
     model_fields=None
     order_by=None
-    context_list=''
+    # context_list=''
     filter_request=None
 
    
@@ -230,8 +231,6 @@ class FilteredListView(ListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        print(self.request.GET)
-        print(queryset)
         # Return the filtered queryset
         order=self.get_order_by()
         if order:
@@ -249,7 +248,6 @@ class FilteredListView(ListView):
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
-      
         return context
 
     def get_paginate_by(self, queryset):

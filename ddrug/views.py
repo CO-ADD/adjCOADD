@@ -32,8 +32,18 @@ from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
 from .forms import Drug_form
 from .Vitek import *
-   
 
+# ===================================================================
+@login_required   
+def smartsQuery(req, pk):
+    '''
+    MAKE SUBSTRUCTURE QUERY 
+    '''
+
+    context={}
+    object_=get_object_or_404(Drug, drug_id=pk)
+    context["object"]=object_
+    return render(req, "ddrug/drug/drug_detail_structure.html", context)
           
 # #############################Drug View############################################
 # ==========List View================================Read===========================================
@@ -50,6 +60,27 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
+
+    def get_queryset(self):
+        # Get the queryset however you usually would.  For example:
+        queryset = super().get_queryset()
+        # Then use the query parameters and the queryset to
+        # instantiate a filterset and save it as an attribute
+        # on the view instance for later.
+        smiles_str=self.request.GET.get("substructure") or None
+        print(smiles_str)
+        if smiles_str:
+            molstructure=Chem.MolFromSmiles(smiles_str)
+            print(molstructure)
+            queryset=Drug.objects.filter(smol__hassubstruct=molstructure)
+        # print(queryset)
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        # Return the filtered queryset
+        order=self.get_order_by()
+        if order:
+            return self.filterset.qs.distinct().order_by(order)
+        return self.filterset.qs.distinct()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # clearIMGfolder()
@@ -63,6 +94,9 @@ class DrugCardView(DrugListView):
                 m=object_.smol
                 molecule_to_svg(m, object_.pk)
         return context
+
+    
+
 # ===========Detail View=============================Read============================================
 @login_required
 def detailDrug(req, pk):
@@ -129,11 +163,13 @@ from apputil.utils import instance_dict, Validation_Log, OverwriteStorage
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
 from django.core import serializers
+
 def get_file(filename):
     from django.conf import settings
     filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
     return filepath
 import sys
+
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_Card  

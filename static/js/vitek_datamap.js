@@ -59,7 +59,7 @@ const sendToServer = (data) => {
       console.log(response)
       data = response["table_html"];
       savecsv = response["table_csv"];
-      console.log(data)
+      // console.log(savecsv)
       $("#pivotable").html("");
       $("#pivotable").append(data);
     })
