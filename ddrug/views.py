@@ -101,7 +101,7 @@ class DrugCardView(DrugListView):
         for object_ in context["object_list"]:
             filepath=get_filewithpath(file_name=object_.pk)
             if os.path.exists(filepath):
-                return context
+                continue
             else:
                 m=object_.smol
                 try:
