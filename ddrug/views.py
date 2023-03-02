@@ -83,10 +83,10 @@ class DrugCardView(DrugListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         smiles_str=self.request.GET.get("substructure") or None
-        print(smiles_str)
+        
         if smiles_str:
             molstructure=Chem.MolFromSmiles(smiles_str)
-            print(molstructure)
+            
             queryset=Drug.objects.filter(smol__hassubstruct=molstructure)
         # print(queryset)
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
