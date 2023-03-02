@@ -48,6 +48,7 @@ def smartsQuery(req, pk):
     # convert object to JMSE regonized form
     m="\\n".join(context["object_mol"].split("\n")) 
     context["object_mol"]=m
+
     return render(req, "ddrug/drug/drug_detail_structure.html", context)
           
 # #############################Drug View############################################
