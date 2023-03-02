@@ -255,6 +255,7 @@ LOGGING = {
             # 'backupCount': 10,
             'formatter': 'verbose',
         },
+     
     },
     
     'loggers': {

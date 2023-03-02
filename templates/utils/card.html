@@ -24,15 +24,15 @@
 
         $(document).ready(function () {
           let my_modal = $("#drug_detail_structure{{object.pk}}");
-          console.log("loarding structure")
+          
           $("#drug_detail{{object.pk}}").click(function () {
             console.log("click structrue")
             my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
-              // if (response == "Permission Not Granted") {
-              //   alert("permission!");
-              // } else {
+              if (response == "Permission Not Granted") {
+                alert("permission!");
+              } else {
                 my_modal.modal("show"); // Open Modal
-              // }
+              }
             });
           });
         });
@@ -91,5 +91,12 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<script>
 
+    $("#drug_detail_structure{{object.pk}}").draggable({
+    handle: ".modal-header"
+});
+</script>
 
