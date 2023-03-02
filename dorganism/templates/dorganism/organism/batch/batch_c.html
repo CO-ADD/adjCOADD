@@ -1,7 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content" style="width: 30rem">
     <div class="modal-header">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.reload(true);"></button>
     </div>
     <div class="mx-2">
       <h4 class="my-0">Create Batch</h4>
@@ -16,9 +16,17 @@
         <hr />
         <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />
         <a href="#" onclick="window.location.reload(true);" class="btn btn-outline-secondary">
+          <!-- <a  class="btn btn-outline-secondary"> -->
           Cancel
         </a>
       </form>
     </div>
   </div>
 </div>
+  
+<!-- <script>
+  //this function will be called after the JavaScriptApplet code has been loaded.
+  $(".btn-close, a").on('click', function(){
+  $(".modal-dialog").remove();
+})
+</script>   -->

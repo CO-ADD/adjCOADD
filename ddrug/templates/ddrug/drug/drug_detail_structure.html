@@ -2,8 +2,8 @@
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title">{{object.pk}}</h5>
-        <button  class="btn-close" onclick="window.location.reload(true);" class="btn btn-outline-secondary">
-           
+        <!-- <button  class="btn-close" onclick="window.location.reload(true);" class="btn btn-outline-secondary"> -->
+            <button id="close_{{object.pk}}" class="btn-close"  data-bs-dismiss="modal">
         </button>
     </div>
     <div class="modal-body">
@@ -20,7 +20,7 @@
         
         
         <div align="center">
-            <button TYPE="button" onClick="jsmeApplet.reset()">Clear Editor</button>
+            <button type="button" onClick="jsmeApplet.reset()">Clear Editor</button>
             <button type="button" onclick='JSApplet.JSME.clearFontCache()'>Clear the font cache</button>
             <button type="button" onclick='jsmeApplet.repaint()'>Repaint the applet</button>
         </div>
@@ -49,10 +49,15 @@
         
         
         {%load static%}
-        <script type="text/javascript" src="{% static 'js/jsme/jsme.nocache.js' %}"></script>        
+        <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jsme/jsme.nocache.js' %}"></script>      
         <script>
-        
             //this function will be called after the JavaScriptApplet code has been loaded.
+            $("#close_{{object.pk}}").on('click', function(){
+            $(".modal-dialog").remove();
+        })
+        </script>  
+        <script>
             function jsmeOnLoad() {
                 // glutathione is chiral
                   
