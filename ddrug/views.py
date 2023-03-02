@@ -35,7 +35,6 @@ from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolde
 from .forms import Drug_form
 from .Vitek import *
 
-
 # ===================================================================
 @login_required   
 def smartsQuery(req, pk):
