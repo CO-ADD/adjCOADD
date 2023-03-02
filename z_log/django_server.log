@@ -1,0 +1,2 @@
+django.utils.autoreload INFO 2023-03-02 10:52:45,161 autoreload 21448 12276 C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-02 10:52:46,396 autoreload 22248 20308 Watching for file changes with StatReloader
