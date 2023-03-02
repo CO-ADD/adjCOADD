@@ -55,7 +55,7 @@ def smartsQuery(req, pk):
         context["object_mol"]=m
     except Exception as err:
         logger.error(err)
-        messages.error(req, f'mol not exists or {err}')
+        messages.error(req, f'{object_.pk} mol not exists or {err}')
         context["object_mol"]=''
 
     return render(req, "ddrug/drug/drug_detail_structure.html", context)
@@ -105,11 +105,10 @@ class DrugCardView(DrugListView):
                 return context
             else:
                 m=object_.smol
-                print(m)
                 try:
                     molecule_to_svg(m, object_.pk)
                 except Exception as err:
-                    messages.error(self.request, f'mol not exists or {err}')
+                    messages.error(self.request, f'**{object_.pk} mol may not exists**')
         return context
 
     
