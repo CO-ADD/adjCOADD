@@ -43,6 +43,11 @@ def smartsQuery(req, pk):
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     context["object"]=object_
+    # get mol block for an object
+    context["object_mol"]=Chem.MolToMolBlock(object_.smol)
+    # convert object to JMSE regonized form
+    m="\\n".join(context["object_mol"].split("\n")) 
+    context["object_mol"]=m
     return render(req, "ddrug/drug/drug_detail_structure.html", context)
           
 # #############################Drug View############################################
@@ -89,9 +94,8 @@ class DrugCardView(DrugListView):
             if os.path.exists(filepath):
                 return context
             else:
-                print("generate img")
-                # m=Chem.MolFromSmiles(object_.smiles)
                 m=object_.smol
+                print(m)
                 molecule_to_svg(m, object_.pk)
         return context
 
