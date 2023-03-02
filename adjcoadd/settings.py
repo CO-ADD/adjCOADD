@@ -254,9 +254,8 @@ LOGGING = {
             # 'maxBytes': 1024 * 1024 * 10,
             # 'backupCount': 10,
             'formatter': 'verbose',
-
         },
-     
+    
     },
     
     'loggers': {
