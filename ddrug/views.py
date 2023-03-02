@@ -7,6 +7,8 @@ import numpy as np
 from django.core.serializers.json import DjangoJSONEncoder
 from time import localtime, strftime
 
+import logging
+logger = logging.getLogger("django")
 from django.utils.decorators import classonlymethod
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -44,10 +46,16 @@ def smartsQuery(req, pk):
     object_=get_object_or_404(Drug, drug_id=pk)
     context["object"]=object_
     # get mol block for an object
-    context["object_mol"]=Chem.MolToMolBlock(object_.smol)
-    # convert object to JMSE regonized form
-    m="\\n".join(context["object_mol"].split("\n")) 
-    context["object_mol"]=m
+    try:
+        context["object_mol"]=Chem.MolToMolBlock(object_.smol)
+  
+   # convert object to JMSE regonized form
+        m="\\n".join(context["object_mol"].split("\n")) 
+        context["object_mol"]=m
+    except Exception as err:
+        logger.error(err)
+        messages.error(req, f'{object_.pk} mol not exists or {err}')
+        context["object_mol"]=''
 
     return render(req, "ddrug/drug/drug_detail_structure.html", context)
           
@@ -96,8 +104,10 @@ class DrugCardView(DrugListView):
                 return context
             else:
                 m=object_.smol
-                print(m)
-                molecule_to_svg(m, object_.pk)
+                try:
+                    molecule_to_svg(m, object_.pk)
+                except Exception as err:
+                    messages.error(self.request, f'**{object_.pk} mol may not exists**')
         return context
 
     
