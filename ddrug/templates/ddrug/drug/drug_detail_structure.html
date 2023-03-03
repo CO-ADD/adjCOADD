@@ -5,8 +5,8 @@
             <button id="close_{{object.pk}}" class="btn-close" data-bs-dismiss="modal" data-name="close_{{object.pk}}">
             </button>
         </div>
-        <div class="modal-body">
-            <h5>Edit Structure Here...</h5>
+        <div class="modal-body m-0">
+
             {%include 'utils/message.html'%}
             <table align="center">
                 <tr>
@@ -28,13 +28,18 @@
 
             <table align="center">
                 <tr>
-                    <td colspan="12" style="font-weight:bold;">Export chemical structure from applet:<button
-                            type="button" class="btn btn-sm" onclick='getMolfile(false);'>Get molfile</button><button
-                            type="button" class="btn btn-sm" onclick='getMolfile(true);'>Get molfile V3000</button></td>
+                    <td colspan="12" style="font-weight:bold;">Export chemical structure from applet:
+                        <button type="button" class="btn btn-sm" onclick='getMolfile(false);'>Get
+                            molfile</button>
+                        <button type="button" class="btn btn-sm" onclick='getMolfile(true);'>Get
+                            molfile V3000</button>
+                        <button type="button" class="btn btn-sm" onclick='getSmiles();'>Get
+                            smiles</button>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="5">
-                        <TEXTAREA id="jme_output_{{object.pk}}" ROWS=5 COLS=80></TEXTAREA>
+                        <TEXTAREA id="jme_output_{{object.pk}}" ROWS=3 COLS=80></TEXTAREA>
                     </td>
                 </tr>
                 <tr>
@@ -42,9 +47,9 @@
                 </tr>
                 <tr>
                     <td colspan="12">
-                        Click <button type="button" class="btn btn-sm" onclick='getSmiles();'>Get smiles</button>, close
-                        the pop-window and
-                        click apply button on the sidebar to apply
+                        Click <button type="button" class="btn btn-sm" onclick='getSmiles_forquery();'>Get
+                            smiles</button>, close
+                        the pop-window to apply
                         Substructure Query.
                     </td>
                 </tr>
@@ -71,7 +76,7 @@
                 function jsmeOnLoad() {
                     // var drug_smiles = "{{object.smiles}}";
                     var drug_mol = "{{object_mol}}"
-                    jsmeApplet = new JSApplet.JSME("appletContainer", "750px", "440px", {
+                    jsmeApplet = new JSApplet.JSME("appletContainer", "750px", "400px", {
                         //optional parameters
                         "options": "query,hydrogens,fullScreenIcon",
                         //"smiles" : glutathione_smiles
@@ -82,20 +87,27 @@
                     });
                     document.JME = jsmeApplet;
                 }
+                function getSmiles_forquery() {
+
+                    function getSmiles() {
+                        var data = document.JME.smiles();
+                        $('#smiles_input').val(data)
+                        sessionStorage.setItem('smiles_query', data.toString())
+                        console.log(sessionStorage.getItem('smiles_query'))
+
+                    }
+                    getSmiles()
+                }
 
                 function getSmiles() {
                     var data = document.JME.smiles();
                     document.getElementById("jme_output_{{object.pk}}").value = data;
-                    $('#smiles_input').val(data)
-                    sessionStorage.setItem('smiles_query', data.toString())
-                    console.log(sessionStorage.getItem('smiles_query'))
 
                 }
 
                 function getMolfile(isV3000) {
                     var data = document.JME.molFile(isV3000);
                     document.getElementById("jme_output_{{object.pk}}").value = data;
-                    console.log(data)
 
                 }
 
