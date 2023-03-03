@@ -1,0 +1,13 @@
+django.utils.autoreload INFO 2023-03-03 12:29:07,632 autoreload 22400 17296 Watching for file changes with StatReloader
+django.server INFO 2023-03-03 12:29:09,587 basehttp 22400 17344 "GET / HTTP/1.1" 200 7740
+django.server INFO 2023-03-03 12:29:11,439 basehttp 22400 17344 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-03 12:29:11,548 basehttp 22400 17344 "GET /index/ HTTP/1.1" 200 13279
+django.server INFO 2023-03-03 12:29:13,895 basehttp 22400 17344 "GET /drug_card HTTP/1.1" 200 190253
+django.server INFO 2023-03-03 12:29:15,215 basehttp 22400 17344 "GET /drug/AMD00004 HTTP/1.1" 200 27517
+django.server INFO 2023-03-03 12:29:31,343 basehttp 22400 17344 "GET /drug/AMD00004 HTTP/1.1" 200 27522
+django.server INFO 2023-03-03 12:29:38,106 basehttp 22400 17344 "GET /drug_detail_structure/AMD00004 HTTP/1.1" 200 8079
+django.server INFO 2023-03-03 12:30:30,367 basehttp 22400 17344 "GET /drug_card HTTP/1.1" 200 190253
+django.server INFO 2023-03-03 12:30:31,844 basehttp 22400 17344 "GET /drug_detail_structure/AMD00004 HTTP/1.1" 200 8079
+django.server INFO 2023-03-03 12:30:34,948 basehttp 22400 17344 "GET /drug/AMD00004 HTTP/1.1" 200 27538
+django.server INFO 2023-03-03 12:34:17,290 basehttp 22400 17344 "GET /drug/AMD00004 HTTP/1.1" 200 27539
+django.server INFO 2023-03-03 12:34:17,327 basehttp 22400 17344 "GET /static/css/custom.css HTTP/1.1" 304 0
