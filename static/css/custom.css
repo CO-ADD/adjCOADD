@@ -339,6 +339,15 @@ nav.shrink {
   color: var(--bs-light);
 }
 
+a .tooltiptext {
+  visibility: hidden;
+}
+
+a:hover .tooltiptext {
+  visibility: visible;
+
+}
+
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
