@@ -18,11 +18,16 @@
             </td>
           </tr>
           <tr>
-            <th scope="row" class="">Structure</th>
+            <th scope="row" class="">Structure <br> <small class="fw-light">(Click Image Open Editor)</small></th>
             <td class="w-75" data-id="{{object.pk}}" data-type="">
-              {%load static%}
-              <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload"
-                loading="lazy" style="background-color: transparent !important" />
+              <a id="drug_detail{{object.pk}}" class="card-link">
+                {%load static%}
+
+                <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload"
+                  loading="lazy" style="background-color: transparent !important" />
+              </a>
+              <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog">
+              </div>
             </td>
           </tr>
           <tr>

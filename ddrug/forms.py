@@ -1,3 +1,4 @@
+from rdkit import Chem
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.forms import SimpleArrayField
@@ -24,3 +25,9 @@ class Drug_form(forms.ModelForm):
     #     super().__init__(*args, **kwargs)
     #     for field in self.fields: 
     #         field.wiget.attrs['readonly'] = 'readonly'
+
+    def clean_smol(self):
+        data=self.cleaned_data['smol']
+        data=Chem.MolFromSmiles(data)
+        print(data)
+        return data

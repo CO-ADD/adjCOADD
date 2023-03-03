@@ -168,6 +168,7 @@ def updateDrug(req, pk):
         if form.is_valid():
             instance=form.save(commit=False)        
             instance.save(**kwargs)
+            print("updated Drug")
             return redirect(req.META['HTTP_REFERER']) 
         else:
             print(form.errors)
