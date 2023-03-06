@@ -1,11 +1,13 @@
 import json
 import os
 from rdkit import Chem
+from django_rdkit.models import *
 from django_filters.views import FilterView
 import pandas as pd
 import numpy as np
 from django.core.serializers.json import DjangoJSONEncoder
 from time import localtime, strftime
+import psycopg2
 
 import logging
 logger = logging.getLogger("django")
@@ -31,7 +33,7 @@ from apputil.utils_dataimport import Importhandler
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder
+from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from .forms import Drug_form
 from .Vitek import *
 
@@ -70,7 +72,6 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
 
 # =============================Card View=====================================
     # editable graphic , molblock, 3D, py3Dmol 
- 
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
@@ -82,11 +83,11 @@ class DrugCardView(DrugListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         smiles_str=self.request.GET.get("substructure") or None
-        
+        # similarity_queryset=get_mfp2_neighbors(smiles_str)
+        # print(similarity_queryset)
         if smiles_str:
-            molstructure=Chem.MolFromSmiles(smiles_str)
-            
-            queryset=Drug.objects.filter(smol__hassubstruct=molstructure)
+            molstructure_smol=Chem.MolFromSmiles(smiles_str)
+            queryset=Drug.objects.filter(smol__hassubstruct=QMOL(Value(smiles_str)))
         # print(queryset)
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         # Return the filtered queryset
@@ -96,18 +97,22 @@ class DrugCardView(DrugListView):
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        try:
+            context = super().get_context_data(**kwargs)
         # clearIMGfolder()
-        for object_ in context["object_list"]:
-            filepath=get_filewithpath(file_name=object_.pk)
-            if os.path.exists(filepath):
-                continue
-            else:
-                m=object_.smol
-                try:
-                    molecule_to_svg(m, object_.pk)
-                except Exception as err:
-                    messages.error(self.request, f'**{object_.pk} mol may not exists**')
+            for object_ in context["object_list"]:
+                filepath=get_filewithpath(file_name=object_.pk)
+                if os.path.exists(filepath):
+                    continue
+                else:
+                    m=object_.smol
+                    try:
+                        molecule_to_svg(m, object_.pk)
+                    except Exception as err:
+                        messages.error(self.request, f'**{object_.pk} mol may not exists**')
+        except Exception as err:
+            context={}
+            messages.error(self.request, err)
         return context
 
     
@@ -118,6 +123,10 @@ def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     form=Drug_form(instance=object_)
+    value = Chem.AllChem.GetMorganFingerprint(object_.smol,2)# MORGAN_FP(Value(object_.smiles))
+    print(TORSIONBV_FP(object_.smiles))
+    
+    print(value)
     # Array display handler
     if object_.drug_panel:
         context["drug_panel"]=",".join(object_.drug_panel)
@@ -197,10 +206,8 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
 
     
     def get_context_data(self,  **kwargs):
-        # get data:
 
         context =super().get_context_data( **kwargs)
-       
         context['defaultcolumns1']='expiry_date'
         context['defaultcolumns2']='card_barcode'
         context['defaultindex1']='analysis_time'

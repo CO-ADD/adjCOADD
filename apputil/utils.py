@@ -165,18 +165,6 @@ class Filterbase(django_filters.FilterSet):
         lookup='__'.join([name, 'overlap'])
         return queryset.filter(**{lookup: value})
     
-    # def substructure_filter(self, queryset, name, substructure):
-    #     try:
-    #         # lookup='__'.join([name, 'is_null'])
-    #         return queryset.filter(smol__hassubstruct=QMOL(Value(substructure)))
-    #     except Exception as err:
-    #         print(err)
-    #         messages.error(req, err)
-    #         return  queryset.filter(**{lookup: substructure})
-        
-        # for cmpd in query.annotate(smiles=MOL_TO_SMILES('molecule'))[:5]:
-        # print(cmpd.name, cmpd.smiles)
-    
 
 # =====================Application USers Filterset===================================
 
