@@ -1,4 +1,6 @@
 from rdkit import Chem
+from django_rdkit.models import *
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.forms import SimpleArrayField
@@ -16,18 +18,26 @@ class Drug_form(forms.ModelForm):
     max_phase = forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Drug.Choice_Dictionary['max_phase'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)
+
     class Meta:
         model =Drug
         fields='__all__'
-        exclude=['ffp2']
+        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol']
     
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     for field in self.fields: 
     #         field.wiget.attrs['readonly'] = 'readonly'
 
-    def clean_smol(self):
-        data=self.cleaned_data['smol']
-        data=Chem.MolFromSmiles(data)
-        print(data)
-        return data
+    # def clean_smol(self):
+    #     data=self.cleaned_data['smol']
+    #     data=Chem.MolFromSmiles(data)
+    #     print(data)
+    #     return data
+
+    # def clean_mfp2(self):
+    #     data=self.cleaned_data['mfp2']
+    #     data=Chem.AllChem.GetMorganFingerprintAsBitVect(Chem.MolFromSmiles(self.instance.smiles),radius=2, bitInfo={})
+    #     print(data)
+    #     return data
+

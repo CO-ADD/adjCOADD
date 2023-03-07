@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
-# os.environ['path']+=r';C:\Program Files\UniConvertor-2.0rc5\dlls'
 import django_filters
+from django_rdkit.models import *
+from django_rdkit.config import config
 from rdkit.Chem import Draw
 from rdkit import RDConfig
 from rdkit.Chem import rdDepictor
@@ -9,12 +10,12 @@ from rdkit.Chem.Draw import rdMolDraw2D
 from rdkit.Chem.Draw import IPythonConsole
 from IPython.display import SVG
 import cairosvg
-# import py3Dmol
+
+from django.conf import settings
 
 from apputil.utils import Filterbase, get_filewithpath
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from adjcoadd.constants import *
-from django.conf import settings
 # ======================================Util Func. (To SVG)=====================================================#
 
 
@@ -73,3 +74,17 @@ class Vitekcard_filter(Filterbase):
     class Meta:
         model=VITEK_Card
         fields=['card_barcode']
+
+
+# Similarity Query Function
+# config.tanimoto_threshold =0.4 # similarity_threshold_int/100
+def get_mfp2_neighbors(smiles):
+    value = MORGANBV_FP(Value(smiles))
+    print(config.tanimoto_threshold)
+    # print(f'threshold {config.tanimoto_threshold}')
+    queryset = Drug.objects.filter(mfp2__tanimoto=value)#(mfp2__tanimoto=value)
+    # queryset = queryset.annotate(smiles=MOL_TO_SMILES('smol'))
+    # queryset = queryset.annotate(smol=TANIMOTO_SML('mfp2', value))
+    queryset = queryset.order_by(TANIMOTO_DIST('mfp2', value))
+    # queryset = queryset.values_list('drug_name',  ) #'smiles','smol'
+    return queryset
