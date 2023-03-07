@@ -117,6 +117,7 @@ class DrugCardView(DrugListView):
         except Exception as err:
             context={}
             messages.error(self.request, err)
+
         return context
 
     
