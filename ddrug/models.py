@@ -68,9 +68,9 @@ class Drug(AuditModel):
     mf = models.CharField(max_length=25, blank=True, verbose_name = "MF")	
     smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
     smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
-    # torsionbv = models.BfpField(null=True)	
+    torsionbv = models.BfpField(null=True)	
     ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
-    # mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
+    mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
     #salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
 
     #------------------------------------------------
@@ -82,7 +82,7 @@ class Drug(AuditModel):
             models.Index(name="drug_dname_idx", fields=['drug_name']),
             GistIndex(name="drug_smol_idx",fields=['smol']),
             GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
-            # GistIndex(name="drug_mfp2_idx",fields=['mfp2'])
+            GistIndex(name="drug_mfp2_idx",fields=['mfp2'])
         ]
 
     #------------------------------------------------
@@ -128,11 +128,12 @@ class Drug(AuditModel):
         return(xmol)
 
     #------------------------------------------------
-    # def save(self, *args, **kwargs):
-    #     super(Drug, self).save(*args, **kwargs)
-    #     self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'))
-        # print("update ffp2")
-        # self.save()
+    def save(self, *args, **kwargs):
+        print("save ffp2")
+        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+        super(Drug, self).save(*args, **kwargs)
+        print(f"field FFP2 is {self.ffp2}")
+        
             
     # -------------------------------------------------
     def get_values(self, fields=DRUG_FIELDs):

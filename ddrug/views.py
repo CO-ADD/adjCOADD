@@ -2,6 +2,7 @@ import json
 import os
 from rdkit import Chem
 from django_rdkit.models import *
+from django_rdkit.config import config
 from django_filters.views import FilterView
 import pandas as pd
 import numpy as np
@@ -83,10 +84,13 @@ class DrugCardView(DrugListView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         smiles_str=self.request.GET.get("substructure") or None
-        # similarity_queryset=get_mfp2_neighbors(smiles_str)
-        # print(similarity_queryset)
-        if smiles_str:
-            molstructure_smol=Chem.MolFromSmiles(smiles_str)
+        similarity_threshold_str=self.request.GET.get("similarity_threshold") or None
+        if similarity_threshold_str!=str(100) and smiles_str:
+            config.tanimoto_threshold = int(similarity_threshold_str)/100
+            queryset=get_mfp2_neighbors(smiles_str)
+            # print(similarity_queryset)
+        elif smiles_str:
+        #     molstructure_smol=Chem.MolFromSmiles(smiles_str)
             queryset=Drug.objects.filter(smol__hassubstruct=QMOL(Value(smiles_str)))
         # print(queryset)
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
@@ -123,10 +127,10 @@ def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     form=Drug_form(instance=object_)
-    value = Chem.AllChem.GetMorganFingerprint(object_.smol,2)# MORGAN_FP(Value(object_.smiles))
-    print(TORSIONBV_FP(object_.smiles))
+    # value = Chem.AllChem.GetMorganFingerprint(object_.smol,2)# MORGAN_FP(Value(object_.smiles))
+    # print(TORSIONBV_FP(object_.smiles))
     
-    print(value)
+    # print(value)
     # Array display handler
     if object_.drug_panel:
         context["drug_panel"]=",".join(object_.drug_panel)
@@ -173,11 +177,16 @@ def updateDrug(req, pk):
     kwargs['user']=req.user 
     form=Drug_form(instance=object_)
     if req.method=='POST':
+        print("updateing")
         form=Drug_form(req.POST, instance=object_)
         if form.is_valid():
-            instance=form.save(commit=False)        
-            instance.save(**kwargs)
-            print("updated Drug")
+            print("checkform")
+            instance=form.save(commit=False)
+            try:        
+                instance.save(**kwargs)
+                print("updated Drug")
+            except Exception as err:
+                messages.error(req, err)
             return redirect(req.META['HTTP_REFERER']) 
         else:
             print(form.errors)

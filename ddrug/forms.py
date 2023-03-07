@@ -22,18 +22,18 @@ class Drug_form(forms.ModelForm):
     class Meta:
         model =Drug
         fields='__all__'
-        exclude=['ffp2']
+        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol']
     
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     for field in self.fields: 
     #         field.wiget.attrs['readonly'] = 'readonly'
 
-    def clean_smol(self):
-        data=self.cleaned_data['smol']
-        data=Chem.MolFromSmiles(data)
-        print(data)
-        return data
+    # def clean_smol(self):
+    #     data=self.cleaned_data['smol']
+    #     data=Chem.MolFromSmiles(data)
+    #     print(data)
+    #     return data
 
     # def clean_mfp2(self):
     #     data=self.cleaned_data['mfp2']

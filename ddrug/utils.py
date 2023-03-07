@@ -77,15 +77,14 @@ class Vitekcard_filter(Filterbase):
 
 
 # Similarity Query Function
-config.tanimoto_threshold = 0.5
+# config.tanimoto_threshold =0.4 # similarity_threshold_int/100
 def get_mfp2_neighbors(smiles):
-    # Drug.objects.update(mfp2=MORGANBV_FP('molecule'),)
     value = MORGANBV_FP(Value(smiles))
-    
-    print(f'mfp2 value is {value}')
+    print(config.tanimoto_threshold)
+    # print(f'threshold {config.tanimoto_threshold}')
     queryset = Drug.objects.filter(mfp2__tanimoto=value)#(mfp2__tanimoto=value)
-    # queryset = queryset.annotate(smiles=MOL_TO_SMILES('molecule'))
+    # queryset = queryset.annotate(smiles=MOL_TO_SMILES('smol'))
     # queryset = queryset.annotate(smol=TANIMOTO_SML('mfp2', value))
     queryset = queryset.order_by(TANIMOTO_DIST('mfp2', value))
-    queryset = queryset.values_list('drug_name',  ) #'smiles','smol'
+    # queryset = queryset.values_list('drug_name',  ) #'smiles','smol'
     return queryset

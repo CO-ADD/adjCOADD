@@ -10,7 +10,7 @@
 
             <input id="filter-apply" class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
 
-            <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
+            <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="resetfun()">Reset</button>
         </div>
         <hr>
         <div class="d-flex justify-content-center">
@@ -31,12 +31,32 @@
                 &nbsp; entries on one Page
             </span>
         </div>
-<hr>
+        <hr>
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <div class="d-flex flex-column">
+            <p>
 
-            <label for="smiles_query">Substructure Query</label>
-            <input id="smiles_input" type="text" name="substructure"  aria-label="smiles">
+                <label for="smiles_query">Substructure Query</label>
+                <input id="smiles_input" type="text" name="substructure" aria-label="smiles">
+            </p>
+
+            <p>
+                <button class="accordion-button collapsed p-1 fw-bold text-center" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#Similarity_set" aria-expanded="false"
+                    aria-controls="Similarity_set"> Set
+                    Similarity
+                </button>
+            <div class="collapse" id="Similarity_set">
+
+
+                <div class="form-label mt-2">Similarity in <span
+                        class="output_similarity text-center d-inline">100</span>
+                    %</div>
+                <input id="Similarity_threshold" type="range" class="form-range" name="similarity_threshold" min="40"
+                    max="100" step="1" value="100" style="width:12em">
+
+            </div>
+            </p>
         </div>
         <hr>
         {{filter.form.as_p}}
@@ -53,7 +73,7 @@
 <script src="{%static 'js/resizebar.js'%}"></script>
 
 <script>
-    function myfun() {
+    function resetfun() {
 
         console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
@@ -67,12 +87,16 @@
 <script>
     $(document).ready(function () {
         console.log("working...")
+        // var similarity_value = $("#Similarity_threshold").val()
+        $("#Similarity_threshold").change((e) => {
+            $(".output_similarity").text(e.target.value)
+        })
         if (sessionStorage.getItem('smiles_query') !== null) {
             $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
             console.log($('#smiles_input').val())
             sessionStorage.removeItem('smiles_query')
-        } 
-       
+        }
+
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
         $("#filter-apply").on("click", function () {
             console.log("working...")
