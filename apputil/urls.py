@@ -14,9 +14,9 @@ urlpatterns = [
     path('user_update/<str:pk>', updateApplicationuser, name="updateAppUser"),
     path('user_delete/<str:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
-    path('dict/create', createDictionary, name='dict_create' ),
-    path('dict_update', updateDictionary, name='dict_update' ),
-    path('dict_delete', deleteDictionary, name='dict_delete' ),
+    path('dict_create/', createDictionary, name='dict_create' ),
+    path('dict_update/', updateDictionary, name='dict_update' ),
+    path('dict_delete/', deleteDictionary, name='dict_delete' ),
     #Data Export/Import 
     path('exportData/', exportCSV, name="dataexport"),
     path('testsite/', testsite, name="testsite"),

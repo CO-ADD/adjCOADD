@@ -14,9 +14,13 @@
       <a id="createDict" class="card-link text-success">
         <i class="bi bi-plus">New</i>
       </a>
+      {%include 'utils/message.html'%}
     </div>
     <div class="fixTableHead">
-      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+      <table
+        class="table table-small table-bordered sorting_table table-hover bg-light"
+        id="id_dictionary_table"
+      >
         <thead>
           <tr>
             {%for field in fields%}
@@ -42,10 +46,13 @@
 </div>
 
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_dictionary.js'%}"
+></script>
 
 <script>
-  $(document).ready(function () { });
+  $(document).ready(function () {});
   $('[data-type="deleteDict"] a').click(function () {
     console.log("click");
     var td = $(this).parent();
@@ -65,7 +72,9 @@
       .done((response) => {
         console.log(response);
         if (!response.result) {
-          td.append('<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>')
+          td.append(
+            '<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>'
+          );
         }
       })
       .fail(() => {

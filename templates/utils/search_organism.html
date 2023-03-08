@@ -1,8 +1,13 @@
 <!-- ================================================================================== -->
 <div class="my-0">
-  <label>Organism Name | Class Name</label>
   <form id="search-form" autocomplete="off">
     {% csrf_token %}
+    <label
+      for="search_input"
+      class="col-sm-5 col-form-label"
+      style="font-size: x-small; font-weight: bold"
+      >Organism Name | Class Name</label
+    >
     <input
       type="text"
       id="search-input"

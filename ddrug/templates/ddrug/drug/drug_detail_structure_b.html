@@ -1,0 +1,22 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header m-0">
+      <div class="modal-title badge bg-secondary">{{object.pk}}</div>
+      <button
+        id="close_{{object.pk}}"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        data-name="close_{{object.pk}}"
+      ></button>
+    </div>
+    <div class="modal-body m-0">
+      {%include 'utils/message.html'%}
+
+      <noscript>You need to enable JavaScript to run this app.</noscript>
+      <div id="root"></div>
+      {%load static%}
+      <script src="{%static 'js/jquery-3.6.1.min'%}"></script>
+      <script defer="defer" src="{% static 'js/main.5445f351.js' %}"></script>
+    </div>
+  </div>
+</div>
