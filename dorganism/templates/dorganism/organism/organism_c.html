@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content " style="width: 30rem">
+  <div class="modal-content " style="width: 50rem">
     <div class="modal-header">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -12,7 +12,9 @@
       <form method="POST" class="post-form" name="create" action="{%url 'org_create'%}">
         {% csrf_token %}
         <!--  -->
-        {{form.as_p}}
+        <table>
+          {{form.as_table}}
+        </table>
         <input type="text" id="taxo-name" name="search_organism" style="display: none" />
 
         <hr />
