@@ -40,3 +40,4 @@ class Drug_form(forms.ModelForm):
     #     data=Chem.AllChem.GetMorganFingerprintAsBitVect(Chem.MolFromSmiles(self.instance.smiles),radius=2, bitInfo={})
     #     print(data)
     #     return data
+
