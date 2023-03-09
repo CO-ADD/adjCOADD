@@ -99,7 +99,7 @@ DRUG_FIELDs = {
 
 VITEKCARD_FIELDs = {
     
-    "orgbatch_id_pk":"orgbatch_id",
+    "orgbatch_id":"orgbatch_id",
     "card_barcode":"Barcode",
     "card_type":"Card Type",
     "card_code":"Card Code",
@@ -107,7 +107,7 @@ VITEKCARD_FIELDs = {
     "instrument":"instrument",
     "proc_date":"proc_date",
     "analysis_time":"Analysis with",
-    "acreated_at":"acreated_at"
+  
    
 }
 

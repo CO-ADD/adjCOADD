@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import  (DrugListView, DrugCardView,detailDrug, createDrug, updateDrug, 
-    detailVitekcard,  VitekcardListView, Importhandler_VITEK, smartsQuery)#VitekcardListView,
+    detailVitekcard,  VitekcardListView, Importhandler_VITEK, smartsQuery, ketcher_test,iframe_url)#VitekcardListView,
 
 
 
@@ -17,4 +17,7 @@ urlpatterns = [
     path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
     path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),
     path("import-VITEK/", Importhandler_VITEK.as_view(), name="import-VITEK"),
+    path("ketcher_test/", ketcher_test, name="ketcher_test"),
+    path("ketcher/", iframe_url, name="ketcher"),
+    
 ]
