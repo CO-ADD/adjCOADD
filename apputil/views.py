@@ -132,6 +132,7 @@ def createDictionary(req):
         try:
             if form.is_valid:
                 instance=form.save(commit=False)
+                print("dictionary form")
                 instance.save(**kwargs)
                 print("save")
                 return redirect("dict_view")

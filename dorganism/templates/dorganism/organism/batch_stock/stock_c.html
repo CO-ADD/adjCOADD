@@ -1,18 +1,37 @@
 <div class="modal-dialog">
   <div class="modal-content" style="width: 30rem">
     <div class="modal-header">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
     </div>
     <div class="mx-2">
       <h4 class="my-0">Create Stock</h4>
       <hr />
-      <form method="POST" class="post-form" name="create" action="{%url 'stock_create'%}">
+      <form
+        method="POST"
+        class="post-form"
+        name="create"
+        action="{%url 'stock_create'%}"
+      >
         {% csrf_token %}
         <!-- ignore prettier -->
-        {{form.as_p}}
+        {%include 'utils/django_form_table.html'%}
 
-        <input type="submit" class="btn btn-outline-secondary" value="Add" name="note" />
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <input
+          type="submit"
+          class="btn btn-outline-secondary"
+          value="Add"
+          name="note"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
           Close
         </button>
       </form>

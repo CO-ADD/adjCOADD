@@ -61,7 +61,17 @@ def smartsQuery(req, pk):
         context["object_mol"]=''
 
     return render(req, "ddrug/drug/drug_detail_structure.html", context)
-          
+
+@login_required   
+def iframe_url(req):
+    context={}
+    return render(req, "utils/index.html")
+
+@login_required   
+def ketcher_test(req):
+    context={}
+    return render(req, "utils/ketcher_test.html")
+
 # #############################Drug View############################################
 # ==========List View================================Read===========================================
 class DrugListView(LoginRequiredMixin, FilteredListView):

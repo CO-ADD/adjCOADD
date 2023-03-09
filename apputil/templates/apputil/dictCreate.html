@@ -1,16 +1,6 @@
 <div class="modal-dialog">
-  <div class="modal-content">
-    <form id="createDictForm" method="POST" class="post-form" name="create-Dict" action="{%url 'dict_create'%}">
-      {% csrf_token %}
-      <div class="modal-header">
-        <h4 class="modal-title">Create dict</h4>
-      </div>
-
-      {{ form.as_p }}
-      <div class="modal-footer">
-
-        <input type="submit" class="btn btn-success m-auto" value="Add" />
-      </div>
-    </form>
-  </div>
+  {% url 'dict_create' as createurl %}
+  <!--prettier-ignore-->
+  {%include 'utils/modal/create.html' with title='Create Dictionary' urlname=createurl %}
+  <!--  -->
 </div>

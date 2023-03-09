@@ -1,8 +1,13 @@
 <!-- ================================================================================== -->
 <div class="my-0">
-  <label>Micro Organism</label>
   <form id="id_search-form" autocomplete="off">
     {% csrf_token %}
+    <label
+      for="search_input"
+      class="col-sm-5 col-form-label"
+      style="font-size: x-small; font-weight: bold"
+      >Micro Organism</label
+    >
     <input
       type="text"
       id="search-id-input"

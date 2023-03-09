@@ -12,7 +12,7 @@
     <form method="POST" class="post-form" action="{{urlname}}">
       {% csrf_token %}
       <!--  -->
-      {{ form.as_p }}
+      {%include 'utils/django_form_table.html'%}
       <div class="modal-footer">
         <input type="submit" class="btn btn-outline-secondary" value="Add" />
         <button

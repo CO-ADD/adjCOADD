@@ -12,8 +12,9 @@
     <div class="d-flex">
       {% include 'utils/pagination.html'%}
       <a id="createDict" class="card-link text-success">
-        <i class="bi bi-plus">New</i>
+        <i class="bi bi-plus"></i>New
       </a>
+      {%include 'utils/message.html'%}
     </div>
     <div class="fixTableHead">
       <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
@@ -65,7 +66,9 @@
       .done((response) => {
         console.log(response);
         if (!response.result) {
-          td.append('<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>')
+          td.append(
+            '<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>'
+          );
         }
       })
       .fail(() => {
