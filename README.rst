@@ -2,4 +2,4 @@
 adjCOADD
 =====
 
-adjCOADD is a Django app to conduct web-based Micro-organism database screening.
+adjCOADD is a Django application for CO-ADD's micro-organism database.
