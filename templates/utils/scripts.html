@@ -1,0 +1,72 @@
+{%load static%}
+<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="{%static 'js/sorting_table.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/js_utils/getCookie.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/editableTable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/editableTablechoices.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/js_utils/dataTables.js'%}"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.21.2/bootstrap-table.min.js"
+    integrity="sha512-Pzu+rRJHcBZGogD+WpK3kZVU5aKuL0W3hVYLePrsa1nL9Kdqch3+7tiSkg/ziHJOx5lTtA20w86zw1yGaF6Scw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+<script src="https://unpkg.com/htmx.org@1.8.4"
+    integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
+    crossorigin="anonymous"></script>
+
+
+<script>
+    $(window).scroll(function () {
+        if ($(document).scrollTop() > 50) {
+            $("nav").addClass("shrink");
+            $("nav").find("form").addClass("not-visible");
+        } else {
+            $("nav").removeClass("shrink");
+            $("nav").find("form").removeClass("not-visible");
+        }
+    });
+</script>
+
+
+<!-- create Toggle-btn arrow up-down -->
+<script>
+    $(".toggle-btn").on("click", function () {
+        $(this).find("i").toggleClass("open");
+    });
+</script>
+<!-- Create bootstrap Tooltip -->
+<script>
+    var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+
+<script>
+    var idleTime;
+    $(document).ready(function () {
+        reloadPage();
+        $("html").bind(
+            "mousemove click mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick",
+            function () {
+                clearTimeout(idleTime);
+                reloadPage();
+            }
+        );
+    });
+    function reloadPage() {
+        clearTimeout(idleTime);
+        idleTime = setTimeout(function () {
+            location.reload();
+        }, 5 * 60 * 1000);
+    }
+</script>

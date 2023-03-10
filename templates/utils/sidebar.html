@@ -1,8 +1,8 @@
 <div class="sidebar text-secondary">
-    <div style="height:fit-content; width: 200px;" class="mx-1 bg-light text-primary ">
-        <p style="font-size: small; font-weight: bold;">
-            {{filterset | default_if_none:"&nbsp;"}}
-        </p>
+    <div style="height:fit-content; width: 200px;">
+
+        {{filterset | default_if_none:"&nbsp;"}}
+
 
     </div>
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
@@ -31,7 +31,7 @@
                 &nbsp; entries on one Page
             </span>
         </div>
-<hr>
+        <hr>
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <div class="d-flex flex-column">
 
@@ -71,8 +71,8 @@
             $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
             console.log($('#smiles_input').val())
             sessionStorage.removeItem('smiles_query')
-        } 
-       
+        }
+
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
         $("#filter-apply").on("click", function () {
             console.log("working...")
