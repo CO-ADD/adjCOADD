@@ -18,6 +18,7 @@ class Drug_form(forms.ModelForm):
     max_phase = forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Drug.Choice_Dictionary['max_phase'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)
+    drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
     class Meta:
         model =Drug

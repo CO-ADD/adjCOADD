@@ -1,25 +1,15 @@
 <!-- trigger modal -->
-<button
-  class="card-link text-danger fs-6 border-0"
-  data-bs-toggle="modal"
-  data-bs-target="#modal-default{{object_batch}}"
->
-  <i class="fa-solid fa-trash"></i>
+<button class="card-link text-danger fs-6 border-0" data-bs-toggle="modal"
+  data-bs-target="#modal-default{{object_batch}}">
+  <i class="fa-regular fa-trash-can"></i>
 </button>
 
 <!-- Modal -->
-<div
-  class="modal fade"
-  id="modal-default{{object_batch}}"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="modal-default{{object_batch}}Label"
-  aria-hidden="true"
->
+<div class="modal fade" id="modal-default{{object_batch}}" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="modal-default{{object_batch}}Label" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'batch_delete' pk=object_batch.pk as deleteurl %}
-  {%include 'utils/modal/delete.html' with title='Delete Batch' urlname=deleteurl %}
+    {%include 'utils/modal/delete.html' with title='Delete Batch' urlname=deleteurl %}
   </div>
 </div>

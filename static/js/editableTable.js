@@ -1,11 +1,14 @@
 $(document).ready(function () {
-    $(document).on("dblclick", ".editable", function () {
-        var selectbox = $(this).find(".select")
-        var detail = $(this).find(".detail")
+    $(document).on("click", ".edit_organismdetail", function () {
+        console.log("loading editableTable...")
+        var selectbox = $(".select")
+        var detail = $(".detail")
         selectbox.addClass("visible")
         $('.updateformshow').addClass("visible")
         detail.addClass("not-visible")
-        $(this).removeClass("editable")
+        $('.editablechoices').removeClass("editablechoices")
+        $('.editable').removeClass("editable")
+
     });
 
     $(document).keypress(
@@ -15,3 +18,4 @@ $(document).ready(function () {
             }
         });
 })
+

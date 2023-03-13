@@ -1,14 +1,10 @@
 <!-- Start upload datafiles, scanne virus -->
-<div class="container">
-    <div id="progressbar" class="d-flex bg-secondary" style="height: 20px;">
-        <span class="flex-fill"></span>
-        <span class="flex-fill"></span>
-        <span class="flex-fill"></span>
-    </div>
+<div id="fileupload-basic" class="container">
     <!-- <div id="dropzone">
         Drop some directory here.
         <pre id="_log"></pre>
     </div> -->
+    <h3>Step 1 Files Upload</h3>
     <section class="row border " id="Import_step1">
         <h4 class="title is-2" id="datamodel"> <small> Prcoess Name: </small>{{data_model}} PDF</h4>
         <div class="card border">
@@ -16,7 +12,7 @@
             <form method="POST" enctype="multipart/form-data" class="form-control">
                 {% csrf_token %}
                 <!--  -->
-                <input type="text" value="{{data_model}}" name="file_data">
+                <!-- <input type="text" value="{{data_model}}" name="file_data"> -->
                 {{form.as_p}}
 
 
@@ -31,6 +27,7 @@
     </section>
 
     <!-- Run check entries in .csv or excel file -->
+    <h3>Step 2 Data Validate</h3>
     <section id="Import_step2">
         <h3 class="text-danger">
             {%include 'utils/message.html'%}
@@ -127,6 +124,7 @@
     {%include 'utils/preloader.html'%}
 
     <!-- Proceeding Save data -->
+    <h3>Step 3 Save or Cancel</h3>
     <section id="Import_step3" class="not-visible">
         <p>
 
@@ -150,13 +148,14 @@
         </p>
     </section>
     <hr>
+    <h3>Step 4 Finished</h3>
     <section id="Import_step4" class="not-visible">
         <div></div>
         <ul>
-            <li>
-                <a class="button" data-type="Delete" href="javascript:void(0);">Please Select and Delete nonusable Files
+            <li>Please Select and
+                <a class="button" data-type="Delete" href="javascript:void(0);"> Delete
                     <div class="d-inline"></div>
-                </a>
+                </a>nonusable Files
                 <a class="btn btn-sm" href="{%url 'import-VITEK'%}">And Click Refresh</a>
             </li>
 
@@ -165,10 +164,17 @@
 </div>
 
 {%load static%}
-<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/js_utils/getCookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/importhandler.js' %}"></script>
-
+<script src="{% static 'js/formWizard/jquery.steps.min.js'%}"></script>
+<!-- jQuery steps init -->
+<script>
+    $("#fileupload-basic").steps({
+        headerTag: "h3",
+        bodyTag: "section",
+        transitionEffect: "slideLeft",
+        autoFocus: true
+    });
+</script>
 <script>
 
     function downloadFile() {

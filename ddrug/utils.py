@@ -76,6 +76,14 @@ class Vitekcard_filter(Filterbase):
         fields=['card_barcode']
 
 
+class Vitekast_filter(Filterbase):
+    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model=VITEK_AST
+        fields=['card_barcode']
+
+
+
 # Similarity Query Function
 # config.tanimoto_threshold =0.4 # similarity_threshold_int/100
 def get_mfp2_neighbors(smiles):
