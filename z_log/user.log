@@ -1,14 +1,1 @@
 
-user_log INFO 2023-03-09 20:36:12,823 signals 41720 140554599913024 test login successful
-user_log INFO 2023-03-09 20:36:57,255 signals 41720 140554616698432 test login successful
-user_log INFO 2023-03-09 20:44:37,726 signals 41720 140554846172736 test login successful
-user_log INFO 2023-03-10 12:45:13,483 signals 22116 25772 test login successful
-user_log INFO 2023-03-10 13:40:31,120 signals 22116 23056 test login successful
-user_log INFO 2023-03-10 14:01:01,749 signals 22116 9892 test login successful
-user_log INFO 2023-03-10 14:08:49,163 signals 22116 3888 test login successful
-user_log INFO 2023-03-10 14:11:24,747 signals 22116 1324 test login successful
-user_log INFO 2023-03-10 14:36:10,007 signals 22116 22460 test login successful
-user_log INFO 2023-03-10 15:04:26,727 signals 22116 1900 test login successful
-user_log INFO 2023-03-10 15:23:35,530 signals 22116 24888 test login successful
-user_log INFO 2023-03-10 15:32:53,524 signals 22116 18948 test login successful
-user_log INFO 2023-03-10 15:34:11,333 signals 22116 4008 test login successful

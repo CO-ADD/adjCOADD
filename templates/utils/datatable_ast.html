@@ -5,10 +5,13 @@
       <th style="width:1rem">
       </th>
       <!-- customized/verbose model fields name -->
-      <th class="order_field" style="width: fit-content">ID</th>
-      {%for field in fields%}
-      <th class="order_field" style="width: fit-content">{{field}}</th>
-      {%endfor%}
+      <th class="order_field" style="width: fit-content">pk</th>
+
+      <th class="order_field" style="width: fit-content">Drug Name</th>
+      <th class="order_field" style="width: fit-content">Code</th>
+      <th class="order_field" style="width: fit-content">Organism Name</th>
+      <th class="order_field" style="width: fit-content">MIC</th>
+
       <!-- object ID -->
       <!--field with web link if exists  -->
       {%if tax_id %}
@@ -22,27 +25,31 @@
     <!--  -->
     {% for object in page_obj%}
     <tr>
+      <td></td>
       <td>
         <!--prettier-ignore  -->
-        {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
+        {{object.pk}}
+        <!--  -->
+
+      </td>
+
+      <td>
+        <!--prettier-ignore  -->
+        {{object.drug_id__drug_name}}
         <!--  -->
 
       </td>
       <td>
-        {%if url_name%}
-        <!--  -->
-        {%if object.urlname%}
-        <a href="{%url url_name object.urlname%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-        {%else%}
-        <a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-        {%endif%}
-        <!--  -->
-        {%endif%}
-        {{object.pk}}
+        {{object.drug_id__drug_codes}}
       </td>
-      {%for value in object.get_values%}
-      <td>{{value}}</td>
-      {%endfor%}
+      <td>
+        {{object.card_barcode__orgbatch_id__organism_id__organism_name}}
+      </td>
+      <td>
+        {{object.mic}}
+      </td>
+
+
       <!-- Special for Taxonomy Tax_id web Link -->
       {%if object.tax_id %}
       <td>

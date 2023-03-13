@@ -34,7 +34,7 @@ from apputil.utils_dataimport import Importhandler
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
+from .utils import Drug_filter, Vitekcard_filter, Vitekast_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from .forms import Drug_form
 from .Vitek import *
 
@@ -65,7 +65,7 @@ def smartsQuery(req, pk):
 @login_required   
 def iframe_url(req):
     context={}
-    return render(req, "utils/index.html")
+    return render(req, "utils/ketcher/index.html")
 
 @login_required   
 def ketcher_test(req):
@@ -318,7 +318,7 @@ class Importhandler_VITEK(Importhandler):
         kwargs['user']=request.user
         
         self.file_url=[]
-        self.data_model=request.POST.get('file_data')
+        self.data_model=request.POST.get('file_data') or None
         myfiles=request.FILES.getlist('file_field')
       
         try:
@@ -405,7 +405,31 @@ class Importhandler_VITEK(Importhandler):
         return render(request, 'ddrug/importhandler_vitek.html', context)
 
 
+# =========Vitek Ast==================
+class VitekastListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=VITEK_AST  
+    template_name = 'ddrug/vitek_ast/vitekast_list.html' 
+    filterset_class=Vitekast_filter
+    model_fields=VITEKAST_FIELDs_antibio
+    context_list=''
 
+    def get_queryset(self):
+        # Get the queryset however you usually would.  For example:
+        queryset = super().get_queryset()
+
+        # queryset=Vitek_CARD.objects.all().values('drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
+        queryset=queryset.values('pk', 'drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
+        print(f'query: {queryset}')
+        # Then use the query parameters and the queryset to
+        # instantiate a filterset and save it as an attribute
+        # on the view instance for later.
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        # Return the filtered queryset
+        order=self.get_order_by()
+        if order:
+            return self.filterset.qs.distinct().order_by(order)
+        return self.filterset.qs.distinct()
 
       
 

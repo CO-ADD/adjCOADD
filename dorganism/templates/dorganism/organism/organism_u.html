@@ -1,12 +1,6 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
   {% csrf_token %}
   <div class="row">
-    <div class="col-md-3 updateformshow not-visible">
-      <a class="btn btn-sm" href="{% url 'org_detail' object.pk %}">Discard Changes</a>
-      <input style="float: right" type="submit" class="btn btn-sm" value="Update Changes" name="note" />
-    </div>
-  </div>
-  <div class="row">
     <div class="col-md-4">
       <input type="text" id="taxo-name" name="search_organism" style="display: none;">
       <table class="table table-sm align-middle table-bordered">
@@ -190,6 +184,10 @@
           </tr>
         </tbody>
       </table>
+      <div class="col-md-3 updateformshow not-visible">
+        <button type="submit" class="btn btn-sm mx-2" name="note"><i class="fa-regular fa-floppy-disk"></i></button>
+        <a class="btn btn-sm mx-2" href="{% url 'org_detail' object.pk %}"><i class="fa-solid fa-xmark"></i></a>
+      </div>
     </div>
   </div>
 </form>

@@ -1,73 +1,5 @@
 /*!
 
- =========================================================
- * Atlantis Bootstrap 4 Admin Dashboard (Bootstrap 4)
- =========================================================
-
- * Product Page: http://www.themekita.com/
- * Copyright 2018 Theme Kita (http://www.themekita.com/)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-[Table of contents]
-
-* Background
-* Typography
-* Layouts
-   + Body & Wrapper
-   + Main Header
-   + Sidebar
-* Layouts Color
-* Components
-   + Breadcrumbs
-   + Cards
-     - Card Stats
-     - Card Task
-     - Card States
-     - Card Posts
-     - Card Pricing
-     - Card Annoucement
-     - Card Profile
-     - Accordion
-   + Inputs
-   + Tables
-   + Navbars
-   + Navsearch
-   + Badges
-   + Dropdowns
-   + Charts
-   + Alerts
-   + Buttons
-   + Navtabs
-   + Popovers
-   + Progress
-   + Paginations
-   + Sliders
-   + Modals
-   + Timeline
-   + Maps
-   + Invoice
-   + Messages
-   + Tasks
-   + Settings
-* Plugins
-   + jQueryUI
-   + jQuery Scrollbar
-   + Toggle
-   + Css Animate
-   + Full Calendar
-   + SweetAlert
-   + Datatables
-   + DateTimePicker
-   + Select2
-   + Tagsinput
-   + Dropzone
-   + Summernote
-* Responsive
-* 404
-* Login & Register
 
 # [Color codes]
 
@@ -552,3 +484,8 @@ body {
 #search-nav.focus {
   max-width: 400px;
 }
+
+/* [data-bs-toggle] {
+  background-color: green !important;
+} */
+

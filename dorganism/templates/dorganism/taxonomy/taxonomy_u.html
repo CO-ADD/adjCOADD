@@ -1,22 +1,11 @@
-<a
-  class="card-link"
-  data-bs-toggle="modal"
-  data-bs-target="#taxonomy_detail_update"
-  >Update</a
->
+<a class="card-link border-0 text-success fs-5" data-bs-toggle="modal" data-bs-target="#taxonomy_detail_update"><i
+    class="fa-regular fa-pen-to-square"></i></a>
 
-<div
-  class="modal fade"
-  id="taxonomy_detail_update"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="taxonomy_detail_update" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'taxonomy_update' pk=object.pk as updateurl %}
-  {%include 'utils/modal/update.html' with title='Update Taxonomy' urlname=updateurl %}
+    {%include 'utils/modal/update.html' with title='Update Taxonomy' urlname=updateurl %}
   </div>
 </div>

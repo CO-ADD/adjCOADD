@@ -33,7 +33,7 @@ DICTIONARY_FIELDs = {
 
 # TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
 TAXONOMY_FIELDs = {
-    'organism_name':'Organism Name',  
+    # 'organism_name':'Organism Name',  
     'code':'Code', 
     'lineage':'Lineage', 
     'tax_rank':'Rank',
@@ -50,7 +50,7 @@ ORGANISM_FIELDs = {
     'gen_property':'Genotype', 
     'biologist':'Biologist',
     'strain_origin':'Origin',
-    'organism_id':'Organism ID', 
+    # 'organism_id':'Organism ID', 
     }
 
 ORGANISM_BATCH_FIELDs = {
@@ -88,7 +88,7 @@ ORGANISM_CULTR_FIELDs = {
 # -dDrug Settings ---------------------------------------------------
 DRUG_FIELDs = {
     
-    "drug_id":"Drug ID",
+    # "drug_id":"Drug ID",
     "drug_name":"Drug Name",
     "drug_othernames":"Other Name",
     "drug_codes":"Drug Code",
@@ -136,6 +136,24 @@ VITEKAST_FIELDs = {
     "selection":"Selection",
     "organism":"Organism",
     "filename":"PDF Filename",
-    "page_no":"PDF pageNo"
+    "page_no":"PDF pageNo",
+    "mic":"MIC",
+    # "drug_id__drug_name":"Drug Name",
+    # "drug_id__drug_codes":"Code",
+    # "card_barcode__orgbatch_id__organism_id__organism_name":"Organism Name",
+    # "mic":"MIC",
+    # "drug_id__drug_name":"Drug Name",
+    # "drug_id__drug_codes":"Code",
+    # "card_barcode__orgbatch_id__organism_id__organism_name":"Organism Name",
+   
+}
+
+
+VITEKAST_FIELDs_antibio = {
+    "mic":"MIC",
+    "drug_id__drug_name":"Drug Name",
+    "drug_id__drug_codes":"Code",
+    "card_barcode__orgbatch_id__organism_id__organism_name":"Organism Name",
+    
    
 }

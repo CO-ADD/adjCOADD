@@ -10,22 +10,24 @@
 
 <script>
     var ketcherFrame = document.getElementById('ifKetcher');
+
+    console.log(ketcherFrame.contentWindow)
     var ketcher = null;
 
     if ('contentDocument' in ketcherFrame) {
         console.log(ketcherFrame.contentWindow)
-        console.log(ketcherFrame.contentWindow)
 
         ketcher = ketcherFrame.contentWindow.ketcher;
         console.log("content");
-        console.log(ketcher)
-        ketcher.setMolecule('c1ccccc1');
+        console.log(ketcher);
+        ketcher.getSmiles()
+        // ketcher.setMolecule('c1ccccc1');
     }
-    else // IE7
-    {
-        ketcher = document.frames['ifKetcher'].window.ketcher;
-        console.log(ketcher)
-    }
+    // else // IE7
+    // {
+    //     ketcher = document.frames['ifKetcher'].window.ketcher;
+    //     console.log(ketcher)
+    // }
 
 </script>
 {%endblock%}
