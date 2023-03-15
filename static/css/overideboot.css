@@ -483,8 +483,3 @@ body {
 #search-nav.focus {
   max-width: 400px;
 }
-
-.input-group {
-  height: 1.5rem !important;
-  width: auto !important;
-}

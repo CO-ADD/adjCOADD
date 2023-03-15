@@ -14,9 +14,11 @@
     >
       <div class="d-flex align-items-baseline">
         {% include 'utils/pagination.html'%}
+        <!--  -->
+        {%include 'utils/selectAllExp.html'%}
         <!-- Create New Entry Modal-->
-        <a id="createDrug" class="card-link" style="float: right">
-          <i class="bi bi-plus"></i>New
+        <a id="createDrug" class="card-link fs-5">
+          <i class="fa-solid fa-file-circle-plus"></i>
         </a>
         <div
           id="createDrugModal"
@@ -28,7 +30,6 @@
       <!-- End---------------------- -->
 
       <!--  -->
-      {%include 'utils/selectAllExp.html'%}
       <!-- Swich Table/Card View -->
       <div class="m-0">
         <a href="{%url 'drug_list'%}" class="btn btn-outline-secondary"
