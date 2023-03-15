@@ -103,13 +103,13 @@ class Organism(AuditModel):
     #ORG_CLASSES = ['GN','GP','MB','FG','MA']
     #SEP = "_"
 
+    strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
         db_column="organism_name", related_name="organism_name+")
     strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs")
     strain_code= models.CharField(max_length=30, blank=True, verbose_name = "Strain Code")
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
-    strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     res_property= models.CharField(max_length=350, blank=True, verbose_name = "Resistance Property")
     gen_property= models.CharField(max_length=350, blank=True, verbose_name = "Genetic Property")
     strain_origin = models.CharField(max_length=350, blank=True, verbose_name = "Origin of Strain")
@@ -127,12 +127,12 @@ class Organism(AuditModel):
         db_column="lab_restriction", related_name="%(class)s_MTA+")
     risk_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Risk Group", on_delete=models.DO_NOTHING,
         db_column="risk_group", related_name="%(class)s_Risk+")
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_Biologist")
     pathogen_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pathogen", on_delete=models.DO_NOTHING,
         db_column="pathogen_group", related_name="%(class)s_Pathogen+")
     oxygen_pref = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Oxygen", on_delete=models.DO_NOTHING,
         db_column="oxygen_pref", related_name="%(class)s_Oxygen+")
-    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
-        db_column="biologist", related_name="%(class)s_Biologist")
 
     #------------------------------------------------
     class Meta:

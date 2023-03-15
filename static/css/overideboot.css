@@ -16,8 +16,8 @@ danger-color : #f3545d
 
 -------------------------------------------------------------------*/
 *:focus {
-  outline: 0 !important;
-  box-shadow: none !important;
+  outline: 0;
+  box-shadow: none;
 }
 
 /*   Typography    */
@@ -164,67 +164,67 @@ strong,
 
 .text-primary,
 .text-primary a {
-  color: #1572E8 !important;
+  color: #1572E8;
 }
 
 .text-primary:hover,
 .text-primary a:hover {
-  color: #1572E8 !important;
+  color: #1572E8;
 }
 
 .text-secondary,
 .text-secondary a {
-  color: #6861CE !important;
+  color: #6861CE;
 }
 
 .text-secondary:hover,
 .text-secondary a:hover {
-  color: #6861CE !important;
+  color: #6861CE;
 }
 
 .text-info,
 .text-info a {
-  color: #48ABF7 !important;
+  color: #48ABF7;
 }
 
 .text-info:hover,
 .text-info a:hover {
-  color: #48ABF7 !important;
+  color: #48ABF7;
 }
 
 .text-success,
 .text-success a {
-  color: #118615 !important;
+  color: #118615;
 }
 
 .text-success:hover,
 .text-success a:hover {
-  color: #31CE36 !important;
+  color: #31CE36;
 }
 
 .text-warning,
 .text-warning a {
-  color: #FFAD46 !important;
+  color: #FFAD46;
 }
 
 .text-warning:hover,
 .text-warning a:hover {
-  color: #FFAD46 !important;
+  color: #FFAD46;
 }
 
 .text-danger,
 .text-danger a {
-  color: #F25961 !important;
+  color: #F25961;
 }
 
 .text-danger:hover,
 .text-danger a:hover {
-  color: #F25961 !important;
+  color: #F25961;
 }
 
 label {
-  color: #495057 !important;
-  font-size: 14px !important;
+  color: #495057;
+  font-size: 14px;
 }
 
 .text-small {
@@ -247,23 +247,23 @@ label {
 
 /*   Font-weight    */
 .fw-light {
-  font-weight: 300 !important;
+  font-weight: 300;
 }
 
 .fw-normal {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 .fw-mediumbold {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 .fw-bold {
-  font-weight: 600 !important;
+  font-weight: 600;
 }
 
 .fw-extrabold {
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 /* 		Opacity  	*/
@@ -309,7 +309,7 @@ body {
 .border-right,
 .border-bottom,
 .border-top {
-  border-color: #F0F1F3 !important;
+  border-color: #F0F1F3;
 }
 
 .dropdown-menu {
@@ -318,33 +318,33 @@ body {
 }
 
 .no-box-shadow {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 /*    margin-top negative   */
 .mt--5,
 .my--5 {
-  margin-top: -3rem !important;
+  margin-top: -3rem;
 }
 
 .mt--4,
 .my--4 {
-  margin-top: -1.5rem !important;
+  margin-top: -1.5rem;
 }
 
 .mt--3,
 .my--3 {
-  margin-top: -1rem !important;
+  margin-top: -1rem;
 }
 
 .mt--2,
 .my--2 {
-  margin-top: -0.5rem !important;
+  margin-top: -0.5rem;
 }
 
 .mt--1,
 .my--1 {
-  margin-top: -0.25rem !important;
+  margin-top: -0.25rem;
 }
 
 /*      Wrapper      */
@@ -462,11 +462,11 @@ body {
 }
 
 .btn-toggle {
-  font-size: 20px !important;
+  font-size: 20px;
   line-height: 20px;
-  padding: 0px !important;
-  background: transparent !important;
-  color: #2A2F5B !important;
+  padding: 0px;
+  background: transparent;
+  color: #2A2F5B;
 }
 
 .btn-toggle:hover,
@@ -485,5 +485,5 @@ body {
 }
 
 /* [data-bs-toggle] {
-  background-color: green !important;
+  background-color: green ;
 } */

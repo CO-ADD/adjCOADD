@@ -77,10 +77,13 @@ class Vitekcard_filter(Filterbase):
 
 
 class Vitekast_filter(Filterbase):
-    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['Drug_Name'].label='Drug Name'
     class Meta:
         model=VITEK_AST
-        fields=['card_barcode']
+        fields=['Drug_Name']
 
 
 

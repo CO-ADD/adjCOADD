@@ -19,6 +19,7 @@ danger-color : #f3545d */
   --teal: #2c7a84;
   --orange: #ff6e00;
   --grey: #625e5d;
+  --bs-card-bg: #fefefe;
   --bs-card-border: black;
   --bs-heading-bg: var(--teal);
   --bs-topbar-search-bg: #f3f3f9;
@@ -57,7 +58,7 @@ danger-color : #f3545d */
   --bs-body-bg: #222736;
   --bs-body-bg-rgb: rgb(34, 39, 54);
   --bs-body-color-rgb: rgb(166, 176, 207);
-  --bs-body-color: #a6b0cf;
+  --bs-body-color: #f6f6f6;
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
   --bs-custom-white: #2a3042;
@@ -76,17 +77,16 @@ danger-color : #f3545d */
   --bs-boxed-body-bg: #32394f;
   --bs-topnav-bg: #282e3f;
   --bs-menu-item-color: #878c9b;
-  --bs-form-item-color: #3a425a;
+  --bs-form-item-color: #f6f6f6;
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
   --bs-inform-color: #f1ca81;
   --bs-th-bg: #226770;
+  --bs-card-bg: #262b3c;
 }
 
 /* html elements custom style -----------------------------*/
-.darkMode .card {
-  --bs-card-bg: #2a3042;
-}
+
 
 a {
   text-decoration: none;
@@ -107,9 +107,11 @@ footer {
   bottom: 0 !important;
 }
 
-input,
-select,
-option {
+label {
+  color: var(--bs-body-color);
+}
+
+input {
   background-color: var(--bs-form-item-color);
   color: var(--bs-body-color);
 }
@@ -231,6 +233,12 @@ button,
 
 /* ------------------------------ */
 /* ----custom Card Style */
+.card {
+  background-color: var(--bs-card-bg);
+  border-color: var(--bs-card-border);
+}
+
+.page-link,
 .card-link {
   cursor: pointer !important;
   color: var(--bs-menu-item-color);
@@ -243,11 +251,10 @@ button,
 }
 
 /* bootstrap override */
-.card,
+
 .dropdown-menu {
   background-color: var(--bs-light) !important;
   border: 1px solid var(--bs-card-border) !important;
-  transition: 1s;
 }
 
 .card:hover {
@@ -653,11 +660,6 @@ table {
   width: 100%;
 }
 
-th,
-td {
-  padding: 8px 15px;
-  /* border: 2px solid #529432;  */
-}
 
 /* pivottable */
 
@@ -742,7 +744,7 @@ td {
 #sortable1,
 #sortable2,
 #sortable3 {
-  /* border: 1px solid var(--bs-card-border); */
+
   background-color: var(--bs-topnav-bg);
   color: white;
   border-radius: 2%;
@@ -752,7 +754,6 @@ td {
   list-style-type: none;
   margin: auto;
   padding: 5px;
-  /* float: left; */
   margin-right: 10px;
   font-size: medium;
 }

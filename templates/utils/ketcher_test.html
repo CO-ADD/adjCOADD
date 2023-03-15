@@ -6,8 +6,11 @@
 <div class="d-flex justify-content-center" style="margin-top: 200px;">
 
     <iframe id="ifKetcher" src="{% url 'ketcher' %}" width="800" height="600"></iframe>
-</div>
 
+</div>
+<button type="button" onclick="ketcherfunc()">
+    Check window
+</button>
 <script>
     var ketcherFrame = document.getElementById('ifKetcher');
 
@@ -28,6 +31,12 @@
     //     ketcher = document.frames['ifKetcher'].window.ketcher;
     //     console.log(ketcher)
     // }
+
+    function ketcherfunc() {
+        // e.preventDefault();
+        console.log(ketcher);
+        console.log(ketcherFrame.contentWindow)
+    }
 
 </script>
 {%endblock%}
