@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 # import cx_Oracle
 # cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
-DEVELOPMENT=False
+DEVELOPMENT=True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -211,11 +211,11 @@ CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.
 
 
 # Django Session timeout setting
-# INACTIVE_TIME= 120
-# if DEVELOPMENT:
-#     SESSION_COOKIE_AGE=3000
-# else:
-#     SESSION_COOKIE_AGE=300
+INACTIVE_TIME= 120
+if DEVELOPMENT:
+    SESSION_COOKIE_AGE=3000
+else:
+    SESSION_COOKIE_AGE=300
 # SESSION_EXPIRE_SECONDS =  120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

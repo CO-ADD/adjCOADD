@@ -2,8 +2,7 @@
   <thead>
     <tr>
       <!-- detail view link name if exists -->
-      <th style="width:1rem">
-      </th>
+      <th style="width: 1rem"></th>
       <!-- customized/verbose model fields name -->
       <th class="order_field" style="width: fit-content">ID</th>
       {%for field in fields%}
@@ -26,19 +25,17 @@
         <!--prettier-ignore  -->
         {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
         <!--  -->
-
       </td>
       <td>
         {%if url_name%}
         <!--  -->
         {%if object.urlname%}
-        <a href="{%url url_name object.urlname%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
         {%else%}
-        <a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a href="{%url url_name object.pk%}">{{object.pk}}</a>
         {%endif%}
         <!--  -->
         {%endif%}
-        {{object.pk}}
       </td>
       {%for value in object.get_values%}
       <td>{{value}}</td>
@@ -46,8 +43,11 @@
       <!-- Special for Taxonomy Tax_id web Link -->
       {%if object.tax_id %}
       <td>
-        <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
-          target="_blank">{{object.tax_id}}</a>
+        <a
+          href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+          target="_blank"
+          >{{object.tax_id}}</a
+        >
       </td>
       {%endif%}
     </tr>

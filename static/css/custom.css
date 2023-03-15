@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap");
 
-
 /* [Color codes]
 
 body-text-color: #575962
@@ -42,9 +41,10 @@ danger-color : #f3545d */
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
   --bs-th-bg: #cacece;
+  --bs-table-bg: rgb(235, 235, 235) !important;
 }
 
-.darkMode {
+:root .darkMode {
   --bs-card-border: #f6f6f6;
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
@@ -82,12 +82,14 @@ danger-color : #f3545d */
   --bs-footer-color: #a6b0cf;
   --bs-inform-color: #f1ca81;
   --bs-th-bg: #226770;
-  --bs-card-bg: #262b3c;
+  --bs-table-bg: #2e2e2e !important;
+  --bs-card-bg: #262b3c !important;
 }
 
 /* html elements custom style -----------------------------*/
-
-
+.darkMode .accordion-item {
+  background-color: var(--bs-table-bg);
+}
 a {
   text-decoration: none;
   cursor: pointer;
@@ -97,7 +99,6 @@ a {
 body {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
-  font-family: "Roboto Condensed", sans-serif;
 }
 
 footer {
@@ -116,12 +117,12 @@ input {
   color: var(--bs-body-color);
 }
 
-td>input {
+td > input {
   max-width: 150px !important;
 }
 
 option {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 
 p {
@@ -132,10 +133,9 @@ p {
 }
 
 select {
-  width: 100%;
-  height: 100%;
   border: none;
   margin: 0;
+  overflow: scroll;
 }
 
 select option {
@@ -180,14 +180,12 @@ td {
   max-width: 200px;
   white-space: wrap;
   word-wrap: break-word;
-  background-color: var(--bs-gray-300);
   color: var(--bs-body-color);
   padding: 0;
 }
 
 tr {
   height: 30px;
-  background-color: var(--bs-grey-300);
   color: var(--bs-body-color);
 }
 
@@ -304,15 +302,14 @@ button,
 }
 
 .nav-link:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   transform: scaleX(0);
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color:
-    var(--bs-light);
+  background-color: var(--bs-light);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }
@@ -655,12 +652,6 @@ form p {
   background-color: var(--bs-th-bg);
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-
 /* pivottable */
 
 .dataframe th,
@@ -744,7 +735,6 @@ table {
 #sortable1,
 #sortable2,
 #sortable3 {
-
   background-color: var(--bs-topnav-bg);
   color: white;
   border-radius: 2%;
@@ -868,4 +858,11 @@ table {
 #alert {
   animation: disapear 2s forwards;
   width: 6rem;
+}
+.django-form-table {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+.django-form-table:hover {
+  background-color: var(--bs-gray-200);
 }

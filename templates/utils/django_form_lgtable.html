@@ -1,0 +1,8 @@
+<div class="row g-2">
+  {%for field in form.visible_fields%}
+  <div class="col-sm-3 border django-form-table">
+    <label>{{field.label}}</label>
+    <p>{{field}}</p>
+  </div>
+  {%endfor%}
+</div>

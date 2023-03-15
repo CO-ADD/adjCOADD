@@ -10,20 +10,33 @@
   <!-- Main View -->
   <div class="main d-flex flex-column">
     {%include 'utils/message.html'%}
-    <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
+    <div
+      class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
+    >
       <div class="d-flex align-items-baseline">
         {% include 'utils/pagination.html'%}
         <!-- Create New Entry Modal-->
-        <a id="createOrganism" class="card-link text-success" style="float: right">
+        <a
+          id="createOrganism"
+          class="card-link text-success"
+          style="float: right"
+        >
           <i class="bi bi-plus"></i>New
         </a>
-        <div id="createOrganismModal" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
+        <div
+          id="createOrganismModal"
+          class="modal fade"
+          role="dialog"
+          data-bs-backdrop="static"
+        ></div>
       </div>
       <!--  -->
       {%include 'utils/selectAllExp.html'%}
       <!-- Swich Table/Card View -->
       <div class="m-0">
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
+        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
+          ><i class="bi bi-list"></i
+        ></a>
         <a href="{%url 'org_card'%}" class="btn btn-outline-secondary">
           <i class="bi bi-grid-fill"></i>
         </a>
@@ -36,7 +49,7 @@
         <!--  -->
         {% url 'org_detail' object.pk as url_name %}
         <!--prettier-ignore-->
-        {%include 'utils/card.html' with url_name=url_name object_id=object.organism_id datatype='Organism' object_var1=object.strain_code object_var2=object.organism_name object_var3=object.strain_ids object_var5_label="Type" object_var5=object.strain_type object_id_slug=object.organism_id object_var6_label="Phenotype" object_var6=object.res_property object_var7_label="Genotype" object_var7=object.gen_property %}
+        {%include 'utils/card.html' with url_name=url_name object_name=object.organism_name datatype='Organism' object_var1=object.strain_code object_var3=object.strain_ids object_var5_label="Type" object_var5=object.strain_type object_id_slug=object.organism_id object_var6_label="Phenotype" object_var6=object.res_property object_var7_label="Genotype" object_var7=object.gen_property %}
         <!--prettier-ignore-->
         {%endfor%}
       </div>
@@ -45,6 +58,9 @@
 </div>
 
 {%load static%}
-<script type="text/javascript" src="{%static 'js/modal/create_organism.js'%}"></script>
+<script
+  type="text/javascript"
+  src="{%static 'js/modal/create_organism.js'%}"
+></script>
 
 {%endblock%}

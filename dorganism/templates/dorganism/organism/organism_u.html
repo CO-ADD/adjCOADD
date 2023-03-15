@@ -1,16 +1,34 @@
-<form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
+<form
+  id="OrganismUpdateForm"
+  method="POST"
+  action="{%url 'organism_update' object.pk %}"
+>
   {% csrf_token %}
   <div class="row">
     <div class="col-md-4">
-      <input type="text" id="taxo-name" name="search_organism" style="display: none;">
-      <table class="table table-sm align-middle table-bordered">
+      <input
+        type="text"
+        id="taxo-name"
+        name="search_organism"
+        style="display: none"
+      />
+      <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <tr>
             <th scope="row" class="">Organism Name</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="organism_name">
-              <div class="detail"> <a
-                  href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a> </div>
-              <div class="input-group select">{% include 'utils/search_organism.html' %}</div>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="organism_name"
+            >
+              <div class="detail">
+                <a href="{%url 'taxo_detail' object.organism_name.urlname %}"
+                  >{{object.organism_name}}</a
+                >
+              </div>
+              <div class="input-group select">
+                {% include 'utils/search_organism.html' %}
+              </div>
             </td>
           </tr>
           <tr>
@@ -22,7 +40,11 @@
           </tr>
           <tr>
             <th scope="row" class="">Strain Code</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_code">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_code"
+            >
               <div class="detail">{{object.strain_code}}</div>
               <div class="input-group select">{{form.strain_code}}</div>
             </td>
@@ -30,7 +52,11 @@
 
           <tr>
             <th scope="row" class="">Strain Notes</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_notes">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_notes"
+            >
               <div class="detail">{{object.strain_notes}}</div>
               <div class="input-group select">{{form.strain_notes}}</div>
             </td>
@@ -38,7 +64,11 @@
 
           <tr>
             <th scope="row" class="">Strain_Type</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="strain_type"
+            >
               <div class="detail">
                 {{strain_type | default_if_none:"&nbsp;"}}
               </div>
@@ -50,7 +80,11 @@
 
           <tr>
             <th scope="row" class="">Panel</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_panel">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="strain_panel"
+            >
               <div class="detail">
                 {{strain_panel|default_if_none:"&nbsp;"}}
               </div>
@@ -61,7 +95,11 @@
           </tr>
           <tr>
             <th scope="row" class="">Strain Origin</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_origin">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_origin"
+            >
               <div class="detail" style="width: 300px; overflow: auto">
                 {{object.strain_origin}}
               </div>
@@ -70,7 +108,11 @@
           </tr>
           <tr>
             <th scope="row" class="">Strain Identification</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_identification">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="strain_identification"
+            >
               <div class="detail">{{object.strain_identification}}</div>
               <div class="input-group select">
                 {{form.strain_identification}}
@@ -81,18 +123,26 @@
       </table>
     </div>
     <div class="col-md-4">
-      <table class="table table-sm align-middle table-bordered">
+      <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <tr>
             <th scope="row" class="">Resistance Properties</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="res_property">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="res_property"
+            >
               <div class="detail">{{object.res_property}}</div>
               <div class="input-group select">{{form.res_property}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">Gene Properties</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="gen_property">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="gen_property"
+            >
               <div class="detail">{{object.gen_property}}</div>
               <div class="input-group select">{{form.gen_property}}</div>
             </td>
@@ -106,34 +156,48 @@
           </tr>
           <tr>
             <th scope="row" class="">Sequence Link</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="sequence_link">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="sequence_link"
+            >
               <div class="detail">{{object.sequence_link}}</div>
               <div class="input-group select">{{form.sequence_link}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">Oxygen Pref</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="oxygen_pref">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="oxygen_pref"
+            >
               <div class="detail">{{object.oxygen_pref}}</div>
               <div class="form-control select">{{form.oxygen_pref}}</div>
             </td>
           </tr>
 
-
-
           <tr>
             <th scope="row" class="">MTA Status</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="mta_status">
-              <div class="detail">{{object.mta_status|default_if_none:"&nbsp;"}}</div>
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="mta_status"
+            >
+              <div class="detail">
+                {{object.mta_status|default_if_none:"&nbsp;"}}
+              </div>
               <div class="form-control select">{{form.mta_status}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">MTA Document</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="mta_document">
-              <div class="detail">
-                {{object.mta_document}}
-              </div>
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="mta_document"
+            >
+              <div class="detail">{{object.mta_document}}</div>
               <div class="input-group select">{{form.mta_document}}</div>
             </td>
           </tr>
@@ -141,13 +205,17 @@
       </table>
     </div>
     <div class="col-md-4">
-      <table class="table table-sm align-middle table-bordered">
+      <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <tr>
             <th scope="row" class="">
               <label for="id_risk_group">Risk Group</label>
             </th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="risk_group">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="risk_group"
+            >
               <div class="detail">{{object.risk_group}}</div>
               <div class="form-control select">{{form.risk_group }}</div>
             </td>
@@ -155,14 +223,22 @@
 
           <tr>
             <th scope="row" class="">Pathogen</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="pathogen_group">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="pathogen_group"
+            >
               <div class="detail">{{object.pathogen_group}}</div>
               <div class="form-control select">{{form.pathogen_group}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">Lab Restriction</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="lab_restriction">
+            <td
+              class="editable"
+              data-id="{{object.pk}}"
+              data-type="lab_restriction"
+            >
               <div class="detail">{{object.lab_restriction}}</div>
               <div class="input-group select">{{form.lab_restriction}}</div>
             </td>
@@ -170,7 +246,11 @@
 
           <tr>
             <th scope="row" class="">Biologist</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="biologist">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="biologist"
+            >
               <div class="detail">{{object.biologist}}</div>
               <div class="form-control select">{{form.biologist}}</div>
             </td>
@@ -185,8 +265,12 @@
         </tbody>
       </table>
       <div class="col-md-3 updateformshow not-visible">
-        <button type="submit" class="btn btn-sm mx-2" name="note"><i class="fa-regular fa-floppy-disk"></i></button>
-        <a class="btn btn-sm mx-2" href="{% url 'org_detail' object.pk %}"><i class="fa-solid fa-xmark"></i></a>
+        <button type="submit" class="btn btn-sm mx-2" name="note">
+          <i class="fa-regular fa-floppy-disk"></i>
+        </button>
+        <a class="btn btn-sm mx-2" href="{% url 'org_detail' object.pk %}"
+          ><i class="fa-solid fa-xmark"></i
+        ></a>
       </div>
     </div>
   </div>
