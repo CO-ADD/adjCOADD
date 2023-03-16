@@ -112,6 +112,9 @@ body {
 tbody{
   background-color: var(--bs-boxed-body-bg);
 }
+tbody{
+  background-color: var(--bs-boxed-body-bg);
+}
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
