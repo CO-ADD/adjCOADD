@@ -1,38 +1,15 @@
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %} 
+{% block title%} COADD{% endblock %}
 {% block content%}
 <!--  -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+  {%include 'utils/topbar.html' with list_url='taxo_list' card_url='taxo_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    {%include 'utils/message.html'%}
-    <div
-      class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline"
-    >
-      <div class="d-flex align-items-baseline">
-        {% include 'utils/pagination.html'%}
-        <!-- Create New Entry Modal-->
-        <a id="createTaxo" class="card-link" style="float: right"
-          ><i class="bi bi-plus"></i>New
-        </a>
-        <div id="createTaxoModal" class="modal fade" role="dialog"></div>
-      </div>
-      <!--------------- -->
-      {%include 'utils/selectAllExp.html'%}
-      <!-- Swich Table/Card View -->
-      <div class="m-0">
-        <a href="{%url 'taxo_list'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-list"></i
-        ></a>
-        <a href="{%url 'taxo_card'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-grid-fill"></i
-        ></a>
-      </div>
-    </div>
+   {%include 'utils/main_horizalbar.html' with create_object='createTaxo' create_objectModal='createTaxoModal' %}
     <!-- Card View Content -->
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
@@ -40,7 +17,7 @@
         <!--  -->
         {% url 'taxo_detail' object.urlname as url_name %}
         <!--prettier-ignore-->
-        {%include 'utils/card.html' with url_name=url_name object_id=object.organism_name datatype='Taxonomy' object_var2=object.division object_var3=object.org_class object_var_link_label="Tax ID: " object_var_link=object.tax_id  object_id_slug=object.urlname object_var6_label="Rank" object_var6=object.tax_rank object_var8_label="Lineage" object_var8=object.lineage object_var9_label="Other Names: " object_var9=object.other_names%}
+        {%include 'utils/card.html' with url_name=url_name object_name=object.organism_name datatype='Taxonomy' object_var2=object.division object_var3=object.org_class object_var_link_label="Tax ID: " object_var_link=object.tax_id object_id_slug=object.urlname object_var6_label="Rank" object_var6=object.tax_rank object_var8_label="Lineage" object_var8=object.lineage object_var9_label="Other Names: " object_var9=object.other_names%}
         <!--  -->
         {%endfor%}
       </div>
@@ -49,9 +26,6 @@
 </div>
 
 {%load static%}
-<script
-  type="text/javascript"
-  src="{%static 'js/modal/create_taxonomy.js'%}"
-></script>
+<script type="text/javascript" src="{%static 'js/modal/create_taxonomy.js'%}"></script>
 
 {% endblock%}

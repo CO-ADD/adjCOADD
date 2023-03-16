@@ -10,7 +10,7 @@
 
     {%include './organism_d.html'%}
 
-    <div class="accordion" id="organism-detail">
+    <div class="accordion bg-transparent" id="organism-detail">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
@@ -20,9 +20,9 @@
                     </h5>
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            <div id="collapseOne" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
                 data-bs-parent="#organism-detail">
-                <div class="accordion-body">
+                <div class="accordion-body bg-transparent">
                     {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}

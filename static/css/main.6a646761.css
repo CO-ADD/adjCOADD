@@ -20,7 +20,6 @@
   height: 0;
 }
 :where(pre) {
-  font-family: monospace, monospace;
   font-size: 1em;
 }
 :where(abbr[title]) {
@@ -32,7 +31,6 @@
   font-weight: bolder;
 }
 :where(code, kbd, samp) {
-  font-family: monospace, monospace;
   font-size: 1em;
 }
 :where(small) {
@@ -133,8 +131,6 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -891,8 +887,6 @@ fieldset[disabled] .Atom-module_atom__g2RUu {
 .Select-module_dropdownList__rdcrH .MuiMenuItem-root {
   color: #333;
   cursor: default;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   font-size: 14px;
   min-height: 28px;
   padding: 0 8px;
@@ -959,8 +953,6 @@ fieldset[disabled] .Atom-module_atom__g2RUu {
   box-sizing: border-box;
   color: #333;
   cursor: default;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   font-size: 14px;
   height: 24px;
   line-height: 22px;
@@ -1029,8 +1021,6 @@ fieldset[disabled] .Atom-module_atom__g2RUu {
   color: #585858;
   display: flex;
   flex-direction: column;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   opacity: 1;
   outline: 0;
   position: relative;
@@ -1703,8 +1693,6 @@ fieldset[disabled] .Atom-module_atom__g2RUu {
   color: #333;
   cursor: default;
   display: flex;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   font-size: 14px;
   height: 24px;
   min-height: 24px;
@@ -3353,8 +3341,6 @@ fieldset[disabled] .FormulaInput-module_chem_input__oprB3 {
   padding: 0;
 }
 .OpenOptions-module_dropContainer__PL6Tg p {
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   font-size: 10px;
   line-height: 12.1px;
   margin: 0;
@@ -4490,8 +4476,6 @@ fieldset[disabled] .ElementsTable-module_button__xCaL4 {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   width: 260px;
 }
 .RemoveFG-module_window__6PHH4 > * {
@@ -5882,8 +5866,6 @@ fieldset[disabled] .Editor-module_editor__o0Gjz input[type="search"] {
   box-sizing: border-box;
   color: #333;
   display: inline-block;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   font-size: 14px;
   height: 24px;
   line-height: 16px;
@@ -6140,8 +6122,6 @@ fieldset[disabled] .Editor-module_editor__o0Gjz textarea {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  font-family: Inter, FreeSans, Arimo, Droid Sans, Helvetica, Helvetica Neue,
-    Arial, sans-serif;
   max-height: 300px;
   opacity: 1;
   outline: 0;

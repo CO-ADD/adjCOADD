@@ -1,4 +1,5 @@
 <!-- Start upload datafiles, scanne virus -->
+<br>
 <div id="fileupload-basic" class="container">
     <!-- <div id="dropzone">
         Drop some directory here.
@@ -119,6 +120,9 @@
 
 
         </div>
+        {%else%}
+
+        <h1 class="text-warning"> <strong> No files uploaded, please back to the step 1</strong></h1>
         {%endif %}
     </section>
     {%include 'utils/preloader.html'%}
@@ -172,7 +176,8 @@
         headerTag: "h3",
         bodyTag: "section",
         transitionEffect: "slideLeft",
-        autoFocus: true
+        autoFocus: true,
+        stepsOrientation: "vertical"
     });
 </script>
 <script>

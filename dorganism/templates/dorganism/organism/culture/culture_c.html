@@ -1,5 +1,5 @@
-<div class="modal-dialog">
-  <div class="modal-content" style="width: 30rem">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
     <div class="modal-header">
       <button
         type="button"
@@ -8,7 +8,6 @@
         aria-label="Close"
         onclick="window.location.reload(true);"
       ></button>
-
     </div>
     <div class="mx-2">
       <h4 class="my-0">Create Culture</h4>
@@ -22,7 +21,7 @@
       >
         {% csrf_token %}
         <!-- ignore prettier -->
-        {%include 'utils/django_form_table.html'%}
+        {%include 'utils/django_form_lgtable.html'%}
         <input
           type="text"
           id="microorg"

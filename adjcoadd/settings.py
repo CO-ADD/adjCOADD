@@ -211,7 +211,7 @@ CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.
 
 
 # Django Session timeout setting
-# INACTIVE_TIME= 120
+INACTIVE_TIME= 120
 if DEVELOPMENT:
     SESSION_COOKIE_AGE=3000
 else:

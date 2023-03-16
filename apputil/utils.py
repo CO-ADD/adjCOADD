@@ -236,6 +236,7 @@ class FilteredListView(ListView):
         context['fields']=self.model.get_fields(fields=self.model_fields)
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
+        context['Count']=self.model.objects.count()
         return context
 
     def get_paginate_by(self, queryset):
@@ -258,6 +259,8 @@ class FilteredListView(ListView):
                 
             if order_field in model_constants_field.values():
                 order_by=acs_decs+ list(model_constants_field.keys())[list(model_constants_field.values()).index(order_field)]
+            elif order_field == 'ID':
+                order_by=acs_decs+'pk'
            
             return order_by
         return order_by

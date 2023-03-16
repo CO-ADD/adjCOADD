@@ -1,6 +1,6 @@
 {% load myapp_extras %}
 <!--prettier-ignore-->
-<div class="p-0 ps-2 m-0">
+<div class="d-flex p-0 ps-2 m-0 align-items-baseline">
 
     <ul class="pagination">
         <!-- <span class="step-links"> -->
@@ -49,19 +49,23 @@
             <li class="page-item ">
 
 
-                <a class="page-link " href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next
-                    Page &raquo;</a>
+                <a class="page-link " href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">
+                    &raquo;</a>
             </li>
 
             <li class="page-item ">
                 <a class="page-link " href="{% my_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">
-                    ( {{page_obj.number}} of {{page_obj.paginator.num_pages}})
+                    End
                 </a>
             </li>
+
 
             {% endif %}
     </ul>
     <!--prettier-ignore-->
     <!-- </span> -->
+    <span class="bg-transparent">&nbsp; showing p.{{page_obj.number}} of {{page_obj.paginator.num_pages}} pages in
+        <strong> {{Count}}
+            Entries</strong></span>
 
 </div>

@@ -1,9 +1,9 @@
-<table class="table table-hover table-bordered sorting_table" style="width: 100%">
+<div class="fixTableHead ">
+<table class="table table-bordered table-hover sorting_table" style="width: 100%">
   <thead>
     <tr>
       <!-- detail view link name if exists -->
-      <th style="width:1rem">
-      </th>
+      <th style="width: 1rem"></th>
       <!-- customized/verbose model fields name -->
       <th class="order_field" style="width: fit-content">ID</th>
       {%for field in fields%}
@@ -26,15 +26,14 @@
         <!--prettier-ignore  -->
         {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
         <!--  -->
-
       </td>
       <td>
         {%if url_name%}
         <!--  -->
         {%if object.urlname%}
-        <a href="{%url url_name object.urlname%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
         {%else%}
-        <a href="{%url url_name object.pk%}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a href="{%url url_name object.pk%}">{{object.pk}}</a>
         {%endif%}
         <!--  -->
         {%endif%}
@@ -60,3 +59,4 @@
     {%endif%}
   </tbody>
 </table>
+</div>

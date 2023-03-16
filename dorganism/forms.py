@@ -57,6 +57,7 @@ class Taxonomy_form(forms.ModelForm):
     class Meta:
         model =Taxonomy
         exclude=['urlname']
+        fields=["organism_name","other_names", "code", "org_class", "tax_id", "parent_tax_id", "tax_rank", "division", "lineage" ]
 
 
 #========================================Batch Form================================================================

@@ -12,38 +12,17 @@ secondary-color : #716aca
 info-color : #36a3f7
 success-color : #35cd3a
 warning-color : #ffa534
-danger-color : #f3545d */
+danger-color : #f3545d 
+
+
+
+*/
 
 :root {
+  /* Theme Color */
   --teal: #2c7a84;
   --orange: #ff6e00;
   --grey: #625e5d;
-  --bs-card-border: black;
-  --bs-heading-bg: var(--teal);
-  --bs-topbar-search-bg: #f3f3f9;
-  --bs-header-item-color: #555b6d;
-  --bs-boxed-body-bg: #e3e3ec;
-  --bs-topnav-bg: #2c7a84;
-  --bs-menu-item-color: #545a6d;
-  --bs-heading-dark-bg: #2a3042;
-  --bs-input-border-color: #ced4da;
-  --bs-input-focus-border-color: #b1bbc4;
-  --bs-form-check-input-border: #ff6e00;
-  --bs-inform-color: #ff6e00;
-  --bs-form-item-color: #f0f3f5;
-  --bs-footer-bg: #f2f2f5;
-  --bs-footer-color: #74788d;
-  --bs-custom-white: #fff;
-  --bs-border-color: #625e5d;
-  --bs-body-bg: rgb(235, 235, 235);
-  --bs-body-color: #32394e;
-  --bs-light: #e4e4e4;
-  --bs-dark: #32394e;
-  --bs-th-bg: #cacece;
-}
-
-.darkMode {
-  --bs-card-border: #f6f6f6;
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
   --bs-gray-300: #32394e;
@@ -53,14 +32,45 @@ danger-color : #f3545d */
   --bs-gray-700: #f6f6f6;
   --bs-gray-800: #eff2f7;
   --bs-gray-900: #f8f9fa;
+
+  /* Background Color */
+  --bs-card-bg: #fefefe;
+  --bs-heading-bg: var(--teal);
+  --bs-heading-dark-bg: #2a3042;
+  --bs-body-bg: rgb(174, 213, 214);
+  --bs-footer-bg: #f2f2f5;
+  --bs-topbar-search-bg: #f3f3f9;
+  --bs-th-bg: #a7b6b6;
+  --bs-topnav-bg: #2c7a84;
+  --bs-boxed-body-bg: #f8fcfa;
+  /* Text Color */
+  --bs-body-color: rgb(0, 90, 90);
+  --bs-menu-item-color: #545a6d;
+  --bs-header-item-color: #555b6d;
+  --bs-footer-color: #74788d;
+  --bs-form-item-color: #f0f3f5;
+  --bs-light: #e4e4e4;
+  --bs-dark: #32394e;
+  --bs-custom-white: #fff;
+  --bs-inform-color: #ff6e00;
+
+  /* border Color */
+  --bs-border-color: #625e5d;
+  --bs-card-border: black;
+  --bs-input-border-color: #ced4da;
+  --bs-form-check-input-border: #ff6e00;
+  --bs-input-focus-border-color: #b1bbc4;
+}
+
+:root .darkMode {
+  --bs-card-border: #f6f6f6;
   --bs-body-bg: #222736;
   --bs-body-bg-rgb: rgb(34, 39, 54);
   --bs-body-color-rgb: rgb(166, 176, 207);
-  --bs-body-color: #a6b0cf;
+  --bs-body-color: #f6f6f6;
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
   --bs-custom-white: #2a3042;
-  /* --bs-input-border-color: #32394e; */
   --bs-input-focus-border-color: #3a425a;
   --bs-hr-border-color: #32394e;
   --bs-form-check-input-border: #3a425a;
@@ -75,16 +85,17 @@ danger-color : #f3545d */
   --bs-boxed-body-bg: #32394f;
   --bs-topnav-bg: #282e3f;
   --bs-menu-item-color: #878c9b;
-  --bs-form-item-color: #3a425a;
+  --bs-form-item-color: #f6f6f6;
   --bs-footer-bg: #262b3c;
   --bs-footer-color: #a6b0cf;
   --bs-inform-color: #f1ca81;
   --bs-th-bg: #226770;
+  --bs-card-bg: #262b3c !important;
 }
 
 /* html elements custom style -----------------------------*/
-.darkMode .card {
-  --bs-card-bg: #2a3042;
+.darkMode .accordion-item {
+  background-color: var(--bs-body-bg);
 }
 
 a {
@@ -98,7 +109,9 @@ body {
   color: var(--bs-body-color);
   font-family: "Roboto Condensed", sans-serif;
 }
-
+tbody{
+  background-color: var(--bs-boxed-body-bg);
+}
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
@@ -106,19 +119,17 @@ footer {
   bottom: 0 !important;
 }
 
-input,
-select,
-option {
+label {
+  color: var(--bs-body-color);
+}
+
+input {
   background-color: var(--bs-form-item-color);
   color: var(--bs-body-color);
 }
 
 td>input {
   max-width: 150px !important;
-}
-
-option {
-  font-size: 16px !important;
 }
 
 p {
@@ -129,13 +140,16 @@ p {
 }
 
 select {
-  width: 100%;
-  height: 100%;
+  white-space: initial;
+  font-size: 12px !important;
+  width: 5rem;
   border: none;
   margin: 0;
+  overflow: scroll;
 }
 
 select option {
+  font-size: 12px !important;
   width: 100%;
   height: 100%;
   border: none;
@@ -177,22 +191,18 @@ td {
   max-width: 200px;
   white-space: wrap;
   word-wrap: break-word;
-  background-color: var(--bs-gray-300);
   color: var(--bs-body-color);
   padding: 0;
 }
 
 tr {
   height: 30px;
-  background-color: var(--bs-grey-300);
   color: var(--bs-body-color);
 }
 
 /* -------------------------------------------------- */
 /*---- block content div custom style */
-.base-content {
-  background-color: var(--bs-body-bg);
-}
+
 
 /* ----Button custom style */
 button,
@@ -230,6 +240,12 @@ button,
 
 /* ------------------------------ */
 /* ----custom Card Style */
+.card {
+  background-color: var(--bs-card-bg);
+  border-color: var(--bs-card-border);
+}
+
+.page-link,
 .card-link {
   cursor: pointer !important;
   color: var(--bs-menu-item-color);
@@ -242,11 +258,10 @@ button,
 }
 
 /* bootstrap override */
-.card,
+
 .dropdown-menu {
   background-color: var(--bs-light) !important;
   border: 1px solid var(--bs-card-border) !important;
-  transition: 1s;
 }
 
 .card:hover {
@@ -296,15 +311,14 @@ button,
 }
 
 .nav-link:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   transform: scaleX(0);
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color:
-    var(--bs-light);
+  background-color: var(--bs-light);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }
@@ -417,10 +431,12 @@ a:hover .tooltiptext {
 }
 
 .sidebar {
+  background-color: var(--bs-boxed-body-bg);
   position: relative;
   margin: 0;
   padding: 0;
   min-width: 10%;
+  box-shadow: 2px 2px 5px var(--bs-body-bg);
 }
 
 .main {
@@ -432,7 +448,9 @@ a:hover .tooltiptext {
 .tab-text {
   color: var(--bs-body-color);
 }
-
+.leftbar{
+  background-color: var(--bs-boxed-body-bg);
+}
 /* ============== 2 edit table/form =========== */
 .results-card {
   max-height: 300px;
@@ -647,17 +665,6 @@ form p {
   background-color: var(--bs-th-bg);
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-  padding: 8px 15px;
-  /* border: 2px solid #529432;  */
-}
-
 /* pivottable */
 
 .dataframe th,
@@ -741,7 +748,6 @@ td {
 #sortable1,
 #sortable2,
 #sortable3 {
-  /* border: 1px solid var(--bs-card-border); */
   background-color: var(--bs-topnav-bg);
   color: white;
   border-radius: 2%;
@@ -751,7 +757,6 @@ td {
   list-style-type: none;
   margin: auto;
   padding: 5px;
-  /* float: left; */
   margin-right: 10px;
   font-size: medium;
 }
@@ -863,7 +868,17 @@ td {
   }
 }
 
+
 #alert {
   animation: disapear 2s forwards;
   width: 6rem;
+}
+
+.django-form-table {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+.django-form-table:hover {
+  background-color: var(--bs-gray-700);
 }

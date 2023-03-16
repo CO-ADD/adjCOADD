@@ -1,6 +1,5 @@
 /*!
 
-
 # [Color codes]
 
 body-text-color: #575962
@@ -17,8 +16,8 @@ danger-color : #f3545d
 
 -------------------------------------------------------------------*/
 *:focus {
-  outline: 0 !important;
-  box-shadow: none !important;
+  outline: 0;
+  box-shadow: none;
 }
 
 /*   Typography    */
@@ -46,22 +45,22 @@ td,
 button.close {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 body {
   font-size: 14px;
   letter-spacing: 0.05em;
-  color: #2A2F5B;
+  color: #2a2f5b;
 }
 
 a {
-  color: #1572E8;
+  color: #1572e8;
 }
 
 a:hover,
 a:focus {
-  color: #1269DB;
+  color: #1269db;
 }
 
 h1,
@@ -86,12 +85,12 @@ h4,
 
 h5,
 .h5 {
-  font-size: .9125rem;
+  font-size: 0.9125rem;
 }
 
 h6,
 .h6 {
-  font-size: .825rem;
+  font-size: 0.825rem;
 }
 
 p {
@@ -144,7 +143,7 @@ strong,
 }
 
 .page-pretitle {
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #95aac9;
 }
@@ -165,67 +164,67 @@ strong,
 
 .text-primary,
 .text-primary a {
-  color: #1572E8 !important;
+  color: #1572e8;
 }
 
 .text-primary:hover,
 .text-primary a:hover {
-  color: #1572E8 !important;
+  color: #1572e8;
 }
 
 .text-secondary,
 .text-secondary a {
-  color: #6861CE !important;
+  color: #6861ce;
 }
 
 .text-secondary:hover,
 .text-secondary a:hover {
-  color: #6861CE !important;
+  color: #6861ce;
 }
 
 .text-info,
 .text-info a {
-  color: #48ABF7 !important;
+  color: #48abf7;
 }
 
 .text-info:hover,
 .text-info a:hover {
-  color: #48ABF7 !important;
+  color: #48abf7;
 }
 
 .text-success,
 .text-success a {
-  color: #118615 !important;
+  color: #118615;
 }
 
 .text-success:hover,
 .text-success a:hover {
-  color: #31CE36 !important;
+  color: #31ce36;
 }
 
 .text-warning,
 .text-warning a {
-  color: #FFAD46 !important;
+  color: #ffad46;
 }
 
 .text-warning:hover,
 .text-warning a:hover {
-  color: #FFAD46 !important;
+  color: #ffad46;
 }
 
 .text-danger,
 .text-danger a {
-  color: #F25961 !important;
+  color: #f25961;
 }
 
 .text-danger:hover,
 .text-danger a:hover {
-  color: #F25961 !important;
+  color: #f25961;
 }
 
 label {
-  color: #495057 !important;
-  font-size: 14px !important;
+  color: #495057;
+  font-size: 14px;
 }
 
 .text-small {
@@ -239,7 +238,7 @@ label {
 }
 
 .metric-label {
-  font-size: .975rem;
+  font-size: 0.975rem;
   font-weight: 500;
   color: #686f76;
   white-space: nowrap;
@@ -248,23 +247,23 @@ label {
 
 /*   Font-weight    */
 .fw-light {
-  font-weight: 300 !important;
+  font-weight: 300;
 }
 
 .fw-normal {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 .fw-mediumbold {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 .fw-bold {
-  font-weight: 600 !important;
+  font-weight: 600;
 }
 
 .fw-extrabold {
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 /* 		Opacity  	*/
@@ -310,7 +309,7 @@ body {
 .border-right,
 .border-bottom,
 .border-top {
-  border-color: #F0F1F3 !important;
+  border-color: #f0f1f3;
 }
 
 .dropdown-menu {
@@ -319,33 +318,33 @@ body {
 }
 
 .no-box-shadow {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 /*    margin-top negative   */
 .mt--5,
 .my--5 {
-  margin-top: -3rem !important;
+  margin-top: -3rem;
 }
 
 .mt--4,
 .my--4 {
-  margin-top: -1.5rem !important;
+  margin-top: -1.5rem;
 }
 
 .mt--3,
 .my--3 {
-  margin-top: -1rem !important;
+  margin-top: -1rem;
 }
 
 .mt--2,
 .my--2 {
-  margin-top: -0.5rem !important;
+  margin-top: -0.5rem;
 }
 
 .mt--1,
 .my--1 {
-  margin-top: -0.25rem !important;
+  margin-top: -0.25rem;
 }
 
 /*      Wrapper      */
@@ -398,7 +397,7 @@ body {
   display: flex;
   align-items: center;
   position: relative;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .logo-header .big-logo {
@@ -415,7 +414,7 @@ body {
 }
 
 .logo-header .logo {
-  color: #2A2F5B;
+  color: #2a2f5b;
   opacity: 1;
   position: relative;
   height: 100%;
@@ -463,11 +462,11 @@ body {
 }
 
 .btn-toggle {
-  font-size: 20px !important;
+  font-size: 20px;
   line-height: 20px;
-  padding: 0px !important;
-  background: transparent !important;
-  color: #2A2F5B !important;
+  padding: 0px;
+  background: transparent;
+  color: #2a2f5b;
 }
 
 .btn-toggle:hover,
@@ -478,14 +477,13 @@ body {
 #search-nav {
   flex: 1;
   max-width: 300px;
-  transition: all .4s;
+  transition: all 0.4s;
 }
 
 #search-nav.focus {
   max-width: 400px;
 }
 
-/* [data-bs-toggle] {
-  background-color: green !important;
-} */
-
+.table{
+ background-color: white !important;
+}

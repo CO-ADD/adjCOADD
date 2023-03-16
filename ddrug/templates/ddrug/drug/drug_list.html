@@ -3,29 +3,13 @@
 {% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+  {%include 'utils/topbar.html' with list_url='drug_list' card_url='drug_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    {%include 'utils/message.html'%}
-    <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
-      <div class="d-flex align-items-baseline">
-        {% include 'utils/pagination.html'%}
-        <!-- Create New Entry Modal-->
-        <a id="createDrug" class="card-link" style="float: right"><i class="bi bi-plus"></i>New
-        </a>
-        <div id="createDrugModal" class="modal fade" role="dialog"></div>
-      </div>
-      <!--  -->
-      {%include 'utils/selectAllExp.html'%}
-      <!-- Swich Table/Card View -->
-      <div class="m-0">
-        <a href="{%url 'drug_list'%}" class="btn btn-outline-secondary"><i class="bi bi-list"></i></a>
-        <a href="{%url 'drug_card'%}" class="btn btn-outline-secondary"><i class="bi bi-grid-fill"></i></a>
-      </div>
-    </div>
+  {%include 'utils/main_horizalbar.html' with create_object='createDrug' create_objectModal='createDrugModal' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
