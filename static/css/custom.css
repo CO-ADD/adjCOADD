@@ -107,6 +107,10 @@ a {
 body {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
+  font-family: "Roboto Condensed", sans-serif;
+}
+tbody{
+  background-color: var(--bs-boxed-body-bg);
 }
 tbody{
   background-color: var(--bs-boxed-body-bg);
