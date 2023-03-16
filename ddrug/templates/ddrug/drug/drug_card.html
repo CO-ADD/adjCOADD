@@ -2,45 +2,13 @@
 <!--  -->
 {% block title%} COADD{% endblock %} {% block content%}
 <!--  -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+{%include 'utils/topbar.html' with list_url='drug_list' card_url='drug_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar_drugcard.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    {%include 'utils/message.html'%}
-    <div
-      class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline"
-    >
-      <div class="d-flex align-items-baseline">
-        {% include 'utils/pagination.html'%}
-        <!--  -->
-        {%include 'utils/selectAllExp.html'%}
-        <!-- Create New Entry Modal-->
-        <a id="createDrug" class="card-link fs-5">
-          <i class="fa-solid fa-file-circle-plus"></i>
-        </a>
-        <div
-          id="createDrugModal"
-          class="modal fade"
-          role="dialog"
-          data-bs-backdrop="static"
-        ></div>
-      </div>
-      <!-- End---------------------- -->
-
-      <!--  -->
-      <!-- Swich Table/Card View -->
-      <div class="m-0">
-        <a href="{%url 'drug_list'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-list"></i
-        ></a>
-        <a href="{%url 'drug_card'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-grid-fill"></i
-        ></a>
-      </div>
-      <!-- End -->
-    </div>
+  {%include 'utils/main_horizalbar.html' with create_object='createDrug' create_objectModal='createDrugModal' %}
     <!-- Card View Content -->
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">

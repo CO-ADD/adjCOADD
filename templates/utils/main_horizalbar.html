@@ -1,0 +1,12 @@
+{%include 'utils/message.html'%}
+<div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+    <!-- <div class="d-flex align-items-baseline"> -->
+    {% include 'utils/pagination.html'%}
+    <!--  -->
+    {%include 'utils/selectAllExp.html'%}
+    <!-- Create New Entry Modal-->
+    <a id="{{create_object}}" class="card-link text-success fs-5" style="float:right"><i
+            class="fa-solid fa-file-circle-plus"></i>
+    </a>
+    <div id="{{create_objectModal}}" class="modal fade" role="dialog"></div>
+</div>

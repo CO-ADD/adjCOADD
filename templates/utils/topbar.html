@@ -1,52 +1,54 @@
-<div class="d-flex bg-dark justify-content-between mb-0 w-100">
-  <button id="hidefilter" title="hidefilter">
-    <i class="bi bi-funnel"></i></i>
-  </button>
-  <div>
-    <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-      aria-controls="offcanvasRight">
-      <i class="fas fa-cog fa-spin"></i>
-    </button>
-
-    <div class="offcanvas offcanvas-end" tabindex="1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-      data-bs-backdrop="false" style="width: 200px; margin-top: 8%">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            <i class="fa fa-file-export">Export</i>
-          </button>
-          <ul class="dropdown-menu">
-            <!--  -->
-
-            {%for field in model_fields%}
-            <li>
-              <input class="filled-in" type="checkbox" value="{{field}}" name="model_field_select" />
-              <label for=""> {{field}} </label>
-            </li>
-            {%endfor%}
-            <button class="Download">Click Download</button>
-          </ul>
-        </div>
-
-        <a class="btn btn-sm m-3 bg-warning" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="top"
-          title="Import Data"><i class="fa fa-file-import">To Import {{import_module}}</i>
-        </a>
-        
-        <a class="btn btn-sm disabled m-3" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
-          <i class="fa-solid fa-arrows-rotate"></i>
-        </a>
-      </div>
-    </div>
+<div class="d-flex flex-column bg-dark p-0 mb-3 h-25">
+  <div class="d-flex flex-column p-0 mb-3 bg-light">
+    <a class="btn-sm btn-outline-secondary" id="hidefilter" title="hidefilter">
+      <i class="bi bi-funnel fs-6 text-dark"></i>
+    </a>
   </div>
+  <div class="d-flex flex-column p-0 mb-3">
+    <a href="{%url list_url %}" class="btn-sm btn-outline-secondary"><i
+        class="fa-solid fa-table-list fs-6 text-light"></i></a>
+    <a href="{%url card_url %}" class="btn-sm btn-outline-secondary"><i
+        class="fa-solid fa-grip fs-6 text-light"></i></a>
+  </div>
+
+
+
+
+
+  <div class="d-flex flex-column">
+    <div class="p-0 mb-3">
+      <a class="btn-sm btn-outline-secondary" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="top"
+        title="Import Data {{import_module}}"><i class="fa fa-file-import fs-6 text-light"></i>
+      </a>
+    </div>
+
+    <div class="btn-group p-0 mb-3">
+      <a class="btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-file-export fs-6 text-light"></i>
+      </a>
+      <ul class="dropdown-menu">
+        <!--  -->
+
+        {%for field in model_fields%}
+        <li>
+          <input class="filled-in" type="checkbox" value="{{field}}" name="model_field_select" />
+          <label for=""> {{field}} </label>
+        </li>
+        {%endfor%}
+        <button class="bg-transparent text-light"><i class="fa-solid fa-download"></i></button>
+      </ul>
+    </div>
+
+
+    <!-- <a class="nav-link px-1 py-0 inactive" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
+      <i class="fa-solid fa-arrows-rotate"></i>
+    </a> -->
+
+  </div>
+
 </div>
 
 {%load static %}
-<script src="{%static 'js/jquery-3.6.1.min.js'%}"></script>
-<script src="{%static 'js/js_utils/getCookie.js'%}"></script>
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>
 
 <script>

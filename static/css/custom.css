@@ -12,40 +12,17 @@ secondary-color : #716aca
 info-color : #36a3f7
 success-color : #35cd3a
 warning-color : #ffa534
-danger-color : #f3545d */
+danger-color : #f3545d 
+
+
+
+*/
 
 :root {
+  /* Theme Color */
   --teal: #2c7a84;
   --orange: #ff6e00;
   --grey: #625e5d;
-  --bs-card-bg: #fefefe;
-  --bs-card-border: black;
-  --bs-heading-bg: var(--teal);
-  --bs-topbar-search-bg: #f3f3f9;
-  --bs-header-item-color: #555b6d;
-  --bs-boxed-body-bg: #e3e3ec;
-  --bs-topnav-bg: #2c7a84;
-  --bs-menu-item-color: #545a6d;
-  --bs-heading-dark-bg: #2a3042;
-  --bs-input-border-color: #ced4da;
-  --bs-input-focus-border-color: #b1bbc4;
-  --bs-form-check-input-border: #ff6e00;
-  --bs-inform-color: #ff6e00;
-  --bs-form-item-color: #f0f3f5;
-  --bs-footer-bg: #f2f2f5;
-  --bs-footer-color: #74788d;
-  --bs-custom-white: #fff;
-  --bs-border-color: #625e5d;
-  --bs-body-bg: rgb(235, 235, 235);
-  --bs-body-color: #32394e;
-  --bs-light: #e4e4e4;
-  --bs-dark: #32394e;
-  --bs-th-bg: #cacece;
-  --bs-table-bg: rgb(235, 235, 235) !important;
-}
-
-:root .darkMode {
-  --bs-card-border: #f6f6f6;
   --bs-gray-100: #212529;
   --bs-gray-200: #2a3042;
   --bs-gray-300: #32394e;
@@ -55,6 +32,38 @@ danger-color : #f3545d */
   --bs-gray-700: #f6f6f6;
   --bs-gray-800: #eff2f7;
   --bs-gray-900: #f8f9fa;
+
+  /* Background Color */
+  --bs-card-bg: #fefefe;
+  --bs-heading-bg: var(--teal);
+  --bs-heading-dark-bg: #2a3042;
+  --bs-body-bg: white;
+  --bs-footer-bg: #f2f2f5;
+  --bs-topbar-search-bg: #f3f3f9;
+  --bs-th-bg: #cacece;
+  --bs-topnav-bg: #2c7a84;
+  --bs-boxed-body-bg: #e3e3ec;
+  /* Text Color */
+  --bs-body-color: #32394e;
+  --bs-menu-item-color: #545a6d;
+  --bs-header-item-color: #555b6d;
+  --bs-footer-color: #74788d;
+  --bs-form-item-color: #f0f3f5;
+  --bs-light: #e4e4e4;
+  --bs-dark: #32394e;
+  --bs-custom-white: #fff;
+  --bs-inform-color: #ff6e00;
+
+  /* border Color */
+  --bs-border-color: #625e5d;
+  --bs-card-border: black;
+  --bs-input-border-color: #ced4da;
+  --bs-form-check-input-border: #ff6e00;
+  --bs-input-focus-border-color: #b1bbc4;
+}
+
+:root .darkMode {
+  --bs-card-border: #f6f6f6;
   --bs-body-bg: #222736;
   --bs-body-bg-rgb: rgb(34, 39, 54);
   --bs-body-color-rgb: rgb(166, 176, 207);
@@ -62,7 +71,6 @@ danger-color : #f3545d */
   --bs-heading-color: #f6f6f6;
   --bs-border-color: #32394e;
   --bs-custom-white: #2a3042;
-  /* --bs-input-border-color: #32394e; */
   --bs-input-focus-border-color: #3a425a;
   --bs-hr-border-color: #32394e;
   --bs-form-check-input-border: #3a425a;
@@ -82,14 +90,14 @@ danger-color : #f3545d */
   --bs-footer-color: #a6b0cf;
   --bs-inform-color: #f1ca81;
   --bs-th-bg: #226770;
-  --bs-table-bg: #2e2e2e !important;
   --bs-card-bg: #262b3c !important;
 }
 
 /* html elements custom style -----------------------------*/
 .darkMode .accordion-item {
-  background-color: var(--bs-table-bg);
+  background-color: var(--bs-body-bg);
 }
+
 a {
   text-decoration: none;
   cursor: pointer;
@@ -117,7 +125,7 @@ input {
   color: var(--bs-body-color);
 }
 
-td > input {
+td>input {
   max-width: 150px !important;
 }
 
@@ -191,9 +199,7 @@ tr {
 
 /* -------------------------------------------------- */
 /*---- block content div custom style */
-.base-content {
-  background-color: var(--bs-body-bg);
-}
+
 
 /* ----Button custom style */
 button,
@@ -855,14 +861,17 @@ form p {
   }
 }
 
+
 #alert {
   animation: disapear 2s forwards;
   width: 6rem;
 }
+
 .django-form-table {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
 }
+
 .django-form-table:hover {
-  background-color: var(--bs-gray-200);
+  background-color: var(--bs-gray-700);
 }

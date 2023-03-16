@@ -75,3 +75,9 @@ user_log ERROR 2023-03-15 15:14:45,786 signals 7031 140379908040256 login failed
 user_log INFO 2023-03-15 15:14:52,903 signals 7031 140379908040256 test login successful
 user_log INFO 2023-03-15 18:14:47,370 signals 4120 140210994136640 test login successful
 user_log INFO 2023-03-15 19:08:59,803 signals 10080 139882038912576 test login successful
+user_log INFO 2023-03-16 09:22:01,995 signals 16484 10888 test login successful
+user_log ERROR 2023-03-16 10:14:55,900 signals 16484 5760 login failed; unknown user
+user_log INFO 2023-03-16 10:15:01,900 signals 16484 5760 test login successful
+user_log INFO 2023-03-16 11:11:59,668 signals 16484 14612 test login successful
+user_log INFO 2023-03-16 12:07:21,357 signals 16484 21672 test login successful
+user_log INFO 2023-03-16 14:36:05,097 signals 20080 11684 test login successful

@@ -4,43 +4,16 @@
 <!--  -->
 {% block content %}
 <!--  -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+  {%include 'utils/topbar.html'  with list_url='org_list' card_url='org_card'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    {%include 'utils/message.html'%}
-    <div
-      class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
-    >
-      <div class="d-flex align-items-baseline">
-        {% include 'utils/pagination.html'%}
-        <!--  -->
-        {%include 'utils/selectAllExp.html'%}
-        <!-- Create New Entry Modal-->
-        <a id="createOrganism" class="card-link fs-5">
-          <i class="fa-solid fa-file-circle-plus"></i>
-        </a>
-        <div
-          id="createOrganismModal"
-          class="modal fade"
-          role="dialog"
-          data-bs-backdrop="static"
-        ></div>
-      </div>
-      <!--  -->
-      <!-- Swich Table/Card View -->
-      <div class="m-0">
-        <a href="{%url 'org_list'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-list"></i
-        ></a>
-        <a href="{%url 'org_card'%}" class="btn btn-outline-secondary"
-          ><i class="bi bi-grid-fill"></i
-        ></a>
-      </div>
-    </div>
-
+    <!-- prettier-ignore -->
+    {%include 'utils/main_horizalbar.html' with create_object='createOrganism' create_objectModal='createOrganismModal' %}
+    <!-- prettier-ignore -->
+    <!--  -->
     <!-- list View Content -->
     <div class="fixTableHead">
       <!-- prettier-ignore -->
