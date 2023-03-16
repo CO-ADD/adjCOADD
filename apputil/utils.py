@@ -259,6 +259,8 @@ class FilteredListView(ListView):
                 
             if order_field in model_constants_field.values():
                 order_by=acs_decs+ list(model_constants_field.keys())[list(model_constants_field.values()).index(order_field)]
+            elif order_field == 'ID':
+                order_by=acs_decs+'pk'
            
             return order_by
         return order_by

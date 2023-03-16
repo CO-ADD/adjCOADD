@@ -37,14 +37,14 @@ danger-color : #f3545d
   --bs-card-bg: #fefefe;
   --bs-heading-bg: var(--teal);
   --bs-heading-dark-bg: #2a3042;
-  --bs-body-bg: white;
+  --bs-body-bg: rgb(174, 213, 214);
   --bs-footer-bg: #f2f2f5;
   --bs-topbar-search-bg: #f3f3f9;
-  --bs-th-bg: #cacece;
+  --bs-th-bg: #a7b6b6;
   --bs-topnav-bg: #2c7a84;
-  --bs-boxed-body-bg: #e3e3ec;
+  --bs-boxed-body-bg: #f8fcfa;
   /* Text Color */
-  --bs-body-color: #32394e;
+  --bs-body-color: rgb(0, 90, 90);
   --bs-menu-item-color: #545a6d;
   --bs-header-item-color: #555b6d;
   --bs-footer-color: #74788d;
@@ -108,7 +108,9 @@ body {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
 }
-
+tbody{
+  background-color: var(--bs-boxed-body-bg);
+}
 footer {
   /* border: 2px solid wheat; */
   background-color: var(--grey);
@@ -129,10 +131,6 @@ td>input {
   max-width: 150px !important;
 }
 
-option {
-  font-size: 14px !important;
-}
-
 p {
   color: var(--bs-dark);
   margin: 0;
@@ -141,12 +139,16 @@ p {
 }
 
 select {
+  white-space: initial;
+  font-size: 12px !important;
+  width: 5rem;
   border: none;
   margin: 0;
   overflow: scroll;
 }
 
 select option {
+  font-size: 12px !important;
   width: 100%;
   height: 100%;
   border: none;
@@ -428,10 +430,12 @@ a:hover .tooltiptext {
 }
 
 .sidebar {
+  background-color: var(--bs-boxed-body-bg);
   position: relative;
   margin: 0;
   padding: 0;
   min-width: 10%;
+  box-shadow: 2px 2px 5px var(--bs-body-bg);
 }
 
 .main {
@@ -443,7 +447,9 @@ a:hover .tooltiptext {
 .tab-text {
   color: var(--bs-body-color);
 }
-
+.leftbar{
+  background-color: var(--bs-boxed-body-bg);
+}
 /* ============== 2 edit table/form =========== */
 .results-card {
   max-height: 300px;

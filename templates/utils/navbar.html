@@ -183,7 +183,7 @@
     document.body.classList.add("darkMode");
     const elements = document.querySelectorAll("table");
     elements.forEach((element) => {
-      element.classList.remove("bg-light");
+      element.classList.add("table-dark");
     });
 
     localStorage.setItem("darkMode", "enabled");
@@ -192,7 +192,7 @@
     document.body.classList.remove("darkMode");
     const elements = document.querySelectorAll("table");
     elements.forEach((element) => {
-      element.classList.add("bg-light");
+      element.classList.remove("table-dark");
     });
 
     localStorage.setItem("darkMode", null);

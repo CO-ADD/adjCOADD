@@ -7190,3 +7190,517 @@ Traceback (most recent call last):
 django.urls.exceptions.NoReverseMatch: Reverse for '' not found. '' is not a valid view function or pattern name.
 django.server ERROR 2023-03-16 15:00:04,411 basehttp 20080 25712 "GET /vitekast_list HTTP/1.1" 500 316214
 django.server INFO 2023-03-16 15:01:31,784 basehttp 20080 25712 "GET /vitekast_list HTTP/1.1" 200 41010
+django.utils.autoreload INFO 2023-03-16 15:04:30,565 autoreload 22780 5020 Watching for file changes with StatReloader
+django.server INFO 2023-03-16 15:04:33,626 basehttp 22780 15808 "GET / HTTP/1.1" 200 8602
+django.server INFO 2023-03-16 15:04:35,516 basehttp 22780 15808 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:04:35,627 basehttp 22780 15808 "GET /index/ HTTP/1.1" 200 15016
+django.server INFO 2023-03-16 15:04:39,225 basehttp 22780 15808 "GET /organism_card HTTP/1.1" 200 149956
+django.server INFO 2023-03-16 15:04:42,799 basehttp 22780 15808 "GET /organism_card HTTP/1.1" 200 149956
+django.server INFO 2023-03-16 15:04:43,700 basehttp 22780 15808 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:04:57,979 basehttp 22780 15808 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:04:58,059 basehttp 22780 15808 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:05:34,394 basehttp 22780 15808 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:05:34,669 basehttp 22780 2396 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-16 15:05:34,670 basehttp 22780 2396 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-16 15:05:34,672 basehttp 22780 2396 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-16 15:05:34,675 basehttp 22780 2396 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-16 15:05:34,683 basehttp 22780 2396 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-16 15:05:34,724 basehttp 22780 10624 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-16 15:05:34,744 basehttp 22780 8396 "GET /static/css/custom.css HTTP/1.1" 200 14853
+django.server INFO 2023-03-16 15:05:34,771 basehttp 22780 15808 "GET /static/css/overideboot.css HTTP/1.1" 200 5728
+django.server INFO 2023-03-16 15:05:34,835 basehttp 22780 12368 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-16 15:05:34,841 basehttp 22780 24208 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-16 15:05:34,868 basehttp 22780 24208 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-16 15:05:34,879 basehttp 22780 24208 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-16 15:05:34,882 basehttp 22780 24208 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-16 15:05:34,884 basehttp 22780 24208 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-16 15:05:34,888 basehttp 22780 24208 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-03-16 15:05:35,175 basehttp 22780 24208 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-03-16 15:05:46,930 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:05:46,951 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5724
+django.server INFO 2023-03-16 15:05:49,923 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:05:49,938 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:06:27,298 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:06:27,316 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5728
+django.server INFO 2023-03-16 15:06:51,178 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:06:51,196 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5730
+django.server INFO 2023-03-16 15:07:22,685 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76293
+django.server INFO 2023-03-16 15:07:22,702 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5726
+django.server INFO 2023-03-16 15:08:18,242 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76284
+django.server INFO 2023-03-16 15:08:18,260 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5727
+django.server INFO 2023-03-16 15:08:21,010 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76284
+django.server INFO 2023-03-16 15:09:21,998 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76284
+django.server INFO 2023-03-16 15:09:22,014 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 15:10:39,210 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76288
+django.server INFO 2023-03-16 15:10:39,225 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:12:21,870 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76288
+django.server INFO 2023-03-16 15:12:21,883 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:12:33,522 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76288
+django.server INFO 2023-03-16 15:12:35,194 basehttp 22780 24208 "GET /organism_list HTTP/1.1" 200 76288
+django.server INFO 2023-03-16 15:12:41,529 basehttp 22780 24208 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:13:29,724 basehttp 22780 11272 "GET /organism_list HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:13:29,732 basehttp 22780 11272 "GET /?next=/organism_list HTTP/1.1" 200 8606
+django.server INFO 2023-03-16 15:13:29,747 basehttp 22780 11272 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 15:13:29,750 basehttp 22780 8724 "GET /static/css/custom.css HTTP/1.1" 200 14925
+django.server INFO 2023-03-16 15:13:29,763 basehttp 22780 11720 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-16 15:13:29,764 basehttp 22780 13464 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-16 15:13:29,765 basehttp 22780 6024 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-16 15:13:29,772 basehttp 22780 11272 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-16 15:13:29,774 basehttp 22780 8724 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-16 15:13:29,774 basehttp 22780 3384 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-16 15:13:29,778 basehttp 22780 13464 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-16 15:13:29,786 basehttp 22780 11720 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-16 15:13:29,980 basehttp 22780 11720 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-16 15:13:30,833 basehttp 22780 11720 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-03-16 15:13:32,128 basehttp 22780 11720 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:13:32,233 basehttp 22780 11720 "GET /index/ HTTP/1.1" 200 15020
+django.server INFO 2023-03-16 15:13:32,270 basehttp 22780 11720 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-03-16 15:13:32,270 basehttp 22780 13464 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 200 26975
+django.server INFO 2023-03-16 15:13:49,891 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149960
+django.server INFO 2023-03-16 15:13:49,914 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:13:49,928 basehttp 22780 13464 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-16 15:13:49,929 basehttp 22780 11720 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-16 15:13:49,946 basehttp 22780 11720 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-16 15:13:52,818 basehttp 22780 11720 "GET /organism_card HTTP/1.1" 200 149960
+django.server INFO 2023-03-16 15:15:02,662 basehttp 22780 11720 "GET /organism_card HTTP/1.1" 200 149951
+django.server INFO 2023-03-16 15:15:02,680 basehttp 22780 11720 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:15:02,682 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 200 14853
+django.server INFO 2023-03-16 15:16:12,291 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149948
+django.server INFO 2023-03-16 15:16:12,311 basehttp 22780 13464 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:16:12,311 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:17:04,269 basehttp 22780 11720 "GET /organism_card HTTP/1.1" 200 149942
+django.server INFO 2023-03-16 15:17:04,284 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:17:04,284 basehttp 22780 11720 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:17:27,772 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149937
+django.server INFO 2023-03-16 15:17:27,788 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:17:52,113 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149932
+django.server INFO 2023-03-16 15:17:52,130 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:17:52,131 basehttp 22780 13464 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:18:07,661 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149926
+django.server INFO 2023-03-16 15:18:37,477 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149931
+django.server INFO 2023-03-16 15:18:37,494 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:19:48,870 basehttp 22780 13464 "GET /organism_card HTTP/1.1" 200 149927
+django.server INFO 2023-03-16 15:19:48,886 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:19:48,887 basehttp 22780 13464 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:20:12,530 basehttp 22780 11720 "GET /organism_card HTTP/1.1" 200 149927
+django.server INFO 2023-03-16 15:20:35,356 basehttp 22780 11720 "GET /organism_card HTTP/1.1" 200 149927
+django.server INFO 2023-03-16 15:20:35,373 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:20:36,410 basehttp 22780 11720 "GET /organism_list HTTP/1.1" 200 76255
+django.server INFO 2023-03-16 15:21:10,063 basehttp 22780 11720 "GET /organism_list HTTP/1.1" 200 76264
+django.server INFO 2023-03-16 15:21:10,076 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:21:10,077 basehttp 22780 11720 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:22:45,830 basehttp 22780 11720 "GET /organism_list HTTP/1.1" 200 76259
+django.server INFO 2023-03-16 15:22:45,844 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:22:45,844 basehttp 22780 11720 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:22:57,540 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76306
+django.server INFO 2023-03-16 15:23:26,522 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76306
+django.server INFO 2023-03-16 15:23:45,873 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76251
+django.server INFO 2023-03-16 15:23:45,886 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:24:16,598 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76261
+django.server INFO 2023-03-16 15:24:16,612 basehttp 22780 13464 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:24:25,799 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76262
+django.server INFO 2023-03-16 15:24:39,069 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76270
+django.server INFO 2023-03-16 15:24:39,082 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:24:53,061 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76267
+django.server INFO 2023-03-16 15:25:11,213 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76272
+django.server INFO 2023-03-16 15:25:55,704 basehttp 22780 13464 "GET /organism_list HTTP/1.1" 200 76251
+django.server INFO 2023-03-16 15:25:55,717 basehttp 22780 13464 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:25:55,718 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 200 14900
+django.server INFO 2023-03-16 15:26:38,812 basehttp 22780 11720 "GET /organism_list HTTP/1.1" 200 76251
+django.server INFO 2023-03-16 15:26:38,825 basehttp 22780 11720 "GET /static/css/custom.css HTTP/1.1" 200 14906
+django.server INFO 2023-03-16 15:27:03,564 basehttp 22780 11720 "GET /organism_list HTTP/1.1" 200 76251
+django.server INFO 2023-03-16 15:27:03,582 basehttp 22780 13464 "GET /static/css/custom.css HTTP/1.1" 200 14906
+django.server INFO 2023-03-16 15:27:03,582 basehttp 22780 11720 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 15:27:03,589 basehttp 22780 1668 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-16 15:27:03,593 basehttp 22780 14984 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-16 15:27:03,593 basehttp 22780 26216 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-16 15:27:03,594 basehttp 22780 5552 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-16 15:27:03,597 basehttp 22780 13464 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-16 15:27:03,598 basehttp 22780 11720 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-16 15:27:03,603 basehttp 22780 26216 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-16 15:27:03,610 basehttp 22780 14984 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-16 15:27:03,724 basehttp 22780 14984 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-16 15:27:03,733 basehttp 22780 14984 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-16 15:27:03,736 basehttp 22780 14984 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-16 15:27:03,738 basehttp 22780 14984 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-16 15:27:03,740 basehttp 22780 14984 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-03-16 15:27:04,498 basehttp 22780 14984 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-03-16 15:27:42,568 basehttp 22780 14984 "GET /organism_list HTTP/1.1" 200 76251
+django.server INFO 2023-03-16 15:27:42,582 basehttp 22780 14984 "GET /static/css/custom.css HTTP/1.1" 200 14906
+django.utils.autoreload INFO 2023-03-16 15:30:18,563 autoreload 22780 5020 C:\Users\uqwzhon4\project\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-16 15:30:19,937 autoreload 22760 23104 Watching for file changes with StatReloader
+django.server INFO 2023-03-16 15:30:21,353 basehttp 22760 8188 "GET /organism_list HTTP/1.1" 200 76400
+django.server INFO 2023-03-16 15:30:21,366 basehttp 22760 8188 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:30:21,367 basehttp 22760 10796 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-16 15:30:54,657 autoreload 22760 23104 C:\Users\uqwzhon4\project\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-16 15:30:55,932 autoreload 3120 19028 Watching for file changes with StatReloader
+django.server INFO 2023-03-16 15:30:56,926 basehttp 3120 6884 "GET /organism_list HTTP/1.1" 200 76408
+django.server INFO 2023-03-16 15:30:56,946 basehttp 3120 6884 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:36:24,182 basehttp 3120 23012 "GET /organism_list HTTP/1.1" 200 76408
+django.server INFO 2023-03-16 15:36:24,196 basehttp 3120 23012 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:36:24,265 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 200 14913
+django.server INFO 2023-03-16 15:37:30,130 basehttp 3120 21692 "GET /taxonomy_card HTTP/1.1" 200 253180
+django.server INFO 2023-03-16 15:37:30,148 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:37:30,159 basehttp 3120 21692 "GET /static/js/modal/create_taxonomy.js HTTP/1.1" 200 335
+django.server INFO 2023-03-16 15:37:47,410 basehttp 3120 21692 "GET /organism_card HTTP/1.1" 200 150084
+django.server INFO 2023-03-16 15:37:47,425 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:38:04,453 basehttp 3120 21692 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:38:04,468 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:38:04,481 basehttp 3120 21692 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-16 15:38:04,484 basehttp 3120 21692 "GET /static/js/modal/create_stock.js HTTP/1.1" 200 347
+django.server INFO 2023-03-16 15:38:04,494 basehttp 3120 21692 "GET /static/js/modal/create_culture.js HTTP/1.1" 200 344
+django.server INFO 2023-03-16 15:38:04,494 basehttp 3120 23012 "GET /static/js/modal/create_batch.js HTTP/1.1" 200 338
+django.server INFO 2023-03-16 15:38:32,040 basehttp 3120 23012 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:40:54,468 basehttp 3120 23012 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:40:54,485 basehttp 3120 23012 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:40:54,487 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 200 14928
+django.server INFO 2023-03-16 15:40:58,953 basehttp 3120 21692 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:40:58,966 basehttp 3120 21692 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:41:09,816 basehttp 3120 14412 "GET /organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:41:09,824 basehttp 3120 14412 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8597
+django.server INFO 2023-03-16 15:41:09,842 basehttp 3120 14412 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 15:41:09,845 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 200 14928
+django.server INFO 2023-03-16 15:41:09,854 basehttp 3120 25608 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-16 15:41:09,855 basehttp 3120 6160 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-16 15:41:09,856 basehttp 3120 5400 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-16 15:41:09,856 basehttp 3120 14412 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-16 15:41:09,859 basehttp 3120 10864 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-16 15:41:09,860 basehttp 3120 25144 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-16 15:41:09,868 basehttp 3120 6160 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-16 15:41:09,874 basehttp 3120 5400 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-16 15:41:10,064 basehttp 3120 5400 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-16 15:41:10,963 basehttp 3120 5400 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-03-16 15:41:12,004 basehttp 3120 5400 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:41:12,095 basehttp 3120 5400 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 15:41:12,115 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:41:12,127 basehttp 3120 5400 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-03-16 15:41:12,128 basehttp 3120 6160 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 200 26975
+django.server INFO 2023-03-16 15:41:14,591 basehttp 3120 6160 "GET /organism_card HTTP/1.1" 200 150084
+django.server INFO 2023-03-16 15:41:14,610 basehttp 3120 6160 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:41:14,623 basehttp 3120 6160 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-16 15:41:14,625 basehttp 3120 5400 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-16 15:41:14,660 basehttp 3120 5400 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-16 15:41:16,864 basehttp 3120 5400 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:41:16,885 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:41:16,899 basehttp 3120 5400 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-16 15:41:16,928 basehttp 3120 5400 "GET /static/js/modal/create_stock.js HTTP/1.1" 200 347
+django.server INFO 2023-03-16 15:41:16,947 basehttp 3120 5400 "GET /static/js/modal/create_culture.js HTTP/1.1" 200 344
+django.server INFO 2023-03-16 15:41:16,947 basehttp 3120 6160 "GET /static/js/modal/create_batch.js HTTP/1.1" 200 338
+django.server INFO 2023-03-16 15:44:39,666 basehttp 3120 5400 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:44:39,683 basehttp 3120 5400 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:44:39,685 basehttp 3120 6160 "GET /static/css/custom.css HTTP/1.1" 200 14963
+django.server INFO 2023-03-16 15:45:33,684 basehttp 3120 6160 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:45:33,697 basehttp 3120 6160 "GET /static/css/custom.css HTTP/1.1" 200 14958
+django.server INFO 2023-03-16 15:46:12,676 basehttp 3120 6160 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:46:12,692 basehttp 3120 6160 "GET /static/css/custom.css HTTP/1.1" 200 14946
+django.server INFO 2023-03-16 15:49:26,079 basehttp 3120 6160 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:49:26,097 basehttp 3120 6160 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:49:26,098 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 200 14970
+django.server INFO 2023-03-16 15:49:53,165 basehttp 3120 5400 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 15:49:53,180 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:52:16,528 basehttp 3120 5400 "GET /drug_card HTTP/1.1" 200 239245
+django.server INFO 2023-03-16 15:52:16,548 basehttp 3120 5400 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:52:16,620 basehttp 3120 5400 "GET /static/js/modal/create_drug.js HTTP/1.1" 200 335
+django.server WARNING 2023-03-16 15:52:16,713 basehttp 3120 5400 "GET /static/images/AMD00002.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,721 basehttp 3120 6160 "GET /static/images/AMD00003.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,789 basehttp 3120 13916 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,813 basehttp 3120 17480 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,815 basehttp 3120 25528 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,835 basehttp 3120 24596 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,835 basehttp 3120 21048 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,849 basehttp 3120 26052 "GET /static/images/AMD00178.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,876 basehttp 3120 960 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,876 basehttp 3120 26016 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,896 basehttp 3120 25472 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,897 basehttp 3120 16356 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,918 basehttp 3120 5416 "GET /static/images/AMD00216.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,919 basehttp 3120 3528 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,941 basehttp 3120 21032 "GET /static/images/AMD00219.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,941 basehttp 3120 14252 "GET /static/images/AMD00179.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,959 basehttp 3120 21460 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,961 basehttp 3120 23220 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,985 basehttp 3120 2176 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:16,986 basehttp 3120 20008 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,005 basehttp 3120 10916 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,006 basehttp 3120 26056 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,025 basehttp 3120 9564 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,025 basehttp 3120 12408 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,042 basehttp 3120 6112 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,042 basehttp 3120 12536 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,062 basehttp 3120 18524 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,063 basehttp 3120 5688 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,082 basehttp 3120 18332 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,082 basehttp 3120 9956 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,103 basehttp 3120 22036 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,105 basehttp 3120 14620 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,125 basehttp 3120 6884 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,126 basehttp 3120 8248 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,147 basehttp 3120 16740 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,148 basehttp 3120 4632 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,174 basehttp 3120 4296 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,174 basehttp 3120 3372 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,195 basehttp 3120 23652 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,196 basehttp 3120 20476 "GET /static/images/AMD00220.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,217 basehttp 3120 15556 "GET /static/images/AMD00214.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 15:52:17,217 basehttp 3120 3784 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server INFO 2023-03-16 15:52:26,238 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150084
+django.server INFO 2023-03-16 15:53:07,218 basehttp 3120 23592 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 15:53:07,232 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:54:31,529 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150097
+django.server INFO 2023-03-16 15:54:31,547 basehttp 3120 16916 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:54:31,547 basehttp 3120 23592 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:55:35,151 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150112
+django.server INFO 2023-03-16 15:55:35,163 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:56:19,900 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150084
+django.server INFO 2023-03-16 15:56:19,912 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 200 15015
+django.server INFO 2023-03-16 15:57:28,035 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 15:57:28,046 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 200 15071
+django.server INFO 2023-03-16 15:58:00,782 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 15:58:00,794 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 200 15116
+django.server INFO 2023-03-16 15:58:35,851 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 15:58:35,863 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 200 15129
+django.server INFO 2023-03-16 15:58:39,187 basehttp 3120 23592 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 15:58:39,199 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:58:45,124 basehttp 3120 23592 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 15:58:45,139 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:58:48,876 basehttp 3120 23592 "GET /organism_list HTTP/1.1" 200 76416
+django.server INFO 2023-03-16 15:58:48,889 basehttp 3120 23592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:59:05,077 basehttp 3120 23592 "GET /createOrg/ HTTP/1.1" 200 14768
+django.server INFO 2023-03-16 15:59:15,243 basehttp 3120 23592 "POST /search_organism/ HTTP/1.1" 200 470
+django.server INFO 2023-03-16 15:59:20,517 basehttp 3120 23592 "POST /createOrg/ HTTP/1.1" 302 0
+django.server INFO 2023-03-16 15:59:20,915 basehttp 3120 23592 "GET /organism_list HTTP/1.1" 200 76416
+django.server INFO 2023-03-16 15:59:20,926 basehttp 3120 23592 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:59:20,927 basehttp 3120 16916 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.request ERROR 2023-03-16 15:59:30,289 log 3120 16916 Internal Server Error: /organism_list
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 225, in get_queryset
+    return self.filterset.qs.distinct().order_by(order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1645, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 2202, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'ID' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, biologist, biologist_id, gen_property, growth_preference, lab_restriction, lab_restriction_id, mta_document, mta_status, mta_status_id, organism_id, organism_name, organism_name_id, oxygen_pref, oxygen_pref_id, pathogen_group, pathogen_group_id, reference, res_property, risk_group, risk_group_id, sequence_link, strain_code, strain_identification, strain_ids, strain_notes, strain_origin, strain_panel, strain_type, tax_id
+django.server ERROR 2023-03-16 15:59:30,295 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 113256
+django.request WARNING 2023-03-16 15:59:30,399 log 3120 16916 Not Found: /favicon.ico
+django.server WARNING 2023-03-16 15:59:30,399 basehttp 3120 16916 "GET /favicon.ico HTTP/1.1" 404 11785
+django.request ERROR 2023-03-16 15:59:38,339 log 3120 16916 Internal Server Error: /organism_list
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 225, in get_queryset
+    return self.filterset.qs.distinct().order_by(order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1645, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 2202, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'ID' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, biologist, biologist_id, gen_property, growth_preference, lab_restriction, lab_restriction_id, mta_document, mta_status, mta_status_id, organism_id, organism_name, organism_name_id, oxygen_pref, oxygen_pref_id, pathogen_group, pathogen_group_id, reference, res_property, risk_group, risk_group_id, sequence_link, strain_code, strain_identification, strain_ids, strain_notes, strain_origin, strain_panel, strain_type, tax_id
+django.server ERROR 2023-03-16 15:59:38,340 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 113243
+django.server INFO 2023-03-16 15:59:46,354 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=-Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 67063
+django.server INFO 2023-03-16 15:59:46,369 basehttp 3120 16916 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 15:59:48,336 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 70888
+django.request ERROR 2023-03-16 15:59:55,769 log 3120 16916 Internal Server Error: /organism_list
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 225, in get_queryset
+    return self.filterset.qs.distinct().order_by(order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1645, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 2202, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'ID' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, biologist, biologist_id, gen_property, growth_preference, lab_restriction, lab_restriction_id, mta_document, mta_status, mta_status_id, organism_id, organism_name, organism_name_id, oxygen_pref, oxygen_pref_id, pathogen_group, pathogen_group_id, reference, res_property, risk_group, risk_group_id, sequence_link, strain_code, strain_identification, strain_ids, strain_notes, strain_origin, strain_panel, strain_type, tax_id
+django.server ERROR 2023-03-16 15:59:55,771 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 113374
+django.server INFO 2023-03-16 16:01:46,080 basehttp 3120 16916 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:01:51,174 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 70888
+django.server INFO 2023-03-16 16:01:53,103 basehttp 3120 16916 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 70888
+django.server INFO 2023-03-16 16:02:02,336 basehttp 3120 10812 "GET / HTTP/1.1" 200 8597
+django.server INFO 2023-03-16 16:02:02,370 basehttp 3120 10812 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 16:02:02,376 basehttp 3120 10812 "GET /static/css/custom.css HTTP/1.1" 200 15129
+django.server INFO 2023-03-16 16:02:02,381 basehttp 3120 10812 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,386 basehttp 3120 10812 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,389 basehttp 3120 10812 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,392 basehttp 3120 10812 "GET /static/js/sorting_table.js HTTP/1.1" 200 598
+django.server INFO 2023-03-16 16:02:02,405 basehttp 3120 10812 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,413 basehttp 3120 10812 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,417 basehttp 3120 10812 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,420 basehttp 3120 10812 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:02,423 basehttp 3120 10812 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.request WARNING 2023-03-16 16:02:02,440 log 3120 10812 Not Found: /favicon.ico
+django.server WARNING 2023-03-16 16:02:02,441 basehttp 3120 10812 "GET /favicon.ico HTTP/1.1" 404 11785
+django.server INFO 2023-03-16 16:02:09,040 basehttp 3120 10812 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-16 16:02:09,142 basehttp 3120 10812 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 16:02:09,151 basehttp 3120 10812 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:09,152 basehttp 3120 7904 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:09,167 basehttp 3120 7904 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:12,241 basehttp 3120 7904 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 16:02:12,250 basehttp 3120 7904 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:12,251 basehttp 3120 10812 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:12,263 basehttp 3120 10812 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:12,277 basehttp 3120 10812 "GET /static/js/modal/create_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:15,235 basehttp 3120 10812 "GET /organism_list HTTP/1.1" 200 76416
+django.server INFO 2023-03-16 16:02:15,245 basehttp 3120 10812 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:24,239 basehttp 3120 10812 "GET /organism_list?paginate_by=50&order_by=Panel&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 74632
+django.server INFO 2023-03-16 16:02:24,248 basehttp 3120 10812 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:24,248 basehttp 3120 7904 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:02:30,404 basehttp 3120 7904 "GET /organism_list?paginate_by=50&order_by=-Panel&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 77417
+django.server INFO 2023-03-16 16:02:30,413 basehttp 3120 7904 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-16 16:06:35,242 autoreload 3120 19028 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-16 16:06:36,483 autoreload 14912 23408 Watching for file changes with StatReloader
+django.server INFO 2023-03-16 16:06:40,741 basehttp 14912 8204 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 70888
+django.server INFO 2023-03-16 16:06:40,757 basehttp 14912 8204 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:06:40,758 basehttp 14912 15268 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:06:44,087 basehttp 14912 15268 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 66388
+django.server INFO 2023-03-16 16:06:45,223 basehttp 14912 15268 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 77028
+django.server INFO 2023-03-16 16:06:52,699 basehttp 14912 15268 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 16:06:55,410 basehttp 14912 15268 "GET /drug_card HTTP/1.1" 200 239253
+django.server WARNING 2023-03-16 16:06:55,472 basehttp 14912 15268 "GET /static/images/AMD00002.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,486 basehttp 14912 8204 "GET /static/images/AMD00003.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,488 basehttp 14912 22388 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,521 basehttp 14912 17832 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,522 basehttp 14912 9728 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,526 basehttp 14912 23104 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,534 basehttp 14912 17440 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,549 basehttp 14912 10816 "GET /static/images/AMD00178.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,550 basehttp 14912 16708 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,555 basehttp 14912 10164 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,564 basehttp 14912 21864 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,568 basehttp 14912 6316 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,577 basehttp 14912 21624 "GET /static/images/AMD00216.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,588 basehttp 14912 24464 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,595 basehttp 14912 14332 "GET /static/images/AMD00219.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,605 basehttp 14912 23484 "GET /static/images/AMD00179.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,605 basehttp 14912 14012 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,606 basehttp 14912 18180 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,613 basehttp 14912 20560 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,626 basehttp 14912 20268 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,630 basehttp 14912 20584 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,632 basehttp 14912 15212 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,634 basehttp 14912 15236 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,660 basehttp 14912 23036 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,664 basehttp 14912 13056 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,664 basehttp 14912 25784 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,679 basehttp 14912 13492 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,685 basehttp 14912 24300 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,686 basehttp 14912 17364 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,697 basehttp 14912 3656 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,705 basehttp 14912 18320 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,710 basehttp 14912 25024 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,723 basehttp 14912 9136 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,724 basehttp 14912 9300 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,725 basehttp 14912 24648 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,738 basehttp 14912 2260 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,750 basehttp 14912 19088 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,750 basehttp 14912 11984 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,759 basehttp 14912 13916 "GET /static/images/AMD00220.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,771 basehttp 14912 14432 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,772 basehttp 14912 3368 "GET /static/images/AMD00214.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,782 basehttp 14912 11372 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,794 basehttp 14912 23532 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,796 basehttp 14912 9900 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,796 basehttp 14912 23572 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,805 basehttp 14912 24684 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,809 basehttp 14912 4660 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,815 basehttp 14912 15732 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,817 basehttp 14912 20164 "GET /static/images/AMD00045.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-16 16:06:55,817 basehttp 14912 14268 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server INFO 2023-03-16 16:06:59,245 basehttp 14912 24596 "GET /drug_list HTTP/1.1" 200 53910
+django.server INFO 2023-03-16 16:07:00,411 basehttp 14912 24596 "GET /drug_list?paginate_by=50&order_by=-ID&substructure=&drug_name=&smol= HTTP/1.1" 200 54489
+django.server INFO 2023-03-16 16:07:01,241 basehttp 14912 24596 "GET /drug_list?paginate_by=50&order_by=ID&substructure=&drug_name=&smol= HTTP/1.1" 200 54314
+django.server INFO 2023-03-16 16:07:03,260 basehttp 14912 24596 "GET /drug_list?paginate_by=50&order_by=-ID&substructure=&drug_name=&smol= HTTP/1.1" 200 54489
+django.server INFO 2023-03-16 16:07:04,254 basehttp 14912 24596 "GET /drug_list?paginate_by=50&order_by=ID&substructure=&drug_name=&smol= HTTP/1.1" 200 54314
+django.server INFO 2023-03-16 16:07:20,612 basehttp 14912 24596 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 16:07:36,196 basehttp 14912 22036 "GET /organism_list?paginate_by=50&order_by=-Panel&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 77417
+django.server INFO 2023-03-16 16:07:36,212 basehttp 14912 22036 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:07:36,213 basehttp 14912 17668 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:07:36,226 basehttp 14912 17668 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:07:36,745 basehttp 14912 17668 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:08:11,879 basehttp 14912 24596 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 16:08:12,106 basehttp 14912 12200 "GET /static/css/custom.css HTTP/1.1" 200 15129
+django.server INFO 2023-03-16 16:08:12,108 basehttp 14912 12200 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-16 16:08:12,112 basehttp 14912 12200 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-16 16:08:12,113 basehttp 14912 12200 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-16 16:08:12,118 basehttp 14912 12200 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-16 16:08:12,133 basehttp 14912 1156 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-16 16:08:12,146 basehttp 14912 24596 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-16 16:08:12,213 basehttp 14912 11344 "GET /static/js/sorting_table.js HTTP/1.1" 200 598
+django.server INFO 2023-03-16 16:08:12,214 basehttp 14912 16924 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-16 16:08:12,228 basehttp 14912 14348 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-16 16:08:12,233 basehttp 14912 14348 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-16 16:08:12,241 basehttp 14912 14348 "GET /static/images/app/avatar.png HTTP/1.1" 200 9371
+django.server INFO 2023-03-16 16:08:12,247 basehttp 14912 14348 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_Baseline1500x375.png HTTP/1.1" 200 26975
+django.server INFO 2023-03-16 16:08:12,899 basehttp 14912 14348 "GET /static/images/app/favicon-16x16.png HTTP/1.1" 200 489
+django.server INFO 2023-03-16 16:08:20,468 basehttp 14912 14348 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 16:08:20,485 basehttp 14912 14348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:08:28,075 basehttp 14912 14348 "GET /index/ HTTP/1.1" 200 15011
+django.server INFO 2023-03-16 16:08:28,092 basehttp 14912 14348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:09:28,348 basehttp 14912 14348 "GET /index/ HTTP/1.1" 200 15026
+django.server INFO 2023-03-16 16:09:28,362 basehttp 14912 14348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:09:28,362 basehttp 14912 16924 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:09:49,313 basehttp 14912 16924 "GET /index/ HTTP/1.1" 200 15041
+django.server INFO 2023-03-16 16:09:49,327 basehttp 14912 16924 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-16 16:09:52,207 basehttp 14912 16924 "GET /organism_card HTTP/1.1" 200 150092
+django.server INFO 2023-03-16 16:09:54,651 basehttp 14912 16924 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 16:10:00,333 basehttp 14912 16924 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1678946994662 HTTP/1.1" 200 569
+django.server INFO 2023-03-16 16:10:04,496 basehttp 14912 16924 "GET /createBatch/ HTTP/1.1" 200 9932
+django.server INFO 2023-03-16 16:10:04,503 basehttp 14912 16924 "GET /static/js/search_organism_id.js HTTP/1.1" 200 1842
+django.server INFO 2023-03-16 16:10:08,867 basehttp 14912 16924 "GET /organism/FG_0001 HTTP/1.1" 200 44218
+django.server INFO 2023-03-16 16:10:08,882 basehttp 14912 16924 "GET /static/css/custom.css HTTP/1.1" 304 0

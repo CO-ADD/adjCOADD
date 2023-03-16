@@ -1,28 +1,24 @@
-<div class="d-flex flex-column bg-dark p-0 mb-3 h-25">
-  <div class="d-flex flex-column p-0 mb-3 bg-light">
+<div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+  <div class="d-flex flex-column p-0">
     <a class="btn-sm btn-outline-secondary" id="hidefilter" title="hidefilter">
       <i class="bi bi-funnel fs-6 text-dark"></i>
     </a>
   </div>
-  <div class="d-flex flex-column p-0 mb-3">
+  <div class="d-flex flex-column p-0 bg-dark">
     <a href="{%url list_url %}" class="btn-sm btn-outline-secondary"><i
         class="fa-solid fa-table-list fs-6 text-light"></i></a>
     <a href="{%url card_url %}" class="btn-sm btn-outline-secondary"><i
         class="fa-solid fa-grip fs-6 text-light"></i></a>
   </div>
 
-
-
-
-
-  <div class="d-flex flex-column">
-    <div class="p-0 mb-3">
+  <div class="d-flex flex-column bg-dark">
+    <div class="pt-2">
       <a class="btn-sm btn-outline-secondary" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="top"
         title="Import Data {{import_module}}"><i class="fa fa-file-import fs-6 text-light"></i>
       </a>
     </div>
 
-    <div class="btn-group p-0 mb-3">
+    <div class="btn-group p-0">
       <a class="btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa fa-file-export fs-6 text-light"></i>
       </a>
