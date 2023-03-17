@@ -4,18 +4,16 @@
 {% block content %}
 
 <!-- Include -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+  {%include 'utils/topbar.html' with list_url='dict_view' card_url='dict_view'%}
+  <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <div class="d-flex">
-      {% include 'utils/pagination.html'%}
-      <a id="createDict" class="card-link text-success">
-        <i class="bi bi-plus"></i>New
-      </a>
-      {%include 'utils/message.html'%}
-    </div>
+    <!-- prettier-ignore -->
+    {%include 'utils/main_horizalbar.html' with create_object='createDict' create_objectModal='createDictModal' %}
+    <!-- prettier-ignore -->
+
     <div class="fixTableHead">
       <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
         <thead>
@@ -23,7 +21,7 @@
             {%for field in fields%}
             <th class="order_field" style="width: fit-content">{{field}}</th>
             {%endfor%}
-            <th class="text-danger" style="width: 5px">Delete</th>
+            <th class="text-danger" style="width: 5px"></th>
           </tr>
         </thead>
         <tbody>
@@ -39,8 +37,6 @@
 </div>
 <!--prettier-ignore-->
 
-<div id="createDictModal" class="modal fade" role="dialog">
-</div>
 
 {%load static%}
 <script type="text/javascript" src="{%static 'js/modal/create_dictionary.js'%}"></script>
@@ -69,6 +65,8 @@
           td.append(
             '<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>'
           );
+        } else {
+          window.location.reload();
         }
       })
       .fail(() => {

@@ -65,8 +65,8 @@ class Organismfilter(Filterbase):
     Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  widget=forms.RadioSelect, choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))# choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
     Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
     Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
-    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
-    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status']))
+    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter')
+    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
     Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '))
     # risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
     # oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
@@ -74,6 +74,8 @@ class Organismfilter(Filterbase):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        print(get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '))
+        self.filters["Type"].extra["choices"]=get_DictonaryChoicesValue_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | ')
         for i in self.filters:
             self.filters[i].label=i
             # test_i=Organism.objects.filter(oxygen_pref__icontains='Aerobic').count() #Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary[i][0])

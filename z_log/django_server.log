@@ -1,0 +1,874 @@
+django.utils.autoreload INFO 2023-03-17 14:17:18,310 autoreload 15944 14280 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 14:17:20,546 basehttp 15944 22392 "GET / HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 14:17:21,748 basehttp 15944 13552 "GET /static/css/custom.css HTTP/1.1" 200 15523
+django.server INFO 2023-03-17 14:17:21,752 basehttp 15944 13552 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-17 14:17:21,757 basehttp 15944 13552 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-17 14:17:21,764 basehttp 15944 13552 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-17 14:17:21,769 basehttp 15944 804 "GET /static/js/sorting_table.js HTTP/1.1" 200 598
+django.server INFO 2023-03-17 14:17:21,774 basehttp 15944 804 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-17 14:17:21,794 basehttp 15944 22368 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-17 14:17:21,796 basehttp 15944 13552 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-17 14:17:21,800 basehttp 15944 22392 "GET /static/css/overideboot.css HTTP/1.1" 200 5725
+django.server INFO 2023-03-17 14:17:21,806 basehttp 15944 8844 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5533
+django.server INFO 2023-03-17 14:17:21,831 basehttp 15944 9584 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-17 14:17:21,839 basehttp 15944 9584 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-17 14:17:22,038 basehttp 15944 9584 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-17 14:17:23,762 basehttp 15944 9584 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 14:17:23,850 basehttp 15944 9584 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 14:17:23,874 basehttp 15944 9584 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-17 14:17:26,910 basehttp 15944 9584 "GET /organism_card HTTP/1.1" 200 150188
+django.server INFO 2023-03-17 14:17:26,937 basehttp 15944 8844 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-17 14:17:26,937 basehttp 15944 9584 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-17 14:17:26,949 basehttp 15944 9584 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-17 14:17:29,047 basehttp 15944 9584 "GET /organism_list HTTP/1.1" 200 76512
+django.utils.autoreload INFO 2023-03-17 15:27:53,659 autoreload 8064 26260 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 15:27:56,399 basehttp 8064 4988 "GET / HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 15:27:56,602 basehttp 8064 4988 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:27:56,606 basehttp 8064 25356 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:28:00,047 basehttp 8064 25356 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:28:00,554 basehttp 8064 25356 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 15:28:00,571 basehttp 8064 25356 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.request ERROR 2023-03-17 15:28:27,686 log 8064 25356 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 472, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for '' not found. '' is not a valid view function or pattern name.
+django.server ERROR 2023-03-17 15:28:27,688 basehttp 8064 25356 "GET /dict/ HTTP/1.1" 500 312294
+django.request WARNING 2023-03-17 15:28:27,991 log 8064 25356 Not Found: /favicon.ico
+django.server WARNING 2023-03-17 15:28:27,991 basehttp 8064 25356 "GET /favicon.ico HTTP/1.1" 404 11785
+django.request ERROR 2023-03-17 15:29:44,891 log 8064 25356 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 472, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for '' not found. '' is not a valid view function or pattern name.
+django.server ERROR 2023-03-17 15:29:44,892 basehttp 8064 25356 "GET /dict/ HTTP/1.1" 500 312294
+django.server INFO 2023-03-17 15:35:02,767 basehttp 8064 20820 "GET /dict/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:35:02,774 basehttp 8064 20820 "GET /?next=/dict/ HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 15:35:04,913 basehttp 8064 20820 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:35:05,299 basehttp 8064 20820 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 15:35:07,797 basehttp 8064 20820 "GET /dict/ HTTP/1.1" 200 52995
+django.server INFO 2023-03-17 15:35:07,921 basehttp 8064 20820 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 200 349
+django.server INFO 2023-03-17 15:35:12,180 basehttp 8064 20820 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 15:35:27,264 basehttp 8064 20820 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:35:27,562 basehttp 8064 20820 "GET /dict/ HTTP/1.1" 200 52995
+django.server INFO 2023-03-17 15:36:20,523 basehttp 8064 20820 "GET /dict/ HTTP/1.1" 200 52995
+django.server INFO 2023-03-17 15:36:20,573 basehttp 8064 20820 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 15:38:08,782 autoreload 8064 26260 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:38:10,491 autoreload 5708 27104 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 15:38:11,887 basehttp 5708 3728 "GET /dict/ HTTP/1.1" 200 53188
+django.server INFO 2023-03-17 15:38:11,904 basehttp 5708 3728 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:38:11,904 basehttp 5708 13164 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:38:15,146 basehttp 5708 3728 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24294
+django.server INFO 2023-03-17 15:38:32,962 basehttp 5708 3728 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 15:38:49,323 basehttp 5708 3728 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:38:49,654 basehttp 5708 3728 "GET /dict/ HTTP/1.1" 200 53239
+django.server INFO 2023-03-17 15:39:06,248 basehttp 5708 3728 "GET /dict/ HTTP/1.1" 200 53239
+django.server INFO 2023-03-17 15:39:20,121 basehttp 5708 3728 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24895
+django.utils.autoreload INFO 2023-03-17 15:39:35,160 autoreload 5708 27104 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:39:36,452 autoreload 13232 10604 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 15:39:46,228 basehttp 13232 17748 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24947
+django.server INFO 2023-03-17 15:39:57,814 basehttp 13232 17748 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:40:00,124 basehttp 13232 17748 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24346
+django.server INFO 2023-03-17 15:40:25,263 basehttp 13232 17748 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 15:40:36,725 basehttp 13232 17748 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:40:37,031 basehttp 13232 17748 "GET /dict/ HTTP/1.1" 200 53210
+django.server INFO 2023-03-17 15:40:40,765 basehttp 13232 17748 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=aa HTTP/1.1" 200 23102
+django.utils.autoreload INFO 2023-03-17 15:40:55,671 autoreload 13232 10604 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:40:57,183 autoreload 24212 8656 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 15:41:09,317 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=aa HTTP/1.1" 200 23136
+django.server INFO 2023-03-17 15:41:16,494 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=aa HTTP/1.1" 200 23136
+django.server INFO 2023-03-17 15:41:26,008 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=AA-0317test&dict_value=aa HTTP/1.1" 200 22678
+django.server INFO 2023-03-17 15:41:31,590 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=AA-0317test&dict_value= HTTP/1.1" 200 22623
+django.server INFO 2023-03-17 15:42:43,305 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 53659
+django.server INFO 2023-03-17 15:45:40,892 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 53712
+django.server INFO 2023-03-17 15:45:44,229 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:45:44,559 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 53742
+django.server INFO 2023-03-17 15:48:29,611 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51386
+django.server INFO 2023-03-17 15:48:29,636 basehttp 24212 16184 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:48:47,811 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 25312
+django.server INFO 2023-03-17 15:48:50,542 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:48:50,905 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24757
+django.server INFO 2023-03-17 15:48:53,773 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:48:54,098 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 24222
+django.server INFO 2023-03-17 15:48:55,307 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:48:55,651 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 23695
+django.server INFO 2023-03-17 15:48:57,247 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:48:57,578 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 23168
+django.server INFO 2023-03-17 15:48:58,603 basehttp 24212 16184 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 15:48:58,931 basehttp 24212 16184 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 22669
+django.utils.autoreload INFO 2023-03-17 15:57:28,584 autoreload 24212 8656 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:57:30,202 autoreload 9408 8076 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 15:57:33,100 basehttp 9408 5700 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:57:33,115 basehttp 9408 5700 "GET /?next=/dict/%3Fpaginate_by%3D50%26order_by%3D%26substructure%3D%26dict_class%3D%26dict_value%3Dtest HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 15:57:33,153 basehttp 9408 5700 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 15:57:35,680 basehttp 9408 5700 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 15:57:36,166 basehttp 9408 5700 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 15:57:40,217 basehttp 9408 5700 "GET /dict/ HTTP/1.1" 200 50932
+django.request ERROR 2023-03-17 15:57:48,286 log 9408 5700 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 226, in get_queryset
+    return self.filterset.qs.distinct()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 161, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 166, in multichoices_filter
+    return queryset.filter(**{lookup: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1297, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1341, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'overlap' for CharField or join on the field not permitted.
+django.server ERROR 2023-03-17 15:57:48,290 basehttp 9408 5700 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_class=test0317--&dict_value= HTTP/1.1" 500 175556
+django.utils.autoreload INFO 2023-03-17 15:59:02,213 autoreload 9408 8076 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:59:03,607 autoreload 9852 9664 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 15:59:14,618 autoreload 9852 9664 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:59:15,982 autoreload 16296 11036 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 15:59:26,983 autoreload 16296 11036 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 15:59:28,431 autoreload 23288 17792 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 15:59:31,503 log 23288 20364 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 228, in get_queryset
+    return self.filterset.qs.distinct()
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 161, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django_filters\filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 169, in multichoices_or_filter
+    return queryset.filter(**{lookup: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1297, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1341, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'or' for CharField or join on the field not permitted.
+django.server ERROR 2023-03-17 15:59:31,508 basehttp 23288 20364 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_class=test0317--&dict_value= HTTP/1.1" 500 175697
+django.utils.autoreload INFO 2023-03-17 16:03:14,860 autoreload 23288 17792 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:03:16,356 autoreload 19032 9324 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:03:18,554 basehttp 19032 25288 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_class=test0317--&dict_value= HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:03:18,574 basehttp 19032 25288 "GET /?next=/dict/%3Fpaginate_by%3D50%26order_by%3D%26substructure%3D%26dict_class%3DQC_Status%26dict_class%3DUnit_Concentration%26dict_class%3Dtest0317--%26dict_value%3D HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 16:03:18,590 basehttp 19032 25288 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:03:20,668 basehttp 19032 25288 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:03:21,121 basehttp 19032 25288 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 16:03:21,135 basehttp 19032 25288 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:03:23,004 basehttp 19032 25288 "GET /dict/ HTTP/1.1" 200 50932
+django.server INFO 2023-03-17 16:03:26,945 basehttp 19032 25288 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_value= HTTP/1.1" 200 22711
+django.utils.autoreload INFO 2023-03-17 16:03:44,256 autoreload 19032 9324 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:03:45,713 autoreload 26792 3028 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:03:47,515 basehttp 26792 22472 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_value= HTTP/1.1" 200 22711
+django.server INFO 2023-03-17 16:03:51,468 basehttp 26792 22472 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=QC_Status&dict_class=Unit_Concentration&dict_value= HTTP/1.1" 200 22711
+django.server INFO 2023-03-17 16:04:16,465 basehttp 26792 22472 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Unit_Concentration&dict_value= HTTP/1.1" 200 22654
+django.utils.autoreload INFO 2023-03-17 16:08:47,015 autoreload 26792 3028 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:08:48,165 autoreload 26376 16396 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:08:50,627 autoreload 26376 16396 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:08:51,872 autoreload 5700 21868 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:09:19,976 basehttp 5700 22588 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Unit_Concentration&dict_value= HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:09:19,992 basehttp 5700 22588 "GET /?next=/dict/%3Fpaginate_by%3D50%26order_by%3D%26substructure%3D%26dict_class%3DUnit_Concentration%26dict_value%3D HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 16:09:20,094 basehttp 5700 22588 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:09:22,347 basehttp 5700 22588 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:09:22,776 basehttp 5700 22588 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 16:09:25,551 basehttp 5700 22588 "GET /dict/ HTTP/1.1" 200 50971
+django.server INFO 2023-03-17 16:09:32,785 basehttp 5700 22588 "GET /dict_create/ HTTP/1.1" 200 1497
+django.utils.autoreload INFO 2023-03-17 16:09:46,509 autoreload 10392 25980 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:09:51,118 basehttp 10392 12028 "GET /dict/ HTTP/1.1" 200 50971
+django.utils.autoreload INFO 2023-03-17 16:10:23,077 autoreload 10392 25980 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:10:24,308 autoreload 13804 26908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:10:44,824 autoreload 13804 26908 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:10:46,012 autoreload 1400 15520 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:10:54,693 autoreload 1400 15520 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:10:55,878 autoreload 16388 23784 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:11:35,777 basehttp 16388 22084 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=AA&dict_value= HTTP/1.1" 200 22652
+django.server INFO 2023-03-17 16:11:35,796 basehttp 16388 22084 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:11:42,032 basehttp 16388 22084 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=AA-0317test&dict_value= HTTP/1.1" 200 22670
+django.server INFO 2023-03-17 16:11:43,010 basehttp 16388 22084 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51386
+django.server INFO 2023-03-17 16:11:52,861 basehttp 16388 18688 "GET / HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 16:11:52,890 basehttp 16388 18688 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:11:53,009 basehttp 16388 18688 "GET /static/css/custom.css HTTP/1.1" 200 15523
+django.server INFO 2023-03-17 16:11:53,021 basehttp 16388 18688 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:11:53,023 basehttp 16388 18688 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.request WARNING 2023-03-17 16:11:53,023 log 16388 18688 Not Found: /favicon.ico
+django.server WARNING 2023-03-17 16:11:53,023 basehttp 16388 18688 "GET /favicon.ico HTTP/1.1" 404 11785
+django.server INFO 2023-03-17 16:12:00,529 basehttp 16388 18688 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:12:01,013 basehttp 16388 18688 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 16:12:01,026 basehttp 16388 18688 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:12:04,625 basehttp 16388 18688 "GET /dict/ HTTP/1.1" 200 50971
+django.server INFO 2023-03-17 16:12:04,664 basehttp 16388 18688 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 200 349
+django.server INFO 2023-03-17 16:12:12,133 basehttp 16388 18688 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:12:25,711 basehttp 16388 18688 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:12:26,052 basehttp 16388 18688 "GET /dict/ HTTP/1.1" 200 50995
+django.server INFO 2023-03-17 16:12:40,212 basehttp 16388 18688 "GET /dict/ HTTP/1.1" 200 50995
+django.server INFO 2023-03-17 16:12:40,279 basehttp 16388 18688 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:13:00,662 autoreload 16388 23784 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:13:01,977 autoreload 20708 10112 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:13:10,062 basehttp 20708 19140 "GET /dict/ HTTP/1.1" 200 51041
+django.server INFO 2023-03-17 16:13:16,712 basehttp 20708 19140 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 16:13:17,054 basehttp 20708 19140 "GET /dict/ HTTP/1.1" 200 51017
+django.utils.autoreload INFO 2023-03-17 16:14:21,359 autoreload 20708 10112 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:14:22,401 autoreload 8788 1308 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:14:27,961 autoreload 8788 1308 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:14:28,950 autoreload 20484 17448 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:15:48,709 autoreload 20484 17448 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:15:49,712 autoreload 21728 22816 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:15:54,069 basehttp 21728 16244 "GET /dict/ HTTP/1.1" 200 49215
+django.utils.autoreload INFO 2023-03-17 16:16:21,665 autoreload 21728 22816 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:16:22,820 autoreload 3032 6768 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 16:16:27,123 log 3032 21500 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 221, in get_queryset
+    self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 196, in __init__
+    self.filters['dict_class'].label='Class'
+    ^^^^^^^^^^^^
+AttributeError: 'Dictionaryfilter' object has no attribute 'filters'
+django.server ERROR 2023-03-17 16:16:27,125 basehttp 3032 21500 "GET /dict/ HTTP/1.1" 500 103046
+django.utils.autoreload INFO 2023-03-17 16:17:15,781 autoreload 3032 6768 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:17:16,861 autoreload 23464 13508 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:17:21,389 basehttp 23464 26008 "GET /dict/ HTTP/1.1" 200 49215
+django.utils.autoreload INFO 2023-03-17 16:18:06,757 autoreload 23464 13508 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:18:07,839 autoreload 13216 26272 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:18:13,135 basehttp 13216 26328 "GET /dict/ HTTP/1.1" 200 49215
+django.utils.autoreload INFO 2023-03-17 16:18:32,156 autoreload 13216 26272 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:18:33,174 autoreload 17312 23544 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:18:39,938 basehttp 17312 1548 "GET /dict/ HTTP/1.1" 200 49215
+django.utils.autoreload INFO 2023-03-17 16:19:29,367 autoreload 17312 23544 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:19:30,508 autoreload 13252 13340 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 16:19:35,124 log 13252 17388 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 222, in get_queryset
+    self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 198, in __init__
+    self.fields['dict_class'].choices = choice_class
+    ^^^^^^^^^^^
+AttributeError: 'Dictionaryfilter' object has no attribute 'fields'
+django.server ERROR 2023-03-17 16:19:35,127 basehttp 13252 17388 "GET /dict/ HTTP/1.1" 500 102975
+django.utils.autoreload INFO 2023-03-17 16:20:22,496 autoreload 13252 13340 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:20:23,570 autoreload 25900 10972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 16:21:19,341 autoreload 25900 10972 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:21:20,422 autoreload 8860 10980 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:21:25,214 basehttp 8860 3476 "GET /dict/ HTTP/1.1" 200 49215
+django.server INFO 2023-03-17 16:21:25,263 basehttp 8860 3476 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:21:25,264 basehttp 8860 17588 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:21:36,516 autoreload 8860 10980 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:21:37,671 autoreload 12188 6624 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 16:21:44,582 log 12188 24896 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 222, in get_queryset
+    self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 196, in __init__
+    self.filters['dict_class'].choices = choice_class
+    ^^^^^^^^^^^^
+AttributeError: 'Dictionaryfilter' object has no attribute 'filters'
+django.server ERROR 2023-03-17 16:21:44,585 basehttp 12188 24896 "GET /dict/ HTTP/1.1" 500 103023
+django.utils.autoreload INFO 2023-03-17 16:22:01,303 autoreload 12188 6624 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:22:02,563 autoreload 22768 5488 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 16:22:06,495 log 22768 16756 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 222, in get_queryset
+    self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 196, in __init__
+    self.fields['dict_class'].choices = choice_class
+    ^^^^^^^^^^^
+AttributeError: 'Dictionaryfilter' object has no attribute 'fields'
+django.server ERROR 2023-03-17 16:22:06,498 basehttp 22768 16756 "GET /dict/ HTTP/1.1" 500 103017
+django.utils.autoreload INFO 2023-03-17 16:24:07,671 autoreload 22768 5488 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:24:09,018 autoreload 8608 27276 Watching for file changes with StatReloader
+django.request ERROR 2023-03-17 16:24:45,884 log 8608 26916 Internal Server Error: /dict/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 222, in get_queryset
+    self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py", line 197, in __init__
+    self.fields['dict_class'].choices = choice_class
+    ^^^^^^^^^^^
+AttributeError: 'Dictionaryfilter' object has no attribute 'fields'
+django.server ERROR 2023-03-17 16:24:45,886 basehttp 8608 26916 "GET /dict/ HTTP/1.1" 500 99812
+django.utils.autoreload INFO 2023-03-17 16:25:05,071 autoreload 8608 27276 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:25:06,385 autoreload 16132 13416 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:25:14,637 basehttp 16132 24432 "GET /dict/ HTTP/1.1" 200 51017
+django.server INFO 2023-03-17 16:25:14,646 basehttp 16132 24432 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:25:26,561 basehttp 16132 24432 "GET /dict/?paginate_by=50&order_by=Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51502
+django.server INFO 2023-03-17 16:25:27,960 basehttp 16132 24432 "GET /dict/?paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51444
+django.server INFO 2023-03-17 16:25:34,049 basehttp 16132 24432 "GET /dict/?page=2&paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51859
+django.server INFO 2023-03-17 16:25:41,679 basehttp 16132 24432 "GET /dict/?page=3&paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 40836
+django.utils.autoreload INFO 2023-03-17 16:26:24,456 autoreload 16132 13416 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:26:25,815 autoreload 9220 21424 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:26:32,934 basehttp 9220 9776 "GET /dict/?page=3&paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 46614
+django.server INFO 2023-03-17 16:26:32,946 basehttp 9220 9776 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:28:19,686 basehttp 9220 9776 "GET /dict/?page=3&paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 46614
+django.server INFO 2023-03-17 16:28:21,511 basehttp 9220 9776 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:28:28,759 basehttp 9220 9776 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:28:29,111 basehttp 9220 9776 "GET /dict/ HTTP/1.1" 200 56765
+django.server INFO 2023-03-17 16:28:36,256 basehttp 9220 9776 "GET /dict/ HTTP/1.1" 200 56765
+django.utils.autoreload INFO 2023-03-17 16:29:05,653 autoreload 9220 21424 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:29:06,996 autoreload 5144 24632 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:29:35,416 basehttp 5144 12012 "GET /dict/ HTTP/1.1" 200 50701
+django.server INFO 2023-03-17 16:29:45,260 basehttp 5144 12012 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 16:29:45,570 basehttp 5144 12012 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:29:49,303 basehttp 5144 12012 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:29:56,735 basehttp 5144 12012 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:30:01,768 basehttp 5144 12012 "GET /dict/?page=2 HTTP/1.1" 200 51290
+django.server INFO 2023-03-17 16:30:02,933 basehttp 5144 12012 "GET /dict/?page=1& HTTP/1.1" 200 50756
+django.utils.autoreload INFO 2023-03-17 16:31:11,320 autoreload 5144 24632 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:31:12,563 autoreload 3796 25096 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:31:21,738 basehttp 3796 24344 "GET /dict/?page=1& HTTP/1.1" 200 50722
+django.server INFO 2023-03-17 16:31:27,826 basehttp 3796 24344 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:31:37,946 basehttp 3796 24344 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:31:38,277 basehttp 3796 24344 "GET /dict/ HTTP/1.1" 200 50667
+django.server INFO 2023-03-17 16:31:43,077 basehttp 3796 24344 "GET /dict/ HTTP/1.1" 200 50667
+django.server INFO 2023-03-17 16:32:06,981 basehttp 3796 24344 "GET /dict/ HTTP/1.1" 200 50667
+django.utils.autoreload INFO 2023-03-17 16:33:16,172 autoreload 3796 25096 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:33:17,437 autoreload 1400 20124 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:33:19,599 basehttp 1400 12976 "GET /dict/ HTTP/1.1" 200 49185
+django.utils.autoreload INFO 2023-03-17 16:33:37,091 autoreload 1400 20124 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:33:38,332 autoreload 8016 26816 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:33:43,438 basehttp 8016 7780 "GET /dict/ HTTP/1.1" 200 49185
+django.server INFO 2023-03-17 16:33:43,458 basehttp 8016 17192 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:33:43,459 basehttp 8016 7780 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:33:56,036 autoreload 8016 26816 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:33:57,252 autoreload 22684 22736 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:34:01,397 basehttp 22684 25548 "GET /dict/ HTTP/1.1" 200 50701
+django.server INFO 2023-03-17 16:34:01,410 basehttp 22684 27120 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:34:01,411 basehttp 22684 25548 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:34:01,411 basehttp 22684 1636 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:34:01,415 basehttp 22684 27120 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:34:01,416 basehttp 22684 25548 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:34:01,426 basehttp 22684 25548 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:35:27,240 autoreload 22684 22736 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:35:28,524 autoreload 23820 25168 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:35:42,714 basehttp 23820 16912 "GET /organism_card HTTP/1.1" 200 150188
+django.server INFO 2023-03-17 16:35:42,749 basehttp 23820 16912 "GET /static/js/modal/create_organism.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:36:27,168 autoreload 23820 25168 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:36:28,491 autoreload 19620 19712 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:38:01,585 basehttp 19620 12012 "GET /createOrg/ HTTP/1.1" 200 15953
+django.server INFO 2023-03-17 16:38:01,615 basehttp 19620 12012 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:40:09,150 basehttp 19620 12012 "GET /dict/ HTTP/1.1" 200 50701
+django.server INFO 2023-03-17 16:40:09,161 basehttp 19620 12012 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:40:18,807 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=license HTTP/1.1" 200 22438
+django.server INFO 2023-03-17 16:40:35,004 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value=license HTTP/1.1" 200 22506
+django.server INFO 2023-03-17 16:40:36,722 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51116
+django.server INFO 2023-03-17 16:40:42,568 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 24843
+django.server INFO 2023-03-17 16:40:53,772 basehttp 19620 12012 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:41:26,106 basehttp 19620 12012 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:41:26,448 basehttp 19620 12012 "GET /dict/ HTTP/1.1" 200 50723
+django.server INFO 2023-03-17 16:41:34,354 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25382
+django.server INFO 2023-03-17 16:41:43,669 basehttp 19620 12012 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:45:54,600 basehttp 19620 12012 "GET /dict/ HTTP/1.1" 200 50723
+django.server INFO 2023-03-17 16:45:54,613 basehttp 19620 12012 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:46:06,545 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25382
+django.server INFO 2023-03-17 16:46:10,465 basehttp 19620 12012 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 16:46:10,828 basehttp 19620 12012 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 24843
+django.server INFO 2023-03-17 16:46:15,728 basehttp 19620 12012 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:46:23,160 basehttp 19620 12012 "GET /organism_card HTTP/1.1" 200 150302
+django.utils.autoreload INFO 2023-03-17 16:46:45,855 autoreload 19620 19712 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:46:47,141 autoreload 26180 25100 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:46:55,896 basehttp 26180 15624 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:47:01,853 basehttp 26180 15624 "GET /organism_card HTTP/1.1" 200 150302
+django.utils.autoreload INFO 2023-03-17 16:47:47,060 autoreload 26180 25100 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:47:48,380 autoreload 21868 13272 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:47:55,784 basehttp 21868 12440 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:50:14,069 basehttp 21868 12440 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:50:14,550 basehttp 21868 12440 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 16:50:36,260 autoreload 21868 13272 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:50:37,751 autoreload 10772 21424 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:50:41,718 basehttp 10772 9132 "GET /organism_card HTTP/1.1" 200 150302
+django.server INFO 2023-03-17 16:50:52,784 basehttp 10772 9132 "GET /createOrg/ HTTP/1.1" 200 15953
+django.utils.autoreload INFO 2023-03-17 16:52:08,566 autoreload 10772 21424 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:52:09,789 autoreload 13892 2476 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:52:21,206 basehttp 13892 6136 "GET /organism_card HTTP/1.1" 200 150188
+django.server INFO 2023-03-17 16:52:21,248 basehttp 13892 6136 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:52:31,403 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50701
+django.server INFO 2023-03-17 16:52:32,808 basehttp 13892 6136 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:52:43,791 basehttp 13892 6136 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:52:44,099 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50900
+django.server INFO 2023-03-17 16:52:47,793 basehttp 13892 6136 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 16:52:48,140 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:53:13,345 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:53:14,960 basehttp 13892 6136 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 16:53:22,627 basehttp 13892 6136 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 16:53:22,968 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50725
+django.server INFO 2023-03-17 16:53:28,057 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=Value&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51699
+django.server INFO 2023-03-17 16:53:29,807 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=-Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51158
+django.server INFO 2023-03-17 16:53:31,635 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=Class&substructure=&dict_class=&dict_value= HTTP/1.1" 200 51210
+django.server INFO 2023-03-17 16:53:39,442 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25340
+django.server INFO 2023-03-17 16:53:44,862 basehttp 13892 6136 "GET /organism_card HTTP/1.1" 200 150284
+django.server INFO 2023-03-17 16:53:50,178 basehttp 13892 6136 "GET /createOrg/ HTTP/1.1" 200 16049
+django.server INFO 2023-03-17 16:53:58,625 basehttp 13892 6136 "GET /organism/FG_0001 HTTP/1.1" 200 44538
+django.server INFO 2023-03-17 16:53:58,664 basehttp 13892 6136 "GET /static/js/modal/create_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:53:58,669 basehttp 13892 6136 "GET /static/js/modal/create_culture.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:53:58,682 basehttp 13892 6136 "GET /static/js/modal/create_batch.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:54:07,523 basehttp 13892 6136 "GET /organism/FG_0001 HTTP/1.1" 200 44538
+django.server INFO 2023-03-17 16:54:10,868 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50725
+django.server INFO 2023-03-17 16:54:20,063 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25340
+django.server INFO 2023-03-17 16:54:21,604 basehttp 13892 6136 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 16:54:21,945 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 24843
+django.server INFO 2023-03-17 16:54:34,807 basehttp 13892 6136 "GET /organism_card HTTP/1.1" 200 150188
+django.server INFO 2023-03-17 16:54:39,962 basehttp 13892 6136 "GET /createOrg/ HTTP/1.1" 200 15953
+django.server INFO 2023-03-17 16:54:47,427 basehttp 13892 6136 "GET /organism/FG_0001 HTTP/1.1" 200 44442
+django.server INFO 2023-03-17 16:54:54,319 basehttp 13892 6136 "GET /organism/FG_0001 HTTP/1.1" 200 44442
+django.server INFO 2023-03-17 16:54:57,501 basehttp 13892 6136 "GET /dict/ HTTP/1.1" 200 50731
+django.server INFO 2023-03-17 16:55:06,443 basehttp 13892 6136 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 24843
+django.utils.autoreload INFO 2023-03-17 16:56:38,010 autoreload 13892 2476 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 16:56:39,254 autoreload 5676 17972 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 16:56:59,617 basehttp 5676 25904 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 24809
+django.server INFO 2023-03-17 16:56:59,627 basehttp 5676 25904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 16:57:23,642 basehttp 5676 25904 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25306
+django.server INFO 2023-03-17 16:57:39,773 basehttp 5676 25904 "GET /organism_card HTTP/1.1" 200 150284
+django.server INFO 2023-03-17 16:57:49,000 basehttp 5676 25904 "GET /dict/ HTTP/1.1" 200 50691
+django.server INFO 2023-03-17 16:58:26,415 basehttp 5676 25904 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Strain_Type&dict_value= HTTP/1.1" 200 31204
+django.utils.autoreload INFO 2023-03-17 17:00:58,529 autoreload 5676 17972 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:00:59,824 autoreload 3056 8576 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 17:01:11,831 autoreload 3056 8576 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:01:13,106 autoreload 11808 7232 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:01:23,504 basehttp 11808 16752 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:01:43,326 basehttp 11808 16752 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:01:43,690 basehttp 11808 16752 "GET /dict/ HTTP/1.1" 200 50691
+django.server INFO 2023-03-17 17:01:52,950 basehttp 11808 16752 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Strain_Type&dict_value= HTTP/1.1" 200 31737
+django.server INFO 2023-03-17 17:02:00,460 basehttp 11808 16752 "GET /organism_card HTTP/1.1" 200 150284
+django.server INFO 2023-03-17 17:02:18,885 basehttp 11808 16752 "GET /createOrg/ HTTP/1.1" 200 16106
+django.server INFO 2023-03-17 17:02:34,329 basehttp 11808 16752 "GET /organism/FG_0001 HTTP/1.1" 200 44595
+django.server INFO 2023-03-17 17:02:43,214 basehttp 11808 16752 "GET /organism_card HTTP/1.1" 200 150284
+django.utils.autoreload INFO 2023-03-17 17:03:08,324 autoreload 11808 7232 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:03:09,754 autoreload 4984 19168 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:03:52,443 basehttp 4984 1408 "GET /createOrg/ HTTP/1.1" 200 16106
+django.utils.autoreload INFO 2023-03-17 17:05:23,975 autoreload 4984 19168 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:05:25,290 autoreload 17256 904 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:05:31,946 basehttp 17256 18644 "GET /organism_card HTTP/1.1" 200 150330
+django.server INFO 2023-03-17 17:05:31,959 basehttp 17256 18644 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:10:43,081 basehttp 17256 20140 "GET /organism_card HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:10:43,088 basehttp 17256 20140 "GET /?next=/organism_card HTTP/1.1" 200 8422
+django.utils.autoreload INFO 2023-03-17 17:13:06,751 autoreload 17256 904 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:13:08,198 autoreload 3516 5784 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-17 17:13:24,490 autoreload 3516 5784 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:13:25,788 autoreload 24660 19800 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:13:38,964 basehttp 24660 20788 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:13:39,470 basehttp 24660 20788 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 17:13:42,916 basehttp 24660 20788 "GET /organism_card HTTP/1.1" 200 149524
+django.utils.autoreload INFO 2023-03-17 17:13:56,707 autoreload 24660 19800 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:13:57,972 autoreload 10212 7852 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:14:03,991 basehttp 10212 6524 "GET /organism_card HTTP/1.1" 200 149524
+django.utils.autoreload INFO 2023-03-17 17:15:16,694 autoreload 10212 7852 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:15:17,891 autoreload 3444 17224 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:15:29,746 basehttp 3444 16104 "GET /organism_card HTTP/1.1" 200 149524
+django.server INFO 2023-03-17 17:15:29,758 basehttp 3444 16104 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-17 17:18:15,727 autoreload 3444 17224 C:\Users\uqwzhon4\project\adjCOADD\dorganism\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:18:16,975 autoreload 16180 16868 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:18:23,676 basehttp 16180 11600 "GET /organism_card HTTP/1.1" 200 150330
+django.utils.autoreload INFO 2023-03-17 17:19:20,605 autoreload 16180 16868 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:19:21,820 autoreload 12032 14852 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:19:28,277 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50691
+django.server INFO 2023-03-17 17:19:37,607 basehttp 12032 24668 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:20:24,191 basehttp 12032 24668 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:20:24,532 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50713
+django.server INFO 2023-03-17 17:20:31,447 basehttp 12032 24668 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=License_Status&dict_value= HTTP/1.1" 200 25845
+django.server INFO 2023-03-17 17:20:43,406 basehttp 12032 24668 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Strain_Type&dict_value= HTTP/1.1" 200 31737
+django.server INFO 2023-03-17 17:20:50,716 basehttp 12032 24668 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:21:02,433 basehttp 12032 24668 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:21:02,773 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50713
+django.server INFO 2023-03-17 17:21:07,683 basehttp 12032 24668 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:21:14,103 basehttp 12032 24668 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:21:14,434 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50708
+django.server INFO 2023-03-17 17:21:24,576 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50708
+django.server INFO 2023-03-17 17:21:34,805 basehttp 12032 24668 "GET /organism_card HTTP/1.1" 200 150488
+django.server INFO 2023-03-17 17:21:45,300 basehttp 12032 24668 "GET /createOrg/ HTTP/1.1" 200 16275
+django.server INFO 2023-03-17 17:22:17,318 basehttp 12032 24668 "GET /dict/ HTTP/1.1" 200 50708
+django.utils.autoreload INFO 2023-03-17 17:25:22,056 autoreload 12032 14852 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:25:23,196 autoreload 11036 6148 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:25:32,069 basehttp 11036 14104 "GET /dict/ HTTP/1.1" 200 50746
+django.server INFO 2023-03-17 17:25:32,080 basehttp 11036 14104 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:25:54,751 basehttp 11036 14104 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 17:25:55,115 basehttp 11036 14104 "GET /dict/ HTTP/1.1" 200 50713
+django.server INFO 2023-03-17 17:26:14,750 basehttp 11036 14104 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:26:24,582 basehttp 11036 14104 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:26:24,925 basehttp 11036 14104 "GET /dict/ HTTP/1.1" 200 50912
+django.server INFO 2023-03-17 17:26:33,358 basehttp 11036 14104 "GET /dict_create/ HTTP/1.1" 200 1497
+django.server INFO 2023-03-17 17:26:48,367 basehttp 11036 14104 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:26:48,731 basehttp 11036 14104 "GET /dict/ HTTP/1.1" 200 50759
+django.server INFO 2023-03-17 17:26:57,936 basehttp 11036 14104 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=testtest&dict_value= HTTP/1.1" 200 22963
+django.server INFO 2023-03-17 17:26:59,549 basehttp 11036 14104 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-17 17:26:59,918 basehttp 11036 14104 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=testtest&dict_value= HTTP/1.1" 200 51316
+django.server INFO 2023-03-17 17:27:07,185 basehttp 11036 14104 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Plate_Color&dict_value= HTTP/1.1" 200 23932
+django.server INFO 2023-03-17 17:27:55,879 basehttp 11036 14104 "GET /organism_card HTTP/1.1" 200 150488
+django.server INFO 2023-03-17 17:28:00,188 basehttp 11036 14104 "GET /createOrg/ HTTP/1.1" 200 16275
+django.server INFO 2023-03-17 17:30:22,098 basehttp 11036 14104 "GET /organism_card HTTP/1.1" 200 150488
+django.server INFO 2023-03-17 17:30:22,561 basehttp 11036 9164 - Broken pipe from ('127.0.0.1', 57983)
+django.server INFO 2023-03-17 17:30:22,605 basehttp 11036 14104 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:30:24,675 basehttp 11036 14104 "GET /createOrg/ HTTP/1.1" 200 16550
+django.utils.autoreload INFO 2023-03-17 17:31:02,210 autoreload 11036 6148 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils.py changed, reloading.
+django.utils.autoreload INFO 2023-03-17 17:31:03,431 autoreload 25508 24052 Watching for file changes with StatReloader
+django.server INFO 2023-03-17 17:31:22,268 basehttp 25508 23692 "GET / HTTP/1.1" 200 8422
+django.server INFO 2023-03-17 17:31:22,310 basehttp 25508 23692 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,310 basehttp 25508 20532 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,319 basehttp 25508 2496 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,319 basehttp 25508 7668 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,321 basehttp 25508 26420 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,322 basehttp 25508 24016 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,323 basehttp 25508 23692 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,324 basehttp 25508 20532 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,330 basehttp 25508 2496 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,330 basehttp 25508 7668 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,331 basehttp 25508 26420 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:22,355 basehttp 25508 26420 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:24,365 basehttp 25508 26420 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-17 17:31:24,809 basehttp 25508 26420 "GET /index/ HTTP/1.1" 200 15006
+django.server INFO 2023-03-17 17:31:24,826 basehttp 25508 26420 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:30,324 basehttp 25508 26420 "GET /organism_card HTTP/1.1" 200 150488
+django.server INFO 2023-03-17 17:31:30,347 basehttp 25508 26420 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:30,347 basehttp 25508 7668 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:30,357 basehttp 25508 7668 "GET /static/js/modal/create_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:31:33,047 basehttp 25508 7668 "GET /createOrg/ HTTP/1.1" 200 16550
+django.server INFO 2023-03-17 17:31:33,140 basehttp 25508 7668 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-17 17:31:52,664 basehttp 25508 7668 "GET /createOrg/ HTTP/1.1" 200 16550
+django.server INFO 2023-03-17 17:32:12,649 basehttp 25508 7668 "GET /organism/FG_0001 HTTP/1.1" 200 44764
+django.server INFO 2023-03-17 17:32:12,673 basehttp 25508 26420 "GET /static/js/modal/create_culture.js HTTP/1.1" 200 344
+django.server INFO 2023-03-17 17:32:12,673 basehttp 25508 7668 "GET /static/js/modal/create_stock.js HTTP/1.1" 200 347
+django.server INFO 2023-03-17 17:32:12,683 basehttp 25508 7668 "GET /static/js/modal/create_batch.js HTTP/1.1" 200 338
+django.server INFO 2023-03-17 17:32:12,741 basehttp 25508 7668 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-17 17:32:18,968 basehttp 25508 7668 "GET /createBatch/ HTTP/1.1" 200 10459
+django.server INFO 2023-03-17 17:32:18,985 basehttp 25508 7668 "GET /static/js/search_organism_id.js HTTP/1.1" 200 1842
+django.server INFO 2023-03-17 17:32:27,536 basehttp 25508 7668 "GET /organism/FG_0001 HTTP/1.1" 200 44764
+django.server INFO 2023-03-17 17:32:29,663 basehttp 25508 7668 "GET /createStock/ HTTP/1.1" 200 115537

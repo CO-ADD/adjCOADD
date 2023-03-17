@@ -107,7 +107,7 @@ def instance_dict(instance, key_format=None):
 # ===================================Dictionary query convert to choice Tuples========================================================================#
 
 def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
-    options=ModelName.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
+    options=ModelName.objects.filter(dict_class=DictClass, astatus__gte=0).values('dict_value', 'dict_desc')
     if options:
         choices_values=tuple([tuple(d.values()) for d in options])
         choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
@@ -117,7 +117,7 @@ def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
     
 # ------------------------Only use dict_value----------------
 def get_DictonaryChoicesValue_byDictClass(ModelName, DictClass, sep='|'):
-    options=ModelName.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
+    options=ModelName.objects.filter(dict_class=DictClass, astatus__gte=0).values('dict_value', 'dict_desc')
     if options:
         choices_values=tuple([tuple(d.values()) for d in options])
         choices=tuple((a[0], a[0]) for a in choices_values)
@@ -186,15 +186,15 @@ class AppUserfilter(django_filters.FilterSet):
 
 # =====================Dictionary Filterset===================================
 
-a=[tuple(d.values()) for d in Dictionary.objects.order_by().values('dict_class').distinct()]
-# print(a)
-choice_class=[(x[0], x[0]) for x in a]
 class Dictionaryfilter(Filterbase):
-    dict_class = django_filters.ChoiceFilter(choices=choice_class)
-    #   dict_value = django_filters.CharFilter(lookup_expr='icontains')
+    dict_class = django_filters.ChoiceFilter(choices=[])
+    dict_value = django_filters.CharFilter(lookup_expr='icontains')
     #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).order_by().values('dict_class').distinct()]
+        choice_class=[(x[0], x[0]) for x in a]
+        self.filters['dict_class'].extra["choices"] = choice_class
         self.filters['dict_class'].label='Class'
       
     class Meta:
