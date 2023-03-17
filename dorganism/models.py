@@ -62,9 +62,9 @@ class Taxonomy(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,OrgName,verbose=0):
+    def exists(cls,OrgName,verbose=0):
         try:
-            retInstance = self.objects.get(organism_name=OrgName.strip())
+            retInstance = cls.objects.get(organism_name=OrgName.strip())
         except:
             if verbose:
                 print(f"[Taxonomy Not Found] {OrgName} ")
@@ -100,6 +100,7 @@ class Organism(AuditModel):
         'lab_restriction':'Lab_Restriction',
     }
 
+    
     #ORG_CLASSES = ['GN','GP','MB','FG','MA']
     #SEP = "_"
 
@@ -155,7 +156,7 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def str_OrganismID(self,OrganimClass,OrganismNo) -> str:
+    def str_OrganismID(cls,OrganimClass,OrganismNo) -> str:
     #
     # Input:    OrganismClass GN, GP,...
     #           OrganismNo 
@@ -165,12 +166,12 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,OrgID,verbose=0):
+    def exists(cls,OrgID,verbose=0):
     #
     # Returns an instance by organism_id
     #
         try:
-            retInstance = self.objects.get(organism_id=OrgID)
+            retInstance = cls.objects.get(organism_id=OrgID)
         except:
             if verbose:
                 print(f"[OrgansimID Not Found] {OrgID} ")
@@ -178,14 +179,15 @@ class Organism(AuditModel):
         return(retInstance)
 
     #------------------------------------------------
-    def find_Next_OrganismID(self,OrganismClass,OrganismClassTypes = ORGANISM_CLASSES) -> str:
+    @classmethod
+    def find_Next_OrganismID(cls,OrganismClass,OrganismClassTypes = ORGANISM_CLASSES) -> str:
         if OrganismClass in OrganismClassTypes:
             Organism_IDSq=Sequence(OrganismClass)
             Organism_nextID = next(Organism_IDSq)
-            Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
+            Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
             while Organism.objects.filter(organism_id=Organism_strID).first():
                 Organism_nextID = next(Organism_IDSq)
-                Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
+                Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
             return(Organism_strID)    
         else:
             return(None)

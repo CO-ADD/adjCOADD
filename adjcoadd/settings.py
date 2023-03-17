@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 # import cx_Oracle
 # cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
-DEVELOPMENT=False
+DEVELOPMENT=True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
+    'dscreen',
+    'dcollab',
+    'dgene',
 ]
 
 MIDDLEWARE = [
@@ -87,70 +90,72 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 import psycopg2.extensions
+
 if DEVELOPMENT:
-    DATABASES={
-            # ==================For Local Test===========================================
-   'default': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
+    HOST_NAME = 'Localhost'
+    PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+else:
+    HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+    PG_ENGINE = 'psqlextra.backend'
+
+
+DATABASES = {
+    'default': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD':'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
     },
     'dorganism': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-      'NAME': 'orgdb',
-      'TEST': {
-          'NAME': 'mytestdatabase2',
-      },
-      'HOST': 'Localhost',
-      'PORT': '5432',
-   },
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+    },
     'ddrug': {
-      "ENGINE": 'django.db.backends.postgresql_psycopg2',
-      'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public','isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-      'NAME': 'orgdb',
-      'HOST': 'Localhost',
-      'PORT': '5432',
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+    },
+    'dscreen': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+    },
+    'dgene': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dgene,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+    },
+    'dcollab': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': 'orgdb',
+        'USER': 'orgdb', #os.environ.get('db_user'),
+        'PASSWORD': 'orgdb',
+        'HOST': HOST_NAME,
+        'PORT': '5432',
     }
-
-    }
-else:
-    DATABASES = {
-
-      'default': {
-       #       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        
-          "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-          'NAME': 'orgdb',
-          'USER': 'orgdb', #os.environ.get('db_user'),
-          'PASSWORD':'orgdb',
-          'HOST': 'imb-coadd-work.imb.uq.edu.au',
-          'PORT': '5432',
-      },
-      'dorganism': {
-          "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-          'NAME': 'orgdb',
-          'USER': 'orgdb', #os.environ.get('db_user'),
-          'PASSWORD': 'orgdb',
-          'HOST': 'imb-coadd-work.imb.uq.edu.au',
-          'PORT': '5432',
-      },
-
-      'ddrug': {
-          "ENGINE": "psqlextra.backend",
-          'OPTIONS':{'options': '-c search_path=ddrug,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-          'NAME': 'orgdb',
-          'USER': 'orgdb', #os.environ.get('db_user'),
-          'PASSWORD': 'orgdb',
-          'HOST': 'imb-coadd-work.imb.uq.edu.au',
-          'PORT': '5432',
-      }
-
 }
+
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]  
 
 # Password validation
