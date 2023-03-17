@@ -3,35 +3,20 @@
     <div class="brand d-flex flex-column align-items-center">
       <a class="navbar-brand" href="{%url 'index'%}">
         {%load static%}
-        <img
-          class="d-inline-block align-text-top"
-          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
-          alt="CoADD Logo"
-        />
+        <img class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
       </a>
 
-      <a
-        class="nav-link version"
-        href="https://co-add.github.io/README/html/index.html"
-        data-bs-toggle="tooltip"
-        data-bs-placement="bottom"
-        title="info README
-        "
-      >
-        VERSION 0.6
+      <a class="nav-link version" href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
+        data-bs-placement="bottom" title="info README
+        ">
+        VERSION 0.7
         <i class="fa fa-info-circle" aria-hidden="true"></i>
       </a>
     </div>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -42,13 +27,7 @@
       </a>
 
       <div class="dropdown d-inline-block">
-        <a
-          type="button"
-          class="nav-link active"
-          data-bs-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <p class="d-xl-inline-block nav-title">VIEWS</p>
           <i class="fa-solid fa-chevron-down nav-title"></i>
         </a>
@@ -104,17 +83,8 @@
         <li class="nav-item d-flex">
           {% if user.is_authenticated %}
           <div class="dropdown d-inline-block">
-            <a
-              class="nav-link active"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <img
-                class="rounded-circle header-profile-user"
-                src="{%static 'images/app/avatar.png'%}"
-                alt="Avatar"
-              />
+            <a class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
               <p class="d-xl-inline-block nav-title">{{user.username}}</p>
               <i class="fa-solid fa-chevron-down nav-title"></i>
             </a>
@@ -136,11 +106,7 @@
                 </p>
               </a>
               <a class="dropdown-item" href="#">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="dark-mode"
-                />
+                <input class="form-check-input" type="checkbox" id="dark-mode" />
                 <label class="form-check-label" for="flexSwitchCheckChecked">
                   <p>Switch to Dark</p>
                 </label>
