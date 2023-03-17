@@ -290,7 +290,6 @@ class Dictionary(AuditModel):
     def __str__(self) -> str:
         return f"{self.dict_value} <small class='not-visible'>({self.dict_desc})</small>"
 
-
     #------------------------------------------------
     @classmethod
     def exists(self,DictClass,DictValue=None,DictDesc=None,verbose=1):
