@@ -1,8 +1,8 @@
 <tr hx-trigger="cancel" class="editing" hx-get="{%url 'org_detail' object.organism_id.pk %}">
   <!-- <td></td> -->
   <td>
-    <input type="submit" value="update" hx-put="{%url 'batch_update' pk=object.pk%}" hx-include="closest tr"
-      hx-trigger="click" />
+    <input class="btn btn-sm" type="submit" value="update" hx-put="{%url 'batch_update' pk=object.pk%}"
+      hx-include="closest tr" hx-trigger="click" />
     <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
   </td>
   <td>{{form.orgbatch_id}}</td>
