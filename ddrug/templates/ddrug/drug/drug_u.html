@@ -1,4 +1,8 @@
-<form id="DrugUpdateForm" method="POST" action="{%url 'drug_update' object.pk %}">
+<form
+  id="DrugUpdateForm"
+  method="POST"
+  action="{%url 'drug_update' object.pk %}"
+>
   {% csrf_token %}
 
   <div class="row">
@@ -21,11 +25,21 @@
               <a id="drug_detail{{object.pk}}" class="card-link">
                 {%load static%}
 
-                <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload"
-                  loading="lazy" style="background-color: transparent !important" />
+                <img
+                  src="{%static 'images/'%}{{object.pk}}.svg"
+                  alt="structure"
+                  width="80%"
+                  class="lazyload"
+                  loading="lazy"
+                  style="background-color: transparent !important"
+                />
               </a>
-              <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog">
-              </div>
+              <div
+                id="drug_detail_structure{{object.pk}}"
+                class="modal fade"
+                data-bs-backdrop="static"
+                role="dialog"
+              ></div>
             </td>
           </tr>
           <tr>
@@ -55,7 +69,11 @@
             <th scope="row" class="">
               <label for="id_drug_type">Drug Type</label>
             </th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="drug_type">
+            <td
+              class="editablechoices tdclass"
+              data-id="{{object.pk}}"
+              data-type="drug_type"
+            >
               <div class="detail">{{object.drug_type}}</div>
               <div class="form-control select">{{form.drug_type}}</div>
             </td>
