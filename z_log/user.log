@@ -1,9 +1,0 @@
-user_log INFO 2023-03-17 14:17:23,754 signals 15944 9584 test login successful
-user_log INFO 2023-03-17 15:27:59,948 signals 8064 25356 test login successful
-user_log INFO 2023-03-17 15:35:04,824 signals 8064 20820 test login successful
-user_log INFO 2023-03-17 15:57:35,592 signals 9408 5700 test login successful
-user_log INFO 2023-03-17 16:03:20,580 signals 19032 25288 test login successful
-user_log INFO 2023-03-17 16:09:22,258 signals 5700 22588 test login successful
-user_log INFO 2023-03-17 16:12:00,440 signals 16388 18688 test login successful
-user_log INFO 2023-03-17 17:13:38,865 signals 24660 20788 test login successful
-user_log INFO 2023-03-17 17:31:24,277 signals 25508 26420 test login successful
