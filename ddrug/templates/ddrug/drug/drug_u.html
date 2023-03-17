@@ -1,8 +1,4 @@
-<form
-  id="DrugUpdateForm"
-  method="POST"
-  action="{%url 'drug_update' object.pk %}"
->
+<form id="DrugUpdateForm" method="POST" action="{%url 'drug_update' object.pk %}">
   {% csrf_token %}
 
   <div class="row">
@@ -25,21 +21,11 @@
               <a id="drug_detail{{object.pk}}" class="card-link">
                 {%load static%}
 
-                <img
-                  src="{%static 'images/'%}{{object.pk}}.svg"
-                  alt="structure"
-                  width="80%"
-                  class="lazyload"
-                  loading="lazy"
-                  style="background-color: transparent !important"
-                />
+                <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload"
+                  loading="lazy" style="background-color: transparent !important" />
               </a>
-              <div
-                id="drug_detail_structure{{object.pk}}"
-                class="modal fade"
-                data-bs-backdrop="static"
-                role="dialog"
-              ></div>
+              <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog">
+              </div>
             </td>
           </tr>
           <tr>
@@ -51,11 +37,7 @@
           </tr>
           <tr>
             <th scope="row" class="">Other Names</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="drug_othernames"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="drug_othernames">
               <div class="detail">{{drug_othernames}}</div>
               <div class="input-group select">{{form.drug_othernames}}</div>
             </td>
@@ -73,11 +55,7 @@
             <th scope="row" class="">
               <label for="id_drug_type">Drug Type</label>
             </th>
-            <td
-              class="editablechoices tdclass"
-              data-id="{{object.pk}}"
-              data-type="drug_type"
-            >
+            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="drug_type">
               <div class="detail">{{object.drug_type}}</div>
               <div class="form-control select">{{form.drug_type}}</div>
             </td>
@@ -105,22 +83,14 @@
         <tbody>
           <tr>
             <th scope="row" class="w-25">Target</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="drug_target"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="drug_target">
               <div class="detail">{{object.drug_target}}</div>
               <div class="input-group select">{{form.drug_target}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">Sub-Target</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="drug_subtarget"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="drug_subtarget">
               <div class="detail">{{object.drug_subtarget}}</div>
               <div class="input-group select">{{form.drug_subtarget}}</div>
             </td>
@@ -142,11 +112,7 @@
 
           <tr>
             <th scope="row" class="">Sub Class</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="drug_subclass"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="drug_subclass">
               <div class="detail">{{object.drug_subclass}}</div>
               <div class="input-group select">{{form.drug_subclass}}</div>
             </td>
@@ -162,11 +128,7 @@
 
           <tr>
             <th scope="row" class="">Antimicro_class</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="antimicro_class"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="antimicro_class">
               <div class="detail">{{object.antimicro_class}}</div>
               <div class="input-group select">{{form.antimicro_class}}</div>
             </td>
@@ -181,22 +143,14 @@
           </tr>
           <tr>
             <th scope="row" class="">Approval Note</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="approval_note"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="approval_note">
               <div class="detail">{{object.approval_note}}</div>
               <div class="input-group select">{{form.approval_note}}</div>
             </td>
           </tr>
           <tr>
             <th scope="row" class="">Admin Routes</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="admin_routes"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="admin_routes">
               <div class="detail">{{object.admin_routes}}</div>
               <div class="input-group select">{{form.admin_routes}}</div>
             </td>
@@ -204,11 +158,7 @@
 
           <tr>
             <th scope="row" class="">Application</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="application"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="application">
               <div class="detail">{{object.application}}</div>
               <div class="input-group select">{{form.application}}</div>
             </td>
@@ -222,11 +172,7 @@
         <tbody>
           <tr>
             <th scope="row" class="w-25">n_compounds</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="n_compounds"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="n_compounds">
               <div class="detail">{{object.n_compounds}}</div>
               <div class="input-group select">{{form.n_compounds}}</div>
             </td>
@@ -323,11 +269,7 @@
 
           <tr>
             <th scope="row" class="">vendor_catno</th>
-            <td
-              class="editable"
-              data-id="{{object.pk}}"
-              data-type="vendor_catno"
-            >
+            <td class="editable" data-id="{{object.pk}}" data-type="vendor_catno">
               <div class="detail">{{object.vendor_catno}}</div>
               <div class="input-group select">{{form.vendor_catno}}</div>
             </td>
@@ -386,9 +328,7 @@
         <button type="submit" class="btn btn-sm mx-2" name="note">
           <i class="fa-regular fa-floppy-disk"></i>
         </button>
-        <a class="btn btn-sm mx-2" href="{% url 'drug_detail' object.pk %}"
-          ><i class="fa-solid fa-xmark"></i
-        ></a>
+        <a class="btn btn-sm mx-2" href="{% url 'drug_detail' object.pk %}"><i class="fa-solid fa-xmark"></i></a>
       </div>
     </div>
   </div>
