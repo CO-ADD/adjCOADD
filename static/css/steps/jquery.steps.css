@@ -47,7 +47,6 @@
     left: -999em;
 }
 
-
 /*
     Wizard
 */
@@ -192,8 +191,6 @@
     display: inline-block;
     margin-left: 1.5em;
 }
-
-
 
 .wizard>.actions>ul {
     display: inline-block;
