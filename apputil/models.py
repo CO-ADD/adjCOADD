@@ -232,6 +232,8 @@ class AuditModel(models.Model):
     # get field names in postgres in the order provided by constants.py
     @classmethod
     def get_databasefields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
         if fields:
             databasefields=fields.keys()
         else:
@@ -242,6 +244,8 @@ class AuditModel(models.Model):
     # get field verbose or customized name in the order provided by constants.py
     @classmethod
     def get_fields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -250,7 +254,9 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # get field name in model Class in the order provided by constants.py
     @classmethod
-    def get_modelfields(cls, fields=HEADER_FIELDS):
+    def get_modelfields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
         if fields:
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -259,7 +265,9 @@ class AuditModel(models.Model):
  
     #------------------------------------------------
     # objects values according to fields return from the above class methods
-    def get_values(self, fields=HEADER_FIELDS):
+    def get_values(self, fields=None):
+        if fields is None:
+            fields = self.HEADER_FIELDS
         value_list=[]
         for field in self._meta.fields:
             if field.name in fields.keys():
@@ -319,7 +327,7 @@ class Dictionary(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,DictClass,DictValue=None,DictDesc=None,verbose=1):
+    def get(cls,DictClass,DictValue=None,DictDesc=None,verbose=1):
     #
     # Returns a Dictionary instance if found 
     #    by dict_value
@@ -345,22 +353,58 @@ class Dictionary(AuditModel):
 
     #------------------------------------------------
     @classmethod
+    def exists(cls,DictClass,DictValue=None,DictDesc=None,verbose=1):
+    #
+    # Returns if Dictionary instance exists
+    #    by dict_value
+    #    by dict_desc (set dict_value = None)
+    #
+        if DictValue:
+            retValue = cls.objects.filter(dict_value=DictValue, dict_class=DictClass).exists()
+        elif DictDesc:
+            retValue = cls.objects.filter(dict_desc=DictDesc, dict_class=DictClass).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    @classmethod
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
-    def get_aschoices(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
-    #def get_Dictionary_asChoice(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
+    def get_aschoices(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', ' <empty> ')):
+        dictList = None
+        choices=(emptyChoice,)
+        # comment on initial migrations
         dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
-        sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
-        if sortedlist:
-            choices_values=tuple([tuple(d.values()) for d in sortedlist])
-            if showDesc:
-                choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
-            else:
-                choices=tuple((a[0], a[0]) for a in choices_values)
-        else:
-            choices=emptyChoice
+        if dictList:
+            sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
+            if sortedlist:
+                choices_values=tuple([tuple(d.values()) for d in sortedlist])
+                if showDesc:
+                    choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
+                else:
+                    choices=tuple((a[0], a[0]) for a in choices_values)
         return choices
+
+    # #------------------------------------------------
+    # @classmethod
+    # #
+    # # Returns Dictionary entries for a DictClass as Choices
+    # #
+    # def get_aschoices(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
+    # #def get_Dictionary_asChoice(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
+    #     dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
+    #     sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
+    #     if sortedlist:
+    #         choices_values=tuple([tuple(d.values()) for d in sortedlist])
+    #         if showDesc:
+    #             choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
+    #         else:
+    #             choices=tuple((a[0], a[0]) for a in choices_values)
+    #     else:
+    #         choices=emptyChoice
+    #     return choices
     
     #------------------------------------------------
     #@classmethod
