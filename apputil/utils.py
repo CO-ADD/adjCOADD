@@ -188,7 +188,6 @@ class FilteredListView(ListView):
     paginate_by=50
     model_fields=None
     order_by=None
-    # context_list=''
     filter_request=None
 
    
@@ -213,9 +212,8 @@ class FilteredListView(ListView):
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
-        context['fields']=self.model.get_fields(fields=self.model_fields)
-        
-        context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
+        context['fields']=self.model.get_fields(fields=self.model.HEADER_FIELDS)
+        context['model_fields']=self.model.get_modelfields(fields=self.model.HEADER_FIELDS)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()
         return context

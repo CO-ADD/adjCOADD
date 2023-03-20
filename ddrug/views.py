@@ -78,7 +78,7 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     model=Drug  
     template_name = 'ddrug/drug/drug_list.html' 
     filterset_class=Drug_filter
-    model_fields=DRUG_FIELDs
+    # model_fields=DRUG_FIELDs
 
 # =============================Card View=====================================
     # editable graphic , molblock, 3D, py3Dmol 
@@ -219,7 +219,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     model=VITEK_Card  
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
-    model_fields=VITEKCARD_FIELDs
+    # model_fields=VITEKCARD_FIELDs
     context_list=''
    
 
@@ -232,6 +232,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         context['defaultindex1']='analysis_time'
         context['defaultindex2']='proc_date'
         context['defaultvalues']='instrument'
+        print(context['fields'])
       
         data=list(context["object_list"].values())
         df=pd.DataFrame(data)

@@ -86,10 +86,7 @@ class Taxonomy(AuditModel):
     #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
-    # #------------------------------------------------
-    def get_values(self, fields=TAXONOMY_FIELDs):
-        value_list=super(Taxonomy, self).get_values(fields)
-        return value_list
+ 
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -219,11 +216,7 @@ class Organism(AuditModel):
         else:
             super(Organism, self).save(*args, **kwargs) 
 
-    # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_FIELDs):
-        value_list=super(Organism, self).get_values(fields)
-        return value_list
-
+   
 #------------------------------------------------------------------------------------------------
 class Organism_Batch(AuditModel):
     """
@@ -321,10 +314,6 @@ class Organism_Batch(AuditModel):
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
         
-    # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_BATCH_FIELDs):
-        value_list=super(Organism_Batch, self).get_values(fields)
-        return value_list
 
 #------------------------------------------------------------------------------------------------
 class OrgBatch_Stock(AuditModel):
@@ -394,10 +383,6 @@ class OrgBatch_Stock(AuditModel):
             retInstance = None
         return(retInstance)
 
-    # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_STOCK_FIELDs):
-        value_list=super(OrgBatch_Stock, self).get_values(fields)
-        return value_list
 
   
 #-------------------------------------------------------------------------------------------------
@@ -449,7 +434,4 @@ class Organism_Culture(AuditModel):
     def __str__(self) -> str:
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
-    # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_CULTR_FIELDs):
-        value_list=super(Organism_Culture, self).get_values(fields)
-        return value_list
+  

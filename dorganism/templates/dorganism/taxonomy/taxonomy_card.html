@@ -4,12 +4,12 @@
 {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/topbar.html' with list_url='taxo_list' card_url='taxo_card' %}
+  {%include 'utils/leftbar.html' with list_url='taxo_list' card_url='taxo_card' create_object='createTaxo' create_objectModal='createTaxoModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-   {%include 'utils/main_horizalbar.html' with create_object='createTaxo' create_objectModal='createTaxoModal' %}
+   {%include 'utils/main_horizalbar.html' %}
     <!-- Card View Content -->
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">

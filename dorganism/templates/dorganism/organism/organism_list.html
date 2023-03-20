@@ -5,13 +5,13 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/topbar.html'  with list_url='org_list' card_url='org_card'%}
+  {%include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' with create_object='createOrganism' create_objectModal='createOrganismModal' %}
+    {%include 'utils/main_horizalbar.html' %}
     <!-- prettier-ignore -->
     <!--  -->
     <!-- list View Content -->

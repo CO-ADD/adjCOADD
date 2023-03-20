@@ -34,7 +34,7 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
-    model_fields=TAXONOMY_FIELDs
+    # model_fields=TAXONOMY_FIELDs
 
 # =============================Card View=====================================
 
@@ -107,7 +107,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model=Organism  
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
-    model_fields=ORGANISM_FIELDs
+    # model_fields=ORGANISM_FIELDs
     
 # =============================Card View=====================================
     
@@ -240,7 +240,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     model=Organism_Batch 
     template_name = 'dorganism/organism/batch/batch_card.html' 
     filterset_class=Batchfilter
-    model_fields=ORGANISM_BATCH_FIELDs
+    # model_fields=ORGANISM_BATCH_FIELDs
 
 # ---------------------------------------------------------------------------------------------    
 # @login_required

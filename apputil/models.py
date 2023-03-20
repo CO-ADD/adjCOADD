@@ -231,7 +231,7 @@ class AuditModel(models.Model):
     #Method Get Fields, Values List
     # get field names in postgres in the order provided by constants.py
     @classmethod
-    def get_databasefields(cls, fields=None):
+    def get_databasefields(cls, fields=HEADER_FIELDS):
         if fields:
             databasefields=fields.keys()
         else:
@@ -241,7 +241,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # get field verbose or customized name in the order provided by constants.py
     @classmethod
-    def get_fields(cls, fields=None):
+    def get_fields(cls, fields=HEADER_FIELDS):
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -259,7 +259,8 @@ class AuditModel(models.Model):
  
     #------------------------------------------------
     # objects values according to fields return from the above class methods
-    def get_values(self, fields=HEADER_FIELDS):
+    def get_values(self):
+        fields=self.HEADER_FIELDS
         value_list=[]
         for field in self._meta.fields:
             if field.name in fields.keys():

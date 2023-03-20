@@ -58,8 +58,8 @@
 
     {%endif%}
     </p>
-    <p class="card-text m-0 fst-italic">{{object_var2}}</p>
-    <p class="card-text m-0 fst-normal">{{object_var3}}</p>
+    <p class="card-text m-0 fst-italic">{{object_var2 |safe}}</p>
+    <p class="card-text m-0 fst-normal">{{object_var3 | safe}}</p>
     <p class="card-text m-0 fst-normal">
       <strong> {{object_var_link_label}} </strong>
       <a class="card-link" style="float: right"
