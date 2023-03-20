@@ -658,3 +658,12 @@ LINE 1: ...rgbatch"."orgbatch_id", "orgbatch"."organism_id", "orgbatch"...
 HINT:  Perhaps you meant to reference the column "orgbatch.batch_no".
 
 django.server ERROR 2023-03-20 19:43:05,027 basehttp 20964 5352 "GET /organism/FG_0001 HTTP/1.1" 500 260811
+django.utils.autoreload INFO 2023-03-20 20:00:56,767 autoreload 31568 29064 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:02:11,847 autoreload 20288 26004 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:05:08,324 autoreload 4872 13124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:05:17,230 autoreload 4872 13124 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:05:19,296 autoreload 28548 5836 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:05:31,086 autoreload 28548 5836 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:05:33,383 autoreload 23520 2432 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:05:44,695 autoreload 23520 2432 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:05:46,483 autoreload 18360 10500 Watching for file changes with StatReloader

@@ -78,7 +78,7 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     model=Drug  
     template_name = 'ddrug/drug/drug_list.html' 
     filterset_class=Drug_filter
-    model_fields=DRUG_FIELDs
+    model_fields=model.HEADER_FIELDS
 
 # =============================Card View=====================================
     # editable graphic , molblock, 3D, py3Dmol 
@@ -219,7 +219,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     model=VITEK_Card  
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=Vitekcard_filter
-    model_fields=VITEKCARD_FIELDs
+    model_fields=model.HEADER_FIELDS
     context_list=''
    
 
@@ -286,9 +286,9 @@ def detailVitekcard(req, pk):
     object_=get_object_or_404(VITEK_Card, pk=pk)
     context["object"]=object_
     context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEKID_FIELDs)
+    context["vitekid_fields"]=VITEK_ID.get_fields()
     context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEKAST_FIELDs)
+    context["vitekast_fields"]=VITEK_AST.get_fields()
 
     return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)
 
@@ -410,7 +410,7 @@ class VitekastListView(LoginRequiredMixin, FilteredListView):
     model=VITEK_AST  
     template_name = 'ddrug/vitek_ast/vitekast_list.html' 
     filterset_class=Vitekast_filter
-    model_fields=VITEKAST_FIELDs_antibio
+    model_fields=model.HEADER_FIELDS
     context_list=''
 
     def get_queryset(self):
