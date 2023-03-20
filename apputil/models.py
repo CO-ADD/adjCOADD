@@ -84,13 +84,13 @@ class ApplicationUser(AbstractUser):
     # --------------------------------------------------------------------------
     
     # get field names in postgres in the order provided by constants.py
-    # @classmethod
-    # def get_databasefields(self, fields=None):
-    #     if fields:
-    #         databasefields=fields.keys()
-    #     else:
-    #         databasefields=None
-    #     return databasefields
+    @classmethod
+    def get_databasefields(self, fields=None):
+        if fields:
+            databasefields=fields.keys()
+        else:
+            databasefields=None
+        return databasefields
     # # get field verbose or customized name in the order provided by constants.py
 
     @classmethod
@@ -230,18 +230,18 @@ class AuditModel(models.Model):
     #------------------------------------------------
     #Method Get Fields, Values List
     # get field names in postgres in the order provided by constants.py
-    # @classmethod
-    # def get_databasefields(cls, fields=None):
-    #     if fields:
-    #         databasefields=fields.keys()
-    #     else:
-    #         databasefields=None
-    #     return databasefields
+    @classmethod
+    def get_databasefields(cls, fields=None):
+        if fields:
+            databasefields=fields.keys()
+        else:
+            databasefields=None
+        return databasefields
     
     #------------------------------------------------
     # get field verbose or customized name in the order provided by constants.py
     @classmethod
-    def get_fields(cls, fields=HEADER_FIELDS):
+    def get_fields(cls, fields=None):
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -367,26 +367,26 @@ class Dictionary(AuditModel):
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
-    # def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
-    # #-----------------------------------------------------------------------------------
-    #     retDictList = []
-    #     if DictValueStr:
-    #         dLst = DictValueStr.split(sep)
-    #         for dVal in dLst:
-    #             xDict = cls.exists(DictClass,dVal.strip(),None)
-    #             if xDict:
-    #                 retDictList.append(xDict.dict_value)
-    #             else:
-    #                 retDictList.append(f"{dVal.strip()}{notFound}")
-    #     elif DictDescStr:
-    #         dLst = DictDescStr.split(sep)
-    #         for dDesc in dLst:
-    #             xDict = cls.exists(DictClass,None,dDesc.strip())
-    #             if xDict:
-    #                 retDictList.append(xDict.dict_value)
-    #             else:
-    #                 retDictList.append(f"{dDesc.strip()}{notFound}")
-    #     return(retDictList)
+    def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    #-----------------------------------------------------------------------------------
+        retDictList = []
+        if DictValueStr:
+            dLst = DictValueStr.split(sep)
+            for dVal in dLst:
+                xDict = cls.exists(DictClass,dVal.strip(),None)
+                if xDict:
+                    retDictList.append(xDict.dict_value)
+                else:
+                    retDictList.append(f"{dVal.strip()}{notFound}")
+        elif DictDescStr:
+            dLst = DictDescStr.split(sep)
+            for dDesc in dLst:
+                xDict = cls.exists(DictClass,None,dDesc.strip())
+                if xDict:
+                    retDictList.append(xDict.dict_value)
+                else:
+                    retDictList.append(f"{dDesc.strip()}{notFound}")
+        return(retDictList)
 
 
 #-------------------------------------------------------------------------------------------------

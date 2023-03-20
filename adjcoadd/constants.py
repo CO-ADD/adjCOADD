@@ -21,7 +21,6 @@ APPUSER_FIELDs = {
     'is_active':'Active', 
     }
 
-<<<<<<< HEAD
 
 DICTIONARY_FIELDs = {
     'dict_value':'Value', 
@@ -160,5 +159,3 @@ SCREENRUN_FIELDs = {
     "run_conditions":"Conditions",
     "run_issues":"Issues",
 }
-=======
->>>>>>> 40bfa52 (Fixing 01)

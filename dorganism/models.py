@@ -87,9 +87,9 @@ class Taxonomy(AuditModel):
         super(Taxonomy, self).save()
 
     # #------------------------------------------------
-    # def get_values(self, fields=TAXONOMY_FIELDs):
-    #     value_list=super(Taxonomy, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=TAXONOMY_FIELDs):
+        value_list=super(Taxonomy, self).get_values(fields)
+        return value_list
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -220,9 +220,9 @@ class Organism(AuditModel):
             super(Organism, self).save(*args, **kwargs) 
 
     # # ------------------------------------------------
-    # def get_values(self, fields=ORGANISM_FIELDs):
-    #     value_list=super(Organism, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=ORGANISM_FIELDs):
+        value_list=super(Organism, self).get_values(fields)
+        return value_list
 
 #------------------------------------------------------------------------------------------------
 class Organism_Batch(AuditModel):
@@ -322,9 +322,9 @@ class Organism_Batch(AuditModel):
             super(Organism_Batch,self).save(*args, **kwargs)
         
     # # ------------------------------------------------
-    # def get_values(self, fields=ORGANISM_BATCH_FIELDs):
-    #     value_list=super(Organism_Batch, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=ORGANISM_BATCH_FIELDs):
+        value_list=super(Organism_Batch, self).get_values(fields)
+        return value_list
 
 #------------------------------------------------------------------------------------------------
 class OrgBatch_Stock(AuditModel):
@@ -395,9 +395,9 @@ class OrgBatch_Stock(AuditModel):
         return(retInstance)
 
     # # ------------------------------------------------
-    # def get_values(self, fields=ORGANISM_STOCK_FIELDs):
-    #     value_list=super(OrgBatch_Stock, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=ORGANISM_STOCK_FIELDs):
+        value_list=super(OrgBatch_Stock, self).get_values(fields)
+        return value_list
 
   
 #-------------------------------------------------------------------------------------------------
@@ -450,6 +450,6 @@ class Organism_Culture(AuditModel):
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
     # # ------------------------------------------------
-    # def get_values(self, fields=ORGANISM_CULTR_FIELDs):
-    #     value_list=super(Organism_Culture, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=ORGANISM_CULTR_FIELDs):
+        value_list=super(Organism_Culture, self).get_values(fields)
+        return value_list

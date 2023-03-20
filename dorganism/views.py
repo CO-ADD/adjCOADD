@@ -165,9 +165,9 @@ def detailOrganism(req, pk):
         context["strain_panel"]=" "
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["batch_fields"]=Organism_Batch.get_fields()
+    context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["cultr_fields"]=Organism_Culture.get_fields()
+    context["cultr_fields"]=Organism_Culture.get_fields(fields=ORGANISM_CULTR_FIELDs)
 
     return render(req, "dorganism/organism/organism_detail.html", context)
 

@@ -37,7 +37,7 @@ danger-color : #f3545d
   --bs-card-bg: #fefefe;
   --bs-heading-bg: var(--teal);
   --bs-heading-dark-bg: #2a3042;
-  --bs-body-bg: white;
+  --bs-body-bg: rgb(238, 238, 238);
   --bs-footer-bg: #f2f2f5;
   --bs-topbar-search-bg: #f3f3f9;
   --bs-th-bg: #a7b6b6;
@@ -107,13 +107,15 @@ a {
 
 body {
   background: var(--bs-body-bg);
-  background: linear-gradient(135deg, var(--bs-body-bg) 10%, rgba(149, 242, 229, 1) 100%);
+  /* background: linear-gradient(135deg, var(--bs-body-bg) 10%, rgba(149, 242, 229, 1) 100%); */
   color: var(--bs-body-color);
 }
-tbody{
+
+tbody {
   background-color: var(--bs-boxed-body-bg);
 }
-tbody{
+
+tbody {
   background-color: var(--bs-boxed-body-bg);
 }
 
