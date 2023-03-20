@@ -62,8 +62,14 @@ class Taxonomy_form(forms.ModelForm):
 
 #========================================Batch Form================================================================
 class Batch_form(forms.ModelForm):
+<<<<<<< HEAD
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0),required=False,)
+=======
+    organism_id=forms.ModelChoiceField(queryset=Organism.objects.all(), widget=forms.HiddenInput(),required=False,)
+    qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status']),required=False,)
+
+>>>>>>> 40bfa52 (Fixing 01)
     def __init__(self, organism_id_str=None, *args, **kwargs):
         self.organism_id_str=organism_id_str
         super(Batch_form, self).__init__(*args, **kwargs)
@@ -87,7 +93,7 @@ class Batchupdate_form(forms.ModelForm):
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_FIELDs.keys()
+        fields=model.HEADER_FIELDS.keys()
         exclude=['stock_level']
 
 
@@ -115,14 +121,13 @@ class Culture_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Culture
-        fields=ORGANISM_CULTR_FIELDs
+        fields=model.HEADER_FIELDS 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
     culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
 
-
     class Meta:
         model =Organism_Culture
-        fields=ORGANISM_CULTR_FIELDs
+        fields=model.HEADER_FIELDS 

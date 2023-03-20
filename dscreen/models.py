@@ -21,8 +21,14 @@ class Screen_Run(AuditModel):
     List of Screening runs
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = SCREENRUN_FIELDs
+    HEADER_FIELDS = {
+        "run_id":"RunID",
+        "screen_type":"Type",
+        "run_type":"RunType",
+        "run_status":"Status",
+        "run_conditions":"Conditions",
+        "run_issues":"Issues",
+    }
 
     Choice_Dictionary = {
         'run_type':'Run_Type',

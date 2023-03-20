@@ -34,7 +34,7 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
-    model_fields=TAXONOMY_FIELDs
+    #model_fields=TAXONOMY_FIELDs
 
 # =============================Card View=====================================
 
@@ -107,7 +107,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model=Organism  
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
-    model_fields=ORGANISM_FIELDs
+    #model_fields=ORGANISM_FIELDs
     
 # =============================Card View=====================================
     
@@ -165,9 +165,9 @@ def detailOrganism(req, pk):
         context["strain_panel"]=" "
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
+    context["batch_fields"]=Organism_Batch.get_fields()
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["cultr_fields"]=Organism_Culture.get_fields(fields=ORGANISM_CULTR_FIELDs)
+    context["cultr_fields"]=Organism_Culture.get_fields()
 
     return render(req, "dorganism/organism/organism_detail.html", context)
 
@@ -240,7 +240,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     model=Organism_Batch 
     template_name = 'dorganism/organism/batch/batch_card.html' 
     filterset_class=Batchfilter
-    model_fields=ORGANISM_BATCH_FIELDs
+    #model_fields=ORGANISM_BATCH_FIELDs
 
 # ---------------------------------------------------------------------------------------------    
 # @login_required

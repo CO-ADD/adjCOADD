@@ -17,9 +17,7 @@ class Organisation(AuditModel):
     List of Organisation
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = DOCUMENT_FIELDs
-
+    HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'org_type':'Organisation_Type',
     }
@@ -43,9 +41,7 @@ class Collab_User(AuditModel):
     List of Collaborative Groups
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = COLLABUSER_FIELDs
-
+    HEADER_FIELDS = {}
     Choice_Dictionary = {}
 
     user_id = models.CharField(max_length=10, primary_key=True, verbose_name = "User ID")
@@ -64,7 +60,7 @@ class Collab_User(AuditModel):
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
     country = models.CharField(max_length=250, blank=True, verbose_name = "Country")
-    group = models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group Membership", on_delete=models.DO_NOTHING,
+    group = models.ForeignKey("Collab_Group", null=True, blank=True, verbose_name = "Group Membership", on_delete=models.DO_NOTHING,
         db_column="group", related_name="%(class)s_Group+")
     
     #------------------------------------------------
@@ -82,9 +78,7 @@ class Collab_Group(AuditModel):
     List of Collaborative Groups
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = COLLABGROUP_FIELDs
-
+    HEADER_FIELDS = {}
     Choice_Dictionary = {
         'mta_status':'License_Status',
     }
@@ -117,9 +111,7 @@ class Data_Source(AuditModel):
     List of Data sources
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = DATASOURCE_FIELDs
-
+    HEADER_FIELDS = {}
     Choice_Dictionary = {
         'source_type':'DataSource_Type',
     }

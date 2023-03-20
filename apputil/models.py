@@ -18,6 +18,18 @@ from adjcoadd.constants import *
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'name':'Name',
+        'username':'Username', 
+        'first_name':'First Name',  
+        'last_name':'Last Name',
+        'initials':'Initial',
+        'email':'Email',
+        'permission':'Permissions',
+        'is_appuser':'AppUser',
+        'is_active':'Active', 
+        }
+
     username = models.CharField(unique=True, max_length=55, verbose_name='uq user')       # uqjzuegg 
     name = models.CharField(primary_key=True,  max_length=50, verbose_name='user name')          # J.Zuegg
     initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
@@ -28,18 +40,23 @@ class ApplicationUser(AbstractUser):
     permission = models.CharField(max_length=10, default = 'No', null=False)      # application permissions .. Read, Write, Delete, Admin ..
     is_appuser=models.BooleanField(default=True)
 
+    #------------------------------------------------
     class Meta:
         db_table = 'app_user'
         ordering=['username']
     
+    #------------------------------------------------  
+    def __str__(self) -> str:
+        return f"{self.name}" 
+
     #------------------------------------------------
-    @classmethod
     #
     # Returns an User instance if found by name
     #
-    def exists(self,UserName):
+    @classmethod
+    def exists(cls,UserName):
         try:
-            retInstance = self.objects.get(name=UserName)
+            retInstance = cls.objects.get(name=UserName)
         except:
             retInstance = None
         return(retInstance)
@@ -77,7 +94,7 @@ class ApplicationUser(AbstractUser):
     # # get field verbose or customized name in the order provided by constants.py
 
     @classmethod
-    def get_fields(cls, fields=None):
+    def get_fields(cls, fields=HEADER_FIELDS):
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -87,16 +104,12 @@ class ApplicationUser(AbstractUser):
 
     # get field name in model Class in the order provided by constants.py
     @classmethod
-    def get_modelfields(cls, fields=None):
+    def get_modelfields(cls, fields=HEADER_FIELDS):
         if fields:
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
         else:
             model_fields=None
         return model_fields
-    #------------------------------------------------
-    
-    def __str__(self) -> str:
-        return f"{self.name}" 
 
 #-------------------------------------------------------------------------------------------------
 class AuditModel(models.Model):
@@ -112,7 +125,7 @@ class AuditModel(models.Model):
 
     OWNER           = "orgdb"
     VALID_STATUS    = False
-    CLASS_FIELDS    = {}
+    HEADER_FIELDS   = {}
 
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
@@ -228,7 +241,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # get field verbose or customized name in the order provided by constants.py
     @classmethod
-    def get_fields(cls, fields=CLASS_FIELDS):
+    def get_fields(cls, fields=HEADER_FIELDS):
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -237,7 +250,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # get field name in model Class in the order provided by constants.py
     @classmethod
-    def get_modelfields(cls, fields=CLASS_FIELDS):
+    def get_modelfields(cls, fields=HEADER_FIELDS):
         if fields:
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -246,7 +259,7 @@ class AuditModel(models.Model):
  
     #------------------------------------------------
     # objects values according to fields return from the above class methods
-    def get_values(self, fields=CLASS_FIELDS):
+    def get_values(self, fields=HEADER_FIELDS):
         value_list=[]
         for field in self._meta.fields:
             if field.name in fields.keys():
@@ -280,11 +293,17 @@ class AuditModel(models.Model):
 #-------------------------------------------------------------------------------------------------
 class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
-    CLASS_FIELDS = DICTIONARY_FIELDs
+    HEADER_FIELDS = {
+        'dict_value':'Value', 
+        'dict_class':'Class',  
+        'dict_desc':'Description',
+        'dict_sort':'Order',
+    }
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
     dict_desc = models.CharField(max_length=120, blank=True, verbose_name = "Description")
+    dict_sort = models.IntegerField(default=0, verbose_name = "Order")
    
     #------------------------------------------------
     class Meta:
@@ -331,9 +350,10 @@ class Dictionary(AuditModel):
     #
     def get_aschoices(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
     #def get_Dictionary_asChoice(cls, DictClass, showDesc = True, sep = " | ", emptyChoice= ('--', 'empty')):
-        dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc')
-        if dictList:
-            choices_values=tuple([tuple(d.values()) for d in dictList])
+        dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
+        sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
+        if sortedlist:
+            choices_values=tuple([tuple(d.values()) for d in sortedlist])
             if showDesc:
                 choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
             else:

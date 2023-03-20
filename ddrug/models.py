@@ -22,8 +22,14 @@ class Drug(AuditModel):
     List of Drugs, DrugCombinations, DrugScreens 
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = DRUG_FIELDs
+    HEADER_FIELDS = {
+        "drug_id":"Drug ID",
+        "drug_name":"Drug Name",
+        "drug_othernames":"Other Name",
+        "drug_codes":"Drug Code",
+        "drug_type":"Drug Type",
+        "drug_note":"Drug Note"
+    }
 
     Choice_Dictionary = {
         'drug_type':'Drug_Type',
@@ -149,8 +155,16 @@ class VITEK_Card(AuditModel):
 #     List of VITEK Cards
 #     """
 # #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = VITEKCARD_FIELDs
+    HEADER_FIELDs = {
+        "orgbatch_id":"orgbatch_id",
+        "card_barcode":"Barcode",
+        "card_type":"Card Type",
+        "card_code":"Card Code",
+        "expiry_date":"expiry_date",
+        "instrument":"instrument",
+        "proc_date":"proc_date",
+        "analysis_time":"Analysis with",
+    }
 
     Choice_Dictionary= {
         'card_type':'Card_Type',
@@ -253,8 +267,16 @@ class VITEK_AST(AuditModel):
       Antimicrobial Suceptibility Testing (AST) data from VITEK Cards
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS = VITEKAST_FIELDs
+    HEADER_FIELDs = {
+        "card_barcode":"Barcode",
+        "process":"Process",
+        "id_organism":"ID organism",
+        "id_probability":"ID Probability",
+        "id_confidence":"ID Confidence",
+        "id_source":"Source",
+        "filename":"PDF Name",
+        "page_no":"PDF PageNo"
+    }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
         db_column="card_barcode", related_name="%(class)s_card_barcode+") 
@@ -373,8 +395,19 @@ class VITEK_ID(AuditModel):
       Identification Testing (ID) data from VITEK Cards
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS    = VITEKID_FIELDs
+    HEADER_FIELDs = {
+        "card_barcode":"Barcode",
+        "drug_id":"Drug",
+        "mic":"MIC",
+        "process":"Vitek Process",
+        "bp_profile":"Break Point",
+        "bp_comment":"Comment",
+        "bp_source":"Source",
+        "selection":"Selection",
+        "organism":"Organism",
+        "filename":"PDF Filename",
+        "page_no":"PDF pageNo"
+    }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
         db_column="card_barcode", related_name="%(class)s_card_barcode+") 
@@ -471,9 +504,7 @@ class COADD_BMD(AuditModel):
      Antibiogram from CO-ADD screening    
     """
 #-------------------------------------------------------------------------------------------------
-    VALID_STATUS    = True
-    CLASS_FIELDS    = COADDBMD_FIELDs
-
+    HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
     }

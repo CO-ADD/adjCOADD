@@ -29,19 +29,19 @@ urlpatterns = [
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
     path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
 
-    #Batch
+    # OrgBatch
     path('organism-batch_card', BatchCardView.as_view(), name="batch_card"),
     path('createBatch/', createBatch, name="batch_create"),
     path('updateBat/<str:pk>', updateBatch, name="batch_update"),
     path('deleteBat/<str:pk>', deleteBatch, name="batch_delete"),
 
-    #Stock
+    # OrgBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
     path('createStock/', createStock, name="stock_create"),
     path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
     path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
 
-    #Culture 
+    # Organism Culture 
     path('createCulture/', createCulture, name="cultr_create"),
     path('updateCulture/<str:pk>', updateCulture, name="cultr_update"),
     path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
