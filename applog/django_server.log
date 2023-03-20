@@ -672,3 +672,69 @@ django.server INFO 2023-03-20 20:05:53,182 basehttp 18360 22396 "GET /?next=/org
 django.server INFO 2023-03-20 20:05:53,632 basehttp 18360 22396 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
 django.server INFO 2023-03-20 20:05:55,262 basehttp 18360 22396 "POST /accounts/login/ HTTP/1.1" 302 0
 django.server INFO 2023-03-20 20:05:55,273 basehttp 18360 22396 "GET / HTTP/1.1" 200 8491
+django.utils.autoreload INFO 2023-03-20 20:07:42,754 autoreload 18360 10500 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:07:44,678 autoreload 32808 16728 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:07:47,397 autoreload 32808 16728 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:07:48,617 autoreload 22868 33656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:07:54,545 autoreload 22868 33656 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:07:55,657 autoreload 30332 18632 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:07:58,420 autoreload 30332 18632 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:08:00,326 autoreload 18660 24368 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:08:05,432 autoreload 18660 24368 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:08:07,547 autoreload 15216 25636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:08:11,251 autoreload 15216 25636 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:08:12,975 autoreload 25632 24068 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 20:08:14,782 autoreload 25632 24068 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 20:08:17,181 autoreload 13004 30852 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-20 21:44:42,782 autoreload 33408 16388 Watching for file changes with StatReloader
+django.server INFO 2023-03-20 21:44:48,150 basehttp 33408 15548 "GET / HTTP/1.1" 200 8356
+django.server INFO 2023-03-20 21:44:48,332 basehttp 33408 15548 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-20 21:44:48,334 basehttp 33408 22896 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-20 21:44:48,343 basehttp 33408 15076 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-20 21:44:48,561 basehttp 33408 15076 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-20 21:44:50,750 basehttp 33408 15076 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-20 21:44:51,248 basehttp 33408 15076 "GET /index/ HTTP/1.1" 200 15067
+django.request ERROR 2023-03-20 21:44:52,896 log 33408 15076 Internal Server Error: /organism_card
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils.py", line 206, in get_queryset
+    return self.filterset.qs.distinct()
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils.py", line 141, in qs
+    parent = super().qs
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filterset.py", line 229, in qs
+    self.errors
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filterset.py", line 202, in errors
+    return self.form.errors
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filterset.py", line 250, in form
+    Form = self.get_form_class()
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filterset.py", line 242, in get_form_class
+    [(name, filter_.field) for name, filter_ in self.filters.items()]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filterset.py", line 242, in <listcomp>
+    [(name, filter_.field) for name, filter_ in self.filters.items()]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\filters.py", line 149, in field
+    self._field = self.field_class(label=self.label, **field_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\fields.py", line 286, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django_filters\fields.py", line 258, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\forms\fields.py", line 861, in __init__
+    super().__init__(**kwargs)
+TypeError: Field.__init__() got an unexpected keyword argument 'showDesc'
+django.server ERROR 2023-03-20 21:44:52,903 basehttp 33408 15076 "GET /organism_card HTTP/1.1" 500 136566
+django.server INFO 2023-03-20 21:45:12,054 basehttp 33408 15076 "GET /drug_card HTTP/1.1" 200 20363
+django.server INFO 2023-03-20 21:45:22,508 basehttp 33408 15076 "GET /taxonomy_card HTTP/1.1" 200 253029
+django.server INFO 2023-03-20 21:45:22,775 basehttp 33408 15076 "GET /static/js/modal/create_taxonomy.js HTTP/1.1" 200 348
+django.server INFO 2023-03-20 21:45:26,399 basehttp 33408 15076 "GET /taxonomy/Aaosphaeria-arxii HTTP/1.1" 200 20305
+django.utils.autoreload INFO 2023-03-20 21:45:39,350 autoreload 33408 16388 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-20 21:45:41,753 autoreload 21980 2312 Watching for file changes with StatReloader

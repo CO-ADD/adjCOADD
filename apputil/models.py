@@ -50,16 +50,20 @@ class ApplicationUser(AbstractUser):
         return f"{self.name}" 
 
     #------------------------------------------------
-    #
     # Returns an User instance if found by name
-    #
     @classmethod
-    def exists(cls,UserName):
+    def get(cls,UserName):
         try:
             retInstance = cls.objects.get(name=UserName)
         except:
             retInstance = None
         return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,UserName):
+        return cls.objects.filter(name=UserName).exists()
 
     # --------------------------------------------------------------------------
     def has_permission(self,strPermission) -> bool:
@@ -94,7 +98,9 @@ class ApplicationUser(AbstractUser):
     # # get field verbose or customized name in the order provided by constants.py
 
     @classmethod
-    def get_fields(cls, fields=HEADER_FIELDS):
+    def get_fields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -323,7 +329,7 @@ class Dictionary(AuditModel):
         ]
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.dict_value} <small class='not-visible'>({self.dict_desc})</small>"
+        return f"{self.dict_value} {self.dict_desc}"
 
     #------------------------------------------------
     @classmethod
@@ -411,13 +417,18 @@ class Dictionary(AuditModel):
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
-    def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    #------------------------------------------------
+    @classmethod
+    #
+    # Returns Dictionary entries for a DictClass as Choices
+    #
+    def get_DictValues_fromStrList(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
     #-----------------------------------------------------------------------------------
         retDictList = []
         if DictValueStr:
             dLst = DictValueStr.split(sep)
             for dVal in dLst:
-                xDict = cls.exists(DictClass,dVal.strip(),None)
+                xDict = cls.get(DictClass,dVal.strip(),None)
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
@@ -425,12 +436,34 @@ class Dictionary(AuditModel):
         elif DictDescStr:
             dLst = DictDescStr.split(sep)
             for dDesc in dLst:
-                xDict = cls.exists(DictClass,None,dDesc.strip())
+                xDict = cls.get(DictClass,None,dDesc.strip())
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
                     retDictList.append(f"{dDesc.strip()}{notFound}")
         return(retDictList)
+
+    # @classmethod
+    # def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    # #-----------------------------------------------------------------------------------
+    #     retDictList = []
+    #     if DictValueStr:
+    #         dLst = DictValueStr.split(sep)
+    #         for dVal in dLst:
+    #             xDict = cls.get(DictClass,dVal.strip(),None)
+    #             if xDict:
+    #                 retDictList.append(xDict.dict_value)
+    #             else:
+    #                 retDictList.append(f"{dVal.strip()}{notFound}")
+    #     elif DictDescStr:
+    #         dLst = DictDescStr.split(sep)
+    #         for dDesc in dLst:
+    #             xDict = cls.get(DictClass,None,dDesc.strip())
+    #             if xDict:
+    #                 retDictList.append(xDict.dict_value)
+    #             else:
+    #                 retDictList.append(f"{dDesc.strip()}{notFound}")
+    #     return(retDictList)
 
 
 #-------------------------------------------------------------------------------------------------
