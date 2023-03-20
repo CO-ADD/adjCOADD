@@ -44,7 +44,6 @@ def smartsQuery(req, pk):
     '''
     MAKE SUBSTRUCTURE QUERY 
     '''
-
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     context["object"]=object_

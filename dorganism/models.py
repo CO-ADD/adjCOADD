@@ -32,6 +32,15 @@ class Taxonomy(AuditModel):
         'division':'Organism_Division',
     }
 
+    HEADER_FIELDS = {
+        'organism_name':'Organism Name',  
+        'code':'Code', 
+        'lineage':'Lineage', 
+        'tax_rank':'Rank',
+        'division':'Division', 
+        'org_class':'Class',
+    }
+
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
     urlname = models.SlugField(max_length=100, verbose_name = "URLSpecie")
     other_names = models.CharField(max_length=100, blank=True, verbose_name = "Other Names")
@@ -62,9 +71,9 @@ class Taxonomy(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,OrgName,verbose=0):
+    def exists(cls,OrgName,verbose=0):
         try:
-            retInstance = self.objects.get(organism_name=OrgName.strip())
+            retInstance = cls.objects.get(organism_name=OrgName.strip())
         except:
             if verbose:
                 print(f"[Taxonomy Not Found] {OrgName} ")
@@ -77,7 +86,7 @@ class Taxonomy(AuditModel):
     #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
-    #------------------------------------------------
+    # #------------------------------------------------
     def get_values(self, fields=TAXONOMY_FIELDs):
         value_list=super(Taxonomy, self).get_values(fields)
         return value_list
@@ -89,6 +98,18 @@ class Organism(AuditModel):
     
     """
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'organism_name':'Organism Name',
+        'strain_ids':'Strain IDs',
+        'strain_type':'Strain Type',
+        'strain_panel':'Panel',
+        'res_property':'Phenotype',  
+        'gen_property':'Genotype', 
+        'biologist':'Biologist',
+        'strain_origin':'Origin',
+        'organism_id':'Organism ID', 
+    }
+
     Choice_Dictionary = {
         'risk_group':'Risk_Group',
         'pathogen_group':'Pathogen_Group',
@@ -99,9 +120,6 @@ class Organism(AuditModel):
         'organism_class':'Organism_Class',
         'lab_restriction':'Lab_Restriction',
     }
-
-    #ORG_CLASSES = ['GN','GP','MB','FG','MA']
-    #SEP = "_"
 
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
@@ -155,7 +173,7 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def str_OrganismID(self,OrganimClass,OrganismNo) -> str:
+    def str_OrganismID(cls,OrganimClass,OrganismNo) -> str:
     #
     # Input:    OrganismClass GN, GP,...
     #           OrganismNo 
@@ -165,12 +183,12 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(self,OrgID,verbose=0):
+    def exists(cls,OrgID,verbose=0):
     #
     # Returns an instance by organism_id
     #
         try:
-            retInstance = self.objects.get(organism_id=OrgID)
+            retInstance = cls.objects.get(organism_id=OrgID)
         except:
             if verbose:
                 print(f"[OrgansimID Not Found] {OrgID} ")
@@ -178,14 +196,15 @@ class Organism(AuditModel):
         return(retInstance)
 
     #------------------------------------------------
-    def find_Next_OrganismID(self,OrganismClass,OrganismClassTypes = ORGANISM_CLASSES) -> str:
+    @classmethod
+    def find_Next_OrganismID(cls,OrganismClass,OrganismClassTypes = ORGANISM_CLASSES) -> str:
         if OrganismClass in OrganismClassTypes:
             Organism_IDSq=Sequence(OrganismClass)
             Organism_nextID = next(Organism_IDSq)
-            Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
+            Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
             while Organism.objects.filter(organism_id=Organism_strID).first():
                 Organism_nextID = next(Organism_IDSq)
-                Organism_strID = self.str_OrganismID(OrganismClass,Organism_nextID)
+                Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
             return(Organism_strID)    
         else:
             return(None)
@@ -200,7 +219,7 @@ class Organism(AuditModel):
         else:
             super(Organism, self).save(*args, **kwargs) 
 
-    # ------------------------------------------------
+    # # ------------------------------------------------
     def get_values(self, fields=ORGANISM_FIELDs):
         value_list=super(Organism, self).get_values(fields)
         return value_list
@@ -211,9 +230,18 @@ class Organism_Batch(AuditModel):
     Organism/Isolate Batch Collection
     """
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        "orgbatch_id":"OrgBatch ID",
+        "supplier":"Supplier",
+        "supplier_code":"Supplier Code",
+        "stock_date":"Stock Date",
+        "stock_level":"Stock Levels",
+        "qc_status":"QC_Status",
+        "batch_notes":"Batch Notes",
+        "biologist":"Biologist"
+    }
 
     Choice_Dictionary = {
-
         'qc_status':'QC_Status',
     }
 
@@ -293,7 +321,7 @@ class Organism_Batch(AuditModel):
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
         
-    # ------------------------------------------------
+    # # ------------------------------------------------
     def get_values(self, fields=ORGANISM_BATCH_FIELDs):
         value_list=super(Organism_Batch, self).get_values(fields)
         return value_list
@@ -305,6 +333,14 @@ class OrgBatch_Stock(AuditModel):
     
     """
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS={
+        "orgbatch_id":"OrgBatch ID",
+        "stock_id":"Stock ID",
+        "stock_note":"Stock Note",
+        "stock_type":"Stock Type",
+        "stock_date":"Stock Date",
+        "biologist":"Biologist"
+    }
 
     Choice_Dictionary = {
         'stock_type':'Stock_Type',
@@ -358,7 +394,7 @@ class OrgBatch_Stock(AuditModel):
             retInstance = None
         return(retInstance)
 
-    # ------------------------------------------------
+    # # ------------------------------------------------
     def get_values(self, fields=ORGANISM_STOCK_FIELDs):
         value_list=super(OrgBatch_Stock, self).get_values(fields)
         return value_list
@@ -371,6 +407,17 @@ class Organism_Culture(AuditModel):
     
     """
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        "organism_id":"Organism ID",
+        "culture_type":"Culture Type",
+        "media_use":"Media Use",
+        "atmosphere":"Atmosphere",
+        "temperature":"Temperature",
+        "labware":"Labware",
+        "notes":"Media",
+        "biologist":"Biologist"
+    }
+
     Choice_Dictionary = {
         'culture_type':'Culture_Type',
         'media_use':'Media_Use',
@@ -402,7 +449,7 @@ class Organism_Culture(AuditModel):
     def __str__(self) -> str:
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
-    # ------------------------------------------------
+    # # ------------------------------------------------
     def get_values(self, fields=ORGANISM_CULTR_FIELDs):
         value_list=super(Organism_Culture, self).get_values(fields)
         return value_list

@@ -21,6 +21,8 @@ class DatabaseRouter(object):
         'default': {'auth', 'contenttypes','apputil'},
         'dorganism': {'dorganism'},
         'ddrug': {'ddrug'},
+        'dgene': {'dgene'},
+        'dcollab': {'dcollab'},
         }
 
     def db_for_read(self, model, **hints):

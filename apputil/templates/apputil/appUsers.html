@@ -4,20 +4,16 @@
 {% block content %}
 
 <!-- Include -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+  {%include 'utils/topbar.html' with list_url='userslist' card_url='userslist'%}
+  <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <div class="d-flex">
-      {% include 'utils/pagination.html'%}
-      <!--  -->
-      {%if request.user.is_superuser%}
-      <a id="createAppUser" class="card-link text-success">
-        <i class="bi bi-plus">New</i>
-      </a>
-      {%endif%}
-    </div>
+         <!-- prettier-ignore -->
+    {%include 'utils/main_horizalbar.html' with create_object='createAppUser' create_objectModal='createAppUserModal' %}
+    <!-- prettier-ignore -->
+
     <div class="fixTableHead">
       <table
         class="table table-small table-bordered sorting_table table-hover bg-light"
@@ -40,8 +36,8 @@
       </table>
     </div>
   </div>
-  <!--prettier-ignore-->
 </div>
+<!--prettier-ignore-->
 
 <div id="createAppUserModal" class="modal fade" role="dialog"></div>
 <script>

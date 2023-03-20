@@ -2,7 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
-from apputil.utils import get_DictonaryChoices_byDictClass
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
@@ -28,9 +27,9 @@ class CreateOrganism_form(ModelForm):
         self.organism_name=organism_name
         
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
-        self.fields['strain_type'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_type'], ' | '),)
+        self.fields['strain_type'].widget = forms.SelectMultiple(choices= Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true',})
-        self.fields['strain_panel'].widget = forms.SelectMultiple(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['strain_panel'], ' | '),)
+        self.fields['strain_panel'].widget = forms.SelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
         self.fields['mta_status'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0)
               
@@ -87,7 +86,7 @@ class Batchupdate_form(forms.ModelForm):
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     class Meta:
         model =Organism_Batch
-        fields=ORGANISM_BATCH_FIELDs.keys()
+        fields=model.HEADER_FIELDS.keys()
         exclude=['stock_level']
 
 
@@ -100,9 +99,10 @@ class Stock_form(forms.ModelForm):
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
-    culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-    media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-
+    # culture_type= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['culture_type'], showDesc=True), 
+    #                                 widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    # media_use= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['media_use'], showDesc=True),
+    # 
     def __init__(self, organism_id=None, *args, **kwargs):
         self.organism_id=organism_id
         super(Culture_form, self).__init__(*args, **kwargs)
@@ -115,14 +115,14 @@ class Culture_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Culture
-        fields=ORGANISM_CULTR_FIELDs
+        fields=model.HEADER_FIELDS 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
-    culture_type= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['culture_type'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-    media_use= forms.ChoiceField(choices= get_DictonaryChoices_byDictClass(Dictionary, Organism_Culture.Choice_Dictionary['media_use'], ' | '), widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-
-
+    # culture_type= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['culture_type'], showDesc=True), 
+    #                                 widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    # media_use= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['media_use'], showDesc=True),
+    # 
     class Meta:
         model =Organism_Culture
-        fields=ORGANISM_CULTR_FIELDs
+        fields=model.HEADER_FIELDS 

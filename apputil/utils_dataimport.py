@@ -1,7 +1,7 @@
-import magic
 import os
 import pandas as pd
 from pathlib import Path
+import magic
 
 
 from django import forms

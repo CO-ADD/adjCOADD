@@ -19,7 +19,6 @@ APPUSER_FIELDs = {
     'permission':'Permissions',
     'is_appuser':'AppUser',
     'is_active':'Active', 
-    
     }
 
 
@@ -27,9 +26,7 @@ DICTIONARY_FIELDs = {
     'dict_value':'Value', 
     'dict_class':'Class',  
     'dict_desc':'Description', 
-    
     }
-
 
 # TAXONOMY_FIELDs = ['Specie',  'Code',  'Class',  'NCBI Parent Tax ID','Taxonomy Rank','Division', ]
 TAXONOMY_FIELDs = {
@@ -63,6 +60,7 @@ ORGANISM_BATCH_FIELDs = {
     "batch_notes":"Batch Notes",
     "biologist":"Biologist"
 }
+
 ORGANISM_STOCK_FIELDs={
     "orgbatch_id":"OrgBatch ID",
     "stock_id":"Stock ID",
@@ -72,9 +70,7 @@ ORGANISM_STOCK_FIELDs={
     "biologist":"Biologist"
 }
 
-
 ORGANISM_CULTR_FIELDs = {
-    
     "organism_id":"Organism ID",
     "culture_type":"Culture Type",
     "media_use":"Media Use",
@@ -94,11 +90,9 @@ DRUG_FIELDs = {
     "drug_codes":"Drug Code",
     "drug_type":"Drug Type",
     "drug_note":"Drug Note"
-   
 }
 
 VITEKCARD_FIELDs = {
-    
     "orgbatch_id":"orgbatch_id",
     "card_barcode":"Barcode",
     "card_type":"Card Type",
@@ -107,12 +101,9 @@ VITEKCARD_FIELDs = {
     "instrument":"instrument",
     "proc_date":"proc_date",
     "analysis_time":"Analysis with",
-  
-   
 }
 
 VITEKID_FIELDs = {
-    
     "card_barcode":"Barcode",
     "process":"Process",
     "id_organism":"ID organism",
@@ -121,11 +112,9 @@ VITEKID_FIELDs = {
     "id_source":"Source",
     "filename":"PDF Name",
     "page_no":"PDF PageNo"
-   
 }
 
 VITEKAST_FIELDs = {
-    
     "card_barcode":"Barcode",
     "drug_id":"Drug",
     "mic":"MIC",
@@ -156,4 +145,17 @@ VITEKAST_FIELDs_antibio = {
     "card_barcode__orgbatch_id__organism_id__organism_name":"Organism Name",
     
    
+}
+
+COADDBMD_FIELDs = {
+    
+}
+
+SCREENRUN_FIELDs = {
+    "run_id":"RunID",
+    "screen_type":"Type",
+    "run_type":"RunType",
+    "run_status":"Status",
+    "run_conditions":"Conditions",
+    "run_issues":"Issues",
 }
