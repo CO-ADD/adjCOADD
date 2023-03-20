@@ -5,19 +5,18 @@
 
 <!-- Include -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html' with list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal'%}
+  {%include 'utils/leftbar.html' with list_url='userslist' card_url='userslist' create_object='createAppUser'
+  create_objectModal='createAppUserModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-         <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html'%}
+    <!-- prettier-ignore -->
+    {%include 'utils/main_horizalbar.html' with create_object='createAppUser' create_objectModal='createAppUserModal' %}
     <!-- prettier-ignore -->
 
     <div class="fixTableHead">
-      <table
-        class="table table-small table-bordered sorting_table table-hover bg-light"
-      >
+      <table class="table table-small table-bordered sorting_table table-hover bg-light">
         <thead>
           <tr>
             {%for field in fields%}

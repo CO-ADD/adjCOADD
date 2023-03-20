@@ -62,11 +62,15 @@ def search_organism_id(req):
 class Organismfilter(Filterbase):
     ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
     Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
-    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  widget=forms.RadioSelect, choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))# choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
+    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  
+                                      widget=forms.RadioSelect, 
+                                      choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))
+    # choices=get_DictonaryChoices_byDictClass(Dictionary, Organism.Choice_Dictionary['organism_class'], ' | '))
     Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
     Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
-    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False))
-    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
+    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', choices=[], showDesc = False)
+    #MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
+    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', choices=[])
     Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=[] )#Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
     # risk_group=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group']))
     # oxygen_pref=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref']))
@@ -75,6 +79,7 @@ class Organismfilter(Filterbase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
+        self.filters["MTA"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['mta_status'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
             # test_i=Organism.objects.filter(oxygen_pref__icontains='Aerobic').count() #Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary[i][0])

@@ -100,10 +100,8 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,DrugName,DrugID=None,verbose=0):
-    #
+    def get(cls,DrugName,DrugID=None,verbose=0):
     # Returns an instance by drug_name or durg_id
-    #
         try:
             if DrugName:
                 retInstance = cls.objects.get(drug_name=DrugName)
@@ -119,6 +117,18 @@ class Drug(AuditModel):
                 elif DrugID:
                     print(f"[Drug Not Found] {DrugID} ")
         return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,DrugName,DrugID=None,verbose=0):
+    # Returns if an instance exists by drug_name or durg_id
+        if DrugName:
+            retValue = cls.objects.filter(drug_name=DrugName).exists()
+        elif DrugID:
+            retValue = cls.objects.filter(drug_id=DrugID).exists()
+        else:
+            retValue = False
+        return(retValue)
 
     #------------------------------------------------
     @classmethod
@@ -144,7 +154,10 @@ class Drug(AuditModel):
         print(f"field FFP2 is {self.ffp2}")
         
             
-   
+    # # -------------------------------------------------
+    #def get_values(self, fields=DRUG_FIELDs):
+    #    value_list=super(Drug, self).get_values(fields)
+    #    return value_list
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):
@@ -152,7 +165,7 @@ class VITEK_Card(AuditModel):
 #     List of VITEK Cards
 #     """
 # #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    HEADER_FIELDs = {
         "orgbatch_id":"orgbatch_id",
         "card_barcode":"Barcode",
         "card_type":"Card Type",
@@ -196,10 +209,8 @@ class VITEK_Card(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,CardBarcode,verbose=0):
-    #
+    def get(cls,CardBarcode,verbose=0):
     # Returns an instance if found by Card Barcode
-    #
         try:
             retInstance = cls.objects.get(card_barcode=CardBarcode)
         except:
@@ -207,6 +218,12 @@ class VITEK_Card(AuditModel):
                 print(f"[Vitek Card Not Found] {CardBarcode}")
             retInstance = None
         return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,CardBarcode,verbose=0):
+    # Returns if an instance exists by Card Barcode
+        return cls.objects.filter(card_barcode=CardBarcode).exists()
 
    #------------------------------------------------
     @classmethod
@@ -218,7 +235,7 @@ class VITEK_Card(AuditModel):
     #
         validStatus = True
        
-        retInstance = cls.exists(cDict['CARD_BARCODE'])
+        retInstance = cls.get(cDict['CARD_BARCODE'])
         if retInstance is None:
             retInstance = cls()
             retInstance.card_barcode = cDict['CARD_BARCODE']
@@ -226,13 +243,13 @@ class VITEK_Card(AuditModel):
         else:
             valLog.add_log('Info','Update VITEK card',f"{retInstance} -{cDict['CARD_CODE']}",'-')
 
-        OrgBatch = Organism_Batch.exists(cDict['ORGBATCH_ID']) 
+        OrgBatch = Organism_Batch.get(cDict['ORGBATCH_ID']) 
         if OrgBatch is None:
             valLog.add_log('Error','Organism Batch does not Exists',cDict['ORGBATCH_ID'],'Use existing OrganismBatch ID')
             validStatus = False
         retInstance.orgbatch_id = OrgBatch
 
-        retInstance.card_type = Dictionary.exists(retInstance.Choice_Dictionary["card_type"],cDict['CARD_TYPE'])
+        retInstance.card_type = Dictionary.get(retInstance.Choice_Dictionary["card_type"],cDict['CARD_TYPE'])
         if retInstance.card_type is None:
             valLog.add_log('Error','Vitek Card Type not Correct',cDict['CARD_TYPE'],'-')
             validStatus = False
@@ -252,7 +269,10 @@ class VITEK_Card(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
- 
+    # # -------------------------------------------------
+    # def get_values(self, fields=VITEKCARD_FIELDs):
+    #     value_list=super(VITEK_Card, self).get_values(fields)
+    #     return value_list
 
 
 #-------------------------------------------------------------------------------------------------
@@ -314,12 +334,10 @@ class VITEK_AST(AuditModel):
                 retStr += f"{self.card_barcode} "
         return(retStr)
 
-   #------------------------------------------------
+    #------------------------------------------------
     @classmethod
-    def exists(cls,CardBarcode,DrugID,Source,verbose=0):
-    #
-    # Returns an instance if found by CardBarcode and DrugID
-    #
+    def get(cls,CardBarcode,DrugID,Source,verbose=0):
+    # Returns an instance if found by (CardBarcode,DrugID,Source)
         try:
             retInstance = cls.objects.get(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source)
         except:
@@ -327,6 +345,11 @@ class VITEK_AST(AuditModel):
                 print(f"[Vitek AST Not Found] {CardBarcode} {DrugID} {Source}")
             retInstance = None
         return(retInstance)
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,CardBarcode,DrugID,Source,verbose=0):
+    # Returns an instance if found by (CardBarcode,DrugID,Source)
+        return cls.objects.filter(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source).exists()
 
     #------------------------------------------------
     @classmethod
@@ -342,13 +365,13 @@ class VITEK_AST(AuditModel):
             validStatus = False
             valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
 
-        DrugID = Drug.exists(cDict['DRUG_NAME'])
+        DrugID = Drug.get(cDict['DRUG_NAME'])
         if DrugID is None:
             validStatus = False
             valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
 
         if validStatus:
-            retInstance = cls.exists(Barcode,DrugID,cDict['BP_SOURCE'])
+            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'])
         else:
             retInstance = None
                
@@ -378,7 +401,10 @@ class VITEK_AST(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
-
+    # # # -------------------------------------------------
+    # def get_values(self, fields=VITEKAST_FIELDs):
+    #     value_list=super(VITEK_AST, self).get_values(fields)
+    #     return value_list
 
 # #-------------------------------------------------------------------------------------------------
 class VITEK_ID(AuditModel):
@@ -429,10 +455,8 @@ class VITEK_ID(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,CardBarcode,verbose=0):
-    #
-    # Returns an instance if found by CardBarcode and DrugID
-    #
+    def get(cls,CardBarcode,verbose=0):
+    # Returns an instance if found by CardBarcode
         try:
             retInstance = cls.objects.get(card_barcode=CardBarcode)
         except:
@@ -440,6 +464,11 @@ class VITEK_ID(AuditModel):
                 print(f"[Vitek AST Not Found] {CardBarcode} ")
             retInstance = None
         return(retInstance)
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,CardBarcode,verbose=0):
+    # Returns if an instance exists by CardBarcode
+        return cls.objects.filter(card_barcode=CardBarcode).exists()
 
    #------------------------------------------------
     @classmethod
@@ -450,13 +479,12 @@ class VITEK_ID(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
-        Barcode = VITEK_Card.exists(cDict['CARD_BARCODE']) 
+        Barcode = VITEK_Card.get(cDict['CARD_BARCODE']) 
         if Barcode is None:
             validStatus = False
             valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
 
-        #retInstance = self.exists(cDict['CARD_BARCODE'])
-        retInstance = cls.exists(Barcode)
+        retInstance = cls.get(Barcode)
         if retInstance is None:
             retInstance = cls()
             retInstance.card_barcode = Barcode
@@ -482,6 +510,12 @@ class VITEK_ID(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
+
+    # #  # -------------------------------------------------
+    # def get_values(self, fields=VITEKID_FIELDs):
+    #     value_list=super(VITEK_ID, self).get_values(fields)
+    #     return value_list
+#-------------------------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------------------------
 class COADD_BMD(AuditModel):
@@ -539,10 +573,8 @@ class COADD_BMD(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,DrugID,RunID,verbose=0):
-    #
+    def get(cls,OrgBatchID,DrugID,RunID,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
-    #
         try:
             retInstance = cls.objects.get(orgbatch_id=OrgBatchID,drug_id=DrugID,run_id=RunID)
         except:
@@ -550,6 +582,12 @@ class COADD_BMD(AuditModel):
                 print(f"[MIC Not Found] {OrgBatchID} {DrugID} {RunID}")
             retInstance = None
         return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,OrgBatchID,DrugID,RunID,verbose=0):
+    # Returns an instance if found by OrgBatchID and DrugID
+        return cls.objects.filter(orgbatch_id=OrgBatchID,drug_id=DrugID,run_id=RunID).exists()
 
     #------------------------------------------------
     @classmethod
@@ -560,18 +598,18 @@ class COADD_BMD(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
-        Barcode = COADD_BMD.exists(cDict['CARD_BARCODE']) 
+        Barcode = COADD_BMD.get(cDict['CARD_BARCODE']) 
         if Barcode is None:
             validStatus = False
             valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
 
-        DrugID = Drug.exists(cDict['DRUG_NAME'])
+        DrugID = Drug.get(cDict['DRUG_NAME'])
         if DrugID is None:
             validStatus = False
             valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
 
         if validStatus:
-            retInstance = cls.exists(Barcode,DrugID,cDict['BP_SOURCE'])
+            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'])
         else:
             retInstance = None
                
