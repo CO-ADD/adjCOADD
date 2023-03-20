@@ -667,3 +667,8 @@ django.utils.autoreload INFO 2023-03-20 20:05:31,086 autoreload 28548 5836 C:\Da
 django.utils.autoreload INFO 2023-03-20 20:05:33,383 autoreload 23520 2432 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-03-20 20:05:44,695 autoreload 23520 2432 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
 django.utils.autoreload INFO 2023-03-20 20:05:46,483 autoreload 18360 10500 Watching for file changes with StatReloader
+django.server INFO 2023-03-20 20:05:53,143 basehttp 18360 22396 "GET /organism_card HTTP/1.1" 302 0
+django.server INFO 2023-03-20 20:05:53,182 basehttp 18360 22396 "GET /?next=/organism_card HTTP/1.1" 200 8356
+django.server INFO 2023-03-20 20:05:53,632 basehttp 18360 22396 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-20 20:05:55,262 basehttp 18360 22396 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-20 20:05:55,273 basehttp 18360 22396 "GET / HTTP/1.1" 200 8491
