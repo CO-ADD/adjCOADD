@@ -145,9 +145,9 @@ class Drug(AuditModel):
         
             
     # # -------------------------------------------------
-    # def get_values(self, fields=DRUG_FIELDs):
-    #     value_list=super(Drug, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=DRUG_FIELDs):
+        value_list=super(Drug, self).get_values(fields)
+        return value_list
 
 #-------------------------------------------------------------------------------------------------
 class VITEK_Card(AuditModel):
@@ -256,9 +256,9 @@ class VITEK_Card(AuditModel):
         return(retInstance)
 
     # -------------------------------------------------
-    # def get_values(self, fields=VITEKCARD_FIELDs):
-    #     value_list=super(VITEK_Card, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=VITEKCARD_FIELDs):
+        value_list=super(VITEK_Card, self).get_values(fields)
+        return value_list
 
 
 #-------------------------------------------------------------------------------------------------
@@ -385,9 +385,9 @@ class VITEK_AST(AuditModel):
         return(retInstance)
 
     # # -------------------------------------------------
-    # def get_values(self, fields=VITEKAST_FIELDs):
-    #     value_list=super(VITEK_AST, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=VITEKAST_FIELDs):
+        value_list=super(VITEK_AST, self).get_values(fields)
+        return value_list
 
 # #-------------------------------------------------------------------------------------------------
 class VITEK_ID(AuditModel):
@@ -493,9 +493,9 @@ class VITEK_ID(AuditModel):
 
 
     #  # -------------------------------------------------
-    # def get_values(self, fields=VITEKID_FIELDs):
-    #     value_list=super(VITEK_ID, self).get_values(fields)
-    #     return value_list
+    def get_values(self, fields=VITEKID_FIELDs):
+        value_list=super(VITEK_ID, self).get_values(fields)
+        return value_list
 #-------------------------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------------------------

@@ -104,26 +104,6 @@ def instance_dict(instance, key_format=None):
     from django.forms.models import model_to_dict
     model_to_dict(instance, fields=[field.name for field in instance._meta.fields]) 
 
-# ===================================Dictionary query convert to choice Tuples========================================================================#
-
-# def get_DictonaryChoices_byDictClass(ModelName, DictClass, sep='|'):
-#     options=ModelName.objects.filter(dict_class=DictClass, astatus__gte=0).values('dict_value', 'dict_desc')
-#     if options:
-#         choices_values=tuple([tuple(d.values()) for d in options])
-#         choices=tuple((a[0], a[0]+sep+a[1]) for a in choices_values)
-#     else:
-#         choices=(('--', 'empty'),)
-#     return choices
-    
-# # ------------------------Only use dict_value----------------
-# def get_DictonaryChoicesValue_byDictClass(ModelName, DictClass, sep='|'):
-#     options=ModelName.objects.filter(dict_class=DictClass, astatus__gte=0).values('dict_value', 'dict_desc')
-#     if options:
-#         choices_values=tuple([tuple(d.values()) for d in options])
-#         choices=tuple((a[0], a[0]) for a in choices_values)
-#     else:
-#         choices=(('--', 'empty'),)
-#     return choices
 
 #-----------------------------------------------------------------------------------
 def slugify(value, lower=False, allow_unicode=False):
@@ -234,6 +214,7 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
+        
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()
