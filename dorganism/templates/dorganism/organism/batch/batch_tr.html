@@ -6,6 +6,7 @@
     </button>
     <span class=""> {%include 'dorganism/organism/batch/batch_d.html'%} </span>
   </td>
+  <td class="not-visible">{{object_batch.pk}}</td>
   {%for value in object_batch.get_values%}
   <td>{{value}}</td>
   {%endfor%}

@@ -1,9 +1,6 @@
 <div class="sidebar card-text">
     <div style="height:fit-content; width: 200px;">
-
         {{filterset | default_if_none:"&nbsp;"}}
-
-
     </div>
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
@@ -31,7 +28,7 @@
                 &nbsp; entries on one Page
             </span>
         </div>
-        <hr>
+
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <div class="d-flex flex-column">
 
@@ -39,12 +36,23 @@
             <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
         </div>
         <hr>
-        {{filter.form.as_p}}
+        {%for field in filter.form%}
+        <button class="accordion-button collapsed bg-transparent text-info border-bottom"
+            style="width: 15em; font-size: small;" type="button" data-bs-toggle="collapse"
+            data-bs-target="#{{field.label}}" aria-expanded="false" aria-controls="{{field.label}}">
+            {{field.label}}
+        </button>
+        <div id="{{field.label}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
+            <div class="accordion-body">
+                <strong>{{field}}</strong>
+            </div>
+        </div>
+        {%endfor%}
     </form>
-    <hr>
+
 
 </div>
-<div class="resizer">-</div>
+<!-- <div class="resizer">-</div> -->
 
 
 
@@ -66,7 +74,7 @@
 
 <script>
     $(document).ready(function () {
-        console.log("working...")
+
         if (sessionStorage.getItem('smiles_query') !== null) {
             $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
             console.log($('#smiles_input').val())

@@ -7,7 +7,7 @@
         <div id="createStockModal" class="modal fade" role="dialog"></div>
       </th>
       <!-- <th style="width: 10em">EDIT</th> -->
-
+      <th class="not-visible">Batch ID</th>
       {%for th in batch_fields %}
       <th>{{th}}</th>
       {%endfor%}
@@ -24,8 +24,6 @@
 <script src="https://unpkg.com/htmx.org@1.8.4"
   integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
 {%load static%}
-<script src="{% static 'js/js_utils/getCookie.js'%}"></script>
-
 <script src="{%static 'js/modal/create_stock.js'%}"></script>
 
 <script>

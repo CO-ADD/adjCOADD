@@ -321,7 +321,8 @@ def stockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
-        object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
+        print(batch_id)
+        object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
         qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1)
         data=[]
         for i in qs:

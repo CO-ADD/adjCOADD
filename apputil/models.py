@@ -374,7 +374,7 @@ class Dictionary(AuditModel):
         return(retValue)
 
     #------------------------------------------------
-    #@classmethod
+    @classmethod
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
@@ -382,7 +382,7 @@ class Dictionary(AuditModel):
         dictList = None
         choices=(emptyChoice,)
         # comment on initial migrations
-        dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
+        dictList=Dictionary.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
         if dictList:
             sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
             if sortedlist:

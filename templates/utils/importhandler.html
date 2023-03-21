@@ -6,11 +6,11 @@
         <pre id="_log"></pre>
     </div> -->
     <h3>Step 1 Files Upload</h3>
-    <section class="row border " id="Import_step1">
+    <section class="row" id="Import_step1">
         <h4 class="title is-2" id="datamodel"> <small> Prcoess Name: </small>{{data_model}} PDF</h4>
-        <div class="card border">
+        <div class="">
 
-            <form method="POST" enctype="multipart/form-data" class="form-control">
+            <form method="POST" enctype="multipart/form-data" class="post-form">
                 {% csrf_token %}
                 <!--  -->
                 <!-- <input type="text" value="{{data_model}}" name="file_data"> -->
@@ -36,9 +36,6 @@
         {%if file_list %}
         <div class="card mx-5">
             <div class="card-body">
-                <!-- <div class="card-title text-center">Uploaded Files and your old files listed here </div> -->
-                <!--  -->
-
                 <ol class="d-flex flex-wrap justify-content-start align-items-start">
                     {%for f in file_list%}
 

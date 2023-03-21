@@ -36,18 +36,15 @@ danger-color : #f3545d
   /* Background Color */
   --bs-card-bg: #fefefe;
   --bs-heading-bg: var(--teal);
-  --bs-heading-dark-bg: #2a3042;
   --bs-body-bg: rgb(238, 238, 238);
   --bs-footer-bg: #f2f2f5;
-  --bs-topbar-search-bg: #f3f3f9;
   --bs-th-bg: #a7b6b6;
   --bs-topnav-bg: #2c7a84;
   --bs-boxed-body-bg: #f8fcfa;
   --bs-form-item-color: #fff;
   /* Text Color */
   --bs-body-color: #575962;
-  --bs-menu-item-color: #545a6d;
-  --bs-header-item-color: #555b6d;
+  --bs-menu-item-color: #6a8bf8;
   --bs-footer-color: #74788d;
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
@@ -57,9 +54,6 @@ danger-color : #f3545d
   /* border Color */
   --bs-border-color: #625e5d;
   --bs-card-border: white;
-  --bs-input-border-color: #ced4da;
-  --bs-form-check-input-border: #ff6e00;
-  --bs-input-focus-border-color: #b1bbc4;
 }
 
 :root .darkMode {
@@ -72,11 +66,8 @@ danger-color : #f3545d
   /* Background Color */
   --bs-card-bg: #262b3c !important;
   --bs-heading-bg: #262b3c;
-  --bs-heading-dark-bg: #556ee6;
   --bs-body-bg: #5b5c61;
   --bs-footer-bg: #262b3c;
-  ;
-  --bs-topbar-search-bg: #f3f3f9;
   /* nodarkmode */
   --bs-th-bg: #226770;
   --bs-topnav-bg: #282e3f;
@@ -84,8 +75,7 @@ danger-color : #f3545d
   --bs-form-item-color: #f6f6f6;
   /* Text Color */
   --bs-body-color: #f6f6f6;
-  --bs-menu-item-color: #878c9b;
-  --bs-header-item-color: #a6b0cf;
+  --bs-menu-item-color: #ebeef0;
   --bs-footer-color: #a6b0cf;
   --bs-light: #32394e;
   --bs-dark: #f6f6f6;
@@ -95,10 +85,6 @@ danger-color : #f3545d
   /* border Color */
   --bs-border-color: #32394e;
   --bs-card-border: #f6f6f6;
-  --bs-input-border-color: #ced4da;
-  --bs-form-check-input-border: #3a425a;
-  --bs-input-focus-border-color: #3a425a;
-
 }
 
 /* html elements custom style -----------------------------*/
@@ -118,20 +104,9 @@ body {
   color: var(--bs-body-color);
 }
 
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
+section {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
 }
 
 tbody {
@@ -276,6 +251,7 @@ button,
 .page-link,
 .card-link {
   cursor: pointer !important;
+  background-color: var(--bs-boxed-body-bg) !important;
   color: var(--bs-menu-item-color);
 }
 
@@ -305,10 +281,14 @@ button,
 /* ------------------- */
 /* ----Navbar custom style */
 .navbar {
-  background-color: var(--bs-heading-bg);
   height: 120px;
   width: 100%;
   transition: 1s;
+}
+
+.navbar,
+.navbar-nav {
+  background-color: var(--bs-heading-bg);
 }
 
 .nav-title {
@@ -446,7 +426,7 @@ a:hover .tooltiptext {
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
-.resizer {
+/* .resizer {
   flex-basis: 0;
   position: relative;
   z-index: 2;
@@ -456,7 +436,7 @@ a:hover .tooltiptext {
   margin-left: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
 .sidebar {
   background-color: var(--bs-boxed-body-bg);
@@ -465,6 +445,7 @@ a:hover .tooltiptext {
   padding: 0;
   min-width: 10%;
   box-shadow: 2px 2px 5px var(--bs-body-bg);
+  height: fit-content;
 }
 
 .main {
