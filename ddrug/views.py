@@ -221,8 +221,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekcard_filter
     model_fields=model.HEADER_FIELDS
     context_list=''
-   
-
     
     def get_context_data(self,  **kwargs):
 
@@ -235,8 +233,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         print(context['fields'])
       
         data=list(context["object_list"].values())
+        print(data)
         df=pd.DataFrame(data)
-        table=pd.pivot_table(df, values=["instrument"], index=["proc_date", "analysis_time"],
+        table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
                         columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
         context['table']=table
     

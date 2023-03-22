@@ -1,4 +1,4 @@
-<div class="sidebar card-text">
+<div class="sidebar card-text me-2">
     <div style="height:fit-content; width: 200px;">
         {{filterset | default_if_none:"&nbsp;"}}
     </div>
@@ -37,12 +37,12 @@
         </div>
         <hr>
         {%for field in filter.form%}
-        <button class="accordion-button collapsed bg-transparent text-info border-bottom"
-            style="width: 15em; font-size: small;" type="button" data-bs-toggle="collapse"
-            data-bs-target="#{{field.label}}" aria-expanded="false" aria-controls="{{field.label}}">
+        <button class="accordion-button collapsed bg-transparent border-bottom"
+            style="width: 15em; font-size: small; font-weight: bold;" type="button" data-bs-toggle="collapse"
+            data-bs-target="#{{field.name|safe}}" aria-expanded="false" aria-controls="{{field.label}}">
             {{field.label}}
         </button>
-        <div id="{{field.label}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
+        <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
             <div class="accordion-body">
                 <strong>{{field}}</strong>
             </div>

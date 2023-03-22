@@ -1,0 +1,637 @@
+django.utils.autoreload INFO 2023-03-22 08:52:18,699 autoreload 18388 8888 Watching for file changes with StatReloader
+django.server INFO 2023-03-22 08:52:21,827 basehttp 18388 21120 "GET / HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 08:52:21,864 basehttp 18388 8488 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,869 basehttp 18388 20700 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,869 basehttp 18388 13792 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,869 basehttp 18388 3120 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,870 basehttp 18388 17912 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,872 basehttp 18388 8488 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,877 basehttp 18388 13792 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,877 basehttp 18388 20700 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,878 basehttp 18388 3120 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:21,879 basehttp 18388 17912 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:22,042 basehttp 18388 8488 "GET /static/js/resizable.js HTTP/1.1" 200 1225
+django.server INFO 2023-03-22 08:52:22,049 basehttp 18388 8488 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:22,050 basehttp 18388 21120 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 08:52:24,135 basehttp 18388 21120 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 08:52:24,277 basehttp 18388 21120 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 08:52:24,293 basehttp 18388 21120 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:32,823 basehttp 18388 21120 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:52:32,840 basehttp 18388 21120 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:32,840 basehttp 18388 8488 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:52:32,846 basehttp 18388 8488 "GET /static/js/modal/create_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:54:16,989 basehttp 18388 8488 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:54:17,097 basehttp 18388 8488 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:54:21,992 basehttp 18388 8488 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:54:38,792 basehttp 18388 8488 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:54:55,310 basehttp 18388 22856 "GET /organism_card HTTP/1.1" 302 0
+django.server INFO 2023-03-22 08:54:55,315 basehttp 18388 22856 "GET /?next=/organism_card HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 08:54:55,330 basehttp 18388 22856 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 08:54:55,332 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 200 15249
+django.server INFO 2023-03-22 08:54:55,338 basehttp 18388 21952 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 08:54:55,342 basehttp 18388 5164 "GET /static/js/sorting_table.js HTTP/1.1" 200 598
+django.server INFO 2023-03-22 08:54:55,345 basehttp 18388 13052 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 08:54:55,346 basehttp 18388 10124 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 08:54:55,348 basehttp 18388 22856 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 08:54:55,349 basehttp 18388 21952 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 08:54:55,350 basehttp 18388 22320 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 08:54:55,350 basehttp 18388 13052 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 08:54:55,353 basehttp 18388 10124 "GET /static/js/resizable.js HTTP/1.1" 200 1225
+django.server INFO 2023-03-22 08:54:55,359 basehttp 18388 5164 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 08:54:55,691 basehttp 18388 5164 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 08:54:56,787 basehttp 18388 5164 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 08:54:58,331 basehttp 18388 5164 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 08:54:58,477 basehttp 18388 5164 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 08:54:58,515 basehttp 18388 5164 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 08:55:00,955 basehttp 18388 5164 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:55:00,979 basehttp 18388 5164 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 08:55:00,991 basehttp 18388 5164 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 08:55:00,993 basehttp 18388 10124 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 08:55:01,036 basehttp 18388 10124 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 08:55:50,714 basehttp 18388 10124 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:55:50,730 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 200 15242
+django.server INFO 2023-03-22 08:56:55,566 basehttp 18388 10124 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:56:55,582 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 200 15268
+django.server INFO 2023-03-22 08:57:36,555 basehttp 18388 10124 "GET /organism_card HTTP/1.1" 200 37679
+django.server INFO 2023-03-22 08:57:36,572 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 200 15244
+django.server INFO 2023-03-22 08:58:09,984 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:01:01,698 basehttp 18388 10124 "GET /organism_card HTTP/1.1" 200 37479
+django.server INFO 2023-03-22 09:01:01,713 basehttp 18388 10124 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:11:47,181 basehttp 18388 20504 "GET /organism_card HTTP/1.1" 200 37479
+django.server INFO 2023-03-22 09:11:47,202 basehttp 18388 20504 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:16:49,121 basehttp 18388 13240 "GET /organism_card HTTP/1.1" 200 37599
+django.server INFO 2023-03-22 09:16:49,135 basehttp 18388 13240 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:17:00,114 basehttp 18388 13240 "GET /organism_list HTTP/1.1" 200 32454
+django.server INFO 2023-03-22 09:17:36,136 basehttp 18388 13240 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 09:17:45,467 basehttp 18388 13240 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32617
+django.server INFO 2023-03-22 09:17:46,353 basehttp 18388 13240 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32615
+django.server INFO 2023-03-22 09:18:59,893 basehttp 18388 13240 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32615
+django.server INFO 2023-03-22 09:18:59,906 basehttp 18388 13240 "GET /static/css/custom.css HTTP/1.1" 200 15236
+django.server INFO 2023-03-22 09:19:25,514 basehttp 18388 13240 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:19:25,528 basehttp 18388 13240 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:24:30,877 basehttp 18388 20900 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:24:30,896 basehttp 18388 20900 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:29:31,915 basehttp 18388 24720 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:29:31,935 basehttp 18388 24720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:30:07,317 basehttp 18388 24720 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:30:22,362 basehttp 18388 9024 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:30:22,370 basehttp 18388 9024 "GET /?next=/organism_list%3Fpaginate_by%3D50%26order_by%3D-Strain%2BType%26substructure%3D%26Class%3D%26ID%3D%26Name%3D%26Strain%3D%26Notes%3D%26MTA%3D HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 09:30:22,386 basehttp 18388 9024 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 09:30:22,388 basehttp 18388 19348 "GET /static/css/custom.css HTTP/1.1" 200 15236
+django.server INFO 2023-03-22 09:30:22,390 basehttp 18388 16400 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 09:30:22,391 basehttp 18388 17116 "GET /static/js/sorting_table.js HTTP/1.1" 200 598
+django.server INFO 2023-03-22 09:30:22,394 basehttp 18388 9024 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 09:30:22,396 basehttp 18388 19348 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 09:30:22,397 basehttp 18388 16400 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 09:30:22,398 basehttp 18388 9024 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 09:30:22,399 basehttp 18388 12480 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 09:30:22,400 basehttp 18388 19348 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 09:30:22,401 basehttp 18388 19516 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 09:30:22,405 basehttp 18388 17116 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 09:30:22,672 basehttp 18388 17116 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 09:30:23,809 basehttp 18388 17116 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 09:30:25,107 basehttp 18388 17116 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:30:25,227 basehttp 18388 17116 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 09:30:25,243 basehttp 18388 17116 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:30:25,252 basehttp 18388 17116 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 09:30:27,498 basehttp 18388 17116 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 09:30:27,513 basehttp 18388 19516 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:30:27,514 basehttp 18388 17116 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 09:30:27,516 basehttp 18388 17116 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 09:30:27,520 basehttp 18388 17116 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 09:30:30,971 basehttp 18388 17116 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 09:30:30,986 basehttp 18388 17116 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:30:34,038 basehttp 18388 17116 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:30:34,054 basehttp 18388 17116 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:42:27,894 basehttp 18388 20440 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:42:27,908 basehttp 18388 8788 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:42:27,908 basehttp 18388 20440 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:47:28,860 basehttp 18388 21420 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:47:28,882 basehttp 18388 21420 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:47:28,886 basehttp 18388 21420 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:13,714 basehttp 18388 21420 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:51:13,730 basehttp 18388 21420 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:13,731 basehttp 18388 25540 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:25,773 basehttp 18388 7396 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:51:25,778 basehttp 18388 7396 "GET /?next=/organism_list%3Fpaginate_by%3D50%26order_by%3D-Organism%2BID%26substructure%3D%26Class%3D%26ID%3D%26Name%3D%26Strain%3D%26Notes%3D%26MTA%3D HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 09:51:25,793 basehttp 18388 7396 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 09:51:25,795 basehttp 18388 20032 "GET /static/css/custom.css HTTP/1.1" 200 15236
+django.server INFO 2023-03-22 09:51:25,797 basehttp 18388 18356 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 09:51:25,798 basehttp 18388 16248 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-22 09:51:25,799 basehttp 18388 7396 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 09:51:25,801 basehttp 18388 20032 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 09:51:25,804 basehttp 18388 18356 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 09:51:25,804 basehttp 18388 7396 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 09:51:25,805 basehttp 18388 20032 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 09:51:25,806 basehttp 18388 20732 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 09:51:25,807 basehttp 18388 23792 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 09:51:25,812 basehttp 18388 16248 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 09:51:26,084 basehttp 18388 16248 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 09:51:26,944 basehttp 18388 16248 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 09:51:28,042 basehttp 18388 16248 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:51:28,164 basehttp 18388 16248 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 09:51:28,178 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:28,179 basehttp 18388 16248 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 09:51:30,063 basehttp 18388 16248 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 09:51:30,080 basehttp 18388 16248 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:30,081 basehttp 18388 23792 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 09:51:30,083 basehttp 18388 23792 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 09:51:30,090 basehttp 18388 23792 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 09:51:31,537 basehttp 18388 23792 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 09:51:33,439 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 09:51:33,452 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:34,696 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 09:51:43,549 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 09:51:43,564 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:45,014 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32631
+django.server INFO 2023-03-22 09:51:46,666 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 09:51:46,683 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:47,769 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 09:51:49,144 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:51:50,182 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 09:51:50,199 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:51:51,078 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:54:00,268 basehttp 18388 23792 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 09:54:00,282 basehttp 18388 16248 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:54:00,282 basehttp 18388 23792 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:54:27,311 basehttp 18388 7300 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:54:27,318 basehttp 18388 7300 "GET /?next=/organism_list%3Fpaginate_by%3D50%26order_by%3D-Organism%2BID%26substructure%3D%26Class%3D%26ID%3D%26Name%3D%26Strain%3D%26Notes%3D%26MTA%3D HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 09:54:27,330 basehttp 18388 7300 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 09:54:27,331 basehttp 18388 7152 "GET /static/css/custom.css HTTP/1.1" 200 15243
+django.server INFO 2023-03-22 09:54:27,337 basehttp 18388 24432 "GET /static/js/sorting_table.js HTTP/1.1" 200 601
+django.server INFO 2023-03-22 09:54:27,337 basehttp 18388 20600 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 09:54:27,339 basehttp 18388 7300 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 09:54:27,339 basehttp 18388 7152 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 09:54:27,344 basehttp 18388 20600 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 09:54:27,345 basehttp 18388 7152 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 09:54:27,345 basehttp 18388 7300 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 09:54:27,345 basehttp 18388 23920 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 09:54:27,346 basehttp 18388 6684 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 09:54:27,351 basehttp 18388 24432 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 09:54:27,608 basehttp 18388 24432 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 09:54:28,799 basehttp 18388 24432 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 09:54:30,062 basehttp 18388 24432 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 09:54:30,193 basehttp 18388 24432 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 09:54:30,208 basehttp 18388 24432 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 09:54:32,391 basehttp 18388 24432 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 09:54:32,405 basehttp 18388 24432 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 09:54:32,405 basehttp 18388 6684 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 09:54:32,411 basehttp 18388 24432 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 09:54:32,419 basehttp 18388 24432 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 09:54:33,594 basehttp 18388 24432 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 09:54:39,548 basehttp 18388 24432 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:25,772 basehttp 18388 21652 "GET /organism_list HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:03:25,778 basehttp 18388 21652 "GET /?next=/organism_list HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 10:03:25,792 basehttp 18388 21652 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 10:03:25,793 basehttp 18388 23796 "GET /static/css/custom.css HTTP/1.1" 200 15316
+django.server INFO 2023-03-22 10:03:25,801 basehttp 18388 20876 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 10:03:25,802 basehttp 18388 21652 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 10:03:25,802 basehttp 18388 11852 "GET /static/js/sorting_table.js HTTP/1.1" 200 646
+django.server INFO 2023-03-22 10:03:25,803 basehttp 18388 23796 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 10:03:25,803 basehttp 18388 13248 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 10:03:25,809 basehttp 18388 11852 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 10:03:25,809 basehttp 18388 13472 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 10:03:25,811 basehttp 18388 13248 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 10:03:25,811 basehttp 18388 21652 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 10:03:25,816 basehttp 18388 20876 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 10:03:26,168 basehttp 18388 20876 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 10:03:27,229 basehttp 18388 20876 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 10:03:28,662 basehttp 18388 20876 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:03:28,764 basehttp 18388 20876 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 10:03:28,783 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:28,785 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:28,800 basehttp 18388 21652 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 10:03:31,232 basehttp 18388 21652 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 10:03:31,251 basehttp 18388 21652 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:31,251 basehttp 18388 20876 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:31,264 basehttp 18388 20876 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 10:03:31,264 basehttp 18388 21652 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 10:03:31,298 basehttp 18388 21652 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 10:03:33,206 basehttp 18388 21652 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 10:03:36,394 basehttp 18388 21652 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:03:36,417 basehttp 18388 21652 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:36,418 basehttp 18388 20876 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:03:38,009 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:05:36,652 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:05:36,675 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:05:36,675 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:07:23,916 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32707
+django.server INFO 2023-03-22 10:07:23,934 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:07:23,935 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:07:23,936 basehttp 18388 13248 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:08:47,616 basehttp 18388 13248 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32715
+django.server INFO 2023-03-22 10:08:47,637 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:08:47,637 basehttp 18388 13248 "GET /static/css/custom.css HTTP/1.1" 200 15316
+django.server INFO 2023-03-22 10:09:30,971 basehttp 18388 13248 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32715
+django.server INFO 2023-03-22 10:09:30,987 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:09:30,987 basehttp 18388 13248 "GET /static/css/custom.css HTTP/1.1" 200 15322
+django.server INFO 2023-03-22 10:11:28,305 basehttp 18388 13248 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32715
+django.server INFO 2023-03-22 10:11:28,325 basehttp 18388 13248 "GET /static/css/custom.css HTTP/1.1" 200 15645
+django.server INFO 2023-03-22 10:11:28,325 basehttp 18388 21652 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:11:28,326 basehttp 18388 20876 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:12:40,040 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32715
+django.server INFO 2023-03-22 10:12:40,056 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 200 15593
+django.server INFO 2023-03-22 10:12:40,057 basehttp 18388 13248 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:15:49,761 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:15:49,778 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 200 15442
+django.server INFO 2023-03-22 10:15:49,779 basehttp 18388 21652 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:15:49,779 basehttp 18388 13248 "GET /static/js/sorting_table.js HTTP/1.1" 200 643
+django.server INFO 2023-03-22 10:15:52,946 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:15:52,965 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:15:52,966 basehttp 18388 13248 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:01,834 basehttp 18388 13248 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:16:01,854 basehttp 18388 13248 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:01,854 basehttp 18388 20876 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:07,669 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:16:07,689 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:07,689 basehttp 18388 13248 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:08,926 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:16:29,927 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:16:29,944 basehttp 18388 20876 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:29,945 basehttp 18388 13248 "GET /static/js/sorting_table.js HTTP/1.1" 200 685
+django.server INFO 2023-03-22 10:16:36,560 basehttp 18388 13248 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:16:36,584 basehttp 18388 13248 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:36,584 basehttp 18388 20876 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:16:38,870 basehttp 18388 20876 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:16:38,892 basehttp 18388 20876 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:17:17,877 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:17:17,883 basehttp 18388 20152 "GET /?next=/organism_list%3Fpaginate_by%3D50%26order_by%3D-Organism%2BName%26substructure%3D%26Class%3D%26ID%3D%26Name%3D%26Strain%3D%26Notes%3D%26MTA%3D HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 10:17:17,902 basehttp 18388 20152 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 10:17:17,905 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 200 15442
+django.server INFO 2023-03-22 10:17:17,907 basehttp 18388 13760 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 10:17:17,909 basehttp 18388 20152 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 10:17:17,909 basehttp 18388 13348 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 10:17:17,910 basehttp 18388 17780 "GET /static/js/sorting_table.js HTTP/1.1" 200 685
+django.server INFO 2023-03-22 10:17:17,913 basehttp 18388 11216 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 10:17:17,915 basehttp 18388 13760 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 10:17:17,916 basehttp 18388 13348 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 10:17:17,917 basehttp 18388 17780 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 10:17:17,918 basehttp 18388 12812 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 10:17:17,922 basehttp 18388 20152 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 10:17:18,269 basehttp 18388 20152 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 10:17:19,410 basehttp 18388 20152 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 10:17:20,779 basehttp 18388 20152 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:17:20,880 basehttp 18388 20152 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 10:17:20,918 basehttp 18388 20152 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 10:17:23,200 basehttp 18388 20152 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 10:17:23,223 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:17:23,243 basehttp 18388 20152 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 10:17:23,245 basehttp 18388 12812 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 10:17:23,280 basehttp 18388 20152 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 10:17:25,166 basehttp 18388 20152 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 10:17:26,931 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:17:29,826 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:17:29,850 basehttp 18388 20152 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:17:29,850 basehttp 18388 12812 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:17:33,078 basehttp 18388 12812 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:17:45,241 basehttp 18388 12812 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:17:45,266 basehttp 18388 12812 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:17:45,266 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:21:17,421 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:21:17,440 basehttp 18388 20152 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:21:17,441 basehttp 18388 12812 "GET /static/js/sorting_table.js HTTP/1.1" 200 781
+django.server INFO 2023-03-22 10:21:26,480 basehttp 18388 12812 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:21:26,503 basehttp 18388 12812 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:22:17,312 basehttp 18388 12812 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:22:17,331 basehttp 18388 12812 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:22:17,333 basehttp 18388 13348 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:22:17,334 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 200 805
+django.server INFO 2023-03-22 10:22:41,729 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:22:41,746 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 200 846
+django.server INFO 2023-03-22 10:22:46,883 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:22:46,911 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:22:49,483 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:22:49,508 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:22:52,514 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:22:52,539 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:23:06,227 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:23:06,252 basehttp 18388 20152 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:23:06,253 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:23:08,095 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:23:09,315 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:23:09,339 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:23:10,573 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:23:11,988 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:23:13,358 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:23:13,383 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:24:14,494 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:24:14,514 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:24:14,515 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:24:16,534 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:24:18,069 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:24:19,398 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:24:22,671 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Panel&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32623
+django.server INFO 2023-03-22 10:24:23,912 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Panel&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32621
+django.server INFO 2023-03-22 10:24:23,936 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:24:25,916 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:24:27,102 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32631
+django.server INFO 2023-03-22 10:24:32,849 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:24:33,800 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:24:33,826 basehttp 18388 20152 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:28:57,889 basehttp 18388 20152 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32637
+django.server INFO 2023-03-22 10:28:57,907 basehttp 18388 20152 "GET /static/css/custom.css HTTP/1.1" 200 15410
+django.server INFO 2023-03-22 10:28:57,909 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 200 728
+django.server INFO 2023-03-22 10:28:57,910 basehttp 18388 18848 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:00,127 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32617
+django.server INFO 2023-03-22 10:29:00,153 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:00,154 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:01,749 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32615
+django.server INFO 2023-03-22 10:29:01,773 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:01,773 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:04,311 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32617
+django.server INFO 2023-03-22 10:29:04,334 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:04,335 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:05,811 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32615
+django.server INFO 2023-03-22 10:29:05,834 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:05,835 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:12,028 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:29:12,054 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:12,055 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:13,900 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32631
+django.server INFO 2023-03-22 10:29:13,921 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:23,989 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:29:24,013 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:24,014 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:26,163 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32639
+django.server INFO 2023-03-22 10:29:35,501 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Genotype&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32627
+django.server INFO 2023-03-22 10:29:35,525 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:35,526 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:29:36,570 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=-Genotype&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32629
+django.server INFO 2023-03-22 10:29:38,862 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=-Genotype&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32629
+django.server INFO 2023-03-22 10:30:31,604 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=-Genotype&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32629
+django.server INFO 2023-03-22 10:30:31,624 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:30:31,624 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 200 858
+django.server INFO 2023-03-22 10:30:36,156 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32631
+django.server INFO 2023-03-22 10:30:36,178 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:30:37,241 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:30:37,265 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:31:20,324 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Strain+IDs&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:31:20,342 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:31:20,342 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 200 850
+django.server INFO 2023-03-22 10:33:57,460 basehttp 18388 18848 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:33:57,484 basehttp 18388 18848 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:33:57,485 basehttp 18388 13348 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:33:59,255 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:34:01,060 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:34:02,509 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:36:01,696 basehttp 18388 13348 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:36:01,721 basehttp 18388 13348 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:36:01,722 basehttp 18388 18848 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:36:01,722 basehttp 18388 21072 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:36:03,045 basehttp 18388 21072 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:36:04,228 basehttp 18388 21072 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32633
+django.server INFO 2023-03-22 10:36:05,315 basehttp 18388 21072 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32635
+django.server INFO 2023-03-22 10:36:52,498 basehttp 18388 23168 "GET / HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 10:36:52,528 basehttp 18388 23168 "GET /static/css/overideboot.css HTTP/1.1" 200 5737
+django.server INFO 2023-03-22 10:36:52,532 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 200 15410
+django.server INFO 2023-03-22 10:36:52,536 basehttp 18388 23168 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-22 10:36:52,540 basehttp 18388 23168 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-22 10:36:52,552 basehttp 18388 23168 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-22 10:36:52,558 basehttp 18388 23168 "GET /static/js/sorting_table.js HTTP/1.1" 200 850
+django.server INFO 2023-03-22 10:36:52,558 basehttp 18388 23168 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-22 10:36:52,558 basehttp 18388 23168 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-22 10:36:52,565 basehttp 18388 23168 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-22 10:36:52,567 basehttp 18388 23168 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-22 10:36:52,567 basehttp 18388 23168 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-22 10:36:52,567 basehttp 18388 23168 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-22 10:36:52,578 basehttp 18388 23168 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-22 10:36:59,417 basehttp 18388 23168 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:36:59,522 basehttp 18388 23168 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 10:36:59,531 basehttp 18388 23168 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-22 10:37:01,768 basehttp 18388 23168 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 10:37:01,778 basehttp 18388 9028 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-22 10:37:01,778 basehttp 18388 23168 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-22 10:37:01,795 basehttp 18388 23168 "GET /static/js/modal/create_organism.js HTTP/1.1" 200 328
+django.server INFO 2023-03-22 10:37:03,810 basehttp 18388 23168 "GET /organism_list HTTP/1.1" 200 32459
+django.server INFO 2023-03-22 10:37:05,149 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32617
+django.server INFO 2023-03-22 10:37:06,233 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32615
+django.server INFO 2023-03-22 10:37:45,409 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32619
+django.server INFO 2023-03-22 10:37:45,418 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:37:45,418 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:37:45,558 basehttp 18388 9028 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-22 10:38:31,054 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:38:31,063 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 200 848
+django.server INFO 2023-03-22 10:38:32,233 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32634
+django.server INFO 2023-03-22 10:38:33,711 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:38:33,722 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:38:35,240 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32634
+django.server INFO 2023-03-22 10:39:29,195 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32618
+django.server INFO 2023-03-22 10:39:29,204 basehttp 18388 9028 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:39:29,205 basehttp 18388 23168 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:39:32,036 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:41:45,289 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:41:45,300 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:41:45,301 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 200 15614
+django.server INFO 2023-03-22 10:41:48,674 basehttp 18388 14312 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:41:48,691 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 200 848
+django.server INFO 2023-03-22 10:41:48,692 basehttp 18388 14312 "GET /static/css/custom.css HTTP/1.1" 200 15614
+django.server INFO 2023-03-22 10:41:52,436 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32618
+django.server INFO 2023-03-22 10:41:52,447 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:41:53,915 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:41:53,926 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:04,015 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=-Biologist&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32632
+django.server INFO 2023-03-22 10:42:04,024 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:05,091 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=Biologist&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32630
+django.server INFO 2023-03-22 10:42:07,169 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=-Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32626
+django.server INFO 2023-03-22 10:42:07,179 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:07,180 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:09,895 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32624
+django.server INFO 2023-03-22 10:42:43,867 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32624
+django.server INFO 2023-03-22 10:42:43,877 basehttp 18388 9028 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:43,878 basehttp 18388 23168 "GET /static/js/sorting_table.js HTTP/1.1" 200 848
+django.server INFO 2023-03-22 10:42:46,299 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32624
+django.server INFO 2023-03-22 10:42:46,311 basehttp 18388 23168 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:42:49,302 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32561
+django.server INFO 2023-03-22 10:42:49,312 basehttp 18388 23168 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:43:05,122 basehttp 18388 23168 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:43:05,131 basehttp 18388 23168 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:43:05,133 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:43:09,014 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32634
+django.server INFO 2023-03-22 10:43:09,024 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:43:11,458 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:43:13,176 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32634
+django.server INFO 2023-03-22 10:43:13,190 basehttp 18388 9028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:43:15,445 basehttp 18388 9028 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32561
+django.server INFO 2023-03-22 10:43:15,454 basehttp 18388 9028 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:13,827 basehttp 18388 14312 "GET /organism_list?paginate_by=50&order_by=-Organism+ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:45:13,842 basehttp 18388 14312 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:13,844 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-22 10:45:13,844 basehttp 18388 24344 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:16,849 basehttp 18388 1292 "GET /accounts/logout/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:45:16,856 basehttp 18388 1292 "GET / HTTP/1.1" 200 8352
+django.server INFO 2023-03-22 10:45:16,874 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:20,440 basehttp 18388 1292 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-22 10:45:20,560 basehttp 18388 1292 "GET /index/ HTTP/1.1" 200 14893
+django.server INFO 2023-03-22 10:45:20,583 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:22,956 basehttp 18388 1292 "GET /organism_card HTTP/1.1" 200 37604
+django.server INFO 2023-03-22 10:45:22,979 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:25,086 basehttp 18388 1292 "GET /organism_list HTTP/1.1" 200 32460
+django.server INFO 2023-03-22 10:45:25,111 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:29,521 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32618
+django.server INFO 2023-03-22 10:45:29,545 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:32,311 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:45:32,333 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:33,730 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32618
+django.server INFO 2023-03-22 10:45:35,209 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:45:35,230 basehttp 18388 1292 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:35,230 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:37,023 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32618
+django.server INFO 2023-03-22 10:45:38,018 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=ID&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32616
+django.server INFO 2023-03-22 10:45:38,040 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:43,511 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32626
+django.server INFO 2023-03-22 10:45:43,526 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:45,460 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32624
+django.server INFO 2023-03-22 10:45:46,853 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32626
+django.server INFO 2023-03-22 10:45:46,869 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:47,827 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Origin&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32624
+django.server INFO 2023-03-22 10:45:49,408 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32636
+django.server INFO 2023-03-22 10:45:51,550 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Strain+Type&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32634
+django.server INFO 2023-03-22 10:45:51,565 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:55,102 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32640
+django.server INFO 2023-03-22 10:45:56,777 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32638
+django.server INFO 2023-03-22 10:45:56,793 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:45:59,844 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32640
+django.server INFO 2023-03-22 10:45:59,858 basehttp 18388 24344 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:46:00,760 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32638
+django.server INFO 2023-03-22 10:46:04,896 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32561
+django.server INFO 2023-03-22 10:46:04,913 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:46:07,758 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=-Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32640
+django.server INFO 2023-03-22 10:46:09,547 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=Organism+Name&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32638
+django.server INFO 2023-03-22 10:46:14,200 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32561
+django.server INFO 2023-03-22 10:46:14,219 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:46:34,174 basehttp 18388 24344 "GET /organism_list?paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&Type=Competent&Type=Control&Type=Mutant&Type=Resistant&MTA= HTTP/1.1" 200 30288
+django.server INFO 2023-03-22 10:46:34,195 basehttp 18388 24344 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:46:34,195 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:48:31,157 basehttp 18388 17880 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32641
+django.server INFO 2023-03-22 10:48:31,191 basehttp 18388 17880 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:48:31,198 basehttp 18388 17880 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-22 10:48:31,201 basehttp 18388 7052 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:48:40,159 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&Type=Competent&Type=Control&Type=Mutant&Type=Resistant&MTA= HTTP/1.1" 200 30520
+django.server INFO 2023-03-22 10:48:40,173 basehttp 18388 24344 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:48:40,173 basehttp 18388 1292 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:49:03,180 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&Type=Competent&Type=Control&Type=Mutant&Type=Resistant&MTA= HTTP/1.1" 200 30368
+django.server INFO 2023-03-22 10:49:03,197 basehttp 18388 1292 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:49:15,288 basehttp 18388 1292 "GET /organism_list?paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&Type=Competent&Type=Control&Type=Mutant&Type=Resistant&MTA= HTTP/1.1" 200 30440
+django.server INFO 2023-03-22 10:53:32,165 basehttp 18388 9800 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32713
+django.server INFO 2023-03-22 10:53:32,203 basehttp 18388 9800 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:53:32,248 basehttp 18388 9800 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:54:19,938 basehttp 18388 13572 "GET /organism_list?paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&Type=Competent&Type=Control&Type=Mutant&Type=Resistant&MTA= HTTP/1.1" 200 30440
+django.server INFO 2023-03-22 10:54:19,953 basehttp 18388 13572 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:54:19,953 basehttp 18388 24244 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:54:19,954 basehttp 18388 18904 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:55:16,572 basehttp 18388 18904 "GET /organism/GN_0004 HTTP/1.1" 200 34015
+django.server INFO 2023-03-22 10:55:16,587 basehttp 18388 18904 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:55:16,590 basehttp 18388 18904 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-22 10:55:16,593 basehttp 18388 18904 "GET /static/js/modal/create_stock.js HTTP/1.1" 200 347
+django.server INFO 2023-03-22 10:55:16,609 basehttp 18388 24244 "GET /static/js/modal/create_batch.js HTTP/1.1" 200 338
+django.server INFO 2023-03-22 10:55:16,609 basehttp 18388 18904 "GET /static/js/modal/create_culture.js HTTP/1.1" 200 344
+django.server INFO 2023-03-22 10:55:21,459 basehttp 18388 18904 "GET /organism/GN_0004 HTTP/1.1" 200 34015
+django.server INFO 2023-03-22 10:55:23,539 basehttp 18388 18904 "GET /createStock/ HTTP/1.1" 200 12893
+django.server INFO 2023-03-22 10:55:35,891 basehttp 18388 18904 "GET /organism_card HTTP/1.1" 200 37756
+django.server INFO 2023-03-22 10:55:35,906 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:55:37,858 basehttp 18388 18904 "GET /organism/GN_0003 HTTP/1.1" 200 34014
+django.server INFO 2023-03-22 10:55:40,656 basehttp 18388 18904 "GET /organism_card HTTP/1.1" 200 37756
+django.server INFO 2023-03-22 10:55:41,837 basehttp 18388 18904 "GET /organism/GN_0002 HTTP/1.1" 200 36402
+django.server INFO 2023-03-22 10:55:43,519 basehttp 18388 18904 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679446541848 HTTP/1.1" 200 12
+django.server INFO 2023-03-22 10:55:49,188 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29389
+django.server INFO 2023-03-22 10:55:49,206 basehttp 18388 18904 "GET /static/js/vitek_datamap.js HTTP/1.1" 200 2602
+django.server INFO 2023-03-22 10:56:42,102 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29389
+django.server INFO 2023-03-22 10:56:42,118 basehttp 18388 18904 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:57:09,959 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29389
+django.server INFO 2023-03-22 10:57:09,975 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 200 15634
+django.server INFO 2023-03-22 10:57:23,076 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:58:33,137 basehttp 18388 18272 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32713
+django.server INFO 2023-03-22 10:58:33,180 basehttp 18388 18272 "GET /static/css/custom.css HTTP/1.1" 200 15634
+django.server INFO 2023-03-22 10:58:33,268 basehttp 18388 18272 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:58:33,271 basehttp 18388 18272 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:58:58,272 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29389
+django.server INFO 2023-03-22 10:58:58,289 basehttp 18388 24244 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 10:58:58,290 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:00:02,589 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29347
+django.server INFO 2023-03-22 11:00:02,604 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:00:31,482 basehttp 18388 18904 "GET /vitekcard_list HTTP/1.1" 200 29371
+django.server INFO 2023-03-22 11:00:31,502 basehttp 18388 24244 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:00:31,502 basehttp 18388 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.request ERROR 2023-03-22 11:00:46,872 log 18388 18904 Internal Server Error: /vitekcard_list
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 239, in get_context_data
+    table=pd.pivot_table(df, values=["instrument"], index=["proc_date", "analysis_time"],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\pandas\core\reshape\pivot.py", line 97, in pivot_table
+    table = __internal_pivot_table(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\pandas\core\reshape\pivot.py", line 143, in __internal_pivot_table
+    raise KeyError(i)
+KeyError: 'instrument'
+django.server ERROR 2023-03-22 11:00:46,877 basehttp 18388 18904 "GET /vitekcard_list?paginate_by=50&order_by=&substructure=&card_barcode=6861777503724 HTTP/1.1" 500 109283
+django.request WARNING 2023-03-22 11:00:47,006 log 18388 18904 Not Found: /favicon.ico
+django.server WARNING 2023-03-22 11:00:47,008 basehttp 18388 18904 "GET /favicon.ico HTTP/1.1" 404 11785
+django.request ERROR 2023-03-22 11:01:35,001 log 18388 18904 Internal Server Error: /vitekcard_list
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 239, in get_context_data
+    table=pd.pivot_table(df, values=["instrument"], index=["proc_date", "analysis_time"],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\pandas\core\reshape\pivot.py", line 97, in pivot_table
+    table = __internal_pivot_table(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\pandas\core\reshape\pivot.py", line 143, in __internal_pivot_table
+    raise KeyError(i)
+KeyError: 'instrument'
+django.server ERROR 2023-03-22 11:01:35,002 basehttp 18388 18904 "GET /vitekcard_list?paginate_by=50&order_by=-ID&substructure=&card_barcode=6861777503724 HTTP/1.1" 500 109381
+django.server INFO 2023-03-22 11:02:46,699 basehttp 18388 18904 "POST /vitekcard_list HTTP/1.1" 200 30
+django.server INFO 2023-03-22 11:03:34,148 basehttp 18388 19360 "GET /organism_list?paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 32713
+django.server INFO 2023-03-22 11:03:34,184 basehttp 18388 19360 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:03:34,193 basehttp 18388 19360 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-22 11:04:03,970 autoreload 18388 8888 C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-22 11:04:05,452 autoreload 7136 15696 Watching for file changes with StatReloader
+django.server INFO 2023-03-22 11:04:08,395 basehttp 7136 11276 "POST /vitekcard_list HTTP/1.1" 200 30
+django.server INFO 2023-03-22 11:04:11,135 basehttp 7136 11276 "GET /vitekcard_list HTTP/1.1" 200 29371
+django.server INFO 2023-03-22 11:04:11,152 basehttp 7136 10340 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:04:11,152 basehttp 7136 11276 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:04:11,152 basehttp 7136 20768 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:04:15,468 basehttp 7136 20768 "POST /vitekcard_list HTTP/1.1" 200 624
+django.server INFO 2023-03-22 11:04:48,007 basehttp 7136 20768 "GET /vitekcard_list?paginate_by=50&order_by=ID&substructure=&card_barcode= HTTP/1.1" 200 29484
+django.server INFO 2023-03-22 11:04:49,764 basehttp 7136 20768 "GET /vitekcard_list?paginate_by=50&order_by=-Barcode&substructure=&card_barcode= HTTP/1.1" 200 29496
+django.utils.autoreload INFO 2023-03-22 11:04:58,822 autoreload 7136 15696 C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-22 11:04:59,854 autoreload 22072 16004 Watching for file changes with StatReloader
+django.server INFO 2023-03-22 11:05:04,642 basehttp 22072 21520 "GET /vitekcard_detail/1234356576879 HTTP/1.1" 200 14462
+django.server INFO 2023-03-22 11:05:04,659 basehttp 22072 21520 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-22 11:05:19,217 basehttp 22072 21520 "GET /vitekast_list HTTP/1.1" 200 21305
+django.server INFO 2023-03-22 11:05:44,283 basehttp 22072 21520 "GET /organism_card HTTP/1.1" 200 37756
+django.server INFO 2023-03-22 11:05:45,837 basehttp 22072 21520 "GET /organism/GN_0001 HTTP/1.1" 200 39985

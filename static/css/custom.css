@@ -168,8 +168,12 @@ span {
   padding-right: 18px;
 }
 
-.sorting_table .order_field:before,
-.sorting_table .order_field:after {
+.sorting_table .asc:before,
+.sorting_table .asc:after,
+.sorting_table .desc:before,
+.sorting_table .desc:after,
+.sorting_table th:before,
+.sorting_table th:after {
   border: 4px solid transparent;
   content: "";
   display: block;
@@ -180,13 +184,33 @@ span {
   width: 0;
 }
 
-.sorting_table .order_field:before {
+.sorting_table th:before {
   border-bottom-color: #666;
   margin-top: -9px;
 }
 
-.sorting_table .order_field:after {
+.sorting_table th:after {
   border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .asc:before {
+  border-bottom-color: #1a1a1a;
+  margin-top: -9px;
+}
+
+.sorting_table .asc:after {
+  border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .desc:before {
+  border-bottom-color: #666;
+  margin-top: -9px;
+}
+
+.sorting_table .desc:after {
+  border-top-color: #1a1a1a;
   margin-top: 1px;
 }
 
@@ -199,7 +223,6 @@ td {
 }
 
 tr {
-  height: 30px;
   color: var(--bs-body-color);
 }
 
@@ -439,12 +462,13 @@ a:hover .tooltiptext {
 } */
 
 .sidebar {
-  background-color: var(--bs-boxed-body-bg);
+  background-color: var(--bs-th-bg);
   position: relative;
   margin: 0;
   padding: 0;
   min-width: 10%;
-  box-shadow: 2px 2px 5px var(--bs-body-bg);
+  box-shadow: 2px 2px 5px var(--bs-th-bg);
+  min-height: 50em;
   height: fit-content;
 }
 
@@ -459,7 +483,7 @@ a:hover .tooltiptext {
 }
 
 .leftbar {
-  background-color: var(--bs-boxed-body-bg);
+  background-color: var(--bs-th-bg);
 }
 
 /* ============== 2 edit table/form =========== */
