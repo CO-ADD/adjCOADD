@@ -16,175 +16,58 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <th scope="row" class="">Strain IDs</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_ids">
-              <div class="detail">{{object.strain_ids}}</div>
-              <div class="input-group select">{{form.strain_ids}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Strain Code</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_code">
-              <div class="detail">{{object.strain_code}}</div>
-              <div class="input-group select">{{form.strain_code}}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">Strain Notes</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_notes">
-              <div class="detail">{{object.strain_notes}}</div>
-              <div class="input-group select">{{form.strain_notes}}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">Strain_Type</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_type">
-              <div class="detail">
-                {{strain_type | default_if_none:"&nbsp;"}}
-              </div>
-              <div class="form-control select col-12 fs-6">
-                {{form.strain_type}}
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">Panel</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="strain_panel">
-              <div class="detail">
-                {{strain_panel|default_if_none:"&nbsp;"}}
-              </div>
-              <div class="form-control select col-12 fs-6">
-                {{form.strain_panel}}
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Strain Origin</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_origin">
-              <div class="detail">
-                {{object.strain_origin}}
-              </div>
-              <div class="input-group select">{{form.strain_origin}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Strain Identification</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="strain_identification">
-              <div class="detail">{{object.strain_identification}}</div>
-              <div class="input-group select">
-                {{form.strain_identification}}
-              </div>
-            </td>
-          </tr>
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Strain IDs' data_type='strain_ids' object_field=object.strain_ids form_field=form.strain_ids %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Strain Code' data_type='strain_ids' object_field=object.strain_code form_field=form.strain_code %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Strain Notes' data_type='strain_notes' object_field=object.strain_ids form_field=form.strain_notes %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Strain_Type' data_type='strain_type' object_field=strain_type form_field=form.strain_type %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Panel' data_type='strain_panel' object_field=strain_panel form_field=form.strain_panel %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label='Strain Origin' data_type='strain_origin' object_field=object.strain_origin form_field=form.strain_origin %}
+         <!--prettier-ignore-->
+         {%include 'utils/row_editabletable.html' with form_label='Strain Identification' data_type='strain_identification' object_field=object.strain_identification form_field=form.strain_identification %}       
         </tbody>
       </table>
     </div>
     <div class="col-md-4">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-          <tr>
-            <th scope="row" class="">Resistance Properties</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="res_property">
-              <div class="detail">{{object.res_property}}</div>
-              <div class="input-group select">{{form.res_property}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Gene Properties</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="gen_property">
-              <div class="detail">{{object.gen_property}}</div>
-              <div class="input-group select">{{form.gen_property}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Sequence</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="sequence">
-              <div class="detail">{{object.sequence}}</div>
-              <div class="input-group select">{{form.sequence}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Sequence Link</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="sequence_link">
-              <div class="detail">{{object.sequence_link}}</div>
-              <div class="input-group select">{{form.sequence_link}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Oxygen Pref</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="oxygen_pref">
-              <div class="detail">{{object.oxygen_pref | safe}}</div>
-              <div class="form-control select">{{form.oxygen_pref}}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">MTA Status</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="mta_status">
-              <div class="detail">
-                {{object.mta_status|safe}}
-              </div>
-              {% autoescape on %}
-              <div class="form-control select">{{form.mta_status}}</div>
-              {% endautoescape %}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">MTA Document</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="mta_document">
-              <div class="detail">{{object.mta_document}}</div>
-              <div class="input-group select">{{form.mta_document}}</div>
-            </td>
-          </tr>
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Resistance Properties' data_type='res_property' object_field=object.res_property form_field=form.res_property %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Gene Properties' data_type='gen_property' object_field=object.gen_property form_field=form.gen_property %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Sequence' data_type='sequence' object_field=object.sequence form_field=form.sequence %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Sequence Link' data_type='sequence_link' object_field=object.sequence_link form_field=form.sequence_link %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Oxygen Pref' data_type='oxygen_pref' object_field=object.oxygen_pref form_field=form.oxygen_pref %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='MTA Status' data_type='mta_status' object_field=object.mta_status form_field=form.mta_status %}
+              <!--prettier-ignore-->
+            {%include 'utils/row_editabletable.html' with form_label='MTA Document' data_type='mta_document' object_field=object.mta_document form_field=form.mta_document %}       
+  
         </tbody>
       </table>
     </div>
     <div class="col-md-4">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-          <tr>
-            <th scope="row" class="">
-              <label for="id_risk_group">Risk Group</label>
-            </th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="risk_group">
-              <div class="detail">{{object.risk_group | safe}}</div>
-              <div class="form-control select">{{form.risk_group}}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">Pathogen</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="pathogen_group">
-              <div class="detail">{{object.pathogen_group | safe}}</div>
-              <div class="form-control select">{{form.pathogen_group}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Lab Restriction</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="lab_restriction">
-              <div class="detail">{{object.lab_restriction | safe}}</div>
-              <div class="input-group select">{{form.lab_restriction}}</div>
-            </td>
-          </tr>
-
-          <tr>
-            <th scope="row" class="">Biologist</th>
-            <td class="editablechoices tdclass" data-id="{{object.pk}}" data-type="biologist">
-              <div class="detail">{{object.biologist}}</div>
-              <div class="form-control select">{{form.biologist}}</div>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="">Tax ID</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="tax_id">
-              <div class="detail">{{object.tax_id}}</div>
-              <div class="input-group select">{{form.tax_id}}</div>
-            </td>
-          </tr>
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Risk Group' data_type='risk_group' object_field=object.risk_group form_field=form.risk_group %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Pathogen' data_type='pathogen_group' object_field=object.pathogen_group form_field=form.pathogen_group %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Lab Restriction' data_type='lab_restriction' object_field=object.lab_restriction form_field=form.lab_restriction %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Biologist' data_type='biologist' object_field=object.biologist form_field=form.biologist %}
+             <!--prettier-ignore-->
+             {%include 'utils/row_editabletable.html' with form_label='Tax ID' data_type='tax_id' object_field=object.tax_id form_field=form.tax_id %}
+             <!--prettier-ignore-->
         </tbody>
       </table>
       <div class="col-md-3 updateformshow not-visible">
