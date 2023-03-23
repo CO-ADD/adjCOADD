@@ -118,9 +118,13 @@
         </div>
     </div>
 
-    {% load static %}
-
-    <script type="text/javascript" src="{%static 'js/modal/create_culture.js'%}"></script>
-    <script type="text/javascript" src="{%static 'js/modal/create_batch.js'%}"></script>
-
+ 
+ 
+<script>
+    $(document).ready(function () {
+  loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/");
+  loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/");
+  loadOrganismModal("#createStockModal", "#create_stock", "/createStock/");
+});
+</script>
     {%endblock%}

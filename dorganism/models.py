@@ -90,10 +90,6 @@ class Taxonomy(AuditModel):
     #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
-    # #------------------------------------------------
-    #def get_values(self, fields=TAXONOMY_FIELDs):
-    #    value_list=super(Taxonomy, self).get_values(fields)
-    #    return value_list
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -103,10 +99,11 @@ class Organism(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
+#        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_name':'Organism Name',
+        'strain_panel':'Panel',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
-        'strain_panel':'Panel',
         'res_property':'Phenotype',  
         'gen_property':'Genotype', 
         'biologist':'Biologist',
@@ -377,7 +374,7 @@ class OrgBatch_Stock(AuditModel):
     stock_date = models.DateField(verbose_name = "Stock Date")
     stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
     n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
-    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
+    n_left = models.IntegerField(default=0, verbose_name = "#Vials left", editable=False)
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
@@ -417,10 +414,17 @@ class OrgBatch_Stock(AuditModel):
         return cls.objects.filter(stock_id=StockID).exists()
 
     # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_STOCK_FIELDs):
-    #    value_list=super(OrgBatch_Stock, self).get_values(fields)
-    #    return value_list
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if "n_left_extra" in kwargs:
+           n_left_extra=kwargs.pop("n_left_extra", None)
+           if not self.n_left:
+                self.n_left=n_left_extra
+                super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
 
+            
   
 #-------------------------------------------------------------------------------------------------
 class Organism_Culture(AuditModel):

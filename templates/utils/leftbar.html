@@ -45,14 +45,20 @@
       </ul>
     </div>
 
-
-    <!-- <a class="nav-link px-1 py-0 inactive" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
-      <i class="fa-solid fa-arrows-rotate"></i>
-    </a> -->
-
   </div>
 
 </div>
+
+<script>
+  $(document).ready(function () {
+    loadOrganismModal("#createOrganismModal", "#createOrganism", "/createOrg/");
+    loadOrganismModal("#createTaxoModal", "#createTaxo", "/createTaxo/");
+    loadOrganismModal("#createDrugModal", "#createDrug", "/createDrug/");
+    loadOrganismModal("#createDictModal", "#createDict", "/dict_create/");
+  });
+
+</script>
+
 
 {%load static %}
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>

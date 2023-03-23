@@ -91,10 +91,16 @@ class Batchupdate_form(forms.ModelForm):
 
 
 # ===============================Stock Form-------------------------------
-class Stock_form(forms.ModelForm):  
+class Stock_createform(forms.ModelForm):
+    n_left_extra=forms.IntegerField(required=True)  
     class Meta:
         model =OrgBatch_Stock
-        exclude=["n_left"]
+        fields="__all__"
+
+class Stock_form(forms.ModelForm):
+    class Meta:
+        model =OrgBatch_Stock
+        fields="__all__"
 
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):

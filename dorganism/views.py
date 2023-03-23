@@ -24,7 +24,7 @@ from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
-                    Batch_form, Batchupdate_form, Stock_form, Culture_form, Cultureupdate_form)
+                    Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form)
    
           
 # #############################TAXONOMY View############################################
@@ -135,9 +135,11 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
+                    print("org saved")
                     return redirect(req.META['HTTP_REFERER'])
 
             except IntegrityError as err:
+                    print("error")
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
@@ -323,7 +325,7 @@ def stockList(req, pk):
         batch_id=req.GET.get('Batch_id')
         print(batch_id)
         object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
-        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
             item={
@@ -352,8 +354,11 @@ def createStock(req):
     kwargs['user']=req.user 
     form=Stock_form()
     if req.method=='POST':
-        form=Stock_form(req.POST)
+        form=Stock_createform(req.POST)
         if form.is_valid():
+            print(req.POST.get("n_left_extra"))
+            n_left_extra=req.POST.get("n_left_extra")
+            kwargs['n_left_extra']=n_left_extra
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 

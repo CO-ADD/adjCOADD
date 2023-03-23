@@ -329,6 +329,9 @@ class Dictionary(AuditModel):
         ]
     #------------------------------------------------
     def __str__(self) -> str:
+        return f"{self.dict_value} {self.dict_desc} "
+
+    def strtml(self)-> str:
         return f"{self.dict_value} <small class='not-visible'> {self.dict_desc} </small>"
 
     #------------------------------------------------

@@ -16,7 +16,7 @@
 
                 <select class="border" style="width: fit-content;" name="paginate_by" id="pages_set">
                     <option value=50> {{paginate_by}}</option>
-                    <option value=25>25 </option>
+                    <option value=2>2 </option>
                     <option value=50>50 </option>
                     <option value=100>100 </option>
                     <option value=200>200 </option>
@@ -66,8 +66,9 @@
         console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
         form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
-        form.querySelectorAll('p select option').forEach(item => item.removeAttribute("selected"))
+        form.querySelectorAll('select option').forEach(item => item.removeAttribute("selected"))
         form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"))
+        form.querySelectorAll('input[type=checkbox]').forEach(item => item.removeAttribute("checked"))
         form.submit();
     }
 </script>
