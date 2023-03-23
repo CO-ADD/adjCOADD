@@ -374,7 +374,7 @@ class OrgBatch_Stock(AuditModel):
     stock_date = models.DateField(verbose_name = "Stock Date")
     stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
     n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
-    n_left = models.IntegerField(default=0, verbose_name = "#Vials left", editable=False)
+    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
@@ -415,14 +415,14 @@ class OrgBatch_Stock(AuditModel):
 
     # # ------------------------------------------------
     #------------------------------------------------
-    def save(self, *args, **kwargs):
-        if "n_left_extra" in kwargs:
-           n_left_extra=kwargs.pop("n_left_extra", None)
-           if not self.n_left:
-                self.n_left=n_left_extra
-                super().save(*args, **kwargs)
-        else:
-            super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if "n_left_extra" in kwargs:
+    #        n_left_extra=kwargs.pop("n_left_extra", None)
+    #        if not self.n_left:
+    #             self.n_left=n_left_extra
+    #             super().save(*args, **kwargs)
+    #     else:
+    #         super().save(*args, **kwargs)
 
             
   

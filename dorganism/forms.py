@@ -95,7 +95,7 @@ class Stock_createform(forms.ModelForm):
     n_left_extra=forms.IntegerField(required=True)  
     class Meta:
         model =OrgBatch_Stock
-        fields="__all__"
+        exclude=['n_left']
 
 class Stock_form(forms.ModelForm):
     class Meta:
