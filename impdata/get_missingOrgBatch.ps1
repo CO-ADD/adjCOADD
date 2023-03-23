@@ -1,0 +1,1 @@
+ (Select-String -Pattern "Organism Batch does not Exists \((.*)\)" -AllMatches $args[0]).Matches| Foreach-Object {$_.Groups[1].Value} | get-unique

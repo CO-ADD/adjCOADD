@@ -41,16 +41,16 @@ def main():
 
     # Django -------------------------------------------------------------
     djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
-    uploadDir = "C:/Data/A02_WorkDB/03_Django/01_Data/02_Uploads"
+    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/Data"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-        uploadDir = "C:/Data/A02_WorkDB/03_Django/01_Data/02_Uploads"
+        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/Data"
     elif prgArgs.database == 'WorkLinux':
         djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/01_Data/02_Uploads"
+        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/Data"
 
     xlFiles = {
-        'Application':"ApplicationData_v03.xlsx",
+        'Application': "ApplicationData_v03.xlsx",
         'Drug': "DrugData_v02.xlsx",
     }
 

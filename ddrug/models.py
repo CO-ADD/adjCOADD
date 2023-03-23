@@ -318,6 +318,7 @@ class VITEK_AST(AuditModel):
             models.Index(name="vast_bprofile_idx",fields=['bp_profile']),
             models.Index(name="vast_bpsource_idx",fields=['bp_source']),
             models.Index(name="vast_fname_idx",fields=['filename']),
+            models.Index(name="vast_orgname_idx",fields=['organism']),
         ]
 
     #------------------------------------------------
@@ -337,20 +338,20 @@ class VITEK_AST(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def get(cls,CardBarcode,DrugID,Source,verbose=0):
+    def get(cls,CardBarcode,DrugID,Source,OrgName,verbose=0):
     # Returns an instance if found by (CardBarcode,DrugID,Source)
         try:
-            retInstance = cls.objects.get(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source)
+            retInstance = cls.objects.get(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source,organism=OrgName)
         except:
             if verbose:
-                print(f"[Vitek AST Not Found] {CardBarcode} {DrugID} {Source}")
+                print(f"[Vitek AST Not Found] {CardBarcode} {DrugID} {Source} {OrgName}")
             retInstance = None
         return(retInstance)
     #------------------------------------------------
     @classmethod
-    def exists(cls,CardBarcode,DrugID,Source,verbose=0):
+    def exists(cls,CardBarcode,DrugID,Source,OrgName,verbose=0):
     # Returns an instance if found by (CardBarcode,DrugID,Source)
-        return cls.objects.filter(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source).exists()
+        return cls.objects.filter(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source,organism=OrgName).exists()
 
     #------------------------------------------------
     @classmethod
@@ -372,7 +373,7 @@ class VITEK_AST(AuditModel):
             valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
 
         if validStatus:
-            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'])
+            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'],cDict['SELECTED_ORGANISM'])
         else:
             retInstance = None
                
