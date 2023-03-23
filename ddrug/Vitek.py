@@ -11,15 +11,14 @@ import re
 
 import logging
 logger = logging.getLogger(__name__)
-__version__ = "1.0"
+__version__ = "1.1"
 
 #-----------------------------------------------------------------------------
-def parse_VitekPDF(DirName,PdfName):
+def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
 #-----------------------------------------------------------------------------
     lstVitek = []
     logging.getLogger().setLevel(logging.WARNING)
     with pdfplumber.open(os.path.join(DirName,PdfName)) as pdf:
-    # with pdfplumber.open(DirName) as pdf:
         nPage = 0
         df = {}
         for page in pdf.pages:
@@ -47,6 +46,12 @@ def parse_VitekPDF(DirName,PdfName):
                         df['OrganismID'] = xLst[0][0:2]+f"_{int(xLst[0][2:]):04d}"
                         df['BatchID'] = int(xLst[1])
                         df['OrgBatchID'] = df['OrganismID']+f"_{int(df['BatchID']):02d}"
+                    if OrgBatchID is not None:
+                        # Overwrite OrgBatchID
+                        xLst = OrgBatchID.strip().split('_')
+                        df['OrganismID'] = "_".join(xLst[0:2])
+                        df['BatchID'] = int(xLst[2])
+                        df['OrgBatchID'] = df['OrganismID']+f"_{int(df['BatchID']):02d}"
                         
             # If Header contains Isolate/Card data
             if if_IsolateData:
@@ -71,6 +76,8 @@ def parse_VitekPDF(DirName,PdfName):
                     if_MIC_Section = False
                     if_ID_Section = False
                     if_AST_Section = False
+                    prevRow1 = ""
+                    prevRow4 = ""
                     for row in table:
                         #print(row)
                         if row[0]:
@@ -168,19 +175,37 @@ def parse_VitekPDF(DirName,PdfName):
                         if 'AES Findings:' == col1:
                             if 'EUCAST' in row[1]:
                                 df['AST_Interpretation'] = 'EUCAST'
-                            elif 'CSLI' in row[1]:
-                                df['AST_Interpretation'] = 'CSLI'
+                            elif 'CLSI' in row[1]:
+                                df['AST_Interpretation'] = 'CLSI'
                             else:
                                 df['AST_Interpretation'] = 'Other'       
                             if_MIC_Section = False
                             to_be_Saved = True
 
                         # - MIC Section -----------------------------------------------------   
-                        if if_MIC_Section:
+                        if if_MIC_Section:                            
                             if row[1] != '':
-                                df['AST'][row[0].replace("\n", "")] = {'MIC': row[1], 'Interpretation': row[2]}
+                                if row[0].replace("\n", "") in ['Urine','Other']:
+                                    # fix multiple entries for one drug [Urine Others] taking the first instance
+                                    if prevRow1 != "":
+                                        df['AST'][prevRow1] = {'MIC': row[1], 'Interpretation': row[2]}
+                                else:
+                                    df['AST'][row[0].replace("\n", "")] = {'MIC': row[1], 'Interpretation': row[2]}
+                                prevRow1 = ""
+                            else:
+                                prevRow1 = row[0].replace("\n", "")
+
                             if row[4] != '':
-                                df['AST'][row[3].replace("\n", "")] = {'MIC': row[4], 'Interpretation': row[5]}
+                                if row[3].replace("\n", "") in ['Urine','Other']:
+                                    # fix multiple entries for one drug [Urine Others] taking the first instance
+                                    if prevRow4 != "":
+                                        df['AST'][prevRow4] = {'MIC': row[4], 'Interpretation': row[5]}
+                                else:
+                                    df['AST'][row[3].replace("\n", "")] = {'MIC': row[4], 'Interpretation': row[5]}
+                                prevRow4 = ""
+                            else:
+                                prevRow4 = row[0].replace("\n", "")
+
                         if 'Antimicrobial' == col1:
                             if_MIC_Section = True
 
@@ -324,20 +349,20 @@ def dict_Vitek_AST(pCard):
             dfAST['BP_COMMENT'] = "; ".join(xComment)
         else:
             dfAST['BP_COMMENT'] = ''
-
+        #print(dfAST)
         lAST.append(dfAST)
     return(lAST)
 
 
 #-----------------------------------------------------------------------------
-def process_VitekPDF(DirName,PdfName):
+def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
 #-----------------------------------------------------------------------------
+
+    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=OrgBatchID)
+
     lstCards = []
     lstID = []
     lstAST = []
-
-    pVitek = parse_VitekPDF(DirName,PdfName)
-
     for pv in pVitek:
         k = pv.keys()
         #print(f"\n**\n {pv}\n**\n")
@@ -349,7 +374,7 @@ def process_VitekPDF(DirName,PdfName):
 
         if 'ID' in k :
             if pv['ID']:
-                print(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
+                logger.info(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
                 xCard = dict_Vitek_Card(pv,'ID')
                 for x in xCard:
                     lstCards.append(x)
@@ -359,14 +384,14 @@ def process_VitekPDF(DirName,PdfName):
 
         if 'AST' in k :
             if pv['AST']:
-                print(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
+                logger.info(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
                 xCard = dict_Vitek_Card(pv,'AST')
                 for x in xCard:
                     lstCards.append(x)
                 xAST = dict_Vitek_AST(pv)
                 for x in xAST:
                     lstAST.append(x)
-    print(f"[Vitek    ] {len(lstCards):4d} - {len(lstID):4d} - {len(lstAST):4d} ")
+    logger.info(f"[Vitek    ] Cards: {len(lstCards):4d} - ID: {len(lstID):4d} - AST: {len(lstAST):4d} ")
     # print(f"{len(lstCards)} {lstCards} \n")
     # print(f"{len(lstID)} {lstID} \n")
     # print(f"{len(lstAST)} {lstAST} \n")

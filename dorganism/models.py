@@ -353,10 +353,15 @@ class OrgBatch_Stock(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS={
         "orgbatch_id":"OrgBatch ID",
-        "stock_id":"Stock ID",
-        "stock_note":"Stock Note",
         "stock_type":"Stock Type",
+        "n_created":"#C",
+        "n_left":"#L",
+        "location_freezer": "Freezer",
+        "location_rack": "Rack",
+        "location_column": "Column",
+        "location_slot": "Slot",
         "stock_date":"Stock Date",
+        "stock_note":"Stock Note",
         "biologist":"Biologist"
     }
 
@@ -364,7 +369,7 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
@@ -372,11 +377,11 @@ class OrgBatch_Stock(AuditModel):
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
     location_slot = models.CharField(max_length=10, blank=True, verbose_name = "Slot")
-    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
+    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock_type+")
-    stock_date = models.DateField(verbose_name = "Stock Date")
-    stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
-    n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
+    stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
+    #stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
+    n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
@@ -391,7 +396,7 @@ class OrgBatch_Stock(AuditModel):
             models.Index(name="orgbstock_freezer_idx",fields=['location_freezer']),
             models.Index(name="orgbstock_stdate_idx",fields=['stock_date']),
             models.Index(name="orgbstock_nleft_idx",fields=['n_left']),
-            models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
+            #models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
         ]
 
     #------------------------------------------------
