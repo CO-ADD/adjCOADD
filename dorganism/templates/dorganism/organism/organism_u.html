@@ -71,10 +71,12 @@
         </tbody>
       </table>
       <div class="col-md-3 updateformshow not-visible">
-        <button type="submit" class="btn btn-sm mx-2" name="note">
-          <i class="fa-regular fa-floppy-disk"></i>
-        </button>
-        <a class="btn btn-sm mx-2" href="{% url 'org_detail' object.pk %}"><i class="fa-solid fa-xmark"></i></a>
+        <div class="d-flex justify-content-evenly align-baseline ">
+          {%include 'utils/miscellaneous/save_btn.html'%}
+          <!--  -->
+          {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+          
+        </div>
       </div>
     </div>
   </div>

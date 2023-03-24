@@ -3,9 +3,9 @@
 
 <div class="modal fade" id="taxonomy_detail_update" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <!--prettier-ignore-->
     {% url 'taxonomy_update' pk=object.pk as updateurl %}
-    {%include 'utils/modal/update.html' with title='Update Taxonomy' urlname=updateurl %}
+    {%include 'utils/modal/modal_form.html' with title='Update Taxonomy' urlname=updateurl %}
   </div>
 </div>

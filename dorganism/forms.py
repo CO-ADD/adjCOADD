@@ -86,7 +86,8 @@ class Batchupdate_form(forms.ModelForm):
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     class Meta:
         model =Organism_Batch
-        fields=model.HEADER_FIELDS.keys()
+        fields=list(model.HEADER_FIELDS.keys())
+        fields+=['orgbatch_id']
         exclude=['stock_level']
 
 

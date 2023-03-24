@@ -3,8 +3,7 @@
     <tr>
       <th>
         Stock
-        <a class="card-link" id="create_stock"><i class="fa-solid fa-file-circle-plus"></i></a>
-        <div id="createStockModal" class="modal fade" role="dialog"></div>
+
       </th>
       <!-- <th style="width: 10em">EDIT</th> -->
       <th class="not-visible">Batch ID</th>
@@ -24,6 +23,8 @@
 <script src="https://unpkg.com/htmx.org@1.8.4"
   integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
 
+{%load static%}
+<script type="text/javascript" src="{% static 'js/create_modal.js' %}"></script>
 
 <script>
   $(document).ready(function () {
@@ -31,6 +32,7 @@
     var table = $("#datatable_batch").DataTable({
       searching: false,
       paging: false,
+      info:false
     });
 
     const csrftoken = getCookie("csrftoken");
@@ -70,7 +72,8 @@
       columns: [
         // { title: "Stock ID", data: "stock_id" },
         {
-          title: "Edit",
+          title: `Add New <a class="card-link" id="create_stock"><i class="bi bi-file-earmark-plus text-success"></i></a>
+        <div id="createStockModal" class="modal fade" role="dialog"></div> `,
           data: null,
           defaultContent:
             `<button id="update_stock" class="text-success border-0"> <i class="fa-regular fa-pen-to-square"></i></button>` +
@@ -94,8 +97,9 @@
       // select: true,
       searching: false,
       paging: false,
+      info:false
     });
-
+    loadOrganismModal("#createStockModal", "#create_stock", "/createStock/");
     $("#Stock tbody").on("click", `#delete_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#deleteStockModal");

@@ -1,50 +1,5 @@
 <div class="modal-dialog modal-lg">
-  <div class="modal-content">
-    <div class="modal-header card-text">
-      <strong>Create Organism</strong>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-
-    <div class="mx-2">
-      {% include 'utils/search_organism.html' %}
-      <!-- ===================================================================================== -->
-      <hr />
-      <form
-        method="POST"
-        class="post-form"
-        name="create"
-        action="{%url 'org_create'%}"
-      >
-        {% csrf_token %}
-        <!--  -->
-        {%include 'utils/django_form_lgtable.html'%}
-        <input
-          type="text"
-          id="taxo-name"
-          name="search_organism"
-          style="display: none"
-        />
-
-        <hr />
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          value="Add"
-          name="note"
-        />
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal"
-        >
-          Cancel
-        </button>
-      </form>
-    </div>
-  </div>
+   <!--prettier-ignore-->
+   {% url 'org_create' as createurl %}
+   {%include 'utils/modal/modal_form.html' with title='Create Organism' urlname=createurl %}
 </div>

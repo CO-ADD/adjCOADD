@@ -16,7 +16,6 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
-
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
@@ -286,7 +285,7 @@ def updateBatch(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
-        print(qd)
+        print(qd["orgbatch_id"])
         object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
         form=Batchupdate_form(data=qd, instance=object_batch, )
         
@@ -299,6 +298,9 @@ def updateBatch(req, pk):
                 "object_batch":object_batch,
                 'object':object_batch  # this object refer to the same entry of object_batch
             }
+            return render(req, "dorganism/organism/batch/batch_tr.html", context)
+        else:
+            print(form.errors)
             return render(req, "dorganism/organism/batch/batch_tr.html", context)
     return render(req, "dorganism/organism/batch/batch_u.html", context)
 
@@ -397,6 +399,7 @@ def updateStock(req, pk):
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
+                            
                     except Exception as err:
                         print(f'form erroro is {form.errors} and error {err}')
             except Exception as err:

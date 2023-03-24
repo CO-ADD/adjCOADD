@@ -54,6 +54,8 @@ danger-color : #f3545d
   /* border Color */
   --bs-border-color: #625e5d;
   --bs-card-border: white;
+  /* transition  */
+  --trans-property: all 0.3s ease;
 }
 
 :root .darkMode {
@@ -933,4 +935,8 @@ form p {
 
 .modal-content {
   background-color: var(--bs-boxed-body-bg);
+}
+.fa-floppy-disk{
+  transition:var(--trans-property);
+  font-size:18px;
 }

@@ -34,20 +34,22 @@
 
             <label for="smiles_query" class="not-visible">Substructure Query</label>
             <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
-        </div>
-        <hr>
-        {%for field in filter.form%}
-        <button class="accordion-button collapsed bg-transparent border-bottom"
-            style="width: 15em; font-size: small; font-weight: bold;" type="button" data-bs-toggle="collapse"
+            <hr>
+            
+            
+            {%for field in filter.form%}
+            <button id="btn_{{field.name|safe}}" class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6" type="button" data-bs-toggle="collapse"
             data-bs-target="#{{field.name|safe}}" aria-expanded="false" aria-controls="{{field.label}}">
             {{field.label}}
         </button>
         <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
-            <div class="accordion-body">
+            <div class="accordion-body bg-light m-2 px-1 py-1">
                 <strong>{{field}}</strong>
             </div>
         </div>
         {%endfor%}
+    </div>
+
     </form>
 
 
@@ -75,7 +77,8 @@
 
 <script>
     $(document).ready(function () {
-
+        
+       
         if (sessionStorage.getItem('smiles_query') !== null) {
             $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
             console.log($('#smiles_input').val())
@@ -90,5 +93,7 @@
             document.cookie = "filter=" + value;
 
         })
+
+        $("#Class").addClass('show');
     })
 </script>
