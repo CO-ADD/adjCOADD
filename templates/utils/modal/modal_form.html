@@ -35,6 +35,24 @@
 
     <form method="POST" class="post-form" action="{{urlname}}">
       {% csrf_token %}
+       <!--  -->
+      {%if title == 'Create Organism' %}
+      <input
+        type="text"
+        id="taxo-name"
+        name="search_organism"
+        style="display: none"
+      />
+      {%endif%}
+      <!--  -->
+      {%if title == 'Create Batch' or title == 'Create Culture'%}
+      <input
+        type="text"
+        id="microorg"
+        name="search_organism"
+        style="display: none"
+      />
+      {%endif%}
       <!--  -->
       {%include 'utils/django_form_lgtable.html'%}
        <hr>
