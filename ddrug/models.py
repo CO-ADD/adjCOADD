@@ -149,6 +149,7 @@ class Drug(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         print("save ffp2")
+        super(Drug, self).save(*args, **kwargs)
         self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
         super(Drug, self).save(*args, **kwargs)
         print(f"field FFP2 is {self.ffp2}")

@@ -1,47 +1,8 @@
-{% extends 'base.html'%}
+{% extends "base.html" %}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
-<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
 {% block content%}
-<div class="d-flex justify-content-center" style="margin-top: 200px;">
 
-    <iframe id="ifKetcher" src="{% url 'ketcher' %}" width="800" height="600"></iframe>
+{%include 'utils/ketcher.html'%}
 
-</div>
-<button type="button" onclick="ketcherfunc()">
-    Check window
-</button>
-<script>
-    var ketcherFrame = document.getElementById('ifKetcher');
-
-    console.log(ketcherFrame.contentWindow)
-    var ketcher = null;
-
-    if ('contentDocument' in ketcherFrame) {
-        console.log(ketcherFrame.contentWindow)
-
-        ketcher = ketcherFrame.contentWindow.ketcher;
-        console.log("content");
-        console.log(ketcher);
-        ketcher.getSmiles()
-        // ketcher.setMolecule('c1ccccc1');
-    }
-    // else // IE7
-    // {
-    //     ketcher = document.frames['ifKetcher'].window.ketcher;
-    //     console.log(ketcher)
-    // }
-
-    function ketcherfunc() {
-        // e.preventDefault();
-        console.log(ketcher);
-        console.log(ketcherFrame.contentWindow)
-    }
-    // else // IE7
-    // {
-    //     ketcher = document.frames['ifKetcher'].window.ketcher;
-    //     console.log(ketcher)
-    // }
-
-</script>
 {%endblock%}

@@ -41,14 +41,14 @@
             <button id="btn_{{field.name|safe}}" class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6" type="button" data-bs-toggle="collapse"
             data-bs-target="#{{field.name|safe}}" aria-expanded="false" aria-controls="{{field.label}}">
             {{field.label}}
-        </button>
-        <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
+            </button>
+          <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
             <div class="accordion-body bg-light m-2 px-1 py-1">
                 <strong>{{field}}</strong>
             </div>
+           </div>
+             {%endfor%}
         </div>
-        {%endfor%}
-    </div>
 
     </form>
 
@@ -79,11 +79,7 @@
     $(document).ready(function () {
         
        
-        if (sessionStorage.getItem('smiles_query') !== null) {
-            $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
-            console.log($('#smiles_input').val())
-            sessionStorage.removeItem('smiles_query')
-        }
+       
 
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
         $("#filter-apply").on("click", function () {
