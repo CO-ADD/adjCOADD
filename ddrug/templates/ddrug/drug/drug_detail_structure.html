@@ -11,79 +11,8 @@
     </div>
     <div class="modal-body m-0">
       {%include 'utils/message.html'%}
-
-      <table align="center">
-        <tr>
-          <td id="appletContainer"></td>
-        </tr>
-      </table>
-
-      <div align="center">
-        <button type="button" class="btn btn-sm" onClick="jsmeApplet.reset()">
-          Clear Editor
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm"
-          onclick="JSApplet.JSME.clearFontCache()"
-        >
-          Clear the font cache
-        </button>
-        <button type="button" class="btn btn-sm" onclick="jsmeApplet.repaint()">
-          Repaint the applet
-        </button>
-      </div>
-
-      <table align="center">
-        <tr>
-          <td colspan="12" style="font-weight: bold">
-            Export chemical structure from applet:
-            <button
-              type="button"
-              class="btn btn-sm"
-              onclick="getMolfile(false);"
-            >
-              Get molfile
-            </button>
-            <button
-              type="button"
-              class="btn btn-sm"
-              onclick="getMolfile(true);"
-            >
-              Get molfile V3000
-            </button>
-            <button type="button" class="btn btn-sm" onclick="getSmiles();">
-              Get smiles
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="5">
-            <textarea
-              id="jme_output_{{object.pk}}"
-              rows="3"
-              cols="80"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" style="font-weight: bold">
-            Set Sub-Structure Query Input
-          </td>
-        </tr>
-        <tr>
-          <td colspan="12">
-            Click
-            <button
-              type="button"
-              class="btn btn-sm"
-              onclick="getSmiles_forquery();"
-            >
-              Get smiles</button
-            >, close the pop-window to apply Substructure Query.
-          </td>
-        </tr>
-      </table>
+      <!--  -->
+      {%include 'utils/ketcher.html'%}
       <hr />
 
       <button
@@ -98,49 +27,11 @@
         type="text/javascript"
         src="{% static 'js/jquery-3.6.1.min.js' %}"
       ></script>
-      <script
-        type="text/javascript"
-        src="{% static 'js/jsme/jsme.nocache.js' %}"
-      ></script>
       <script>
         //this function will be called after the JavaScriptApplet code has been loaded.
         $('[data-name="close_{{object.pk}}"]').on("click", function () {
           $(".modal-dialog").remove();
         });
-      </script>
-      <script>
-        function jsmeOnLoad() {
-          // var drug_smiles = "{{object.smiles}}";
-          var drug_mol = "{{object_mol}}";
-          jsmeApplet = new JSApplet.JSME("appletContainer", "750px", "400px", {
-            //optional parameters
-            options: "query,hydrogens,fullScreenIcon",
-            //"smiles" : glutathione_smiles
-            //"jme" : glutathione_JME
-            //"mol" : glutathione_mol
-            chem: drug_mol, // use generic input file format with automatic chemical format detection
-          });
-          document.JME = jsmeApplet;
-        }
-        function getSmiles_forquery() {
-          function getSmiles() {
-            var data = document.JME.smiles();
-            $("#smiles_input").val(data);
-            sessionStorage.setItem("smiles_query", data.toString());
-            console.log(sessionStorage.getItem("smiles_query"));
-          }
-          getSmiles();
-        }
-
-        function getSmiles() {
-          var data = document.JME.smiles();
-          document.getElementById("jme_output_{{object.pk}}").value = data;
-        }
-
-        function getMolfile(isV3000) {
-          var data = document.JME.molFile(isV3000);
-          document.getElementById("jme_output_{{object.pk}}").value = data;
-        }
       </script>
     </div>
   </div>

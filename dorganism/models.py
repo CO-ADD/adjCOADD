@@ -71,7 +71,7 @@ class Taxonomy(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,OrgName,verbose=0):
+    def get(cls,OrgName,verbose=0):
         try:
             retInstance = cls.objects.get(organism_name=OrgName.strip())
         except:
@@ -79,6 +79,10 @@ class Taxonomy(AuditModel):
                 print(f"[Taxonomy Not Found] {OrgName} ")
             retInstance = None
         return(retInstance)
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,OrgName,verbose=0):
+        return cls.objects.filter(organism_name=OrgName.strip()).exists()
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -86,10 +90,6 @@ class Taxonomy(AuditModel):
     #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
-    # #------------------------------------------------
-    def get_values(self, fields=TAXONOMY_FIELDs):
-        value_list=super(Taxonomy, self).get_values(fields)
-        return value_list
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -99,10 +99,11 @@ class Organism(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
+#        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_name':'Organism Name',
+        'strain_panel':'Panel',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
-        'strain_panel':'Panel',
         'res_property':'Phenotype',  
         'gen_property':'Genotype', 
         'biologist':'Biologist',
@@ -184,9 +185,13 @@ class Organism(AuditModel):
     #------------------------------------------------
     @classmethod
     def exists(cls,OrgID,verbose=0):
-    #
+    # Returns if an instance exists by organism_id
+        return cls.objects.filter(organism_id=OrgID).exists()
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,OrgID,verbose=0):
     # Returns an instance by organism_id
-    #
         try:
             retInstance = cls.objects.get(organism_id=OrgID)
         except:
@@ -202,7 +207,7 @@ class Organism(AuditModel):
             Organism_IDSq=Sequence(OrganismClass)
             Organism_nextID = next(Organism_IDSq)
             Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
-            while Organism.objects.filter(organism_id=Organism_strID).first():
+            while cls.exists(Organism_strID):
                 Organism_nextID = next(Organism_IDSq)
                 Organism_strID = cls.str_OrganismID(OrganismClass,Organism_nextID)
             return(Organism_strID)    
@@ -212,7 +217,7 @@ class Organism(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         #print(f"[save_Organism] ..")
-        if not self.organism_id: #Object does not exists
+        if not self.organism_id: 
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
             if self.organism_id: 
                 super(Organism, self).save(*args, **kwargs)
@@ -220,9 +225,9 @@ class Organism(AuditModel):
             super(Organism, self).save(*args, **kwargs) 
 
     # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_FIELDs):
-        value_list=super(Organism, self).get_values(fields)
-        return value_list
+    #def get_values(self, fields=ORGANISM_FIELDs):
+    #    value_list=super(Organism, self).get_values(fields)
+    #    return value_list
 
 #------------------------------------------------------------------------------------------------
 class Organism_Batch(AuditModel):
@@ -231,7 +236,7 @@ class Organism_Batch(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
-        "orgbatch_id":"OrgBatch ID",
+        "batch_id":"Batch ID",
         "supplier":"Supplier",
         "supplier_code":"Supplier Code",
         "stock_date":"Stock Date",
@@ -245,12 +250,12 @@ class Organism_Batch(AuditModel):
         'qc_status':'QC_Status',
     }
 
-    SEP = '_'
+    #SEP = '_'
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id+")
-    batch_no  = models.IntegerField(default = -1, verbose_name = "Batch No")
+    batch_id  = models.CharField(max_length=5, null=False, blank=False, verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_QC+")
@@ -269,7 +274,7 @@ class Organism_Batch(AuditModel):
         db_table = 'orgbatch'
         ordering=['orgbatch_id']
         indexes = [
-            models.Index(name="orgbatch_orgbatch_idx",fields=['organism_id','batch_no']),
+            models.Index(name="orgbatch_orgbatch_idx",fields=['organism_id','batch_id']),
             models.Index(name="orgbatch_qc_idx",fields=['qc_status']),
             models.Index(name="orgbatch_supp_idx",fields=['supplier']),
             models.Index(name="orgbatch_sdate_idx",fields=['stock_date']),
@@ -281,50 +286,60 @@ class Organism_Batch(AuditModel):
         return f"{self.orgbatch_id}"
 
     #------------------------------------------------
-    def find_Next_BatchNo(self, OrganismID) -> int:
+    @classmethod
+    # Formats BatchNo:int -> BatchID:str 
+    def str_BatchID(self,BatchNo:int) -> str:
+        return(f"{BatchNo:02d}")
+    #------------------------------------------------
+    @classmethod
+    # Formats OrganismID:str,BatchID:str -> OrgBatchID:str
+    def str_OrgBatchID(self,OrganismID:str,BatchID:str) -> str:
+        return(f"{OrganismID}{ORGBATCH_SEP}{BatchID}")
+
+    #------------------------------------------------
+    def find_Next_BatchID(self, OrganismID:str) -> str:
         next_BatchNo = 1
-        while Organism_Batch.objects.filter(organism_id=OrganismID, batch_no=next_BatchNo).exists():
+        next_OrgBatch = self.str_OrgBatchID(OrganismID,self.str_BatchID(next_BatchNo))
+        while self.exists(next_OrgBatch):
             next_BatchNo = next_BatchNo + 1
-        return(next_BatchNo)    
+            next_OrgBatch = self.str_OrgBatchID(OrganismID,self.str_BatchID(next_BatchNo))
+        return(self.str_BatchID(next_BatchNo))    
 
     #------------------------------------------------
     @classmethod
-    def str_OrgBatchID(self,OrganismID,BatchNo) -> str:
-        return(f"{OrganismID}{ORGBATCH_SEP}{BatchNo:02d}")
-
-    #------------------------------------------------
-    @classmethod
-    def exists(self,BatchID,verbose=0):
-    #
+    def get(cls,OrgBatchID,verbose=0):
     # Returns an instance if found by orgbatch_id
-    #
         try:
-            retInstance = self.objects.get(orgbatch_id=BatchID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID)
         except:
             if verbose:
-                print(f"[OrgBatch Not Found] {BatchID} ")
+                print(f"[OrgBatch Not Found] {OrgBatchID} ")
             retInstance = None
         return(retInstance)
 
     #------------------------------------------------
+    @classmethod
+    def exists(cls,OrgBatchID,verbose=0):
+    # Returns if instance exists
+        return cls.objects.filter(orgbatch_id=OrgBatchID).exists()
+
+    #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.orgbatch_id: #Object does not exists
-            try:
-                print(f'find orgbatchID with {self.organism_id.organism_id}')
-            except Exception as err:
-                print(err)
-            Next_BatchNo = self.find_Next_BatchNo(self.organism_id.organism_id)
-            if Next_BatchNo:
-                self.batch_no = Next_BatchNo
-                self.orgbatch_id = self.str_OrgBatchID(self.organism_id.organism_id,Next_BatchNo)
+        if not self.orgbatch_id: 
+            # creates new OrgBatchID
+            OrgID = self.organism_id.organism_id
+            Next_BatchID = self.find_Next_BatchID(OrgID)
+            if Next_BatchID:
+                self.batch_id = Next_BatchID
+                self.orgbatch_id = self.format_OrgBatchID(OrgID,Next_BatchID)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
         
     # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_BATCH_FIELDs):
-        value_list=super(Organism_Batch, self).get_values(fields)
-        return value_list
+    #def get_values(self, fields=ORGANISM_BATCH_FIELDs):
+    #    value_list=super(Organism_Batch, self).get_values(fields)
+    #    return value_list
 
 #------------------------------------------------------------------------------------------------
 class OrgBatch_Stock(AuditModel):
@@ -382,23 +397,34 @@ class OrgBatch_Stock(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(self,StockID,verbose=0):
-    #
+    def get(cls,StockID,verbose=0):
     # Returns an instance if found by orgbatch_id and stocktype
-    #
         try:
-            retInstance = self.objects.get(stock_id=StockID)
+            retInstance = cls.objects.get(stock_id=StockID)
         except:
             if verbose:
-                print(f"[OrgBatch Not Found] {StockID}")
+                print(f"[OrgBatch Stock Not Found] {StockID}")
             retInstance = None
         return(retInstance)
 
-    # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_STOCK_FIELDs):
-        value_list=super(OrgBatch_Stock, self).get_values(fields)
-        return value_list
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,StockID,verbose=0):
+    # Returns if an instance exists by orgbatch_id and stocktype
+        return cls.objects.filter(stock_id=StockID).exists()
 
+    # # ------------------------------------------------
+    #------------------------------------------------
+    # def save(self, *args, **kwargs):
+    #     if "n_left_extra" in kwargs:
+    #        n_left_extra=kwargs.pop("n_left_extra", None)
+    #        if not self.n_left:
+    #             self.n_left=n_left_extra
+    #             super().save(*args, **kwargs)
+    #     else:
+    #         super().save(*args, **kwargs)
+
+            
   
 #-------------------------------------------------------------------------------------------------
 class Organism_Culture(AuditModel):
@@ -450,6 +476,6 @@ class Organism_Culture(AuditModel):
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
     # # ------------------------------------------------
-    def get_values(self, fields=ORGANISM_CULTR_FIELDs):
-        value_list=super(Organism_Culture, self).get_values(fields)
-        return value_list
+    #def get_values(self, fields=ORGANISM_CULTR_FIELDs):
+    #    value_list=super(Organism_Culture, self).get_values(fields)
+    #    return value_list

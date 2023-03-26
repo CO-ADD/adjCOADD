@@ -4,15 +4,15 @@
 {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/topbar.html'  with list_url='org_list' card_url='org_card'%}
+  {%include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-        <!-- prettier-ignore -->
-        {%include 'utils/main_horizalbar.html' with create_object='createOrganism' create_objectModal='createOrganismModal' %}
-        <!-- prettier-ignore -->
-     
+    <!-- prettier-ignore -->
+    {%include 'utils/main_horizalbar.html' %}
+    <!-- prettier-ignore -->
+
     <!-- Card View Content -->
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
@@ -28,10 +28,5 @@
   </div>
 </div>
 
-{%load static%}
-<script
-  type="text/javascript"
-  src="{%static 'js/modal/create_organism.js'%}"
-></script>
 
 {%endblock%}

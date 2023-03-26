@@ -8,12 +8,12 @@
         <li class="page-item">
 
             <a class="page-link"
-                href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a>
+                href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&laquo;</a>
         </li>
         {%else%}
         <li class="page-item">
 
-            <a class="page-link">Previous</a>
+            <a class="page-link border border-0">&laquo;</a>
         </li>
         {% endif %}
 
@@ -33,7 +33,7 @@
         {% if page_obj.number == num %}
         <li class="page-item">
 
-            <a class="page-link bg-warning" href="{% my_url num 'page' request.GET.urlencode %}">
+            <a class="page-link fw-bold text-light" style="background-color: var(--bs-inform-color) !important;" href="{% my_url num 'page' request.GET.urlencode %}">
                 {{num}}</a>
         </li>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
@@ -64,7 +64,7 @@
     </ul>
     <!--prettier-ignore-->
     <!-- </span> -->
-    <span class="bg-transparent">&nbsp; showing p.{{page_obj.number}} of {{page_obj.paginator.num_pages}} pages in
+    <span class="text-info">&nbsp; showing p.{{page_obj.number}} of {{page_obj.paginator.num_pages}} pages in
         <strong> {{Count}}
             Entries</strong></span>
 

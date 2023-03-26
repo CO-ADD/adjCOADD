@@ -1,61 +1,65 @@
 <div class="fixTableHead ">
-<table class="table table-bordered table-hover sorting_table" style="width: 100%">
-  <thead>
-    <tr>
-      <!-- detail view link name if exists -->
-      <th style="width: 1rem"></th>
-      <!-- customized/verbose model fields name -->
-      <th class="order_field" style="width: fit-content">ID</th>
-      {%for field in fields%}
-      <th class="order_field" style="width: fit-content">{{field}}</th>
-      {%endfor%}
-      <!-- object ID -->
-      <!--field with web link if exists  -->
-      {%if tax_id %}
-      <th>Tax ID</th>
-      {%endif%}
-    </tr>
-  </thead>
+  <table class="table table-bordered table-hover sorting_table" style="width: 100%">
+    <thead>
+      <tr>
+        <!-- detail view link name if exists -->
+        <th style="width: 1rem"></th>
+        <!-- customized/verbose model fields name -->
+        <th class="order_field " style="width: fit-content">ID</th>
+        {%for field in fields%}
+        <th class="order_field" style="width: fit-content">{{field}}</th>
+        {%endfor%}
+        <!-- object ID -->
+        <!--field with web link if exists  -->
+        {%if tax_id %}
+        <th>Tax ID</th>
+        {%endif%}
+      </tr>
+    </thead>
 
-  <tbody>
-    {%if page_obj%}
-    <!--  -->
-    {% for object in page_obj%}
-    <tr>
-      <td>
-        <!--prettier-ignore  -->
-        {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
-        <!--  -->
-      </td>
-      <td>
-        {%if url_name%}
-        <!--  -->
-        {%if object.urlname%}
-        <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
-        {%else%}
-        <a href="{%url url_name object.pk%}">{{object.pk}}</a>
+    <tbody>
+      {%if page_obj%}
+      <!--  -->
+      {% for object in page_obj%}
+      <tr>
+        <td>
+          <!--prettier-ignore  -->
+          {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
+          <!--  -->
+        </td>
+        <td>
+          {%if url_name%}
+          <!--  -->
+          {%if object.urlname%}
+          <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
+          {%else%}
+          <a href="{%url url_name object.pk%}">{{object.pk}}</a>
+          {%endif%}
+          <!--  -->
+          {%endif%}
+        </td>
+        {%for value in object.get_values%}
+        <td>{{value}}</td>
+        {%endfor%}
+        <!-- Special for Taxonomy Tax_id web Link -->
+        {%if object.tax_id %}
+        <td>
+          <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+            target="_blank">{{object.tax_id}}</a>
+        </td>
         {%endif%}
-        <!--  -->
-        {%endif%}
-      </td>
-      {%for value in object.get_values%}
-      <td>{{value}}</td>
+      </tr>
       {%endfor%}
-      <!-- Special for Taxonomy Tax_id web Link -->
-      {%if object.tax_id %}
-      <td>
-        <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
-          target="_blank">{{object.tax_id}}</a>
-      </td>
+      <!--  -->
+      {%else%}
+      <tr>
+        No Data
+      </tr>
       {%endif%}
-    </tr>
-    {%endfor%}
-    <!--  -->
-    {%else%}
-    <tr>
-      No Data
-    </tr>
-    {%endif%}
-  </tbody>
-</table>
+    </tbody>
+  </table>
 </div>
+<script>
+  var table = document.getElementsByTagName('table')[0];
+  resizableGrid(table);
+</script>

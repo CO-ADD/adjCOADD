@@ -5,13 +5,13 @@
 
 <!-- Include -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/topbar.html' with list_url='dict_view' card_url='dict_view'%}
+  {%include 'utils/leftbar.html' with list_url='dict_view' card_url='dict_view' create_object='createDict' create_objectModal='createDictModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' with create_object='createDict' create_objectModal='createDictModal' %}
+    {%include 'utils/main_horizalbar.html'%}
     <!-- prettier-ignore -->
 
     <div class="fixTableHead">

@@ -1,40 +1,5 @@
 <div class="modal-dialog modal-lg">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="mx-2">
-      <h4 class="my-0">Create Stock</h4>
-      <hr />
-      <form
-        method="POST"
-        class="post-form"
-        name="create"
-        action="{%url 'stock_create'%}"
-      >
-        {% csrf_token %}
-        <!-- ignore prettier -->
-        {%include 'utils/django_form_lgtable.html'%}
-
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          value="Add"
-          name="note"
-        />
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-      </form>
-    </div>
-  </div>
+  {% url 'stock_create' as createurl %}
+  {%include 'utils/modal/modal_form.html' with title='Create Stock' urlname=createurl %}
+  
 </div>

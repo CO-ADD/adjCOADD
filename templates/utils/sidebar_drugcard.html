@@ -1,10 +1,7 @@
 <div class="sidebar text-secondary">
-  <div style="height:fit-content; width: 200px;" class="mx-1 bg-light text-primary ">
-    <p style="font-size: small; font-weight: bold;">
-      {{filterset | default_if_none:"&nbsp;"}}
-    </p>
-
-  </div>
+  <div style="height:fit-content; width: 200px;">
+        {{filterset | default_if_none:"&nbsp;"}}
+    </div>
   <form id="django-filter-siderbar" method="get" class="form-group mx-2">
     <div class="d-flex justify-content-evenly">
 
@@ -41,7 +38,7 @@
         <input id="smiles_input" type="text" name="substructure" aria-label="smiles">
       </p>
 
-      <p>
+     
         <button class="accordion-button collapsed p-1 fw-bold text-center" type="button" data-bs-toggle="collapse"
           data-bs-target="#Similarity_set" aria-expanded="false" aria-controls="Similarity_set"> Set
           Similarity
@@ -55,17 +52,28 @@
           step="1" value="100" style="width:12em">
 
       </div>
-      </p>
+     
+      <hr>
+        
+            {%for field in filter.form%}
+            <button id="btn_{{field.name|safe}}" class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6" type="button" data-bs-toggle="collapse"
+            data-bs-target="#{{field.name|safe}}" aria-expanded="false" aria-controls="{{field.label}}">
+            {{field.label}}
+            </button>
+          <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
+            <div class="accordion-body bg-light m-2 px-1 py-1">
+                <strong>{{field}}</strong>
+            </div>
+           </div>
+             {%endfor%}
     </div>
-    <hr>
-    {{filter.form.as_p}}
   </form>
-  <hr>
+
   <!--  -->
 
 
 </div>
-<div class="resizer">-</div>
+<!-- <div class="resizer">-</div> -->
 
 
 
@@ -92,11 +100,7 @@
     $("#Similarity_threshold").change((e) => {
       $(".output_similarity").text(e.target.value)
     })
-    if (sessionStorage.getItem('smiles_query') !== null) {
-      $('#smiles_input').val(sessionStorage.getItem('smiles_query'))
-      console.log($('#smiles_input').val())
-      sessionStorage.removeItem('smiles_query')
-    }
+    
 
     $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
     $("#filter-apply").on("click", function () {
@@ -106,5 +110,7 @@
       document.cookie = "filter=" + value;
 
     })
+
+    $("#Class").addClass('show');
   })
 </script>

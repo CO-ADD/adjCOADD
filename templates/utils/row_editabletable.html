@@ -1,0 +1,7 @@
+<tr>
+    <th scope="row" class=""><label for="id_{{data_type}}">{{form_label}}</label></th>
+    <td class="editable" data-id="{{object.pk}}" data-type="{{data_type}}">
+        <div class="detail">{{object_field | safe |default_if_none:"&nbsp;"}}</div>
+        <div class="select">{{form_field}}</div>
+    </td>
+</tr>

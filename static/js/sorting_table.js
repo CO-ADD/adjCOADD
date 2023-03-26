@@ -1,15 +1,21 @@
 $(document).ready(function () {
-
-    $(".order_field").click(function () {
+    if (sessionStorage.getItem('dorder') !== null) {
+        $(".order_field").toggleClass("desc")
+    }
+    else {
+        $(".order_field").toggleClass("asc")
+    }
+    $(".order_field").dblclick(function () {
 
         var order_name = $(this).text().toString()
-        console.log(order_name);
-        if (localStorage.getItem('dorder') !== null) {
+        if (sessionStorage.getItem('dorder') !== null) {
             order_name = order_name
-            localStorage.removeItem('dorder')
+            sessionStorage.removeItem('dorder')
+            // $(this).toggleClass(".asc")
+            $(this).toggleClass(".desc")
         } else {
-            localStorage.setItem('dorder', '-')
-            order_name = localStorage.getItem('dorder') + order_name
+            sessionStorage.setItem('dorder', '-')
+            order_name = sessionStorage.getItem('dorder') + order_name
             console.log(order_name)
         }
         $("#order_input").val(order_name);

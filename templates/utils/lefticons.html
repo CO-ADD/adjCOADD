@@ -1,0 +1,29 @@
+<div class="leftbar d-flex flex-column p-0 bg-light">
+  {% if title == "Organism"%}
+  <div class="d-flex flex-column p-0">
+   
+    <!-- Update Object-->
+    <button class="edit_organismdetail border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="Update Object"><i class="fa-regular fa-pen-to-square"></i></button>
+  </div>
+  {% if user.permission == 'Admin'%}
+  <div class="d-flex flex-column p-0">
+   
+  <!-- Update Object-->
+  {%include 'dorganism/organism/organism_d.html'%}
+  </div>
+  {%endif%}
+  <!--  -->
+  {%else%}
+
+  <div class="d-flex flex-column p-0">
+
+      <!-- Update Object-->
+       {%include 'utils/miscellaneous/create_a.html' with create_object=title create_objectModal=modal %}
+ 
+  </div>
+ 
+{%endif%}
+</div>
+
+

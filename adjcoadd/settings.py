@@ -232,7 +232,6 @@ DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
 
 
 # Logging files
-#create log file
 LOG_PATH = os.path.join(BASE_DIR, 'applog')
 LOGGING = {
     'version': 1,

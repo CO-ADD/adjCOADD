@@ -16,7 +16,6 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
-
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView
 from apputil.views import permission_not_granted
@@ -24,7 +23,7 @@ from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
-                    Batch_form, Batchupdate_form, Stock_form, Culture_form, Cultureupdate_form)
+                    Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form)
    
           
 # #############################TAXONOMY View############################################
@@ -34,7 +33,7 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
-    model_fields=TAXONOMY_FIELDs
+    model_fields=model.HEADER_FIELDS
 
 # =============================Card View=====================================
 
@@ -107,7 +106,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model=Organism  
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class=Organismfilter
-    model_fields=ORGANISM_FIELDs
+    model_fields=model.HEADER_FIELDS
     
 # =============================Card View=====================================
     
@@ -135,9 +134,11 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
+                    print("org saved")
                     return redirect(req.META['HTTP_REFERER'])
 
             except IntegrityError as err:
+                    print("error")
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
@@ -165,9 +166,9 @@ def detailOrganism(req, pk):
         context["strain_panel"]=" "
     context["form"]=form
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["batch_fields"]=Organism_Batch.get_fields(fields=ORGANISM_BATCH_FIELDs)
+    context["batch_fields"]=Organism_Batch.get_fields()
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["cultr_fields"]=Organism_Culture.get_fields(fields=ORGANISM_CULTR_FIELDs)
+    context["cultr_fields"]=Organism_Culture.get_fields()
 
     return render(req, "dorganism/organism/organism_detail.html", context)
 
@@ -240,7 +241,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     model=Organism_Batch 
     template_name = 'dorganism/organism/batch/batch_card.html' 
     filterset_class=Batchfilter
-    model_fields=ORGANISM_BATCH_FIELDs
+    model_fields=model.HEADER_FIELDS
 
 # ---------------------------------------------------------------------------------------------    
 # @login_required
@@ -284,7 +285,7 @@ def updateBatch(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
-        print(qd)
+        print(qd["orgbatch_id"])
         object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
         form=Batchupdate_form(data=qd, instance=object_batch, )
         
@@ -297,6 +298,9 @@ def updateBatch(req, pk):
                 "object_batch":object_batch,
                 'object':object_batch  # this object refer to the same entry of object_batch
             }
+            return render(req, "dorganism/organism/batch/batch_tr.html", context)
+        else:
+            print(form.errors)
             return render(req, "dorganism/organism/batch/batch_tr.html", context)
     return render(req, "dorganism/organism/batch/batch_u.html", context)
 
@@ -321,8 +325,9 @@ def stockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
-        object_=Organism_Batch.objects.get(orgbatch_id=batch_id)
-        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1)
+        print(batch_id)
+        object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
             item={
@@ -351,8 +356,11 @@ def createStock(req):
     kwargs['user']=req.user 
     form=Stock_form()
     if req.method=='POST':
-        form=Stock_form(req.POST)
+        form=Stock_createform(req.POST)
         if form.is_valid():
+            print(req.POST.get("n_left_extra"))
+            n_left_extra=req.POST.get("n_left_extra")
+            kwargs['n_left_extra']=n_left_extra
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
@@ -391,6 +399,7 @@ def updateStock(req, pk):
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
+                            
                     except Exception as err:
                         print(f'form erroro is {form.errors} and error {err}')
             except Exception as err:
