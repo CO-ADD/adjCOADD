@@ -74,7 +74,7 @@ class ApplicationUser(AbstractUser):
         _Permissions = {
             'Read':1,
             'Write':2,
-            'Delete':3,
+            # 'Delete':3,
             'Admin':10,
         }
         if strPermission in _Permissions:
@@ -153,11 +153,16 @@ class AuditModel(models.Model):
     #
     # Validates the instance using full_clean
     # 
-        retValid = None
+        retValid = {}
         try:
             self.full_clean(**kwargs)
         except ValidationError as e:
-            retValid = e.message_dict
+            for key in e.message_dict:
+                if e.message_dict[key] == ['This field cannot be null.']:
+                    if ~self._meta.get_field(key).null:
+                        retValid[key] = e.message_dict[key] 
+                else:
+                    retValid[key] = e.message_dict[key] 
         return(retValid)
 
 
@@ -500,16 +505,16 @@ class ApplicationLog(models.Model):
     #
     # Saves an Log Entry
     #
-    def add(cls, LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStats):
+    def add(cls, LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus):
         log_inst = cls()
         log_inst.log_code = LogCode
-        log_inst.log_code = LogProc
-        log_inst.log_code = LogType
+        log_inst.log_proc = LogProc
+        log_inst.log_type = LogType
         if LogUser is None:
-            LogUser = ApplicationUser.objects.get(name=cls.OWNER)
-        log_inst.log_code = LogUser
-        log_inst.log_code = LogObject
-        log_inst.log_code = LogDesc
-        log_inst.log_code = LogStats
+            LogUser = ApplicationUser.get(cls.OWNER)
+        log_inst.log_user = LogUser
+        log_inst.log_object = LogObject
+        log_inst.log_desc = LogDesc
+        log_inst.log_status = LogStatus
         log_inst.save()
 
