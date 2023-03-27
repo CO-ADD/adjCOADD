@@ -36,7 +36,7 @@ from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from .utils import Drug_filter, Vitekcard_filter, Vitekast_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from .forms import Drug_form
-from .Vitek import *
+from .util_vitek import *
 
 # ===================================================================
 @login_required   

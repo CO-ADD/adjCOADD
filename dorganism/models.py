@@ -283,7 +283,7 @@ class Organism_Batch(AuditModel):
         indexes = [
             models.Index(name="orgbatch_orgbatch_idx",fields=['organism_id','batch_id']),
             models.Index(name="orgbatch_qc_idx",fields=['qc_status']),
-            models.Index(name="orgbatch_supp_idx",fields=['supplier']),
+            # models.Index(name="orgbatch_supp_idx",fields=['supplier']),
             models.Index(name="orgbatch_sdate_idx",fields=['stock_date']),
             models.Index(name="orgbatch_slevel_idx",fields=['stock_level']),
         ]
@@ -447,7 +447,7 @@ class Organism_Culture(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
         "organism_id":"Organism ID",
-        "culture_type":"Culture Type",
+        "culture_type":"Culture_Type",
         "media_use":"Media Use",
         "atmosphere":"Atmosphere",
         "temperature":"Temperature",
@@ -467,8 +467,7 @@ class Organism_Culture(AuditModel):
         db_column="culture_type", related_name="%(class)s_culture_type+")
     culture_source = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="culture_source", related_name="%(class)s_culture_source+")
-
-    media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    media_use = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
     labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
@@ -491,6 +490,19 @@ class Organism_Culture(AuditModel):
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
     # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_CULTR_FIELDs):
-    #    value_list=super(Organism_Culture, self).get_values(fields)
-    #    return value_list
+    def save(self, *args, **kwargs):
+        
+        culture_type=kwargs.pop("culture_type", None)
+        culture_source=kwargs.pop("culture_source", None)
+        if not self.culture_type and not self.culture_source:
+            try:
+                self.culture_type=Dictionary.objects.get(dict_value=culture_type)
+                self.culture_source=Dictionary.objects.get(dict_value=culture_source)
+                super().save(*args, **kwargs)
+            except Exception as error:
+                print(error)
+                return error
+        else:
+            super().save(*args, **kwargs)
+
+        

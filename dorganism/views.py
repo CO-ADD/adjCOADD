@@ -286,7 +286,7 @@ def updateBatch(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         print(qd["orgbatch_id"])
-        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
+        object_batch=object_ 
         form=Batchupdate_form(data=qd, instance=object_batch, )
         
         if form.is_valid():
@@ -437,10 +437,19 @@ def createCulture(req):
         Organism_Id=req.POST.get('search_organism')
         form=Culture_form(Organism_Id, req.POST)
         if form.is_valid():
+            print(f'the type is : {req.POST.get("culture_type")}')
+            culture_type=req.POST.get("culture_type")
+            kwargs['culture_type']=culture_type
+            print(f'the source is {req.POST.get("culture_source")}')
+            culture_source=req.POST.get("culture_source")
+            kwargs['culture_source']=culture_source
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    instance.save(**kwargs)
+                    message=instance.save(**kwargs)
+                    
+                    if type(message)==Exception:
+                        messages.error(req, f'{message} happes')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -465,8 +474,8 @@ def updateCulture(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
-        object_culture=get_object_or_404(Organism_Culture, pk=pk)
-        form=Cultureupdate_form(data=qd, instance=object_culture, )
+        object_culture=object_
+        form=Cultureupdate_form(data=qd, instance=object_culture )
         
         if form.is_valid():
             kwargs={}

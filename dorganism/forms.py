@@ -106,13 +106,17 @@ class Stock_form(forms.ModelForm):
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
-    # culture_type= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['culture_type'], showDesc=True), 
-    #                                 widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-    # media_use= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['media_use'], showDesc=True),
+    culture_type= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0), 
+                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}), required=False,)
+    culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
+                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}), required=False,)
+
     # 
     def __init__(self, organism_id=None, *args, **kwargs):
         self.organism_id=organism_id
         super(Culture_form, self).__init__(*args, **kwargs)
+        self.fields['culture_type'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0)
+        self.fields['culture_source'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0)
         
               
     def clean_organism_id(self):       
@@ -122,14 +126,15 @@ class Culture_form(forms.ModelForm):
 
     class Meta:
         model =Organism_Culture
-        fields=model.HEADER_FIELDS 
+        fields=list(model.HEADER_FIELDS.keys())
+        exclude=['culture_type'] 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
-    # culture_type= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['culture_type'], showDesc=True), 
-    #                                 widget=forms.Select(attrs={'class':'form-select'}), required=False,)
-    # media_use= forms.ChoiceField(choices= Dictionary.get_aschoices(Organism_Culture.Choice_Dictionary['media_use'], showDesc=True),
+    # 
+ 
     # 
     class Meta:
         model =Organism_Culture
-        fields=model.HEADER_FIELDS 
+        fields=list(model.HEADER_FIELDS.keys()) 
+        exclude=['culture_type']

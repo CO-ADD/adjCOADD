@@ -1,0 +1,837 @@
+django.utils.autoreload INFO 2023-03-27 12:34:17,259 autoreload 25412 26000 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:35:14,911 autoreload 1332 4696 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:36:40,999 autoreload 14668 19760 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:42:51,013 autoreload 22156 6464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:43:40,694 autoreload 12472 25068 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:45:14,282 autoreload 14264 560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:45:45,982 autoreload 19516 22748 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:47:05,278 autoreload 19516 22748 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 12:47:06,327 autoreload 18256 18528 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:47:46,802 autoreload 18256 18528 C:\Users\uqwzhon4\project\adjCOADD\ddrug\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 12:47:47,933 autoreload 14708 9888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 12:49:00,093 autoreload 14708 9888 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 12:49:01,256 autoreload 9028 14720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:01:31,173 autoreload 24624 21376 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:01:33,053 basehttp 24624 15132 "GET / HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 13:01:33,096 basehttp 24624 25760 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,097 basehttp 24624 21780 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,097 basehttp 24624 15888 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,103 basehttp 24624 15888 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,104 basehttp 24624 21780 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,104 basehttp 24624 25760 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,109 basehttp 24624 21780 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,109 basehttp 24624 15888 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,395 basehttp 24624 14760 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-27 13:01:33,405 basehttp 24624 15132 "GET /static/css/overideboot.css HTTP/1.1" 200 6108
+django.server INFO 2023-03-27 13:01:33,422 basehttp 24624 15804 "GET /static/css/custom.css HTTP/1.1" 200 15874
+django.server INFO 2023-03-27 13:01:33,424 basehttp 24624 21780 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-27 13:01:33,425 basehttp 24624 25760 "GET /static/js/create_modal.js HTTP/1.1" 200 372
+django.server INFO 2023-03-27 13:01:33,429 basehttp 24624 25760 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:33,491 basehttp 24624 25760 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:35,005 basehttp 24624 25760 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:01:35,148 basehttp 24624 25760 "GET /index/ HTTP/1.1" 200 15259
+django.server INFO 2023-03-27 13:01:35,162 basehttp 24624 25760 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:39,313 basehttp 24624 25760 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:01:39,330 basehttp 24624 25760 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:39,330 basehttp 24624 21780 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:47,503 basehttp 24624 25760 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:01:47,517 basehttp 24624 25760 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:01:50,063 basehttp 24624 25760 "GET /createCulture/ HTTP/1.1" 200 3880
+django.server INFO 2023-03-27 13:01:50,069 basehttp 24624 25760 "GET /static/js/search_organism_id.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:02:16,571 basehttp 24624 25760 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:02:22,093 basehttp 24624 25760 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:02:34,551 basehttp 24624 25760 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:02:34,680 basehttp 24624 25760 "GET /organism/GN_0002 HTTP/1.1" 200 39750
+django.server INFO 2023-03-27 13:04:16,493 basehttp 24624 25760 "GET /dict/ HTTP/1.1" 200 52740
+django.server WARNING 2023-03-27 13:04:16,511 basehttp 24624 25760 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:04:33,801 basehttp 24624 21780 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=Cultre HTTP/1.1" 200 24459
+django.server WARNING 2023-03-27 13:04:33,817 basehttp 24624 21780 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:04:36,357 basehttp 24624 15804 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=Cultre HTTP/1.1" 200 24459
+django.server WARNING 2023-03-27 13:04:36,374 basehttp 24624 15804 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:04:39,808 basehttp 24624 15132 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=Cultre HTTP/1.1" 200 24459
+django.server WARNING 2023-03-27 13:04:39,825 basehttp 24624 15132 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:04:58,089 basehttp 24624 14760 "GET /dict_create/ HTTP/1.1" 200 2231
+django.server INFO 2023-03-27 13:05:10,116 basehttp 24624 14760 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:05:10,197 basehttp 24624 14760 "GET /dict/ HTTP/1.1" 200 52784
+django.server WARNING 2023-03-27 13:05:10,214 basehttp 24624 14760 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:05:23,387 basehttp 24624 15888 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Culture+Type&dict_value= HTTP/1.1" 200 25017
+django.server WARNING 2023-03-27 13:05:23,406 basehttp 24624 15888 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:05:31,584 basehttp 24624 21448 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:05:33,607 basehttp 24624 21448 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:05:35,985 basehttp 24624 21448 "GET /createCulture/ HTTP/1.1" 200 3880
+django.server INFO 2023-03-27 13:05:42,706 basehttp 24624 21448 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:05:48,712 basehttp 24624 21448 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:07:48,795 autoreload 24624 21376 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:07:50,011 autoreload 13132 5056 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:07:55,264 basehttp 13132 3120 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:07:55,278 basehttp 13132 17512 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:07:55,279 basehttp 13132 3120 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:07:55,282 basehttp 13132 13276 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:07:55,282 basehttp 13132 7032 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:07:55,283 basehttp 13132 24960 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.request ERROR 2023-03-27 13:08:00,113 log 13132 24960 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 434, in createCulture
+    form=Culture_form()
+         ^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\forms.py", line 116, in __init__
+    self.fields['culture_type'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['culture_type'], astatus__gte=0)
+                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'culture_type'
+django.server ERROR 2023-03-27 13:08:00,113 basehttp 13132 24960 "GET /createCulture/ HTTP/1.1" 500 86054
+django.utils.autoreload INFO 2023-03-27 13:09:31,144 autoreload 13132 5056 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:09:32,202 autoreload 17520 16448 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:09:36,539 basehttp 17520 16712 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:09:38,809 basehttp 17520 16712 "GET /createCulture/ HTTP/1.1" 200 3880
+django.server INFO 2023-03-27 13:09:42,205 basehttp 17520 16712 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:11:53,793 basehttp 17520 16712 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:11:59,923 autoreload 21792 11968 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:12:03,763 basehttp 21792 4828 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:12:05,771 basehttp 21792 4828 "GET /createCulture/ HTTP/1.1" 200 3880
+django.utils.autoreload INFO 2023-03-27 13:13:54,864 autoreload 21792 11968 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:13:55,897 autoreload 20676 13492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:14:20,667 autoreload 20676 13492 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:14:21,626 autoreload 19460 25352 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:14:36,667 autoreload 19460 25352 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:14:37,800 autoreload 4176 14160 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:14:39,646 basehttp 4176 13864 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:14:39,662 basehttp 4176 13864 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:14:39,664 basehttp 4176 15888 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:14:39,665 basehttp 4176 12052 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:14:39,668 basehttp 4176 26648 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:14:39,668 basehttp 4176 12312 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:14:43,190 basehttp 4176 12312 "GET /createCulture/ HTTP/1.1" 200 3881
+django.server INFO 2023-03-27 13:14:53,549 basehttp 4176 12312 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:14:56,626 basehttp 4176 12312 "GET /dict/ HTTP/1.1" 200 52784
+django.server WARNING 2023-03-27 13:14:56,651 basehttp 4176 12312 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.utils.autoreload INFO 2023-03-27 13:15:24,323 autoreload 4176 14160 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:15:25,369 autoreload 13072 10620 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:15:33,929 basehttp 13072 8816 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Culture+Type&dict_value= HTTP/1.1" 200 25017
+django.server WARNING 2023-03-27 13:15:33,952 basehttp 13072 8816 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.request ERROR 2023-03-27 13:15:43,898 log 13072 20548 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 13:15:43,945 basehttp 13072 20548 "POST /dict_update HTTP/1.1" 500 82463
+django.server INFO 2023-03-27 13:15:50,220 basehttp 13072 1020 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Culture+Type&dict_value= HTTP/1.1" 200 25017
+django.server WARNING 2023-03-27 13:15:50,238 basehttp 13072 1020 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.request ERROR 2023-03-27 13:16:08,973 log 13072 10156 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 13:16:09,021 basehttp 13072 10156 "POST /dict_update HTTP/1.1" 500 82463
+django.server INFO 2023-03-27 13:16:18,687 basehttp 13072 22480 "GET /dict/ HTTP/1.1" 200 52784
+django.server WARNING 2023-03-27 13:16:18,704 basehttp 13072 22480 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:16:26,865 basehttp 13072 1572 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Culture+Type&dict_value= HTTP/1.1" 200 25017
+django.server WARNING 2023-03-27 13:16:26,887 basehttp 13072 1572 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:16:49,236 basehttp 13072 3984 "POST /dict_delete/ HTTP/1.1" 200 22
+django.server INFO 2023-03-27 13:16:49,306 basehttp 13072 3984 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=Culture+Type&dict_value= HTTP/1.1" 200 53260
+django.server WARNING 2023-03-27 13:16:49,323 basehttp 13072 3984 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:17:01,133 basehttp 13072 21432 "GET /dict_create/ HTTP/1.1" 200 2231
+django.server INFO 2023-03-27 13:17:24,372 basehttp 13072 21432 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:17:24,442 basehttp 13072 21432 "GET /dict/ HTTP/1.1" 200 52939
+django.server WARNING 2023-03-27 13:17:24,462 basehttp 13072 21432 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:17:33,582 basehttp 13072 13684 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 25526
+django.server WARNING 2023-03-27 13:17:33,600 basehttp 13072 13684 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:17:44,072 basehttp 13072 3008 "GET /dict_create/ HTTP/1.1" 200 2231
+django.server INFO 2023-03-27 13:18:00,324 basehttp 13072 3008 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:18:00,394 basehttp 13072 3008 "GET /dict/ HTTP/1.1" 200 52804
+django.server WARNING 2023-03-27 13:18:00,412 basehttp 13072 3008 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:18:13,654 basehttp 13072 11860 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:18:17,256 basehttp 13072 11860 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:18:18,958 basehttp 13072 11860 "GET /createCulture/ HTTP/1.1" 200 3933
+django.server INFO 2023-03-27 13:20:37,660 basehttp 13072 11860 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:20:49,104 basehttp 13072 11860 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:20:49,241 basehttp 13072 11860 "GET /organism/GN_0002 HTTP/1.1" 200 39750
+django.server INFO 2023-03-27 13:20:49,255 basehttp 13072 11860 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:20:49,255 basehttp 13072 18412 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:20:49,258 basehttp 13072 21048 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:20:49,259 basehttp 13072 27544 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:20:49,260 basehttp 13072 8040 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:07,069 basehttp 13072 8040 "GET /createCulture/ HTTP/1.1" 200 3933
+django.request WARNING 2023-03-27 13:21:38,196 log 13072 8040 Not Found: /createCulture/
+django.server WARNING 2023-03-27 13:21:38,196 basehttp 13072 8040 "POST /createCulture/ HTTP/1.1" 404 8728
+django.server INFO 2023-03-27 13:21:45,083 basehttp 13072 8040 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:21:48,429 basehttp 13072 8040 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:21:48,570 basehttp 13072 8040 "GET /organism/GN_0002 HTTP/1.1" 200 39738
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 8040 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 11860 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 18412 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 27544 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 21048 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,586 basehttp 13072 19348 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,589 basehttp 13072 11860 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,590 basehttp 13072 8040 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,594 basehttp 13072 11860 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,594 basehttp 13072 8040 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:21:48,607 basehttp 13072 8040 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-27 13:21:56,096 autoreload 13072 10620 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:21:57,203 autoreload 1296 3328 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:22:02,236 basehttp 1296 13812 "GET /createCulture/ HTTP/1.1" 200 3933
+django.server INFO 2023-03-27 13:22:02,244 basehttp 1296 13812 "GET /static/js/search_organism_id.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:22:04,877 basehttp 1296 13812 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:22:13,085 basehttp 1296 13812 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:22:13,238 basehttp 1296 13812 "GET /organism/GN_0002 HTTP/1.1" 200 39738
+django.utils.autoreload INFO 2023-03-27 13:24:09,213 autoreload 1296 3328 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:24:10,284 autoreload 26988 19936 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:25:12,288 basehttp 26988 24732 "GET /createCulture/ HTTP/1.1" 200 3933
+django.utils.autoreload INFO 2023-03-27 13:26:00,938 autoreload 26988 19936 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:26:02,019 autoreload 24304 8220 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:26:09,758 basehttp 24304 20140 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.request ERROR 2023-03-27 13:26:17,421 log 24304 20140 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 446, in createCulture
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 496, in save
+    if not self.culture_type:
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 217, in __get__
+    raise self.RelatedObjectDoesNotExist(
+dorganism.models.Organism_Culture.culture_type.RelatedObjectDoesNotExist: Organism_Culture has no culture_type.
+django.server ERROR 2023-03-27 13:26:17,424 basehttp 24304 20140 "POST /createCulture/ HTTP/1.1" 500 93578
+django.utils.autoreload INFO 2023-03-27 13:28:37,205 autoreload 24304 8220 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:28:38,248 autoreload 22220 10576 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:28:40,998 basehttp 22220 10244 "GET /createCulture/ HTTP/1.1" 200 3933
+django.request ERROR 2023-03-27 13:28:46,347 log 22220 10244 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 446, in createCulture
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 496, in save
+    if not self.culture_type:
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 217, in __get__
+    raise self.RelatedObjectDoesNotExist(
+dorganism.models.Organism_Culture.culture_type.RelatedObjectDoesNotExist: Organism_Culture has no culture_type.
+django.server ERROR 2023-03-27 13:28:46,350 basehttp 22220 10244 "POST /createCulture/ HTTP/1.1" 500 93608
+django.utils.autoreload INFO 2023-03-27 13:31:23,649 autoreload 22220 10576 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:31:24,903 autoreload 23296 26820 Watching for file changes with StatReloader
+django.request ERROR 2023-03-27 13:31:28,442 log 23296 15296 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 446, in createCulture
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 498, in save
+    self.culture_type=Dictionary.objects.get(value=culture_type)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1407, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1217, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'value' into field. Choices are: Division, acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, dict_class, dict_desc, dict_sort, dict_value
+django.server ERROR 2023-03-27 13:31:28,446 basehttp 23296 15296 "POST /createCulture/ HTTP/1.1" 500 141982
+django.server INFO 2023-03-27 13:31:32,455 basehttp 23296 15296 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:31:32,478 basehttp 23296 26060 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:32,478 basehttp 23296 16508 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:32,478 basehttp 23296 15296 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:32,479 basehttp 23296 18528 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:32,480 basehttp 23296 23320 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:32,623 basehttp 23296 23320 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:31:34,275 basehttp 23296 23320 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:31:36,198 basehttp 23296 23320 "GET /createCulture/ HTTP/1.1" 200 3933
+django.server INFO 2023-03-27 13:31:38,826 basehttp 23296 23320 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.request ERROR 2023-03-27 13:31:48,285 log 23296 23320 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 446, in createCulture
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 498, in save
+    self.culture_type=Dictionary.objects.get(value=culture_type)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1407, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1217, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'value' into field. Choices are: Division, acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, dict_class, dict_desc, dict_sort, dict_value
+django.server ERROR 2023-03-27 13:31:48,287 basehttp 23296 23320 "POST /createCulture/ HTTP/1.1" 500 141982
+django.utils.autoreload INFO 2023-03-27 13:32:05,685 autoreload 23296 26820 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:32:07,078 autoreload 404 5320 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:32:11,387 basehttp 404 22424 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:32:13,215 basehttp 404 22424 "GET /createCulture/ HTTP/1.1" 200 3933
+django.server INFO 2023-03-27 13:32:16,189 basehttp 404 22424 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:32:24,336 basehttp 404 22424 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:32:24,476 basehttp 404 22424 "GET /organism/GN_0002 HTTP/1.1" 200 39768
+django.utils.autoreload INFO 2023-03-27 13:33:55,851 autoreload 404 5320 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:33:57,006 autoreload 19632 26988 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:38:15,794 basehttp 19632 10492 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:38:28,921 autoreload 19632 26988 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:38:30,058 autoreload 12420 23532 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:38:37,635 autoreload 12420 23532 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:38:38,740 autoreload 968 11900 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:38:43,178 basehttp 968 22784 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:38:46,542 basehttp 968 22784 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:38:49,192 basehttp 968 22784 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:38:57,323 basehttp 968 22784 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:38:57,454 basehttp 968 22784 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:39:11,960 autoreload 968 11900 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:39:13,061 autoreload 8220 24816 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:39:14,712 basehttp 8220 25736 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:39:16,626 basehttp 8220 25736 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.request ERROR 2023-03-27 13:39:22,776 log 8220 25736 Internal Server Error: /createCulture/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "culture_source" violates not-null constraint
+DETAIL:  Failing row contains (7, 0, 2023-03-27 03:39:22.723399+00, null, null, test0327, test, , , , , test, null, null, test, GN_0002, null).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 500, in save
+    super().save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1660, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 103, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "culture_source" violates not-null constraint
+DETAIL:  Failing row contains (7, 0, 2023-03-27 03:39:22.723399+00, null, null, test0327, test, , , , , test, null, null, test, GN_0002, null).
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 446, in createCulture
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 502, in save
+    raise Exception
+Exception
+django.server ERROR 2023-03-27 13:39:22,784 basehttp 8220 25736 "POST /createCulture/ HTTP/1.1" 500 176182
+django.utils.autoreload INFO 2023-03-27 13:39:53,283 autoreload 8220 24816 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:39:54,327 autoreload 24288 3396 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:40:45,851 basehttp 24288 12172 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:40:45,852 basehttp 24288 4412 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:40:49,788 basehttp 24288 4412 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:40:49,805 basehttp 24288 4412 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:40:49,806 basehttp 24288 12172 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:40:49,806 basehttp 24288 18368 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:40:51,236 basehttp 24288 18368 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:40:52,899 basehttp 24288 18368 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:40:55,548 basehttp 24288 18368 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:40:59,800 basehttp 24288 18368 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:40:59,926 basehttp 24288 18368 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:41:49,857 autoreload 24288 3396 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:41:51,021 autoreload 24728 7912 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:41:53,396 basehttp 24728 11864 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:41:54,833 basehttp 24728 11864 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:41:57,872 basehttp 24728 11864 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:42:03,661 basehttp 24728 11864 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:42:03,817 basehttp 24728 11864 "GET /organism/GN_0002 HTTP/1.1" 200 39057
+django.utils.autoreload INFO 2023-03-27 13:42:22,226 autoreload 24728 7912 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:42:23,292 autoreload 19340 21136 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:42:43,686 autoreload 19340 21136 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:42:44,909 autoreload 16556 12360 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:43:10,719 autoreload 16556 12360 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:43:12,007 autoreload 19092 20888 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:43:12,951 basehttp 19092 14332 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:43:13,882 basehttp 19092 14332 "GET /createBatch/ HTTP/1.1" 200 4036
+django.server INFO 2023-03-27 13:43:16,842 basehttp 19092 14332 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:43:17,991 basehttp 19092 14332 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:43:21,363 basehttp 19092 14332 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:43:25,136 basehttp 19092 14332 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:43:25,274 basehttp 19092 14332 "GET /organism/GN_0002 HTTP/1.1" 200 39057
+django.utils.autoreload INFO 2023-03-27 13:43:41,533 autoreload 19092 20888 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:43:42,682 autoreload 9804 26276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:44:52,421 autoreload 9804 26276 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:44:53,832 autoreload 24304 22816 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:44:54,835 basehttp 24304 13596 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:44:54,859 basehttp 24304 13596 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,861 basehttp 24304 13148 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,866 basehttp 24304 15932 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,866 basehttp 24304 13596 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,867 basehttp 24304 13148 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,868 basehttp 24304 12116 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,870 basehttp 24304 22272 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,871 basehttp 24304 15932 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,889 basehttp 24304 15932 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:54,889 basehttp 24304 22272 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:55,010 basehttp 24304 15932 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:44:56,158 basehttp 24304 15932 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:44:56,163 basehttp 24304 15932 "GET /static/js/search_organism_id.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:45:02,440 basehttp 24304 15932 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:45:03,990 basehttp 24304 15932 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:45:04,132 basehttp 24304 15932 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:45:44,864 autoreload 24304 22816 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:45:45,976 autoreload 11336 11848 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:45:49,775 basehttp 11336 27456 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:45:51,868 basehttp 11336 27456 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:45:56,115 basehttp 11336 27456 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:45:56,308 basehttp 11336 27456 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:46:35,380 autoreload 11336 11848 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:46:36,689 autoreload 18988 21892 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:46:37,772 basehttp 18988 10140 "GET /createCulture/ HTTP/1.1" 200 4176
+django.server INFO 2023-03-27 13:46:43,053 basehttp 18988 10140 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:46:45,659 basehttp 18988 10140 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:46:45,814 basehttp 18988 10140 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:46:53,678 autoreload 18988 21892 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:46:54,744 autoreload 16880 4428 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:46:59,364 basehttp 16880 13972 "GET /dict/ HTTP/1.1" 200 52804
+django.server INFO 2023-03-27 13:46:59,399 basehttp 16880 13972 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:46:59,400 basehttp 16880 3828 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server WARNING 2023-03-27 13:46:59,420 basehttp 16880 3828 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:47:48,556 basehttp 16880 13972 "GET /dict_create/ HTTP/1.1" 200 2231
+django.server INFO 2023-03-27 13:47:58,520 basehttp 16880 13972 "POST /dict_create/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:47:58,604 basehttp 16880 13972 "GET /dict/ HTTP/1.1" 200 52897
+django.server WARNING 2023-03-27 13:47:58,628 basehttp 16880 13972 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:48:10,675 basehttp 16880 1452 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:48:11,749 basehttp 16880 1452 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:48:13,336 basehttp 16880 1452 "GET /createCulture/ HTTP/1.1" 200 4234
+django.server INFO 2023-03-27 13:48:14,916 basehttp 16880 1452 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:48:23,498 basehttp 16880 1452 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:48:23,636 basehttp 16880 1452 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:49:08,171 autoreload 16880 4428 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:49:09,305 autoreload 23480 26160 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:49:18,014 autoreload 23480 26160 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:49:19,080 autoreload 13576 13420 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:49:20,418 basehttp 13576 18800 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:49:20,437 basehttp 13576 18800 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:49:20,438 basehttp 13576 27484 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:49:20,439 basehttp 13576 9772 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:49:20,440 basehttp 13576 21256 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:49:20,441 basehttp 13576 18352 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:49:21,939 basehttp 13576 18352 "GET /createCulture/ HTTP/1.1" 200 4234
+django.server INFO 2023-03-27 13:49:23,937 basehttp 13576 18352 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:49:33,485 basehttp 13576 18352 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:49:33,641 basehttp 13576 18352 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:49:59,297 autoreload 13576 13420 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:50:00,557 autoreload 21840 588 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:50:01,911 basehttp 21840 18196 "GET /createCulture/ HTTP/1.1" 200 4234
+django.server INFO 2023-03-27 13:50:04,173 basehttp 21840 18196 "POST /search_organism_id/ HTTP/1.1" 200 32
+django.server INFO 2023-03-27 13:50:05,389 basehttp 21840 18196 "POST /search_organism_id/ HTTP/1.1" 200 32
+django.server INFO 2023-03-27 13:50:05,589 basehttp 21840 18196 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:50:11,358 basehttp 21840 18196 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:50:11,506 basehttp 21840 18196 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.utils.autoreload INFO 2023-03-27 13:52:49,927 autoreload 21840 588 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:52:51,153 autoreload 18760 1308 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:52:52,796 basehttp 18760 21108 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:53:37,312 basehttp 18760 21108 "GET /dict/ HTTP/1.1" 200 52897
+django.server WARNING 2023-03-27 13:53:37,357 basehttp 18760 21108 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:53:42,239 basehttp 18760 11744 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 26711
+django.server WARNING 2023-03-27 13:53:42,279 basehttp 18760 11744 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:53:58,575 basehttp 18760 9432 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:54:00,933 basehttp 18760 9432 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:54:03,558 basehttp 18760 9432 "GET /createCulture/ HTTP/1.1" 200 4234
+django.server INFO 2023-03-27 13:54:05,561 basehttp 18760 9432 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:54:35,440 basehttp 18760 9432 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:54:35,582 basehttp 18760 9432 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:55:55,477 basehttp 18760 9432 "GET /dict/ HTTP/1.1" 200 52897
+django.server WARNING 2023-03-27 13:55:55,532 basehttp 18760 9432 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 13:55:59,250 basehttp 18760 18004 "GET /dict/?paginate_by=50&order_by=&substructure=&dict_class=&dict_value=test HTTP/1.1" 200 26711
+django.server WARNING 2023-03-27 13:55:59,288 basehttp 18760 18004 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.utils.autoreload INFO 2023-03-27 13:57:02,421 autoreload 18760 1308 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:57:03,544 autoreload 14088 13916 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 13:57:44,328 autoreload 14088 13916 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 13:57:45,394 autoreload 21868 6612 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 13:57:52,153 basehttp 21868 17292 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 13:57:54,119 basehttp 21868 17292 "GET /organism/GN_0002 HTTP/1.1" 200 38727
+django.server INFO 2023-03-27 13:57:56,086 basehttp 21868 17292 "GET /createCulture/ HTTP/1.1" 200 4234
+django.server INFO 2023-03-27 13:57:58,997 basehttp 21868 17292 "POST /search_organism_id/ HTTP/1.1" 200 136
+django.server INFO 2023-03-27 13:58:08,805 basehttp 21868 17292 "POST /createCulture/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 13:58:08,951 basehttp 21868 17292 "GET /organism/GN_0002 HTTP/1.1" 200 40497
+django.server INFO 2023-03-27 13:58:21,536 basehttp 21868 17292 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 13:58:33,822 basehttp 21868 17292 "PUT /updateCulture/15 HTTP/1.1" 200 1738
+django.server INFO 2023-03-27 13:58:42,598 basehttp 21868 17292 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 13:58:50,523 basehttp 21868 17292 "PUT /updateCulture/15 HTTP/1.1" 200 1738
+django.server INFO 2023-03-27 13:58:54,350 basehttp 21868 17292 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 13:59:05,674 basehttp 21868 17292 "GET /organism/GN_0002 HTTP/1.1" 200 40497
+django.server INFO 2023-03-27 13:59:05,690 basehttp 21868 18904 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:59:05,691 basehttp 21868 17292 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:59:05,698 basehttp 21868 4048 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:59:05,701 basehttp 21868 380 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 13:59:05,701 basehttp 21868 27044 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-27 14:00:47,012 autoreload 21868 6612 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:00:48,121 autoreload 20060 17532 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:00:51,743 basehttp 20060 19888 "GET /organism/GN_0002 HTTP/1.1" 200 40497
+django.server INFO 2023-03-27 14:00:51,946 basehttp 20060 19888 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:00:54,069 basehttp 20060 19888 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.utils.autoreload INFO 2023-03-27 14:02:19,029 autoreload 20060 17532 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:02:20,202 autoreload 17148 22796 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:02:21,614 basehttp 17148 11596 "GET /organism/GN_0002 HTTP/1.1" 200 40497
+django.server INFO 2023-03-27 14:02:23,877 basehttp 17148 11596 "GET /updateBat/GN_0002_01 HTTP/1.1" 200 1441
+django.server INFO 2023-03-27 14:02:37,572 basehttp 17148 11596 "PUT /updateBat/GN_0002_01 HTTP/1.1" 200 1801
+django.server INFO 2023-03-27 14:02:40,339 basehttp 17148 11596 "GET /updateBat/GN_0002_01 HTTP/1.1" 200 1454
+django.server INFO 2023-03-27 14:02:44,591 basehttp 17148 11596 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.utils.autoreload INFO 2023-03-27 14:02:55,963 autoreload 17148 22796 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:02:57,134 autoreload 12440 3316 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:02:58,382 basehttp 12440 14568 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.server INFO 2023-03-27 14:03:01,380 basehttp 12440 14568 "GET /updateBat/GN_0002_01 HTTP/1.1" 200 1454
+django.server INFO 2023-03-27 14:03:04,242 basehttp 12440 14568 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.utils.autoreload INFO 2023-03-27 14:03:13,608 autoreload 12440 3316 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:03:14,738 autoreload 21392 27292 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:04:05,880 basehttp 21392 10012 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:04:11,420 basehttp 21392 10012 "PUT /updateCulture/15 HTTP/1.1" 200 1735
+django.server INFO 2023-03-27 14:04:15,195 basehttp 21392 10012 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:04:20,057 basehttp 21392 10012 "PUT /updateCulture/15 HTTP/1.1" 200 1735
+django.server INFO 2023-03-27 14:04:23,018 basehttp 21392 10012 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.server INFO 2023-03-27 14:04:29,698 basehttp 21392 10012 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:04:42,081 basehttp 21392 10012 "PUT /updateCulture/15 HTTP/1.1" 200 1736
+django.server INFO 2023-03-27 14:04:43,736 basehttp 21392 10012 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:04:46,736 basehttp 21392 10012 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.server INFO 2023-03-27 14:04:49,399 basehttp 21392 10012 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:04:53,828 basehttp 21392 10012 "PUT /updateCulture/15 HTTP/1.1" 200 1733
+django.server INFO 2023-03-27 14:04:56,748 basehttp 21392 10012 "GET /organism/GN_0002 HTTP/1.1" 200 40500
+django.utils.autoreload INFO 2023-03-27 14:06:25,468 autoreload 21392 27292 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:06:26,537 autoreload 9088 21848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 14:08:06,357 autoreload 9088 21848 C:\Users\uqwzhon4\project\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 14:08:07,527 autoreload 23096 7912 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:08:09,974 basehttp 23096 11252 "GET /updateCulture/15 HTTP/1.1" 200 1362
+django.server INFO 2023-03-27 14:08:14,157 basehttp 23096 11252 "PUT /updateCulture/15 HTTP/1.1" 200 1735
+django.server INFO 2023-03-27 14:08:17,203 basehttp 23096 11252 "GET /updateCulture/15 HTTP/1.1" 200 1375
+django.server INFO 2023-03-27 14:08:19,873 basehttp 23096 11252 "GET /organism/GN_0002 HTTP/1.1" 200 40503
+django.utils.autoreload INFO 2023-03-27 14:08:58,755 autoreload 25252 580 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:09:02,265 basehttp 25252 18336 "GET /organism/GN_0002 HTTP/1.1" 200 40503
+django.server INFO 2023-03-27 14:09:02,281 basehttp 25252 18336 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,284 basehttp 25252 3968 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,289 basehttp 25252 15816 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,289 basehttp 25252 18336 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,289 basehttp 25252 16168 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,290 basehttp 25252 22236 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,290 basehttp 25252 19604 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,290 basehttp 25252 3968 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,303 basehttp 25252 3968 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,303 basehttp 25252 19604 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:02,328 basehttp 25252 19604 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:09:04,242 basehttp 25252 19604 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679890142294 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 14:09:04,294 basehttp 25252 19604 "GET /permission_not_granted/?next=/stocklist/GN_0002_01%3FBatch_id%3DGN_0002_01%26_%3D1679890142294 HTTP/1.1" 200 22
+django.server INFO 2023-03-27 14:09:13,878 basehttp 25252 26416 "GET / HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 14:09:14,071 basehttp 25252 26416 "GET /static/css/overideboot.css HTTP/1.1" 200 6108
+django.server INFO 2023-03-27 14:09:14,073 basehttp 25252 26416 "GET /static/css/custom.css HTTP/1.1" 200 15874
+django.server INFO 2023-03-27 14:09:14,077 basehttp 25252 26416 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-27 14:09:14,079 basehttp 25252 26416 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-27 14:09:14,083 basehttp 25252 26416 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-27 14:09:14,085 basehttp 25252 26416 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-27 14:09:14,088 basehttp 25252 26416 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-27 14:09:14,090 basehttp 25252 26416 "GET /static/js/editablerow.js HTTP/1.1" 200 1831
+django.server INFO 2023-03-27 14:09:14,092 basehttp 25252 26416 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-27 14:09:14,100 basehttp 25252 15092 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-27 14:09:14,104 basehttp 25252 15092 "GET /static/js/create_modal.js HTTP/1.1" 200 372
+django.server INFO 2023-03-27 14:09:14,108 basehttp 25252 15092 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-27 14:09:14,110 basehttp 25252 26416 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-27 14:09:14,193 basehttp 25252 26416 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-27 14:09:14,633 basehttp 25252 26416 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-27 14:09:16,380 basehttp 25252 26416 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 14:09:16,508 basehttp 25252 26416 "GET /index/ HTTP/1.1" 200 15259
+django.server INFO 2023-03-27 14:09:16,523 basehttp 25252 26416 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-27 14:09:19,955 basehttp 25252 26416 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 14:09:19,973 basehttp 25252 26416 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-27 14:09:19,973 basehttp 25252 15092 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-27 14:09:23,036 basehttp 25252 15092 "GET /organism/GN_0002 HTTP/1.1" 200 40503
+django.server INFO 2023-03-27 14:09:23,051 basehttp 25252 15092 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-27 14:09:24,401 basehttp 25252 15092 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679890163045 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 14:09:24,442 basehttp 25252 15092 "GET /permission_not_granted/?next=/stocklist/GN_0002_01%3FBatch_id%3DGN_0002_01%26_%3D1679890163045 HTTP/1.1" 200 22
+django.server INFO 2023-03-27 14:09:30,169 basehttp 25252 15092 "GET /createStock/ HTTP/1.1" 200 3082
+django.server INFO 2023-03-27 14:14:33,270 basehttp 25252 17224 "GET /organism/GN_0002 HTTP/1.1" 200 40503
+django.utils.autoreload INFO 2023-03-27 14:28:19,147 autoreload 21972 17240 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 14:35:58,469 autoreload 17792 19940 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 14:47:23,090 autoreload 17956 6996 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 14:50:45,658 autoreload 14760 22664 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 14:50:49,288 basehttp 14760 21912 "GET / HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 14:50:49,394 basehttp 14760 21912 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,395 basehttp 14760 17008 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,401 basehttp 14760 24516 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,401 basehttp 14760 21240 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,401 basehttp 14760 21200 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,401 basehttp 14760 23012 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,405 basehttp 14760 21912 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,405 basehttp 14760 17008 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,410 basehttp 14760 23012 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,410 basehttp 14760 24516 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,410 basehttp 14760 21200 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,411 basehttp 14760 21240 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,412 basehttp 14760 21912 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:49,439 basehttp 14760 21912 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:51,388 basehttp 14760 21912 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 14:50:51,490 basehttp 14760 21912 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 14:50:51,508 basehttp 14760 21912 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:53,697 basehttp 14760 21912 "GET /drug_card HTTP/1.1" 200 244506
+django.server INFO 2023-03-27 14:50:53,714 basehttp 14760 23012 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:53,714 basehttp 14760 21912 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:53,756 basehttp 14760 23012 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-03-27 14:50:53,767 basehttp 14760 23012 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-03-27 14:50:53,817 basehttp 14760 21200 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,820 basehttp 14760 24516 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,820 basehttp 14760 21240 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,820 basehttp 14760 23012 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,823 basehttp 14760 17008 "GET /static/images/AMD00178.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,824 basehttp 14760 21912 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,832 basehttp 14760 21544 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,832 basehttp 14760 16636 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,851 basehttp 14760 19312 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,852 basehttp 14760 21036 "GET /static/images/AMD00216.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,853 basehttp 14760 17364 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,867 basehttp 14760 8968 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,869 basehttp 14760 24444 "GET /static/images/AMD00219.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,873 basehttp 14760 23980 "GET /static/images/AMD00179.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,879 basehttp 14760 20084 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,880 basehttp 14760 15920 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,896 basehttp 14760 15408 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,898 basehttp 14760 16008 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,898 basehttp 14760 18612 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,918 basehttp 14760 25072 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,918 basehttp 14760 14888 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,918 basehttp 14760 14168 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,933 basehttp 14760 17536 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,935 basehttp 14760 12428 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,935 basehttp 14760 19288 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,979 basehttp 14760 3672 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,981 basehttp 14760 11740 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,981 basehttp 14760 20976 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,981 basehttp 14760 14232 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,982 basehttp 14760 15452 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:53,982 basehttp 14760 22924 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,005 basehttp 14760 7872 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,006 basehttp 14760 10968 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,018 basehttp 14760 10784 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,019 basehttp 14760 7924 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,029 basehttp 14760 10660 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,029 basehttp 14760 14632 "GET /static/images/AMD00220.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,038 basehttp 14760 17068 "GET /static/images/AMD00214.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,039 basehttp 14760 26928 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,044 basehttp 14760 10608 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,053 basehttp 14760 16336 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,054 basehttp 14760 9772 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,055 basehttp 14760 22408 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,068 basehttp 14760 10832 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,069 basehttp 14760 968 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,095 basehttp 14760 21048 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,097 basehttp 14760 10772 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-03-27 14:50:54,097 basehttp 14760 1296 "GET /static/images/AMD00045.svg HTTP/1.1" 404 1917
+django.server INFO 2023-03-27 14:51:00,222 basehttp 14760 13264 "GET /drug_detail_structure/AMD00008 HTTP/1.1" 200 18840
+django.server INFO 2023-03-27 14:51:00,485 basehttp 14760 13264 "GET /static/js/ketcher/index-bundle.js HTTP/1.1" 200 17115569
+django.request WARNING 2023-03-27 14:51:00,914 log 14760 13264 Not Found: /templates/library.sdf
+django.server WARNING 2023-03-27 14:51:00,914 basehttp 14760 13264 "GET /templates/library.sdf HTTP/1.1" 404 11815
+django.request WARNING 2023-03-27 14:51:00,968 log 14760 25460 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /templates/fg.sdf
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 976, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1040, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1216, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 103, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 138, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-03-27 14:51:00,975 basehttp 14760 25460 "GET /templates/fg.sdf HTTP/1.1" 400 165274
+django.server INFO 2023-03-27 14:53:14,158 basehttp 14760 13264 "GET /createDrug/ HTTP/1.1" 200 8209
+django.server INFO 2023-03-27 14:54:46,795 basehttp 14760 13264 "GET /drug_detail_structure/AMD00002 HTTP/1.1" 200 11786
+django.request WARNING 2023-03-27 14:54:47,389 log 14760 13264 Not Found: /templates/library.sdf
+django.server WARNING 2023-03-27 14:54:47,389 basehttp 14760 13264 "GET /templates/library.sdf HTTP/1.1" 404 11815
+django.request WARNING 2023-03-27 14:54:47,397 log 14760 6572 Not Found: /templates/fg.sdf
+django.server WARNING 2023-03-27 14:54:47,398 basehttp 14760 6572 "GET /templates/fg.sdf HTTP/1.1" 404 11800
+django.server INFO 2023-03-27 14:59:33,367 basehttp 14760 6572 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 14:59:35,791 basehttp 14760 6572 "GET /organism/FG_0001 HTTP/1.1" 200 44853
+django.server INFO 2023-03-27 14:59:35,807 basehttp 14760 6572 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:00:06,011 basehttp 14760 6572 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679893175804 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:00:06,061 basehttp 14760 6572 "GET /permission_not_granted/?next=/stocklist/FG_0001_01%3FBatch_id%3DFG_0001_01%26_%3D1679893175804 HTTP/1.1" 200 22
