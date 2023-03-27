@@ -1,0 +1,23 @@
+<input type="text" id="mol" value="{{object_mol}}" hidden />
+
+<div id="root"></div>
+
+{%load static%}
+<script src="{% static 'js/ketcher/index-bundle.js' %}"></script>
+<script>
+
+  $(document).ready(function () {
+    $("#root button").click(() => {
+      console.log("clickt");
+      data = $("#getSmilesFromKetcher").val();
+      console.log(typeof $("#getSmilesFromKetcher").val());
+      sessionStorage.setItem("smiles_query", data);
+      console.log(sessionStorage.getItem("smiles_query"));
+      if (sessionStorage.getItem("smiles_query") !== null) {
+        $("#smiles_input").val(sessionStorage.getItem("smiles_query"));
+        console.log($("#smiles_input").val());
+        sessionStorage.removeItem("smiles_query");
+      }
+    });
+  });
+</script>

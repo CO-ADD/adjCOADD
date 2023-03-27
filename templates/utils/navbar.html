@@ -15,101 +15,75 @@
       </a>
     </div>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-    {% if user.is_authenticated %}
-    <div class="nav-item d-flex">
-
-
-      <a class="nav-link" href="{%url 'index'%}">
-        <p class="nav-title"><i class="fa-solid fa-house"></i></p>
-      </a>
+      {% if user.is_authenticated %}
+      <div class="navbar-nav">
 
 
-      <div class="dropdown d-inline-block">
-        <a
-          type="button"
-          class="nav-link active"
-          data-bs-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <p class="d-xl-inline-block nav-title">VIEWS</p>
-          <i class="fa-solid fa-chevron-down nav-title"></i>
+        <a class="nav-link" href="{%url 'index'%}">
+          <p class="nav-title"><i class="fa-solid fa-house"></i></p>
         </a>
-        <ul class="dropdown-menu">
-          <!-- item-->
-          <li>
-            <a class="dropdown-item" href="{%url 'org_card'%}">
-              <p>Organism</p>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{%url 'taxo_card'%}">
-              <p>Taxonomy</p>
-            </a>
-          </li>
-          <!-- <li>
-            <a class="dropdown-item" href="{%url 'batch_card'%}">
-              <p>Batch</p>
-            </a>
-          </li> -->
-          <li>
-            <div class="dropdown-divider"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{%url 'drug_card'%}">
-              <p>Drug</p>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
-              <p>Vitek Card</p>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="{%url 'vitekast_list'%}">
-              <p>Vitek Ast</p>
-            </a>
-          </li>
-        </ul>
+
+
+        <div class="dropdown d-inline-block">
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <p class="d-xl-inline-block nav-title">VIEWS</p>
+            <i class="fa-solid fa-chevron-down nav-title"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- item-->
+            <li>
+              <a class="dropdown-item" href="{%url 'org_card'%}">
+                <p>Organism</p>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{%url 'taxo_card'%}">
+                <p>Taxonomy</p>
+              </a>
+            </li>
+
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{%url 'drug_card'%}">
+                <p>Drug</p>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
+                <p>Vitek Card</p>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{%url 'vitekast_list'%}">
+                <p>Vitek Ast</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <a class="nav-link" href="{%url 'ketcher_test' %}">
+            <p class="nav-title">Ketcher Test Page</p>
+          </a>
+        </div>
       </div>
-      <div>
-        <a class="nav-link" href="{%url 'ketcher_test' %}">
-          <p class="nav-title">Ketcher Test Page</p>
-        </a>
-      </div>
-    </div>
-    {%endif%}
-    <!-- </li>
+      {%endif%}
+      <!-- </li>
       </ul>
     </div> -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto fs-5">
         <li class="nav-item d-flex">
           {% if user.is_authenticated %}
           <div class="dropdown d-inline-block">
-            <a
-              class="nav-link active"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <img
-                class="rounded-circle header-profile-user"
-                src="{%static 'images/app/avatar.png'%}"
-                alt="Avatar"
-              />
+            <a class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
               <p class="d-xl-inline-block nav-title">{{user.username}}</p>
               <i class="fa-solid fa-chevron-down nav-title"></i>
             </a>
@@ -121,21 +95,17 @@
                   <!-- <a href="{%url 'testsite'%}">testsite</a> -->
                   {%endif%}
                   <!--  -->
-                  {% if user.permissin == 'Read'%}
+                  {% if user.permission == 'Read'%}
                   <span class="text-info"> Guest</span>
                   {%endif%}
                   <!--  -->
-                  {% if user.permissin == 'Write'%}
+                  {% if user.permission == 'Write'%}
                   <span class="text-info"> User</span>
                   {%endif%}
                 </p>
               </a>
               <a class="dropdown-item" href="#">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="dark-mode"
-                />
+                <input class="form-check-input" type="checkbox" id="dark-mode" />
                 <label class="form-check-label" for="flexSwitchCheckChecked">
                   <p>Switch to Dark</p>
                 </label>

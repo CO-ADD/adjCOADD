@@ -1,20 +1,5 @@
 <div class="modal-dialog modal-lg">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="mx-2">
-      <h4 class="my-0">Update Stock</h4>
-      <form id="StockUpdateForm" class="post-form" method="POST" action="{%url 'stock_update' object.pk %}">
-        {% csrf_token %}
-        <!--  -->
-        {%include 'utils/django_form_lgtable.html'%}
-        <input type="submit" class="btn btn-outline-secondary" value="update" />
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </form>
-    </div>
-    <div id="form_result"></div>
-  </div>
+  {% url 'stock_update' object.pk as updateurl %}
+  {%include 'utils/modal/modal_form.html' with title='Update Stock' urlname=updateurl %}
+
 </div>

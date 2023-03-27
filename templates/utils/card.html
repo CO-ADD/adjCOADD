@@ -12,7 +12,7 @@
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}
-      <a id="drug_detail{{object.pk}}" class="card-link">
+      <a id="drug_detail{{object.pk}} " href="{%url 'smartsquery' object.pk%}" class="card-link">
         SUBSTRUCTURE_query
         {%load static%}
         <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
@@ -22,22 +22,22 @@
     <!-- call drug structure editor modal -->
     <script>
 
-      $(document).ready(function () {
-        let my_modal = $("#drug_detail_structure{{object.pk}}");
+      // $(document).ready(function () {
+      //   let my_modal = $("#drug_detail_structure{{object.pk}}");
 
-        $("#drug_detail{{object.pk}}").click(function () {
-          console.log("click structrue")
-          my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
-            if (response == "Permission Not Granted") {
-              alert("permission!");
-            } else {
-              my_modal.modal("show"); // Open Modal
-            }
-          });
+      //   $("#drug_detail{{object.pk}}").click(function () {
+      //     console.log("click structrue")
+      //     my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
+      //       if (response == "Permission Not Granted") {
+      //         alert("permission!");
+      //       } else {
+      //         my_modal.modal("show"); // Open Modal
+      //       }
+      //     });
 
-        });
+      //   });
 
-      });
+      // });
 
 
 
@@ -58,8 +58,8 @@
 
     {%endif%}
     </p>
-    <p class="card-text m-0 fst-italic">{{object_var2}}</p>
-    <p class="card-text m-0 fst-normal">{{object_var3}}</p>
+    <p class="card-text m-0 fst-italic">{{object_var2 |safe}}</p>
+    <p class="card-text m-0 fst-normal">{{object_var3 | safe}}</p>
     <p class="card-text m-0 fst-normal">
       <strong> {{object_var_link_label}} </strong>
       <a class="card-link" style="float: right"

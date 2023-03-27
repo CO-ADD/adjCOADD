@@ -391,3 +391,5 @@ dmypy.json
 .DJANGO_SECRET_KEY
 #help
 /help.py
+#log
+/applog/

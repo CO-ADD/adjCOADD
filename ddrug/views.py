@@ -50,8 +50,7 @@ def smartsQuery(req, pk):
     # get mol block for an object
     try:
         context["object_mol"]=Chem.MolToMolBlock(object_.smol)
-  
-   # convert object to JMSE regonized form
+    # convert object to JMSE regonized form
         m="\\n".join(context["object_mol"].split("\n")) 
         context["object_mol"]=m
     except Exception as err:
@@ -69,7 +68,11 @@ def iframe_url(req):
 @login_required   
 def ketcher_test(req):
     context={}
-    return render(req, "utils/ketcher_test.html")
+    n=Chem.MolFromSmiles("CC(C)([C@@H]1C(O)=O)S[C@H]([C@@H]2NC([C@@H](c(cc3)ccc3O)N)=O)N1C2=O")
+    m=Chem.MolToMolBlock(n)
+    context["object_mol"]="\\n".join(m.split("\n"))
+    print(context["object_mol"])
+    return render(req, "utils/ketcher_test.html", context)
 
 # #############################Drug View############################################
 # ==========List View================================Read===========================================
@@ -221,8 +224,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekcard_filter
     model_fields=model.HEADER_FIELDS
     context_list=''
-   
-
     
     def get_context_data(self,  **kwargs):
 
@@ -232,10 +233,12 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         context['defaultindex1']='analysis_time'
         context['defaultindex2']='proc_date'
         context['defaultvalues']='instrument'
+        print(context['fields'])
       
         data=list(context["object_list"].values())
+        print(data)
         df=pd.DataFrame(data)
-        table=pd.pivot_table(df, values=["instrument"], index=["proc_date", "analysis_time"],
+        table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
                         columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
         context['table']=table
     

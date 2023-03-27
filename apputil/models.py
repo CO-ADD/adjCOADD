@@ -74,7 +74,7 @@ class ApplicationUser(AbstractUser):
         _Permissions = {
             'Read':1,
             'Write':2,
-            'Delete':3,
+            # 'Delete':3,
             'Admin':10,
         }
         if strPermission in _Permissions:
@@ -334,7 +334,10 @@ class Dictionary(AuditModel):
         ]
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.dict_value} {self.dict_desc}"
+        return f"{self.dict_value} {self.dict_desc} "
+
+    def strtml(self)-> str:
+        return f"{self.dict_value} <small class='not-visible'> {self.dict_desc} </small>"
 
     #------------------------------------------------
     @classmethod
@@ -387,7 +390,7 @@ class Dictionary(AuditModel):
         dictList = None
         choices=(emptyChoice,)
         # comment on initial migrations
-        dictList=cls.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
+        dictList=Dictionary.objects.filter(dict_class=DictClass).values('dict_value', 'dict_desc', 'dict_sort')
         if dictList:
             sortedlist = sorted(dictList, key=lambda d: d['dict_sort']) 
             if sortedlist:

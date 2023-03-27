@@ -86,15 +86,22 @@ class Batchupdate_form(forms.ModelForm):
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     class Meta:
         model =Organism_Batch
-        fields=model.HEADER_FIELDS.keys()
+        fields=list(model.HEADER_FIELDS.keys())
+        fields+=['orgbatch_id']
         exclude=['stock_level']
 
 
 # ===============================Stock Form-------------------------------
-class Stock_form(forms.ModelForm):  
+class Stock_createform(forms.ModelForm):
+    n_left_extra=forms.IntegerField(required=True)  
     class Meta:
         model =OrgBatch_Stock
-        exclude=["n_left"]
+        exclude=['n_left']
+
+class Stock_form(forms.ModelForm):
+    class Meta:
+        model =OrgBatch_Stock
+        fields="__all__"
 
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):

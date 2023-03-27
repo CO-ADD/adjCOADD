@@ -1,47 +1,30 @@
-{% extends 'base.html'%}
+{% extends "base.html" %}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
-<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
 {% block content%}
-<div class="d-flex justify-content-center" style="margin-top: 200px;">
 
-    <iframe id="ifKetcher" src="{% url 'ketcher' %}" width="800" height="600"></iframe>
+<input type="text" id="mol" value="{{object_mol}}" hidden />
 
-</div>
-<button type="button" onclick="ketcherfunc()">
-    Check window
-</button>
+<div id="root"></div>
+
+{%load static%}
+<script src="{% static 'js/ketcher/index-bundle.js' %}"></script>
 <script>
-    var ketcherFrame = document.getElementById('ifKetcher');
 
-    console.log(ketcherFrame.contentWindow)
-    var ketcher = null;
-
-    if ('contentDocument' in ketcherFrame) {
-        console.log(ketcherFrame.contentWindow)
-
-        ketcher = ketcherFrame.contentWindow.ketcher;
-        console.log("content");
-        console.log(ketcher);
-        ketcher.getSmiles()
-        // ketcher.setMolecule('c1ccccc1');
-    }
-    // else // IE7
-    // {
-    //     ketcher = document.frames['ifKetcher'].window.ketcher;
-    //     console.log(ketcher)
-    // }
-
-    function ketcherfunc() {
-        // e.preventDefault();
-        console.log(ketcher);
-        console.log(ketcherFrame.contentWindow)
-    }
-    // else // IE7
-    // {
-    //     ketcher = document.frames['ifKetcher'].window.ketcher;
-    //     console.log(ketcher)
-    // }
-
+  $(document).ready(function () {
+    $("#root button").click(() => {
+      console.log("clickt");
+      data = $("#getSmilesFromKetcher").val();
+      console.log(typeof $("#getSmilesFromKetcher").val());
+      sessionStorage.setItem("smiles_query", data);
+      console.log(sessionStorage.getItem("smiles_query"));
+      if (sessionStorage.getItem("smiles_query") !== null) {
+        $("#smiles_input").val(sessionStorage.getItem("smiles_query"));
+        console.log($("#smiles_input").val());
+        sessionStorage.removeItem("smiles_query");
+      }
+    });
+  });
 </script>
+
 {%endblock%}

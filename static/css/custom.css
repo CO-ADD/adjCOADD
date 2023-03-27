@@ -36,18 +36,15 @@ danger-color : #f3545d
   /* Background Color */
   --bs-card-bg: #fefefe;
   --bs-heading-bg: var(--teal);
-  --bs-heading-dark-bg: #2a3042;
   --bs-body-bg: rgb(238, 238, 238);
   --bs-footer-bg: #f2f2f5;
-  --bs-topbar-search-bg: #f3f3f9;
   --bs-th-bg: #a7b6b6;
   --bs-topnav-bg: #2c7a84;
-  --bs-boxed-body-bg: #f8fcfa;
+  --bs-boxed-body-bg: #e7f1ff;
   --bs-form-item-color: #fff;
   /* Text Color */
-  --bs-body-color: rgb(0, 90, 90);
-  --bs-menu-item-color: #545a6d;
-  --bs-header-item-color: #555b6d;
+  --bs-body-color: #575962;
+  --bs-menu-item-color: #6a8bf8;
   --bs-footer-color: #74788d;
   --bs-light: #e4e4e4;
   --bs-dark: #32394e;
@@ -57,41 +54,39 @@ danger-color : #f3545d
   /* border Color */
   --bs-border-color: #625e5d;
   --bs-card-border: white;
-  --bs-input-border-color: #ced4da;
-  --bs-form-check-input-border: #ff6e00;
-  --bs-input-focus-border-color: #b1bbc4;
+  /* transition  */
+  --trans-property: all 0.3s ease;
 }
 
 :root .darkMode {
+  /* Theme Color */
+  --teal: #2c7a84;
+  --orange: #ff6e00;
+  --grey: #625e5d;
   --bs-gray-700: #9e9e9e;
-  --bs-card-border: #f6f6f6;
-  --bs-body-bg: #222736;
-  --bs-body-bg-rgb: rgb(34, 39, 54);
-  --bs-body-color-rgb: rgb(166, 176, 207);
-  --bs-body-color: #f6f6f6;
-  --bs-heading-color: #f6f6f6;
-  --bs-border-color: #32394e;
-  --bs-custom-white: #2a3042;
-  --bs-input-focus-border-color: #3a425a;
-  --bs-hr-border-color: #32394e;
-  --bs-form-check-input-border: #3a425a;
-  --bs-light: #32394e;
-  --bs-light-rgb: rgb(50, 57, 78);
-  --bs-dark: #f6f6f6;
-  --bs-dark-rgb: 246, 246, 246;
-  --bs-heading-bg: #262b3c;
-  --bs-header-item-color: #a6b0cf;
-  --bs-topbar-search-bg: #2a3042;
-  --bs-heading-dark-bg: #556ee6;
-  --bs-boxed-body-bg: #32394f;
-  --bs-topnav-bg: #282e3f;
-  --bs-menu-item-color: #878c9b;
-  --bs-form-item-color: #f6f6f6;
-  --bs-footer-bg: #262b3c;
-  --bs-footer-color: #a6b0cf;
-  --bs-inform-color: #f1ca81;
-  --bs-th-bg: #226770;
+
+  /* Background Color */
   --bs-card-bg: #262b3c !important;
+  --bs-heading-bg: #262b3c;
+  --bs-body-bg: #5b5c61;
+  --bs-footer-bg: #262b3c;
+  /* nodarkmode */
+  --bs-th-bg: #226770;
+  --bs-topnav-bg: #282e3f;
+  --bs-boxed-body-bg: #32394f;
+  --bs-form-item-color: #f6f6f6;
+  /* Text Color */
+  --bs-body-color: #f6f6f6;
+  --bs-menu-item-color: #ebeef0;
+  --bs-footer-color: #a6b0cf;
+  --bs-light: #32394e;
+  --bs-dark: #f6f6f6;
+  --bs-custom-white: #2a3042;
+  --bs-inform-color: #f1ca81;
+
+  /* border Color */
+  --bs-border-color: #32394e;
+  --bs-card-border: #f6f6f6;
 }
 
 /* html elements custom style -----------------------------*/
@@ -107,24 +102,13 @@ a {
 
 body {
   background: var(--bs-body-bg);
-  /* background: linear-gradient(135deg, var(--bs-body-bg) 10%, rgba(149, 242, 229, 1) 100%); */
+  /* background: linear-gradient(135deg, var(--bs-body-bg) 10%, rgb(255, 255, 255) 100%); */
   color: var(--bs-body-color);
 }
 
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
-}
-
-tbody {
-  background-color: var(--bs-boxed-body-bg);
+section {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
 }
 
 tbody {
@@ -163,10 +147,10 @@ p {
 select {
   white-space: initial;
   font-size: 12px !important;
-  width: 10rem;
+  width: 12rem;
   border: none;
   margin: 0;
-  overflow: scroll;
+
 }
 
 select option {
@@ -186,8 +170,12 @@ span {
   padding-right: 18px;
 }
 
-.sorting_table .order_field:before,
-.sorting_table .order_field:after {
+.sorting_table .asc:before,
+.sorting_table .asc:after,
+.sorting_table .desc:before,
+.sorting_table .desc:after,
+.sorting_table th:before,
+.sorting_table th:after {
   border: 4px solid transparent;
   content: "";
   display: block;
@@ -198,13 +186,33 @@ span {
   width: 0;
 }
 
-.sorting_table .order_field:before {
+.sorting_table th:before {
   border-bottom-color: #666;
   margin-top: -9px;
 }
 
-.sorting_table .order_field:after {
+.sorting_table th:after {
   border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .asc:before {
+  border-bottom-color: #1a1a1a;
+  margin-top: -9px;
+}
+
+.sorting_table .asc:after {
+  border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .desc:before {
+  border-bottom-color: #666;
+  margin-top: -9px;
+}
+
+.sorting_table .desc:after {
+  border-top-color: #1a1a1a;
   margin-top: 1px;
 }
 
@@ -217,7 +225,6 @@ td {
 }
 
 tr {
-  height: 30px;
   color: var(--bs-body-color);
 }
 
@@ -265,13 +272,21 @@ button,
   background-color: var(--bs-card-bg);
   border-color: var(--bs-card-border);
 }
+.page-item{
+  border:none !important
+}
+
+.page-item:hover{
+  background-color: var(--bs-card-bg);
+}
 
 .page-link,
 .card-link {
   cursor: pointer !important;
+  background-color: transparent !important;
   color: var(--bs-menu-item-color);
+  border:none !important
 }
-
 .card-img-bottom {
   /* width: 100%; */
   height: 20vw;
@@ -298,10 +313,14 @@ button,
 /* ------------------- */
 /* ----Navbar custom style */
 .navbar {
-  background-color: var(--bs-heading-bg);
   height: 120px;
   width: 100%;
   transition: 1s;
+}
+
+.navbar,
+.navbar-nav {
+  background-color: var(--bs-heading-bg);
 }
 
 .nav-title {
@@ -439,7 +458,7 @@ a:hover .tooltiptext {
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
-.resizer {
+/* .resizer {
   flex-basis: 0;
   position: relative;
   z-index: 2;
@@ -449,15 +468,17 @@ a:hover .tooltiptext {
   margin-left: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
 .sidebar {
-  background-color: var(--bs-boxed-body-bg);
+  background-color: var(--bs-th-bg);
   position: relative;
   margin: 0;
   padding: 0;
   min-width: 10%;
-  box-shadow: 2px 2px 5px var(--bs-body-bg);
+  box-shadow: 2px 2px 5px var(--bs-th-bg);
+  min-height: 50em;
+  height: fit-content;
 }
 
 .main {
@@ -471,7 +492,7 @@ a:hover .tooltiptext {
 }
 
 .leftbar {
-  background-color: var(--bs-boxed-body-bg);
+  background-color: var(--bs-th-bg);
 }
 
 /* ============== 2 edit table/form =========== */
@@ -914,4 +935,8 @@ form p {
 
 .modal-content {
   background-color: var(--bs-boxed-body-bg);
+}
+.fa-floppy-disk{
+  transition:var(--trans-property);
+  font-size:18px;
 }

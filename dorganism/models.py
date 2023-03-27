@@ -90,10 +90,6 @@ class Taxonomy(AuditModel):
     #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
-    # #------------------------------------------------
-    #def get_values(self, fields=TAXONOMY_FIELDs):
-    #    value_list=super(Taxonomy, self).get_values(fields)
-    #    return value_list
         
 #-------------------------------------------------------------------------------------------------
 class Organism(AuditModel):
@@ -103,7 +99,9 @@ class Organism(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
+#        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_name':'Organism Name',
+        'strain_panel':'Panel',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
         'source':"Source",
@@ -428,10 +426,17 @@ class OrgBatch_Stock(AuditModel):
         return cls.objects.filter(stock_id=StockID).exists()
 
     # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_STOCK_FIELDs):
-    #    value_list=super(OrgBatch_Stock, self).get_values(fields)
-    #    return value_list
+    #------------------------------------------------
+    # def save(self, *args, **kwargs):
+    #     if "n_left_extra" in kwargs:
+    #        n_left_extra=kwargs.pop("n_left_extra", None)
+    #        if not self.n_left:
+    #             self.n_left=n_left_extra
+    #             super().save(*args, **kwargs)
+    #     else:
+    #         super().save(*args, **kwargs)
 
+            
   
 #-------------------------------------------------------------------------------------------------
 class Organism_Culture(AuditModel):

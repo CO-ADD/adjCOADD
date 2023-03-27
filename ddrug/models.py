@@ -166,7 +166,7 @@ class VITEK_Card(AuditModel):
 #     List of VITEK Cards
 #     """
 # #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDs = {
+    HEADER_FIELDS = {
         "orgbatch_id":"orgbatch_id",
         "card_barcode":"Barcode",
         "card_type":"Card Type",
@@ -282,7 +282,7 @@ class VITEK_AST(AuditModel):
       Antimicrobial Suceptibility Testing (AST) data from VITEK Cards
     """
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDs = {
+    HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "process":"Process",
         "id_organism":"ID organism",
@@ -414,7 +414,7 @@ class VITEK_ID(AuditModel):
       Identification Testing (ID) data from VITEK Cards
     """
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDs = {
+    HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "drug_id":"Drug",
         "mic":"MIC",
@@ -645,4 +645,5 @@ class COADD_BMD(AuditModel):
                 valLog.add_log('Warning',validDict[k],k,'-')
 
         retInstance.VALID_STATUS = validStatus
+        
         return(retInstance)

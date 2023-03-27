@@ -1,52 +1,7 @@
 <div class="modal-dialog modal-lg">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-        onclick="window.location.reload(true);"
-      ></button>
-    </div>
-    <div class="mx-2">
-      <h4 class="my-0">Create Batch</h4>
-      {% include 'utils/search_organism_id.html' %}
-      <form
-        method="POST"
-        class="post-form"
-        name="create"
-        action="{%url 'batch_create'%}"
-      >
-        {% csrf_token %}
-        <!-- ignore prettier -->
-        {%include 'utils/django_form_lgtable.html'%}
-        <input
-          type="text"
-          id="microorg"
-          name="search_organism"
-          style="display: none"
-        />
-        <!-- id "taxo-name" used in search_organism.js to assign ajax result -->
+  {% url 'batch_create' as createurl %}
+  {%include 'utils/modal/modal_form.html' with title='Create Batch' urlname=createurl %}
 
-        <hr />
-        <input
-          type="submit"
-          class="btn btn-outline-secondary"
-          value="Add"
-          name="note"
-        />
-        <a
-          href="#"
-          onclick="window.location.reload(true);"
-          class="btn btn-outline-secondary"
-        >
-          <!-- <a  class="btn btn-outline-secondary"> -->
-          Cancel
-        </a>
-      </form>
-    </div>
-  </div>
 </div>
 <!-- <script>
   //this function will be called after the JavaScriptApplet code has been loaded.
