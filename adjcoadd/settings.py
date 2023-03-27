@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 # import cx_Oracle
 # cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
-DEVELOPMENT=False
+DEVELOPMENT=True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

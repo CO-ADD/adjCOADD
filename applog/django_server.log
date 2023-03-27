@@ -835,3 +835,729 @@ django.server INFO 2023-03-27 14:59:35,791 basehttp 14760 6572 "GET /organism/FG
 django.server INFO 2023-03-27 14:59:35,807 basehttp 14760 6572 "GET /static/js/search_organism.js HTTP/1.1" 304 0
 django.server INFO 2023-03-27 15:00:06,011 basehttp 14760 6572 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679893175804 HTTP/1.1" 302 0
 django.server INFO 2023-03-27 15:00:06,061 basehttp 14760 6572 "GET /permission_not_granted/?next=/stocklist/FG_0001_01%3FBatch_id%3DFG_0001_01%26_%3D1679893175804 HTTP/1.1" 200 22
+django.utils.autoreload INFO 2023-03-27 15:09:53,177 autoreload 23004 17292 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 15:09:58,368 basehttp 23004 11584 "GET /organism/GN_0002 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:09:58,384 basehttp 23004 11584 "GET /accounts/login/?next=/organism/GN_0002 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:09:58,404 basehttp 23004 26472 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:09:58,404 basehttp 23004 11584 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:09:58,413 basehttp 23004 10388 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:09:58,416 basehttp 23004 7296 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:09:58,416 basehttp 23004 11584 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:09:58,493 basehttp 23004 11584 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:10:00,106 basehttp 23004 11584 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:10:00,225 basehttp 23004 11584 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 15:10:01,736 basehttp 23004 11584 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 15:10:04,333 basehttp 23004 11584 "GET /organism/FG_0002 HTTP/1.1" 200 44135
+django.server INFO 2023-03-27 15:10:09,888 basehttp 23004 11584 "GET /stocklist/FG_0002_01?Batch_id=FG_0002_01&_=1679893804343 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:10:09,908 basehttp 23004 11584 "GET /permission_not_granted/?next=/stocklist/FG_0002_01%3FBatch_id%3DFG_0002_01%26_%3D1679893804343 HTTP/1.1" 200 22
+django.server INFO 2023-03-27 15:12:03,676 basehttp 23004 11584 "GET /createStock/ HTTP/1.1" 200 8866
+django.utils.autoreload INFO 2023-03-27 15:13:01,869 autoreload 23004 17292 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 15:13:03,133 autoreload 13716 8760 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 15:13:04,140 basehttp 13716 26956 "GET /organism/FG_0002 HTTP/1.1" 200 44135
+django.server INFO 2023-03-27 15:13:05,781 basehttp 13716 26956 "GET /stocklist/FG_0002_01?Batch_id=FG_0002_01&_=1679893984159 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:13:05,831 basehttp 13716 26956 "GET /permission_not_granted/?next=/stocklist/FG_0002_01%3FBatch_id%3DFG_0002_01%26_%3D1679893984159 HTTP/1.1" 200 22
+django.utils.autoreload INFO 2023-03-27 15:13:54,751 autoreload 13716 8760 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 15:13:55,807 autoreload 27472 14076 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 15:13:58,567 basehttp 27472 22604 "GET /organism/FG_0002 HTTP/1.1" 200 44135
+django.server INFO 2023-03-27 15:14:03,012 basehttp 27472 22604 "GET /stocklist/FG_0002_01?Batch_id=FG_0002_01&_=1679894038579 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:14:03,052 basehttp 27472 22604 "GET /permission_not_granted/?next=/stocklist/FG_0002_01%3FBatch_id%3DFG_0002_01%26_%3D1679894038579 HTTP/1.1" 200 22
+django.utils.autoreload INFO 2023-03-27 15:14:55,289 autoreload 27472 14076 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 15:14:56,401 autoreload 19316 21688 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 15:15:14,393 basehttp 19316 22584 "GET /organism/FG_0002 HTTP/1.1" 200 44135
+django.server INFO 2023-03-27 15:15:16,903 basehttp 19316 22584 "GET /stocklist/FG_0002_01?Batch_id=FG_0002_01&_=1679894114421 HTTP/1.1" 200 287
+django.server INFO 2023-03-27 15:22:05,292 basehttp 19316 13036 "GET /organism/FG_0002 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:22:05,302 basehttp 19316 13036 "GET /accounts/login/?next=/organism/FG_0002 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:22:05,314 basehttp 19316 13036 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,318 basehttp 19316 13036 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,322 basehttp 19316 13036 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,324 basehttp 19316 22076 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,326 basehttp 19316 13036 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,328 basehttp 19316 13036 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,355 basehttp 19316 13036 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,355 basehttp 19316 22076 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:22:05,360 basehttp 19316 22076 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:23:31,189 basehttp 19316 22076 "GET /organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:23:31,200 basehttp 19316 22076 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:23:34,089 basehttp 19316 22076 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:23:34,186 basehttp 19316 22076 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 15:23:34,199 basehttp 19316 22076 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:23:36,520 basehttp 19316 22076 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 15:23:36,534 basehttp 19316 13036 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:23:36,535 basehttp 19316 22076 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:23:37,753 basehttp 19316 22076 "GET /organism/FG_0001 HTTP/1.1" 200 44974
+django.server INFO 2023-03-27 15:23:39,672 basehttp 19316 22076 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679894617771 HTTP/1.1" 200 569
+django.server INFO 2023-03-27 15:27:06,308 basehttp 19316 22076 "GET /accounts/login/?next=/organism/FG_0002 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:27:06,376 basehttp 19316 22076 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 15:28:22,496 basehttp 19316 22076 "GET /organism/updateStock/1423 HTTP/1.1" 200 8954
+django.server INFO 2023-03-27 15:28:34,147 basehttp 19316 22076 "GET /updateBat/FG_0001_01 HTTP/1.1" 200 7257
+django.server INFO 2023-03-27 15:28:35,363 basehttp 19316 22076 "GET /organism/FG_0001 HTTP/1.1" 200 44979
+django.server INFO 2023-03-27 15:28:35,377 basehttp 19316 22076 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:28:35,379 basehttp 19316 13036 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:28:35,379 basehttp 19316 26472 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:28:35,382 basehttp 19316 14188 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:28:35,382 basehttp 19316 19332 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:30:42,412 basehttp 19316 19332 "GET /dict/ HTTP/1.1" 200 52507
+django.server WARNING 2023-03-27 15:30:42,437 basehttp 19316 19332 "GET /static/js/modal/create_dictionary.js HTTP/1.1" 404 1947
+django.server INFO 2023-03-27 15:32:07,361 basehttp 19316 14188 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 15:32:07,403 basehttp 19316 14188 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:32:07,406 basehttp 19316 14188 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:32:07,410 basehttp 19316 14188 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.request ERROR 2023-03-27 15:32:13,805 log 19316 14188 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 15:32:13,853 basehttp 19316 14188 "POST /dict_update HTTP/1.1" 500 82358
+django.server INFO 2023-03-27 15:36:23,061 basehttp 19316 21048 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 15:36:26,104 basehttp 19316 21048 "GET /organism/FG_0001 HTTP/1.1" 200 44915
+django.server INFO 2023-03-27 15:36:26,132 basehttp 19316 21048 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:36:28,587 basehttp 19316 21048 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679895386138 HTTP/1.1" 200 569
+django.request ERROR 2023-03-27 15:36:35,583 log 19316 21048 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 15:36:35,610 basehttp 19316 21048 "POST /dict_update HTTP/1.1" 500 82089
+django.server INFO 2023-03-27 15:37:08,419 basehttp 19316 19432 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 15:42:09,310 basehttp 19316 660 "GET /index/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:42:09,315 basehttp 19316 660 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:47:10,311 basehttp 19316 27464 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:47:10,408 basehttp 19316 27464 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-03-27 15:51:01,687 autoreload 19316 21688 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 15:51:02,837 autoreload 22728 19792 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 15:52:11,338 basehttp 22728 22088 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:52:11,358 basehttp 22728 22088 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:52:11,361 basehttp 22728 22088 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:52:11,366 basehttp 22728 22088 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:52:11,368 basehttp 22728 22088 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:52:11,372 basehttp 22728 22088 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:54:45,013 basehttp 22728 22088 "GET /organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 15:54:45,026 basehttp 22728 22088 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:54:45,045 basehttp 22728 7144 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:54:45,046 basehttp 22728 22088 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:54:45,048 basehttp 22728 14268 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:54:45,048 basehttp 22728 1256 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,320 basehttp 22728 1256 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 15:57:12,349 basehttp 22728 1256 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,351 basehttp 22728 14268 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,351 basehttp 22728 1256 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,370 basehttp 22728 1256 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,375 basehttp 22728 14268 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,375 basehttp 22728 1256 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,380 basehttp 22728 1256 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,381 basehttp 22728 1256 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 15:57:12,382 basehttp 22728 1256 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:02:13,315 basehttp 22728 7556 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:03:30,311 basehttp 22728 7556 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:03:30,343 basehttp 22728 7556 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,347 basehttp 22728 7556 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,351 basehttp 22728 7556 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,351 basehttp 22728 18016 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,358 basehttp 22728 7556 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,358 basehttp 22728 18016 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:03:30,363 basehttp 22728 18016 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:07:14,314 basehttp 22728 18016 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:08:31,317 basehttp 22728 18016 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:12:15,316 basehttp 22728 18016 "GET /?next=/index/ HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:13:32,312 basehttp 22728 18016 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:16:07,111 basehttp 22728 18016 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:16:07,192 basehttp 22728 18016 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 16:16:07,213 basehttp 22728 18016 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:07,214 basehttp 22728 936 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:07,217 basehttp 22728 11340 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:07,217 basehttp 22728 10604 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:07,250 basehttp 22728 11340 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:10,164 basehttp 22728 11340 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 16:16:10,200 basehttp 22728 11340 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:10,202 basehttp 22728 11340 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:11,782 basehttp 22728 11340 "GET /organism/FG_0001 HTTP/1.1" 200 45390
+django.server INFO 2023-03-27 16:16:11,818 basehttp 22728 11340 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:16:11,979 basehttp 22728 11340 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1880
+django.server INFO 2023-03-27 16:16:13,175 basehttp 22728 11340 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679897771841 HTTP/1.1" 200 569
+django.request ERROR 2023-03-27 16:16:25,659 log 22728 11340 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 16:16:25,700 basehttp 22728 11340 "POST /dict_update HTTP/1.1" 500 82089
+django.request ERROR 2023-03-27 16:16:26,264 log 22728 10604 Internal Server Error: /organism/updateStock/undefined
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2018, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 384, in updateStock
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+django.server ERROR 2023-03-27 16:16:26,264 basehttp 22728 10604 "POST /organism/updateStock/undefined HTTP/1.1" 500 155867
+django.server INFO 2023-03-27 16:18:33,348 basehttp 22728 10604 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:18:33,410 basehttp 22728 10604 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 16:18:33,434 basehttp 22728 10604 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:18:33,441 basehttp 22728 10604 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:18:33,443 basehttp 22728 10604 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:18:33,445 basehttp 22728 936 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:20:49,468 basehttp 22728 936 "GET /organism/FG_0001 HTTP/1.1" 200 45402
+django.server INFO 2023-03-27 16:20:49,496 basehttp 22728 936 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:20:52,383 basehttp 22728 936 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679898049500 HTTP/1.1" 200 569
+django.server INFO 2023-03-27 16:21:15,044 basehttp 22728 936 "GET /organism/FG_0001 HTTP/1.1" 200 45402
+django.server INFO 2023-03-27 16:23:34,437 basehttp 22728 936 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 16:23:34,543 basehttp 22728 936 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:26:22,497 basehttp 22728 936 "GET /organism/FG_0001 HTTP/1.1" 200 45402
+django.server INFO 2023-03-27 16:26:22,542 basehttp 22728 936 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:27:11,931 basehttp 22728 936 "GET /index/ HTTP/1.1" 200 15266
+django.server INFO 2023-03-27 16:27:13,737 basehttp 22728 936 "GET /organism_card HTTP/1.1" 200 156514
+django.server INFO 2023-03-27 16:27:15,396 basehttp 22728 936 "GET /organism/FG_0001 HTTP/1.1" 200 45275
+django.server INFO 2023-03-27 16:27:16,703 basehttp 22728 936 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1679898435431 HTTP/1.1" 200 569
+django.utils.autoreload INFO 2023-03-27 16:28:13,265 autoreload 22728 19792 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:28:14,506 autoreload 4968 18692 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:28:15,332 basehttp 4968 26004 "GET /organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:28:15,353 basehttp 4968 26004 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8718
+django.server INFO 2023-03-27 16:28:17,088 basehttp 4968 26004 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:28:17,206 basehttp 4968 26004 "GET /index/ HTTP/1.1" 200 15259
+django.server INFO 2023-03-27 16:28:19,513 basehttp 4968 26004 "GET /organism_card HTTP/1.1" 200 43593
+django.server INFO 2023-03-27 16:28:21,371 basehttp 4968 26004 "GET /organism/GN_0002 HTTP/1.1" 200 40925
+django.server INFO 2023-03-27 16:28:21,438 basehttp 4968 26004 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:28:22,929 basehttp 4968 26004 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898501432 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:29:00,582 basehttp 4968 26004 "GET /organism/GN_0002 HTTP/1.1" 200 40972
+django.server INFO 2023-03-27 16:29:02,776 basehttp 4968 26004 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898540614 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:29:15,594 log 4968 26004 Internal Server Error: /dict_update
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/dict_update/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+django.server ERROR 2023-03-27 16:29:15,674 basehttp 4968 26004 "POST /dict_update HTTP/1.1" 500 82365
+django.request ERROR 2023-03-27 16:29:15,795 log 4968 15772 Internal Server Error: /organism/updateStock/undefined
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2018, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 384, in updateStock
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+django.server ERROR 2023-03-27 16:29:15,795 basehttp 4968 15772 "POST /organism/updateStock/undefined HTTP/1.1" 500 148741
+django.server INFO 2023-03-27 16:30:54,588 basehttp 4968 15772 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:30:54,618 basehttp 4968 15772 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:30:56,970 basehttp 4968 15772 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898654621 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:31:02,732 log 4968 15772 Internal Server Error: /organism/updateStock/undefined
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2018, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 384, in updateStock
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+django.server ERROR 2023-03-27 16:31:02,732 basehttp 4968 15772 "POST /organism/updateStock/undefined HTTP/1.1" 500 149003
+django.request WARNING 2023-03-27 16:31:23,497 log 4968 15772 Not Found: /organism/FG_0001
+django.server WARNING 2023-03-27 16:31:23,497 basehttp 4968 15772 "GET /organism/FG_0001 HTTP/1.1" 404 6461
+django.server INFO 2023-03-27 16:31:51,465 basehttp 4968 15772 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:31:54,344 basehttp 4968 15772 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:31:57,526 basehttp 4968 15772 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898714378 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:32:04,206 basehttp 4968 15772 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:32:16,354 basehttp 4968 26088 "GET /organism/GN_0002 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:32:16,361 basehttp 4968 26088 "GET /accounts/login/?next=/organism/GN_0002 HTTP/1.1" 200 8727
+django.server INFO 2023-03-27 16:32:16,734 basehttp 4968 26088 "GET /static/css/overideboot.css HTTP/1.1" 200 6108
+django.server INFO 2023-03-27 16:32:16,736 basehttp 4968 26088 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-27 16:32:16,738 basehttp 4968 26088 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-27 16:32:16,741 basehttp 4968 21080 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-27 16:32:16,743 basehttp 4968 26180 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-27 16:32:16,744 basehttp 4968 21080 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-27 16:32:16,749 basehttp 4968 26180 "GET /static/js/create_modal.js HTTP/1.1" 200 372
+django.server INFO 2023-03-27 16:32:16,749 basehttp 4968 21080 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-27 16:32:16,751 basehttp 4968 12084 "GET /static/css/custom.css HTTP/1.1" 200 15874
+django.server INFO 2023-03-27 16:32:16,752 basehttp 4968 12916 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-27 16:32:16,753 basehttp 4968 24100 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-27 16:32:16,755 basehttp 4968 26088 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-27 16:32:16,873 basehttp 4968 26088 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-27 16:32:17,404 basehttp 4968 26088 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-27 16:32:18,717 basehttp 4968 26088 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:32:18,835 basehttp 4968 26088 "GET /index/ HTTP/1.1" 200 15268
+django.server INFO 2023-03-27 16:32:18,870 basehttp 4968 26088 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-27 16:32:20,940 basehttp 4968 26088 "GET /organism_card HTTP/1.1" 200 43602
+django.server INFO 2023-03-27 16:32:20,979 basehttp 4968 26088 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-27 16:32:20,980 basehttp 4968 24100 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-27 16:32:22,182 basehttp 4968 24100 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:32:22,234 basehttp 4968 24100 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-27 16:32:22,262 basehttp 4968 24100 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1880
+django.server INFO 2023-03-27 16:32:23,364 basehttp 4968 24100 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898742258 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:32:28,602 log 4968 24100 Internal Server Error: /organism/updateStock/undefined
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2018, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 384, in updateStock
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+django.server ERROR 2023-03-27 16:32:28,602 basehttp 4968 24100 "POST /organism/updateStock/undefined HTTP/1.1" 500 149003
+django.server INFO 2023-03-27 16:32:47,088 basehttp 4968 24100 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:32:47,111 basehttp 4968 24100 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:32:49,121 basehttp 4968 24100 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898767114 HTTP/1.1" 200 244
+django.utils.autoreload INFO 2023-03-27 16:35:11,409 autoreload 4968 18692 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:35:12,618 autoreload 9088 24788 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:35:23,815 basehttp 9088 936 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:35:23,941 basehttp 9088 936 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1621
+django.server INFO 2023-03-27 16:35:27,968 basehttp 9088 936 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898923853 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:35:31,743 log 9088 936 Internal Server Error: /organism/updateStock/undefined
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2018, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'undefined'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 384, in updateStock
+    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 636, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1421, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1439, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1446, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1532, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1562, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1478, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\fields\__init__.py", line 2020, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got 'undefined'.
+django.server ERROR 2023-03-27 16:35:31,743 basehttp 9088 936 "POST /organism/updateStock/undefined HTTP/1.1" 500 149003
+django.server INFO 2023-03-27 16:36:22,884 basehttp 9088 936 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:36:22,914 basehttp 9088 936 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1615
+django.server INFO 2023-03-27 16:36:27,692 basehttp 9088 936 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679898982919 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:36:35,531 log 9088 936 Internal Server Error: /organism/updateStock/3
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 392, in updateStock
+    data = request.POST.get('data')
+           ^^^^^^^
+NameError: name 'request' is not defined
+django.server ERROR 2023-03-27 16:36:35,533 basehttp 9088 936 "POST /organism/updateStock/3 HTTP/1.1" 500 83095
+django.utils.autoreload INFO 2023-03-27 16:38:06,687 autoreload 9088 24788 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:38:07,964 autoreload 520 24164 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:38:08,954 basehttp 520 6168 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:38:08,988 basehttp 520 6168 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:38:13,269 basehttp 520 6168 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899088993 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:38:19,085 log 520 6168 Internal Server Error: /organism/updateStock/3
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 393, in updateStock
+    data = request.POST.get('data')
+           ^^^^^^^
+NameError: name 'request' is not defined
+django.server ERROR 2023-03-27 16:38:19,087 basehttp 520 6168 "POST /organism/updateStock/3 HTTP/1.1" 500 83090
+django.utils.autoreload INFO 2023-03-27 16:38:40,494 autoreload 520 24164 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:38:41,638 autoreload 5208 27336 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:38:42,594 basehttp 5208 13176 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:38:42,628 basehttp 5208 13176 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:38:44,173 basehttp 5208 13176 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899122635 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:38:49,313 log 5208 13176 Internal Server Error: /organism/updateStock/3
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 394, in updateStock
+    data = request.POST.get('data')
+           ^^^^^^^
+NameError: name 'request' is not defined
+django.server ERROR 2023-03-27 16:38:49,315 basehttp 5208 13176 "POST /organism/updateStock/3 HTTP/1.1" 500 83112
+django.utils.autoreload INFO 2023-03-27 16:39:25,880 autoreload 5208 27336 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:39:27,040 autoreload 15208 20080 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:39:28,196 basehttp 15208 21912 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:39:28,233 basehttp 15208 21912 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:39:29,591 basehttp 15208 21912 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899168235 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:39:34,391 log 15208 21912 Internal Server Error: /organism/updateStock/3
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 394, in updateStock
+    data = request.POST.get('data')
+           ^^^^^^^
+NameError: name 'request' is not defined
+django.server ERROR 2023-03-27 16:39:34,393 basehttp 15208 21912 "POST /organism/updateStock/3 HTTP/1.1" 500 83085
+django.utils.autoreload INFO 2023-03-27 16:39:49,837 autoreload 15208 20080 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:39:51,079 autoreload 20248 15404 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:39:52,115 basehttp 20248 3424 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:39:52,142 basehttp 20248 3424 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:39:53,837 basehttp 20248 3424 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899192150 HTTP/1.1" 200 244
+django.request ERROR 2023-03-27 16:39:57,242 log 20248 3424 Internal Server Error: /organism/updateStock/3
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 396, in updateStock
+    object_.n_left=int(data["value"])
+                       ~~~~^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+django.server ERROR 2023-03-27 16:39:57,243 basehttp 20248 3424 "POST /organism/updateStock/3 HTTP/1.1" 500 83308
+django.utils.autoreload INFO 2023-03-27 16:42:12,118 autoreload 20248 15404 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:42:13,172 autoreload 23952 27104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-27 16:42:16,604 autoreload 23952 27104 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-03-27 16:42:17,702 autoreload 10488 14496 Watching for file changes with StatReloader
+django.server INFO 2023-03-27 16:42:19,163 basehttp 10488 8644 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:42:19,191 basehttp 10488 8644 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-03-27 16:42:20,681 basehttp 10488 8644 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899339195 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:42:24,659 basehttp 10488 8644 "POST /organism/updateStock/3 HTTP/1.1" 200 21
+django.server INFO 2023-03-27 16:42:29,946 basehttp 10488 8644 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:42:31,512 basehttp 10488 8644 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899349980 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:47:34,584 basehttp 10488 10492 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:47:34,682 basehttp 10488 10492 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1641
+django.server INFO 2023-03-27 16:47:44,530 basehttp 10488 10492 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:47:46,812 basehttp 10488 10492 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899664564 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:47:55,946 basehttp 10488 10492 "POST /organism/updateStock/3 HTTP/1.1" 200 21
+django.server INFO 2023-03-27 16:48:16,820 basehttp 10488 10492 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:48:16,837 basehttp 10488 10492 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1750
+django.server INFO 2023-03-27 16:48:20,882 basehttp 10488 10492 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899696841 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:48:40,846 basehttp 10488 17752 "GET /organism/FG_0001 HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:48:40,855 basehttp 10488 17752 "GET /accounts/login/?next=/organism/FG_0001 HTTP/1.1" 200 8727
+django.server INFO 2023-03-27 16:48:40,873 basehttp 10488 17752 "GET /static/css/overideboot.css HTTP/1.1" 200 6108
+django.server INFO 2023-03-27 16:48:40,873 basehttp 10488 6796 "GET /static/css/custom.css HTTP/1.1" 200 15874
+django.server INFO 2023-03-27 16:48:40,880 basehttp 10488 4288 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-27 16:48:40,883 basehttp 10488 16936 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-27 16:48:40,885 basehttp 10488 852 "GET /static/js/sorting_table.js HTTP/1.1" 200 832
+django.server INFO 2023-03-27 16:48:40,886 basehttp 10488 25092 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-27 16:48:40,892 basehttp 10488 17752 "GET /static/js/editableTable.js HTTP/1.1" 200 623
+django.server INFO 2023-03-27 16:48:40,892 basehttp 10488 6796 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-27 16:48:40,902 basehttp 10488 4288 "GET /static/js/create_modal.js HTTP/1.1" 200 372
+django.server INFO 2023-03-27 16:48:40,902 basehttp 10488 852 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-27 16:48:40,904 basehttp 10488 25092 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-27 16:48:40,911 basehttp 10488 16936 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-27 16:48:41,105 basehttp 10488 16936 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-27 16:48:41,900 basehttp 10488 16936 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-03-27 16:48:43,413 basehttp 10488 16936 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-03-27 16:48:43,529 basehttp 10488 16936 "GET /index/ HTTP/1.1" 200 15268
+django.server INFO 2023-03-27 16:48:43,561 basehttp 10488 16936 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-03-27 16:48:46,408 basehttp 10488 16936 "GET /drug_card HTTP/1.1" 200 35140
+django.server INFO 2023-03-27 16:48:46,455 basehttp 10488 16936 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-03-27 16:48:46,455 basehttp 10488 25092 "GET /static/js/resizebar.js HTTP/1.1" 200 861
+django.server INFO 2023-03-27 16:48:46,530 basehttp 10488 25092 "GET /static/images/AMD00002.svg HTTP/1.1" 200 324
+django.server INFO 2023-03-27 16:48:46,540 basehttp 10488 16936 "GET /static/images/AMD00003.svg HTTP/1.1" 200 324
+django.server WARNING 2023-03-27 16:48:46,584 basehttp 10488 16936 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server INFO 2023-03-27 16:48:50,219 basehttp 10488 25092 "GET /organism_card HTTP/1.1" 200 43602
+django.server INFO 2023-03-27 16:48:51,531 basehttp 10488 25092 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:48:51,564 basehttp 10488 25092 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.server INFO 2023-03-27 16:48:51,596 basehttp 10488 25092 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1750
+django.server INFO 2023-03-27 16:48:54,065 basehttp 10488 25092 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899731586 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:49:03,821 basehttp 10488 25092 "POST /organism/updateStock/3 HTTP/1.1" 200 21
+django.server INFO 2023-03-27 16:49:40,322 basehttp 10488 25092 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:49:40,349 basehttp 10488 25092 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1752
+django.server INFO 2023-03-27 16:49:42,494 basehttp 10488 25092 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899780352 HTTP/1.1" 200 244
+django.server INFO 2023-03-27 16:49:54,178 basehttp 10488 25092 "POST /organism/updateStock/3 HTTP/1.1" 200 21
+django.server INFO 2023-03-27 16:50:14,355 basehttp 10488 25092 "GET /organism/GN_0002 HTTP/1.1" 200 40981
+django.server INFO 2023-03-27 16:50:14,389 basehttp 10488 25092 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1699
+django.server INFO 2023-03-27 16:50:17,376 basehttp 10488 25092 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899814391 HTTP/1.1" 200 12
+django.server INFO 2023-03-27 16:50:22,356 basehttp 10488 25092 "GET /stocklist/GN_0002_01?Batch_id=GN_0002_01&_=1679899814392 HTTP/1.1" 200 12
+django.server INFO 2023-03-27 16:50:32,025 basehttp 10488 25092 "GET /organism_card HTTP/1.1" 200 43602
+django.server INFO 2023-03-27 16:50:33,224 basehttp 10488 25092 "GET /organism/GN_0001 HTTP/1.1" 200 42823
+django.server INFO 2023-03-27 16:50:33,257 basehttp 10488 25092 "GET /static/js/editablerow_stock.js HTTP/1.1" 200 1699
+django.server INFO 2023-03-27 16:50:34,490 basehttp 10488 25092 "GET /stocklist/2?Batch_id=2&_=1679899833277 HTTP/1.1" 200 12
+django.server INFO 2023-03-27 16:50:35,952 basehttp 10488 25092 "GET /stocklist/GN_0001_01?Batch_id=GN_0001_01&_=1679899833278 HTTP/1.1" 200 245
+django.server INFO 2023-03-27 16:50:43,486 basehttp 10488 25092 "POST /organism/updateStock/6 HTTP/1.1" 200 21
