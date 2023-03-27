@@ -106,6 +106,8 @@ class Organism(AuditModel):
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
+        'source':"Source",
+        'source_code':"Source Code",
         'strain_panel':'Panel',
         'res_property':'Phenotype',  
         'gen_property':'Genotype', 
@@ -142,6 +144,9 @@ class Organism(AuditModel):
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Purchase Order")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_MTA+")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -166,6 +171,7 @@ class Organism(AuditModel):
             models.Index(name="org_stcode_idx", fields=['strain_code']),
             models.Index(name="org_strainid_idx", fields=['strain_type']),
             models.Index(name="org_stpanel_idx", fields=['strain_panel']),
+            models.Index(name="org_source_idx", fields=['source']),
             models.Index(name="org_taxid_idx", fields=['tax_id']),
             models.Index(name="org_riskgrp_idx", fields=['risk_group']),
             models.Index(name="org_pathgrp_idx", fields=['pathogen_group']),
@@ -240,8 +246,8 @@ class Organism_Batch(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
-        "supplier":"Supplier",
-        "supplier_code":"Supplier Code",
+#        "supplier":"Supplier",
+#        "supplier_code":"Supplier Code",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
         "qc_status":"QC_Status",
@@ -263,9 +269,9 @@ class Organism_Batch(AuditModel):
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_QC+")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
-    supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
-    supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
-    supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
+    # supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
+    # supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
+    # supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=True) 
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", editable=False, default=list) 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
@@ -447,18 +453,21 @@ class Organism_Culture(AuditModel):
 
     Choice_Dictionary = {
         'culture_type':'Culture_Type',
-        'media_use':'Media_Use',
+        'culture_source':'Culture_Source',
     }
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id+")
-    culture_type = models.CharField(max_length=120, blank=True, verbose_name = "Culture Type") 
-    media_use = models.CharField(max_length=120, blank=True, verbose_name = "Media Use") 
+    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
+        db_column="culture_type", related_name="%(class)s_culture_type+")
+    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
+        db_column="culture_source", related_name="%(class)s_culture_source+")
+
     media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
     labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
-    notes = models.CharField(max_length=512,blank=True, verbose_name = "Media") 
+    notes = models.CharField(max_length=512,blank=True, verbose_name = "Culture Notes") 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
