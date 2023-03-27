@@ -116,7 +116,7 @@ class Batchfilter(Filterbase):
     Stock_Date=django_filters.IsoDateTimeFilter(field_name='stock_date')
     class Meta:
         model=Organism_Batch
-        fields= ["supplier","supplier_code","supplier_po", "stock_date",  "biologist"]
+        fields= ["stock_date",  "biologist"]
 
 
 

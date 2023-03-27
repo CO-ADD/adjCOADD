@@ -22,6 +22,9 @@ from adjcoadd.constants import *
 from .forms import Permission_Choices
 from .models import Dictionary, ApplicationUser
 
+import logging
+logger = logging.getLogger(__name__)
+
 # ==========utilized in Create User folder under /uploads ==========
 def file_location(req):
     location=settings.MEDIA_ROOT+'/'+str(req.user)
@@ -62,37 +65,57 @@ class Validation_Log():
         self.logProcess = logProcess
         self.logTypes = logTypes
         self.nLogs = {}
-        self.Logs={}
+        self.Logs  = {}
+        self.Info  = {}
 
         for t in self.logTypes:
             self.nLogs[t] = 0
             self.Logs[t] = []
            
 
-    def add_log(self, logType, logDesc, logItem, logHelp):
+    def add_log(self, logType, logDesc, logItem, logHelp, ):
         lDict = {
             'Process': self.logProcess, 
             'Description': logDesc, 
             'Item': str(logItem), 
             'Help': logHelp,
-            'Time': datetime.now() }
+#            'Time': datetime.now() 
+            }
         logType = logType[0].upper()+logType[1:].lower()
         if logType in self.logTypes:
             self.Logs[logType].append(lDict)
             self.nLogs[logType] = self.nLogs[logType] + 1
-        
-    def show(self,logTypes= ['Error','Warning', 'Info']):
-        info={} #info=[]
+
+    def select_unique(self,logTypes= ['Error','Warning', 'Info']):
+        uLogs={}
         for t in logTypes:
-            # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
-            info[t]=[]
+            uLogs[t]=[]
             for l in self.Logs[t]:
-                print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
+                flAdd=False
+                if len(uLogs[t])<1:
+                    flAdd=True
+                else:
+                    flAdd=True
+                    for u in uLogs[t]:
+                        if u == l:
+                            flAdd=False
+                if flAdd:
+                    uLogs[t].append(l)
+        self.Logs = uLogs
+
+    def info(self,logTypes= ['Error','Warning', 'Info']):
+        self.info={}
+        for t in logTypes:
+            self.info[t]=[]
+            for l in self.Logs[t]:
                 description=str(l['Description']).replace("'", "").replace('"', '')
                 print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
-                info[t].append(print_info) # info.append(print_info)
-       
-        return info
+                self.info[t].append(print_info) 
+
+    def show(self,logTypes= ['Error','Warning', 'Info']):
+        for t in logTypes:
+            for l in self.Logs[t]:
+                logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
 
 
 
@@ -170,6 +193,7 @@ class Dictionaryfilter(Filterbase):
     dict_class = django_filters.ChoiceFilter(choices=[])
     dict_value = django_filters.CharFilter(lookup_expr='icontains')
     #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).order_by().values('dict_class').distinct()]

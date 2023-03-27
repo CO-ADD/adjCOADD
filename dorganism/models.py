@@ -104,6 +104,9 @@ class Organism(AuditModel):
         'strain_panel':'Panel',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
+        'source':"Source",
+        'source_code':"Source Code",
+        'strain_panel':'Panel',
         'res_property':'Phenotype',  
         'gen_property':'Genotype', 
         'biologist':'Biologist',
@@ -139,6 +142,9 @@ class Organism(AuditModel):
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Purchase Order")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_MTA+")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -163,6 +169,7 @@ class Organism(AuditModel):
             models.Index(name="org_stcode_idx", fields=['strain_code']),
             models.Index(name="org_strainid_idx", fields=['strain_type']),
             models.Index(name="org_stpanel_idx", fields=['strain_panel']),
+            models.Index(name="org_source_idx", fields=['source']),
             models.Index(name="org_taxid_idx", fields=['tax_id']),
             models.Index(name="org_riskgrp_idx", fields=['risk_group']),
             models.Index(name="org_pathgrp_idx", fields=['pathogen_group']),
@@ -237,8 +244,8 @@ class Organism_Batch(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
-        "supplier":"Supplier",
-        "supplier_code":"Supplier Code",
+#        "supplier":"Supplier",
+#        "supplier_code":"Supplier Code",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
         "qc_status":"QC_Status",
@@ -260,9 +267,9 @@ class Organism_Batch(AuditModel):
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_QC+")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
-    supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
-    supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
-    supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
+    # supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
+    # supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
+    # supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=True) 
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", editable=False, default=list) 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
@@ -276,7 +283,7 @@ class Organism_Batch(AuditModel):
         indexes = [
             models.Index(name="orgbatch_orgbatch_idx",fields=['organism_id','batch_id']),
             models.Index(name="orgbatch_qc_idx",fields=['qc_status']),
-            models.Index(name="orgbatch_supp_idx",fields=['supplier']),
+            # models.Index(name="orgbatch_supp_idx",fields=['supplier']),
             models.Index(name="orgbatch_sdate_idx",fields=['stock_date']),
             models.Index(name="orgbatch_slevel_idx",fields=['stock_level']),
         ]
@@ -350,10 +357,15 @@ class OrgBatch_Stock(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS={
         "orgbatch_id":"OrgBatch ID",
-        "stock_id":"Stock ID",
-        "stock_note":"Stock Note",
         "stock_type":"Stock Type",
+        "n_created":"#C",
+        "n_left":"#L",
+        "location_freezer": "Freezer",
+        "location_rack": "Rack",
+        "location_column": "Column",
+        "location_slot": "Slot",
         "stock_date":"Stock Date",
+        "stock_note":"Stock Note",
         "biologist":"Biologist"
     }
 
@@ -361,7 +373,7 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
@@ -369,11 +381,11 @@ class OrgBatch_Stock(AuditModel):
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
     location_slot = models.CharField(max_length=10, blank=True, verbose_name = "Slot")
-    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
+    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock_type+")
-    stock_date = models.DateField(verbose_name = "Stock Date")
-    stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
-    n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
+    stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
+    #stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
+    n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
@@ -388,7 +400,7 @@ class OrgBatch_Stock(AuditModel):
             models.Index(name="orgbstock_freezer_idx",fields=['location_freezer']),
             models.Index(name="orgbstock_stdate_idx",fields=['stock_date']),
             models.Index(name="orgbstock_nleft_idx",fields=['n_left']),
-            models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
+            #models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
         ]
 
     #------------------------------------------------
@@ -435,7 +447,7 @@ class Organism_Culture(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
         "organism_id":"Organism ID",
-        "culture_type":"Culture Type",
+        "culture_type":"Culture_Type",
         "media_use":"Media Use",
         "atmosphere":"Atmosphere",
         "temperature":"Temperature",
@@ -446,18 +458,20 @@ class Organism_Culture(AuditModel):
 
     Choice_Dictionary = {
         'culture_type':'Culture_Type',
-        'media_use':'Media_Use',
+        'culture_source':'Culture_Source',
     }
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id+")
-    culture_type = models.CharField(max_length=120, blank=True, verbose_name = "Culture Type") 
-    media_use = models.CharField(max_length=120, blank=True, verbose_name = "Media Use") 
-    media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
+        db_column="culture_type", related_name="%(class)s_culture_type+")
+    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
+        db_column="culture_source", related_name="%(class)s_culture_source+")
+    media_use = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
     labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
-    notes = models.CharField(max_length=512,blank=True, verbose_name = "Media") 
+    notes = models.CharField(max_length=512,blank=True, verbose_name = "Culture Notes") 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
@@ -476,6 +490,19 @@ class Organism_Culture(AuditModel):
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
     # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_CULTR_FIELDs):
-    #    value_list=super(Organism_Culture, self).get_values(fields)
-    #    return value_list
+    def save(self, *args, **kwargs):
+        
+        culture_type=kwargs.pop("culture_type", None)
+        culture_source=kwargs.pop("culture_source", None)
+        if not self.culture_type and not self.culture_source:
+            try:
+                self.culture_type=Dictionary.objects.get(dict_value=culture_type)
+                self.culture_source=Dictionary.objects.get(dict_value=culture_source)
+                super().save(*args, **kwargs)
+            except Exception as error:
+                print(error)
+                return error
+        else:
+            super().save(*args, **kwargs)
+
+        

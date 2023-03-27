@@ -286,7 +286,7 @@ def updateBatch(req, pk):
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
         print(qd["orgbatch_id"])
-        object_batch=get_object_or_404(Organism_Batch, orgbatch_id=qd["orgbatch_id"])
+        object_batch=object_ 
         form=Batchupdate_form(data=qd, instance=object_batch, )
         
         if form.is_valid():
@@ -319,13 +319,14 @@ def deleteBatch(req, pk):
 
 ############################################### Stock View ###########################################
 
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
 def stockList(req, pk):
-    # if req.headers.get('x-requested-with') == 'XMLHttpRequest':
+    # if req.headers.get('x-requested-with') == 'XMLHttpRequest':\
+    print(pk)
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
-        print(batch_id)
+        print(f'bactch id {batch_id}')
         object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
         qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1) # n_left show when bigger or equal to 2
         data=[]
@@ -385,7 +386,20 @@ def updateStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
     form=Stock_form(instance=object_)
+    print(pk)
     #-------------------------------------------------------------------------
+    if req.method == 'POST' and req.headers.get('x-requested-with') == 'XMLHttpRequest':
+        print("start...")
+        # process the data sent in the AJAX request
+      
+        n_left_value=req.POST.get('value')
+        print(n_left_value)
+        object_.n_left=int(n_left_value)
+        
+        object_.save(**kwargs)
+        print("saved")
+        response_data = {'result': 'success'}
+        return JsonResponse(response_data)
     if req.method=='POST':
         form=Stock_form(req.POST, instance=object_)
         if "cancel" in req.POST:
@@ -437,10 +451,19 @@ def createCulture(req):
         Organism_Id=req.POST.get('search_organism')
         form=Culture_form(Organism_Id, req.POST)
         if form.is_valid():
+            print(f'the type is : {req.POST.get("culture_type")}')
+            culture_type=req.POST.get("culture_type")
+            kwargs['culture_type']=culture_type
+            print(f'the source is {req.POST.get("culture_source")}')
+            culture_source=req.POST.get("culture_source")
+            kwargs['culture_source']=culture_source
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    instance.save(**kwargs)
+                    message=instance.save(**kwargs)
+                    
+                    if type(message)==Exception:
+                        messages.error(req, f'{message} happes')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -465,8 +488,8 @@ def updateCulture(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
-        object_culture=get_object_or_404(Organism_Culture, pk=pk)
-        form=Cultureupdate_form(data=qd, instance=object_culture, )
+        object_culture=object_
+        form=Cultureupdate_form(data=qd, instance=object_culture )
         
         if form.is_valid():
             kwargs={}

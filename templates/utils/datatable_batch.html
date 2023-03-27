@@ -25,6 +25,7 @@
 
 {%load static%}
 <script type="text/javascript" src="{% static 'js/create_modal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/editablerow_stock.js' %}"></script>
 
 <script>
   $(document).ready(function () {
@@ -89,11 +90,27 @@
         { title: "Slot", data: "location_slot" },
 
         { title: "Stock Date", data: "stock_date", type: "datetime" },
-        { title: "Left", data: "n_left" },
+        { title: "Left", 
+          data: "n_left",
+          className:"editablerow_stock",
+         
+        },
         { title: "Created", data: "n_created" },
         { title: "Note", data: "stock_notes" },
         { title: "Biologist", data: "biologist" },
       ],
+      columnDefs: [
+    {
+      targets: [7],
+      createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
+        if (colIndex === 7) {
+          var dataValue = rowData.stock_id;
+          $(cell).attr('data-name', dataValue);
+          $(cell).attr('data-type', 'n_left');
+        }
+      }
+    }
+  ],
       // select: true,
       searching: false,
       paging: false,
