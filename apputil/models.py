@@ -74,7 +74,7 @@ class ApplicationUser(AbstractUser):
         _Permissions = {
             'Read':1,
             'Write':2,
-            'Delete':3,
+            # 'Delete':3,
             'Admin':10,
         }
         if strPermission in _Permissions:
