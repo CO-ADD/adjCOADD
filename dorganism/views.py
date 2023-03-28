@@ -70,7 +70,6 @@ def createTaxonomy(req):
     
 # ====================================================Update in Form===========================================
 @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateTaxonomy(req, slug=None):
     object_=get_object_or_404(Taxonomy, urlname=slug)
     kwargs={}
@@ -174,7 +173,6 @@ def detailOrganism(req, pk):
 
 #======================================================================Update Organism=================================================================================
 @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
@@ -273,7 +271,7 @@ def createBatch(req):
 # ---------------------------------------------------------------------------------------------
 from django.http import QueryDict
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def updateBatch(req, pk):
     object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
     kwargs={}
@@ -379,7 +377,7 @@ def createStock(req):
     return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, }) 
 
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def updateStock(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     print(object_)
@@ -393,8 +391,8 @@ def updateStock(req, pk):
         # process the data sent in the AJAX request
       
         n_left_value=req.POST.get('value')
-        print(n_left_value)
-        object_.n_left=int(n_left_value)
+        object_.n_left=int(n_left_value)-1
+        print(object_.n_left)
         
         object_.save(**kwargs)
         print("saved")
@@ -476,7 +474,7 @@ def createCulture(req):
 # ---------------------------------------------------------------------------------------------
 from django.http import QueryDict
 
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def updateCulture(req, pk):
     object_=get_object_or_404(Organism_Culture, id=pk)
     kwargs={}

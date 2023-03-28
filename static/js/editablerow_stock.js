@@ -1,19 +1,21 @@
 $(document).ready(function () {
-  $(document).on("dblclick", ".editablerow_stock", function () {
+  $(document).on("click", ".editablerow_stock", function () {
     console.log("editable stock...");
     var value = $(this).text();
     var input =
-      "<input type='number' class='input-data' min='0' onkeydown='if(event.keyCode==38) return false;' value='" + value + "' />"+"<button>cancel</button>";
+      "<p class='input-data'>Are you sure: " + value + " (n_left) - 1? </p>" + "<button data-value='" + value + "' class='btn_cancel btn btn-small border border-0'><i class='fa-solid fa-xmark'></i></button>" + "<button data-value='" + value + "' class='btn_ok btn btn-small border border-0'><i class='fa-solid fa-check'></i></button>";
     $(this).html(input);
-    
+
     $(this).removeClass("editablerow_stock");
   });
 
-  $(document).on("blur", ".input-data", function () {
-    var value = $(this).val().trim();
+  $(document).on("click", ".btn_ok", function () {
+    console.log("button ok")
+    var value = Number($(this).data('value')) - 1;
     var td = $(this).parent("td");
     $(this).remove();
-    td.html(value);
+    $(this).closest('button').remove();
+    td.html(value.toString());
     td.addClass("editablerow_stock");
     var name = td.data("name");
     var type = td.data("type");
@@ -21,19 +23,16 @@ $(document).ready(function () {
     console.log(data);
     sendToServer(data, td);
   });
-  $(document).on("keypress", ".input-data", function (e) {
-    if (e.keyCode === 13) {
-      var value = $(this).val().trim();
-      var td = $(this).parent("td");
-      $(this).remove();
-      td.html(value);
-      td.addClass("editablerow_stock");
-      var name = td.data("name");
-      var type = td.data("type");
-      data = { name: name, type: type, value: value };
-      console.log(data);
-      sendToServer(data, td);
-    }
+  $(document).on("click", ".btn_cancel", function (e) {
+    var value = $(this).data('value');
+    var td = $(this).parent("td");
+    $(this).remove();
+    $(this).closest('button').remove();
+    td.html(value);
+    console.log(value)
+    td.addClass("editablerow_stock");
+
+
   });
 
   const csrftoken = getCookie("csrftoken");

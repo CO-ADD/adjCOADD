@@ -14,15 +14,16 @@
       {% csrf_token %}
 
       <p>Are you sure you want to delete this entry {{entry}}?</p>
-
-      <input class="btn btn-outline-secondary" type="submit" value="Confirm" />
-      <button
-        type="button"
-        class="btn btn-outline-secondary"
-        data-bs-dismiss="modal"
-      >
-        Close
-      </button>
+      <!--prettier-ignore-->
+      {%if model_name == 'Dictionary'%}
+     <div class="d-inline-block" data-name="{{title}}" data-type="deleteDict">
+        <button class="card-link text-danger fs-6" onclick="window.location.reload(true);"><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
+      </div>
+      {%else%}
+      {%include 'utils/miscellaneous/save_btn.html'%}
+      
+      {%endif%}
+      {%include 'utils/miscellaneous/cancel_btn.html'%}
     </form>
   </div>
   <div class="modal-footer"></div>

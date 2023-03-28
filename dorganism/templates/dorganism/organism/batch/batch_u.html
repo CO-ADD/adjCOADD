@@ -1,8 +1,8 @@
 <tr hx-trigger="cancel" class="editing" hx-get="{%url 'org_detail' object.organism_id.pk %}">
   <!-- <td></td> -->
   <td>
-    <button class="border border-0 bg-transparent" type="submit" value="update" hx-put="{%url 'batch_update' pk=object.pk%}"
-      hx-include="closest tr" hx-trigger="click" >
+    <button class="border border-0 bg-transparent" type="submit" value="update"
+      hx-put="{%url 'batch_update' pk=object.pk%}" hx-include="closest tr" hx-trigger="click">
       <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
     </button>
     {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
@@ -12,8 +12,7 @@
   <td>{{form.batch_id}}</td>
   <td>{{form.batch_notes}}</td>
   <td>{{form.qc_status}}</td>
-  <td>{{form.supplier}}</td>
-  <td>{{form.supplier_code}}</td>
+
   <td>{{form.stock_date}}</td>
   <td>{{form.stock_level}}</td>
   <td>{{form.biologist}}</td>
