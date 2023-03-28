@@ -5,7 +5,7 @@
 
 <!-- Include -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html' with list_url='dict_view' card_url='dict_view' create_object='createDict' create_objectModal='createDictModal'%}
+  {%include 'utils/leftbar.html' with list_url='dict_view' card_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
@@ -18,10 +18,10 @@
       <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
         <thead>
           <tr>
+            <th class="text-danger" style="width: 5px"></th>
             {%for field in fields%}
             <th class="order_field" style="width: fit-content">{{field}}</th>
             {%endfor%}
-            <th class="text-danger" style="width: 5px"></th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
 
 <script>
   $(document).ready(function () { });
-  $('[data-type="deleteDict"] a').click(function () {
+  $('[data-type="deleteDict"] button').click(function () {
     console.log("click");
     var td = $(this).parent();
     var dict_value = td.data("name");
@@ -76,4 +76,8 @@
 </script>
 {%load static%}
 <script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
+<script>
+  var table = document.getElementsByTagName('table')[0];
+  resizableGrid(table);
+</script>
 {%endblock%}

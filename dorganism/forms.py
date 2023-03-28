@@ -31,8 +31,12 @@ class CreateOrganism_form(ModelForm):
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true',})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
+        self.fields['oxygen_pref'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0)
+        self.fields['risk_group'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0)
+        self.fields['pathogen_group'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0)
         self.fields['mta_status'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0)
-              
+        self.fields['lab_restriction'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction'], astatus__gte=0)
+        
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
@@ -53,6 +57,11 @@ class UpdateOrganism_form(CreateOrganism_form):
 class Taxonomy_form(forms.ModelForm):
     org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0), widget=forms.Select(attrs={'class':'form-select'}))
     division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0))
+    
+    def __init__(self, organism_name=None, *args, **kwargs):
+        self.fields['org_class'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['org_class'], astatus__gte=0)
+        self.fields['division'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['division'], astatus__gte=0)
+
     class Meta:
         model =Taxonomy
         exclude=['urlname']
@@ -63,9 +72,13 @@ class Taxonomy_form(forms.ModelForm):
 class Batch_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0),required=False,)
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
     def __init__(self, organism_id_str=None, *args, **kwargs):
         self.organism_id_str=organism_id_str
         super(Batch_form, self).__init__(*args, **kwargs)
+        
+
       
               
     def clean_organism_id(self):       
@@ -84,6 +97,9 @@ class Batch_form(forms.ModelForm):
 class Batchupdate_form(forms.ModelForm):
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0),required=False,)
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
+
     class Meta:
         model =Organism_Batch
         fields=list(model.HEADER_FIELDS.keys())
@@ -94,11 +110,13 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Form-------------------------------
 class Stock_createform(forms.ModelForm):
     n_left_extra=forms.IntegerField(required=True)  
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model =OrgBatch_Stock
         exclude=['n_left']
 
 class Stock_form(forms.ModelForm):
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
@@ -133,7 +151,10 @@ class Culture_form(forms.ModelForm):
 class Cultureupdate_form(forms.ModelForm):
     # 
  
-    # 
+    def __init__(self, organism_id=None, *args, **kwargs):
+        super(Culture_form, self).__init__(*args, **kwargs)
+        self.fields['culture_type'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0)
+        self.fields['culture_source'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0)
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 

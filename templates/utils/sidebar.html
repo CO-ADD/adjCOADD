@@ -1,7 +1,5 @@
 <div class="sidebar card-text me-2">
-    <div style="height:fit-content; width: 200px;">
-        {{filterset | default_if_none:"&nbsp;"}}
-    </div>
+
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
 
@@ -28,26 +26,32 @@
                 &nbsp; entries on one Page
             </span>
         </div>
+        <hr>
+        <div style="height:fit-content; width: 200px;">
+            {{filterset | default_if_none:"&nbsp;"}}
+        </div>
 
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column" id="Django-form-filter-items">
 
             <label for="smiles_query" class="not-visible">Substructure Query</label>
             <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
             <hr>
-            
-            
+
+
             {%for field in filter.form%}
-            <button id="btn_{{field.name|safe}}" class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6" type="button" data-bs-toggle="collapse"
-            data-bs-target="#{{field.name|safe}}" aria-expanded="false" aria-controls="{{field.label}}">
-            {{field.label}}
+            <button id="btn_{{field.name|safe}}"
+                class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6"
+                type="button" data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
+                aria-controls="{{field.label}}">
+                {{field.label}}
             </button>
-          <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
-            <div class="accordion-body bg-light m-2 px-1 py-1">
-                <strong>{{field}}</strong>
+            <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
+                <p class="accordion-body bg-transparent m-2 px-1 py-1">
+                    {{field}}
+                </p>
             </div>
-           </div>
-             {%endfor%}
+            {%endfor%}
         </div>
 
     </form>
@@ -68,6 +72,7 @@
         console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
         form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
+        console.log(form.querySelectorAll('p input'))
         form.querySelectorAll('select option').forEach(item => item.removeAttribute("selected"))
         form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"))
         form.querySelectorAll('input[type=checkbox]').forEach(item => item.removeAttribute("checked"))
@@ -77,9 +82,6 @@
 
 <script>
     $(document).ready(function () {
-        
-       
-       
 
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
         $("#filter-apply").on("click", function () {

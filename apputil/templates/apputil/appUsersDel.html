@@ -1,10 +1,5 @@
-<a
-  class="card-link text-danger fs-6"
-  data-bs-toggle="modal"
-  data-bs-target="#user_del{{object.pk}}"
->
-  <i class="fa fa-trash"></i>
-</a>
+<!-- trigger modal -->
+{%include 'utils/miscellaneous/delete_btn.html' with target='#user_del'|add:object.pk %}
 <div
   class="modal fade"
   id="user_del{{object.pk}}"

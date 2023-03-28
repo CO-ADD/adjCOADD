@@ -1,7 +1,5 @@
 <!-- trigger modal -->
-<button class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#modal-default{{object_cultr.pk}}">
-  <i class="fa-regular fa-trash-can"></i>
-</button>
+{%include 'utils/miscellaneous/delete_btn.html' with target='#modal-default'|add:object_cultr.pk %}
 
 <!-- Modal -->
 <div class="modal fade" id="modal-default{{object_cultr.pk}}" data-bs-backdrop="static" data-bs-keyboard="false"

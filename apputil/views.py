@@ -72,6 +72,7 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     model=ApplicationUser
     template_name = 'apputil/appUsers.html'  
     filterset_class = AppUserfilter
+    model_fields=model.HEADER_FIELDS
 
 
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
@@ -116,6 +117,7 @@ class DictionaryView(LoginRequiredMixin, FilteredListView):
     model=Dictionary
     template_name='apputil/dictList.html'
     filterset_class = Dictionaryfilter
+    model_fields=model.HEADER_FIELDS
 
     
 # 

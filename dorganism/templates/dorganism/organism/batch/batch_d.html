@@ -1,8 +1,5 @@
 <!-- trigger modal -->
-<button class="text-danger border-0 bg-transparent" data-bs-toggle="modal"
-  data-bs-target="#modal-default{{object_batch}}">
-  <i class="fa-regular fa-trash-can bg-transparent"></i>
-</button>
+{%include 'utils/miscellaneous/delete_btn.html' with target='#modal-default'|add:object_batch %}
 
 <!-- Modal -->
 <div class="modal fade" id="modal-default{{object_batch}}" data-bs-backdrop="static" data-bs-keyboard="false"

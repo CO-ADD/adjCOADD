@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>
-        Stock
 
       </th>
       <!-- <th style="width: 10em">EDIT</th> -->
@@ -28,12 +27,32 @@
 <script type="text/javascript" src="{% static 'js/editablerow_stock.js' %}"></script>
 
 <script>
+  // Define permission
+  const user_permission = '{{user.permission}}'
+  var defaultContent = (data, type, row) => {
+    console.log(user_permission)
+    return user_permission == 'Admin' ?
+      (`<button id="update_stock" class="text-success border-0"> <i class="fa-regular fa-pen-to-square"></i></button>` +
+        '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
+        "&nbsp; " +
+        `<button id="delete_stock" class="border-0"> <i class="fa-regular fa-trash-can"></i></button>` +
+        '<div id="deleteStockModal" class="modal " role="dialog"></div>')
+      :
+      (`<button class="text-secondary border-0" disabled> <i class="fa-regular fa-pen-to-square"></i></button>` +
+        '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
+        "&nbsp; " +
+        `<button class="border-0" disabled> <i class="fa-regular fa-trash-can"></i></button>` +
+        '<div id="deleteStockModal" class="modal " role="dialog"></div>')
+
+  }
+
+
   $(document).ready(function () {
     // Table Batch
     var table = $("#datatable_batch").DataTable({
       searching: false,
       paging: false,
-      info:false
+      info: false
     });
 
     const csrftoken = getCookie("csrftoken");
@@ -60,6 +79,7 @@
 
     // Display it the child row
     row.child(table).show();
+
     // Initialise as a DataTable
     var usersTable = table.DataTable({
       dom: "Bfrtip",
@@ -70,18 +90,14 @@
         headers: { "X-CSRFToken": csrftoken },
         data: { Batch_id },
       },
+
       columns: [
         // { title: "Stock ID", data: "stock_id" },
         {
-          title: `Add New <a class="card-link" id="create_stock"><i class="bi bi-file-earmark-plus text-success"></i></a>
+          "title": `Add New <a class="card-link" id="create_stock"><i class="bi bi-file-earmark-plus text-success"></i></a>
         <div id="createStockModal" class="modal fade" role="dialog"></div> `,
-          data: null,
-          defaultContent:
-            `<button id="update_stock" class="text-success border-0"> <i class="fa-regular fa-pen-to-square"></i></button>` +
-            '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
-            "&nbsp; " +
-            `<button id="delete_stock" class="border-0"> <i class="fa-regular fa-trash-can"></i></button>` +
-            '<div id="deleteStockModal" class="modal " role="dialog"></div>',
+          "data": null,
+          "defaultContent": defaultContent()
         },
         { title: "Type", data: "stock_type" },
         { title: "Freezer", data: "location_freezer" },
@@ -90,31 +106,32 @@
         { title: "Slot", data: "location_slot" },
 
         { title: "Stock Date", data: "stock_date", type: "datetime" },
-        { title: "Left", 
+        {
+          title: "Left",
           data: "n_left",
-          className:"editablerow_stock",
-         
+          className: "editablerow_stock n_left_column",
+
         },
         { title: "Created", data: "n_created" },
         { title: "Note", data: "stock_notes" },
         { title: "Biologist", data: "biologist" },
       ],
       columnDefs: [
-    {
-      targets: [7],
-      createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
-        if (colIndex === 7) {
-          var dataValue = rowData.stock_id;
-          $(cell).attr('data-name', dataValue);
-          $(cell).attr('data-type', 'n_left');
+        {
+          targets: [7],
+          createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+            if (colIndex === 7) {
+              var dataValue = rowData.stock_id;
+              $(cell).attr('data-name', dataValue);
+              $(cell).attr('data-type', 'n_left');
+            }
+          }
         }
-      }
-    }
-  ],
+      ],
       // select: true,
       searching: false,
       paging: false,
-      info:false
+      info: false
     });
     loadOrganismModal("#createStockModal", "#create_stock", "/createStock/");
     $("#Stock tbody").on("click", `#delete_stock`, function () {
