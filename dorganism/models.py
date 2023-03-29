@@ -338,7 +338,7 @@ class Organism_Batch(AuditModel):
             Next_BatchID = self.find_Next_BatchID(OrgID)
             if Next_BatchID:
                 self.batch_id = Next_BatchID
-                self.orgbatch_id = self.format_OrgBatchID(OrgID,Next_BatchID)
+                self.orgbatch_id = self.str_OrgBatchID(OrgID,Next_BatchID)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
             super(Organism_Batch,self).save(*args, **kwargs)
@@ -427,15 +427,22 @@ class OrgBatch_Stock(AuditModel):
 
     # # ------------------------------------------------
     #------------------------------------------------
-    # def save(self, *args, **kwargs):
-    #     if "n_left_extra" in kwargs:
-    #        n_left_extra=kwargs.pop("n_left_extra", None)
-    #        if not self.n_left:
-    #             self.n_left=n_left_extra
-    #             super().save(*args, **kwargs)
-    #     else:
-    #         super().save(*args, **kwargs)
-
+    def save(self, *args, **kwargs):
+        
+        orgbatch_id =kwargs.pop("orgbatch_id", None)
+        stock_type=kwargs.pop("stock_type", None)
+        stock_date=kwargs.pop("stock_date", None)
+        # n_created=kwargs.pop("n_created", None)
+        if orgbatch_id:
+            self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
+        if stock_type:
+            self.stock_type=Dictionary.objects.get(dict_value=stock_type)
+        if stock_date:
+            self.stock_date=stock_date
+        # if n_created:
+        #     self.n_created=n_created
+        super().save(*args, **kwargs)
+       
             
   
 #-------------------------------------------------------------------------------------------------
@@ -494,15 +501,12 @@ class Organism_Culture(AuditModel):
         
         culture_type=kwargs.pop("culture_type", None)
         culture_source=kwargs.pop("culture_source", None)
-        if not self.culture_type and not self.culture_source:
-            try:
-                self.culture_type=Dictionary.objects.get(dict_value=culture_type)
-                self.culture_source=Dictionary.objects.get(dict_value=culture_source)
-                super().save(*args, **kwargs)
-            except Exception as error:
-                print(error)
-                return error
-        else:
-            super().save(*args, **kwargs)
+        # if not self.culture_type and not self.culture_source:
+        if culture_type:
+            self.culture_type=Dictionary.objects.get(dict_value=culture_type)
+        if culture_source:
+            self.culture_source=Dictionary.objects.get(dict_value=culture_source)
+        super().save(*args, **kwargs)
+       
 
         
