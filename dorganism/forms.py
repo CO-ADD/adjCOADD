@@ -63,6 +63,7 @@ class Taxonomy_form(forms.ModelForm):
         self.fields['org_class'].queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0)
         self.fields['division'].queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0)
 
+
     class Meta:
         model =Taxonomy
         exclude=['urlname']
