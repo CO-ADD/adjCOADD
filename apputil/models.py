@@ -239,14 +239,12 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(*args, **kwargs)
 
     #------------------------------------------------
-    # Methods for getting Fields and Values List
-
+    #Method Get Fields, Values List
     # get field names in postgres in the order provided by constants.py
     @classmethod
     def get_databasefields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
-
         if fields:
             databasefields=fields.keys()
         else:
@@ -254,63 +252,61 @@ class AuditModel(models.Model):
         return databasefields
     
     #------------------------------------------------
-    # get customized field names in the list/order provided by HEADER_FIELDS
+    # get field verbose or customized name in the order provided by headerfields
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
         if fields:
-            # Ordered by _meta.fields (model)
-            #select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
-
-            # Ordered by HEADER_FIELDS
-            select_fields=[fields[f.name] for f in fields.keys()  if f.name in cls._meta.fields]
+            fieldsname=[field.name for field in cls._meta.fields]
+            select_fields=[fields[f] for f in fields.keys() if f in fieldsname]
+            # select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
             select_fields=None
         return select_fields
     #------------------------------------------------
-    # get class field names in the list/order provided by HEADER_FIELDS
+    # get field name in model Class in the order provided by constants.py
     @classmethod
     def get_modelfields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
-
         if fields:
-            # Ordered by _meta.fields (model)
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
-
-            # Ordered by HEADER_FIELDS
-            model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
         else:
             model_fields=None
         return model_fields
  
     #------------------------------------------------
-    # get field values according to the list/order provided by HEADER_FIELDS 
+    # objects values according to fields return from the above class methods, based on header_fields order
     def get_values(self, fields=None):
         if fields is None:
             fields = self.HEADER_FIELDS
-
         value_list=[]
-
-        # Ordered by _meta.fields (model)
-        #for field in self._meta.fields:
-        #    if field.name in fields.keys():
-
-        # Ordered by HEADER_FIELDS
-        for field in fields.keys() :
-            if field.name in self._meta.fields:
-                obj=getattr(self, field.name)
+        fieldsname=[field.name for field in self._meta.fields]
+        for name in fields.keys():
+            if name in fieldsname:
+                obj=getattr(self, name)
                 if obj:
                     if isinstance(obj, list):
                         array_to_string=','.join(str(e) for e in obj)
-                        value_list.append(array_to_string)
+                        value_list.append(array_to_string) 
                     else:   
-                        value_list.append(field.value_to_string(self))
+                        value_list.append(obj)
                 else:
                     value_list.append(" ")
-                    
         return value_list
+        # for field in self._meta.fields:
+        #     if field.name in fields.keys():
+        #         obj=getattr(self, field.name)
+        #         if obj:
+        #             if isinstance(obj, list):
+        #                 array_to_string=','.join(str(e) for e in obj)
+        #                 value_list.append(array_to_string)
+        #             else:   
+        #                 value_list.append(field.value_to_string(self))
+        #         else:
+        #             value_list.append(" ")
+        # return value_list
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method
@@ -536,4 +532,3 @@ class ApplicationLog(models.Model):
         log_inst.log_desc = LogDesc
         log_inst.log_status = LogStatus
         log_inst.save()
-

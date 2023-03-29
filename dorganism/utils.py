@@ -105,7 +105,7 @@ class Taxonomyfilter(Filterbase):
         self.filters['division'].label='Division'
         self.filters['org_class'].label='Class'
         self.filters['tax_id'].label='Tax ID'
-        print(Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
+        # print(Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
 
     class Meta:
         model=Taxonomy

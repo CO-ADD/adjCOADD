@@ -38,7 +38,7 @@
           <label for=""> {{field}} </label>
         </li>
         {%endfor%}
-        <button class="bg-dark text-light" style="float:right"><i class="fa-solid fa-download"></i></button>
+        <button class="data_export bg-dark text-light" style="float:right"><i class="fa-solid fa-download"></i></button>
       </ul>
     </div>
 
@@ -64,7 +64,7 @@
   $(document).ready(function () {
     const csrftoken = getCookie("csrftoken");
 
-    $(".Download").on("click", function () {
+    $(".data_export").on("click", function () {
       // select wanted data to export
       var selected_data = [];
 

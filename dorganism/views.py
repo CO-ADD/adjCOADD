@@ -77,6 +77,7 @@ def updateTaxonomy(req, slug=None):
     if req.method=='POST':
         form=Taxonomy_form(req.POST, instance=object_)
         if form.is_valid():
+            print('update')
             instance=form.save(commit=False)        
             instance.save(**kwargs)
             return redirect(req.META['HTTP_REFERER']) 
@@ -372,7 +373,7 @@ def createStock(req):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'something wrong...{form.errors}')
+            print(f'wrong {form.errors.as_data()}')
             return redirect(req.META['HTTP_REFERER'])      
         
 
