@@ -1,10 +1,10 @@
 <table id="datatable_culture" class="cell-border" style="width: 100%">
   <thead>
     <tr>
+      <th style="width: 10em">EDIT</th>
       {%for th in cultr_fields %}
       <th>{{th}}</th>
       {%endfor%}
-      <th style="width: 10em">EDIT</th>
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">

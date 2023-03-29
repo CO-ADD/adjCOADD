@@ -45,9 +45,9 @@
              <!--prettier-ignore-->
              {%include 'utils/row_editabletable.html' with form_label='Sequence Link' data_type='sequence_link' object_field=object.sequence_link form_field=form.sequence_link %}
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Oxygen Pref' data_type='oxygen_pref' object_field=object.oxygen_pref form_field=form.oxygen_pref %}
+             {%include 'utils/row_editabletable.html' with form_label='Oxygen Pref' data_type='oxygen_pref' object_field=object.oxygen_pref.strtml form_field=form.oxygen_pref %}
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='MTA Status' data_type='mta_status' object_field=object.mta_status form_field=form.mta_status %}
+             {%include 'utils/row_editabletable.html' with form_label='MTA Status' data_type='mta_status' object_field=object.mta_status.strtml form_field=form.mta_status %}
               <!--prettier-ignore-->
             {%include 'utils/row_editabletable.html' with form_label='MTA Document' data_type='mta_document' object_field=object.mta_document form_field=form.mta_document %}       
   
@@ -58,11 +58,11 @@
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Risk Group' data_type='risk_group' object_field=object.risk_group form_field=form.risk_group %}
+             {%include 'utils/row_editabletable.html' with form_label='Risk Group' data_type='risk_group' object_field=object.risk_group.strtml form_field=form.risk_group %}
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Pathogen' data_type='pathogen_group' object_field=object.pathogen_group form_field=form.pathogen_group %}
+             {%include 'utils/row_editabletable.html' with form_label='Pathogen' data_type='pathogen_group' object_field=object.pathogen_group.strtml form_field=form.pathogen_group %}
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Lab Restriction' data_type='lab_restriction' object_field=object.lab_restriction form_field=form.lab_restriction %}
+             {%include 'utils/row_editabletable.html' with form_label='Lab Restriction' data_type='lab_restriction' object_field=object.lab_restriction.strtml form_field=form.lab_restriction %}
              <!--prettier-ignore-->
              {%include 'utils/row_editabletable.html' with form_label='Biologist' data_type='biologist' object_field=object.biologist form_field=form.biologist %}
              <!--prettier-ignore-->

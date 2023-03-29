@@ -31,11 +31,11 @@ class CreateOrganism_form(ModelForm):
         self.fields['strain_type'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true',})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.fields['oxygen_pref'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0)
-        self.fields['risk_group'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0)
-        self.fields['pathogen_group'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0)
-        self.fields['mta_status'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0)
-        self.fields['lab_restriction'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction'], astatus__gte=0)
+        self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0)]
+        self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0)]
+        self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0)]
+        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0)]
+        self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction'], astatus__gte=0)]
         
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
@@ -110,14 +110,17 @@ class Batchupdate_form(forms.ModelForm):
 
 # ===============================Stock Form-------------------------------
 class Stock_createform(forms.ModelForm):
-    n_left_extra=forms.IntegerField(required=True)  
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
+    stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
+                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
+
     class Meta:
         model =OrgBatch_Stock
-        exclude=['n_left']
+        fields="__all__"
 
 class Stock_form(forms.ModelForm):
-    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    # stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
@@ -153,9 +156,9 @@ class Cultureupdate_form(forms.ModelForm):
     # 
  
     def __init__(self, organism_id=None, *args, **kwargs):
-        super(Culture_form, self).__init__(*args, **kwargs)
-        self.fields['culture_type'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0)
-        self.fields['culture_source'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0)
+        super().__init__(*args, **kwargs)
+        # self.fields['culture_type'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0)
+        # self.fields['culture_source'].queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0)
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 

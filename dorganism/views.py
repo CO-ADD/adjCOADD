@@ -85,7 +85,7 @@ def updateTaxonomy(req, slug=None):
     return render(req, 'dorganism/taxonomy/taxonomy_u.html', {'form':form, 'object':object_})
 
 # ====================================================Delete===========================================
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted')
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted')
 def deleteTaxonomy(req, slug=None):
     kwargs={}
     kwargs['user']=req.user 
@@ -219,7 +219,7 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/organism/organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteOrganism(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -300,7 +300,7 @@ def updateBatch(req, pk):
     return render(req, "dorganism/organism/batch/batch_u.html", context)
 
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteBatch(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -350,13 +350,18 @@ def stockList(req, pk):
 def createStock(req):
     kwargs={}
     kwargs['user']=req.user 
-    form=Stock_form()
+    form=Stock_createform()
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
-            print(req.POST.get("n_left_extra"))
-            n_left_extra=req.POST.get("n_left_extra")
-            kwargs['n_left_extra']=n_left_extra
+            print(req.POST.get("orgbatch_id"))
+            orgbatch_id=req.POST.get("orgbatch_id")
+            stock_type=req.POST.get("stock_type")
+            stock_date=req.POST.get("stock_date")
+            kwargs['orgbatch_id']=orgbatch_id
+            kwargs['stock_type']=stock_type
+            kwargs['stock_date']=stock_date
+
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
@@ -422,7 +427,7 @@ def updateStock(req, pk):
     return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
 
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteStock(req, pk):
     kwargs={}
     kwargs['user']=req.user
@@ -499,7 +504,7 @@ def updateCulture(req, pk):
     return render(req, "dorganism/organism/culture/culture_u.html", context)
 
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Delete'), login_url='permission_not_granted') 
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteCulture(req, pk):
     kwargs={}
     kwargs['user']=req.user
