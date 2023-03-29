@@ -39,7 +39,7 @@ $(document).ready(function () {
   const sendToServer = (data, td) => {
     console.log(data);
     $.ajax({
-      url: "/dict_update",
+      url: "/dict_update/",
       type: "POST",
       headers: { "X-CSRFToken": csrftoken },
       data: data,

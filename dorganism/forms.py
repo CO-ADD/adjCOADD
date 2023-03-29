@@ -58,7 +58,7 @@ class Taxonomy_form(forms.ModelForm):
     org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0), widget=forms.Select(attrs={'class':'form-select'}))
     division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0))
     
-    def __init__(self, organism_name=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['org_class'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0)]
         self.fields['division'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0)]
@@ -100,7 +100,7 @@ class Batchupdate_form(forms.ModelForm):
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     
-    def __init__(self, organism_id_str=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0)]
 
@@ -118,7 +118,9 @@ class Stock_createform(forms.ModelForm):
     orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
     stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
-    def __init__(self, organism_id_str=None, *args, **kwargs):
+
+    
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
 
@@ -163,7 +165,7 @@ class Culture_form(forms.ModelForm):
 class Cultureupdate_form(forms.ModelForm):
     # 
  
-    def __init__(self, organism_id=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
     class Meta:
