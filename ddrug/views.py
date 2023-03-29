@@ -162,8 +162,7 @@ def detailDrug(req, pk):
  
     return render(req, "ddrug/drug/drug_detail.html", context)
 # ====================================================Create===========================================
-# @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createDrug(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -183,7 +182,6 @@ def createDrug(req):
     
 # ====================================================Update in Form===========================================
 @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
 def updateDrug(req, pk):
     object_=get_object_or_404(Drug, pk=pk)
     kwargs={}

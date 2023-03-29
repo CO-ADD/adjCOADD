@@ -51,8 +51,7 @@ def detailTaxonomy(req, slug=None):
     return render(req, "dorganism/taxonomy/taxonomy_detail.html", context)
 
 # ====================================================Create===========================================
-# @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createTaxonomy(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -115,8 +114,7 @@ class OrganismCardView(OrganismListView):
 # ======================================================================CREATE==========================================#
     # ==Step1. Ajax Call(def search_organism in utils) search Taxonomy(for all models using Taxonomy as ForeignKey)=====#
     # =============================step 2. Create new record by form===================#
-# @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createOrganism(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
@@ -242,8 +240,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
     model_fields=model.HEADER_FIELDS
 
 # ---------------------------------------------------------------------------------------------    
-# @login_required
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createBatch(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -349,7 +346,7 @@ def stockList(req, pk):
     return JsonResponse({})
 
 # ---------------------------------------------------------------------------------------------
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createStock(req):
     kwargs={}
     kwargs['user']=req.user 
@@ -439,7 +436,7 @@ def deleteStock(req, pk):
 ############################################Culture ##################################33
 # ==========List View================================Read===========================================
    
-@user_passes_test(lambda u: u.has_permission('Write'), login_url='permission_not_granted') 
+@login_required
 def createCulture(req):
     kwargs={}
     kwargs['user']=req.user 
