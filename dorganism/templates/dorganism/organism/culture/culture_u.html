@@ -3,22 +3,22 @@
   class="editing"
   hx-get="{%url 'org_detail' object.organism_id.pk %}"
 >
+<td>
+  <input
+    type="submit"
+    value="update"
+    hx-put="{%url 'cultr_update' pk=object.pk%}"
+    hx-include="closest tr"
+    hx-trigger="click"
+  />
+  <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
+</td>
   <td>{{form.organism_id}}</td>
-  <td>{{form.culture_type}}</td>
+  <td></td>
   <td>{{form.media_use}}</td>
   <td>{{form.atmosphere}}</td>
   <td>{{form.temperature}}</td>
   <td>{{form.labware}}</td>
   <td>{{form.notes}}</td>
   <td>{{form.biologist}}</td>
-  <td>
-    <input
-      type="submit"
-      value="update"
-      hx-put="{%url 'cultr_update' pk=object.pk%}"
-      hx-include="closest tr"
-      hx-trigger="click"
-    />
-    <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
-  </td>
 </tr>

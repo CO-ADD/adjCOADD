@@ -218,32 +218,6 @@ def exportCSV(request):
         return response
 
 
-############################################### Export CSV View ###########################################
-import csv
-import datetime 
-from django.apps import apps
-
-@login_required
-@user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
-def exportCSV(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-        data_arr = request.POST.getlist('data_arr[]')
-        data_fields = request.POST.getlist('fields[]')
-        model_name=request.POST.get('model_name')
-        try:
-            model=apps.get_model('dorganism', model_name)
-        except:
-            model=apps.get_model('ddrug', model_name)
-        query=model.objects.filter(pk__in=data_arr)
-        response = HttpResponse(content_type='text/csv')
-        file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
-        writer = csv.writer(response)
-        writer.writerow(data_fields)
-        for i in query.values_list(*data_fields):
-            writer.writerow(i)
-        response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
-        return response
-
 # ==============Test Site: Combined Queries of Models ==========================#
 from django.core.paginator import Paginator
 # from itertools import chain
