@@ -213,6 +213,7 @@ class FilteredListView(ListView):
     model_fields=None
     order_by=None
     filter_request=None
+    filter_Count=None
 
    
     def get_queryset(self):
@@ -224,6 +225,7 @@ class FilteredListView(ListView):
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         # Return the filtered queryset
         order=self.get_order_by()
+        self.filter_Count=self.filterset.qs.distinct().count()
         if order:
             return self.filterset.qs.distinct().order_by(order)
         return self.filterset.qs.distinct()
@@ -241,6 +243,8 @@ class FilteredListView(ListView):
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()
+        context['querycount']=self.filter_Count
+        
         return context
 
     def get_paginate_by(self, queryset):

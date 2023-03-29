@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(document).on("click", ".edit_organismdetail", function () {
+    $(document).on("click", ".edit_detailtable", function () {
         console.log("loading editableTable...")
         var selectbox = $(".select")
         var detail = $(".detail")

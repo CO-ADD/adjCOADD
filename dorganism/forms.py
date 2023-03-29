@@ -59,8 +59,10 @@ class Taxonomy_form(forms.ModelForm):
     division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0))
     
     def __init__(self, organism_name=None, *args, **kwargs):
-        self.fields['org_class'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['org_class'], astatus__gte=0)
-        self.fields['division'].queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['division'], astatus__gte=0)
+        super().__init__(*args, **kwargs)
+        self.fields['org_class'].queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0)
+        self.fields['division'].queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0)
+
 
     class Meta:
         model =Taxonomy

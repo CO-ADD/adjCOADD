@@ -4,69 +4,49 @@
 {% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
-<div class="mx-2 border border-2">
+<div class="d-flex flex-row vh-100">
 
-    <a class="card-link mx-3" href="{%url 'drug_card' %}"><i class="fa-solid fa-angles-left"></i></a>
-    <button class="edit_organismdetail mx-3 border-0 text-success"><i class="fa-regular fa-pen-to-square"></i></button>
+    <div class="border border-2 w-100">
 
-    {%include './drug_d.html'%}
-    <div class="accordion" id="organism-detail">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h5 class="fs-6 my-0">{{object.pk}}
-                    </h5>
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                data-bs-parent="#organism-detail">
-                <div class="accordion-body">
-                    {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                            {% endfor %}
-                    </ul>
-                    {% endif %}
-                    <b>
-                        {%include 'utils/message.html'%}
-                    </b>
-                    {%include 'ddrug/drug/drug_u.html'%}
-                    <div class="row border label">
-                        <div class="d-flex p-0 bd-highlight" style="font-size: x-small;">
-                            <div>
-                                <strong>Created </strong>
-                                {{object.acreated_at |date:"d M, Y" }}
-                                <!--  -->
-                                {{object.acreated_at|time:"H:i" }} AEST
-                            </div>
-                            <div> <strong> &nbsp; by </strong>
-                                {{object.acreated}}
-                            </div>
-                            {%if object.aupdated_at%}
-                            <div>&nbsp; | &nbsp;</div>
-                            <div>
-                                <strong> &nbsp;Modified </strong>
-                                {{object.aupdated_at |date:"d M, Y" }}
-                                <!--  -->
-                                {{object.aupdated_at|time:"H:i" }} AEST
-                            </div>
-                            <div>
-                                <strong> &nbsp; by </strong>
+        <div class="d-flex m-0 p-0">
 
-                                {{object.aupdated}}
-                            </div>
-                            {%endif%}
+            {%include 'utils/lefticons.html' with title="Drug"%}
+            <div class="accordion bg-transparent w-100" id="drug-detail">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" style="max-height:20px;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">
+                            <h5 class="fs-6 my-0">{{object.pk}} |
+                                {{object.drug_name}}
+                            </h5>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show bg-transparent"
+                        aria-labelledby="headingOne" data-bs-parent="#drug-detail">
+                        <div class="accordion-body bg-transparent">
+
+
+
+                            <b>
+                                {%include 'utils/message.html'%}
+                            </b>
+                            {%include 'ddrug/drug/drug_u.html'%}
+                            <!--prettier-ignore-->
+                            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
                         </div>
                     </div>
-
                 </div>
             </div>
+
         </div>
+
+       
+
+
     </div>
-    <!-- call drug structure editor modal -->
-    <script>
+      <!-- call drug structure editor modal -->
+      <script>
 
         $(document).ready(function () {
             let my_modal = $("#drug_detail_structure{{object.pk}}");

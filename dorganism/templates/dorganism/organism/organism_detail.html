@@ -34,34 +34,7 @@
 
                             {%include 'dorganism/organism/organism_u.html'%}
 
-                            <div class="row border label w-100">
-                                <div class="d-flex p-0 bd-highlight" style="font-size: x-small;">
-                                    <div>
-                                        <strong>Created </strong>
-                                        {{object.acreated_at |date:"d M, Y" }}
-                                        <!--  -->
-                                        {{object.acreated_at|time:"H:i" }} AEST
-                                    </div>
-                                    <div> <strong> &nbsp; by </strong>
-                                        {{object.acreated}}
-                                    </div>
-                                    {%if object.aupdated_at%}
-                                    <div>&nbsp; | &nbsp;</div>
-                                    <div>
-                                        <strong> &nbsp;Modified </strong>
-                                        {{object.aupdated_at |date:"d M, Y" }}
-                                        <!--  -->
-                                        {{object.aupdated_at|time:"H:i" }} AEST
-                                    </div>
-                                    <div>
-                                        <strong> &nbsp; by </strong>
-
-                                        {{object.aupdated}}
-                                    </div>
-                                    {%endif%}
-                                </div>
-
-                            </div>
+                            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
                         </div>
                     </div>
                 </div>
