@@ -33,7 +33,8 @@
         {% if page_obj.number == num %}
         <li class="page-item">
 
-            <a class="page-link fw-bold text-light" style="background-color: var(--bs-inform-color) !important;" href="{% my_url num 'page' request.GET.urlencode %}">
+            <a class="page-link fw-bold text-light" style="background-color: var(--bs-inform-color) !important;"
+                href="{% my_url num 'page' request.GET.urlencode %}">
                 {{num}}</a>
         </li>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
@@ -65,7 +66,7 @@
     <!--prettier-ignore-->
     <!-- </span> -->
     <span class="text-info">&nbsp; showing p.{{page_obj.number}} of {{page_obj.paginator.num_pages}} pages in
-        <strong> {{Count}}
+        <strong> {{querycount}}
             Entries</strong></span>
 
 </div>

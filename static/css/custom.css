@@ -678,6 +678,10 @@ a:hover .tooltiptext {
 }
 
 /* -------------datatable-------- */
+table.dataTable thead tr {
+  background-color: var(--bs-th-bg)!important;
+}
+
 .n_left_column {
 
   width: fit-content;
@@ -687,9 +691,9 @@ a:hover .tooltiptext {
   white-space: nowrap;
 }
 
-.dataTables_info {
+/* .dataTables_info {
   float: right !important;
-}
+} */
 
 /* -----filter class style in Organism view */
 #id_Class {
