@@ -239,12 +239,14 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(*args, **kwargs)
 
     #------------------------------------------------
-    #Method Get Fields, Values List
+    # Methods for getting Fields and Values List
+
     # get field names in postgres in the order provided by constants.py
     @classmethod
     def get_databasefields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
+
         if fields:
             databasefields=fields.keys()
         else:
@@ -252,36 +254,52 @@ class AuditModel(models.Model):
         return databasefields
     
     #------------------------------------------------
-    # get field verbose or customized name in the order provided by constants.py
+    # get customized field names in the list/order provided by HEADER_FIELDS
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
         if fields:
-            select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
+            # Ordered by _meta.fields (model)
+            #select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
+
+            # Ordered by HEADER_FIELDS
+            select_fields=[fields[f.name] for f in fields.keys()  if f.name in cls._meta.fields]
         else:
             select_fields=None
         return select_fields
     #------------------------------------------------
-    # get field name in model Class in the order provided by constants.py
+    # get class field names in the list/order provided by HEADER_FIELDS
     @classmethod
     def get_modelfields(cls, fields=None):
         if fields is None:
             fields = cls.HEADER_FIELDS
+
         if fields:
+            # Ordered by _meta.fields (model)
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
+
+            # Ordered by HEADER_FIELDS
+            model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
         else:
             model_fields=None
         return model_fields
  
     #------------------------------------------------
-    # objects values according to fields return from the above class methods
+    # get field values according to the list/order provided by HEADER_FIELDS 
     def get_values(self, fields=None):
         if fields is None:
             fields = self.HEADER_FIELDS
+
         value_list=[]
-        for field in self._meta.fields:
-            if field.name in fields.keys():
+
+        # Ordered by _meta.fields (model)
+        #for field in self._meta.fields:
+        #    if field.name in fields.keys():
+
+        # Ordered by HEADER_FIELDS
+        for field in fields.keys() :
+            if field.name in self._meta.fields:
                 obj=getattr(self, field.name)
                 if obj:
                     if isinstance(obj, list):
@@ -291,6 +309,7 @@ class AuditModel(models.Model):
                         value_list.append(field.value_to_string(self))
                 else:
                     value_list.append(" ")
+                    
         return value_list
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
