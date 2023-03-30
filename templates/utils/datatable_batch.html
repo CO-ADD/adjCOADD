@@ -57,9 +57,10 @@
 
     const csrftoken = getCookie("csrftoken");
     $("#datatable_batch tbody").on("click", "a.dt-control", function (e) {
+    
       var tr = $(this).closest("tr");
       var row = table.row(tr);
-
+      var Batch_id_a=$(this).data("value")
       if (row.child.isShown()) {
         // This row is already open - close it
         destroyChild(row);
@@ -67,14 +68,15 @@
       } else {
         // Open this row
         // getStockData(row.data()[1]);
-        createChild(row);
+        createChild(row, Batch_id_a);
         tr.addClass("shown");
       }
     });
   });
-  function createChild(row) {
+  function createChild(row, Batch_id_a) {
     // This is the table we'll convert into a DataTable
-    var Batch_id = row.data()[1];
+    var Batch_id =Batch_id_a//row.data()[1];
+   
     var table = $('<table id="Stock" class="display" width="100%"/>');
 
     // Display it the child row
@@ -164,7 +166,7 @@
       });
     });
   }
-  function destroyChild(row) {
+  function destroyChild(row, Batch_id_a) {
     var table = $("table", row.child());
     table.detach();
     table.DataTable().destroy();

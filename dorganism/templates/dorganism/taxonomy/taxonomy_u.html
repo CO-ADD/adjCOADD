@@ -5,7 +5,8 @@
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <!--prettier-ignore-->
-    {% url 'taxonomy_update' pk=object.pk as updateurl %}
+    {% url 'taxonomy_update' slug=object.urlname as updateurl %}
+<!--  -->
     {%include 'utils/modal/modal_form.html' with title='Update Taxonomy' urlname=updateurl %}
   </div>
 </div>
