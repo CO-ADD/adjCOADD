@@ -278,7 +278,7 @@ class AuditModel(models.Model):
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
 
             # Ordered by HEADER_FIELDS
-            model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
+            # model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
         else:
             model_fields=None
         return model_fields

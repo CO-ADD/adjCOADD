@@ -1,6 +1,7 @@
 # ignore log
 /applog/
-/impdata/*.log
+/impdata/**.log
+**/*.log
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -396,3 +397,4 @@ dmypy.json
 /help.py
 #log
 /applog/
+**/migrations/*.*
