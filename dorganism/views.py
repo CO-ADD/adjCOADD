@@ -72,6 +72,7 @@ def createTaxonomy(req):
 def updateTaxonomy(req, slug=None):
     object_=get_object_or_404(Taxonomy, urlname=slug)
     kwargs={}
+    print(slug)
     kwargs['user']=req.user 
     form=Taxonomy_form(instance=object_)
     if req.method=='POST':
