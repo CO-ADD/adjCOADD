@@ -1,0 +1,18 @@
+django.utils.autoreload INFO 2023-03-30 15:10:53,639 autoreload 11260 11000 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-03-30 15:11:55,222 autoreload 11260 11000 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-03-30 15:11:56,374 autoreload 19052 14764 Watching for file changes with StatReloader
+django.server INFO 2023-03-30 15:12:00,829 basehttp 19052 28268 "GET / HTTP/1.1" 200 8727
+django.server INFO 2023-03-30 15:12:01,275 basehttp 19052 28268 "GET /static/css/overideboot.css HTTP/1.1" 200 6108
+django.server INFO 2023-03-30 15:12:01,278 basehttp 19052 28268 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-03-30 15:12:01,281 basehttp 19052 28268 "GET /static/js/editableTable.js HTTP/1.1" 200 620
+django.server INFO 2023-03-30 15:12:01,284 basehttp 19052 28268 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 200 601812
+django.server INFO 2023-03-30 15:12:01,287 basehttp 19052 28268 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-03-30 15:12:01,289 basehttp 19052 12996 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 200 5527
+django.server INFO 2023-03-30 15:12:01,290 basehttp 19052 28268 "GET /static/js/create_modal.js HTTP/1.1" 200 372
+django.server INFO 2023-03-30 15:12:01,292 basehttp 19052 12996 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-03-30 15:12:01,296 basehttp 19052 21944 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-03-30 15:12:01,300 basehttp 19052 15940 "GET /static/js/sorting_table.js HTTP/1.1" 200 877
+django.server INFO 2023-03-30 15:12:01,304 basehttp 19052 17000 "GET /static/css/custom.css HTTP/1.1" 200 16054
+django.server INFO 2023-03-30 15:12:01,305 basehttp 19052 18660 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-03-30 15:12:01,427 basehttp 19052 18660 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-03-30 15:12:01,826 basehttp 19052 18660 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544

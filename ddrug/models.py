@@ -576,7 +576,7 @@ class MIC_COADD(AuditModel):
              models.Index(name="micc_mic_idx",fields=['mic']),
              models.Index(name="micc_bprofile_idx",fields=['bp_profile']),
              models.Index(name="micc_bpsource_idx",fields=['bp_source']),
-             models.Index(name="micc_source_idx",fields=['source']),
+            #  models.Index(name="micc_source_idx",fields=['source']),
              models.Index(name="micc_size_idx",fields=['plate_size']),
              models.Index(name="micc_material_idx",fields=['plate_material']),
              models.Index(name="micc_media_idx",fields=['media']),
