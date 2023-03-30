@@ -1,10 +1,14 @@
 <tr>
   <td>
-    <a class="dt-control toggle-btn" data-value="{{object_batch.pk}}"> Stock <i class="fa fa-chevron-down"></i></a>
-    <button hx-get="{% url 'batch_update' object_batch.pk %}" hx-trigger="click" class="border border-0 bg-transparent">
-      <i class="fa-regular fa-pen-to-square text-success"></i>
-    </button>
-    <span class=""> {%include 'dorganism/organism/batch/batch_d.html' with object_batch=object_batch.pk %} </span>
+    <a class="dt-control toggle-btn" data-value="{{object_batch.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Click to Open StockTable"></i></a>
+      <div style="float: right">
+
+        <button hx-get="{% url 'batch_update' object_batch.pk %}" hx-trigger="click" class="border border-0 bg-transparent">
+          <i class="fa-regular fa-pen-to-square text-success"></i>
+        </button>
+        <span class=""> {%include 'dorganism/organism/batch/batch_d.html' with object_batch=object_batch.pk %} </span>
+      </div>
   </td>
   <td class="not-visible">{{object_batch.pk}}</td>
   {%for value in object_batch.get_values%}

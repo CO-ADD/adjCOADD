@@ -11,16 +11,13 @@ $(document).ready(function () {
 
   $(document).on("click", ".btn_ok", function () {
     console.log("button ok")
-    var value = Number($(this).data('value')) - 1;
+    var value = Number($(this).data('value'));
     var td = $(this).parent("td");
     $(this).remove();
     $(this).closest('button').remove();
-    td.html(value.toString());
-    td.addClass("editablerow_stock");
     var name = td.data("name");
     var type = td.data("type");
     data = { name: name, type: type, value: value };
-    console.log(data);
     sendToServer(data, td);
   });
   $(document).on("click", ".btn_cancel", function (e) {
@@ -28,11 +25,9 @@ $(document).ready(function () {
     var td = $(this).parent("td");
     $(this).remove();
     $(this).closest('button').remove();
-    td.html(value);
+    td.html(`${value}<i class="fa-regular fa-square-minus" style="float:right"></i>`);
     console.log(value)
     td.addClass("editablerow_stock");
-
-
   });
 
   const csrftoken = getCookie("csrftoken");
@@ -45,7 +40,16 @@ $(document).ready(function () {
       data: data,
     })
       .done((response) => {
-        console.log(response);
+        n_left=response["result"]
+        if (n_left > 1){
+
+          td.html(`${response["result"]}<i class="fa-regular fa-square-minus" style="float:right"></i>`);
+        }else{
+          location.reload();
+   
+        }
+    td.addClass("editablerow_stock");
+       return response["result"];
       })
       .fail(() => {
         console.log("Error occured");

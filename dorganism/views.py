@@ -335,13 +335,14 @@ def stockList(req, pk):
                 "location_rack": str(i.location_rack),
                 "location_col": str(i.location_column),
                 "location_slot": str(i.location_slot),
-                "stock_date": str(i.stock_date),
+                "stock_date": str(i.stock_date.strftime("%d-%m-%Y")),
                 "n_left": str(i.n_left) if i.n_left >1 else " ",
                 "n_created": str(i.n_created),
                 "stock_notes":str(i.stock_note),
                 "biologist": str(i.biologist),
             }
             data.append(item)
+           
         res=data
         
         return JsonResponse({'data':res})
@@ -400,7 +401,7 @@ def updateStock(req, pk):
         
         object_.save(**kwargs)
         print("saved")
-        response_data = {'result': 'success'}
+        response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
         form=Stock_form(req.POST, instance=object_)

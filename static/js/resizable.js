@@ -1,5 +1,7 @@
 function resizableGrid(e) {
+   
     var t = e.getElementsByTagName("tr")[0], n = t ? t.children : void 0;
+
     if (n) {
         e.style.overflow = "hidden";
         for (var i = e.offsetHeight, o = 0; o < n.length; o++) { var r = s(i); n[o].appendChild(r), n[o].style.position = "relative", d(r) }
@@ -8,6 +10,7 @@ function resizableGrid(e) {
     function d(e) {
         var t, n, i, o, r;
         e.addEventListener("mousedown", function (e) {
+           
             n = e.target.parentElement, i = n.nextElementSibling, t = e.pageX;
             var d = function (e) {
                 if ("border-box" == l(e, "box-sizing")) return 0;
