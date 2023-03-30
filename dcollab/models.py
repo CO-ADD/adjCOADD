@@ -11,12 +11,12 @@ from django.db import transaction, IntegrityError
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
 
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Organisation(AuditModel):
     """
     List of Organisation
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'org_type':'Organisation_Type',
@@ -35,12 +35,12 @@ class Organisation(AuditModel):
     def __str__(self) -> str:
         return f"{self.organisation}"
 
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Collab_User(AuditModel):
     """
     List of Collaborative Groups
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {}
     Choice_Dictionary = {}
 
@@ -72,12 +72,12 @@ class Collab_User(AuditModel):
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name} {self.organisation.org_code}"
 
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Collab_Group(AuditModel):
     """
     List of Collaborative Groups
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {}
     Choice_Dictionary = {
         'mta_status':'License_Status',
@@ -105,18 +105,18 @@ class Collab_Group(AuditModel):
     def __str__(self) -> str:
         return f"{self.group_code}"
 
-    #-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Data_Source(AuditModel):
     """
     List of Data sources
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {}
     Choice_Dictionary = {
         'source_type':'DataSource_Type',
     }
 
-    source_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Source ID")
+    source_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Source ID")
     source_name = models.CharField(max_length=50, blank=True, verbose_name = "Source Name")
     source_code = models.CharField(max_length=10, blank=True, verbose_name = "Source Code")
     description = models.CharField(max_length=1000, blank=True, verbose_name = "Description")

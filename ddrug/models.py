@@ -16,12 +16,12 @@ from dscreen.models import Screen_Run
 # Drugs related Application Model
 #-------------------------------------------------------------------------------------------------
 
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Drug(AuditModel):
     """
     List of Drugs, DrugCombinations, DrugScreens 
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "drug_id":"Drug ID",
         "drug_name":"Drug Name",
@@ -98,6 +98,22 @@ class Drug(AuditModel):
     def __str__(self) -> str:
         return f"{self.drug_name} ({self.drug_id})"
 
+   #------------------------------------------------
+    @classmethod
+    def str_DrugID(cls,DrugNo) -> str:
+        return(f"AMD{DrugNo:05d}")
+
+    #------------------------------------------------
+    @classmethod
+    def find_Next_DrugID(cls) -> str:
+        Drug_IDSq=Sequence('Drug')
+        Drug_nextID = next(Drug_IDSq)
+        Drug_strID = cls.str_DrugID(Drug_nextID)
+        while cls.exists(None,Drug_strID):
+            Drug_nextID = next(Drug_IDSq)
+            Drug_strID = cls.str_DrugID(Drug_nextID)
+        return(Drug_strID)    
+
     #------------------------------------------------
     @classmethod
     def get(cls,DrugName,DrugID=None,verbose=0):
@@ -148,24 +164,24 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        print("save ffp2")
-        #self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-        super(Drug, self).save(*args, **kwargs)
-        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-        print(f"field FFP2 is {self.ffp2}")
-        
-            
-    # # -------------------------------------------------
-    #def get_values(self, fields=DRUG_FIELDs):
-    #    value_list=super(Drug, self).get_values(fields)
-    #    return value_list
 
-#-------------------------------------------------------------------------------------------------
+        if not self.drug_id: 
+            self.drug_id = self.find_Next_DrugID()
+            if self.drug_id: 
+                super(Drug, self).save(*args, **kwargs)
+                self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+        else:
+            self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+            super(Drug, self).save(*args, **kwargs) 
+        # print("save ffp2")
+        # print(f"field FFP2 is {self.ffp2}")
+        
+#=================================================================================================
 class VITEK_Card(AuditModel):
 #     """
 #     List of VITEK Cards
 #     """
-# #-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "orgbatch_id":"orgbatch_id",
         "card_barcode":"Barcode",
@@ -270,18 +286,12 @@ class VITEK_Card(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
-    # # -------------------------------------------------
-    # def get_values(self, fields=VITEKCARD_FIELDs):
-    #     value_list=super(VITEK_Card, self).get_values(fields)
-    #     return value_list
-
-
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class VITEK_AST(AuditModel):
     """
       Antimicrobial Suceptibility Testing (AST) data from VITEK Cards
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "process":"Process",
@@ -402,18 +412,13 @@ class VITEK_AST(AuditModel):
 
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
-
-    # # # -------------------------------------------------
-    # def get_values(self, fields=VITEKAST_FIELDs):
-    #     value_list=super(VITEK_AST, self).get_values(fields)
-    #     return value_list
-
-# #-------------------------------------------------------------------------------------------------
+    
+#=================================================================================================
 class VITEK_ID(AuditModel):
     """
       Identification Testing (ID) data from VITEK Cards
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "drug_id":"Drug",
@@ -518,22 +523,18 @@ class VITEK_ID(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
-
-    # #  # -------------------------------------------------
-    # def get_values(self, fields=VITEKID_FIELDs):
-    #     value_list=super(VITEK_ID, self).get_values(fields)
-    #     return value_list
-#-------------------------------------------------------------------------------------------------
-
-#-------------------------------------------------------------------------------------------------
-class COADD_BMD(AuditModel):
+#=================================================================================================
+class MIC_COADD(AuditModel):
     """
      Antibiogram from CO-ADD screening    
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
+        'plate_size':'Plate_Size',
+        'plate_material':'Plate_Material',
+        'media':'Media',
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
@@ -545,28 +546,41 @@ class COADD_BMD(AuditModel):
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
          db_column="mic_type", related_name="%(class)s_MICType+")
-    run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)s_RunID+")
+    bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
+    bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
+
+    # Future update to ForeignKey (JZG) ... same for Testplate_ID
+    #run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+    #    db_column="run_id", related_name="%(class)s_RunID+")
+    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
+    testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
+
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
         db_column="plate_size", related_name="%(class)s_PlateSize+")
     plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
         db_column="plate_material", related_name="%(class)s_PlateMaterial+")
-    media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
-        db_column="media", related_name="%(class)s_Media+")
+
+    # Possible update to ForeignKey (JZG) 
+    #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
+    #    db_column="media", related_name="%(class)s_Media+")
+    media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
 
     #------------------------------------------------
     class Meta:
         app_label = 'ddrug'
-        db_table = 'coadd_bmd'
+        db_table = 'mic_coadd'
         ordering=['drug_id','orgbatch_id']
-        # indexes = [
-        #     models.Index(name="mic_drugid_idx",fields=['drug_id']),
-        #     models.Index(name="mic_mic_idx",fields=['mic']),
-        #     models.Index(name="mic_bprofile_idx",fields=['bp_profile']),
-        #     models.Index(name="mic_bpsource_idx",fields=['bp_source']),
-        #     models.Index(name="mic_source_idx",fields=['source']),
-        #     models.Index(name="mic_sourcetype_idx",fields=['source_type']),
-        # ]
+        indexes = [
+             models.Index(name="micc_drugid_idx",fields=['drug_id']),
+             models.Index(name="micc_mic_idx",fields=['mic']),
+             models.Index(name="micc_bprofile_idx",fields=['bp_profile']),
+             models.Index(name="micc_bpsource_idx",fields=['bp_source']),
+            #  models.Index(name="micc_source_idx",fields=['source']),
+             models.Index(name="micc_size_idx",fields=['plate_size']),
+             models.Index(name="micc_material_idx",fields=['plate_material']),
+             models.Index(name="micc_media_idx",fields=['media']),
+        ]
 
     #------------------------------------------------
     def __str__(self) -> str:
@@ -606,36 +620,124 @@ class COADD_BMD(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
-        Barcode = COADD_BMD.get(cDict['CARD_BARCODE']) 
-        if Barcode is None:
-            validStatus = False
-            valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
 
+        retInstance = cls()
+
+        retInstance.clean_Fields()
+        validDict = retInstance.validate()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k,'-')
+
+        retInstance.VALID_STATUS = validStatus
+        
+        return(retInstance)
+    
+#=================================================================================================
+class MIC_Pub(AuditModel):
+    """
+     Antibiogram from Public sources    
+    """
+#=================================================================================================
+    HEADER_FIELDS   = {}
+    Choice_Dictionary = {
+        'mic_type':'MIC_Type',
+    }
+
+    organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="oragnism_id", related_name="%(class)s_organism_id+") 
+    drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
+        db_column="drug_id", related_name="%(class)s_drug_id+")
+    
+    mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
+    mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
+    mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
+         db_column="mic_type", related_name="%(class)s_MICType+")
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
+    bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
+
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'ddrug'
+        db_table = 'mic_pub'
+        ordering=['drug_id','organism_id']
+        indexes = [
+             models.Index(name="micp_drugid_idx",fields=['drug_id']),
+             models.Index(name="micp_mic_idx",fields=['mic']),
+             models.Index(name="micp_bprofile_idx",fields=['bp_profile']),
+             models.Index(name="micp_bpsource_idx",fields=['bp_source']),
+             models.Index(name="micp_source_idx",fields=['source']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        retStr = ""
+        if self.drug_id:    
+            if self.drug_id is not None:
+                retStr += f"{self.drug_id.drug_name} "
+            else:
+                retStr += f"{self.drug_id} "
+        retStr += f"{self.organism_id} {self.mic} {self.source}"
+        return(retStr)
+
+   #------------------------------------------------
+    @classmethod
+    def get(cls,OrgID,DrugID,Source,verbose=0):
+    # Returns an instance if found by OrgBatchID and DrugID
+        try:
+            retInstance = cls.objects.get(organism_id=OrgID,drug_id=DrugID,source=Source)
+        except:
+            if verbose:
+                print(f"[MIC Not Found] {OrgID} {DrugID} {Source}")
+            retInstance = None
+        return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,OrgID,DrugID,Source,verbose=0):
+    # Returns an instance if found by OrgBatchID and DrugID
+        return cls.objects.filter(organism_id=OrgID,drug_id=DrugID,source=Source).exists()
+
+    #------------------------------------------------
+    @classmethod
+    def check_from_dict(cls,cDict,valLog):
+    #
+    # Returns an instance from dictionary 
+    #  with Validation_Log for validation check
+    #  .validStatus if validated 
+    #
+        #print(cDict)
+        validStatus = True
         DrugID = Drug.get(cDict['DRUG_NAME'])
         if DrugID is None:
             validStatus = False
-            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
+            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ",'-')
+
+        OrganismID = Organism.get(cDict['ORGANISM_ID']) 
+        if OrganismID is None:
+            validStatus = False
+            valLog.add_log('Error','OrganismID does not Exists',f"{cDict['ORGANISM_ID']} ",'-')
 
         if validStatus:
-            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'])
+            retInstance = cls.get(OrganismID,DrugID,cDict['SOURCE'])
         else:
             retInstance = None
                
         if retInstance is None:
             retInstance = cls()
-            retInstance.card_barcode = Barcode
+            retInstance.organism_id = OrganismID
             retInstance.drug_id = DrugID
-            retInstance.bp_source = cDict['BP_SOURCE']
-            valLog.add_log('Info','New VITEK AST',f"{Barcode} {DrugID} {cDict['BP_SOURCE']}",'-')
+            retInstance.source = cDict['SOURCE']
+            valLog.add_log('Info','New MIC ',f"{OrganismID} {DrugID} {cDict['SOURCE']}",'-')
         
         retInstance.mic = cDict['MIC']
-        retInstance.process = cDict['VITEK_PROCESS']
+        retInstance.mic_unit = cDict['MIC_UNIT']
+        retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],cDict['SOURCE_TYPE'],None,verbose=1)
         retInstance.bp_profile = cDict['BP_PROFILE']
-        retInstance.bp_comment = cDict['BP_COMMENT']
-        retInstance.selection = cDict['ORGANISM_ORIGIN']
-        retInstance.organism = cDict['SELECTED_ORGANISM']
-        retInstance.filename = cDict['FILENAME']
-        retInstance.page_no = cDict['PAGENO']  
+        retInstance.bp_source = cDict['BP_SOURCE']
 
         retInstance.clean_Fields()
         validDict = retInstance.validate()

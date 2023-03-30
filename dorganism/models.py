@@ -16,6 +16,7 @@ from adjcoadd.constants import *
 # Organism Application Model
 #-------------------------------------------------------------------------------------------------
 
+#=================================================================================================
 class Taxonomy(AuditModel):
     """
     Based on the NCBI Taxonomy at https://www.ncbi.nlm.nih.gov/taxonomy
@@ -26,7 +27,7 @@ class Taxonomy(AuditModel):
         Division        Rodents, Bacteria, Mammals, Plants and Fungi, Primates
         Division_Code   ROD, BCT, MAM, PLN, PRI
     # """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     Choice_Dictionary = {
         'org_class':'Organism_Class',
         'division':'Organism_Division',
@@ -91,13 +92,13 @@ class Taxonomy(AuditModel):
         super(Taxonomy, self).save()
 
         
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Organism(AuditModel):
     """
     Main class of Organisms/Bacterias/Fungi/Cells in Isolate Collection
     
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_name':'Organism Name',
@@ -144,7 +145,7 @@ class Organism(AuditModel):
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
-    supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Purchase Order")
+    #supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Purchase Order")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_MTA+")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -231,17 +232,12 @@ class Organism(AuditModel):
         else:
             super(Organism, self).save(*args, **kwargs) 
 
-    # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_FIELDs):
-    #    value_list=super(Organism, self).get_values(fields)
-    #    return value_list
-
-#------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Organism_Batch(AuditModel):
     """
     Organism/Isolate Batch Collection
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
 #        "supplier":"Supplier",
@@ -270,7 +266,7 @@ class Organism_Batch(AuditModel):
     # supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
     # supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
     # supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
-    stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date",editable=True) 
+    stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", editable=False, default=list) 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
@@ -341,20 +337,16 @@ class Organism_Batch(AuditModel):
                 self.orgbatch_id = self.str_OrgBatchID(OrgID,Next_BatchID)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
+            self.batch_id = str(self.orgbatch_id).replace(str(self.organism_id.organism_id),"").split(ORGBATCH_SEP)[1]
             super(Organism_Batch,self).save(*args, **kwargs)
         
-    # # ------------------------------------------------
-    #def get_values(self, fields=ORGANISM_BATCH_FIELDs):
-    #    value_list=super(Organism_Batch, self).get_values(fields)
-    #    return value_list
-
-#------------------------------------------------------------------------------------------------
+#=================================================================================================
 class OrgBatch_Stock(AuditModel):
     """
     Stock of Organism/Isolate Batches
     
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS={
         "orgbatch_id":"OrgBatch ID",
         "stock_type":"Stock Type",
@@ -445,13 +437,13 @@ class OrgBatch_Stock(AuditModel):
        
             
   
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Organism_Culture(AuditModel):
     """
     Recommanded and optimised Growth/Culture conditions 
     
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "organism_id":"Organism ID",
         "culture_type":"Culture_Type",
