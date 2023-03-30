@@ -4,7 +4,7 @@
       <p class="card-title px-1 fw-bold mb-0 fst-italic">
         <a class="card-link" href="{{url_name}}"> {{object_name}}</a>
       </p>
-      <p class="card-text m-0 fst-normal mb-0" style="font-size: x-small">
+      <p class="card-text m-0 fst-normal mb-0 my-auto" style="font-size: x-small">
         {{object_var1}}
       </p>
       <!-- Select Box -->
@@ -12,53 +12,55 @@
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}
-      <a id="drug_detail{{object.pk}} " href="{%url 'smartsquery' object.pk%}" class="card-link">
-        SUBSTRUCTURE_query
-        {%load static%}
-        <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
-          style="background-color: transparent !important" />
-      </a>
-    <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
-    <!-- call drug structure editor modal -->
-    <script>
 
-      // $(document).ready(function () {
-      //   let my_modal = $("#drug_detail_structure{{object.pk}}");
+        <a id="drug_detail{{object.pk}} " href="{%url 'smartsquery' object.pk%}" class="card-link">
+          SUBSTRUCTURE_query
+          {%load static%}
+          <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
+            style="background-color: transparent !important" />
+        </a>
 
-      //   $("#drug_detail{{object.pk}}").click(function () {
-      //     console.log("click structrue")
-      //     my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
-      //       if (response == "Permission Not Granted") {
-      //         alert("permission!");
-      //       } else {
-      //         my_modal.modal("show"); // Open Modal
-      //       }
-      //     });
+        <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog">
+        </div>
+        <!-- call drug structure editor modal -->
+        <script>
 
-      //   });
+          // $(document).ready(function () {
+          //   let my_modal = $("#drug_detail_structure{{object.pk}}");
 
-      // });
+          //   $("#drug_detail{{object.pk}}").click(function () {
+          //     console.log("click structrue")
+          //     my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
+          //       if (response == "Permission Not Granted") {
+          //         alert("permission!");
+          //       } else {
+          //         my_modal.modal("show"); // Open Modal
+          //       }
+          //     });
 
+          //   });
 
+          // });
+        </script>
 
-    </script>
-
-    <div class="d-flex flex-wrap mt-2">
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">SA</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">EC</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">KP</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA5</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">AB</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CA</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CN</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">HEK</div>
-      <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">hRBC</div>
-    </div>
-
-    {%endif%}
+        <!--
+        <div class="d-flex flex-wrap mt-2">
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">SA</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">EC</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">KP</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA5</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">AB</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CA</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CN</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">HEK</div>
+          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">hRBC</div>
+        </div>
+        -->
+        
+      {%endif%}
     </p>
-    <p class="card-text m-0 fst-italic">{{object_var2 |safe}}</p>
+    <p class="card-text m-0 fst-italic">{{object_var2 | safe}}</p>
     <p class="card-text m-0 fst-normal">{{object_var3 | safe}}</p>
     <p class="card-text m-0 fst-normal">
       <strong> {{object_var_link_label}} </strong>

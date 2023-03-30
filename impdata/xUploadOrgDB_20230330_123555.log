@@ -1,0 +1,503 @@
+[__main__            ] Python         : 3.10.6  
+[__main__            ] Conda Env      : dj41py310 
+[__main__            ] LogFile        : xUploadOrgDB_20230330_123555.log 
+[__main__            ] Django         : 4.1.3 
+[__main__            ] Django Folder  : C:/Data/A02_WorkDB/03_Django/adjCOADD 
+[__main__            ] Django Project : adjcoadd.settings 
+[__main__            ] [Upd_djCOADD] Table: Vitek 
+[__main__            ] [Upd_djCOADD] User:  J.Zuegg 
+[__main__            ] [Upd_djCOADD] Vitek from folder ..\..\01_Data\02_Uploads\Vitek\LMIC\AST_Comparision\ 
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   1/ 92 - Isolate_GN0584B001P-2_GN096_EUCAST_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0584_01 - AST-GN96   (6861910203400677) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN096_EUCAST_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN096_EUCAST_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400677)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   2/ 92 - Isolate_GN0584B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0584_01 - AST-GN96   (6861910203400677) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203400677)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   3/ 92 - Isolate_GN0584B001P-2_GN96_CLSI_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0584_01 - AST-GN96   (6861910203400677) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Neomycin (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Flumequine (6861910203400677)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   4/ 92 - Isolate_GN0584B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0584_01 - AST-GN96   (6861910203400677) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203400677)) -  
+[apputil.utils       ] Error   - Isolate_GN0584B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861910203400677)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   5/ 92 - Isolate_GN0585B001P-2_GN096_EUCAST_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0585_01 - AST-GN96   (6861910203400664) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN096_EUCAST_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN096_EUCAST_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400664)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   6/ 92 - Isolate_GN0585B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0585_01 - AST-GN96   (6861910203400664) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203400664)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   7/ 92 - Isolate_GN0585B001P-2_GN96_CLSI_K.pnemoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0585_01 - AST-GN96   (6861910203400664) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI_K.pnemoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI_K.pnemoniae.pdf : Drug does not Exists (ESBL (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI_K.pnemoniae.pdf : Drug does not Exists (Neomycin (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_CLSI_K.pnemoniae.pdf : Drug does not Exists (Flumequine (6861910203400664)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   8/ 92 - Isolate_GN0585B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0585_01 - AST-GN96   (6861910203400664) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203400664)) -  
+[apputil.utils       ] Error   - Isolate_GN0585B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861910203400664)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]   9/ 92 - Isolate_GN0587B001P-2_GN096_EUCAST_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0587_01 - AST-GN96   (6861910203400663) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN096_EUCAST_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN096_EUCAST_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400663)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  10/ 92 - Isolate_GN0587B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0587_01 - AST-GN96   (6861910203400663) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203400663)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  11/ 92 - Isolate_GN0587B001P-2_GN96_CLSI_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0587_01 - AST-GN96   (6861910203400663) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Neomycin (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Flumequine (6861910203400663)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  12/ 92 - Isolate_GN0587B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0587_01 - AST-GN96   (6861910203400663) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203400663)) -  
+[apputil.utils       ] Error   - Isolate_GN0587B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861910203400663)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  13/ 92 - Isolate_GN0588B001P-2_GN096_EUCAST_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0588_01 - AST-GN96   (6861910203400662) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN096_EUCAST_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN096_EUCAST_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400662)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  14/ 92 - Isolate_GN0588B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0588_01 - AST-GN96   (6861910203400662) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203400662)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  15/ 92 - Isolate_GN0588B001P-2_GN96_CLSI_K.pneumoniae.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0588_01 - AST-GN96   (6861910203400662) - Klebsiella pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI_K.pneumoniae.pdf : VITEK card does not Exists (AST-GN96 (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (ESBL (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Neomycin (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_CLSI_K.pneumoniae.pdf : Drug does not Exists (Flumequine (6861910203400662)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  16/ 92 - Isolate_GN0588B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0588_01 - AST-GN96   (6861910203400662) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203400662)) -  
+[apputil.utils       ] Error   - Isolate_GN0588B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861910203400662)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  17/ 92 - Isolate_GN0662B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0662_01 - GN         (2411618403216766) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-N411   (0131648504723481) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_CLSI.pdf : VITEK card does not Exists (GN (2411618403216766)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504723481)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  18/ 92 - Isolate_GN0662B001P-1_N411_CLSI_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-N411   (0131648504723481) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_CLSI_KP.p.pdf : VITEK card does not Exists (AST-N411 (0131648504723481)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  19/ 92 - Isolate_GN0662B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0662_01 - GN         (2411618403216766) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-N411   (0131648504723481) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (GN (2411618403216766)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504723481)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  20/ 92 - Isolate_GN0662B001P-1_N411_EUCAST_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-N411   (0131648504723481) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-1_N411_EUCAST_KP.p.pdf : VITEK card does not Exists (AST-N411 (0131648504723481)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  21/ 92 - Isolate_GN0662B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-GN96   (6861777503725894) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861777503725894)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  22/ 92 - Isolate_GN0662B001P-2_GN96_CLSI_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-GN96   (6861777503725894) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI_KP.p.pdf : VITEK card does not Exists (AST-GN96 (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (ESBL (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (Neomycin (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (Flumequine (6861777503725894)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  23/ 92 - Isolate_GN0662B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-GN96   (6861777503725894) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861777503725894)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  24/ 92 - Isolate_GN0662B001P-2_GN96_EUCAST_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0662_01 - AST-GN96   (6861777503725894) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_EUCAST_KP.p.pdf : VITEK card does not Exists (AST-GN96 (6861777503725894)) -  
+[apputil.utils       ] Error   - Isolate_GN0662B001P-2_GN96_EUCAST_KP.p.pdf : Drug does not Exists (ESBL (6861777503725894)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  25/ 92 - Isolate_GN0668B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0668_01 - GN         (2411618403216889) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-N411   (0131648504720294) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_CLSI.pdf : VITEK card does not Exists (GN (2411618403216889)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504720294)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  26/ 92 - Isolate_GN0668B001P-1_N411_CLSI_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-N411   (0131648504720294) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_CLSI_KP.p.pdf : VITEK card does not Exists (AST-N411 (0131648504720294)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  27/ 92 - Isolate_GN0668B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0668_01 - GN         (2411618403216889) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-N411   (0131648504720294) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (GN (2411618403216889)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504720294)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  28/ 92 - Isolate_GN0668B001P-1_N411_EUCAST_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-N411   (0131648504720294) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-1_N411_EUCAST_KP.p.pdf : VITEK card does not Exists (AST-N411 (0131648504720294)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  29/ 92 - Isolate_GN0668B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-GN96   (6861777503725912) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI.pdf : Drug does not Exists (ESBL (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861777503725912)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  30/ 92 - Isolate_GN0668B001P-2_GN96_CLSI_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-GN96   (6861777503725912) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   18  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI_KP.p.pdf : VITEK card does not Exists (AST-GN96 (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (ESBL (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (Neomycin (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_CLSI_KP.p.pdf : Drug does not Exists (Flumequine (6861777503725912)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  31/ 92 - Isolate_GN0668B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-GN96   (6861777503725912) - Klebsiella pneumoniae ssp ozaenae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_EUCAST.pdf : Drug does not Exists (ESBL (6861777503725912)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  32/ 92 - Isolate_GN0668B001P-2_GN96_EUCAST_KP.p.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0668_01 - AST-GN96   (6861777503725912) - Klebsiella pneumoniae ssp pneumoniae  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    9  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_EUCAST_KP.p.pdf : VITEK card does not Exists (AST-GN96 (6861777503725912)) -  
+[apputil.utils       ] Error   - Isolate_GN0668B001P-2_GN96_EUCAST_KP.p.pdf : Drug does not Exists (ESBL (6861777503725912)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  33/ 92 - Isolate_GN0671B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-N411   (0131648504721649) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504721649)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  34/ 92 - Isolate_GN0671B001P-1_N411_CLSI_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-N411   (0131648504721649) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-1_N411_CLSI_Pdispersa.pdf : VITEK card does not Exists (AST-N411 (0131648504721649)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  35/ 92 - Isolate_GN0671B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-N411   (0131648504721649) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504721649)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  36/ 92 - Isolate_GN0671B001P-1_N411_EUCAST_P.dispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-N411   (0131648504721649) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-1_N411_EUCAST_P.dispersa.pdf : VITEK card does not Exists (AST-N411 (0131648504721649)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  37/ 92 - Isolate_GN0671B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-GN96   (6861777503725909) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861777503725909)) -  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861777503725909)) -  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861777503725909)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  38/ 92 - Isolate_GN0671B001P-2_GN96_CLSI_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-GN96   (6861777503725909) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI_Pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861777503725909)) -  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI_Pdispersa.pdf : Drug does not Exists (Neomycin (6861777503725909)) -  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_CLSI_Pdispersa.pdf : Drug does not Exists (Flumequine (6861777503725909)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  39/ 92 - Isolate_GN0671B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-GN96   (6861777503725909) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861777503725909)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  40/ 92 - Isolate_GN0671B001P-2_GN96_EUCAST_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0671_01 - AST-GN96   (6861777503725909) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0671B001P-2_GN96_EUCAST_Pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861777503725909)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  41/ 92 - Isolate_GN0697B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-N411   (0131648504722790) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504722790)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  42/ 92 - Isolate_GN0697B001P-1_N411_CLSI_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-N411   (0131648504722790) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-1_N411_CLSI_Pdispersa.pdf : VITEK card does not Exists (AST-N411 (0131648504722790)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  43/ 92 - Isolate_GN0697B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-N411   (0131648504722790) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504722790)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  44/ 92 - Isolate_GN0697B001P-1_N411_EUCAST_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-N411   (0131648504722790) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-1_N411_EUCAST_Pdispersa.pdf : VITEK card does not Exists (AST-N411 (0131648504722790)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  45/ 92 - Isolate_GN0697B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-GN96   (6861777503728369) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861777503728369)) -  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861777503728369)) -  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861777503728369)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  46/ 92 - Isolate_GN0697B001P-2_GN96_CLSI_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-GN96   (6861777503728369) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI_Pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861777503728369)) -  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI_Pdispersa.pdf : Drug does not Exists (Neomycin (6861777503728369)) -  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_CLSI_Pdispersa.pdf : Drug does not Exists (Flumequine (6861777503728369)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  47/ 92 - Isolate_GN0697B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-GN96   (6861777503728369) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861777503728369)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  48/ 92 - Isolate_GN0697B001P-2_GN96_EUCAST_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0697_01 - AST-GN96   (6861777503728369) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0697B001P-2_GN96_EUCAST_Pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861777503728369)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  49/ 92 - Isolate_GN0810B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0810_01 - GN         (2411618403217936) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-N411   (0131648504721700) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_CLSI.pdf : VITEK card does not Exists (GN (2411618403217936)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504721700)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  50/ 92 - Isolate_GN0810B001P-1_N411_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-N411   (0131648504721700) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721700)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  51/ 92 - Isolate_GN0810B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0810_01 - GN         (2411618403217936) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-N411   (0131648504721700) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (GN (2411618403217936)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504721700)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  52/ 92 - Isolate_GN0810B001P-1_N411_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-N411   (0131648504721700) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-1_N411_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721700)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  53/ 92 - Isolate_GN0810B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-GN96   (6861910203401260) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   17  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203401260)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203401260)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203401260)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  54/ 92 - Isolate_GN0810B001P-2_GN96_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-GN96   (6861910203401260) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401260)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Neomycin (6861910203401260)) -  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Flumequine (6861910203401260)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  55/ 92 - Isolate_GN0810B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-GN96   (6861910203401260) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203401260)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  56/ 92 - Isolate_GN0810B001P-2_GN96_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0810_01 - AST-GN96   (6861910203401260) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0810B001P-2_GN96_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401260)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  57/ 92 - Isolate_GN0812B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0812_01 - GN         (2411618403217934) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-N411   (0131648504721698) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_CLSI.pdf : VITEK card does not Exists (GN (2411618403217934)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504721698)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  58/ 92 - Isolate_GN0812B001P-1_N411_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-N411   (0131648504721698) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721698)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  59/ 92 - Isolate_GN0812B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0812_01 - GN         (2411618403217934) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-N411   (0131648504721698) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (GN (2411618403217934)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504721698)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  60/ 92 - Isolate_GN0812B001P-1_N411_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-N411   (0131648504721698) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-1_N411_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721698)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  61/ 92 - Isolate_GN0812B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-GN96   (6861910203401258) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   17  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203401258)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203401258)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203401258)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  62/ 92 - Isolate_GN0812B001P-2_GN96_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-GN96   (6861910203401258) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401258)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Neomycin (6861910203401258)) -  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Flumequine (6861910203401258)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  63/ 92 - Isolate_GN0812B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-GN96   (6861910203401258) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203401258)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  64/ 92 - Isolate_GN0812B001P-2_GN96_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0812_01 - AST-GN96   (6861910203401258) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0812B001P-2_GN96_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401258)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  65/ 92 - Isolate_GN0815B001P-1_N411_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0815_01 - GN         (2411618403194924) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-N411   (0131648504721697) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_CLSI.pdf : VITEK card does not Exists (GN (2411618403194924)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_CLSI.pdf : VITEK card does not Exists (AST-N411 (0131648504721697)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  66/ 92 - Isolate_GN0815B001P-1_N411_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-N411   (0131648504721697) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721697)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  67/ 92 - Isolate_GN0815B001P-1_N411_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-ID ]  GN_0815_01 - GN         (2411618403194924) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-N411   (0131648504721697) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    2 - ID:    1 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (GN (2411618403194924)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_EUCAST.pdf : VITEK card does not Exists (AST-N411 (0131648504721697)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  68/ 92 - Isolate_GN0815B001P-1_N411_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-N411   (0131648504721697) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   14  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-1_N411_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-N411 (0131648504721697)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  69/ 92 - Isolate_GN0815B001P-2_GN96_CLSI.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-GN96   (6861910203401257) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   17  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI.pdf : VITEK card does not Exists (AST-GN96 (6861910203401257)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI.pdf : Drug does not Exists (Neomycin (6861910203401257)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI.pdf : Drug does not Exists (Flumequine (6861910203401257)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  70/ 92 - Isolate_GN0815B001P-2_GN96_CLSI_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-GN96   (6861910203401257) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401257)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Neomycin (6861910203401257)) -  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_CLSI_Kleb_spp.pdf : Drug does not Exists (Flumequine (6861910203401257)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  71/ 92 - Isolate_GN0815B001P-2_GN96_EUCAST.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-GN96   (6861910203401257) - Enterobacter aerogenes  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_EUCAST.pdf : VITEK card does not Exists (AST-GN96 (6861910203401257)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  72/ 92 - Isolate_GN0815B001P-2_GN96_EUCAST_Kleb_spp.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_0815_01 - AST-GN96   (6861910203401257) - Klebsiella spp  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN0815B001P-2_GN96_EUCAST_Kleb_spp.pdf : VITEK card does not Exists (AST-GN96 (6861910203401257)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  73/ 92 - Isolate_GN1129B001P-1_N435_CLSI_dispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-N435   (0642146204408484) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   15  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-1_N435_CLSI_dispersa.pdf : VITEK card does not Exists (AST-N435 (0642146204408484)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  74/ 92 - Isolate_GN1129B001P-1_N435_CLSI_Pagglomerans.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-N435   (0642146204408484) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   15  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-1_N435_CLSI_Pagglomerans.pdf : VITEK card does not Exists (AST-N435 (0642146204408484)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  75/ 92 - Isolate_GN1129B001P-1_N435_EUCAST_Pagglomerans.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-N435   (0642146204408484) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   15  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-1_N435_EUCAST_Pagglomerans.pdf : VITEK card does not Exists (AST-N435 (0642146204408484)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  76/ 92 - Isolate_GN1129B001P-1_N435_EUCAST_Pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-N435   (0642146204408484) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   15  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-1_N435_EUCAST_Pdispersa.pdf : VITEK card does not Exists (AST-N435 (0642146204408484)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  77/ 92 - Isolate_GN1129B001P-2_GN96_CLSI_pagglomerans.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-GN96   (6861910203410490) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pagglomerans.pdf : VITEK card does not Exists (AST-GN96 (6861910203410490)) -  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pagglomerans.pdf : Drug does not Exists (Neomycin (6861910203410490)) -  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pagglomerans.pdf : Drug does not Exists (Flumequine (6861910203410490)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  78/ 92 - Isolate_GN1129B001P-2_GN96_CLSI_pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-GN96   (6861910203410490) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:   16  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861910203410490)) -  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pdispersa.pdf : Drug does not Exists (Neomycin (6861910203410490)) -  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_CLSI_pdispersa.pdf : Drug does not Exists (Flumequine (6861910203410490)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  79/ 92 - Isolate_GN1129B001P-2_GN96_EUCAST_pagglomerans.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-GN96   (6861910203410490) - Pantoea agglomerans  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_EUCAST_pagglomerans.pdf : VITEK card does not Exists (AST-GN96 (6861910203410490)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  80/ 92 - Isolate_GN1129B001P-2_GN96_EUCAST_pdispersa.pdf   [J.Zuegg]  
+[ddrug.util_vitek    ] [Vitek-AST]  GN_1129_01 - AST-GN96   (6861910203410490) - Pantoea dispersa  
+[ddrug.util_vitek    ] [Vitek    ] Cards:    1 - ID:    0 - AST:    8  
+[apputil.utils       ] Error   - Isolate_GN1129B001P-2_GN96_EUCAST_pdispersa.pdf : VITEK card does not Exists (AST-GN96 (6861910203410490)) -  
+[d_upload_Vitek      ] ------------------------------------------------------------------------- 
+[d_upload_Vitek      ] [Vitek    ]  81/ 92 - Isolate_GN1168B002P-1_N435_CLSI_Kpo.pdf   [J.Zuegg]  

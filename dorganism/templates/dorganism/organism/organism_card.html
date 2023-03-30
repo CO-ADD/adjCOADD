@@ -4,7 +4,11 @@
 {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal'%}
+  {%include 'utils/leftbar.html' with 
+    list_url='org_list' card_url='org_card' 
+    create_object='createOrganism' 
+    create_objectModal='createOrganismModal'
+    %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
@@ -18,9 +22,19 @@
       <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
         <!--  -->
-        {% url 'org_detail' object.pk as url_name %}
-        <!--prettier-ignore-->
-        {%include 'utils/card.html' with url_name=url_name object_name=object.organism_name datatype='Organism' object_var1=object.strain_code object_var3=object.strain_ids object_var5_label="Type" object_var5=object.strain_type object_id_slug=object.organism_id object_var6_label="Phenotype" object_var6=object.res_property object_var7_label="Genotype" object_var7=object.gen_property %}
+          {% url 'org_detail' object.pk as url_name %}
+          <!--prettier-ignore-->
+          {%include 'utils/card.html' with 
+            url_name=url_name datatype='Organism' 
+            object_name=object.organism_id object_id_slug=object.organism_id
+            object_var1=object.strain_code
+            object_var2=object.organism_name 
+            object_var3=object.strain_ids
+            object_var4=object.source 
+            object_var5_label="Type" object_var5=object.strain_type  
+            object_var6_label="Phenotype" object_var6=object.res_property 
+            object_var7_label="Genotype" object_var7=object.gen_property 
+            %}
         <!--prettier-ignore-->
         {%endfor%}
       </div>

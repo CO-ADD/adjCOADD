@@ -1,0 +1,11 @@
+[__main__            ] Python         : 3.10.6  
+[__main__            ] Conda Env      : dj41py310 
+[__main__            ] LogFile        : xUploadOrgDB_20230330_124651.log 
+[__main__            ] Django         : 4.1.3 
+[__main__            ] Django Folder  : C:/Data/A02_WorkDB/03_Django/adjCOADD 
+[__main__            ] Django Project : adjcoadd.settings 
+[__main__            ] [Upd_djCOADD] Table: Drug 
+[__main__            ] [Upd_djCOADD] User:  J.Zuegg 
+[__main__            ] [Upd_djCOADD] Drug from [Drug] in C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data\DrugData_v02.xlsx 
+[c_upload_dDrug      ] [adjCOADD] Read C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data\DrugData_v02.xlsx[Drug]  
+[c_upload_dDrug      ]  XX Amikacin (AMD00002) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  

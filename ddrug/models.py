@@ -16,12 +16,12 @@ from dscreen.models import Screen_Run
 # Drugs related Application Model
 #-------------------------------------------------------------------------------------------------
 
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class Drug(AuditModel):
     """
     List of Drugs, DrugCombinations, DrugScreens 
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "drug_id":"Drug ID",
         "drug_name":"Drug Name",
@@ -98,6 +98,22 @@ class Drug(AuditModel):
     def __str__(self) -> str:
         return f"{self.drug_name} ({self.drug_id})"
 
+   #------------------------------------------------
+    @classmethod
+    def str_DrugID(cls,DrugNo) -> str:
+        return(f"AMD{DrugNo:05d}")
+
+    #------------------------------------------------
+    @classmethod
+    def find_Next_DrugID(cls) -> str:
+        Drug_IDSq=Sequence('Drug')
+        Drug_nextID = next(Drug_IDSq)
+        Drug_strID = cls.str_DrugID(Drug_nextID)
+        while cls.exists(None,Drug_strID):
+            Drug_nextID = next(Drug_IDSq)
+            Drug_strID = cls.str_DrugID(Drug_nextID)
+        return(Drug_strID)    
+
     #------------------------------------------------
     @classmethod
     def get(cls,DrugName,DrugID=None,verbose=0):
@@ -148,24 +164,24 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        print("save ffp2")
-        #self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-        super(Drug, self).save(*args, **kwargs)
-        self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-        print(f"field FFP2 is {self.ffp2}")
-        
-            
-    # # -------------------------------------------------
-    #def get_values(self, fields=DRUG_FIELDs):
-    #    value_list=super(Drug, self).get_values(fields)
-    #    return value_list
 
-#-------------------------------------------------------------------------------------------------
+        if not self.drug_id: 
+            self.drug_id = self.find_Next_DrugID()
+            if self.drug_id: 
+                super(Drug, self).save(*args, **kwargs)
+                self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+        else:
+            self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+            super(Drug, self).save(*args, **kwargs) 
+        # print("save ffp2")
+        # print(f"field FFP2 is {self.ffp2}")
+        
+#=================================================================================================
 class VITEK_Card(AuditModel):
 #     """
 #     List of VITEK Cards
 #     """
-# #-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "orgbatch_id":"orgbatch_id",
         "card_barcode":"Barcode",
@@ -270,18 +286,12 @@ class VITEK_Card(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
-    # # -------------------------------------------------
-    # def get_values(self, fields=VITEKCARD_FIELDs):
-    #     value_list=super(VITEK_Card, self).get_values(fields)
-    #     return value_list
-
-
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
 class VITEK_AST(AuditModel):
     """
       Antimicrobial Suceptibility Testing (AST) data from VITEK Cards
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "process":"Process",
@@ -402,18 +412,13 @@ class VITEK_AST(AuditModel):
 
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
-
-    # # # -------------------------------------------------
-    # def get_values(self, fields=VITEKAST_FIELDs):
-    #     value_list=super(VITEK_AST, self).get_values(fields)
-    #     return value_list
-
-# #-------------------------------------------------------------------------------------------------
+    
+#=================================================================================================
 class VITEK_ID(AuditModel):
     """
       Identification Testing (ID) data from VITEK Cards
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS = {
         "card_barcode":"Barcode",
         "drug_id":"Drug",
@@ -518,19 +523,12 @@ class VITEK_ID(AuditModel):
         retInstance.VALID_STATUS = validStatus
         return(retInstance)
 
-
-    # #  # -------------------------------------------------
-    # def get_values(self, fields=VITEKID_FIELDs):
-    #     value_list=super(VITEK_ID, self).get_values(fields)
-    #     return value_list
-#-------------------------------------------------------------------------------------------------
-
-#-------------------------------------------------------------------------------------------------
-class COADD_BMD(AuditModel):
+#=================================================================================================
+class MIC_COADD(AuditModel):
     """
      Antibiogram from CO-ADD screening    
     """
-#-------------------------------------------------------------------------------------------------
+#=================================================================================================
     HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
@@ -545,6 +543,9 @@ class COADD_BMD(AuditModel):
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
          db_column="mic_type", related_name="%(class)s_MICType+")
+    bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
+    bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
+    bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
     run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_RunID+")
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
@@ -557,7 +558,7 @@ class COADD_BMD(AuditModel):
     #------------------------------------------------
     class Meta:
         app_label = 'ddrug'
-        db_table = 'coadd_bmd'
+        db_table = 'mic_coadd'
         ordering=['drug_id','orgbatch_id']
         # indexes = [
         #     models.Index(name="mic_drugid_idx",fields=['drug_id']),
@@ -647,3 +648,54 @@ class COADD_BMD(AuditModel):
         retInstance.VALID_STATUS = validStatus
         
         return(retInstance)
+    
+#=================================================================================================
+class MIC_Pub(AuditModel):
+    """
+     Antibiogram from Public sources    
+    """
+#=================================================================================================
+    HEADER_FIELDS   = {}
+    Choice_Dictionary = {
+        'mic_type':'MIC_Type',
+    }
+
+    organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="oragnism_id", related_name="%(class)s_organism_id+") 
+    drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
+        db_column="drug_id", related_name="%(class)s_drug_id+")
+    
+    mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
+    mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
+    mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
+         db_column="mic_type", related_name="%(class)s_MICType+")
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
+    bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
+    bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
+
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'ddrug'
+        db_table = 'mic_pub'
+        ordering=['drug_id','orgbatch_id']
+        # indexes = [
+        #     models.Index(name="mic_drugid_idx",fields=['drug_id']),
+        #     models.Index(name="mic_mic_idx",fields=['mic']),
+        #     models.Index(name="mic_bprofile_idx",fields=['bp_profile']),
+        #     models.Index(name="mic_bpsource_idx",fields=['bp_source']),
+        #     models.Index(name="mic_source_idx",fields=['source']),
+        #     models.Index(name="mic_sourcetype_idx",fields=['source_type']),
+        # ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        retStr = ""
+        if self.drug_id:    
+            if self.drug_id is not None:
+                retStr += f"{self.drug_id.drug_name} "
+            else:
+                retStr += f"{self.drug_id} "
+        retStr += f"{self.orgbatch_id} {self.mic}"
+        return(retStr)

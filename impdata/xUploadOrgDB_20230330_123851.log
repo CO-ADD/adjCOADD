@@ -1,0 +1,472 @@
+[__main__            ] Python         : 3.10.6  
+[__main__            ] Conda Env      : dj41py310 
+[__main__            ] LogFile        : xUploadOrgDB_20230330_123851.log 
+[__main__            ] Django         : 4.1.3 
+[__main__            ] Django Folder  : C:/Data/A02_WorkDB/03_Django/adjCOADD 
+[__main__            ] Django Project : adjcoadd.settings 
+[__main__            ] [Upd_djCOADD] Table: Drug 
+[__main__            ] [Upd_djCOADD] User:  J.Zuegg 
+[__main__            ] [Upd_djCOADD] Drug from [Drug] in C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data\DrugData_v02.xlsx 
+[c_upload_dDrug      ] [adjCOADD] Read C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data\DrugData_v02.xlsx[Drug]  
+[c_upload_dDrug      ]  XX Amikacin (AMD00002) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Amikacin (AMD00002) as J.Zuegg 
+[c_upload_dDrug      ]  XX Amoxicillin (AMD00003) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Amoxicillin (AMD00003) as J.Zuegg 
+[c_upload_dDrug      ]  XX Amoxicillin|Clavulanic acid (AMD00004) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Amoxicillin|Clavulanic acid (AMD00004) as J.Zuegg 
+[c_upload_dDrug      ]  XX Amphotericin B (AMD00005) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Amphotericin B (AMD00005) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ampicillin (AMD00006) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ampicillin (AMD00006) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ampicillin|Sulbactam (AMD00007) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ampicillin|Sulbactam (AMD00007) as J.Zuegg 
+[c_upload_dDrug      ]  XX Anidulafungin (AMD00008) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Anidulafungin (AMD00008) as J.Zuegg 
+[c_upload_dDrug      ]  XX Apramycin (AMD00178) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Apramycin (AMD00178) as J.Zuegg 
+[c_upload_dDrug      ]  XX Avibactam (AMD00009) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Avibactam (AMD00009) as J.Zuegg 
+[c_upload_dDrug      ]  XX Azithromycin (AMD00010) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Azithromycin (AMD00010) as J.Zuegg 
+[c_upload_dDrug      ]  XX Azlocillin (AMD00011) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Azlocillin (AMD00011) as J.Zuegg 
+[c_upload_dDrug      ]  XX Aztreonam (AMD00012) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Aztreonam (AMD00012) as J.Zuegg 
+[c_upload_dDrug      ]  XX Aztreonam|Avibactam (AMD00216) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Aztreonam|Avibactam (AMD00216) as J.Zuegg 
+[c_upload_dDrug      ]  XX Bedaquiline (AMD00013) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Bedaquiline (AMD00013) as J.Zuegg 
+[c_upload_dDrug      ]  XX Bekanamycin (AMD00219) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Bekanamycin (AMD00219) as J.Zuegg 
+[c_upload_dDrug      ]  XX Benzylpenicillin (AMD00179) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Benzylpenicillin (AMD00179) as J.Zuegg 
+[c_upload_dDrug      ]  XX Capreomycin (AMD00014) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Capreomycin (AMD00014) as J.Zuegg 
+[c_upload_dDrug      ]  XX Carbenicillin (AMD00015) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Carbenicillin (AMD00015) as J.Zuegg 
+[c_upload_dDrug      ]  XX Caspofungin (AMD00016) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Caspofungin (AMD00016) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefacetrile (AMD00017) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefacetrile (AMD00017) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefaclor (AMD00018) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefaclor (AMD00018) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefadroxil (AMD00019) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefadroxil (AMD00019) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefalexin (AMD00020) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefalexin (AMD00020) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefaloglycin (AMD00021) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefaloglycin (AMD00021) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefalonium (AMD00022) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefalonium (AMD00022) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefaloridine (AMD00023) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefaloridine (AMD00023) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefalotin (AMD00024) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefalotin (AMD00024) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefamandole (AMD00025) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefamandole (AMD00025) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefapirin (AMD00026) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefapirin (AMD00026) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefatrizine (AMD00027) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefatrizine (AMD00027) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefazaflur (AMD00028) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefazaflur (AMD00028) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefazedone (AMD00029) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefazedone (AMD00029) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefazolin (AMD00030) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefazolin (AMD00030) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefcapene (AMD00031) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefcapene (AMD00031) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefclidine (AMD00032) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefclidine (AMD00032) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefdaloxime (AMD00033) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefdaloxime (AMD00033) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefdinir (AMD00034) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefdinir (AMD00034) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefditoren (AMD00035) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefditoren (AMD00035) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefditoren pivoxil (AMD00220) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefditoren pivoxil (AMD00220) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefepime (AMD00036) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefepime (AMD00036) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefepime|Zidebactam (AMD00214) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefepime|Zidebactam (AMD00214) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefetamet (AMD00037) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefetamet (AMD00037) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefixime (AMD00038) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefixime (AMD00038) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefluprenam (AMD00039) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefluprenam (AMD00039) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefmenoxime (AMD00040) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefmenoxime (AMD00040) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefmetazole (AMD00041) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefmetazole (AMD00041) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefodizime (AMD00042) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefodizime (AMD00042) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefonicid (AMD00043) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefonicid (AMD00043) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefoperazone (AMD00044) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefoperazone (AMD00044) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefoselis (AMD00045) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefoselis (AMD00045) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefotaxime (AMD00046) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefotaxime (AMD00046) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefotaxime|Clavulanic acid (AMD00211) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefotaxime|Clavulanic acid (AMD00211) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefotetan (AMD00047) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefotetan (AMD00047) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefovecin (AMD00048) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefovecin (AMD00048) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefoxitin (AMD00049) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefoxitin (AMD00049) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefozopran (AMD00050) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefozopran (AMD00050) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefpimizole (AMD00051) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefpimizole (AMD00051) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefpirome (AMD00052) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefpirome (AMD00052) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefpodoxime (AMD00053) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefpodoxime (AMD00053) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefprozil (AMD00054) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefprozil (AMD00054) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefquinome (AMD00055) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefquinome (AMD00055) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefradine (AMD00056) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefradine (AMD00056) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefroxadine (AMD00057) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefroxadine (AMD00057) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftamere (AMD00058) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftamere (AMD00058) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftaroline (AMD00059) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftaroline (AMD00059) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftazidime (AMD00060) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftazidime (AMD00060) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftazidime|Avibactam (AMD00061) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftazidime|Avibactam (AMD00061) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftazidime|Clavulanic acid (AMD00212) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftazidime|Clavulanic acid (AMD00212) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefteram (AMD00062) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefteram (AMD00062) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftezole (AMD00063) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftezole (AMD00063) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftibuten (AMD00064) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftibuten (AMD00064) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftiofur (AMD00065) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftiofur (AMD00065) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftiolene (AMD00066) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftiolene (AMD00066) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftizoxime (AMD00067) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftizoxime (AMD00067) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftobiprole (AMD00068) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftobiprole (AMD00068) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftolozane (AMD00069) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftolozane (AMD00069) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftolozane|Tazobactam (AMD00070) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftolozane|Tazobactam (AMD00070) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ceftriaxone (AMD00071) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ceftriaxone (AMD00071) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefuroxime (AMD00072) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefuroxime (AMD00072) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefuroxime axetil (AMD00073) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefuroxime axetil (AMD00073) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cefuzonam (AMD00074) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cefuzonam (AMD00074) as J.Zuegg 
+[c_upload_dDrug      ]  XX Chloramphenicol (AMD00075) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Chloramphenicol (AMD00075) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cinoxacin (AMD00076) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cinoxacin (AMD00076) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ciprofloxacin (AMD00077) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ciprofloxacin (AMD00077) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clarithromycin (AMD00078) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clarithromycin (AMD00078) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clavulanic acid (AMD00079) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clavulanic acid (AMD00079) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clinafloxacin (AMD00080) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clinafloxacin (AMD00080) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clindamycin (AMD00081) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clindamycin (AMD00081) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clofazimine (AMD00082) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clofazimine (AMD00082) as J.Zuegg 
+[c_upload_dDrug      ]  XX Clotrimazole (AMD00083) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Clotrimazole (AMD00083) as J.Zuegg 
+[c_upload_dDrug      ]  XX Cloxacillin (AMD00181) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Cloxacillin (AMD00181) as J.Zuegg 
+[c_upload_dDrug      ]  XX Colistin (AMD00084) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Colistin (AMD00084) as J.Zuegg 
+[c_upload_dDrug      ]  XX Dalbavancin (AMD00085) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Dalbavancin (AMD00085) as J.Zuegg 
+[c_upload_dDrug      ]  XX Dalfopristin (AMD00086) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Dalfopristin (AMD00086) as J.Zuegg 
+[c_upload_dDrug      ]  XX Daptomycin (AMD00087) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Daptomycin (AMD00087) as J.Zuegg 
+[c_upload_dDrug      ]  XX D-Cycloserine (AMD00088) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r D-Cycloserine (AMD00088) as J.Zuegg 
+[c_upload_dDrug      ]  XX Delamanid (AMD00089) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Delamanid (AMD00089) as J.Zuegg 
+[c_upload_dDrug      ]  XX Dicloxacillin (AMD00090) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Dicloxacillin (AMD00090) as J.Zuegg 
+[c_upload_dDrug      ]  XX Difloxacin (AMD00182) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Difloxacin (AMD00182) as J.Zuegg 
+[c_upload_dDrug      ]  XX Dirithromycin (AMD00091) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Dirithromycin (AMD00091) as J.Zuegg 
+[c_upload_dDrug      ]  XX Doripenem (AMD00092) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Doripenem (AMD00092) as J.Zuegg 
+[c_upload_dDrug      ]  XX Doxycycline (AMD00093) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Doxycycline (AMD00093) as J.Zuegg 
+[c_upload_dDrug      ]  XX Enoxacin (AMD00094) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Enoxacin (AMD00094) as J.Zuegg 
+[c_upload_dDrug      ]  XX Enrofloxacin (AMD00183) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Enrofloxacin (AMD00183) as J.Zuegg 
+[c_upload_dDrug      ]  XX Eravacycline (AMD00208) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Eravacycline (AMD00208) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ertapenem (AMD00095) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ertapenem (AMD00095) as J.Zuegg 
+[c_upload_dDrug      ]  XX Erythromycin (AMD00096) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Erythromycin (AMD00096) as J.Zuegg 
+[c_upload_dDrug      ]  XX Erythromycin estolate (AMD00221) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Erythromycin estolate (AMD00221) as J.Zuegg 
+[c_upload_dDrug      ]  XX Erythromycin propionate (AMD00222) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Erythromycin propionate (AMD00222) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ethambutol (AMD00097) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ethambutol (AMD00097) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ethambutol|Isoniazid (AMD00223) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ethambutol|Isoniazid (AMD00223) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ethambutol|Isoniazid|Pyrazinamide|Rifampicin (AMD00224) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ethambutol|Isoniazid|Pyrazinamide|Rifampicin (AMD00224) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ethambutol|Isoniazid|Rifampicin (AMD00225) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ethambutol|Isoniazid|Rifampicin (AMD00225) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ethionamide (AMD00098) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ethionamide (AMD00098) as J.Zuegg 
+[c_upload_dDrug      ]  XX Faropenem (AMD00099) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Faropenem (AMD00099) as J.Zuegg 
+[c_upload_dDrug      ]  XX Fidaxomicin (AMD00100) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Fidaxomicin (AMD00100) as J.Zuegg 
+[c_upload_dDrug      ]  XX Fleroxacin (AMD00101) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Fleroxacin (AMD00101) as J.Zuegg 
+[c_upload_dDrug      ]  XX Florfenicol (AMD00184) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Florfenicol (AMD00184) as J.Zuegg 
+[c_upload_dDrug      ]  XX Flucloxacillin (AMD00185) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Flucloxacillin (AMD00185) as J.Zuegg 
+[c_upload_dDrug      ]  XX Fluconazole (AMD00102) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Fluconazole (AMD00102) as J.Zuegg 
+[c_upload_dDrug      ]  XX Flucytosine (AMD00001) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Flucytosine (AMD00001) as J.Zuegg 
+[c_upload_dDrug      ]  XX Fosfomycin (AMD00103) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Fosfomycin (AMD00103) as J.Zuegg 
+[c_upload_dDrug      ]  XX Fusidic acid (AMD00104) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Fusidic acid (AMD00104) as J.Zuegg 
+[c_upload_dDrug      ]  XX Gamithromycin (AMD00186) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Gamithromycin (AMD00186) as J.Zuegg 
+[c_upload_dDrug      ]  XX Gatifloxacin (AMD00105) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Gatifloxacin (AMD00105) as J.Zuegg 
+[c_upload_dDrug      ]  XX Gemifloxacin (AMD00106) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Gemifloxacin (AMD00106) as J.Zuegg 
+[c_upload_dDrug      ]  XX Gentamicin (AMD00107) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Gentamicin (AMD00107) as J.Zuegg 
+[c_upload_dDrug      ]  XX Gepotidacin (AMD00187) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Gepotidacin (AMD00187) as J.Zuegg 
+[c_upload_dDrug      ]  XX Grepafloxacin (AMD00108) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Grepafloxacin (AMD00108) as J.Zuegg 
+[c_upload_dDrug      ]  XX Imipenem (AMD00109) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Imipenem (AMD00109) as J.Zuegg 
+[c_upload_dDrug      ]  XX Imipenem|EDTA (AMD00213) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Imipenem|EDTA (AMD00213) as J.Zuegg 
+[c_upload_dDrug      ]  XX Imipenem|Relebactam (AMD00215) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Imipenem|Relebactam (AMD00215) as J.Zuegg 
+[c_upload_dDrug      ]  XX Isavuconazole (AMD00110) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Isavuconazole (AMD00110) as J.Zuegg 
+[c_upload_dDrug      ]  XX Isoniazid (AMD00111) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Isoniazid (AMD00111) as J.Zuegg 
+[c_upload_dDrug      ]  XX Isoniazid|Pyridoxine|Sulfamethoxazole|Trimethoprim (AMD00226) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Isoniazid|Pyridoxine|Sulfamethoxazole|Trimethoprim (AMD00226) as J.Zuegg 
+[c_upload_dDrug      ]  XX Itraconazole (AMD00112) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Itraconazole (AMD00112) as J.Zuegg 
+[c_upload_dDrug      ]  XX Kanamycin (AMD00113) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Kanamycin (AMD00113) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ketoconazole (AMD00114) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ketoconazole (AMD00114) as J.Zuegg 
+[c_upload_dDrug      ]  XX Latamoxef (AMD00115) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Latamoxef (AMD00115) as J.Zuegg 
+[c_upload_dDrug      ]  XX Levofloxacin (AMD00116) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Levofloxacin (AMD00116) as J.Zuegg 
+[c_upload_dDrug      ]  XX Linezolid (AMD00117) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Linezolid (AMD00117) as J.Zuegg 
+[c_upload_dDrug      ]  XX Lomefloxacin (AMD00118) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Lomefloxacin (AMD00118) as J.Zuegg 
+[c_upload_dDrug      ]  XX Loracarbef (AMD00119) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Loracarbef (AMD00119) as J.Zuegg 
+[c_upload_dDrug      ]  XX Malacidin A (AMD00120) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Malacidin A (AMD00120) as J.Zuegg 
+[c_upload_dDrug      ]  XX Marbofloxacin (AMD00188) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Marbofloxacin (AMD00188) as J.Zuegg 
+[c_upload_dDrug      ]  XX Mecillinam (AMD00121) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Mecillinam (AMD00121) as J.Zuegg 
+[c_upload_dDrug      ]  XX Meropenem (AMD00122) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Meropenem (AMD00122) as J.Zuegg 
+[c_upload_dDrug      ]  XX Meropenem|Vaborbactam (AMD00209) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Meropenem|Vaborbactam (AMD00209) as J.Zuegg 
+[c_upload_dDrug      ]  XX Methicillin (AMD00123) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Methicillin (AMD00123) as J.Zuegg 
+[c_upload_dDrug      ]  XX Metronidazole (AMD00124) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Metronidazole (AMD00124) as J.Zuegg 
+[c_upload_dDrug      ]  XX Mezlocillin (AMD00125) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Mezlocillin (AMD00125) as J.Zuegg 
+[c_upload_dDrug      ]  XX Micafungin (AMD00126) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Micafungin (AMD00126) as J.Zuegg 
+[c_upload_dDrug      ]  XX Minocycline (AMD00127) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Minocycline (AMD00127) as J.Zuegg 
+[c_upload_dDrug      ]  XX Moxifloxacin (AMD00128) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Moxifloxacin (AMD00128) as J.Zuegg 
+[c_upload_dDrug      ]  XX Mupirocin (AMD00129) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Mupirocin (AMD00129) as J.Zuegg 
+[c_upload_dDrug      ]  XX Murepavadin (AMD00130) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Murepavadin (AMD00130) as J.Zuegg 
+[c_upload_dDrug      ]  XX Nafcillin (AMD00131) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Nafcillin (AMD00131) as J.Zuegg 
+[c_upload_dDrug      ]  XX Nalidixic acid (AMD00132) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Nalidixic acid (AMD00132) as J.Zuegg 
+[c_upload_dDrug      ]  XX Netilmicin (AMD00133) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Netilmicin (AMD00133) as J.Zuegg 
+[c_upload_dDrug      ]  XX Nitrofurantoin (AMD00134) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Nitrofurantoin (AMD00134) as J.Zuegg 
+[c_upload_dDrug      ]  XX Nitroxoline (AMD00175) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Nitroxoline (AMD00175) as J.Zuegg 
+[c_upload_dDrug      ]  XX Norfloxacin (AMD00135) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Norfloxacin (AMD00135) as J.Zuegg 
+[c_upload_dDrug      ]  XX Novobiocin (AMD00189) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Novobiocin (AMD00189) as J.Zuegg 
+[c_upload_dDrug      ]  XX Nystatin (AMD00136) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Nystatin (AMD00136) as J.Zuegg 
+[c_upload_dDrug      ]  XX Octapeptin C4 (AMD00176) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Octapeptin C4 (AMD00176) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ofloxacin (AMD00137) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ofloxacin (AMD00137) as J.Zuegg 
+[c_upload_dDrug      ]  XX Orbifloxacin (AMD00190) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Orbifloxacin (AMD00190) as J.Zuegg 
+[c_upload_dDrug      ]  XX Oritavancin (AMD00138) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Oritavancin (AMD00138) as J.Zuegg 
+[c_upload_dDrug      ]  XX Oxacillin (AMD00139) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Oxacillin (AMD00139) as J.Zuegg 
+[c_upload_dDrug      ]  XX Oxytetracycline (AMD00191) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Oxytetracycline (AMD00191) as J.Zuegg 
+[c_upload_dDrug      ]  XX para-Aminosalicylic acid (AMD00140) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r para-Aminosalicylic acid (AMD00140) as J.Zuegg 
+[c_upload_dDrug      ]  XX Pefloxacin (AMD00192) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Pefloxacin (AMD00192) as J.Zuegg 
+[c_upload_dDrug      ]  XX Penicillin (AMD00141) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Penicillin (AMD00141) as J.Zuegg 
+[c_upload_dDrug      ]  XX Phenethicillin (AMD00193) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Phenethicillin (AMD00193) as J.Zuegg 
+[c_upload_dDrug      ]  XX Phenoxymethypenicillin (AMD00194) {'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Phenoxymethypenicillin (AMD00194) as J.Zuegg 
+[c_upload_dDrug      ]  XX Pipemidic acid (AMD00195) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Pipemidic acid (AMD00195) as J.Zuegg 
+[c_upload_dDrug      ]  XX Piperacillin (AMD00142) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Piperacillin (AMD00142) as J.Zuegg 
+[c_upload_dDrug      ]  XX Piperacillin|Tazobactam (AMD00143) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Piperacillin|Tazobactam (AMD00143) as J.Zuegg 
+[c_upload_dDrug      ]  XX Pirlimycin (AMD00196) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Pirlimycin (AMD00196) as J.Zuegg 
+[c_upload_dDrug      ]  XX Plazomicin (AMD00218) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Plazomicin (AMD00218) as J.Zuegg 
+[c_upload_dDrug      ]  XX Polymyxin B (AMD00144) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Polymyxin B (AMD00144) as J.Zuegg 
+[c_upload_dDrug      ]  XX Polymyxin B1 (AMD00227) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Polymyxin B1 (AMD00227) as J.Zuegg 
+[c_upload_dDrug      ]  XX Polymyxin B2 (AMD00228) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Polymyxin B2 (AMD00228) as J.Zuegg 
+[c_upload_dDrug      ]  XX Posaconazole (AMD00145) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Posaconazole (AMD00145) as J.Zuegg 
+[c_upload_dDrug      ]  XX Pradofloxacin (AMD00197) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Pradofloxacin (AMD00197) as J.Zuegg 
+[c_upload_dDrug      ]  XX Prothionamide (AMD00146) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Prothionamide (AMD00146) as J.Zuegg 
+[c_upload_dDrug      ]  XX Pyrazinamide (AMD00147) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Pyrazinamide (AMD00147) as J.Zuegg 
+[c_upload_dDrug      ]  XX Quinupristin (AMD00148) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Quinupristin (AMD00148) as J.Zuegg 
+[c_upload_dDrug      ]  XX Quinupristin|Dalfopristin (AMD00149) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Quinupristin|Dalfopristin (AMD00149) as J.Zuegg 
+[c_upload_dDrug      ]  XX Relebactam (AMD00198) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Relebactam (AMD00198) as J.Zuegg 
+[c_upload_dDrug      ]  XX Retapamulin (AMD00199) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Retapamulin (AMD00199) as J.Zuegg 
+[c_upload_dDrug      ]  XX Rifabutin (AMD00150) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Rifabutin (AMD00150) as J.Zuegg 
+[c_upload_dDrug      ]  XX Rifampicin (AMD00151) {'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Rifampicin (AMD00151) as J.Zuegg 
+[c_upload_dDrug      ]  XX Rifampicin|Isoniazid|Pyrazinamide (AMD00229) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Rifampicin|Isoniazid|Pyrazinamide (AMD00229) as J.Zuegg 
+[c_upload_dDrug      ]  XX Rifapentine (AMD00152) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Rifapentine (AMD00152) as J.Zuegg 
+[c_upload_dDrug      ]  XX Roxithromycin (AMD00177) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Roxithromycin (AMD00177) as J.Zuegg 
+[c_upload_dDrug      ]  XX Solithromycin (AMD00153) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Solithromycin (AMD00153) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sparfloxacin (AMD00154) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sparfloxacin (AMD00154) as J.Zuegg 
+[c_upload_dDrug      ]  XX Spectinomycin (AMD00155) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Spectinomycin (AMD00155) as J.Zuegg 
+[c_upload_dDrug      ]  XX Streptomycin (AMD00156) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Streptomycin (AMD00156) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sulbactam (AMD00157) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sulbactam (AMD00157) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sulfamethoxazole (AMD00158) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sulfamethoxazole (AMD00158) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sulfathiazole (AMD00200) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sulfathiazole (AMD00200) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sulfisoxazole (AMD00201) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sulfisoxazole (AMD00201) as J.Zuegg 
+[c_upload_dDrug      ]  XX Sulfonamides (AMD00210) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Sulfonamides (AMD00210) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tazobactam (AMD00159) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tazobactam (AMD00159) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tedizolid (AMD00160) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tedizolid (AMD00160) as J.Zuegg 
+[c_upload_dDrug      ]  XX Teicoplanin (AMD00161) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Teicoplanin (AMD00161) as J.Zuegg 
+[c_upload_dDrug      ]  XX Telavancin (AMD00162) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Telavancin (AMD00162) as J.Zuegg 
+[c_upload_dDrug      ]  XX Telithromycin (AMD00163) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Telithromycin (AMD00163) as J.Zuegg 
+[c_upload_dDrug      ]  XX Terbinafine (AMD00164) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Terbinafine (AMD00164) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tetracycline (AMD00165) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tetracycline (AMD00165) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tiamulin (AMD00202) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tiamulin (AMD00202) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ticarcillin (AMD00166) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ticarcillin (AMD00166) as J.Zuegg 
+[c_upload_dDrug      ]  XX Ticarcillin|Clavulanic acid (AMD00167) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Ticarcillin|Clavulanic acid (AMD00167) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tigecycline (AMD00168) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tigecycline (AMD00168) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tildipirosin (AMD00203) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tildipirosin (AMD00203) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tilmicosin (AMD00204) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tilmicosin (AMD00204) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tobramycin (AMD00169) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tobramycin (AMD00169) as J.Zuegg 
+[c_upload_dDrug      ]  XX Trimethoprim (AMD00170) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Trimethoprim (AMD00170) as J.Zuegg 
+[c_upload_dDrug      ]  XX Trimethoprim|Sulfamethoxazole (AMD00171) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Trimethoprim|Sulfamethoxazole (AMD00171) as J.Zuegg 
+[c_upload_dDrug      ]  XX Trovafloxacin (AMD00172) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Trovafloxacin (AMD00172) as J.Zuegg 
+[c_upload_dDrug      ]  XX Tulathromycin (AMD00205) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Tulathromycin (AMD00205) as J.Zuegg 
+[c_upload_dDrug      ]  XX Vaborbactam (AMD00206) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Vaborbactam (AMD00206) as J.Zuegg 
+[c_upload_dDrug      ]  XX Valnemulin (AMD00207) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Valnemulin (AMD00207) as J.Zuegg 
+[c_upload_dDrug      ]  XX Vancomycin (AMD00173) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Vancomycin (AMD00173) as J.Zuegg 
+[c_upload_dDrug      ]  XX Voriconazole (AMD00174) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Voriconazole (AMD00174) as J.Zuegg 
+[c_upload_dDrug      ]  XX Zidebactam (AMD00180) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Zidebactam (AMD00180) as J.Zuegg 
+[c_upload_dDrug      ]  XX Neomycin (AMD00230) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Neomycin (AMD00230) as J.Zuegg 
+[c_upload_dDrug      ]  XX Flumequine (AMD00231) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r Flumequine (AMD00231) as J.Zuegg 
+[c_upload_dDrug      ]  XX ESBL (AMD00232) {'drug_othernames': ['This field cannot be blank.'], 'drug_codes': ['This field cannot be blank.'], 'torsionbv': ['This field cannot be blank.'], 'ffp2': ['This field cannot be blank.'], 'mfp2': ['This field cannot be blank.']}  
+[c_upload_dDrug      ]  >r ESBL (AMD00232) as J.Zuegg 
