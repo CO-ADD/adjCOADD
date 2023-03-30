@@ -62,6 +62,7 @@ def main():
     import b_upload_dOrganism as dOrg
     import c_upload_dDrug as dDrug
     import d_upload_Vitek as dVitek
+    import e_upload_MIC as dMIC
 
     # Logger ----------------------------------------------------------------
     logger = logging.getLogger(__name__)
@@ -122,9 +123,9 @@ def main():
         if prgArgs.vitekfile:
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfile}") 
             dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
-    #elif prgArgs.table == 'VitekID':
-    #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
-    #     dDrug.update_VitekID_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    elif prgArgs.table == 'MICPub':
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     # elif prgArgs.table == 'VitekAST':
     #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
     #     dDrug.update_VitekAST_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)

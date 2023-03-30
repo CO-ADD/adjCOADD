@@ -1,0 +1,258 @@
+[__main__            ] Python         : 3.10.6  
+[__main__            ] Conda Env      : dj41py310 
+[__main__            ] LogFile        : xUploadOrgDB_20230330_143547.log 
+[__main__            ] Django         : 4.1.3 
+[__main__            ] Django Folder  : C:/Data/A02_WorkDB/03_Django/adjCOADD 
+[__main__            ] Django Project : adjcoadd.settings 
+[__main__            ] [Upd_djCOADD] Table: MICPub 
+[__main__            ] [Upd_djCOADD] User:  J.Zuegg 
+[__main__            ] [Upd_djCOADD] MICPub from oraCastDB 
+[oraCastDB.oraCastDB ] [OrgDB] Connecting to OrgDB  
+[zSql.zSqlConnector  ] [Oracle] orgdb@coadb [SID: 98] 
+[e_upload_MIC        ] [MIC-Pub] ...  
+[e_upload_MIC        ] [MIC-Pub] 8099  
+[zSql.zSqlConnector  ] [Oracle] orgdb@coadb [Closed]  
+[e_upload_MIC        ] [     100 /     8099] 0:05:01 >r Levofloxacin GN_0277 (Kp CDC #0112) >8 CDC  
+[e_upload_MIC        ] [     200 /     8099] 0:04:48 >r Tobramycin GN_0333 (Ab.cmplx CDC #0276) 16 CDC  
+[e_upload_MIC        ] [     300 /     8099] 0:04:36 >r Ceftazidime GN_0330 (Ab CDC #0273) 64 CDC  
+[e_upload_MIC        ] [     400 /     8099] 0:04:32 >r Meropenem GN_0371 (Ec CDC #0346) <=0.12 CDC  
+[e_upload_MIC        ] [     500 /     8099] 0:04:28 >r Ceftazidime|Avibactam GN_0378 (Ec CDC #0495) <=0.5 CDC  
+[e_upload_MIC        ] [     600 /     8099] 0:04:25 >r Meropenem GN_0318 (Kp CDC #0153) >8 CDC  
+[e_upload_MIC        ] [     700 /     8099] 0:04:21 >r Ceftazidime|Clavulanic acid GN_0313 (Kp CDC #0148) >64 CDC  
+[e_upload_MIC        ] [     800 /     8099] 0:04:15 >r Minocycline GN_0348 (Ab CDC #0291) 8 CDC  
+[e_upload_MIC        ] [     900 /     8099] 0:04:11 >r Ceftriaxone GN_0309 (Kl.as CDC #0144) >32 CDC  
+[e_upload_MIC        ] [    1000 /     8099] 0:04:05 >r Doripenem GN_0446 (Ab CDC #0056) >8 CDC  
+[e_upload_MIC        ] [    1100 /     8099] 0:03:59 >r Ciprofloxacin GN_0377 (Ec CDC #0494) >8 CDC  
+[e_upload_MIC        ] [    1200 /     8099] 0:03:53 >r Amikacin GN_0361 (Ab CDC #0304) 32 CDC  
+[e_upload_MIC        ] [    1300 /     8099] 0:03:49 >r Ciprofloxacin GN_0344 (Ab CDC #0287) >8 CDC  
+[e_upload_MIC        ] [    1400 /     8099] 0:03:44 >r Gentamicin GN_0489 (Kp CDC #0107) >16 CDC  
+[e_upload_MIC        ] [    1500 /     8099] 0:03:41 >r Ampicillin|Sulbactam GN_0281 (Ci.fr CDC #0116) >32 CDC  
+[e_upload_MIC        ] [    1600 /     8099] 0:03:35 >r Tetracycline GN_0350 (Ab CDC #0293) >32 CDC  
+[e_upload_MIC        ] [    1700 /     8099] 0:03:31 >r Ertapenem GN_0433 (Kp CDC #0042) >8 CDC  
+[e_upload_MIC        ] [    1800 /     8099] 0:03:28 >r Colistin GN_0342 (Ab CDC #0285) 1 CDC  
+[e_upload_MIC        ] [    1900 /     8099] 0:03:24 >r Aztreonam GN_0301 (En.cl CDC #0136) >64 CDC  
+[e_upload_MIC        ] [    2000 /     8099] 0:03:21 >r Colistin GN_0484 (Se.ma CDC #0099) 4 CDC  
+[e_upload_MIC        ] [    2100 /     8099] 0:03:17 >r Cefazolin GN_0296 (Se.ma CDC #0131) >32 CDC  
+[e_upload_MIC        ] [    2200 /     8099] 0:03:13 >r Tigecycline GN_0304 (Kp CDC #0139) 1 CDC  
+[e_upload_MIC        ] [    2300 /     8099] 0:03:09 >r Cefazolin GN_0324 (Pr.mi CDC #0159) >8 CDC  
+[e_upload_MIC        ] [    2400 /     8099] 0:03:06 >r Gentamicin GN_0282 (Kp CDC #0117) 8 CDC  
+[e_upload_MIC        ] [    2500 /     8099] 0:03:03 >r Gentamicin GN_0312 (Kl.ox CDC #0147) 8 CDC  
+[e_upload_MIC        ] [    2600 /     8099] 0:02:59 >r Cefotaxime GN_0310 (Kp CDC #0145) >64 CDC  
+[e_upload_MIC        ] [    2700 /     8099] 0:02:55 >r Cefotaxime GN_0340 (Ab CDC #0283) >64 CDC  
+[e_upload_MIC        ] [    2800 /     8099] 0:02:51 >r Imipenem GN_0368 (Ab CDC #0311) 64 CDC  
+[e_upload_MIC        ] [    2900 /     8099] 0:02:47 >r Imipenem|EDTA GN_0298 (Mo.mo CDC #0133) 8 CDC  
+[e_upload_MIC        ] [    3000 /     8099] 0:02:44 >r Tigecycline GN_0357 (Ab CDC #0300) 1 CDC  
+[e_upload_MIC        ] [    3100 /     8099] 0:02:41 >r Anidulafungin FG_0060 (Ca.au CDC #0389) 1 CDC  
+[e_upload_MIC        ] [    3200 /     8099] 0:02:38 >r Amikacin GN_0429 (En.cl CDC #0038) >64 CDC  
+[e_upload_MIC        ] [    3300 /     8099] 0:02:35 >r Caspofungin FG_0064 (Ca.ha CDC #0393) 0.125 CDC  
+[e_upload_MIC        ] [    3400 /     8099] 0:02:31 >r Cefazolin GN_0449 (Pr.mi CDC #0059) >8 CDC  
+[e_upload_MIC        ] [    3500 /     8099] 0:02:28 >r Amikacin GN_0468 (Kp CDC #0079) >64 CDC  
+[e_upload_MIC        ] [    3600 /     8099] 0:02:24 >r Ampicillin GN_0404 (Kp CDC #0012) >32 CDC  
+[e_upload_MIC        ] [    3700 /     8099] 0:02:21 >r Cefotaxime GN_0424 (Ab CDC #0033) >64 CDC  
+[e_upload_MIC        ] [    3800 /     8099] 0:02:18 >r Cefotaxime GN_0461 (En.cl CDC #0072) >64 CDC  
+[e_upload_MIC        ] GN_0393 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0395 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0396 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0397 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0398 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0402 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0403 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0404 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0405 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0406 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0407 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0408 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0409 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0411 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0412 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0420 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0421 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0425 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0430 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0431 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0432 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0433 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] [    3900 /     8099] 0:02:15 >r Ampicillin|Sulbactam GN_0490 (Kp CDC #0109) >32 CDC  
+[e_upload_MIC        ] GN_0434 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0435 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0437 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0438 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0439 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0440 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0445 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0448 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0449 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0451 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0455 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0456 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0457 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0458 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0460 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0464 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0465 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0466 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0468 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0469 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0470 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0473 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0474 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0475 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0476 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0478 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0482 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0483 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0487 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0488 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0489 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0490 Cefotaxime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] [    4000 /     8099] 0:02:11 >r Aztreonam GN_0432 (Kp CDC #0041) >64 CDC  
+[e_upload_MIC        ] [    4100 /     8099] 0:02:08 >r Ceftazidime GN_0394 (En.cl CDC #0002) >128 CDC  
+[e_upload_MIC        ] [    4200 /     8099] 0:02:05 >r Ceftazidime|Avibactam GN_0396 (Kp CDC #0004) 4 CDC  
+[e_upload_MIC        ] GN_0393 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0395 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0396 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0397 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0398 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0402 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0403 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0404 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0405 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0406 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0407 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0408 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0409 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0411 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0412 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0420 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0421 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0425 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0430 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0431 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0432 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0433 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0434 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0435 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0437 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0438 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0439 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0440 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0445 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0448 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0449 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0451 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0455 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0456 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0457 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0458 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0460 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0464 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0465 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0466 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0468 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0469 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0470 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0473 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0474 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0475 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0476 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0478 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0482 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0483 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0487 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0488 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0489 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] GN_0490 Ceftazidime|Clavulanic Acid CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] [    4400 /     8099] 0:01:58 >r Ceftolozane|Tazobactam GN_0418 (Pr.st CDC #0026) <=0.5 CDC  
+[e_upload_MIC        ] [    4500 /     8099] 0:01:55 >r Ceftriaxone GN_0400 (En.cl CDC #0008) 32 CDC  
+[e_upload_MIC        ] [    4600 /     8099] 0:01:52 >r Posaconazole FG_0038 (Ca.gl CDC #0332) 2 CDC  
+[e_upload_MIC        ] [    4700 /     8099] 0:01:49 >r Posaconazole FG_0074 (Ca.gl CDC #0583) 0.25 CDC  
+[e_upload_MIC        ] [    4800 /     8099] 0:01:45 >r Ciprofloxacin GN_0463 (En.ae CDC #0074) <=0.25 CDC  
+[e_upload_MIC        ] FG_0020 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0021 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0022 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0023 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0024 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0025 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0026 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0027 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0028 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0029 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0030 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0031 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0032 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0033 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0034 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0035 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0036 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0037 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0038 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0039 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0040 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0041 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0042 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0043 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0044 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0045 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0046 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0047 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0048 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0049 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0050 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0051 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0052 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0053 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0054 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0055 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0056 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0057 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0058 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0059 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0060 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0061 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0062 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0063 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0064 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0065 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0067 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0068 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0069 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0070 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0071 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0073 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0076 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0077 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0078 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] FG_0080 5-Fluorocytosine CDC {'drug_id': ['This field cannot be null.']}  
+[e_upload_MIC        ] [    4900 /     8099] 0:01:42 >r Imipenem|EDTA GN_0408 (Kp CDC #0016) <=0.25 CDC  
+[e_upload_MIC        ] [    5000 /     8099] 0:01:38 >r Imipenem|Relebactam GN_0413 (Ci.fr CDC #0021) 0.06 CDC  
+[e_upload_MIC        ] [    5100 /     8099] 0:01:35 >r Levofloxacin GN_0490 (Kp CDC #0109) >8 CDC  
+[e_upload_MIC        ] [    5200 /     8099] 0:01:32 >r Meropenem|Vaborbactam GN_0394 (En.cl CDC #0002) <=0.5 CDC  
+[e_upload_MIC        ] [    5300 /     8099] 0:01:28 >r Piperacillin|Tazobactam GN_0422 (Sh.so CDC #0030) <=4 CDC  
+[e_upload_MIC        ] [    5400 /     8099] 0:01:25 >r Tetracycline GN_0424 (Ab CDC #0033) <=2 CDC  
+[e_upload_MIC        ] [    5500 /     8099] 0:01:22 >r Tigecycline GN_0426 (Ab CDC #0035) 2 CDC  
+[e_upload_MIC        ] [    5600 /     8099] 0:01:19 >r Tobramycin GN_0428 (Ab CDC #0037) 16 CDC  
+[e_upload_MIC        ] [    5700 /     8099] 0:01:15 >r Trimethoprim|Sulfamethoxazole GN_0430 (Kp CDC #0039) >8 CDC  
+[e_upload_MIC        ] [    5800 /     8099] 0:01:12 >r Imipenem GN_0467 (Ab CDC #0078) 64 CDC  
+[e_upload_MIC        ] [    5900 /     8099] 0:01:09 >r Cefepime GN_0972 (Pa IHMA 2051556) >32 IHMA  
+[e_upload_MIC        ] [    6000 /     8099] 0:01:06 >r Cefepime GN_0983 () >32 IHMA  
+[e_upload_MIC        ] [    6100 /     8099] 0:01:03 >r Meropenem|Vaborbactam GN_0979 () 0.06|8 IHMA  
+[e_upload_MIC        ] [    6200 /     8099] 0:01:00 >r Ceftazidime GN_0855 (Ab IHMA 2042377) >32 IHMA  
+[e_upload_MIC        ] [    6300 /     8099] 0:00:57 >r Ceftazidime GN_0943 (Pa IHMA 1957692) 2 IHMA  
+[e_upload_MIC        ] [    6400 /     8099] 0:00:54 >r Plazomicin GN_0907 (Kp IHMA 1981359) 0.25 IHMA  
+[e_upload_MIC        ] [    6500 /     8099] 0:00:50 >r Ciprofloxacin GN_0929 () >1 IHMA  
+[e_upload_MIC        ] [    6600 /     8099] 0:00:47 >r Tobramycin GN_0965 (Pa IHMA 2039325) 0.5 IHMA  
+[e_upload_MIC        ] [    6700 /     8099] 0:00:44 >r Tobramycin GN_0990 () 16 IHMA  
+[e_upload_MIC        ] [    6800 /     8099] 0:00:41 >r Ceftazidime|Avibactam GN_0881 () 0.12|4 IHMA  
+[e_upload_MIC        ] [    6900 /     8099] 0:00:38 >r Ceftazidime GN_0874 () >32 IHMA  
+[e_upload_MIC        ] [    7000 /     8099] 0:00:35 >r Ciprofloxacin GN_0965 (Pa IHMA 2039325) 1 IHMA  
+[e_upload_MIC        ] [    7100 /     8099] 0:00:31 >r Doxycycline GN_0865 (Ab IHMA 2147685) 0.5 IHMA  
+[e_upload_MIC        ] [    7200 /     8099] 0:00:28 >r Doxycycline GN_0990 () 2 IHMA  
+[e_upload_MIC        ] [    7300 /     8099] 0:00:25 >r Doxycycline GN_0921 () >32 IHMA  
+[e_upload_MIC        ] [    7400 /     8099] 0:00:22 >r Gentamicin GN_0955 (Pa IHMA 2016194) 1 IHMA  
+[e_upload_MIC        ] [    7500 /     8099] 0:00:19 >r Amikacin GN_0972 (Pa IHMA 2051556) >64 IHMA  
+[e_upload_MIC        ] [    7600 /     8099] 0:00:15 >r Levofloxacin GN_0957 (Pa IHMA 2016434) 16 IHMA  
+[e_upload_MIC        ] [    7700 /     8099] 0:00:12 >r Aztreonam GN_0949 (Pa IHMA 1999604) 16 IHMA  
+[e_upload_MIC        ] [    7800 /     8099] 0:00:09 >r Aztreonam GN_0883 () 2 IHMA  
+[e_upload_MIC        ] [    7900 /     8099] 0:00:06 >r Meropenem GN_0967 (Pa IHMA 2044554) 2 IHMA  
+[e_upload_MIC        ] [    8000 /     8099] 0:00:03 >r Aztreonam|Avibactam GN_0910 (Kp IHMA 2024416) 0.06|4 IHMA  
+[e_upload_MIC        ] [MIC-Pub] [7935] 8099 {'Saved': 0, 'notValid': 164} 

@@ -1,0 +1,14 @@
+[__main__            ] Python         : 3.10.6  
+[__main__            ] Conda Env      : dj41py310 
+[__main__            ] LogFile        : xUploadOrgDB_20230330_141227.log 
+[__main__            ] Django         : 4.1.3 
+[__main__            ] Django Folder  : C:/Data/A02_WorkDB/03_Django/adjCOADD 
+[__main__            ] Django Project : adjcoadd.settings 
+[__main__            ] [Upd_djCOADD] Table: MICPub 
+[__main__            ] [Upd_djCOADD] User:  J.Zuegg 
+[__main__            ] [Upd_djCOADD] MICPub from oraCastDB 
+[oraCastDB.oraCastDB ] [OrgDB] Connecting to OrgDB  
+[zSql.zSqlConnector  ] [Oracle] orgdb@coadb [SID: 108] 
+[e_upload_MIC        ] [MIC-Pub] ...  
+[e_upload_MIC        ] [MIC-Pub] 8099  
+[zSql.zSqlConnector  ] [Oracle] orgdb@coadb [Closed]  

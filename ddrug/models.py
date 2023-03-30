@@ -532,6 +532,9 @@ class MIC_COADD(AuditModel):
     HEADER_FIELDS   = {}
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
+        'plate_size':'Plate_Size',
+        'plate_material':'Plate_Material',
+        'media':'Media',
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
@@ -544,30 +547,38 @@ class MIC_COADD(AuditModel):
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
          db_column="mic_type", related_name="%(class)s_MICType+")
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
-    bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
-    run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)s_RunID+")
+
+    # Future update to ForeignKey (JZG)
+    #run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+    #    db_column="run_id", related_name="%(class)s_RunID+")
+    run_id = models.CharField(max_length=40, blank=True, verbose_name = "RunID")
+
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
         db_column="plate_size", related_name="%(class)s_PlateSize+")
     plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
         db_column="plate_material", related_name="%(class)s_PlateMaterial+")
-    media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
-        db_column="media", related_name="%(class)s_Media+")
+
+    # Possible update to ForeignKey (JZG)
+    #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
+    #    db_column="media", related_name="%(class)s_Media+")
+    media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
 
     #------------------------------------------------
     class Meta:
         app_label = 'ddrug'
         db_table = 'mic_coadd'
         ordering=['drug_id','orgbatch_id']
-        # indexes = [
-        #     models.Index(name="mic_drugid_idx",fields=['drug_id']),
-        #     models.Index(name="mic_mic_idx",fields=['mic']),
-        #     models.Index(name="mic_bprofile_idx",fields=['bp_profile']),
-        #     models.Index(name="mic_bpsource_idx",fields=['bp_source']),
-        #     models.Index(name="mic_source_idx",fields=['source']),
-        #     models.Index(name="mic_sourcetype_idx",fields=['source_type']),
-        # ]
+        indexes = [
+             models.Index(name="micc_drugid_idx",fields=['drug_id']),
+             models.Index(name="micc_mic_idx",fields=['mic']),
+             models.Index(name="micc_bprofile_idx",fields=['bp_profile']),
+             models.Index(name="micc_bpsource_idx",fields=['bp_source']),
+             models.Index(name="micc_source_idx",fields=['source']),
+             models.Index(name="micc_size_idx",fields=['plate_size']),
+             models.Index(name="micc_material_idx",fields=['plate_material']),
+             models.Index(name="micc_media_idx",fields=['media']),
+        ]
 
     #------------------------------------------------
     def __str__(self) -> str:
@@ -671,7 +682,6 @@ class MIC_Pub(AuditModel):
          db_column="mic_type", related_name="%(class)s_MICType+")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
-    bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
 
@@ -679,15 +689,14 @@ class MIC_Pub(AuditModel):
     class Meta:
         app_label = 'ddrug'
         db_table = 'mic_pub'
-        ordering=['drug_id','orgbatch_id']
-        # indexes = [
-        #     models.Index(name="mic_drugid_idx",fields=['drug_id']),
-        #     models.Index(name="mic_mic_idx",fields=['mic']),
-        #     models.Index(name="mic_bprofile_idx",fields=['bp_profile']),
-        #     models.Index(name="mic_bpsource_idx",fields=['bp_source']),
-        #     models.Index(name="mic_source_idx",fields=['source']),
-        #     models.Index(name="mic_sourcetype_idx",fields=['source_type']),
-        # ]
+        ordering=['drug_id','organism_id']
+        indexes = [
+             models.Index(name="micp_drugid_idx",fields=['drug_id']),
+             models.Index(name="micp_mic_idx",fields=['mic']),
+             models.Index(name="micp_bprofile_idx",fields=['bp_profile']),
+             models.Index(name="micp_bpsource_idx",fields=['bp_source']),
+             models.Index(name="micp_source_idx",fields=['source']),
+        ]
 
     #------------------------------------------------
     def __str__(self) -> str:
@@ -697,5 +706,73 @@ class MIC_Pub(AuditModel):
                 retStr += f"{self.drug_id.drug_name} "
             else:
                 retStr += f"{self.drug_id} "
-        retStr += f"{self.orgbatch_id} {self.mic}"
+        retStr += f"{self.organism_id} {self.mic} {self.source}"
         return(retStr)
+
+   #------------------------------------------------
+    @classmethod
+    def get(cls,OrgID,DrugID,Source,verbose=0):
+    # Returns an instance if found by OrgBatchID and DrugID
+        try:
+            retInstance = cls.objects.get(organism_id=OrgID,drug_id=DrugID,source=Source)
+        except:
+            if verbose:
+                print(f"[MIC Not Found] {OrgID} {DrugID} {Source}")
+            retInstance = None
+        return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,OrgID,DrugID,Source,verbose=0):
+    # Returns an instance if found by OrgBatchID and DrugID
+        return cls.objects.filter(organism_id=OrgID,drug_id=DrugID,source=Source).exists()
+
+    #------------------------------------------------
+    @classmethod
+    def check_from_dict(cls,cDict,valLog):
+    #
+    # Returns an instance from dictionary 
+    #  with Validation_Log for validation check
+    #  .validStatus if validated 
+    #
+        #print(cDict)
+        validStatus = True
+        DrugID = Drug.get(cDict['DRUG_NAME'])
+        if DrugID is None:
+            validStatus = False
+            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ",'-')
+
+        OrganismID = Organism.get(cDict['ORGANISM_ID']) 
+        if OrganismID is None:
+            validStatus = False
+            valLog.add_log('Error','OrganismID does not Exists',f"{cDict['ORGANISM_ID']} ",'-')
+
+        if validStatus:
+            retInstance = cls.get(OrganismID,DrugID,cDict['SOURCE'])
+        else:
+            retInstance = None
+               
+        if retInstance is None:
+            retInstance = cls()
+            retInstance.organism_id = OrganismID
+            retInstance.drug_id = DrugID
+            retInstance.source = cDict['SOURCE']
+            valLog.add_log('Info','New MIC ',f"{OrganismID} {DrugID} {cDict['SOURCE']}",'-')
+        
+        retInstance.mic = cDict['MIC']
+        retInstance.mic_unit = cDict['MIC_UNIT']
+        retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],cDict['SOURCE_TYPE'],None,verbose=1)
+        retInstance.bp_profile = cDict['BP_PROFILE']
+        #retInstance.bp_comment = cDict['BP_COMMENT']
+        retInstance.bp_source = cDict['BP_SOURCE']
+
+        retInstance.clean_Fields()
+        validDict = retInstance.validate()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k,'-')
+
+        retInstance.VALID_STATUS = validStatus
+        
+        return(retInstance)
