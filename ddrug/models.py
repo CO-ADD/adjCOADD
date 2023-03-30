@@ -549,17 +549,19 @@ class MIC_COADD(AuditModel):
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
-    # Future update to ForeignKey (JZG)
+    # Future update to ForeignKey (JZG) ... same for Testplate_ID
     #run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
     #    db_column="run_id", related_name="%(class)s_RunID+")
-    run_id = models.CharField(max_length=40, blank=True, verbose_name = "RunID")
+    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
+    testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
 
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
         db_column="plate_size", related_name="%(class)s_PlateSize+")
     plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
         db_column="plate_material", related_name="%(class)s_PlateMaterial+")
 
-    # Possible update to ForeignKey (JZG)
+    # Possible update to ForeignKey (JZG) 
     #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
     #    db_column="media", related_name="%(class)s_Media+")
     media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
@@ -618,36 +620,8 @@ class MIC_COADD(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
-        Barcode = COADD_BMD.get(cDict['CARD_BARCODE']) 
-        if Barcode is None:
-            validStatus = False
-            valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
 
-        DrugID = Drug.get(cDict['DRUG_NAME'])
-        if DrugID is None:
-            validStatus = False
-            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ({cDict['CARD_BARCODE']})",'-')
-
-        if validStatus:
-            retInstance = cls.get(Barcode,DrugID,cDict['BP_SOURCE'])
-        else:
-            retInstance = None
-               
-        if retInstance is None:
-            retInstance = cls()
-            retInstance.card_barcode = Barcode
-            retInstance.drug_id = DrugID
-            retInstance.bp_source = cDict['BP_SOURCE']
-            valLog.add_log('Info','New VITEK AST',f"{Barcode} {DrugID} {cDict['BP_SOURCE']}",'-')
-        
-        retInstance.mic = cDict['MIC']
-        retInstance.process = cDict['VITEK_PROCESS']
-        retInstance.bp_profile = cDict['BP_PROFILE']
-        retInstance.bp_comment = cDict['BP_COMMENT']
-        retInstance.selection = cDict['ORGANISM_ORIGIN']
-        retInstance.organism = cDict['SELECTED_ORGANISM']
-        retInstance.filename = cDict['FILENAME']
-        retInstance.page_no = cDict['PAGENO']  
+        retInstance = cls()
 
         retInstance.clean_Fields()
         validDict = retInstance.validate()
@@ -763,7 +737,6 @@ class MIC_Pub(AuditModel):
         retInstance.mic_unit = cDict['MIC_UNIT']
         retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],cDict['SOURCE_TYPE'],None,verbose=1)
         retInstance.bp_profile = cDict['BP_PROFILE']
-        #retInstance.bp_comment = cDict['BP_COMMENT']
         retInstance.bp_source = cDict['BP_SOURCE']
 
         retInstance.clean_Fields()

@@ -20,3 +20,76 @@
 [e_upload_MIC        ] [     600 /     8099] 0:04:20 >r Meropenem GN_0318 (Kp CDC #0153) >8 CDC  
 [e_upload_MIC        ] [     700 /     8099] 0:04:16 >r Ceftazidime|Clavulanic acid GN_0313 (Kp CDC #0148) >64 CDC  
 [e_upload_MIC        ] [     800 /     8099] 0:04:16 >r Minocycline GN_0348 (Ab CDC #0291) 8 CDC  
+[e_upload_MIC        ] [     900 /     8099] 0:04:11 >r Ceftriaxone GN_0309 (Kl.as CDC #0144) >32 CDC  
+[e_upload_MIC        ] [    1000 /     8099] 0:04:06 >r Doripenem GN_0446 (Ab CDC #0056) >8 CDC  
+[e_upload_MIC        ] [    1100 /     8099] 0:04:01 >r Ciprofloxacin GN_0377 (Ec CDC #0494) >8 CDC  
+[e_upload_MIC        ] [    1200 /     8099] 0:04:00 >r Amikacin GN_0361 (Ab CDC #0304) 32 CDC  
+[e_upload_MIC        ] [    1300 /     8099] 0:03:55 >r Ciprofloxacin GN_0344 (Ab CDC #0287) >8 CDC  
+[e_upload_MIC        ] [    1400 /     8099] 0:03:51 >r Gentamicin GN_0489 (Kp CDC #0107) >16 CDC  
+[e_upload_MIC        ] [    1500 /     8099] 0:03:47 >r Ampicillin|Sulbactam GN_0281 (Ci.fr CDC #0116) >32 CDC  
+[e_upload_MIC        ] [    1600 /     8099] 0:03:44 >r Tetracycline GN_0350 (Ab CDC #0293) >32 CDC  
+[e_upload_MIC        ] [    1700 /     8099] 0:03:40 >r Ertapenem GN_0433 (Kp CDC #0042) >8 CDC  
+[e_upload_MIC        ] [    1800 /     8099] 0:03:35 >r Colistin GN_0342 (Ab CDC #0285) 1 CDC  
+[e_upload_MIC        ] [    1900 /     8099] 0:03:31 >r Aztreonam GN_0301 (En.cl CDC #0136) >64 CDC  
+[e_upload_MIC        ] [    2000 /     8099] 0:03:28 >r Colistin GN_0484 (Se.ma CDC #0099) 4 CDC  
+[e_upload_MIC        ] [    2100 /     8099] 0:03:24 >r Cefazolin GN_0296 (Se.ma CDC #0131) >32 CDC  
+[e_upload_MIC        ] [    2200 /     8099] 0:03:20 >r Tigecycline GN_0304 (Kp CDC #0139) 1 CDC  
+[e_upload_MIC        ] [    2300 /     8099] 0:03:17 >r Cefazolin GN_0324 (Pr.mi CDC #0159) >8 CDC  
+[e_upload_MIC        ] [    2400 /     8099] 0:03:13 >r Gentamicin GN_0282 (Kp CDC #0117) 8 CDC  
+[e_upload_MIC        ] [    2500 /     8099] 0:03:10 >r Gentamicin GN_0312 (Kl.ox CDC #0147) 8 CDC  
+[e_upload_MIC        ] [    2600 /     8099] 0:03:06 >r Cefotaxime GN_0310 (Kp CDC #0145) >64 CDC  
+[e_upload_MIC        ] [    2700 /     8099] 0:03:02 >r Cefotaxime GN_0340 (Ab CDC #0283) >64 CDC  
+[e_upload_MIC        ] [    2800 /     8099] 0:02:59 >r Imipenem GN_0368 (Ab CDC #0311) 64 CDC  
+[e_upload_MIC        ] [    2900 /     8099] 0:02:56 >r Imipenem|EDTA GN_0298 (Mo.mo CDC #0133) 8 CDC  
+[e_upload_MIC        ] [    3000 /     8099] 0:02:53 >r Tigecycline GN_0357 (Ab CDC #0300) 1 CDC  
+[e_upload_MIC        ] [    3100 /     8099] 0:02:50 >r Anidulafungin FG_0060 (Ca.au CDC #0389) 1 CDC  
+[e_upload_MIC        ] [    3200 /     8099] 0:02:47 >r Amikacin GN_0429 (En.cl CDC #0038) >64 CDC  
+[e_upload_MIC        ] [    3300 /     8099] 0:02:44 >r Caspofungin FG_0064 (Ca.ha CDC #0393) 0.125 CDC  
+[e_upload_MIC        ] [    3400 /     8099] 0:02:41 >r Cefazolin GN_0449 (Pr.mi CDC #0059) >8 CDC  
+[e_upload_MIC        ] [    3500 /     8099] 0:02:37 >r Amikacin GN_0468 (Kp CDC #0079) >64 CDC  
+[e_upload_MIC        ] [    3600 /     8099] 0:02:34 >r Ampicillin GN_0404 (Kp CDC #0012) >32 CDC  
+[e_upload_MIC        ] [    3700 /     8099] 0:02:30 >r Cefotaxime GN_0424 (Ab CDC #0033) >64 CDC  
+[e_upload_MIC        ] [    3800 /     8099] 0:02:27 >r Cefotaxime GN_0461 (En.cl CDC #0072) >64 CDC  
+[e_upload_MIC        ] [    3900 /     8099] 0:02:24 >r Ampicillin|Sulbactam GN_0490 (Kp CDC #0109) >32 CDC  
+[e_upload_MIC        ] [    4000 /     8099] 0:02:20 >r Aztreonam GN_0432 (Kp CDC #0041) >64 CDC  
+[e_upload_MIC        ] [    4100 /     8099] 0:02:16 >r Ceftazidime GN_0394 (En.cl CDC #0002) >128 CDC  
+[e_upload_MIC        ] [    4200 /     8099] 0:02:13 >r Ceftazidime|Avibactam GN_0396 (Kp CDC #0004) 4 CDC  
+[e_upload_MIC        ] [    4300 /     8099] 0:02:09 >r Ceftazidime|Clavulanic acid GN_0465 (Kp CDC #0076) >64 CDC  
+[e_upload_MIC        ] [    4400 /     8099] 0:02:06 >r Ceftolozane|Tazobactam GN_0418 (Pr.st CDC #0026) <=0.5 CDC  
+[e_upload_MIC        ] [    4500 /     8099] 0:02:03 >r Ceftriaxone GN_0400 (En.cl CDC #0008) 32 CDC  
+[e_upload_MIC        ] [    4600 /     8099] 0:01:59 >r Posaconazole FG_0038 (Ca.gl CDC #0332) 2 CDC  
+[e_upload_MIC        ] [    4700 /     8099] 0:01:56 >r Posaconazole FG_0074 (Ca.gl CDC #0583) 0.25 CDC  
+[e_upload_MIC        ] [    4800 /     8099] 0:01:53 >r Ciprofloxacin GN_0463 (En.ae CDC #0074) <=0.25 CDC  
+[e_upload_MIC        ] [    4900 /     8099] 0:01:49 >r Imipenem|EDTA GN_0408 (Kp CDC #0016) <=0.25 CDC  
+[e_upload_MIC        ] [    5000 /     8099] 0:01:46 >r Imipenem|Relebactam GN_0413 (Ci.fr CDC #0021) 0.06 CDC  
+[e_upload_MIC        ] [    5100 /     8099] 0:01:43 >r Levofloxacin GN_0490 (Kp CDC #0109) >8 CDC  
+[e_upload_MIC        ] [    5200 /     8099] 0:01:39 >r Meropenem|Vaborbactam GN_0394 (En.cl CDC #0002) <=0.5 CDC  
+[e_upload_MIC        ] [    5300 /     8099] 0:01:36 >r Piperacillin|Tazobactam GN_0422 (Sh.so CDC #0030) <=4 CDC  
+[e_upload_MIC        ] [    5400 /     8099] 0:01:32 >r Tetracycline GN_0424 (Ab CDC #0033) <=2 CDC  
+[e_upload_MIC        ] [    5500 /     8099] 0:01:28 >r Tigecycline GN_0426 (Ab CDC #0035) 2 CDC  
+[e_upload_MIC        ] [    5600 /     8099] 0:01:25 >r Tobramycin GN_0428 (Ab CDC #0037) 16 CDC  
+[e_upload_MIC        ] [    5700 /     8099] 0:01:21 >r Trimethoprim|Sulfamethoxazole GN_0430 (Kp CDC #0039) >8 CDC  
+[e_upload_MIC        ] [    5800 /     8099] 0:01:18 >r Imipenem GN_0467 (Ab CDC #0078) 64 CDC  
+[e_upload_MIC        ] [    5900 /     8099] 0:01:14 >r Cefepime GN_0972 (Pa IHMA 2051556) >32 IHMA  
+[e_upload_MIC        ] [    6000 /     8099] 0:01:11 >r Cefepime GN_0983 () >32 IHMA  
+[e_upload_MIC        ] [    6100 /     8099] 0:01:07 >r Meropenem|Vaborbactam GN_0979 () 0.06|8 IHMA  
+[e_upload_MIC        ] [    6200 /     8099] 0:01:04 >r Ceftazidime GN_0855 (Ab IHMA 2042377) >32 IHMA  
+[e_upload_MIC        ] [    6300 /     8099] 0:01:00 >r Ceftazidime GN_0943 (Pa IHMA 1957692) 2 IHMA  
+[e_upload_MIC        ] [    6400 /     8099] 0:00:57 >r Plazomicin GN_0907 (Kp IHMA 1981359) 0.25 IHMA  
+[e_upload_MIC        ] [    6500 /     8099] 0:00:54 >r Ciprofloxacin GN_0929 () >1 IHMA  
+[e_upload_MIC        ] [    6600 /     8099] 0:00:50 >r Tobramycin GN_0965 (Pa IHMA 2039325) 0.5 IHMA  
+[e_upload_MIC        ] [    6700 /     8099] 0:00:47 >r Tobramycin GN_0990 () 16 IHMA  
+[e_upload_MIC        ] [    6800 /     8099] 0:00:43 >r Ceftazidime|Avibactam GN_0881 () 0.12|4 IHMA  
+[e_upload_MIC        ] [    6900 /     8099] 0:00:40 >r Ceftazidime GN_0874 () >32 IHMA  
+[e_upload_MIC        ] [    7000 /     8099] 0:00:37 >r Ciprofloxacin GN_0965 (Pa IHMA 2039325) 1 IHMA  
+[e_upload_MIC        ] [    7100 /     8099] 0:00:33 >r Doxycycline GN_0865 (Ab IHMA 2147685) 0.5 IHMA  
+[e_upload_MIC        ] [    7200 /     8099] 0:00:30 >r Doxycycline GN_0990 () 2 IHMA  
+[e_upload_MIC        ] [    7300 /     8099] 0:00:26 >r Doxycycline GN_0921 () >32 IHMA  
+[e_upload_MIC        ] [    7400 /     8099] 0:00:23 >r Gentamicin GN_0955 (Pa IHMA 2016194) 1 IHMA  
+[e_upload_MIC        ] [    7500 /     8099] 0:00:20 >r Amikacin GN_0972 (Pa IHMA 2051556) >64 IHMA  
+[e_upload_MIC        ] [    7600 /     8099] 0:00:16 >r Levofloxacin GN_0957 (Pa IHMA 2016434) 16 IHMA  
+[e_upload_MIC        ] [    7700 /     8099] 0:00:13 >r Aztreonam GN_0949 (Pa IHMA 1999604) 16 IHMA  
+[e_upload_MIC        ] [    7800 /     8099] 0:00:10 >r Aztreonam GN_0883 () 2 IHMA  
+[e_upload_MIC        ] [    7900 /     8099] 0:00:06 >r Meropenem GN_0967 (Pa IHMA 2044554) 2 IHMA  
+[e_upload_MIC        ] [    8000 /     8099] 0:00:03 >r Aztreonam|Avibactam GN_0910 (Kp IHMA 2024416) 0.06|4 IHMA  
+[e_upload_MIC        ] [MIC-Pub] [8099] 8099 {'Saved': 0, 'notValid': 0} 
