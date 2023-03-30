@@ -9,6 +9,7 @@
         </button>
         <span class=""> {%include 'dorganism/organism/batch/batch_d.html' with object_batch=object_batch.pk %} </span>
       </div>
+
   </td>
   <td class="not-visible">{{object_batch.pk}}</td>
   {%for value in object_batch.get_values%}
