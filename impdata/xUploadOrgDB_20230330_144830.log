@@ -15,3 +15,8 @@
 [e_upload_MIC        ] [     100 /     8099] 0:04:58 >r Levofloxacin GN_0277 (Kp CDC #0112) >8 CDC  
 [e_upload_MIC        ] [     200 /     8099] 0:04:29 >r Tobramycin GN_0333 (Ab.cmplx CDC #0276) 16 CDC  
 [e_upload_MIC        ] [     300 /     8099] 0:04:23 >r Ceftazidime GN_0330 (Ab CDC #0273) 64 CDC  
+[e_upload_MIC        ] [     400 /     8099] 0:04:29 >r Meropenem GN_0371 (Ec CDC #0346) <=0.12 CDC  
+[e_upload_MIC        ] [     500 /     8099] 0:04:23 >r Ceftazidime|Avibactam GN_0378 (Ec CDC #0495) <=0.5 CDC  
+[e_upload_MIC        ] [     600 /     8099] 0:04:20 >r Meropenem GN_0318 (Kp CDC #0153) >8 CDC  
+[e_upload_MIC        ] [     700 /     8099] 0:04:16 >r Ceftazidime|Clavulanic acid GN_0313 (Kp CDC #0148) >64 CDC  
+[e_upload_MIC        ] [     800 /     8099] 0:04:16 >r Minocycline GN_0348 (Ab CDC #0291) 8 CDC  
