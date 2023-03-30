@@ -146,8 +146,7 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
 def update_OrgBatch_ora(upload=False,uploaduser=None,OutputN=1000):
 #-----------------------------------------------------------------------------------
     orgSQL = """
-    Select Organism_ID, Batch_ID, Batch_Description, 
-        Supplier, Supplier_Code, Supplier_PO, Stock_Date,
+    Select Organism_ID, Batch_ID, Batch_Description, Stock_Date,
         QC, QC_Record,
         Master_Level, Stock_LEvel, Highuse_Level,      
         Biologist
@@ -189,9 +188,6 @@ def update_OrgBatch_ora(upload=False,uploaduser=None,OutputN=1000):
                 djBatch.batch_notes = batch['BATCH_DESCRIPTION']
                 djBatch.qc_status = Dictionary.get("QC_Status",batch['QC'])
                 djBatch.qc_record = batch['QC_RECORD']
-                djBatch.supplier = batch['SUPPLIER']
-                djBatch.supplier_code = batch['SUPPLIER_CODE']
-                djBatch.supplier_po = batch['SUPPLIER_PO']
                 djBatch.stock_date = batch['STOCK_DATE']
                 if batch['MASTER_LEVEL'] is None:
                     batch['MASTER_LEVEL'] = 0
@@ -231,7 +227,8 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
         Strain_Ident, Strain_AddNotes,
         MTA_Document, MTA_Status, Risk_Group, Pathogen, 
         Oxygen_Pref, Lab_Restriction,
-        Sequence_Link, Sequence_MLST,      
+        Sequence_Link, Sequence_MLST,
+        Source, Source_Code,      
         Biologist
     From Organism
     -- Where Organism_Name like 'Klebsiella%'
@@ -282,6 +279,8 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
                 djOrg.growth_preference= org['GROWTH_PREFERENCE']
                 djOrg.strain_notes= org['STRAIN_ADDNOTES']
                 djOrg.res_property= org['RESISTANCE_PROPERTY']
+                djOrg.source = org['SOURCE']
+                djOrg.source_code = org['SOURCE_CODE']
                 djOrg.tax_id= org['TAX_ID']
                 djOrg.sequence_link= org['SEQUENCE_LINK']
                 djOrg.sequence_mlst= org['SEQUENCE_MLST']

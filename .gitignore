@@ -1,11 +1,15 @@
+# ignore log
+/applog/
+/impdata/**.log
+**/*.log
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.log
 # C extensions
 *.so
-
+/impdata/*.log
 # Distribution / packaging
 .Python
 build/
@@ -393,3 +397,4 @@ dmypy.json
 /help.py
 #log
 /applog/
+**/migrations/*.*

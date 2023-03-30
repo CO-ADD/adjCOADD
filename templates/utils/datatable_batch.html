@@ -41,8 +41,8 @@
       (`<button class="text-secondary border-0" disabled> <i class="fa-regular fa-pen-to-square"></i></button>` +
         '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
         "&nbsp; " +
-        `<button class="border-0" disabled> <i class="fa-regular fa-trash-can"></i></button>` +
-        '<div id="deleteStockModal" class="modal " role="dialog"></div>')
+        `<button class="border-0" disabled> <i class="fa-regular fa-trash-can text-secondary"></i></button>` +
+        '<div id="deleteStockModal" class="modal" role="dialog"></div>')
 
   }
 
@@ -107,7 +107,7 @@
         { title: "Col", data: "location_col" },
         { title: "Slot", data: "location_slot" },
 
-        { title: "Stock Date", data: "stock_date", type: "datetime" },
+        { title: "Stock Date", data: "stock_date"},
         {
           title: "Left",
           data: "n_left",
@@ -126,6 +126,12 @@
               var dataValue = rowData.stock_id;
               $(cell).attr('data-name', dataValue);
               $(cell).attr('data-type', 'n_left');
+              if (rowData.n_left<2){
+                $(cell).html(`left low!`)
+              }else{
+
+                $(cell).html(`${rowData.n_left}<i class="fa-regular fa-square-minus" style="float:right"></i>`)
+              }
             }
           }
         }

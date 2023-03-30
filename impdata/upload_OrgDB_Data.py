@@ -41,13 +41,13 @@ def main():
 
     # Django -------------------------------------------------------------
     djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
-    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/Data"
+    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/Data"
+        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
     elif prgArgs.database == 'WorkLinux':
         djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/Data"
+        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
 
     xlFiles = {
         'Application': "ApplicationData_v03.xlsx",
@@ -62,6 +62,7 @@ def main():
     import b_upload_dOrganism as dOrg
     import c_upload_dDrug as dDrug
     import d_upload_Vitek as dVitek
+    import e_upload_MIC as dMIC
 
     # Logger ----------------------------------------------------------------
     logger = logging.getLogger(__name__)
@@ -122,9 +123,9 @@ def main():
         if prgArgs.vitekfile:
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfile}") 
             dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
-    #elif prgArgs.table == 'VitekID':
-    #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
-    #     dDrug.update_VitekID_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    elif prgArgs.table == 'MICPub':
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     # elif prgArgs.table == 'VitekAST':
     #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
     #     dDrug.update_VitekAST_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)

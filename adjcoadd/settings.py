@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-# import cx_Oracle
-# cx_Oracle.init_oracle_client(lib_dir="/opt/oracle/instantclient_21_7")
-DEVELOPMENT=False
+
+# Development : Local/Work/<none>
+DEVELOPMENT='Work'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,8 +92,12 @@ WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 import psycopg2.extensions
 
 if DEVELOPMENT:
-    HOST_NAME = 'Localhost'
-    PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+    if DEVELOPMENT == 'Local':
+        HOST_NAME = 'Localhost'
+        PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+    elif DEVELOPMENT == 'Work':
+        HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+        PG_ENGINE = 'psqlextra.backend'
 else:
     HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
     PG_ENGINE = 'psqlextra.backend'
@@ -174,7 +178,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Australia/Brisbane'
 USE_I18N = True
 USE_TZ = True
-
+DATE_FORMAT = "d-m-Y"
+USE_L10N = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'

@@ -217,13 +217,15 @@ span {
 }
 
 td {
-  max-width: 200px;
+  max-width: 80%;
   white-space: wrap;
   word-wrap: break-word;
   color: var(--bs-body-color);
   padding: 0;
 }
-
+th{
+  max-width: 35%;
+}
 tr {
   color: var(--bs-body-color);
 }
