@@ -155,7 +155,9 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
         nProcessed = nProcessed + 1
         if djMIC.VALID_STATUS:
             if upload:
-                logger.info(f" -> {djMIC} as {appuser}")
+                if nProcessed%OutputN == 0:
+                    eTime,sTime = nTime.remains(nProcessed)
+                    logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
                 djMIC.save(user=appuser)
                 nProc['Saved'] = nProc['Saved'] + 1
             else:
