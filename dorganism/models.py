@@ -300,7 +300,14 @@ class Organism_Batch(AuditModel):
         return(f"{OrganismID}{ORGBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
-    def find_Next_BatchID(self, OrganismID:str) -> str:
+    def find_Next_BatchID(self, OrganismID:str, BatchID:str=None) -> str:
+        # Check for given BatchID    
+        if BatchID:
+            next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
+            if ~self.exists(next_OrgBatch):
+                return(BatchID)
+
+        # Find new BatchID    
         next_BatchNo = 1
         next_OrgBatch = self.str_OrgBatchID(OrganismID,self.str_BatchID(next_BatchNo))
         while self.exists(next_OrgBatch):
@@ -331,12 +338,13 @@ class Organism_Batch(AuditModel):
         if not self.orgbatch_id: 
             # creates new OrgBatchID
             OrgID = self.organism_id.organism_id
-            Next_BatchID = self.find_Next_BatchID(OrgID)
-            if Next_BatchID:
-                self.batch_id = Next_BatchID
-                self.orgbatch_id = self.str_OrgBatchID(OrgID,Next_BatchID)
+            BatchID = self.find_Next_BatchID(OrgID,self.batch_id)
+            if BatchID:
+                self.batch_id = BatchID
+                self.orgbatch_id = self.str_OrgBatchID(OrgID,BatchID)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
+            # confirms Batch_ID from OrgBatchID
             self.batch_id = str(self.orgbatch_id).replace(str(self.organism_id.organism_id),"").split(ORGBATCH_SEP)[1]
             super(Organism_Batch,self).save(*args, **kwargs)
         
