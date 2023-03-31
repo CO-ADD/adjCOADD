@@ -108,63 +108,66 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
     logger.info(f"[MIC-COADD] {nTotal} ")
     CastDB.close()
 
-    vLog = Validation_Log('MIC-Pub')
-    nTime  = zData.Timer(nTotal)
-    nProcessed = 0
+    if nTotal>0:
+        vLog = Validation_Log('MIC-Pub')
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
 
-    # check user
-    appuser = None
-    if uploaduser:
-        appuser = ApplicationUser.get(uploaduser)
+        # check user
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
 
-    nProc = {}
-    nProc['Saved'] = 0
-    nProc['notValid'] = 0
+        nProc = {}
+        nProc['Saved'] = 0
+        nProc['notValid'] = 0
 
-    for mic in micLst:
-        mic['ORGBATCH_ID'] = reformat_OrgBatchID(mic['TEST_STRAIN'])
-        if mic['COMPOUND2_NAME']:
-            mic['DRUG_NAME'] = mic['COMPOUND_NAME'] +'|'+ mic['COMPOUND2_NAME']
-            if mic['DR2_VALUE']:
-                mic['MIC'] = mic['DR'] +'|'+ str(mic['DR2_VALUE'])
+        for mic in micLst:
+            mic['ORGBATCH_ID'] = reformat_OrgBatchID(mic['TEST_STRAIN'])
+            if mic['COMPOUND2_NAME']:
+                mic['DRUG_NAME'] = mic['COMPOUND_NAME'] +'|'+ mic['COMPOUND2_NAME']
+                if mic['DR2_VALUE']:
+                    mic['MIC'] = mic['DR'] +'|'+ str(mic['DR2_VALUE'])
+                else:
+                    mic['MIC'] = mic['DR'] 
+                if mic['DR2_UNIT']:
+                    mic['MIC_UNIT'] = mic['DR_UNIT'] +'|'+ mic['DR2_UNIT']
+                else:
+                    mic['MIC_UNIT'] = mic['DR_UNIT']
             else:
-                mic['MIC'] = mic['DR'] 
-            if mic['DR2_UNIT']:
-                mic['MIC_UNIT'] = mic['DR_UNIT'] +'|'+ mic['DR2_UNIT']
-            else:
+                mic['DRUG_NAME'] = mic['COMPOUND_NAME']
+                mic['MIC'] = mic['DR']
                 mic['MIC_UNIT'] = mic['DR_UNIT']
-        else:
-            mic['DRUG_NAME'] = mic['COMPOUND_NAME']
-            mic['MIC'] = mic['DR']
-            mic['MIC_UNIT'] = mic['DR_UNIT']
-        
-        mic['MEDIA'] = None
-        mic['PLATE_SIZE'] = mic['PLATE_SIZE'].replace('w','')
-        mic['PLATE_MATERIAL'] = mic['MATERIAL']
-        mic['DYE'] = mic['TEST_DYE']
-        mic['ADDITIVE'] = mic['TEST_ADDITIVE']
+            
+            mic['MEDIA'] = None
+            mic['PLATE_SIZE'] = mic['PLATE_SIZE'].replace('w','')
+            mic['PLATE_MATERIAL'] = mic['MATERIAL']
+            mic['DYE'] = mic['TEST_DYE']
+            mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
-        djMIC = MIC_COADD.check_from_dict(mic,vLog)
-        djMIC.clean_Fields()
-        validDict = djMIC.validate()
+            djMIC = MIC_COADD.check_from_dict(mic,vLog)
+            djMIC.clean_Fields()
+            validDict = djMIC.validate()
 
-        if validDict:
-            logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")
+            if validDict:
+                logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")
 
-        # --- Upload ---------------------------------------------------------
-        nProcessed = nProcessed + 1
-        if djMIC.VALID_STATUS:
-            if upload:
-                if nProcessed%OutputN == 0:
-                    eTime,sTime = nTime.remains(nProcessed)
-                    logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
-                djMIC.save(user=appuser)
-                nProc['Saved'] = nProc['Saved'] + 1
+            # --- Upload ---------------------------------------------------------
+            nProcessed = nProcessed + 1
+            if djMIC.VALID_STATUS:
+                if upload:
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
+                    djMIC.save(user=appuser)
+                    nProc['Saved'] = nProc['Saved'] + 1
+                else:
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {djMIC} ")
             else:
-                if nProcessed%OutputN == 0:
-                    eTime,sTime = nTime.remains(nProcessed)
-                    logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {djMIC} ")
-        else:
-            nProc['notValid'] = nProc['notValid'] + 1
-    eTime,sTime = nTime.remains(nProcessed)
-    logger.info(f"[MIC-Pub] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
+                nProc['notValid'] = nProc['notValid'] + 1
+        eTime,sTime = nTime.remains(nProcessed)
+        logger.info(f"[MIC-COADD] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
+    else:
+        logger.info(f"[MIC-COADD] [0 No records found]")
