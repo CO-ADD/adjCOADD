@@ -565,6 +565,7 @@ class MIC_COADD(AuditModel):
     #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
     #    db_column="media", related_name="%(class)s_Media+")
     media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
+    dye = models.CharField(max_length=40, blank=True, verbose_name = "Dye")
 
     #------------------------------------------------
     class Meta:
