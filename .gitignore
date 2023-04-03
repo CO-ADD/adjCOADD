@@ -1,3 +1,5 @@
+# ignore migrations
+**/migrations/*.*
 # ignore log
 /applog/
 /impdata/**.log
@@ -397,4 +399,3 @@ dmypy.json
 /help.py
 #log
 /applog/
-**/migrations/*.*

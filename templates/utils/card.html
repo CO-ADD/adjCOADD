@@ -8,7 +8,7 @@
         {{object_var1}}
       </p>
       <!-- Select Box -->
-      {%include 'utils/selectbox.html' with datatype=datatype object_id=object_id%}
+      {%include 'utils/selectbox.html' with datatype=datatype object_id=object.pk%}
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}

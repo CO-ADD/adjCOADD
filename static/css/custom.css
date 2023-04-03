@@ -217,15 +217,16 @@ span {
 }
 
 td {
-  max-width: 80%;
   white-space: wrap;
   word-wrap: break-word;
   color: var(--bs-body-color);
   padding: 0;
 }
-th{
+
+th {
   max-width: 35%;
 }
+
 tr {
   color: var(--bs-body-color);
 }
@@ -321,7 +322,9 @@ button,
   width: 100%;
   transition: 1s;
 }
-
+.navbar p{
+  transition:1s;
+}
 .navbar,
 .navbar-nav {
   background-color: var(--bs-heading-bg);
@@ -352,6 +355,7 @@ button,
   position: relative;
   color: var(--bs-light) !important;
   border: 2px solid transparent;
+  transition:1s;
 }
 
 .nav-link:after {
@@ -373,10 +377,6 @@ button,
 }
 
 .nav-link:hover:after {
-  /* color: var(--orange, orange); */
-  /* border: 2px solid var(--bs-border-color); */
-  /* text-decoration: underline; */
-
   transform: scaleX(1);
   transform-origin: bottom left;
 }
@@ -386,30 +386,33 @@ button,
   width: 36px;
   background-color: var(--bs-gray-300);
   padding: 3px;
+  transition:1s;
 }
 
-nav.navbar.shrink {
-  height: 45px;
-  transition: 1s;
-}
-
-nav.shrink a {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  font-size: 15px;
-}
-
-nav.shrink .nav-title,
-nav.shrink .brand ul {
-  display: none;
-}
-
+nav.navbar.shrink .header-profile-user,
 nav.shrink .brand .navbar-brand {
-  max-width: 100px0;
+  opacity:0;
 }
+nav.navbar ul,
+nav.navbar .dropdown{
+transition:0.5s;
+}
+nav.navbar.shrink ul,
+nav.navbar.shrink .dropdown
+{
+  height: 30px;
+  padding:0;
+  margin-top:0;
+}
+nav.navbar.shrink{
+  height: 45px;
 
-nav.shrink {
-  padding: 4px 5px;
+}
+nav.shrink a {
+  font-size: 12px;
+}
+nav.shrink p{
+  font-size: 12px;
 }
 
 /* ------------------- */
@@ -680,12 +683,17 @@ a:hover .tooltiptext {
 }
 
 /* -------------datatable-------- */
+table.dataTable {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100% !important;
+}
+
 table.dataTable thead tr {
-  background-color: var(--bs-th-bg)!important;
+  background-color: var(--bs-th-bg) !important;
 }
 
 .n_left_column {
-
   width: fit-content;
 }
 
@@ -693,9 +701,9 @@ table.dataTable thead tr {
   white-space: nowrap;
 }
 
-/* .dataTables_info {
-  float: right !important;
-} */
+table.dataTable th {
+  width: fit-content !important;
+}
 
 /* -----filter class style in Organism view */
 #id_Class {
@@ -957,4 +965,81 @@ form p {
 .fa-floppy-disk {
   transition: var(--trans-property);
   font-size: 18px;
+}
+
+/* Login Form */
+.logintext:hover span{
+  color: var(--teal);
+  font-stretch: expanded;
+  font-weight: bolder;
+}
+.Login-form{
+  width: 50%;
+  margin: auto;
+}
+.Login-form label {
+  position: absolute;
+  padding:5px;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 14px;
+  color: var(--bs-body-color);
+  opacity: 0.5;
+}
+
+.Login-form label.active {
+  top: 0px;
+  /* font-size: 12px; */
+  color: var(--teal);
+  background-color: var(--bs-body-bg);
+  opacity: 1;
+}
+
+
+.Login-form input{
+  color: var(--teal) !important;
+  background-color: var(--bs-body-bg) !important;
+  border: 1px solid var(--bs-body-color) !important;
+}
+
+.Login-form input:focus{
+  border: 2px solid var(--teal) !important;
+}
+.Login-form input:focus+.Login-form label,
+.Login-form input:not(:placeholder-shown)+.Login-form label {
+  top: 5px;
+  /* font-size: 12px; */
+  color: var(--teal) !important;
+  border: 2px solid var(--teal) !important;
+  background-color: var(--bs-body-bg) !important;
+  /* outline: var(--teal) !important */
+}
+
+/* Change the white to any color */
+.Login-form input:-webkit-autofill,
+.Login-form input:-webkit-autofill:hover, 
+.Login-form input:-webkit-autofill:focus, 
+.Login-form input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--bs-body-bg) inset !important;
+}
+.Login-form .form-control:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.login{
+  background-color: var(--teal);
+  color:var(--bs-light);
+  margin-top: 25px;
+  border: 1px solid var(--teal);
+  border-radius:10%;
+  font-size: 16px;
+  padding:3px 8px 3px 8px;
+}
+
+.login:hover{
+  opacity:0.5
 }

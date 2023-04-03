@@ -1,0 +1,4 @@
+django.request WARNING 2023-04-03 16:10:01,884 log 23440 17692 Not Found: /templates/fg.sdf
+django.server WARNING 2023-04-03 16:10:01,885 basehttp 23440 17692 "GET /templates/fg.sdf HTTP/1.1" 404 11800
+django.request WARNING 2023-04-03 16:10:01,892 log 23440 18588 Not Found: /templates/library.sdf
+django.server WARNING 2023-04-03 16:10:01,894 basehttp 23440 18588 "GET /templates/library.sdf HTTP/1.1" 404 11815
