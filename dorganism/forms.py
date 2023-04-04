@@ -124,7 +124,7 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Form-------------------------------
 class Stock_createform(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':True}))
     stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
     passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -185,3 +185,4 @@ class Cultureupdate_form(forms.ModelForm):
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 
         exclude=['culture_type', 'culture_source']
+
