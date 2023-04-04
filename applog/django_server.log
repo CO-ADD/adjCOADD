@@ -1,0 +1,99 @@
+django.utils.autoreload INFO 2023-04-04 19:52:26,011 autoreload 17728 22800 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 19:52:30,268 basehttp 17728 17812 "GET / HTTP/1.1" 200 9076
+django.server INFO 2023-04-04 19:52:30,393 basehttp 17728 13544 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,394 basehttp 17728 17812 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,409 basehttp 17728 27076 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,410 basehttp 17728 4408 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,410 basehttp 17728 25496 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,410 basehttp 17728 28904 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,410 basehttp 17728 13544 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,410 basehttp 17728 17812 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,414 basehttp 17728 27076 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,418 basehttp 17728 4408 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,419 basehttp 17728 28904 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,443 basehttp 17728 28904 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:30,511 basehttp 17728 25496 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-04-04 19:52:33,049 basehttp 17728 25496 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-04-04 19:52:33,510 basehttp 17728 25496 "GET /index/ HTTP/1.1" 200 15414
+django.server INFO 2023-04-04 19:52:33,527 basehttp 17728 25496 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:39,206 basehttp 17728 25496 "GET /organism_card HTTP/1.1" 200 159627
+django.server INFO 2023-04-04 19:52:39,246 basehttp 17728 25496 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:39,246 basehttp 17728 28904 "GET /static/js/resizebar.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:41,936 basehttp 17728 28904 "GET /organism/FG_0001 HTTP/1.1" 200 82292
+django.server INFO 2023-04-04 19:52:41,967 basehttp 17728 28904 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:41,975 basehttp 17728 28904 "GET /static/js/editablerow_stock.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:52:45,245 basehttp 17728 28904 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680601961968 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 19:52:46,544 basehttp 17728 28904 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10283
+django.server INFO 2023-04-04 19:53:06,767 basehttp 17728 28904 "POST /createStock/FG_0001_01/ HTTP/1.1" 302 0
+django.server INFO 2023-04-04 19:53:08,150 basehttp 17728 28904 "GET /organism/FG_0001 HTTP/1.1" 200 82292
+django.server INFO 2023-04-04 19:53:08,193 basehttp 17728 28904 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:53:11,223 basehttp 17728 28904 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680601988207 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 19:56:38,997 basehttp 17728 28904 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10283
+django.utils.autoreload INFO 2023-04-04 19:58:21,406 autoreload 17728 22800 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 19:58:23,267 autoreload 26216 18656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-04 19:58:29,467 autoreload 26216 18656 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 19:58:30,832 autoreload 22092 23736 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 19:58:38,404 basehttp 22092 15500 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10283
+django.utils.autoreload INFO 2023-04-04 19:59:13,213 autoreload 22092 23736 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 19:59:15,383 autoreload 8740 6320 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 19:59:17,395 basehttp 8740 11884 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10274
+django.server INFO 2023-04-04 19:59:27,948 basehttp 8740 11884 "POST /createStock/FG_0001_01/ HTTP/1.1" 302 0
+django.server INFO 2023-04-04 19:59:29,443 basehttp 8740 11884 "GET /organism/FG_0001 HTTP/1.1" 200 82292
+django.server INFO 2023-04-04 19:59:29,496 basehttp 8740 11884 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-04 19:59:32,064 basehttp 8740 11884 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602369567 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:03:18,147 basehttp 8740 11884 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:03:18,374 basehttp 8740 11884 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-04-04 20:03:36,568 autoreload 8740 6320 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:03:38,712 autoreload 164 992 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 20:03:40,463 basehttp 164 8452 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602598195 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:03:41,558 basehttp 164 8452 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10274
+django.server INFO 2023-04-04 20:03:50,723 basehttp 164 8452 "POST /createStock/FG_0001_01/ HTTP/1.1" 200 11580
+django.request WARNING 2023-04-04 20:03:51,095 log 164 8452 Not Found: /favicon.ico
+django.server WARNING 2023-04-04 20:03:51,095 basehttp 164 8452 "GET /favicon.ico HTTP/1.1" 404 11809
+django.server INFO 2023-04-04 20:05:07,403 basehttp 164 8452 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:05:10,737 basehttp 164 8452 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602707482 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:05:13,216 basehttp 164 8452 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10274
+django.server INFO 2023-04-04 20:06:44,146 basehttp 164 8452 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:06:46,346 basehttp 164 8452 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602804197 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:06:47,781 basehttp 164 8452 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 10295
+django.server INFO 2023-04-04 20:07:10,554 basehttp 164 8452 "POST /createStock/FG_0001_01/ HTTP/1.1" 200 11601
+django.utils.autoreload INFO 2023-04-04 20:07:40,354 autoreload 164 992 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:07:41,933 autoreload 18808 17768 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 20:07:49,523 basehttp 18808 10400 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:07:51,463 basehttp 18808 10400 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602869575 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:07:52,983 basehttp 18808 10400 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 103481
+django.server INFO 2023-04-04 20:08:08,696 basehttp 18808 10400 "POST /createStock/FG_0001_01/ HTTP/1.1" 200 103481
+django.server INFO 2023-04-04 20:09:05,863 basehttp 18808 10400 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:09:07,490 basehttp 18808 10400 "GET /updateBat/FG_0001_02 HTTP/1.1" 200 7430
+django.server INFO 2023-04-04 20:09:10,046 basehttp 18808 10400 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:09:11,950 basehttp 18808 10400 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680602950104 HTTP/1.1" 200 279
+django.server INFO 2023-04-04 20:09:13,712 basehttp 18808 10400 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 103559
+django.server INFO 2023-04-04 20:09:26,738 basehttp 18808 10400 "POST /createStock/FG_0001_01/ HTTP/1.1" 200 103559
+django.utils.autoreload INFO 2023-04-04 20:10:36,881 autoreload 18808 17768 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:10:39,214 autoreload 24840 10128 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-04 20:21:09,771 autoreload 29160 10448 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 20:21:12,597 basehttp 29160 13748 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-04-04 20:21:13,044 basehttp 29160 13748 "GET /index/ HTTP/1.1" 200 15331
+django.server INFO 2023-04-04 20:21:17,109 basehttp 29160 13748 "GET /organism_card HTTP/1.1" 200 159544
+django.server INFO 2023-04-04 20:21:19,895 basehttp 29160 13748 "GET /organism/FG_0001 HTTP/1.1" 200 82209
+django.server INFO 2023-04-04 20:21:23,694 basehttp 29160 13748 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680603679929 HTTP/1.1" 200 527
+django.server INFO 2023-04-04 20:21:26,172 basehttp 29160 13748 "GET /createStock/FG_0001_01/ HTTP/1.1" 200 103550
+django.server INFO 2023-04-04 20:21:45,843 basehttp 29160 13748 "POST /createStock/FG_0001_01/ HTTP/1.1" 200 103550
+django.utils.autoreload INFO 2023-04-04 20:22:07,306 autoreload 29160 10448 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:22:08,882 autoreload 21696 19300 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-04 20:22:23,034 autoreload 21696 19300 C:\Users\uqwzhon4\project\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:22:25,013 autoreload 17344 28688 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-04 20:23:41,759 autoreload 17344 28688 C:\Users\uqwzhon4\project\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:23:43,595 autoreload 2056 20116 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 20:23:57,515 basehttp 2056 22604 "GET /organism/FG_0001 HTTP/1.1" 200 82195
+django.server INFO 2023-04-04 20:23:59,425 basehttp 2056 22604 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680603837547 HTTP/1.1" 200 527
+django.server INFO 2023-04-04 20:24:00,574 basehttp 2056 22604 "GET /createStock/ HTTP/1.1" 200 103539
+django.server INFO 2023-04-04 20:24:27,789 basehttp 2056 22604 "POST /createStock/ HTTP/1.1" 200 103539
+django.utils.autoreload INFO 2023-04-04 20:25:46,410 autoreload 2056 20116 C:\Users\uqwzhon4\project\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-04 20:25:48,452 autoreload 1040 13048 Watching for file changes with StatReloader
+django.server INFO 2023-04-04 20:25:59,943 basehttp 1040 24412 "GET /organism/FG_0001 HTTP/1.1" 200 82195
+django.server INFO 2023-04-04 20:26:01,279 basehttp 1040 24412 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680603959966 HTTP/1.1" 200 527
+django.server INFO 2023-04-04 20:26:02,692 basehttp 1040 24412 "GET /createStock/ HTTP/1.1" 200 103548
+django.server INFO 2023-04-04 20:26:16,507 basehttp 1040 24412 "POST /createStock/ HTTP/1.1" 302 0
+django.server INFO 2023-04-04 20:26:17,877 basehttp 1040 24412 "GET /organism/FG_0001 HTTP/1.1" 200 82195
+django.server INFO 2023-04-04 20:26:22,339 basehttp 1040 24412 "GET /stocklist/FG_0001_01?Batch_id=FG_0001_01&_=1680603977922 HTTP/1.1" 200 778

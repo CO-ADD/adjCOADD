@@ -124,21 +124,20 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Form-------------------------------
 class Stock_createform(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':True}))
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
     stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
 
     
-    def __init__(self, orgbatch_id=None, *args,  **kwargs):
-        self.orgbatch_id=orgbatch_id
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
-        # self.fields['orgbatch_id'].queryset=Organism_Batch.objects.filter(astatus__gte=0, pk=self.orgbatch_id) if self.orgbatch_id else Organism_Batch.objects.filter(astatus__gte=0)
-        self.fields['orgbatch_id'].choices=[(self.orgbatch_id, self.orgbatch_id)]
-    
+
+
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
+
 
 class Stock_form(Stock_createform):
     # stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
