@@ -37,7 +37,7 @@ urlpatterns = [
 
     # OrgBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
-    path('createStock/<str:orgbatch_pk>/', createStock, name="stock_create"),
+    path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
     path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
     path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
 

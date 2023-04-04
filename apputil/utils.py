@@ -154,11 +154,20 @@ def slugify(value, lower=False, allow_unicode=False):
         return value
 #-----------------------------------------------------------------------------------
  
+from django.db.models import Q, CharField, TextField
 
+def get_text_fields_q_object(model, search_value):
+    q_object = Q()
+    
+    for field in model._meta.get_fields():
+        if isinstance(field, (CharField, TextField)):
+            q_object |= Q(**{f"{field.name}__icontains": search_value})
+    
+    return q_object
 
 #  #####################Django Filter View#################
 class Filterbase(django_filters.FilterSet):
-   
+    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
     @property
     def qs(self):
         parent = super().qs
@@ -167,6 +176,12 @@ class Filterbase(django_filters.FilterSet):
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
         return queryset.filter(**{lookup: value})
+    
+    def filter_all_fields(self, queryset, name, value):
+        if value:
+            q_object = get_text_fields_q_object(self._meta.model, value)
+            return queryset.filter(q_object)
+        return queryset
     
 
 # =====================Application USers Filterset===================================
