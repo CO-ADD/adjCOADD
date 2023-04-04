@@ -294,7 +294,7 @@ class FilteredListView(ListView):
 
 # Define full path name
 def get_filewithpath( file_name=None):
-    if settings.DEVELOPMENT:
+    if settings.DEVELOPMENT=="Local":
         file_path = f"static/images/{file_name}.svg"
    
     else:
