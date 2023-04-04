@@ -132,8 +132,6 @@ class Stock_createform(forms.ModelForm):
     def __init__(self, orgbatch_id=None, *args,  **kwargs):
         self.orgbatch_id=orgbatch_id
         super().__init__(*args, **kwargs)
-        orgbatch_pk=orgbatch_pk
-        print(orgbatch_pk)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
         # self.fields['orgbatch_id'].queryset=Organism_Batch.objects.filter(astatus__gte=0, pk=self.orgbatch_id) if self.orgbatch_id else Organism_Batch.objects.filter(astatus__gte=0)
         self.fields['orgbatch_id'].choices=[(self.orgbatch_id, self.orgbatch_id)]
