@@ -350,11 +350,11 @@ def stockList(req, pk):
 
 # ---------------------------------------------------------------------------------------------
 @login_required
-def createStock(req, orgbatch_pk):
+def createStock(req, orgbatch_id):
     kwargs={}
-    kwargs['user']=req.user 
-    print(orgbatch_pk)
-    form=Stock_createform(initial={'orgbatch_pk': orgbatch_pk})
+    kwargs['user']=req.user
+    print(f'createstock {orgbatch_id}')
+    form=Stock_createform(orgbatch_id)
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
