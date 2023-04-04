@@ -20,7 +20,7 @@ function resizableGrid(e) {
             o = n.offsetWidth - d, i && (r = i.offsetWidth - d)
         }),
 
-            e.addEventListener("mouseover", function (e) { e.target.style.borderRight = "2px solid #0000ff" }),
+            e.addEventListener("mouseover", function (e) { e.target.style.borderRight = "2px solid #00ffff" }),
             e.addEventListener("mouseout", function (e) { e.target.style.borderRight = "" }),
             document.addEventListener("mousemove", function (e) { if (n) { var d = e.pageX - t; i && (i.style.width = r - d + "px"), n.style.width = o + d + "px" } }),
             document.addEventListener("mouseup", function (e) { n = void 0, i = void 0, t = void 0, r = void 0, o = void 0 })
@@ -28,7 +28,7 @@ function resizableGrid(e) {
 
     function s(e) {
         var t = document.createElement("div");
-        return t.style.top = 0, t.style.right = 0, t.style.width = "5px", t.style.position = "absolute", t.style.cursor = "col-resize", t.style.userSelect = "none", t.style.height = e + "px", t
+        return t.style.top = 0, t.style.right = 0, t.style.width = "10px", t.style.position = "absolute", t.style.cursor = "col-resize", t.style.userSelect = "none", t.style.height = e + "px", t
     }
 
     function l(e, t) { return window.getComputedStyle(e, null).getPropertyValue(t) }

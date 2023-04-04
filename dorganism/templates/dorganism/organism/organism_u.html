@@ -17,57 +17,35 @@
             </td>
           </tr>
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Strain IDs' data_type='strain_ids' object_field=object.strain_ids form_field=form.strain_ids %}
+          {% for field in form.group1 %}
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Strain Code' data_type='strain_ids' object_field=object.strain_code form_field=form.strain_code %}
+          {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Strain Notes' data_type='strain_notes' object_field=object.strain_ids form_field=form.strain_notes %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Strain_Type' data_type='strain_type' object_field=strain_type form_field=form.strain_type %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Panel' data_type='strain_panel' object_field=strain_panel form_field=form.strain_panel %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Strain Origin' data_type='strain_origin' object_field=object.strain_origin form_field=form.strain_origin %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Strain Identification' data_type='strain_identification' object_field=object.strain_identification form_field=form.strain_identification %}       
-        </tbody>
+          {%endfor%}
+           </tbody>
       </table>
     </div>
     <div class="col-md-4">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
              <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Resistance Properties' data_type='res_property' object_field=object.res_property form_field=form.res_property %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Gene Properties' data_type='gen_property' object_field=object.gen_property form_field=form.gen_property %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Sequence' data_type='sequence' object_field=object.sequence form_field=form.sequence %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Sequence Link' data_type='sequence_link' object_field=object.sequence_link form_field=form.sequence_link %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Oxygen Pref' data_type='oxygen_pref' object_field=object.oxygen_pref.strtml form_field=form.oxygen_pref %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='MTA Status' data_type='mta_status' object_field=object.mta_status.strtml form_field=form.mta_status %}
-              <!--prettier-ignore-->
-            {%include 'utils/row_editabletable.html' with form_label='MTA Document' data_type='mta_document' object_field=object.mta_document form_field=form.mta_document %}       
-  
+          {% for field in form.group2 %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+          <!--prettier-ignore-->
+          {%endfor%}
         </tbody>
       </table>
     </div>
     <div class="col-md-4">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Risk Group' data_type='risk_group' object_field=object.risk_group.strtml form_field=form.risk_group %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Pathogen' data_type='pathogen_group' object_field=object.pathogen_group.strtml form_field=form.pathogen_group %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Lab Restriction' data_type='lab_restriction' object_field=object.lab_restriction.strtml form_field=form.lab_restriction %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Biologist' data_type='biologist' object_field=object.biologist form_field=form.biologist %}
-             <!--prettier-ignore-->
-             {%include 'utils/row_editabletable.html' with form_label='Tax ID' data_type='tax_id' object_field=object.tax_id form_field=form.tax_id %}
-             <!--prettier-ignore-->
+          <!--prettier-ignore-->
+          {% for field in form.group3 %}
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+          <!--prettier-ignore-->
+          {%endfor%}
         </tbody>
       </table>
       <div class="col-md-3 updateformshow not-visible">
@@ -85,11 +63,8 @@
 <script>
 $( document ).ready(function() {
     console.log( "ready!" );
-    $("th").css("width", "20%")
-    var table = document.getElementsByTagName('table');
-    for (let i = 0; i < table.length; i++) {
-      resizableGrid(table[i]);
-    }
+    $("th").css("width", "32%")
+ 
   });
 
 </script>

@@ -1,8 +1,7 @@
 <table id="datatable_batch" class="cell-border" style="width: 100%">
   <thead>
     <tr>
-      <th>
-
+      <th style="width: 10%">
       </th>
       <!-- <th style="width: 10em">EDIT</th> -->
       <th class="not-visible">Batch ID</th>
@@ -45,7 +44,8 @@
         '<div id="deleteStockModal" class="modal" role="dialog"></div>')
 
   }
-
+ 
+ 
 
   $(document).ready(function () {
     // Table Batch
@@ -60,7 +60,9 @@
     
       var tr = $(this).closest("tr");
       var row = table.row(tr);
-      var Batch_id_a=$(this).data("value")
+      var Batch_id_a=$(this).data("value");
+      var stock_create_id="create_stock_for"+$(this).data("value").toString();
+      var stock_create_modal="create_stock_modal_for"+$(this).data("value").toString();
       if (row.child.isShown()) {
         // This row is already open - close it
         destroyChild(row);
@@ -68,12 +70,12 @@
       } else {
         // Open this row
         // getStockData(row.data()[1]);
-        createChild(row, Batch_id_a);
+        createChild(row, Batch_id_a, stock_create_id, stock_create_modal);
         tr.addClass("shown");
       }
     });
   });
-  function createChild(row, Batch_id_a) {
+  function createChild(row, Batch_id_a, stock_create_id, stock_create_modal) {
     // This is the table we'll convert into a DataTable
     var Batch_id =Batch_id_a//row.data()[1];
    
@@ -96,8 +98,9 @@
       columns: [
         // { title: "Stock ID", data: "stock_id" },
         {
-          "title": `<a class="card-link" id="create_stock" style="z-index:10"><i class="bi bi-file-earmark-plus text-success"></i></a>
-        <div id="createStockModal" class="modal fade" role="dialog"></div> New `,
+          
+          "title": `<a class="card-link" id="${stock_create_id}" style="z-index:10"><i class="bi bi-file-earmark-plus text-success"></i></a>
+        <div id="${stock_create_modal}" class="modal fade" role="dialog"></div> New `,
           "data": null,
           "defaultContent": defaultContent()
         },
@@ -141,7 +144,7 @@
       paging: false,
       info: false
     });
-    loadOrganismModal("#createStockModal", "#create_stock", "/createStock/");
+  
     $("#Stock tbody").on("click", `#delete_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#deleteStockModal");
@@ -156,7 +159,8 @@
         }
       });
     });
-
+    console.log("#"+stock_create_id)
+    loadOrganismModal("#"+stock_create_modal, "#"+stock_create_id, `/createStock/${Batch_id_a}/`);
     $("#Stock tbody").on("click", `#update_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#updateStockModal");

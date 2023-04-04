@@ -203,6 +203,7 @@ def exportCSV(request):
         data_arr = request.POST.getlist('data_arr[]')
         data_fields = request.POST.getlist('fields[]')
         model_name=request.POST.get('model_name')
+
         try:
             model=apps.get_model('dorganism', model_name)
         except:

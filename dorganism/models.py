@@ -102,14 +102,16 @@ class Organism(AuditModel):
     HEADER_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_name':'Organism Name',
-        'strain_panel':'Panel',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
+        'strain_notes':'Notes',
         'source':"Source",
         'source_code':"Source Code",
+        'reference': "Reference",
         'strain_panel':'Panel',
         'res_property':'Phenotype',  
         'gen_property':'Genotype', 
+        'growth_preference':'Growth Preference', 
         'biologist':'Biologist',
         'strain_origin':'Origin',
         'organism_id':'Organism ID', 
@@ -240,11 +242,10 @@ class Organism_Batch(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
-#        "supplier":"Supplier",
-#        "supplier_code":"Supplier Code",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
         "qc_status":"QC_Status",
+        "qc_record": "QC Record",
         "batch_notes":"Batch Notes",
         "biologist":"Biologist"
     }
@@ -263,9 +264,6 @@ class Organism_Batch(AuditModel):
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_QC+")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
-    # supplier = models.CharField(max_length=250, blank=True, verbose_name = "Supplier")
-    # supplier_code = models.CharField(max_length=120, blank=True, verbose_name = "Supplier Code")
-    # supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Supplier PO")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
     stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", editable=False, default=list) 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
@@ -300,7 +298,14 @@ class Organism_Batch(AuditModel):
         return(f"{OrganismID}{ORGBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
-    def find_Next_BatchID(self, OrganismID:str) -> str:
+    def find_Next_BatchID(self, OrganismID:str, BatchID:str=None) -> str:
+        # Check for given BatchID    
+        if BatchID:
+            next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
+            if ~self.exists(next_OrgBatch):
+                return(BatchID)
+
+        # Find new BatchID    
         next_BatchNo = 1
         next_OrgBatch = self.str_OrgBatchID(OrganismID,self.str_BatchID(next_BatchNo))
         while self.exists(next_OrgBatch):
@@ -331,12 +336,13 @@ class Organism_Batch(AuditModel):
         if not self.orgbatch_id: 
             # creates new OrgBatchID
             OrgID = self.organism_id.organism_id
-            Next_BatchID = self.find_Next_BatchID(OrgID)
-            if Next_BatchID:
-                self.batch_id = Next_BatchID
-                self.orgbatch_id = self.str_OrgBatchID(OrgID,Next_BatchID)
+            BatchID = self.find_Next_BatchID(OrgID,self.batch_id)
+            if BatchID:
+                self.batch_id = BatchID
+                self.orgbatch_id = self.str_OrgBatchID(OrgID,BatchID)
                 super(Organism_Batch,self).save(*args, **kwargs)
         else:
+            # confirms Batch_ID from OrgBatchID
             self.batch_id = str(self.orgbatch_id).replace(str(self.organism_id.organism_id),"").split(ORGBATCH_SEP)[1]
             super(Organism_Batch,self).save(*args, **kwargs)
         
@@ -446,12 +452,13 @@ class Organism_Culture(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         "organism_id":"Organism ID",
-        "culture_type":"Culture_Type",
-        "media_use":"Media Use",
+        "culture_type":"Type",
+        "culture_source":"Source",
+        "media":"Media",
         "atmosphere":"Atmosphere",
         "temperature":"Temperature",
         "labware":"Labware",
-        "notes":"Media",
+        "culture_notes":"Notes",
         "biologist":"Biologist"
     }
 
@@ -466,11 +473,11 @@ class Organism_Culture(AuditModel):
         db_column="culture_type", related_name="%(class)s_culture_type+")
     culture_source = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="culture_source", related_name="%(class)s_culture_source+")
-    media_use = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
     labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
-    notes = models.CharField(max_length=512,blank=True, verbose_name = "Culture Notes") 
+    culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Culture Notes") 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
@@ -478,9 +485,9 @@ class Organism_Culture(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism_culture'
-        ordering=['organism_id','culture_type','media_use']
+        ordering=['organism_id','culture_type','media']
         indexes = [
-            models.Index(name="orgcult_media_idx",fields=['media_use']),
+            models.Index(name="orgcult_media_idx",fields=['media']),
             models.Index(name="orgcult_ctype_idx",fields=['culture_type']),
         ]
 

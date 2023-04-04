@@ -10,7 +10,10 @@ from adjcoadd.constants import *
 
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
- 
+
+    # group1=["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification" ]
+    # group2=['res_property','gen_property','sequence', 'sequence_link','oxygen_pref','mta_status','mta_document', 'source', 'source_code']
+    # group3=['risk_group','pathogen_group','lab_restriction','biologist','tax_id']
     strain_ids= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_code=forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}), required=False,)
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -36,12 +39,18 @@ class CreateOrganism_form(ModelForm):
         self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0)]
         self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0)]
         self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction'], astatus__gte=0)]
-        
+        self.create_field_groups()
+    
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         return data
-            
+
+    def create_field_groups(self):
+        self.group1 = [self[name] for name in ("strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification" )]
+        self.group2 = [self[name] for name in ('res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_document', 'source', 'source_code')]
+        self.group3 = [self[name] for name in ('risk_group','pathogen_group','lab_restriction','biologist','tax_id')]    
+    
     class Meta:
         model=Organism
         exclude = ['organism_id']
@@ -120,11 +129,12 @@ class Stock_createform(forms.ModelForm):
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
 
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, orgbatch_pk=None, **kwargs):
         super().__init__(*args, **kwargs)
+        orgbatch_pk=orgbatch_pk
+        print(orgbatch_pk)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
-
-
+        self.fields['orgbatch_id'].queryset=Organism_Batch.objects.filter(astatus__gte=0, pk=orgbatch_pk) if orgbatch_pk else Organism_Batch.objects.filter(astatus__gte=0)
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
@@ -159,7 +169,7 @@ class Culture_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
-        exclude=['culture_type'] 
+        exclude=['culture_type', 'culture_source'] 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
@@ -171,4 +181,4 @@ class Cultureupdate_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 
-        exclude=['culture_type']
+        exclude=['culture_type', 'culture_source']

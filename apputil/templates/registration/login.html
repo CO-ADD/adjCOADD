@@ -4,29 +4,53 @@
 {% block content %}
 
 <!-- <div class="container-fluid"> -->
-<div></div>
-<div class="card text-center border-3" style="
-    border-radius: 30px;
+
+<div class="text-center" style="
     width: 30em;
     position: absolute;
-    top: 35%;
+    top: 10%;
     left: 35%;
   ">
-  <div class="card-body w-30 h-50 m-auto fs-4 py-5">
-    <h1>Please log in...</h1>
+  <!-- <div class="card-body w-30 h-50 m-auto fs-4 py-5"> -->
+    <h5 class="logintext fs-6 fw-bold m-5">Welcome to Organism DataBase <br> <span> Log in </span> with your account to continue</h5>
 
     {%include 'utils/message.html'%}
-    <form method="POST" action="{% url 'login'%}" class="card-title">
+    <form method="POST" action="{% url 'login'%}" autocomplete="off">
       {%csrf_token%}
       <!--  -->
-      {{ form.as_p}}
+      <div class="Login-form" style="position:relative">
 
-      <button type="submit" class="btn btn-outline-secondary mt-3">
-        <strong>Log In</strong>
+        <label for="user-input">UQ User</label>
+        {{form.username}}
+      </div>
+      <br>
+      <div class="Login-form" style="position:relative">
+
+        <label for="password-input">Password</label>
+        {{form.password}}
+      </div>
+
+      <button type="submit" class="login">
+    Log In
       </button>
     </form>
-  </div>
+  <!-- </div> -->
 </div>
 <!-- </div> -->
+<script>
 
+  $(document).ready(function () {
+   
+    $('.Login-form input').on('focus', function () {
+      $(this).closest('.Login-form').find('label').addClass('active');
+    });
+
+    $('.Login-form input').on('blur', function () {
+      if ($(this).val() === '') {
+       
+        $(this).closest('.Login-form').find('label').removeClass('active');
+      }
+    });
+  });
+</script>
 {%endblock%}

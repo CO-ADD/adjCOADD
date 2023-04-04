@@ -565,6 +565,7 @@ class MIC_COADD(AuditModel):
     #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
     #    db_column="media", related_name="%(class)s_Media+")
     media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
+    dye = models.CharField(max_length=40, blank=True, verbose_name = "Dye")
 
     #------------------------------------------------
     class Meta:
@@ -590,15 +591,15 @@ class MIC_COADD(AuditModel):
                 retStr += f"{self.drug_id.drug_name} "
             else:
                 retStr += f"{self.drug_id} "
-        retStr += f"{self.orgbatch_id} {self.mic}"
+        retStr += f"{self.orgbatch_id} {self.mic} {self.run_id}"
         return(retStr)
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,DrugID,RunID,verbose=0):
+    def get(cls,OrgBatchID,DrugID,TestPlateID,TestWellID,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,drug_id=DrugID,run_id=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID)
         except:
             if verbose:
                 print(f"[MIC Not Found] {OrgBatchID} {DrugID} {RunID}")
@@ -607,9 +608,9 @@ class MIC_COADD(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,DrugID,RunID,verbose=0):
+    def exists(cls,OrgBatchID,DrugID,TestPlateID,TestWellID,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
-        return cls.objects.filter(orgbatch_id=OrgBatchID,drug_id=DrugID,run_id=RunID).exists()
+        return cls.objects.filter(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
 
     #------------------------------------------------
     @classmethod
@@ -620,8 +621,40 @@ class MIC_COADD(AuditModel):
     #  .validStatus if validated 
     #
         validStatus = True
+        DrugID = Drug.get(cDict['DRUG_NAME'])
+        if DrugID is None:
+            validStatus = False
+            valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ",'-')
 
-        retInstance = cls()
+        OrgBatchID = Organism_Batch.get(cDict['ORGBATCH_ID']) 
+        if OrgBatchID is None:
+            validStatus = False
+            valLog.add_log('Error','OrgBatchID does not Exists',f"{cDict['ORGBATCH_ID']} ",'-')
+
+        if validStatus:
+            retInstance = cls.get(OrgBatchID,DrugID,cDict['TESTPLATE_ID'],cDict['TESTWELL_ID'])
+        else:
+            retInstance = None
+               
+        if retInstance is None:
+            retInstance = cls()
+            retInstance.orgbatch_id = OrgBatchID
+            retInstance.drug_id = DrugID
+            retInstance.run_id = cDict['RUN_ID']
+            retInstance.testplate_id = cDict['TESTPLATE_ID']
+            retInstance.testwell_id = cDict['TESTWELL_ID']
+            valLog.add_log('Info','New MIC ',f"{OrgBatchID} {DrugID} {cDict['TESTPLATE_ID']}:{cDict['TESTWELL_ID']}",'-')
+        
+        retInstance.mic = cDict['MIC']
+        retInstance.mic_unit = cDict['MIC_UNIT']
+        retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],'BMD',None,verbose=1)
+
+        retInstance.plate_size = Dictionary.get(cls.Choice_Dictionary["plate_size"],cDict['PLATE_SIZE'],None,verbose=1)
+        retInstance.plate_material = Dictionary.get(cls.Choice_Dictionary["plate_material"],cDict['PLATE_MATERIAL'],None,verbose=1)
+
+        #retInstance.bp_profile = cDict['BP_PROFILE']
+        #retInstance.bp_source = cDict['BP_SOURCE']
+        #retInstance.media = Dictionary.get(cls.Choice_Dictionary["media"],cDict['MEDIA'],None,verbose=1)
 
         retInstance.clean_Fields()
         validDict = retInstance.validate()

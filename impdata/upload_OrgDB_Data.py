@@ -15,10 +15,6 @@ import django
 from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
 
-logTime= datetime.datetime.now()
-logName = "UploadOrgDB"
-logFileName = f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log"
-
 import logging
 #-----------------------------------------------------------------------------
 
@@ -37,6 +33,7 @@ def main():
     prgParser.add_argument("-p","--vitekfile",default=None,required=False, dest="vitekfile", action='store', help="Vitek File to parse")
     prgParser.add_argument("--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
     prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
+    prgParser.add_argument("--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
@@ -65,6 +62,11 @@ def main():
     import e_upload_MIC as dMIC
 
     # Logger ----------------------------------------------------------------
+    logTime= datetime.datetime.now()
+    logName = "UploadOrgDB"
+    logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+
+
     logger = logging.getLogger(__name__)
     logging.basicConfig(
 #    format="%(asctime)s [%(levelname)-8s] [%(name)s] %(message)s ",
@@ -100,16 +102,16 @@ def main():
         appUtil.update_Dictionary_xls(uploadFile,XlsSheet="Dictionary", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True) 
 
     elif prgArgs.table == 'Taxonomy':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     elif prgArgs.table == 'Organism':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     elif prgArgs.table == 'OrgBatch':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     elif prgArgs.table == 'OrgBatchStock':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_OrgBatchStock_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
     elif prgArgs.table == 'Drug':
@@ -124,11 +126,12 @@ def main():
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfile}") 
             dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
     elif prgArgs.table == 'MICPub':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-    # elif prgArgs.table == 'VitekAST':
-    #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB") 
-    #     dDrug.update_VitekAST_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    elif prgArgs.table == 'MICCOADD':
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
+        if  prgArgs.runid:
+            dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         
     #print(prgArgs)uploadFile,

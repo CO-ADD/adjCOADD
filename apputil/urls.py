@@ -17,7 +17,6 @@ urlpatterns = [
     path('dict_create/', createDictionary, name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
     path('dict_delete/', deleteDictionary, name='dict_delete' ),
-    #Data Export/Import 
     path('exportData/', exportCSV, name="dataexport"),
     path('testsite/', testsite, name="testsite"),
 
