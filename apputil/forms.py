@@ -19,10 +19,10 @@ class Dictionary_form(forms.ModelForm):
 
 
 class Login_form(AuthenticationForm):
-    username=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'UQ Username', }), label='')
+    username=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',  'id': 'user-input', 'autocomplete':'off'}), label='user-input')
     password= forms.CharField(widget=forms.PasswordInput(
-    attrs={'class':'form-control','type':'password', 'name': 'password','placeholder':'Password'}),
-    label='')
+    attrs={'class':'form-control', 'id': 'password-input','type':'password', 'name': 'password', 'autocomplete':'new-password'}),
+    label='password-input')
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')

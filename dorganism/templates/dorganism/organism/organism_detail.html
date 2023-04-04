@@ -25,9 +25,6 @@
                     <div id="collapseOne" class="accordion-collapse collapse show bg-transparent"
                         aria-labelledby="headingOne" data-bs-parent="#organism-detail">
                         <div class="accordion-body bg-transparent">
-
-
-
                             <b>
                                 {%include 'utils/message.html'%}
                             </b>
@@ -43,15 +40,23 @@
         </div>
 
         <div class="d-flex m-0 p-0">
+            <div class="d-flex flex-column m-0 p-0">
+                <a class="btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="fa-regular fa-square-plus text-success"></i>
+                  </a>
+                  <div class="collapse" id="collapseExample">
 
-            {%include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+                      {%include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+                      {%include 'utils/lefticons.html' with title="createStock" modal="createStockModal" %}
+                    </div>
+            </div>
             <div class="accordion w-100" id="organism-batch-detail">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button" type="button" style="max-height:20px;"
                             data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true"
                             aria-controls="collapseTwo">
-                            Organism Batch
+                            Organism Batch & Stock
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
@@ -100,7 +105,7 @@
         $(document).ready(function () {
             loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/");
             loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/");
-            loadOrganismModal("#createStockModal", "#create_stock", "/createStock/");
+            loadOrganismModal("#createStockModal", "#createStock", "/createStock/");
         });
     </script>
 

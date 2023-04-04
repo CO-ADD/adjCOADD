@@ -1,5 +1,10 @@
-<div class="sidebar card-text me-2">
-
+<div class="sidebar card-text me-2 ps-3">
+    
+   
+    <div class="input-group input-group-sm my-2 p-1 w-100">
+        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input type="text" class="form-control" style="width:2em !important" placeholder="Search in Compounds" aria-label="" aria-describedby="">
+    </div>
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
 
@@ -27,10 +32,11 @@
             </span>
         </div>
         <hr>
+        {%if filterset%}
         <div style="height:fit-content; width: 200px;">
             {{filterset | default_if_none:"&nbsp;"}}
         </div>
-
+        {%endif%}
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <div class="d-flex flex-column" id="Django-form-filter-items">
 

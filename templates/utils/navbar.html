@@ -7,12 +7,7 @@
           src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
       </a>
 
-      <a class="nav-link version" href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
-        data-bs-placement="bottom" title="info README
-        ">
-        VERSION 0.7
-        <i class="fa fa-info-circle" aria-hidden="true"></i>
-      </a>
+      
     </div>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -82,9 +77,9 @@
         <li class="nav-item d-flex">
           {% if user.is_authenticated %}
           <div class="dropdown d-inline-block">
-            <a class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
-              <p class="d-xl-inline-block nav-title">{{user.username}}</p>
+              <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
               <i class="fa-solid fa-chevron-down nav-title"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
@@ -125,10 +120,18 @@
               <a class="dropdown-item text-danger" href="{%url 'logout'%}">
                 <p key="t-logout">Logout</p>
               </a>
+              <a class="dropdown-item version" style="font-size: x-small;" href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
+              data-bs-placement="bottom" title="info README
+              " target="_blank">
+              VERSION 0.7
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </a>
             </div>
           </div>
 
           {%endif%}
+        
+         
         </li>
       </ul>
     </div>

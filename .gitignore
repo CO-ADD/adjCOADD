@@ -1,11 +1,17 @@
+# ignore migrations
+**/migrations/*.*
+# ignore log
+/applog/
+/impdata/**.log
+**/*.log
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.log
 # C extensions
 *.so
-
+/impdata/*.log
 # Distribution / packaging
 .Python
 env/
