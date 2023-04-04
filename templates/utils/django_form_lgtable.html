@@ -7,12 +7,11 @@
   {%endfor%}
 </div>
 
-
 <script>
 
   $(document).ready(function () {
     $('option').each(function () {
-      console.log("selectt")
+      console.log("custom_option")
       replace_string = $(this).text().replace("<small class='not-visible'>", " | ").replace("</small>", "")
       $(this).text(replace_string)
     })
