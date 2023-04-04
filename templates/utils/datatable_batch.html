@@ -160,7 +160,7 @@
       });
     });
     console.log("#"+stock_create_id)
-    loadOrganismModal("#"+stock_create_modal, "#"+stock_create_id, `/createStock/`);
+    loadOrganismModal("#"+stock_create_modal, "#"+stock_create_id, `/createStock/${Batch_id_a}/`);
     $("#Stock tbody").on("click", `#update_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#updateStockModal");

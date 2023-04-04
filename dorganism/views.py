@@ -350,11 +350,11 @@ def stockList(req, pk):
 
 # ---------------------------------------------------------------------------------------------
 @login_required
-def createStock(req):
+def createStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
-   
-    form=Stock_createform()
+    print(f'createstock {orgbatch_id}')
+    form=Stock_createform(initial={"orgbatch_id":orgbatch_id},)
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
@@ -380,7 +380,7 @@ def createStock(req):
             # return redirect(req.META['HTTP_REFERER'])      
         
 
-    return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form}) 
+    return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
 
 # ---------------------------------------------------------------------------------------------
 @login_required

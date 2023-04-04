@@ -83,7 +83,7 @@ class Batch_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0),required=False,)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
+    batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     def __init__(self, organism_id_str=None, *args, **kwargs):
         self.organism_id_str=organism_id_str
         super(Batch_form, self).__init__(*args, **kwargs)
@@ -108,7 +108,7 @@ class Batchupdate_form(forms.ModelForm):
     qc_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0),required=False,)
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
+    batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0)]
@@ -127,20 +127,22 @@ class Stock_createform(forms.ModelForm):
     orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
     stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
+    passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
     
     def __init__(self, *args, **kwargs):
+        self.orgbatch_id = kwargs.pop('initial', None).get('orgbatch_id') if kwargs.get('initial') else None
         super().__init__(*args, **kwargs)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
-
+        self.fields['orgbatch_id'].choices=[(self.orgbatch_id, self.orgbatch_id)]
 
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
 
 
-class Stock_form(Stock_createform):
-    # stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+class Stock_form(forms.ModelForm):
+    passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
@@ -148,6 +150,7 @@ class Stock_form(Stock_createform):
 # ===============================Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
     organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
+    culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}), required=False,)
     culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
@@ -173,7 +176,7 @@ class Culture_form(forms.ModelForm):
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
-    # 
+    culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
  
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
