@@ -350,10 +350,11 @@ def stockList(req, pk):
 
 # ---------------------------------------------------------------------------------------------
 @login_required
-def createStock(req):
+def createStock(req, orgbatch_pk):
     kwargs={}
     kwargs['user']=req.user 
-    form=Stock_createform()
+    print(orgbatch_pk)
+    form=Stock_createform(initial={'orgbatch_pk': orgbatch_pk})
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
@@ -368,6 +369,7 @@ def createStock(req):
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
+                    instance.orgbatch_id=orgbatch_pk
                     instance.save(**kwargs)
                     print("stock saved")
                     return redirect(req.META['HTTP_REFERER']) 

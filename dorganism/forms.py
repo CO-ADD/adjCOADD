@@ -129,11 +129,12 @@ class Stock_createform(forms.ModelForm):
                                     widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
 
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, orgbatch_pk=None, **kwargs):
         super().__init__(*args, **kwargs)
+        orgbatch_pk=orgbatch_pk
+        print(orgbatch_pk)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0)]
-
-
+        self.fields['orgbatch_id'].queryset=Organism_Batch.objects.filter(astatus__gte=0, pk=orgbatch_pk) if orgbatch_pk else Organism_Batch.objects.filter(astatus__gte=0)
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
@@ -168,7 +169,7 @@ class Culture_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
-        exclude=['culture_type'] 
+        exclude=['culture_type', 'culture_source'] 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
@@ -180,4 +181,4 @@ class Cultureupdate_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 
-        exclude=['culture_type']
+        exclude=['culture_type', 'culture_source']

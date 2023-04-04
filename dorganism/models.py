@@ -485,9 +485,9 @@ class Organism_Culture(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism_culture'
-        ordering=['organism_id','culture_type','media_use']
+        ordering=['organism_id','culture_type','media']
         indexes = [
-            models.Index(name="orgcult_media_idx",fields=['media_use']),
+            models.Index(name="orgcult_media_idx",fields=['media']),
             models.Index(name="orgcult_ctype_idx",fields=['culture_type']),
         ]
 
