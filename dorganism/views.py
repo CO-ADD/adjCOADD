@@ -369,7 +369,6 @@ def createStock(req, orgbatch_id):
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    instance.orgbatch_id=orgbatch_pk
                     instance.save(**kwargs)
                     print("stock saved")
                     return redirect(req.META['HTTP_REFERER']) 
