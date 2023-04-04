@@ -1,7 +1,28 @@
 <tr>
-    <th scope="row" class="movable"><label for="id_{{data_type}}">{{form_label}}</label></th>
-    <td class="editable" colspan="5" data-id="{{object.pk}}" data-type="{{data_type}}">
-        <div class="detail">{{object_field | safe |default_if_none:"&nbsp;"}}</div>
-        <div class="select">{{form_field}}</div>
+    <th scope="row" class="movable">{{form_label}}</th>
+    <td class="editable" colspan="5" data-id="{{object.pk}}" data-type="">
+        <div class="detail object_value" data-type="{{field.label | safe}}">{{field.initial}}</div>
+        <div class="select input_form" data-type="{{field.label}}">{{form_field}}</div>
     </td>
 </tr>
+
+<script>
+   $(document).ready(function() {
+//   // Get all the empty divs and input divs
+//   const $emptyDivs = $('.object_value');
+
+//   const $inputDivs = $('.input_form');
+//   console.log("{{field.initial}}")
+//   // Iterate through each input div and assign the input value to the corresponding empty div
+//   $inputDivs.each(function(index) {
+//     const $inputElement = $(this).find('input');
+//     $emptyDivs.eq(index).html($inputElement.val());
+//   });
+$(".object_value").each(function() {
+      var text = $(this).text();
+      text = text.replace(/\[|\]/g, '');
+      text = text.replace(/'/g, '');
+      $(this).text(text);
+    });
+});
+</script>
