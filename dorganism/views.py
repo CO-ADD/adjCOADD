@@ -504,6 +504,7 @@ def updateCulture(req, pk):
             kwargs['user']=req.user                  
             instance=form.save(commit=False)
             instance.save(**kwargs)
+            print('updated')
             context={
                 "object_cultr":object_culture,
                 'object':object_culture  # this object refer to the same entry of object_batch
