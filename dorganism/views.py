@@ -168,6 +168,9 @@ def detailOrganism(req, pk):
     context["batch_fields"]=Organism_Batch.get_fields()
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["cultr_fields"]=Organism_Culture.get_fields()
+    if 'organism_id' in context["cultr_fields"]:
+        context["cultr_fields"].remove('organism_id')
+        
 
     return render(req, "dorganism/organism/organism_detail.html", context)
 
@@ -243,19 +246,18 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
 
 # ---------------------------------------------------------------------------------------------    
 @login_required
-def createBatch(req):
+def createBatch(req, organism_id):
     kwargs={}
     kwargs['user']=req.user 
     form=Batch_form()
-
+    
     if req.method=='POST':
-        Organism_Id=req.POST.get('search_organism')
-        form=Batch_form(Organism_Id, req.POST)
+        form=Batch_form(req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
-                    # print(instance.organism_id)                 
+                    instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
                     instance.save(**kwargs)
                     return redirect(req.META['HTTP_REFERER']) 
 
@@ -265,7 +267,7 @@ def createBatch(req):
         else:
             print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 # ---------------------------------------------------------------------------------------------
 from django.http import QueryDict
@@ -354,17 +356,19 @@ def createStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
     print(f'createstock {orgbatch_id}')
-    form=Stock_createform(initial={"orgbatch_id":orgbatch_id},)
+    form=Stock_createform() #Stock_createform(initial={"orgbatch_id":orgbatch_id},)
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
-            print(f'orgbatch_id {req.POST.get("orgbatch_id")}')
-            orgbatch_id=req.POST.get("orgbatch_id")
+            print(f'orgbatch_id {orgbatch_id}')
+            orgbatch_id=orgbatch_id
             stock_type=req.POST.get("stock_type")
             stock_date=req.POST.get("stock_date")
+            n_created=req.POST.get("n_created")
             kwargs['orgbatch_id']=orgbatch_id
             kwargs['stock_type']=stock_type
             kwargs['stock_date']=stock_date
+            kwargs['n_created']=n_created
 
             try:
                 with transaction.atomic(using='dorganism'):
@@ -446,24 +450,23 @@ def deleteStock(req, pk):
 # ==========List View================================Read===========================================
    
 @login_required
-def createCulture(req):
+def createCulture(req, organism_id):
     kwargs={}
     kwargs['user']=req.user 
     form=Culture_form()
 
     if req.method=='POST':
         Organism_Id=req.POST.get('search_organism')
-        form=Culture_form(Organism_Id, req.POST)
+        form=Culture_form(req.POST)
         if form.is_valid():
-            print(f'the type is : {req.POST.get("culture_type")}')
             culture_type=req.POST.get("culture_type")
-            kwargs['culture_type']=culture_type
-            print(f'the source is {req.POST.get("culture_source")}')
+            kwargs['culture_type']=culture_type 
             culture_source=req.POST.get("culture_source")
             kwargs['culture_source']=culture_source
             try:
                 with transaction.atomic(using='dorganism'):
-                    instance=form.save(commit=False) 
+                    instance=form.save(commit=False)
+                    instance.organism_id=get_object_or_404(Organism, pk=organism_id)
                     message=instance.save(**kwargs)
                     
                     if type(message)==Exception:
@@ -475,7 +478,7 @@ def createCulture(req):
         else:
             print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 # ---------------------------------------------------------------------------------------------
 from django.http import QueryDict
@@ -492,6 +495,7 @@ def updateCulture(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
+        print(qd)
         object_culture=object_
         form=Cultureupdate_form(data=qd, instance=object_culture )
         
@@ -505,6 +509,13 @@ def updateCulture(req, pk):
                 'object':object_culture  # this object refer to the same entry of object_batch
             }
             return render(req, "dorganism/organism/culture/culture_tr.html", context)
+        else:
+            context={
+                "object_cultr":object_culture,
+                'object':object_culture,  # this object refer to the same entry of object_batch
+                "form":form,
+            }
+            return render(req, "dorganism/organism/culture/culture_u.html", context)
     return render(req, "dorganism/organism/culture/culture_u.html", context)
 
 # ---------------------------------------------------------------------------------------------

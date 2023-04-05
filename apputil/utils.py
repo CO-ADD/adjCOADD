@@ -154,15 +154,33 @@ def slugify(value, lower=False, allow_unicode=False):
         return value
 #-----------------------------------------------------------------------------------
  
-from django.db.models import Q, CharField, TextField
+from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField
 
-def get_text_fields_q_object(model, search_value):
+
+def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
     q_object = Q()
-    
+    exclude_fields = exclude_fields or []
+
     for field in model._meta.get_fields():
+        if field.name in exclude_fields:
+            continue
+
+        lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name
+
         if isinstance(field, (CharField, TextField)):
-            q_object |= Q(**{f"{field.name}__icontains": search_value})
-    
+            q_object |= Q(**{f"{lookup_field_name}__icontains": search_value})
+        elif isinstance(field, ForeignKey):
+            related_model = field.related_model
+            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            q_object |= related_q_object
+        elif isinstance(field, IntegerField):
+            try:
+                int_value = int(search_value)
+                q_object |= Q(**{lookup_field_name: int_value})
+            except ValueError:
+                pass
+        # Add more field types as needed
+
     return q_object
 
 #  #####################Django Filter View#################
@@ -179,14 +197,17 @@ class Filterbase(django_filters.FilterSet):
     
     def filter_all_fields(self, queryset, name, value):
         if value:
-            q_object = get_text_fields_q_object(self._meta.model, value)
+            exclude_fields = ['password',]
+            q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
     
-
+# q_object = get_all_fields_q_object(MyModel, value, exclude_fields=exclude_fields)
 # =====================Application USers Filterset===================================
 
 class AppUserfilter(django_filters.FilterSet):
+    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
+
     username = django_filters.CharFilter(lookup_expr='icontains')
     first_name = django_filters.CharFilter(lookup_expr='icontains')
     last_name = django_filters.CharFilter(lookup_expr='icontains')
@@ -200,6 +221,13 @@ class AppUserfilter(django_filters.FilterSet):
     def qs(self):
         parent = super().qs
         return parent.filter(is_appuser=True)
+    
+    def filter_all_fields(self, queryset, name, value):
+        if value:
+            exclude_fields = ['password',]
+            q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
+            return queryset.filter(q_object)
+        return queryset
 # ===========================================================================
 
 # =====================Dictionary Filterset===================================

@@ -1,30 +1,33 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">{{title}}</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="modal"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
-  <div class="modal-body">
-    <form method="POST" class="post-form" action="{{deleteurl}}">
+  <form method="POST" class="post-form" action="{{deleteurl}}">
+    <div class="modal-body">
       <!--prettier-ignore-->
       {% csrf_token %}
 
       <p>Are you sure you want to delete this entry {{entry}}?</p>
       <!--prettier-ignore-->
+    </div>
+
+    <div class="modal-footer d-flex justify-content-center align-center">
+
       {%if model_name == 'Dictionary'%}
-     <div class="d-inline-block" data-name="{{title}}" data-type="deleteDict">
-        <button class="card-link text-danger fs-6" onclick="window.location.reload(true);"><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
+      <div class="d-inline-block" data-name="{{title}}" data-type="deleteDict">
+        <button class="card-link text-danger fs-6" onclick="window.location.reload(true);"><i
+            class="fa-regular fa-trash-can text-danger fs-6"></i></button>
       </div>
       {%else%}
-      {%include 'utils/miscellaneous/save_btn.html'%}
-      
+      <button type="submit" class="p-0 border border-0 m-auto bg-transparent text-center" name="note">
+        <i class="fa-regular fa-trash-can text-danger fs-6"></i>
+
+      </button>
+
       {%endif%}
       {%include 'utils/miscellaneous/cancel_btn.html'%}
-    </form>
-  </div>
-  <div class="modal-footer"></div>
+    </div>
+  </form>
+
 </div>

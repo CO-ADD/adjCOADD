@@ -25,12 +25,6 @@
     <!--  -->
     {%endif%}
     <!--  -->
-    {%if title == 'Create Batch' or title == 'Create Culture'%}
-    <!--  -->
-    {% include 'utils/search_organism_id.html' %}
-    <!--  -->
-    {%endif%}
-    <!--  -->
     <hr>
 
     <form method="POST" class="post-form" action="{{urlname}}">
@@ -47,14 +41,7 @@
       />
       {%endif%}
       <!--  -->
-      {%if title == 'Create Batch' or title == 'Create Culture'%}
-      <input
-        type="text"
-        id="microorg"
-        name="search_organism"
-        style="display: none"
-      />
-      {%endif%}
+     
       <!--  -->
       {%include 'utils/django_form_lgtable.html'%}
        <hr>
