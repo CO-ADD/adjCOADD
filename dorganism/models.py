@@ -371,20 +371,20 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
+    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
+        db_column="stock_type", related_name="%(class)s_stock_type+")
+    n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
+    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
+    stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
+    stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
-    stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
     location_slot = models.CharField(max_length=10, blank=True, verbose_name = "Slot")
-    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
-        db_column="stock_type", related_name="%(class)s_stock_type+")
-    stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
     #stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
-    n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
-    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_Biologist")
 
@@ -430,15 +430,15 @@ class OrgBatch_Stock(AuditModel):
         orgbatch_id =kwargs.pop("orgbatch_id", None)
         stock_type=kwargs.pop("stock_type", None)
         stock_date=kwargs.pop("stock_date", None)
-        # n_created=kwargs.pop("n_created", None)
+        n_created=kwargs.pop("n_created", None)
         if orgbatch_id:
             self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
         if stock_type:
             self.stock_type=Dictionary.objects.get(dict_value=stock_type)
         if stock_date:
             self.stock_date=stock_date
-        # if n_created:
-        #     self.n_created=n_created
+        if n_created:
+            self.n_created=n_created
         super().save(*args, **kwargs)
        
             
@@ -451,7 +451,7 @@ class Organism_Culture(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "organism_id":"Organism ID",
+        # "organism_id":"Organism ID",
         "culture_type":"Type",
         "culture_source":"Source",
         "media":"Media",

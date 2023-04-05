@@ -2,18 +2,11 @@
 {%include 'utils/miscellaneous/delete_btn.html' with target='#drug_detail_del'%}
 
 <!-- Modal -->
-<div
-  class="modal fade"
-  id="drug_detail_del"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="drug_detail_del" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'drug_delete' pk=object.pk as deleteurl %}
-  {%include 'utils/modal/delete.html' with title='Delete Drug' urlname=deleteurl %}
+    {%include 'utils/modal/delete.html' with title='Delete Drug' urlname=deleteurl entry=object.pk%}
   </div>
 </div>

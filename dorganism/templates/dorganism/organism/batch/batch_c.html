@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg">
-  {% url 'batch_create' as createurl %}
+  {% url 'batch_create' organism_id=organism_id as createurl %}
   {%include 'utils/modal/modal_form.html' with title='Create Batch' urlname=createurl %}
 
 </div>

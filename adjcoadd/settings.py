@@ -21,6 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT=os.path.join(BASE_DIR.parent, 'uploads')
 MEDIA_URL=('uploads/')
 
+# Define Structure Images folder path
+if DEVELOPMENT=="Local":
+    # structure_file_path = f"static/images/{file_name}.svg"
+    STRUCTURE_FILES_DIR=os.path.join(BASE_DIR, 'static/images')
+   
+else:
+    Base_dir = Path(__file__).resolve().parent.parent.parent
+    STRUCTURE_FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+    # structure_file_path=os.path.join(FILES_DIR, f"{file_name}.svg")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 

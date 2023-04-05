@@ -1,21 +1,21 @@
 <!-- trigger modal -->
 {%if user.permission == 'Admin'%}
 
-<a class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_cul{{object_cultr}}" data-bs-toggle="tooltip" data-bs-placement="right"
-title="Click to delete">
+<a class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_cul{{object_cultr}}"
+  data-bs-toggle="tooltip" data-bs-placement="right" title="Click to delete">
   <i class="fa-regular fa-trash-can text-danger fs-6"></i>
 </a>
 {%else%}
 <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
-title="No Permission To Delete">
+  title="No Permission To Delete">
   <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
 </a>
 {%endif%}
 
 
 <!-- Modal -->
-<div class="modal fade" id="modal_cul{{object_cultr}}" data-bs-backdrop="static" data-bs-keyboard="false"
-  tabindex="-1" aria-labelledby="modal-default{{object_cultr}}Label" aria-hidden="true">
+<div class="modal fade" id="modal_cul{{object_cultr}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="modal-default{{object_cultr}}Label" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'cultr_delete' pk=object_cultr as deleteurl %}

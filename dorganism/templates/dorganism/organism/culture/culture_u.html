@@ -4,21 +4,42 @@
   hx-get="{%url 'org_detail' object.organism_id.pk %}"
 >
 <td>
-  <input
+  <button
+    class="border border-0 bg-transparent"
     type="submit"
     value="update"
     hx-put="{%url 'cultr_update' pk=object.pk%}"
     hx-include="closest tr"
     hx-trigger="click"
-  />
-  <a href="{% url 'org_detail' object.organism_id.pk %}">Cancel</a>
+  >
+  <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
+  </button>
+  {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
 </td>
-  <td>{{form.organism_id}}</td>
-  <td></td>
-  <td>{{form.media_use}}</td>
-  <td>{{form.atmosphere}}</td>
-  <td>{{form.temperature}}</td>
-  <td>{{form.labware}}</td>
-  <td>{{form.notes}}</td>
-  <td>{{form.biologist}}</td>
+{%for field in form.group_updatebatch%}
+<td>
+  {{field}} 
+  <!--  -->
+  {% if field.errors %}
+  <!--  -->
+  {% for error in field.errors %}
+  <!--  -->
+  <li>{{ error }}</li>
+  {% endfor %}
+  <!--  -->
+  {% endif %}
+</td>
+{%endfor%}
 </tr>
+
+
+<script>
+
+  $(document).ready(function () {
+    $('option').each(function () {
+      console.log("custom_option")
+      replace_string = $(this).text().replace("<small class='not-visible'>", " | ").replace("</small>", "")
+      $(this).text(replace_string)
+    })
+  })
+</script>

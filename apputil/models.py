@@ -286,6 +286,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # objects values according to fields return from the above class methods, based on header_fields order
     def get_values(self, fields=None):
+        from django.db.models import Model
         if fields is None:
             fields = self.HEADER_FIELDS
 
@@ -295,7 +296,9 @@ class AuditModel(models.Model):
             if name in fieldsname:
                 obj=getattr(self, name)
                 if obj:
-                    if isinstance(obj, list):
+                    if isinstance(obj, Model):
+                        value_list.append(obj.pk)
+                    elif isinstance(obj, list):
                         array_to_string=','.join(str(e) for e in obj)
                         value_list.append(array_to_string) 
                     else:   

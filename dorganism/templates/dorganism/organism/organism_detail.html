@@ -100,9 +100,10 @@
     </div>
     <script>
         $(document).ready(function () {
-            loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/");
-            loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/");
-            loadOrganismModal("#createStockModal", "#createStock", "/createStock/");
+            console.log("{{object.pk}}")
+            loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/{{object.pk}}/");
+            loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/{{object.pk}}/");
+        
         });
     </script>
 
