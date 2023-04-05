@@ -22,6 +22,7 @@ from django.db import transaction, IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
+from django.conf import settings
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
@@ -117,7 +118,7 @@ class DrugCardView(DrugListView):
             context = super().get_context_data(**kwargs)
         # clearIMGfolder()
             for object_ in context["object_list"]:
-                filepath=get_filewithpath(file_name=object_.pk)
+                filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") #get_filewithpath(file_name=object_.pk)
                 if os.path.exists(filepath):
                     continue
                 else:

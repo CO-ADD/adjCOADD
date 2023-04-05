@@ -206,9 +206,9 @@ class Culture_form(forms.ModelForm):
 class Cultureupdate_form(forms.ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select', 'width':'fit-content','readonly':False}), required=False,)
+                                    widget=forms.Select(attrs={'class':'form-select', 'width':'fit-content','disabled': 'disabled'}), required=False,)
     culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select',  'width':'fit-content','readonly':False}), required=False,)
+                                    widget=forms.Select(attrs={'class':'form-select',  'width':'fit-content','disabled': 'disabled'}), required=False,)
  
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
