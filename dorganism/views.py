@@ -495,6 +495,7 @@ def updateCulture(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
+        print(qd)
         object_culture=object_
         form=Cultureupdate_form(data=qd, instance=object_culture )
         
