@@ -460,7 +460,7 @@ def createCulture(req, organism_id):
         Organism_Id=req.POST.get('search_organism')
         form=Culture_form(req.POST)
         if form.is_valid():
-           
+
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False)
@@ -493,6 +493,7 @@ def updateCulture(req, pk):
     }
     if req.method=='PUT':
         qd=QueryDict(req.body).dict()
+        print(qd)
         object_culture=object_
         form=Cultureupdate_form(data=qd, instance=object_culture )
         

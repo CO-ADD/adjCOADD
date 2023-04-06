@@ -213,7 +213,7 @@ class Cultureupdate_form(forms.ModelForm):
                                     widget=forms.Select(attrs={'class':'form-select', 'width':'fit-content','disabled': 'disabled'}), required=False,)
     culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
                                     widget=forms.Select(attrs={'class':'form-select',  'width':'fit-content','disabled': 'disabled'}), required=False,)
- 
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0)]

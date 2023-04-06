@@ -81,7 +81,9 @@
     // This is the table we'll convert into a DataTable
     var Batch_id = Batch_id_a//row.data()[1];
 
+
     var table = $(`<table id="StockTable${Batch_id_a}" class="display" width="100%"/>`);
+
 
     // Display it the child row
     row.child(table).show();
@@ -147,6 +149,7 @@
                      
                     <div class="modal-body fw-bold text-center">
                       Click Save, n_Left will be reduced by 1
+
                       </div>
                       <div class="modal-footer d-flex justify-content-center align-center">
                       <button id="btn_save_${rowData.stock_id}_nleft" class="p-0 border border-0 m-auto bg-transparent text-center"><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
@@ -187,7 +190,9 @@
                   console.log("Error occured");
                 });
             })
+
           }
+
           }
         }
       ],
