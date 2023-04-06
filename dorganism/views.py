@@ -401,6 +401,7 @@ def updateStock(req, pk):
         # process the data sent in the AJAX request
       
         n_left_value=req.POST.get('value')
+        print(n_left_value)
         object_.n_left=int(n_left_value)-1
         print(object_.n_left)
         
@@ -459,10 +460,10 @@ def createCulture(req, organism_id):
         Organism_Id=req.POST.get('search_organism')
         form=Culture_form(req.POST)
         if form.is_valid():
-            culture_type=req.POST.get("culture_type")
-            kwargs['culture_type']=culture_type 
-            culture_source=req.POST.get("culture_source")
-            kwargs['culture_source']=culture_source
+            # culture_type=req.POST.get("culture_type")
+            # kwargs['culture_type']=culture_type 
+            # culture_source=req.POST.get("culture_source")
+            # kwargs['culture_source']=culture_source
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False)

@@ -127,10 +127,14 @@ class Batchupdate_form(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    stock_level = HiddenSimpleArrayField(required=False)
+    stock_level = SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
 
     def __init__(self, *args, **kwargs):
+        
         super().__init__(*args, **kwargs)
+        instance=kwargs.get('instance')
+        if instance and instance.stock_level:
+            self.fields['stock_level'].initial=instance.stock_level
         self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Organism_Batch.Choice_Dictionary['qc_status'], astatus__gte=0)]
         self.create_field_groups()
 
@@ -180,9 +184,9 @@ class Culture_form(forms.ModelForm):
     # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}), required=False,)
+                                    widget=forms.Select(attrs={'readonly':False}), required=False,)
     culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}), required=False,)
+                                    widget=forms.Select(attrs={'readonly':False}), required=False,)
 
     # 
     def __init__(self, *args, **kwargs):
@@ -200,7 +204,7 @@ class Culture_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
-        exclude=['culture_type', 'culture_source'] 
+        # exclude=['culture_type', 'culture_source'] 
 
 # ---------------------------------------------------------------------------------------------
 class Cultureupdate_form(forms.ModelForm):
