@@ -81,7 +81,9 @@
     // This is the table we'll convert into a DataTable
     var Batch_id = Batch_id_a//row.data()[1];
 
-    var table = $('<table id="Stock" class="display" width="100%"/>');
+
+    var table = $(`<table id="StockTable${Batch_id_a}" class="display" width="100%"/>`);
+
 
     // Display it the child row
     row.child(table).show();
@@ -125,42 +127,46 @@
       ],
       columnDefs: [
         {
-          targets: [7],
+          targets: '_all',
           createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
-            var n_left = rowData.n_left
-            var trigger_modal_nleft=n_left>0? `<a class="card-link" type="button" style="float:right" data-bs-toggle="modal"
-                       data-bs-target="#m_${rowData.stock_id}_nleft_modal" id="m_${rowData.stock_id}_nleft">
-                         <i class="fa-regular fa-square-minus"></i>
-                </a>` : `<button class="card-link" type="button" style="float:right" data-bs-toggle="tooltip" data-bs-placement="right"
-                       title="Stock left low" disabled>
-                         <i class="fa-regular fa-square-minus text-secondary"></i>
-                </button>`
-            const html =
+            if (colIndex && colIndex === 7){
+
+              var n_left = rowData.n_left
+              var trigger_modal_nleft=n_left>0? `<a class="card-link" type="button" style="float:right" data-bs-toggle="modal"
+              data-bs-target="#m_${rowData.stock_id}_nleft_modal" id="m_${rowData.stock_id}_nleft">
+              <i class="fa-regular fa-square-minus"></i>
+              </a>` : `<button class="card-link" type="button" style="float:right" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Stock left low" disabled>
+              <i class="fa-regular fa-square-minus text-secondary"></i>
+              </button>`
+              const html =
               `
-                ${trigger_modal_nleft}
+              ${trigger_modal_nleft}
                 <div id="m_${rowData.stock_id}_nleft_modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                   <div class="modal-dialog">
-                    <div class="modal-content">
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
                      
-                      <div class="modal-body fw-bold text-center">
-                        Click Save, n_Left will be reduced by 1
+                    <div class="modal-body fw-bold text-center">
+                      Click Save, n_Left will be reduced by 1
+
                       </div>
                       <div class="modal-footer d-flex justify-content-center align-center">
                       <button id="btn_save_${rowData.stock_id}_nleft" class="p-0 border border-0 m-auto bg-transparent text-center"><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
                       <button type="button" class="btn-close m-auto border-0" data-bs-dismiss="modal"></button>
-                    </div>
-                    </div>
+                      </div>
+                      </div>
                    </div>
-                </div>
-                `
-            if (colIndex === 7) {
-              $(cell).attr('data-type', 'n_left');
-              if (rowData.n_left < 2) {
+                   </div>
+                   `
+                   if (colIndex === 7) {
+                     $(cell).attr('data-type', 'n_left');
+                     if (rowData.n_left < 2) {
                 $(cell).html(`left low!`)
               } else {
                 $(cell).html(`${n_left}` + html)
               }
+            
             }
             console.log(`#btn_save_${rowData.stock_id}_nleft`);
             $('body').on("click", `#btn_save_${rowData.stock_id}_nleft`, function () {
@@ -184,6 +190,9 @@
                   console.log("Error occured");
                 });
             })
+
+          }
+
           }
         }
       ],
@@ -193,7 +202,7 @@
       info: false
     });
 
-    $("#Stock tbody").on("click", `#delete_stock`, function () {
+    $(`#StockTable${Batch_id_a} tbody`).on("click", `#delete_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#deleteStockModal");
       console.log(data);
@@ -209,7 +218,7 @@
     });
     console.log("#" + stock_create_id)
     loadOrganismModal("#" + stock_create_modal, "#" + stock_create_id, `/createStock/${Batch_id_a}/`);
-    $("#Stock tbody").on("click", `#update_stock`, function () {
+    $(`#StockTable${Batch_id_a} tbody`).on("click", `#update_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#updateStockModal");
       console.log(data);
@@ -230,7 +239,7 @@
     table.DataTable().destroy();
 
     // And then hide the row
-    row.child.hide();
+    row.child.remove();
   }
 
   const csrftoken = getCookie("csrftoken");
