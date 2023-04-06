@@ -469,9 +469,9 @@ class Organism_Culture(AuditModel):
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id+")
-    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
+    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
         db_column="culture_type", related_name="%(class)s_culture_type+")
-    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
+    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="culture_source", related_name="%(class)s_culture_source+")
     media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
@@ -496,16 +496,6 @@ class Organism_Culture(AuditModel):
         return f"{self.organism_id} {self.media_use} {self.culture_type}"
 
     # # ------------------------------------------------
-    def save(self, *args, **kwargs):
-        
-        culture_type=kwargs.pop("culture_type", None)
-        culture_source=kwargs.pop("culture_source", None)
-        # if not self.culture_type and not self.culture_source:
-        if culture_type:
-            self.culture_type=Dictionary.objects.get(dict_value=culture_type)
-        if culture_source:
-            self.culture_source=Dictionary.objects.get(dict_value=culture_source)
-        super().save(*args, **kwargs)
-       
+
 
         
