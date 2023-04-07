@@ -3,11 +3,18 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import  (DrugListView, DrugCardView,detailDrug, createDrug, updateDrug, 
-    detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, ketcher_test,iframe_url)#VitekcardListView,
+    detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, 
+    ketcher_test,iframe_url, API_VITEK_ASTList)#VitekcardListView,
 
 
 
 urlpatterns = [
+    # API path
+    path('api-vitek-ast/', API_VITEK_ASTList.as_view()),
+    # path('vitek-ast/create/', VITEK_ASTCreate.as_view()),
+    # path('vitek-ast/<pk>/', VITEK_ASTUpdate.as_view()),
+    # path('vitek-ast/<pk>/delete/', VITEK_ASTDelete.as_view()),
+    # Normal path
     path('drug_card', DrugCardView.as_view(), name="drug_card"),
     path('drug_list', DrugListView.as_view(), name="drug_list"),
     path('drug/<str:pk>', detailDrug, name="drug_detail"),

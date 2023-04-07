@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'dscreen',
     'dcollab',
     'dgene',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
