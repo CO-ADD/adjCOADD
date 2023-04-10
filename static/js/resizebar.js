@@ -1,8 +1,5 @@
-const hidefilter = document.getElementById("hidefilter")
-
-
-hidefilter.addEventListener("click", () => {
-    hidefilter.classList.toggle("text-danger")
-    sidebar.classList.toggle("not-visible");
-    resizer.classList.toggle("toLeft")
-})
+$("#hidefilter").on("click", function () {
+  console.log("test");
+  $(this).find("i").toggleClass("bi-funnel bi-funnel-fill");
+  $(".sidebar").fadeToggle("fast");
+});

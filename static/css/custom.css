@@ -465,18 +465,13 @@ a:hover .tooltiptext {
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
-/* .resizer {
-  flex-basis: 0;
-  position: relative;
-  z-index: 2;
-  cursor: col-resize;
-  background: var(--bs-boxed-body-bg);
-  margin-right: 3px;
-  margin-left: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
+i {
+  transition: 0.5s;
+}
+#hidefilter:hover .bi {
+  font-size: 20px;
+  text-shadow: #1a1a1a;
+}
 .sidebar {
   background-color: var(--bs-th-bg);
   position: relative;
@@ -486,8 +481,8 @@ a:hover .tooltiptext {
   box-shadow: 2px 2px 5px var(--bs-th-bg);
   min-height: 50em;
   height: fit-content;
+  transition: 0.5s;
 }
-
 .main {
   flex-basis: 0;
   flex-grow: 1;
