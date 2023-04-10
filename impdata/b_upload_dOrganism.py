@@ -10,8 +10,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 import django
-from oraCastDB import oraCastDB
-from zUtils import zData
+# from oraCastDB import oraCastDB
+# from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
@@ -81,7 +81,7 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
             if orgClass in ['GN','GP','FG','MB']:
 
                 #djStock = OrgBatch_Stock.get(OrgbatchID,batch['STOCK_TYPE'])
-                #if djStock is None:
+                #iforaCastDB djStock is None:
                 djStock = OrgBatch_Stock()
                 orgBatch = Organism_Batch.get(OrgbatchID)
                 

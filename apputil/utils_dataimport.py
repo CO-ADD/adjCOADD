@@ -83,18 +83,23 @@ validate_file = FileValidator(#max_size=1024 * 100,
 
 
 
-class FileUploadForm(SuperUserRequiredMixin, forms.Form):
+class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
+
+class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
+    file_field = forms.FileField(widget=forms.ClearableFileInput(),  validators=[validate_file])
+
 
 class Importhandler(SuperUserRequiredMixin, View):
     
-    form_class=FileUploadForm
+    form_class=MultiFileUploadForm
     file_url=[]
     data_model='default'
     validate_result={}
     file_report={}
+    process_name=None
     
 
     #---------------------------------------------------------------------------------- 
@@ -117,35 +122,30 @@ class Importhandler(SuperUserRequiredMixin, View):
             for key in newentry_dict:
                 for e in newentry_dict[key]:
                     djCard=app_model.check_from_dict(e, vlog)
-                    if djCard.validStatus:
+                    if djCard.VALID_STATUS:
                         if save:
                             try:
                                 djCard.save(**kwargs)
-                                e['validStatus']=True
+                                e['VALID_STATUS']=True
                             except Exception as err:
                                 self.validate_result[key].append(f"catch Exception Card {err}")
                         else:
-                            e['validStatus']=False
+                            e['VALID_STATUS']=False
                     if report_result.get(key, None):
-                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(djCard.validStatus))
+                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(djCard.VALID_STATUS))
                     else:
-                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(djCard.validStatus)]
+                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(djCard.VALID_STATUS)]
                     if report_filelog.get(key, None):
-                        report_filelog[key].append(str(vlog.show()))
+                        report_filelog[key].append(str(vlog.log_to_UI()))
                     else:
-                        report_filelog[key]=[str(vlog.show())]
+                        report_filelog[key]=[str(vlog.log_to_UI())]
                 # if save:
-                #     newentry_dict[key][:]=[e for e in newentry_dict[key] if e['validStatus']==False]
+                #     newentry_dict[key][:]=[e for e in newentry_dict[key] if e['VALID_STATUS']==False]
                     
     #---------------------------------------------------------------------------------- 
-    def get(self, request):
-        form = self.form_class
-        template=self.template_name
-        # Displaying user saved files in Server/uploads/
-        # chars_lookup=str(request.user)
-        # filesinUploads_list=[file for file in os.listdir(self.dirname) if os.path.isfile(os.path.join(self.dirname, file)) and str(request.user)+"_" in file] 
-               
-        return render(request, 'ddrug/importhandler_vitek.html', { 'form': form,})
+    def get(self, request, process_name):
+        self.process_name=process_name
+        return render(request, self.template_name, { 'form': self.form_class, 'process_name':self.process_name})
 
 
 

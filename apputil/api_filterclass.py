@@ -30,6 +30,7 @@ class API_FilteredListView(generics.ListAPIView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        print(self.filterset)
         # Return the filtered queryset
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()

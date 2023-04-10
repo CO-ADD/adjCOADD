@@ -4,13 +4,14 @@ from django.urls import path, include, re_path
 
 from .views import  (DrugListView, DrugCardView,detailDrug, createDrug, updateDrug, 
     detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, 
-    ketcher_test,iframe_url, API_VITEK_ASTList)#VitekcardListView,
+    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List)#VitekcardListView,
 
 
 
 urlpatterns = [
     # API path
-    path('api-vitek-ast/', API_VITEK_ASTList.as_view()),
+    path('api-vitek-ast/', API_VITEK_ASTList.as_view(), name="api_vitekast"),
+    path('api-drug/', API_Drug_List.as_view(), name="api_drug"),
     # path('vitek-ast/create/', VITEK_ASTCreate.as_view()),
     # path('vitek-ast/<pk>/', VITEK_ASTUpdate.as_view()),
     # path('vitek-ast/<pk>/delete/', VITEK_ASTDelete.as_view()),
@@ -24,7 +25,7 @@ urlpatterns = [
     path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
     path('vitekast_list', VitekastListView.as_view(), name="vitekast_list"),
     path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),
-    path("import-VITEK/", Importhandler_VITEK.as_view(), name="import-VITEK"),
+    path("import/<str:process_name>/", Importhandler_VITEK.as_view(), name="import-VITEK"),
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
     path("ketcher/", iframe_url, name="ketcher"),
     

@@ -116,8 +116,19 @@ class Validation_Log():
         for t in logTypes:
             for l in self.Logs[t]:
                 logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
-
-
+    
+    def log_to_UI(self,logTypes= ['Error','Warning', 'Info']):
+        info={} #info=[]
+        for t in logTypes:
+            # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+            info[t]=[]
+            for l in self.Logs[t]:
+                print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
+                description=str(l['Description']).replace("'", "").replace('"', '')
+                print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
+                info[t].append(print_info) # info.append(print_info)
+       
+        return info
 
     
 #-----------------------------------------------------------------------------------

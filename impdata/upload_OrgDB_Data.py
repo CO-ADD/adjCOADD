@@ -8,11 +8,11 @@ import pandas as pd
 import numpy as np
 import argparse
 
-from zUtils import zData
+# from zUtils import zData
 
 import django
 #from djCOADD import djOrgDB
-from oraCastDB import oraCastDB
+# from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
 
 import logging
@@ -26,7 +26,7 @@ def main():
     prgParser = argparse.ArgumentParser(prog='upload_OrgDB_Data', 
                                 description="Uploading data to adjCOADD from Oracle or Excel")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
+    prgParser.add_argument("--upload",default=True,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
     prgParser.add_argument("-f","--vitekfolder",default=None,required=False, dest="vitekfolder", action='store', help="Vitek Folder to parse")
@@ -37,14 +37,15 @@ def main():
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
-    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
+    djDir = "/home/wz/adjCOADD" #"C:/Data/A02_WorkDB/03_Django/adjCOADD"
+    # uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
+    uploadDir="/home/wz/adjCOADD/impdata/Data"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
         uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
     elif prgArgs.database == 'WorkLinux':
-        djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
+        djDir ="/home/wz/adjCOADD" #"/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
+        uploadDir = "/home/wz/adjCOADD/impdata/Data"#/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
 
     xlFiles = {
         'Application': "ApplicationData_v03.xlsx",
@@ -58,8 +59,8 @@ def main():
     import a_upload_AppUtil as appUtil
     import b_upload_dOrganism as dOrg
     import c_upload_dDrug as dDrug
-    import d_upload_Vitek as dVitek
-    import e_upload_MIC as dMIC
+    # import d_upload_Vitek as dVitek
+    # import e_upload_MIC as dMIC
 
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
@@ -90,6 +91,7 @@ def main():
 
     # Table -------------------------------------------------------------
     logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
+    print(prgArgs.table)
     logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
     if prgArgs.table == 'User':
