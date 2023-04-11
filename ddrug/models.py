@@ -41,7 +41,7 @@ class Drug(AuditModel):
     drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True)
     drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True)
     drug_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Drug Type", on_delete=models.DO_NOTHING,
-        db_column="drug_type", related_name="%(class)s_DrugType+")
+        db_column="drug_type", related_name="%(class)s_drugtype")
     drug_note = models.CharField(max_length=50, blank=True, verbose_name = "Drug Notes")
     drug_panel=ArrayField(models.CharField(max_length=20, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
 
@@ -199,9 +199,9 @@ class VITEK_Card(AuditModel):
 
     card_barcode = models.CharField(max_length=25, primary_key=True, verbose_name = "Card Barcode") 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     card_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Card Type", on_delete=models.DO_NOTHING,
-        db_column="card_type", related_name="%(class)s_CardType+")
+        db_column="card_type", related_name="%(class)s_cardtype")
     card_code = models.CharField(max_length=15, blank=False, verbose_name = "Card Code") 
     expiry_date = models.DateField(blank=True, verbose_name = "Expiry Date")
     instrument = models.CharField(max_length=50, blank=True, verbose_name = "Vitek SN") 
@@ -304,9 +304,9 @@ class VITEK_AST(AuditModel):
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
-        db_column="card_barcode", related_name="%(class)s_card_barcode+") 
+        db_column="card_barcode", related_name="%(class)s_card_barcode") 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
-        db_column="drug_id", related_name="%(class)s_drug_id+")
+        db_column="drug_id", related_name="%(class)s_drug_id")
     mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
     process = models.CharField(max_length=50, blank=True, verbose_name = "Vitek Process")
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
@@ -434,7 +434,7 @@ class VITEK_ID(AuditModel):
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
-        db_column="card_barcode", related_name="%(class)s_card_barcode+") 
+        db_column="card_barcode", related_name="%(class)s_card_barcode") 
     process = models.CharField(max_length=50, blank=True, verbose_name = "Vitek Process")
     id_organism = models.CharField(max_length=120,  blank=True, verbose_name = "ID Organism")
     id_probability = models.CharField(max_length=120, blank=True,  verbose_name = "ID Probability")
@@ -538,28 +538,28 @@ class MIC_COADD(AuditModel):
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id+") 
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
-        db_column="drug_id", related_name="%(class)s_drug_id+")
+        db_column="drug_id", related_name="%(class)s_drug_id")
     
     mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
-         db_column="mic_type", related_name="%(class)s_MICType+")
+         db_column="mic_type", related_name="%(class)s_mictype")
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
     # Future update to ForeignKey (JZG) ... same for Testplate_ID
     #run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-    #    db_column="run_id", related_name="%(class)s_RunID+")
+    #    db_column="run_id", related_name="%(class)s_runid")
     run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
     testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
 
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
-        db_column="plate_size", related_name="%(class)s_PlateSize+")
+        db_column="plate_size", related_name="%(class)s_platesize")
     plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
-        db_column="plate_material", related_name="%(class)s_PlateMaterial+")
+        db_column="plate_material", related_name="%(class)s_material")
 
     # Possible update to ForeignKey (JZG) 
     #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
@@ -679,14 +679,14 @@ class MIC_Pub(AuditModel):
     }
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
-        db_column="oragnism_id", related_name="%(class)s_organism_id+") 
+        db_column="oragnism_id", related_name="%(class)s_organism_id") 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
-        db_column="drug_id", related_name="%(class)s_drug_id+")
+        db_column="drug_id", related_name="%(class)s_drug_id")
     
     mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
-         db_column="mic_type", related_name="%(class)s_MICType+")
+         db_column="mic_type", related_name="%(class)s_mictype")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
