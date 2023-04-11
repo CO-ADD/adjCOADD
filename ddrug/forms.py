@@ -20,7 +20,7 @@ class Drug_form(forms.ModelForm):
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    drug_id=forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}), required=False)
+    drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
         model =Drug
         fields='__all__'

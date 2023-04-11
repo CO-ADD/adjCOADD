@@ -14,7 +14,7 @@ import cairosvg
 from django.conf import settings
 
 from apputil.utils import Filterbase, get_filewithpath
-from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
+from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from adjcoadd.constants import *
 # ======================================Util Func. (To SVG)=====================================================#
 
@@ -86,6 +86,11 @@ class Vitekast_filter(Filterbase):
         fields=['Drug_Name']
 
 
+class MIC_COADDfilter(Filterbase):
+    mic = django_filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model=MIC_COADD
+        fields=['mic']
 
 # Similarity Query Function
 # config.tanimoto_threshold =0.4 # similarity_threshold_int/100

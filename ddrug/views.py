@@ -36,8 +36,9 @@ from apputil.utils_dataimport import Importhandler
 from apputil.api_filterclass import API_FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
-from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, Vitekast_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
+from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
+from .utils import (Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, molecule_to_svg, 
+                    clearIMGfolder, get_mfp2_neighbors)
 from .forms import Drug_form
 from .serializers import Drug_Serializer, VITEK_ASTSerializer
 from .util_vitek import *
@@ -221,17 +222,12 @@ def get_file(filename):
 import sys
 # ------------------------------------------------
 # ---------API View-------------------------------
-from rest_framework import permissions
-from rest_framework.response import Response
-# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-
 
 class API_Drug_List(API_FilteredListView):
     queryset = Drug.objects.all()
     serializer_class = Drug_Serializer
     filterset_class= Drug_filter
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+
 
 
 
@@ -240,7 +236,7 @@ class API_VITEK_ASTList(API_FilteredListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
     filterset_class= Vitekast_filter
-    # permission_classes = [permissions.IsAuthenticated]
+   
 
 
 
@@ -477,5 +473,16 @@ class VitekastListView(LoginRequiredMixin, FilteredListView):
 
       
 
+# ================MIC_COADD View======================================
+class MIC_COADDListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=MIC_COADD  
+    template_name = 'ddrug/mic_coadd/mic_coadd_list.html' 
+    filterset_class=MIC_COADDfilter
+    model_fields=model.HEADER_FIELDS
 
+# =============================Card View=====================================
+    # editable graphic , molblock, 3D, py3Dmol 
+class MIC_COADDCardView(MIC_COADDListView):
+    template_name = 'ddrug/mic_coadd/mic_coadd_card.html'
   

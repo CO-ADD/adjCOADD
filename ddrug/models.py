@@ -531,7 +531,16 @@ class MIC_COADD(AuditModel):
      Antibiogram from CO-ADD screening    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {}
+    HEADER_FIELDS   = {
+        # example fields for test view
+        "mic":"MIC",
+        "mic_type":"Type",
+        "bp_profile":"Profile",
+        "run_id":"Run ID",
+        "bp_profile":"Break Point",
+        "media":"Media",
+    }
+    
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
         'plate_size':'Plate_Size',

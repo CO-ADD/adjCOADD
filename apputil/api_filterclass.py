@@ -1,6 +1,9 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import permissions
 # from .models import MyModel
 # from .serializers import MyModelSerializer
 # from .filtersets import MyModelFilterSet
@@ -22,6 +25,8 @@ class API_FilteredListView(generics.ListAPIView):
     filter_request=None
     filter_Count=None
     pagination_class = CustomPagination
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:

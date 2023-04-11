@@ -23,11 +23,11 @@ class HiddenSimpleArrayField(forms.Field):
 class CreateOrganism_form(ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0), widget=forms.Select(attrs={'class': 'input-group'}), required=False,)
-    risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'input-group'}), required=False,)
-    pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'input-group'}),required=False,)
-    mta_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'],  astatus__gte=0),widget=forms.Select(attrs={'class': 'input-group'}),required=False, )
-    lab_restriction = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction']), widget=forms.Select(attrs={'class': 'input-group'}),required=False, )
+    oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
+    risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
+    pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}),required=False,)
+    mta_status = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'],  astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}),required=False, )
+    lab_restriction = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['lab_restriction']), widget=forms.Select(attrs={'class': 'form-control'}),required=False, )
     
     res_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -78,7 +78,7 @@ class UpdateOrganism_form(CreateOrganism_form):
    
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
-    org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0), widget=forms.Select(attrs={'class':'form-select'}))
+    org_class = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class'], astatus__gte=0), widget=forms.Select(attrs={'class':''}))
     division = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division'], astatus__gte=0))
     
     def __init__(self, *args, **kwargs):
@@ -157,7 +157,7 @@ class Stock_createform(forms.ModelForm):
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
     # orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.HiddenInput())
     stock_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=OrgBatch_Stock.Choice_Dictionary['stock_type'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select', 'readonly':False}))
+                                    widget=forms.Select(attrs={'class':'', 'readonly':False}))
     passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     stock_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
@@ -210,9 +210,9 @@ class Culture_form(forms.ModelForm):
 class Cultureupdate_form(forms.ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_type'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select', 'width':'fit-content','disabled': 'disabled'}), required=False,)
+                                    widget=forms.Select(attrs={'class':'', 'width':'fit-content','disabled': 'disabled'}), required=False,)
     culture_source= forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism_Culture.Choice_Dictionary['culture_source'], astatus__gte=0), 
-                                    widget=forms.Select(attrs={'class':'form-select',  'width':'fit-content','disabled': 'disabled'}), required=False,)
+                                    widget=forms.Select(attrs={'class':'',  'width':'fit-content','disabled': 'disabled'}), required=False,)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
