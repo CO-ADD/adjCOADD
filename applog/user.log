@@ -1,0 +1,10 @@
+user_log INFO 2023-04-11 09:13:18,406 signals 27136 8336 test login successful
+user_log INFO 2023-04-11 09:43:15,737 signals 11852 21808 test login successful
+user_log INFO 2023-04-11 09:43:19,441 signals 11852 21808 test log out successful
+user_log INFO 2023-04-11 09:45:19,716 signals 13156 17696 test login successful
+user_log INFO 2023-04-11 09:48:36,469 signals 25440 24516 test log out successful
+user_log ERROR 2023-04-11 11:26:07,083 signals 24516 17916 login failed; unknown user
+user_log ERROR 2023-04-11 11:26:07,233 signals 24516 17916 login failed; unknown user
+user_log ERROR 2023-04-11 11:29:08,170 signals 18160 28600 login failed; unknown user
+user_log ERROR 2023-04-11 11:29:08,320 signals 18160 28600 login failed; unknown user
+user_log INFO 2023-04-11 11:49:05,215 signals 14964 1036 test login successful

@@ -272,7 +272,7 @@ class Importhandler_apputils(Importhandler):
                             update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
                             context["excel_upload_info"]="Saved in AppUser Datatable"
                         elif process_name=="Drug":
-                            update_Drug_xls(uploadFile, XlsSheet="Drug", upload=True, uploaduser=request.user, lower=True)
+                            update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
                             context["excel_upload_info"]="Saved in Drug Datatable"
                             
                     except Exception as err:

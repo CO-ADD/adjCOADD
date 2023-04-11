@@ -221,16 +221,28 @@ def get_file(filename):
 import sys
 # ------------------------------------------------
 # ---------API View-------------------------------
+from rest_framework import permissions
+from rest_framework.response import Response
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
+
 class API_Drug_List(API_FilteredListView):
     queryset = Drug.objects.all()
     serializer_class = Drug_Serializer
     filterset_class= Drug_filter
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 
 class API_VITEK_ASTList(API_FilteredListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
     filterset_class= Vitekast_filter
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()
