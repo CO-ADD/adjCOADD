@@ -460,7 +460,7 @@ a:hover .tooltiptext {
 
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
-/*  */
+/* ===== 1 Drag to resize sidebar start ======== */
 i {
   transition: 0.5s;
 }
@@ -479,7 +479,6 @@ i {
   height: fit-content;
   transition: 0.5s;
 }
-
 .main {
   flex-basis: 0;
   flex-grow: 1;
@@ -1030,6 +1029,6 @@ form p {
   padding: 3px 8px 3px 8px;
 }
 
-.login:hover {
-  opacity: 0.5;
+.login:hover{
+  opacity:0.5
 }
