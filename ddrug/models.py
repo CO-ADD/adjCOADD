@@ -164,17 +164,19 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-
-        if not self.drug_id: 
+        if not self.drug_id:
             self.drug_id = self.find_Next_DrugID()
-            if self.drug_id: 
-                super(Drug, self).save(*args, **kwargs)
-                self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+            if self.drug_id:
+                super().save(*args, **kwargs)
+                Drug.objects.filter(drug_id=self.drug_id).update(
+                    ffp2=FEATMORGANBV_FP('smol'),
+                    mfp2=MORGANBV_FP('smol'),
+                    torsionbv=TORSIONBV_FP('smol')
+                )       
         else:
             self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-            super(Drug, self).save(*args, **kwargs) 
-        # print("save ffp2")
-        # print(f"field FFP2 is {self.ffp2}")
+            super().save(*args, **kwargs) 
+      
         
 #=================================================================================================
 class VITEK_Card(AuditModel):

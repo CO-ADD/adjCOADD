@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
+DEVELOPMENT='Local'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -205,8 +205,8 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # Configure the test database
 import sys
 if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-    DATABASES['default']['OPTIONS'] = {
-        'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public'
+    DATABASES['ddrug']['OPTIONS'] = {
+        'options': '-c search_path=ddrug,apputil'
     }
 
 # Password validation

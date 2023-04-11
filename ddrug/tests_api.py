@@ -4,10 +4,10 @@ import requests
 from django.urls import reverse
 
 class TestApiAccess(TestCase):
-    # databases={'ddrug', 'default'}
+    databases={'ddrug','apputil'}
     def setUp(self):
         self.username = 'uqwzhon4'
-        self.password = 'Tddx^_^10'
+        self.password = '23Tddx^_^'
 
     def tearDown(self):
         pass

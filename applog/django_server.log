@@ -1,0 +1,1044 @@
+django.request ERROR 2023-04-11 12:00:02,733 log 21940 8932 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1396, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\test\testcases.py", line 167, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database queries to 'ddrug' are not allowed in this test. Add 'ddrug' to ddrug.tests_api.TestApiAccess.databases to ensure proper test isolation and silence this failure.
+django.utils.autoreload INFO 2023-04-11 12:00:39,840 autoreload 10872 21744 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 12:00:44,035 basehttp 10872 22316 "GET / HTTP/1.1" 200 9118
+django.server INFO 2023-04-11 12:00:46,191 basehttp 10872 22316 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 12:00:46,304 basehttp 10872 22316 "GET /index/ HTTP/1.1" 200 16082
+django.server INFO 2023-04-11 12:00:50,760 basehttp 10872 22316 "GET /organism_card HTTP/1.1" 200 47871
+django.server INFO 2023-04-11 12:00:50,948 basehttp 10872 22316 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-04-11 12:00:50,950 basehttp 10872 25064 "GET /static/js/filter_toggle.js HTTP/1.1" 200 167
+django.server INFO 2023-04-11 12:08:32,371 basehttp 10872 17764 "GET /organism_card HTTP/1.1" 200 47871
+django.server INFO 2023-04-11 12:08:32,386 basehttp 10872 17764 "GET /static/css/overideboot.css HTTP/1.1" 200 6163
+django.server INFO 2023-04-11 12:08:32,387 basehttp 10872 8664 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,388 basehttp 10872 9064 "GET /static/css/custom.css HTTP/1.1" 200 17696
+django.server INFO 2023-04-11 12:08:32,390 basehttp 10872 9064 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,392 basehttp 10872 8664 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,394 basehttp 10872 9064 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,394 basehttp 10872 8664 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,395 basehttp 10872 9064 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,403 basehttp 10872 8664 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,403 basehttp 10872 9064 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,403 basehttp 10872 17764 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,407 basehttp 10872 17764 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,419 basehttp 10872 17764 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,423 basehttp 10872 17764 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,429 basehttp 10872 17764 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:08:32,503 basehttp 10872 17764 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.request WARNING 2023-04-11 12:09:05,609 log 10872 17764 Unauthorized: /api-drug/
+django.server WARNING 2023-04-11 12:09:05,610 basehttp 10872 17764 "GET /api-drug/ HTTP/1.1" 401 9925
+django.server INFO 2023-04-11 12:09:05,669 basehttp 10872 17764 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,671 basehttp 10872 8664 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,678 basehttp 10872 9064 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,681 basehttp 10872 17764 "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,682 basehttp 10872 8664 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,683 basehttp 10872 18264 "GET /static/rest_framework/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,684 basehttp 10872 15828 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,686 basehttp 10872 4132 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,687 basehttp 10872 9064 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,687 basehttp 10872 17764 "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:09:05,710 basehttp 10872 17764 "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+django.request WARNING 2023-04-11 12:10:15,192 log 10872 17764 Not Found: /api-drug/ 'Authorization: Token cd83f0384bb5148c8617ff01028d5ece23bc9769'
+django.server WARNING 2023-04-11 12:10:15,193 basehttp 10872 17764 "GET /api-drug/%20'Authorization:%20Token%20cd83f0384bb5148c8617ff01028d5ece23bc9769' HTTP/1.1" 404 12855
+django.request WARNING 2023-04-11 12:10:22,635 log 10872 17764 Unauthorized: /api-drug/
+django.server WARNING 2023-04-11 12:10:22,635 basehttp 10872 17764 "GET /api-drug/ HTTP/1.1" 401 9925
+django.request WARNING 2023-04-11 12:12:14,505 log 10872 17764 Unauthorized: /api-drug/
+django.server WARNING 2023-04-11 12:12:14,505 basehttp 10872 17764 "GET /api-drug/ HTTP/1.1" 401 9925
+django.server INFO 2023-04-11 12:12:21,757 basehttp 10872 17764 "GET /api-vitek-ast/ HTTP/1.1" 200 11510
+django.server INFO 2023-04-11 12:12:21,817 basehttp 10872 17764 "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 304 0
+django.server INFO 2023-04-11 12:13:12,847 basehttp 10872 17764 "GET /createOrg/ HTTP/1.1" 200 10500
+django.server INFO 2023-04-11 12:13:12,854 basehttp 10872 17764 "GET /static/js/search_organism.js HTTP/1.1" 200 2101
+django.request ERROR 2023-04-11 12:13:16,269 log 10872 17764 Internal Server Error: /organism/GN_0001
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column organism_culture.media does not exist
+LINE 1: ...lture_type", "organism_culture"."culture_source", "organism_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 175, in detailOrganism
+    return render(req, "dorganism/organism/organism_detail.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 194, in render
+    len_values = len(values)
+                 ^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 376, in __len__
+    self._fetch_all()
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1867, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 87, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 103, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column organism_culture.media does not exist
+LINE 1: ...lture_type", "organism_culture"."culture_source", "organism_...
+                                                             ^
+
+django.server ERROR 2023-04-11 12:13:16,273 basehttp 10872 17764 "GET /organism/GN_0001 HTTP/1.1" 500 263232
+django.request ERROR 2023-04-11 12:15:42,364 log 26480 11420 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1396, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\test\testcases.py", line 167, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database queries to 'ddrug' are not allowed in this test. Add 'ddrug' to ddrug.tests_api.TestApiAccess.databases to ensure proper test isolation and silence this failure.
+django.utils.autoreload INFO 2023-04-11 12:21:41,595 autoreload 12000 22312 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 12:23:09,346 basehttp 12000 9984 "GET /api-drug/ HTTP/1.1" 200 3144
+django.server INFO 2023-04-11 12:34:37,086 basehttp 12000 15244 "POST /api/token/ HTTP/1.1" 200 507
+django.server INFO 2023-04-11 12:34:39,256 basehttp 12000 29656 "GET /api-drug/ HTTP/1.1" 200 3144
+django.request ERROR 2023-04-11 13:26:06,957 log 26192 8752 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1396, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\test\testcases.py", line 167, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database queries to 'ddrug' are not allowed in this test. Add 'ddrug' to ddrug.tests_api.TestApiAccess.databases to ensure proper test isolation and silence this failure.
+django.request ERROR 2023-04-11 13:29:45,382 log 24736 27124 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+django.utils.autoreload INFO 2023-04-11 13:30:59,138 autoreload 12000 22312 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:31:00,374 autoreload 18704 14964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-11 13:40:25,460 autoreload 18704 14964 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:40:26,509 autoreload 28884 19596 Watching for file changes with StatReloader
+django.request ERROR 2023-04-11 13:40:37,588 log 25504 23860 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+django.utils.autoreload INFO 2023-04-11 13:41:55,781 autoreload 28884 19596 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:41:56,953 autoreload 23432 26616 Watching for file changes with StatReloader
+django.request ERROR 2023-04-11 13:42:08,202 log 19468 5944 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+django.utils.autoreload INFO 2023-04-11 13:42:40,770 autoreload 23432 26616 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:42:41,831 autoreload 26956 1476 Watching for file changes with StatReloader
+django.request ERROR 2023-04-11 13:42:57,243 log 27652 27768 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "drug" does not exist
+LINE 1: ...bfp_to_binary_text("drug"."mfp2") AS "col46" FROM "drug" WHE...
+                                                             ^
+
+django.request ERROR 2023-04-11 13:43:32,034 log 28040 22208 Internal Server Error: /api-drug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\api_filterclass.py", line 36, in get_queryset
+    self.filter_Count=self.filterset.qs.distinct().count()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 621, in count
+    return self.query.get_count(using=self.db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 559, in get_count
+    return obj.get_aggregation(using, ["__count"])["__count"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\query.py", line 544, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1396, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\test\testcases.py", line 167, in __call__
+    raise DatabaseOperationForbidden(self.message)
+django.test.testcases.DatabaseOperationForbidden: Database queries to 'ddrug' are not allowed in this test. Add 'ddrug' to ddrug.tests_api.TestApiAccess.databases to ensure proper test isolation and silence this failure.
+django.utils.autoreload INFO 2023-04-11 13:44:46,919 autoreload 26956 1476 C:\Users\uqwzhon4\project\adjCOADD\adjcoadd\settings.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:44:48,071 autoreload 668 9992 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 13:47:12,970 basehttp 668 25656 "GET / HTTP/1.1" 200 9118
+django.server INFO 2023-04-11 13:47:13,036 basehttp 668 25656 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,041 basehttp 668 15804 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,055 basehttp 668 28552 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,056 basehttp 668 24664 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,057 basehttp 668 23824 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,057 basehttp 668 9880 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,058 basehttp 668 25656 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,059 basehttp 668 15804 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,061 basehttp 668 28552 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,063 basehttp 668 9880 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,064 basehttp 668 24664 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,064 basehttp 668 23824 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:13,098 basehttp 668 23824 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:15,106 basehttp 668 23824 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 13:47:15,260 basehttp 668 23824 "GET /index/ HTTP/1.1" 200 16082
+django.server INFO 2023-04-11 13:47:15,278 basehttp 668 23824 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:18,802 basehttp 668 23824 "GET /drug_card HTTP/1.1" 200 37975
+django.server INFO 2023-04-11 13:47:18,821 basehttp 668 23824 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:47:18,822 basehttp 668 24664 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 13:47:18,910 basehttp 668 9880 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 13:47:18,959 basehttp 668 24664 "GET /static/images/AMD00002.svg HTTP/1.1" 200 324
+django.server INFO 2023-04-11 13:47:18,977 basehttp 668 23824 "GET /static/images/AMD00003.svg HTTP/1.1" 200 32987
+django.server INFO 2023-04-11 13:47:22,032 basehttp 668 23824 "GET /createDrug/ HTTP/1.1" 200 8215
+django.request ERROR 2023-04-11 13:47:37,392 log 668 23824 Internal Server Error: /createDrug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 178, in createDrug
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\models.py", line 175, in save
+    super(Drug, self).save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1659, in execute_sql
+    for sql, params in self.as_sql():
+                       ^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1583, in as_sql
+    value_rows = [
+                 ^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1584, in <listcomp>
+    [
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1585, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1508, in prepare_value
+    raise ValueError(
+ValueError: Failed to insert expression "TORSIONBV_FP(Col(drug, ddrug.Drug.smol))" on ddrug.Drug.torsionbv. F() expressions can only be used to update, not to insert.
+django.server ERROR 2023-04-11 13:47:37,396 basehttp 668 23824 "POST /createDrug/ HTTP/1.1" 500 173942
+django.utils.autoreload INFO 2023-04-11 13:48:52,976 autoreload 668 9992 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:48:54,110 autoreload 13640 23096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-11 13:49:10,703 autoreload 13640 23096 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:49:12,029 autoreload 4984 7508 Watching for file changes with StatReloader
+django.request ERROR 2023-04-11 13:49:16,735 log 4984 24636 Internal Server Error: /createDrug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 178, in createDrug
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\models.py", line 175, in save
+    super(Drug, self).save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1659, in execute_sql
+    for sql, params in self.as_sql():
+                       ^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1583, in as_sql
+    value_rows = [
+                 ^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1584, in <listcomp>
+    [
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1585, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1508, in prepare_value
+    raise ValueError(
+ValueError: Failed to insert expression "TORSIONBV_FP(Col(drug, ddrug.Drug.smol))" on ddrug.Drug.torsionbv. F() expressions can only be used to update, not to insert.
+django.server ERROR 2023-04-11 13:49:16,740 basehttp 4984 24636 "POST /createDrug/ HTTP/1.1" 500 173942
+django.utils.autoreload INFO 2023-04-11 13:49:41,360 autoreload 4984 7508 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:49:42,578 autoreload 23448 13164 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 13:49:47,125 basehttp 23448 21492 "POST /createDrug/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 13:49:47,274 basehttp 23448 21492 "GET /drug_card HTTP/1.1" 200 42672
+django.server INFO 2023-04-11 13:49:47,343 basehttp 23448 21492 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:49:47,359 basehttp 23448 21492 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 13:49:47,364 basehttp 23448 14436 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:49:47,375 basehttp 23448 21492 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.utils.autoreload INFO 2023-04-11 13:50:31,307 autoreload 23448 13164 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:50:32,478 autoreload 26336 27316 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-11 13:50:37,124 autoreload 26336 27316 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:50:38,366 autoreload 9076 28312 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 13:50:39,536 basehttp 9076 20768 "GET /drug_card HTTP/1.1" 200 42672
+django.server INFO 2023-04-11 13:50:39,601 basehttp 9076 20768 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:50:39,620 basehttp 9076 20768 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 13:50:39,623 basehttp 9076 14524 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:50:39,633 basehttp 9076 20768 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 13:50:39,639 basehttp 9076 26712 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:50:40,378 basehttp 9076 26712 "GET /createDrug/ HTTP/1.1" 200 8215
+django.server INFO 2023-04-11 13:50:51,247 basehttp 9076 26712 "POST /createDrug/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 13:50:51,390 basehttp 9076 26712 "GET /drug_card HTTP/1.1" 200 47385
+django.server WARNING 2023-04-11 13:50:51,453 basehttp 9076 26712 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:50:51,465 basehttp 9076 22604 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server WARNING 2023-04-11 13:50:51,465 basehttp 9076 17560 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 13:51:11,683 basehttp 9076 10156 "GET /createDrug/ HTTP/1.1" 200 8215
+django.utils.autoreload INFO 2023-04-11 13:55:31,852 autoreload 9076 28312 C:\Users\uqwzhon4\project\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:55:32,942 autoreload 2392 28576 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-11 13:55:53,084 autoreload 2392 28576 C:\Users\uqwzhon4\project\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 13:55:54,296 autoreload 16768 7528 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 13:55:56,911 basehttp 16768 28636 "GET /drug_card HTTP/1.1" 200 47385
+django.server INFO 2023-04-11 13:55:56,969 basehttp 16768 28636 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 13:55:56,980 basehttp 16768 28636 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 13:55:57,011 basehttp 16768 11716 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:55:57,012 basehttp 16768 28636 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:55:57,017 basehttp 16768 13604 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server INFO 2023-04-11 13:55:58,171 basehttp 16768 17636 "GET /createDrug/ HTTP/1.1" 200 8211
+django.server INFO 2023-04-11 13:56:11,257 basehttp 16768 17636 "POST /createDrug/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 13:56:11,382 basehttp 16768 17636 "GET /drug_card HTTP/1.1" 200 47666
+django.server WARNING 2023-04-11 13:56:11,455 basehttp 16768 17636 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:56:11,460 basehttp 16768 24776 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 13:56:11,460 basehttp 16768 23580 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server INFO 2023-04-11 13:56:33,968 basehttp 16768 23916 "GET /createDrug/ HTTP/1.1" 200 8211
+django.request ERROR 2023-04-11 13:56:53,403 log 16768 23916 Internal Server Error: /createDrug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 178, in createDrug
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\models.py", line 173, in save
+    super(Drug, self).save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1659, in execute_sql
+    for sql, params in self.as_sql():
+                       ^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1583, in as_sql
+    value_rows = [
+                 ^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1584, in <listcomp>
+    [
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1585, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1508, in prepare_value
+    raise ValueError(
+ValueError: Failed to insert expression "TORSIONBV_FP(Col(drug, ddrug.Drug.smol))" on ddrug.Drug.torsionbv. F() expressions can only be used to update, not to insert.
+django.server ERROR 2023-04-11 13:56:53,407 basehttp 16768 23916 "POST /createDrug/ HTTP/1.1" 500 174066
+django.utils.autoreload INFO 2023-04-11 14:04:32,308 autoreload 16768 7528 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 14:04:33,474 autoreload 6940 26796 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 14:04:46,355 basehttp 6940 15108 "GET /drug_card HTTP/1.1" 200 47385
+django.server INFO 2023-04-11 14:04:46,371 basehttp 6940 712 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:04:46,371 basehttp 6940 15108 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:04:46,382 basehttp 6940 15108 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:04:46,455 basehttp 6940 15108 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:04:46,496 basehttp 6940 712 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 14:04:46,514 basehttp 6940 572 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server WARNING 2023-04-11 14:04:46,515 basehttp 6940 6812 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:04:46,515 basehttp 6940 15108 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 14:04:48,387 basehttp 6940 712 "GET /createDrug/ HTTP/1.1" 200 8211
+django.request ERROR 2023-04-11 14:04:58,492 log 6940 712 Internal Server Error: /createDrug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 178, in createDrug
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\models.py", line 174, in save
+    super().save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1659, in execute_sql
+    for sql, params in self.as_sql():
+                       ^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1583, in as_sql
+    value_rows = [
+                 ^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1584, in <listcomp>
+    [
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1585, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1508, in prepare_value
+    raise ValueError(
+ValueError: Failed to insert expression "TORSIONBV_FP(Col(drug, ddrug.Drug.smol))" on ddrug.Drug.torsionbv. F() expressions can only be used to update, not to insert.
+django.server ERROR 2023-04-11 14:04:58,496 basehttp 6940 712 "POST /createDrug/ HTTP/1.1" 500 174024
+django.server INFO 2023-04-11 14:05:23,239 basehttp 6940 712 "GET /drug_card HTTP/1.1" 200 47385
+django.server WARNING 2023-04-11 14:05:23,322 basehttp 6940 712 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:05:23,322 basehttp 6940 6156 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:05:23,334 basehttp 6940 26024 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server INFO 2023-04-11 14:05:24,674 basehttp 6940 22368 "GET /createDrug/ HTTP/1.1" 200 8211
+django.utils.autoreload INFO 2023-04-11 14:06:44,854 autoreload 6940 26796 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 14:06:46,228 autoreload 1044 23832 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 14:06:47,657 basehttp 1044 27804 "GET /drug_card HTTP/1.1" 200 47385
+django.server INFO 2023-04-11 14:06:47,724 basehttp 1044 27804 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:06:47,746 basehttp 1044 27804 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 14:06:47,753 basehttp 1044 27776 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:06:47,766 basehttp 1044 27804 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:06:47,767 basehttp 1044 17192 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server INFO 2023-04-11 14:06:49,098 basehttp 1044 7356 "GET /createDrug/ HTTP/1.1" 200 8211
+django.request ERROR 2023-04-11 14:07:02,479 log 1044 7356 Internal Server Error: /createDrug/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\views.py", line 178, in createDrug
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\ddrug\models.py", line 177, in save
+    super().save(*args, **kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\apputil\models.py", line 239, in save
+    super(AuditModel,self).save(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1006, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1047, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1791, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1659, in execute_sql
+    for sql, params in self.as_sql():
+                       ^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1583, in as_sql
+    value_rows = [
+                 ^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1584, in <listcomp>
+    [
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1585, in <listcomp>
+    self.prepare_value(field, self.pre_save_val(field, obj))
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1508, in prepare_value
+    raise ValueError(
+ValueError: Failed to insert expression "TORSIONBV_FP(Col(drug, ddrug.Drug.smol))" on ddrug.Drug.torsionbv. F() expressions can only be used to update, not to insert.
+django.server ERROR 2023-04-11 14:07:02,485 basehttp 1044 7356 "POST /createDrug/ HTTP/1.1" 500 174015
+django.utils.autoreload INFO 2023-04-11 14:15:28,260 autoreload 1044 23832 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 14:15:29,421 autoreload 19176 28332 Watching for file changes with StatReloader
+django.server INFO 2023-04-11 14:15:43,999 basehttp 19176 29036 "GET /drug_card HTTP/1.1" 200 47385
+django.server INFO 2023-04-11 14:15:44,073 basehttp 19176 29036 "GET /static/images/AMD00002.svg HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:15:44,073 basehttp 19176 11396 "GET /static/images/AMD00003.svg HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 14:15:44,097 basehttp 19176 11396 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:15:44,097 basehttp 19176 29036 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:15:44,113 basehttp 19176 6100 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server INFO 2023-04-11 14:15:45,614 basehttp 19176 1372 "GET /createDrug/ HTTP/1.1" 200 8211
+django.server INFO 2023-04-11 14:15:54,995 basehttp 19176 1372 "POST /createDrug/ HTTP/1.1" 302 0
+django.server INFO 2023-04-11 14:15:55,124 basehttp 19176 1372 "GET /drug_card HTTP/1.1" 200 52087
+django.server WARNING 2023-04-11 14:15:55,217 basehttp 19176 1372 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:15:55,218 basehttp 19176 3304 "GET /static/images/test0411.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-11 14:15:55,233 basehttp 19176 26236 "GET /static/images/test0411b.svg HTTP/1.1" 404 1920
+django.server WARNING 2023-04-11 14:15:55,233 basehttp 19176 15116 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 14:16:45,043 basehttp 19176 6176 "GET /drug/AMD00007 HTTP/1.1" 200 51466
+django.server WARNING 2023-04-11 14:16:45,116 basehttp 19176 6176 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 14:16:59,217 basehttp 19176 13184 "POST /updateDrug/AMD00007 HTTP/1.1" 302 0
+django.server INFO 2023-04-11 14:16:59,362 basehttp 19176 13184 "GET /drug/AMD00007 HTTP/1.1" 200 51756
+django.server WARNING 2023-04-11 14:16:59,414 basehttp 19176 13184 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-11 14:17:52,896 basehttp 19176 15840 "POST /updateDrug/AMD00007 HTTP/1.1" 302 0
+django.server INFO 2023-04-11 14:17:53,067 basehttp 19176 15840 "GET /drug/AMD00007 HTTP/1.1" 200 51760
+django.server INFO 2023-04-11 14:17:53,086 basehttp 19176 15840 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,086 basehttp 19176 28328 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,089 basehttp 19176 10164 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,090 basehttp 19176 27396 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,090 basehttp 19176 16356 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,093 basehttp 19176 15164 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,093 basehttp 19176 10164 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,094 basehttp 19176 15840 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,094 basehttp 19176 28328 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,095 basehttp 19176 16356 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,099 basehttp 19176 15840 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-04-11 14:17:53,100 basehttp 19176 16356 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server WARNING 2023-04-11 14:17:53,127 basehttp 19176 15840 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.utils.autoreload INFO 2023-04-11 14:18:20,717 autoreload 19176 28332 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 14:18:21,973 autoreload 7136 26940 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-11 14:19:06,846 autoreload 7136 26940 C:\Users\uqwzhon4\project\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-04-11 14:19:08,037 autoreload 10040 11608 Watching for file changes with StatReloader
