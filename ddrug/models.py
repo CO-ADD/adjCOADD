@@ -149,7 +149,10 @@ class Drug(AuditModel):
     #------------------------------------------------
     @classmethod
     def update_all_fp(cls):
-        cls.objects.update(ffp2=FEATMORGANBV_FP('smol'))
+        cls.objects.update(ffp2=FEATMORGANBV_FP('smol'),
+                           mfp2=MORGANBV_FP('smol'), 
+                           torsionbv=TORSIONBV_FP('smol')
+                           )
 
     #------------------------------------------------
     @classmethod
@@ -169,12 +172,19 @@ class Drug(AuditModel):
             self.drug_id = self.find_Next_DrugID()
             if self.drug_id: 
                 super(Drug, self).save(*args, **kwargs)
-                self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+                # self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+                Drug.objects.filter(drug_id=self.drug_id).update(
+                    ffp2=FEATMORGANBV_FP('smol'), 
+                    mfp2=MORGANBV_FP('smol'), 
+                    torsionbv=TORSIONBV_FP('smol')
+                    )
         else:
-            self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
+            self.__dict__.update(
+                ffp2=FEATMORGANBV_FP('smol'), 
+                mfp2=MORGANBV_FP('smol'), 
+                torsionbv=TORSIONBV_FP('smol')
+                )
             super(Drug, self).save(*args, **kwargs) 
-        # print("save ffp2")
-        # print(f"field FFP2 is {self.ffp2}")
         
 #=================================================================================================
 class VITEK_Card(AuditModel):
