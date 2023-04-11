@@ -6,7 +6,7 @@ from django.urls import reverse
 class TestApiAccess(TestCase):
     # databases={'ddrug', 'default'}
     def setUp(self):
-        self.username = 'uqwzhon4'
+        self.username = 'XXXX'
         self.password = 'XXXX'
 
     def tearDown(self):
