@@ -7,7 +7,7 @@ class TestApiAccess(TestCase):
     # databases={'ddrug', 'default'}
     def setUp(self):
         self.username = 'uqwzhon4'
-        self.password = 'Tddx^_^10'
+        self.password = 'XXXX'
 
     def tearDown(self):
         pass
