@@ -240,7 +240,7 @@ class API_VITEK_ASTList(API_FilteredListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
     filterset_class= Vitekast_filter
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 
