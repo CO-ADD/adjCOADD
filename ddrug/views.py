@@ -9,6 +9,7 @@ import numpy as np
 from django.core.serializers.json import DjangoJSONEncoder
 from time import localtime, strftime
 import psycopg2
+from rest_framework import generics
 
 import logging
 logger = logging.getLogger("django")
@@ -32,11 +33,13 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils import FilteredListView, get_filewithpath, file_location
 from apputil.utils_dataimport import Importhandler
+from apputil.api_filterclass import API_FilteredListView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
 from .utils import Drug_filter, Vitekcard_filter, Vitekast_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from .forms import Drug_form
+from .serializers import Drug_Serializer, VITEK_ASTSerializer
 from .util_vitek import *
 
 # ===================================================================
@@ -210,12 +213,49 @@ from django.core.files.storage import FileSystemStorage
 from pathlib import Path  
 from django.core import serializers
 
+# ---------util----------------------------------
 def get_file(filename):
     from django.conf import settings
     filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
     return filepath
 import sys
+# ------------------------------------------------
+# ---------API View-------------------------------
+from rest_framework import permissions
+from rest_framework.response import Response
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
+
+class API_Drug_List(API_FilteredListView):
+    queryset = Drug.objects.all()
+    serializer_class = Drug_Serializer
+    filterset_class= Drug_filter
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+
+
+
+class API_VITEK_ASTList(API_FilteredListView):
+    queryset = VITEK_AST.objects.all()
+    serializer_class = VITEK_ASTSerializer
+    filterset_class= Vitekast_filter
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+
+# class VITEK_ASTCreate(generics.CreateAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+
+# class VITEK_ASTUpdate(generics.RetrieveUpdateAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+
+# class VITEK_ASTDelete(generics.DestroyAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+# 
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_Card  
@@ -237,10 +277,12 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         data=list(context["object_list"].values())
         print(data)
         df=pd.DataFrame(data)
-        table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
+        try:
+            table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
                         columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
-        context['table']=table
-    
+            context['table']=table
+        except Exception as err:
+            context['table']= 'table error : '+ str(err) 
         return context
     
    
@@ -307,7 +349,7 @@ class Importhandler_VITEK(Importhandler):
     lAst={}
     # vLog = Validation_Log("Vitek-pdf")
     
-    def post(self, request):
+    def post(self, request, process_name):
         location=file_location(request) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
         context = {}
@@ -350,7 +392,8 @@ class Importhandler_VITEK(Importhandler):
                 context['file_list']=self.file_url
                 context['data_model']=self.data_model
                 context['cards']=self.lCards
-                context['ids']=self.lID    
+                context['ids']=self.lID   
+                print(self.lAst) 
 
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
@@ -402,7 +445,7 @@ class Importhandler_VITEK(Importhandler):
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
                 'status':'SavetoDB', 'savefile':str(file_list)})
 
-           
+        context["process_name"]=process_name   
         return render(request, 'ddrug/importhandler_vitek.html', context)
 
 

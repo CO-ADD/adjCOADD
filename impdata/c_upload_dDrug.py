@@ -8,8 +8,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 import django
-from oraCastDB import oraCastDB
-from zUtils import zData
+# from oraCastDB import oraCastDB
+# from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
@@ -223,7 +223,7 @@ def update_Drug_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lower=Tr
             #logger.info(mvColumns)
             dfSheet = dfSheet.rename(mvColumns,axis='columns') 
 
-        lstRows = [{k:v for k,v in m.items()} for m in dfSheet.to_dict(orient='rows')]
+        lstRows = [{k:v for k,v in m.items()} for m in dfSheet.to_dict("rows")]
         # df -> lstDict and remove null items 
         #lstRows = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
 

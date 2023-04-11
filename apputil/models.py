@@ -307,18 +307,7 @@ class AuditModel(models.Model):
                     value_list.append(" ")
                     
         return value_list
-        # for field in self._meta.fields:
-        #     if field.name in fields.keys():
-        #         obj=getattr(self, field.name)
-        #         if obj:
-        #             if isinstance(obj, list):
-        #                 array_to_string=','.join(str(e) for e in obj)
-        #                 value_list.append(array_to_string)
-        #             else:   
-        #                 value_list.append(field.value_to_string(self))
-        #         else:
-        #             value_list.append(" ")
-        # return value_list
+     
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method

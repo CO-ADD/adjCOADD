@@ -133,7 +133,7 @@ input {
   border-width: 1px !important;
 }
 
-td>input {
+td > input {
   max-width: 150px !important;
 }
 
@@ -150,7 +150,6 @@ select {
   width: 12rem;
   border: none;
   margin: 0;
-
 }
 
 select option {
@@ -234,7 +233,6 @@ tr {
 /* -------------------------------------------------- */
 /*---- block content div custom style */
 
-
 /* ----Button custom style */
 button,
 .btn {
@@ -277,7 +275,7 @@ button,
 }
 
 .page-item {
-  border: none !important
+  border: none !important;
 }
 
 .page-item:hover {
@@ -289,7 +287,7 @@ button,
   cursor: pointer !important;
   background-color: transparent !important;
   color: var(--bs-menu-item-color);
-  border: none !important
+  border: none !important;
 }
 
 .card-img-bottom {
@@ -322,8 +320,8 @@ button,
   width: 100%;
   transition: 1s;
 }
-.navbar p{
-  transition:1s;
+.navbar p {
+  transition: 1s;
 }
 .navbar,
 .navbar-nav {
@@ -355,7 +353,7 @@ button,
   position: relative;
   color: var(--bs-light) !important;
   border: 2px solid transparent;
-  transition:1s;
+  transition: 1s;
 }
 
 .nav-link:after {
@@ -386,32 +384,30 @@ button,
   width: 36px;
   background-color: var(--bs-gray-300);
   padding: 3px;
-  transition:1s;
+  transition: 1s;
 }
 
 nav.navbar.shrink .header-profile-user,
 nav.shrink .brand .navbar-brand {
-  opacity:0;
+  opacity: 0;
 }
 nav.navbar ul,
-nav.navbar .dropdown{
-transition:0.5s;
+nav.navbar .dropdown {
+  transition: 0.5s;
 }
 nav.navbar.shrink ul,
-nav.navbar.shrink .dropdown
-{
+nav.navbar.shrink .dropdown {
   height: 30px;
-  padding:0;
-  margin-top:0;
+  padding: 0;
+  margin-top: 0;
 }
-nav.navbar.shrink{
+nav.navbar.shrink {
   height: 45px;
-
 }
 nav.shrink a {
   font-size: 12px;
 }
-nav.shrink p{
+nav.shrink p {
   font-size: 12px;
 }
 
@@ -932,7 +928,6 @@ form p {
   }
 }
 
-
 #alert {
   animation: disapear 2s forwards;
   width: 6rem;
@@ -950,7 +945,7 @@ form p {
 .dropdown-menu {
   background-color: var(--bs-body-bg) !important;
   color: var(--bs-body-color);
-  border: 2px solid var(--bs-body-color)
+  border: 2px solid var(--bs-body-color);
 }
 
 .modal-content {
@@ -963,18 +958,18 @@ form p {
 }
 
 /* Login Form */
-.logintext:hover span{
+.logintext:hover span {
   color: var(--teal);
   font-stretch: expanded;
   font-weight: bolder;
 }
-.Login-form{
+.Login-form {
   width: 50%;
   margin: auto;
 }
 .Login-form label {
   position: absolute;
-  padding:2px;
+  padding: 2px;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
@@ -993,18 +988,17 @@ form p {
   opacity: 1;
 }
 
-
-.Login-form input{
+.Login-form input {
   color: var(--teal) !important;
   background-color: var(--bs-body-bg) !important;
   border: 1px solid var(--bs-body-color) !important;
 }
 
-.Login-form input:focus{
+.Login-form input:focus {
   border: 2px solid var(--teal) !important;
 }
-.Login-form input:focus+.Login-form label,
-.Login-form input:not(:placeholder-shown)+.Login-form label {
+.Login-form input:focus + .Login-form label,
+.Login-form input:not(:placeholder-shown) + .Login-form label {
   top: 5px;
   /* font-size: 12px; */
   color: var(--teal) !important;
@@ -1015,24 +1009,24 @@ form p {
 
 /* Change the white to any color */
 .Login-form input:-webkit-autofill,
-.Login-form input:-webkit-autofill:hover, 
-.Login-form input:-webkit-autofill:focus, 
-.Login-form input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px var(--bs-body-bg) inset !important;
+.Login-form input:-webkit-autofill:hover,
+.Login-form input:-webkit-autofill:focus,
+.Login-form input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--bs-body-bg) inset !important;
 }
 .Login-form .form-control:focus {
   outline: none;
   box-shadow: none;
 }
 
-.login{
+.login {
   background-color: var(--teal);
-  color:var(--bs-light);
+  color: var(--bs-light);
   margin-top: 25px;
   border: 1px solid var(--teal);
-  border-radius:10%;
+  border-radius: 10%;
   font-size: 16px;
-  padding:3px 8px 3px 8px;
+  padding: 3px 8px 3px 8px;
 }
 
 .login:hover{

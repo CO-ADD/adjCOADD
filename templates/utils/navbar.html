@@ -3,30 +3,40 @@
     <div class="brand d-flex flex-column align-items-center">
       <a class="navbar-brand" href="{%url 'index'%}">
         {%load static%}
-        <img class="d-inline-block align-text-top"
-          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
+        <img
+          class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
+          alt="CoADD Logo"
+        />
       </a>
-
-      
     </div>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
       {% if user.is_authenticated %}
       <div class="navbar-nav">
-
-
         <a class="nav-link" href="{%url 'index'%}">
           <p class="nav-title"><i class="fa-solid fa-house"></i></p>
         </a>
 
-
         <div class="dropdown d-inline-block">
-          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a
+            type="button"
+            class="nav-link active"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <p class="d-xl-inline-block nav-title">VIEWS</p>
             <i class="fa-solid fa-chevron-down nav-title"></i>
           </a>
@@ -63,6 +73,39 @@
             </li>
           </ul>
         </div>
+        <div class="dropdown d-inline-block">
+          <a
+            type="button"
+            class="nav-link active"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <p class="d-xl-inline-block nav-title">API VIEWS</p>
+            <i class="fa-solid fa-chevron-down nav-title"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- item-->
+            <li>
+              <a
+                class="dropdown-item"
+                href="{%url 'api_drug'%}"
+                target="_blank"
+              >
+                <p>Drug</p>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="{%url 'api_vitekast'%}"
+                target="_blank"
+              >
+                <p>VitekAST</p>
+              </a>
+            </li>
+          </ul>
+        </div>
         <div>
           <a class="nav-link" href="{%url 'ketcher_test' %}">
             <p class="nav-title">Ketcher Test Page</p>
@@ -77,8 +120,17 @@
         <li class="nav-item d-flex">
           {% if user.is_authenticated %}
           <div class="dropdown d-inline-block">
-            <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
+            <a
+              class="d-flex align-items-center p-0 nav-link active"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img
+                class="rounded-circle header-profile-user"
+                src="{%static 'images/app/avatar.png'%}"
+                alt="Avatar"
+              />
               <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
               <i class="fa-solid fa-chevron-down nav-title"></i>
             </a>
@@ -87,7 +139,7 @@
                 <p key="t-profile">
                   Profile {% if user.permission == 'Admin'%}
                   <span class="text-info"> Admin </span>
-                  <!-- <a href="{%url 'testsite'%}">testsite</a> -->
+
                   {%endif%}
                   <!--  -->
                   {% if user.permission == 'Read'%}
@@ -100,7 +152,11 @@
                 </p>
               </a>
               <a class="dropdown-item" href="#">
-                <input class="form-check-input" type="checkbox" id="dark-mode" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="dark-mode"
+                />
                 <label class="form-check-label" for="flexSwitchCheckChecked">
                   <p>Switch to Dark</p>
                 </label>
@@ -120,18 +176,23 @@
               <a class="dropdown-item text-danger" href="{%url 'logout'%}">
                 <p key="t-logout">Logout</p>
               </a>
-              <a class="dropdown-item version" style="font-size: x-small;" href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
-              data-bs-placement="bottom" title="info README
-              " target="_blank">
-              VERSION 0.8
-              <i class="fa fa-info-circle" aria-hidden="true"></i>
-            </a>
+              <a
+                class="dropdown-item version"
+                style="font-size: x-small"
+                href="https://co-add.github.io/README/html/index.html"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="info README
+              "
+                target="_blank"
+              >
+                VERSION 0.8
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </a>
             </div>
           </div>
 
           {%endif%}
-        
-         
         </li>
       </ul>
     </div>

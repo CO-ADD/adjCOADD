@@ -23,11 +23,14 @@ $(document).ready(() => {
   // Function to call Importhandler_VITEK in Views.py
   //Button Event: could be validating-objects, deleting, validating-save-objects------//
   $(".button").on("click", function () {
-    console.log($("input:checked"))
+    console.log($("input:checked"));
     // prevent from clicking without choosing a file
-    if ($("input:checked").length < 1 || $("input:checked").hasClass('not-visible')) {
-      alert("haven't select a file")
-      return
+    if (
+      $("input:checked").length < 1 ||
+      $("input:checked").hasClass("not-visible")
+    ) {
+      alert("haven't select a file");
+      return;
     } else {
       if ($(this).data("type") === "Validation") {
         $("#preLoader").fadeIn();
@@ -38,10 +41,12 @@ $(document).ready(() => {
         select_file_list.push($(this).val().toString());
       });
 
-      const datamodel = $("#datamodel").text() ? $("#datamodel").text() : "none";
-      // sending input data to server: files, process name, 
+      const datamodel = $("#datamodel").text()
+        ? $("#datamodel").text()
+        : "none";
+      // sending input data to server: files, process name,
       $.ajax({
-        url: "/import-VITEK/",
+        url: "/import/VITEK/",
         data: {
           type: $(this).data("type"),
           select_file_list: select_file_list,
@@ -51,23 +56,38 @@ $(document).ready(() => {
         headers: { "X-CSRFToken": csrftoken },
       })
         .done((res) => {
-          console.log(res)
+          console.log(res);
           // process received DATA
           // ---------IN delete Case-----------
           if (res.status === "Delete") {
             if (res.systemErr) {
-              $(this).find("div").html("<div id='alert' class='badge bg-danger text-wrap'>file not existed!</div>")
+              $(this)
+                .find("div")
+                .html(
+                  "<div id='alert' class='badge bg-danger text-wrap'>file not existed!</div>"
+                );
             } else {
               $("#delete_cancel_task a:first-child").addClass("blink");
-              $('input[name=uploadedfiles_select]:checked').addClass("not-visible");
-              $('input[name=uploadedfiles_select]:checked').parent().addClass("not-visible");
-              $('input[name=uploadedfiles_select]:checked').prop("checked", false)
-              $(this).find("div").html("<div id='alert' class='badge bg-primary text-wrap'>file deleted!</div>")
+              $("input[name=uploadedfiles_select]:checked").addClass(
+                "not-visible"
+              );
+              $("input[name=uploadedfiles_select]:checked")
+                .parent()
+                .addClass("not-visible");
+              $("input[name=uploadedfiles_select]:checked").prop(
+                "checked",
+                false
+              );
+              $(this)
+                .find("div")
+                .html(
+                  "<div id='alert' class='badge bg-primary text-wrap'>file deleted!</div>"
+                );
             }
-          }
-
-          else {
-            var validateResult = JSON.parse(res.validate_result.replace(/'/g, '"'));
+          } else {
+            var validateResult = JSON.parse(
+              res.validate_result.replace(/'/g, '"')
+            );
             var validateReport = JSON.parse(
               res.file_report
                 .replace(/'/g, '"')
@@ -77,7 +97,7 @@ $(document).ready(() => {
             console.log(validateReport);
             // JSON.parse;
             var f_list = Object.keys(validateResult);
-            console.log(f_list)
+            console.log(f_list);
             // ------------Loop and parse each file's result mapping to the report table ----//
             var error_num = 0;
             var warning_num = 0;
@@ -95,38 +115,43 @@ $(document).ready(() => {
               });
               // ----------setting file status: Case validating-save-objects without Errors ---------------
               if (res.status === "SavetoDB" && error_num === 0) {
-                $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
-
-                  if ($(this).val() === f_list[i]) {
-                    if ($(this).parent().hasClass('text-danger')) {
-                      $(this).parent().removeClass('text-danger')
+                $.each(
+                  $("input[name=uploadedfiles_select]:checked"),
+                  function (index, value) {
+                    if ($(this).val() === f_list[i]) {
+                      if ($(this).parent().hasClass("text-danger")) {
+                        $(this).parent().removeClass("text-danger");
+                      }
+                      $(this).parent().addClass("text-success");
                     }
-                    $(this).parent().addClass('text-success')
                   }
-                })
+                );
 
                 $("#preLoader").fadeOut();
-                console.log(res)
+                console.log(res);
                 if (!$("#Import_step4").hasClass("visible")) {
                   $("#Import_step4").addClass("visible");
                 }
 
-                $("#mesg_save_Proceed").append(`<li>${res.savefile} saved!</li>`);
+                $("#mesg_save_Proceed").append(
+                  `<li>${res.savefile} saved!</li>`
+                );
               }
-              //-----------setting file status: Case validating-objects without Error--------- 
+              //-----------setting file status: Case validating-objects without Error---------
               else if (res.status === "validating" && error_num === 0) {
-                $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
-
-                  if ($(this).val() === f_list[i]) {
-
-                    if ($(this).parent().hasClass('text-danger')) {
-                      $(this).parent().removeClass('text-danger')
+                $.each(
+                  $("input[name=uploadedfiles_select]:checked"),
+                  function (index, value) {
+                    if ($(this).val() === f_list[i]) {
+                      if ($(this).parent().hasClass("text-danger")) {
+                        $(this).parent().removeClass("text-danger");
+                      }
+                      $(this).parent().addClass("text-success");
                     }
-                    $(this).parent().addClass('text-success')
                   }
-                })
+                );
 
-                validatepassedfile.push(f_list[i].toString().toLowerCase())
+                validatepassedfile.push(f_list[i].toString().toLowerCase());
 
                 const tr = `
               <tr>
@@ -134,33 +159,36 @@ $(document).ready(() => {
               <td>${validateResult[f_list[i]]}</td>
               <td>${error_num.toString()}</td>
               <td>${warning_num.toString()}</td>
-              <td><div id="upload_report">${JSON.stringify(ew_description)}</div></td>
+              <td><div id="upload_report">${JSON.stringify(
+                ew_description
+              )}</div></td>
               </tr>`;
                 $("#tasks").append(tr);
                 $("#tasksreport").append(`***
               ${res.file_report} *** <br>`);
-
-
               }
-              //-----------setting file status:  Case validating-objects or validating-save-objects with Error occurs 
+              //-----------setting file status:  Case validating-objects or validating-save-objects with Error occurs
               else {
-                $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
-
-                  if ($(this).val() === f_list[i]) {
-
-                    if ($(this).parent().hasClass('text-success')) {
-                      $(this).parent().removeClass('text-success')
+                $.each(
+                  $("input[name=uploadedfiles_select]:checked"),
+                  function (index, value) {
+                    if ($(this).val() === f_list[i]) {
+                      if ($(this).parent().hasClass("text-success")) {
+                        $(this).parent().removeClass("text-success");
+                      }
+                      $(this).parent().addClass("text-danger");
                     }
-                    $(this).parent().addClass('text-danger')
                   }
-                })
+                );
                 const tr = `
               <tr>
               <td>${f_list[i]}</td>
               <td>${validateResult[f_list[i]]}</td>
               <td>${error_num.toString()}</td>
               <td>${warning_num.toString()}</td>
-              <td><div id="upload_report">${JSON.stringify(ew_description)}</div></td>
+              <td><div id="upload_report">${JSON.stringify(
+                ew_description
+              )}</div></td>
               </tr>`;
                 $("#tasks").append(tr);
                 $("#tasksreport").append(`***
@@ -174,14 +202,13 @@ $(document).ready(() => {
             // --------------Case After click Validating
             if (res.status === "validating") {
               if (!$("#Import_step3").hasClass("visible")) {
-
                 $("#Import_step3").addClass("visible");
               }
               if (error_num === 0) {
                 $("#confirmButton").prop("disabled", false);
               }
             }
-            // ------end preloader displaying 
+            // ------end preloader displaying
             $("#preLoader").fadeOut();
           }
         })
@@ -189,20 +216,19 @@ $(document).ready(() => {
         .fail((XMLHttpRequest, textStatus, errorThrown) => {
           console.log(XMLHttpRequest, textStatus, errorThrown);
         });
-
     }
   });
   //------Button Click Event End-------------------------------------------------------------------------//
-  // -----save button disable when choose files contains error. Meaning Only passing Validtion files can be save. 
+  // -----save button disable when choose files contains error. Meaning Only passing Validtion files can be save.
   $("input[type=checkbox]").click(() => {
     $("#confirmButton").prop("disabled", false);
-    $.each($('input[name=uploadedfiles_select]:checked'), function (index, value) {
-      if ($(this).parent().hasClass('text-danger')) {
-
-        $("#confirmButton").prop("disabled", true);
+    $.each(
+      $("input[name=uploadedfiles_select]:checked"),
+      function (index, value) {
+        if ($(this).parent().hasClass("text-danger")) {
+          $("#confirmButton").prop("disabled", true);
+        }
       }
-    })
-
-  })
-
+    );
+  });
 });
