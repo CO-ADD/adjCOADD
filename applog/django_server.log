@@ -1,2 +1,22 @@
 django.utils.autoreload INFO 2023-04-12 09:56:24,698 autoreload 20888 13648 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-04-12 09:58:08,442 autoreload 27932 23372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-12 10:03:56,624 autoreload 19892 21248 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-12 10:08:04,011 autoreload 19892 21248 C:\Users\uqwzhon4\project\adjCOADD\impdata\a_upload_AppUtil.py changed, reloading.
+django.utils.autoreload INFO 2023-04-12 10:08:05,102 autoreload 17692 26888 Watching for file changes with StatReloader
+django.server INFO 2023-04-12 10:08:08,241 basehttp 17692 16004 "GET / HTTP/1.1" 200 9118
+django.server INFO 2023-04-12 10:08:11,026 basehttp 17692 16004 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-04-12 10:08:11,499 basehttp 17692 16004 "GET /index/ HTTP/1.1" 200 16089
+django.server INFO 2023-04-12 10:08:15,287 basehttp 17692 16004 "GET /organism_card HTTP/1.1" 200 162070
+django.server INFO 2023-04-12 10:08:31,274 basehttp 17692 16004 "GET /organism_card HTTP/1.1" 200 162070
+django.server INFO 2023-04-12 10:08:37,451 basehttp 17692 16004 "GET /user_list/ HTTP/1.1" 200 107785
+django.server INFO 2023-04-12 10:08:41,438 basehttp 17692 16004 "GET /import-excel/ApplicationUser HTTP/1.1" 200 13584
+django.server INFO 2023-04-12 10:08:59,969 basehttp 17692 16004 "GET /index/ HTTP/1.1" 200 16089
+django.server INFO 2023-04-12 10:09:09,195 basehttp 17692 16004 "GET /user_list/ HTTP/1.1" 200 107785
+django.request WARNING 2023-04-12 10:09:15,450 log 17692 16004 Unauthorized: /api-drug/
+django.server WARNING 2023-04-12 10:09:15,451 basehttp 17692 16004 "GET /api-drug/ HTTP/1.1" 401 9925
+django.request WARNING 2023-04-12 10:09:15,752 log 17692 16004 Not Found: /favicon.ico
+django.server WARNING 2023-04-12 10:09:15,752 basehttp 17692 16004 "GET /favicon.ico HTTP/1.1" 404 12633
+django.server INFO 2023-04-12 10:09:22,234 basehttp 17692 16004 "GET /api-vitek-ast/ HTTP/1.1" 200 33088
+django.server INFO 2023-04-12 10:09:26,329 basehttp 17692 16004 "GET /api-vitek-ast/?page=2 HTTP/1.1" 200 33541
+django.server INFO 2023-04-12 10:09:34,708 basehttp 17692 16004 "GET /index/ HTTP/1.1" 200 16089
+django.utils.autoreload INFO 2023-04-12 10:13:43,820 autoreload 1228 17432 Watching for file changes with StatReloader
