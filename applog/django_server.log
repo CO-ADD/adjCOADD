@@ -1,0 +1,2 @@
+django.utils.autoreload INFO 2023-04-12 09:56:24,698 autoreload 20888 13648 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-04-12 09:58:08,442 autoreload 27932 23372 Watching for file changes with StatReloader
