@@ -88,7 +88,7 @@
                         <div class="accordion-body">
                             <h5>{%include 'utils/message.html'%}</h5>
                             <div class="table-responsive">
-                                {% include 'utils/datatable_cultr.html' %}
+                                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name= 'dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields= cultr_fields%}
                             </div>
                         </div>
                     </div>

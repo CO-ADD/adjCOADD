@@ -31,3 +31,34 @@
   </form>
 
 </div>
+
+{%load static%}
+<script src="{% static 'js/ajax_deleteModal.js' %}"></script>
+<script>
+ 
+    $(document).ready(function () {
+        // Open delete confirmation modal
+        $('#{{modal_name}}').modal('show');
+
+        {% if can_delete %}
+        // Delete the object using AJAX
+        $('#confirmDelete').click(function () {
+            ajaxDelete(
+                "{{urlname}}",
+                '{{ csrf_token }}',
+                function (data) {
+                    alert(data.message);
+                    if (data.deleted) {
+                        window.location.href = "{{urlname}}";
+                    } else {
+                        $('#{{modal_name}}').modal('hide');
+                    }
+                },
+                function (xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                }
+            );
+        });
+        {% endif %}
+    });
+</script>

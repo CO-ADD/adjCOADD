@@ -1,0 +1,35 @@
+<!-- trigger modal -->
+{%include 'utils/miscellaneous/delete_btn.html' with target='#user_del'|add:object.pk %}
+<div
+  class="modal fade"
+  id="user_del{{object.pk}}"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form
+        method="POST"
+        class="post-form"
+        action="{% url 'deleteAppUser' object.pk %}"
+      >
+        <!--prettier-ignore-->
+        {% csrf_token %}
+
+        <p>Are you sure you want to delete "{{ object}}"?</p>
+
+        <input type="submit" value="Confirm" />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

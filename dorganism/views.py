@@ -17,7 +17,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils import FilteredListView
+from apputil.utils import FilteredListView, DeleteView_FKeyExist
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
@@ -224,18 +224,33 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/organism/organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteOrganism(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Organism, organism_id=pk)
-    try:
-        object_.delete(**kwargs)
-    except Exception as err:
-        print(err)
-    return redirect('/')
+# @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+# def deleteOrganism(req, pk):
+#     context ={}
+#     kwargs={}
+#     kwargs['user']=req.user
+#     object_=get_object_or_404(Organism, organism_id=pk)
+#     list_fk=20 # call foreignkey object sum function 
+#     context['object']=object_
+#     context['list_fk']=list_fk
+#     if req.method =="POST":
+#         # delete object
+#         object_.delete(**kwargs)
+#         # after deleting redirect to
+#         # home page
+#         return redirect('/')
+#     return render(request, "delete_view.html", context)
+
+class DeleteOrganismView(DeleteView_FKeyExist):
+    model = Organism
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["fkey_number"] = 20 # call fkey sum function
+        return context
    
-# #############################BATCH View############################################
+   
+# ==========================BATCH View   ===============================================================
 # ---------------------------------------------------------------------------------------------
 class BatchCardView(LoginRequiredMixin, FilteredListView):
     login_url = '/'

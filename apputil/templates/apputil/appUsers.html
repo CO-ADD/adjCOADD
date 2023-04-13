@@ -7,6 +7,7 @@
 <div class="d-flex flex-row justify-content-between vh-100">
   <!-- prettier-ignore -->
   {%url 'excel-import' process_name='ApplicationUser' as urlname%}
+  <!-- prettier-ignore -->
   {%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
@@ -39,8 +40,8 @@
 </div>
 <!--prettier-ignore-->
 
-<div id="createAppUserModal" class="modal fade" role="dialog"></div>
-<script>
+<!-- <div id="createAppUserModal" class="modal fade" role="dialog"></div> -->
+<!-- <script>
   $(document).ready(function () {
     let my_modal = $("#createAppUserModal");
 
@@ -50,7 +51,7 @@
       });
     });
   });
-</script>
+</script> -->
 <script>
   var table = document.getElementsByTagName("table")[0];
   resizableGrid(table);

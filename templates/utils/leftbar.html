@@ -1,32 +1,14 @@
 <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
   <div class="d-flex flex-column p-0">
-    <a
-      class="btn-sm"
-      id="hidefilter"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      title="C/O FilterSwitcher"
-    >
+    <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
       <i class="bi bi-funnel fs-6"></i>
     </a>
   </div>
   <div class="d-flex flex-column p-0" style="background-color: var(--bs-th-bg)">
-    <a
-      href="{%url list_url %}"
-      class="btn-sm btn-outline-success"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      title="Table View"
-      ><i class="fa-solid fa-table-list fs-6 text-primary"></i
-    ></a>
-    <a
-      href="{%url card_url %}"
-      class="btn-sm btn-outline-success"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      title="Card View"
-      ><i class="fa-solid fa-grip fs-6 text-primary"></i
-    ></a>
+    <a href="{%url list_url %}" class="btn-sm btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Table View"><i class="fa-solid fa-table-list fs-6 text-primary"></i></a>
+    <a href="{%url card_url %}" class="btn-sm btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Card View"><i class="fa-solid fa-grip fs-6 text-primary"></i></a>
   </div>
   <div class="d-flex flex-column p-0" style="background-color: var(--bs-th-bg)">
     <!-- Create New Entry Modal-->
@@ -35,28 +17,14 @@
   </div>
   <div class="d-flex flex-column" style="background-color: var(--bs-th-bg)">
     <div class="pt-2">
-      <a
-        class="btn-sm btn-outline-success"
-        href="{{import_module}}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="Import Data via Files"
-        ><i class="fa fa-file-import fs-6 text-primary"></i>
+      <a class="btn-sm btn-outline-success" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="Import Data via Files"><i class="fa fa-file-import fs-6 text-primary"></i>
       </a>
     </div>
 
-    <div
-      class="btn-group p-0 mt-2"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      title="Click to Export DATA with selecting Fields "
-    >
-      <a
-        class="btn-sm btn-outline-success"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        href="javascript:void(0)"
-      >
+    <div class="btn-group p-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Click to Export DATA with selecting Fields ">
+      <a class="btn-sm btn-outline-success" data-bs-toggle="dropdown" aria-expanded="false" href="javascript:void(0)">
         <i class="fa fa-file-export fs-6 text-primary"></i>
       </a>
       <ul class="dropdown-menu">
@@ -64,12 +32,7 @@
 
         {%for field in model_fields%}
         <li>
-          <input
-            class="filled-in"
-            type="checkbox"
-            value="{{field}}"
-            name="model_field_select"
-          />
+          <input class="filled-in" type="checkbox" value="{{field}}" name="model_field_select" />
           <label for=""> {{field}} </label>
         </li>
         {%endfor%}
@@ -81,14 +44,14 @@
   </div>
 </div>
 
-<script>
+<!-- <script>
   $(document).ready(function () {
     loadOrganismModal("#createOrganismModal", "#createOrganism", "/createOrg/");
     loadOrganismModal("#createTaxoModal", "#createTaxo", "/createTaxo/");
     loadOrganismModal("#createDrugModal", "#createDrug", "/createDrug/");
     loadOrganismModal("#createDictModal", "#createDict", "/dict_create/");
   });
-</script>
+</script> -->
 
 {%load static %}
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>

@@ -9,77 +9,60 @@
     <div class="col-md-4">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-          {%include 'utils/row_editabletable.html' with form_label='Drug ID' data_type='drug_id' object_field=object.drug_id form_field=form.drug_id %}
           <!--prettier-ignore-->
-
           <tr>
-            <th scope="row" class="">
-              Structure <br />
-              <small class="fw-light">(Click Image Open Editor)</small>
-            </th>
-            <td class="w-75" data-id="{{object.pk}}" data-type="">
-              <a id="drug_detail{{object.pk}}" class="card-link">
-                {%load static%}
-
-                <img
-                  src="{%static 'images/'%}{{object.pk}}.svg"
-                  alt="structure"
-                  width="80%"
-                  class="lazyload"
-                  loading="lazy"
-                  style="background-color: transparent !important"
-                />
-              </a>
-              <div
-                id="drug_detail_structure{{object.pk}}"
-                class="modal fade"
-                data-bs-backdrop="static"
-                role="dialog"
-              ></div>
+            <th>Name</th>
+            <td>
+              {{object.drug_name}}
+              <div class="not-visible">{{form.drug_name}}</div>
             </td>
+       
+              <td rowspan="10">
+                <a id="drug_detail{{object.pk}}" class="card-link">
+                  {%load static%}
+    
+                  <img
+                    src="{%static 'images/'%}{{object.pk}}.svg"
+                    alt="structure"
+                    width="80%"
+                    class="lazyload"
+                    loading="lazy"
+                    style="background-color: transparent !important"
+                  />
+                </a>
+                <div
+                  id="drug_detail_structure{{object.pk}}"
+                  class="modal fade"
+                  data-bs-backdrop="static"
+                  role="dialog"
+                ></div>
+              </td>
+     
           </tr>
-          {%include 'utils/row_editabletable.html' with form_label='Drug Name' data_type='drug_name' object_field=object.drug_name form_field=form.drug_name %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Other Name' data_type='drug_othernames' object_field=object.drug_othernames form_field=form.drug_othernames %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Codes' data_type='drug_codes' object_field=object.drug_codes form_field=form.drug_codes %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Drug Type' data_type='drug_type' object_field=object.drug_type form_field=form.drug_type %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Notes' data_type='drug_note' object_field=object.drug_note form_field=form.drug_note %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Panel' data_type='drug_panel' object_field=object.drug_panel form_field=form.drug_panel %}
-         <!--prettier-ignore-->
-        </tbody>
+           <!--prettier-ignore-->
+           {% for field in form.group1 %}
+           <tr>
+           <!--prettier-ignore-->
+           {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+           <!--prettier-ignore-->
+     
+           </tr>
+           {%endfor%}
+          </tbody>
       </table>
+     
     </div>
     <div class="col-md-4">
       <!-- Table 2 -->
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-          {%include 'utils/row_editabletable.html' with form_label='Target' data_type='drug_target' object_field=object.drug_target form_field=form.drug_target %}
+          {% for field in form.group2 %}
+          <tr>
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Sub-Target' data_type='drug_subtarget' object_field=object.drug_subtarget form_field=form.drug_subtarget %}
+          {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Moa' data_type='moa' object_field=object.moa form_field=form.moa %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Class' data_type='drug_class' object_field=object.drug_class form_field=form.drug_class %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Sub Class' data_type='drug_subclass' object_field=object.drug_subclass form_field=form.drug_subclass %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Antimicro' data_type='antimicro' object_field=object.antimicro form_field=form.antimicro %}
-         <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Antimicro_class' data_type='antimicro_class' object_field=object.antimicro_class form_field=form.antimicro_class %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Max Phase' data_type='max_phase' object_field=object.max_phase form_field=form.max_phase %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Approval Note' data_type='approval_note' object_field=object.approval_note form_field=form.approval_note %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Admin Routes' data_type='admin_routes' object_field=object.admin_routes form_field=form.admin_routes %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Application' data_type='application' object_field=object.application form_field=form.application %}
-          <!--prettier-ignore-->
-       
+          </tr>
+          {%endfor%}
         </tbody>
       </table>
     </div>
@@ -87,38 +70,13 @@
       <!-- Table 3 -->
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
-          {%include 'utils/row_editabletable.html' with form_label='n_compounds' data_type='n_compounds' object_field=object.n_compounds form_field=form.n_compounds %}
+          {% for field in form.group3 %}
+          <tr> 
           <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Drug Bank' data_type='drugbank' object_field=object.drugbank form_field=form.drugbank %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Chembl' data_type='chembl' object_field=object.chembl form_field=form.chembl %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='CAS' data_type='cas' object_field=object.cas form_field=form.cas %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='pubChem' data_type='pubchem' object_field=object.pubchem form_field=form.pubchem %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='chemSpider' data_type='chemspider' object_field=object.spider form_field=form.chemspider %}
-         <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Unii' data_type='unii' object_field=object.unii form_field=form.unii %}
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label='Kegg' data_type='kegg' object_field=object.kegg form_field=form.kegg %}
-          <!--prettier-ignore-->
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Comptox' data_type='comptox' object_field=object.comptox form_field=form.comptox %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Echa' data_type='echa' object_field=object.echa form_field=form.echa %}
-         <!--prettier-ignore-->
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Chebi' data_type='chebi' object_field=object.chebi form_field=form.chebi %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='UQ IMB' data_type='uq_imb' object_field=object.uq_imb form_field=form.uq_imb %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Vendor' data_type='vendor' object_field=object.vendor form_field=form.vendor %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='Vendor CatNo' data_type='vendor_catno' object_field=object.vendor_catno form_field=form.vendor_catno %}
-         <!--prettier-ignore-->
-         {%include 'utils/row_editabletable.html' with form_label='MW' data_type='mw' object_field=object.mw form_field=form.mw %}
-         <!--prettier-ignore-->
+           {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+           <!--prettier-ignore-->
+          </tr>
+           {%endfor%}
 
         </tbody>
       </table>

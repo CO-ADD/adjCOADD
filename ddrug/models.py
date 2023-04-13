@@ -185,14 +185,14 @@ class VITEK_Card(AuditModel):
 #     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id":"orgbatch_id",
-        "card_barcode":"Barcode",
+        "orgbatch_id":"Orgbatch",
+        #"card_barcode":"Barcode",
         "card_type":"Card Type",
         "card_code":"Card Code",
-        "expiry_date":"expiry_date",
-        "instrument":"instrument",
-        "proc_date":"proc_date",
-        "analysis_time":"Analysis with",
+        "expiry_date":"Expiry",
+        "instrument":"Instrument",
+        "proc_date":"Procesed",
+        "analysis_time":"Time",
     }
 
     Choice_Dictionary= {

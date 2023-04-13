@@ -326,9 +326,10 @@ def detailVitekcard(req, pk):
     object_=get_object_or_404(VITEK_Card, pk=pk)
     context["object"]=object_
     context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekid_fields"]=VITEK_ID.get_fields()
+    context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEK_ID.HEADER_FIELDS)
     context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekast_fields"]=VITEK_AST.get_fields()
+    context["vitekast_obj_count"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0).count()
+    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)
 

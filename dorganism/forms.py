@@ -174,7 +174,14 @@ class Stock_createform(forms.ModelForm):
         exclude=['orgbatch_id', 'stock_type', 'stock_date','n_created']
 
 class Stock_form(Stock_createform):
-    # passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['stock_date'].initial=self.instance.stock_date
+        self.fields['n_created'].initial=self.instance.n_created
+
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"

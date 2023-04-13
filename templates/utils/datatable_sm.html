@@ -1,16 +1,24 @@
-<table id="datatable_culture" class="cell-border" style="width: 100%">
+<table id="{{table_id}}" class="cell-border" style="width: 100%">
   <thead>
     <tr>
       <th style="width: 10em"></th>
-      {%for th in cultr_fields %}
+      {%for th in data_fields %}
       <th>{{th}}</th>
       {%endfor%}
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
-    {% for object_cultr in cultr_obj %}
+    {% for object in objects %}
     <!--  -->
-    {%include 'dorganism/organism/culture/culture_tr.html'%}
+    {%if html_name%}
+    {%include html_name%}
+    {%else%}
+    <tr>
+    {%for value in object.get_values%}
+    <td>{{value}}</td>
+    {%endfor%}
+    </tr>
+    {%endif%}
     <!--  -->
     {%endfor%}
   </tbody>
@@ -23,7 +31,7 @@
 <script>
   $(document).ready(function () {
     // Table Batch
-    var table = $("#datatable_culture").DataTable({
+    var table = $('#'+'{{table_id}}').DataTable({
       searching: false,
       paging: false,
       info:false

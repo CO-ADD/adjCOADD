@@ -341,3 +341,33 @@ def get_filewithpath( file_name=None):
         FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
         file_path=os.path.join(FILES_DIR, f"{file_name}.svg")
     return file_path
+# 
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
+class DeleteView_FKeyExist(DeleteView):
+    model = None
+    success_url = reverse_lazy("/")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["fkey_number"] = 20 # call fkey sum function
+        return context
+
+class MyModelDeleteView(DeleteView):
+    # model = MyModel
+    # success_url = reverse_lazy('my_model_list')
+    # template_name = 'my_model_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_delete'] = self.get_object().can_delete
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.can_delete:
+            self.object.delete()
+            data = {'message': 'Deleted successfully', 'deleted': True}
+        else:
+            data = {'message': 'Cannot delete the item', 'deleted': False}
+        return JsonResponse(data)

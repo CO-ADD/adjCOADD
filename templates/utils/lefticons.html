@@ -8,8 +8,9 @@
   <div class="d-flex flex-column p-0">
      {%if title == "Organism"%}
   <!-- Update Object-->
-  
-  {%include 'dorganism/organism/organism_d.html'%}
+  {%url 'organism_delete' pk=object.pk as urlname%}
+  <!--prettier-ignore-->
+  {%include 'utils/miscellaneous/delete_btn.html' with modal_name='delorg_modal_'|add:object.pk trigger='delorg_'|add:object.pk urlname=urlname%}
      {%endif%}
   </div>
  
