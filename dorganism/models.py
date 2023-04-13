@@ -404,13 +404,16 @@ class OrgBatch_Stock(AuditModel):
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.orgbatch_id} {self.stock_type} {self.n_left}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.orgbatch_id} {self.stock_type} {self.n_left}"
 
    #------------------------------------------------
     @classmethod
     def get(cls,StockID,verbose=0):
     # Returns an instance if found by orgbatch_id and stocktype
         try:
-            retInstance = cls.objects.get(stock_id=StockID)
+            retInstance = cls.objects.get(pk=StockID)
         except:
             if verbose:
                 print(f"[OrgBatch Stock Not Found] {StockID}")
@@ -421,25 +424,25 @@ class OrgBatch_Stock(AuditModel):
     @classmethod
     def exists(cls,StockID,verbose=0):
     # Returns if an instance exists by orgbatch_id and stocktype
-        return cls.objects.filter(stock_id=StockID).exists()
+        return cls.objects.filter(pk=StockID).exists()
 
-    # # ------------------------------------------------
+
     #------------------------------------------------
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         
-        orgbatch_id =kwargs.pop("orgbatch_id", None)
-        stock_type=kwargs.pop("stock_type", None)
-        stock_date=kwargs.pop("stock_date", None)
-        n_created=kwargs.pop("n_created", None)
-        if orgbatch_id:
-            self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
-        if stock_type:
-            self.stock_type=Dictionary.objects.get(dict_value=stock_type)
-        if stock_date:
-            self.stock_date=stock_date
-        if n_created:
-            self.n_created=n_created
-        super().save(*args, **kwargs)
+    #     orgbatch_id =kwargs.pop("orgbatch_id", None)
+    #     stock_type=kwargs.pop("stock_type", None)
+    #     stock_date=kwargs.pop("stock_date", None)
+    #     n_created=kwargs.pop("n_created", None)
+    #     if orgbatch_id:
+    #         self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
+    #     if stock_type:
+    #         self.stock_type=Dictionary.objects.get(dict_value=stock_type)
+    #     if stock_date:
+    #         self.stock_date=stock_date
+    #     if n_created:
+    #         self.n_created=n_created
+    #     super().save(*args, **kwargs)
        
             
   
@@ -493,7 +496,11 @@ class Organism_Culture(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.organism_id} {self.media_use} {self.culture_type}"
+        return f"{self.organism_id} {self.culture_type} {self.culture_source}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.organism_id} {self.culture_type} {self.culture_source}"
+
 
     # # ------------------------------------------------
 

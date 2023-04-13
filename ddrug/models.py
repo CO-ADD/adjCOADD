@@ -232,6 +232,9 @@ class VITEK_Card(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
+        return f"{self.card_code} {self.card_type} {self.orgbatch_id}  "
+    #------------------------------------------------
+    def __repr__(self) -> str:
         return f"{self.orgbatch_id} {self.card_type} {self.card_code}"
 
    #------------------------------------------------
