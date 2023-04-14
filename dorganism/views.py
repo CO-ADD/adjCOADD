@@ -154,6 +154,7 @@ def createOrganism(req):
 #=========================================Organism detail table with updating in detail table========================================================================================
 @login_required
 def detailOrganism(req, pk):
+    from django.db.models import Count
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
@@ -170,12 +171,11 @@ def detailOrganism(req, pk):
 
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
-    print(context["batch_obj_count"])
     context["batch_fields"]=Organism_Batch.get_fields()
-
+    context["stock_count"]=Organism_Batch.objects.annotate(number_of_stocks=Count('orgbatch_id'))
+   
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
-    print(context["cultr_obj_count"])
     context["cultr_fields"]=Organism_Culture.get_fields()
     if 'organism_id' in context["cultr_fields"]:
         context["cultr_fields"].remove('organism_id')
@@ -183,7 +183,7 @@ def detailOrganism(req, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
-
+    
         
 
     return render(req, "dorganism/organism/organism_detail.html", context)
