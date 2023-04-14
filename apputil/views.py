@@ -182,15 +182,12 @@ def deleteDictionary(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
         dict_value=req.POST.get("dict_value") 
         object_=get_object_or_404(Dictionary, dict_value=dict_value)
-        if object_:#foreignkey set existed:
-            list_fk=20 #foreignkey set sum
-        # try:
-        #     if object_:
-        #         object_.delete(**kwargs)
-            return JsonResponse({"result": f'There are {str(list_fk)} entries related to the object, cannot delete the object.'})
-        else:
-            object_.delete(**kwargs)
-            return JsonResponse({"result": "object deleted!"})
+        try:
+            if object_:
+                object_.delete(**kwargs)
+                return JsonResponse({"result": "Deleted!"})
+        except Exception as err:
+            return JsonResponse({"result": err})
     
     return JsonResponse({})
 

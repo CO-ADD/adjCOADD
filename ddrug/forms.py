@@ -42,8 +42,6 @@ class Drug_form(forms.ModelForm):
         self.group2 = [self[name] for name in ('approval_note','admin_routes','application','n_compounds','chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
         self.group3 = [self[name] for name in ( 'moa', 'antimicro', 'antimicro_class','max_phase','mw','mf',)]
             
-  
-    
     class Meta:
         model =Drug
         fields='__all__'

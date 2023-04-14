@@ -1,6 +1,6 @@
 {%if user.permission == 'Admin'%}
 
-<a id="{{trigger}}" class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#{{modal_name}}" data-bs-toggle="tooltip" data-bs-placement="right"
+<a class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="{{target}}" data-bs-toggle="tooltip" data-bs-placement="right"
 title="Click to delete">
   <i class="fa-regular fa-trash-can text-danger fs-6"></i>
 </a>
@@ -10,14 +10,3 @@ title="No Permission To Delete">
   <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
 </a>
 {%endif%}
-<div id="{{modal_name}}" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
-
-<script>
-  $(document).ready(function () {
-    var modal_name="{{modal_name}}"
-    var trigger_name="{{trigger}}"
-    var url_name="{{urlname}}"
-    loadOrganismModal(modal_name, trigger_name, url_name);
-    
-  });
-</script>

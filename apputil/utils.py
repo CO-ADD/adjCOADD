@@ -353,21 +353,22 @@ class DeleteView_FKeyExist(DeleteView):
         context["fkey_number"] = 20 # call fkey sum function
         return context
 
-class MyModelDeleteView(DeleteView):
-    # model = MyModel
-    # success_url = reverse_lazy('my_model_list')
-    # template_name = 'my_model_delete.html'
+class ModelDeleteView(DeleteView):
+    model = None
+    success_url = reverse_lazy('/')
+    template_name = None
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['can_delete'] = self.get_object().can_delete
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # context['can_delete'] = self.get_object().can_delete
+    #     return context
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.can_delete:
-            self.object.delete()
-            data = {'message': 'Deleted successfully', 'deleted': True}
-        else:
-            data = {'message': 'Cannot delete the item', 'deleted': False}
-        return JsonResponse(data)
+    # def delete(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     # if self.object.can_delete:
+    #     if self.object:
+    #         self.object.delete()
+    #         data = {'message': 'Deleted successfully', 'deleted': True}
+    #     else:
+    #         data = {'message': 'Cannot delete the item', 'deleted': False}
+    #     return JsonResponse(data)

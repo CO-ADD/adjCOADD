@@ -14,6 +14,7 @@
     {%include html_name%}
     {%else%}
     <tr>
+      <td>{{object.organism}}</td>
     {%for value in object.get_values%}
     <td>{{value}}</td>
     {%endfor%}
@@ -30,10 +31,11 @@
 ></script>
 <script>
   $(document).ready(function () {
+    console.log("{{html_name}}")
     // Table Batch
     var table = $('#'+'{{table_id}}').DataTable({
       searching: false,
-      paging: false,
+      paging: "{{table_id}}" === 'datatable_vitekast' ? true : false,
       info:false
     });
   });

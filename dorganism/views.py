@@ -1,4 +1,5 @@
 import os
+import json
 from rdkit import Chem
 from django_filters.views import FilterView
 
@@ -17,13 +18,15 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils import FilteredListView, DeleteView_FKeyExist
+from apputil.utils import FilteredListView, DeleteView_FKeyExist, ModelDeleteView
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .utils import  Organismfilter, Taxonomyfilter, Batchfilter
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form)
+
+from ddrug.models import VITEK_AST
    
           
 # #############################TAXONOMY View############################################
@@ -164,12 +167,23 @@ def detailOrganism(req, pk):
     else:
         context["strain_panel"]=" "
     context["form"]=form
+
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
+    context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
+    print(context["batch_obj_count"])
     context["batch_fields"]=Organism_Batch.get_fields()
+
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
+    context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
+    print(context["cultr_obj_count"])
     context["cultr_fields"]=Organism_Culture.get_fields()
     if 'organism_id' in context["cultr_fields"]:
         context["cultr_fields"].remove('organism_id')
+    
+    context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
+    context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
+    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+
         
 
     return render(req, "dorganism/organism/organism_detail.html", context)
@@ -224,31 +238,17 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/organism/organism_u.html", context)
 
 # ==============================Delete  ===============================================================
-# @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-# def deleteOrganism(req, pk):
-#     context ={}
-#     kwargs={}
-#     kwargs['user']=req.user
-#     object_=get_object_or_404(Organism, organism_id=pk)
-#     list_fk=20 # call foreignkey object sum function 
-#     context['object']=object_
-#     context['list_fk']=list_fk
-#     if req.method =="POST":
-#         # delete object
-#         object_.delete(**kwargs)
-#         # after deleting redirect to
-#         # home page
-#         return redirect('/')
-#     return render(request, "delete_view.html", context)
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteOrganism(req, pk):
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Organism, organism_id=pk)
+    try:
+        object_.delete(**kwargs)
+    except Exception as err:
+        print(err)
+    return redirect('/')
 
-class DeleteOrganismView(DeleteView_FKeyExist):
-    model = Organism
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["fkey_number"] = 20 # call fkey sum function
-        return context
-   
    
 # ==========================BATCH View   ===============================================================
 # ---------------------------------------------------------------------------------------------

@@ -11,8 +11,10 @@ from rdkit.Chem.Draw import IPythonConsole
 from IPython.display import SVG
 import cairosvg
 
+from django import forms
 from django.conf import settings
 
+from apputil.models import Dictionary
 from apputil.utils import Filterbase, get_filewithpath
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from adjcoadd.constants import *
@@ -61,11 +63,24 @@ mol_choices=[(),(),()]
 
 
 class Drug_filter(Filterbase):
-    drug_name = django_filters.CharFilter(lookup_expr='icontains')
-    smol=django_filters.CharFilter(lookup_expr='contains', ) #method='substructure_filter',)
+    Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
+    Drug_Type=django_filters.MultipleChoiceFilter(field_name='drug_type', method='multichoices_filter', widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
+    Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
+    Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
+    Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters["Drug_Type"].extra["choices"]=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_type'], showDesc = False)
+        self.filters['Drug_Name'].label='Drug Name'
+        self.filters['Drug_Type'].label='Drug Type'
+        self.filters['Target'].label='Drug Target'
+        self.filters['Drug_Class'].label='Drug Class'
+        self.filters['Antimicro'].label='Antimicro'
+    
     class Meta:
         model=Drug
-        fields=['drug_name', 'smol']
+        fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro']
 
 
 

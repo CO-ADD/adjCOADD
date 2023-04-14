@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy, updateTaxonomy, deleteTaxonomy, 
-                     createOrganism, detailOrganism, updateOrganism, DeleteOrganismView, OrganismListView,OrganismCardView, 
+                     createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      updateBatch, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
                      updateCulture, createCulture, deleteCulture) #StockListView 
@@ -27,7 +27,7 @@ urlpatterns = [
     path('organism/<str:pk>', detailOrganism, name="org_detail"),
     path('createOrg/', createOrganism, name="org_create"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
-    path('deleteOrg/<str:pk>', DeleteOrganismView.as_view(), name="organism_delete"),
+    path('deleteOrg/<str:pk>', deleteOrganism, name="organism_delete"),
 
     # OrgBatch
     path('organism-batch_card', BatchCardView.as_view(), name="batch_card"),
