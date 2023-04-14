@@ -259,7 +259,7 @@ class Organism_Batch(AuditModel):
     orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
-    batch_id  = models.CharField(max_length=5, null=False, blank=False, verbose_name = "Batch ID")
+    batch_id  = models.CharField(max_length=5, null=False, blank=True, verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
