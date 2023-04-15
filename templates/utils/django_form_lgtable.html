@@ -3,6 +3,7 @@
   <div class="col border border-2 django-form-table">
     <label>{{field.label}}</label>
     <p>{{field | safe}}</p>
+    <span class="badge bg-info text-light">{{field.help_text}}</span>
   </div>
   {%endfor%}
 </div>

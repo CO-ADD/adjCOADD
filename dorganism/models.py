@@ -372,7 +372,7 @@ class OrgBatch_Stock(AuditModel):
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_organism_id") 
+        db_column="orgbatch_id", related_name="to_batch_organism_id") 
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
     n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
