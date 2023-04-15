@@ -5,14 +5,17 @@
         Drop some directory here.
         <pre id="_log"></pre>
     </div> -->
-    <h3>Step 1 Files Upload</h3>
+    <h3>
+        <span>
+            Files Upload
+        </span>
+    </h3>
     <section class="row" id="Import_step1">
         <h4 class="title is-2" id="datamodel"> <small> Prcoess Name: </small>{{process_name}}</h4>
         <div class="">
 
             <form method="POST" enctype="multipart/form-data" class="post-form">
                 {% csrf_token %}
-            
                 {{form.as_p}}
 
 
@@ -26,10 +29,13 @@
     </section>
     <!-- The belowing section is for pdf uploading and validation process -->
     <!-- Run check entries in .csv or excel file -->
-    <h3>Step 2 Data Validate</h3>
+    <h3>
+        <span>
+            Data Validate
+        </span>
+    </h3>
     <section id="Import_step2">
         <h3 class="text-danger">
-            
             {%include 'utils/message.html'%}
         </h3>
         {%if file_list %}
@@ -124,7 +130,11 @@
     {%include 'utils/preloader.html'%}
 
     <!-- Proceeding Save data -->
-    <h3>Step 3 Save or Cancel</h3>
+    <h3>
+        <span>
+            Save or Cancel
+        </span>
+    </h3>
     <section id="Import_step3" class="not-visible">
         <p>
 
@@ -148,7 +158,11 @@
         </p>
     </section>
     <hr>
-    <h3>Step 4 Finished</h3>
+    <h3>
+        <span>
+            Finished
+        </span>
+    </h3>
     <section id="Import_step4" class="not-visible">
         <div></div>
         <ul>
@@ -161,7 +175,6 @@
             
         </ul>
     </section>
-    
 </div>
     
     {%load static%}
@@ -172,7 +185,7 @@
     $("#fileupload-basic").steps({
         headerTag: "h3",
         bodyTag: "section",
-        transitionEffect: "slideLeft",
+        transitionEffect: "fade",
         autoFocus: true,
         stepsOrientation: "vertical"
     });

@@ -205,8 +205,8 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # Configure the test database
 import sys
 if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-    DATABASES['default']['OPTIONS'] = {
-        'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public'
+    DATABASES['ddrug']['OPTIONS'] = {
+        'options': '-c search_path=ddrug,apputil'
     }
 
 # Password validation

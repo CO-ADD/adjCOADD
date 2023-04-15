@@ -64,7 +64,9 @@
             '<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>'
           );
         } else {
-          window.location.reload();
+          td.append(
+            `<p class="text-success"> ${response.result} click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>`
+          ); 
         }
       })
       .fail(() => {

@@ -1,8 +1,8 @@
+"""
+File-upload...
+"""
 import os
-import pandas as pd
-from pathlib import Path
 import magic
-
 
 from django import forms
 from django.conf import settings
@@ -13,14 +13,30 @@ from django.utils.deconstruct import deconstructible
 from django.views import View
 from django.shortcuts import render
 
-from .utils import instance_dict, Validation_Log, SuperUserRequiredMixin, file_location
+from .views_base import SuperUserRequiredMixin
 
 
+# --files upload--
+## create user folder
+def file_location(req):
+    location=settings.MEDIA_ROOT+'/'+str(req.user)
+    return location
 
-# -----------------------Start Utility Functions-----------------------------------
+## Override filename in FileStorage
+class OverwriteStorage(FileSystemStorage):
+    
+    def get_available_name(self, name, max_length=None):
+        """
+        Returns a filename that's free on the target storage system, and
+        available for new content to be written to.
+        """
+        # If the filename already exists, remove it as if it was a true file system
+    
+        if self.exists(name):
+            os.remove(os.path.join(self.location, name))
+        return name
 
-# ==============Uploading File Validators==============================
-
+## validate files size, type, scan virus...
 @deconstructible
 class FileValidator(object):
     error_messages = {
@@ -70,7 +86,7 @@ class FileValidator(object):
             self.content_types == other.content_types
         )
 
-# ==========================File Process=====================================
+# 
 
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
@@ -79,30 +95,27 @@ validate_file = FileValidator(#max_size=1024 * 100,
 # infected_files = []
 # setup unix socket to scan stream
 # cd = clamd.ClamdUnixSocket()
-
-
-
-
+##
 class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
 
+##
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(),  validators=[validate_file])
 
-
-class Importhandler(SuperUserRequiredMixin, View):
-    
+##
+class Importhandler(SuperUserRequiredMixin, View):  
+    """
+    upload, parse and import data from pdf
+    """  
     form_class=MultiFileUploadForm
     file_url=[]
     data_model='default'
     validate_result={}
     file_report={}
     process_name=None
-    
-
-    #---------------------------------------------------------------------------------- 
     # Use to delete uploaded files
     def delete_file(self, file_name):
         location=file_location(self.request)
@@ -113,36 +126,30 @@ class Importhandler(SuperUserRequiredMixin, View):
             print("removed!")
         except Exception as err:
             raise Exception
-
-    #---------------------------------------------------------------------------------- 
     # use to validate records
     def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
-
         if any(newentry_dict.values()):
             for key in newentry_dict:
                 for e in newentry_dict[key]:
-                    djCard=app_model.check_from_dict(e, vlog)
-                    if djCard.VALID_STATUS:
+                    newentry=app_model.check_from_dict(e, vlog)
+                    if newentry.VALID_STATUS:
                         if save:
                             try:
-                                djCard.save(**kwargs)
+                                newentry.save(**kwargs)
                                 e['VALID_STATUS']=True
                             except Exception as err:
                                 self.validate_result[key].append(f"catch Exception Card {err}")
                         else:
                             e['VALID_STATUS']=False
                     if report_result.get(key, None):
-                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(djCard.VALID_STATUS))
+                        report_result[key].append(str(app_model._meta.db_table)+'_'+str(newentry.VALID_STATUS))
                     else:
-                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(djCard.VALID_STATUS)]
+                        report_result[key]=[str(app_model._meta.db_table)+'_'+str(newentry.VALID_STATUS)]
                     if report_filelog.get(key, None):
                         report_filelog[key].append(str(vlog.log_to_UI()))
                     else:
                         report_filelog[key]=[str(vlog.log_to_UI())]
-                # if save:
-                #     newentry_dict[key][:]=[e for e in newentry_dict[key] if e['VALID_STATUS']==False]
                     
-    #---------------------------------------------------------------------------------- 
     def get(self, request, process_name):
         self.process_name=process_name
         return render(request, self.template_name, { 'form': self.form_class, 'process_name':self.process_name})

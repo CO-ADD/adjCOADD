@@ -265,6 +265,7 @@ class AuditModel(models.Model):
             # select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
             select_fields=None
+        print(select_fields)    
         return select_fields
     #------------------------------------------------
     # get class field names in the list/order provided by HEADER_FIELDS
@@ -500,7 +501,7 @@ class ApplicationLog(models.Model):
     log_type = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Type")
     log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Log Time")
     log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "Log User", on_delete=models.DO_NOTHING, 
-        db_column="log_user", related_name="%(class)s_User")
+        db_column="log_user", related_name="%(class)s_user")
     log_object = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Object")
     log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Log Code")
     log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Status")

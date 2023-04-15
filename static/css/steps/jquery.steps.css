@@ -68,7 +68,7 @@
 }
 
 .wizard>.steps>ul>li {
-    width: 25%;
+    width: 10%;
 }
 
 .wizard>.steps>ul>li,
@@ -81,47 +81,56 @@
     width: 100%;
 }
 
-.wizard>.steps a,
-.wizard>.steps a:hover,
-.wizard>.steps a:active {
-    display: block;
+.wizard>.steps a {
+    display: flex;
+    color: var(--bs-body-color);
+    margin: 0.5em;
+
+}
+
+.wizard>.steps a span,
+.wizard>.steps a:hover span,
+.wizard>.steps a:active span {
+
+    display: inline-flex;
     width: auto;
-    margin: 0 0.5em 0.5em;
-    padding: 1em 1em;
+    margin: 0.5em;
+    /* padding: 1em 1em; */
     text-decoration: none;
+    align-items: center;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
-.wizard>.steps .disabled a,
-.wizard>.steps .disabled a:hover,
-.wizard>.steps .disabled a:active {
-    background: #eee;
+.wizard>.steps .disabled a span,
+.wizard>.steps .disabled a:hover span,
+.wizard>.steps .disabled a:active span {
+    /* background: #eee; */
     color: #aaa;
     cursor: default;
 }
 
-.wizard>.steps .current a,
-.wizard>.steps .current a:hover,
-.wizard>.steps .current a:active {
-    background: #2184be;
-    color: #fff;
+.wizard>.steps .current a span,
+.wizard>.steps .current a:hover span,
+.wizard>.steps .current a:active span {
+    /* background: #2184be; */
+    color: #2184be;
     cursor: default;
 }
 
-.wizard>.steps .done a,
-.wizard>.steps .done a:hover,
-.wizard>.steps .done a:active {
-    background: #9dc8e2;
-    color: #fff;
+.wizard>.steps .done a span,
+.wizard>.steps .done a:hover span,
+.wizard>.steps .done a:active span {
+    /* background: #9dc8e2; */
+    color: #9dc8e2;
 }
 
-.wizard>.steps .error a,
-.wizard>.steps .error a:hover,
-.wizard>.steps .error a:active {
-    background: #ff3111;
-    color: #fff;
+.wizard>.steps .error a span,
+.wizard>.steps .error a:hover span,
+.wizard>.steps .error a:active span {
+    /* background: #ff3111; */
+    color: #ff3111;
 }
 
 .wizard>.content {

@@ -31,14 +31,16 @@ from django.utils.functional import SimpleLazyObject
 
 
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils import FilteredListView, get_filewithpath, file_location
-from apputil.utils_dataimport import Importhandler
-from apputil.api_filterclass import API_FilteredListView
+from apputil.utils.filters_base import FilteredListView
+from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
+from apputil.utils.api_filterclass import API_FilteredListView
+from apputil.utils.logs import Validation_Log
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
-from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID
-from .utils import Drug_filter, Vitekcard_filter, Vitekast_filter, molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
-from .forms import Drug_form
+from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
+from .utils import (molecule_to_svg, 
+                    clearIMGfolder, get_mfp2_neighbors)
+from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter
 from .serializers import Drug_Serializer, VITEK_ASTSerializer
 from .util_vitek import *
 
@@ -78,8 +80,8 @@ def ketcher_test(req):
     print(context["object_mol"])
     return render(req, "utils/ketcher_test.html", context)
 
-# #############################Drug View############################################
-# ==========List View================================Read===========================================
+# --Drug View--
+## 
 class DrugListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Drug  
@@ -87,8 +89,7 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=model.HEADER_FIELDS
 
-# =============================Card View=====================================
-    # editable graphic , molblock, 3D, py3Dmol 
+##
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
@@ -106,11 +107,8 @@ class DrugCardView(DrugListView):
             queryset=get_mfp2_neighbors(smiles_str)
             # print(similarity_queryset)
         elif smiles_str:
-        #     molstructure_smol=Chem.MolFromSmiles(smiles_str)
             queryset=Drug.objects.filter(smol__hassubstruct=QMOL(Value(smiles_str)))
-        # print(queryset)
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        # Return the filtered queryset
         order=self.get_order_by()
         if order:
             return self.filterset.qs.distinct().order_by(order)
@@ -121,7 +119,7 @@ class DrugCardView(DrugListView):
             context = super().get_context_data(**kwargs)
         # clearIMGfolder()
             for object_ in context["object_list"]:
-                filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") #get_filewithpath(file_name=object_.pk)
+                filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
                 if os.path.exists(filepath):
                     continue
                 else:
@@ -133,21 +131,14 @@ class DrugCardView(DrugListView):
         except Exception as err:
             context={}
             messages.error(self.request, err)
+        return context    
 
-        return context
-
-    
-
-# ===========Detail View=============================Read============================================
+##
 @login_required
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, drug_id=pk)
     form=Drug_form(instance=object_)
-    # value = Chem.AllChem.GetMorganFingerprint(object_.smol,2)# MORGAN_FP(Value(object_.smiles))
-    # print(TORSIONBV_FP(object_.smiles))
-    
-    # print(value)
     # Array display handler
     if object_.drug_panel:
         context["drug_panel"]=",".join(object_.drug_panel)
@@ -165,7 +156,8 @@ def detailDrug(req, pk):
     context["form"]=form
  
     return render(req, "ddrug/drug/drug_detail.html", context)
-# ====================================================Create===========================================
+
+##
 @login_required
 def createDrug(req):
     kwargs={}
@@ -184,7 +176,7 @@ def createDrug(req):
             return redirect(req.META['HTTP_REFERER'])
     return render(req, 'ddrug/drug/drug_c.html', {'form':form})
     
-# ====================================================Update in Form===========================================
+##
 @login_required
 def updateDrug(req, pk):
     object_=get_object_or_404(Drug, pk=pk)
@@ -207,55 +199,7 @@ def updateDrug(req, pk):
             print(form.errors)
     return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
 
-# ================Vitek Card===========================================#
-from apputil.utils import instance_dict, Validation_Log, OverwriteStorage
-from django.core.files.storage import FileSystemStorage
-from pathlib import Path  
-from django.core import serializers
-
-# ---------util----------------------------------
-def get_file(filename):
-    from django.conf import settings
-    filepath = os.path.join(settings.MEDIA_ROOT, 'table.csv')
-    return filepath
-import sys
-# ------------------------------------------------
-# ---------API View-------------------------------
-from rest_framework import permissions
-from rest_framework.response import Response
-# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-
-
-class API_Drug_List(API_FilteredListView):
-    queryset = Drug.objects.all()
-    serializer_class = Drug_Serializer
-    filterset_class= Drug_filter
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-
-
-
-class API_VITEK_ASTList(API_FilteredListView):
-    queryset = VITEK_AST.objects.all()
-    serializer_class = VITEK_ASTSerializer
-    filterset_class= Vitekast_filter
-    # permission_classes = [permissions.IsAuthenticated]
-
-
-
-# class VITEK_ASTCreate(generics.CreateAPIView):
-#     queryset = VITEK_AST.objects.all()
-#     serializer_class = VITEK_ASTSerializer
-
-# class VITEK_ASTUpdate(generics.RetrieveUpdateAPIView):
-#     queryset = VITEK_AST.objects.all()
-#     serializer_class = VITEK_ASTSerializer
-
-# class VITEK_ASTDelete(generics.DestroyAPIView):
-#     queryset = VITEK_AST.objects.all()
-#     serializer_class = VITEK_ASTSerializer
-# 
+# --Vitek Card--
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_Card  
@@ -288,7 +232,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
    
     def post(self, request, *args, **kwargs ):
         queryset=self.get_queryset()#
-        # receive data
         if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
             selected_data=request.POST.getlist("selected_data[]") or None
             values_str=request.POST.get("values") or None
@@ -301,44 +244,109 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                 querydata=queryset.filter(pk__in=selected_data)
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
-                query_send=json.dumps(list(querydata.values()), cls=DjangoJSONEncoder) 
-            # get table values  
-            values=values_str or None
+                query_send=json.dumps(list(querydata.values()), cls=DjangoJSONEncoder)   
+            values=values_str or None # pivottable values
             if values:
                 try:
                     table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
-                    # if querydata.count() >1000:
                     response = HttpResponse(content_type='text/csv')
                     response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
                     table_html=table.head().to_html(classes=["table-bordered",])
                     table_csv=table.to_csv()
-                    return JsonResponse({"table_html":table_html, "table_csv":table_csv},)
-                    # else:
-                    #     table_json=table.to_json()
-                    #     return JsonResponse({"table":table_html, "msg":None, "table_json":table_json})
+                    return JsonResponse({"table_html":table_html, "table_csv":table_csv})
                 except Exception as err:
                     error_message=str(err)
                     print(err)
                     return JsonResponse({"table_html":error_message,})
         return JsonResponse({})
 
-
-# ==============Vitek Card Detail===================================#
+##
 @login_required
 def detailVitekcard(req, pk):
     context={}
     object_=get_object_or_404(VITEK_Card, pk=pk)
     context["object"]=object_
     context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekid_fields"]=VITEK_ID.get_fields()
+    context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEK_ID.HEADER_FIELDS)
     context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekast_fields"]=VITEK_AST.get_fields()
+    context["vitekast_obj_count"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0).count()
+    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)
 
+# --Vitek Ast--
+## Query Across Tables:
+## Card, Drug, OrgBatch, Organism
+class VitekastListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=VITEK_AST  
+    template_name = 'ddrug/vitek_ast/vitekast_list.html' 
+    filterset_class=Vitekast_filter
+    model_fields=model.HEADER_FIELDS
+    context_list=''
 
-# ---------------------upload file view----------------------------
-from django.conf import settings
+    def get_queryset(self):
+        # Get the queryset however you usually would.  For example:
+        queryset = super().get_queryset()
+
+        # queryset=Vitek_CARD.objects.all().values('drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
+        queryset=queryset.values('pk', 'drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
+        print(f'query: {queryset}')
+        # Then use the query parameters and the queryset to
+        # instantiate a filterset and save it as an attribute
+        # on the view instance for later.
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        # Return the filtered queryset
+        order=self.get_order_by()
+        if order:
+            return self.filterset.qs.distinct().order_by(order)
+        return self.filterset.qs.distinct()
+
+      
+
+## -----------
+class MIC_COADDListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=MIC_COADD  
+    template_name = 'ddrug/mic_coadd/mic_coadd_list.html' 
+    filterset_class=MIC_COADDfilter
+    model_fields=model.HEADER_FIELDS
+
+## -------------
+class MIC_COADDCardView(MIC_COADDListView):
+    template_name = 'ddrug/mic_coadd/mic_coadd_card.html'
+  
+
+
+# --API Views--
+## Drug
+class API_Drug_List(API_FilteredListView):
+    queryset = Drug.objects.all()
+    serializer_class = Drug_Serializer
+    filterset_class= Drug_filter
+
+## VITEK AST
+class API_VITEK_ASTList(API_FilteredListView):
+    queryset = VITEK_AST.objects.all()
+    serializer_class = VITEK_ASTSerializer
+    filterset_class= Vitekast_filter
+ 
+# class VITEK_ASTCreate(generics.CreateAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+
+# class VITEK_ASTUpdate(generics.RetrieveUpdateAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+
+# class VITEK_ASTDelete(generics.DestroyAPIView):
+#     queryset = VITEK_AST.objects.all()
+#     serializer_class = VITEK_ASTSerializer
+#
+
+
+# --upload file view--
+
 class Importhandler_VITEK(Importhandler):
 
     success_url="/import-VITEK/"
@@ -352,13 +360,10 @@ class Importhandler_VITEK(Importhandler):
     def post(self, request, process_name):
         location=file_location(request) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
-        context = {}
+        context, kwargs = {}, {}
         context['form'] = form
-        vCard=[]   # process variables for store parse result from single file
-        vID=[]
-        vAst=[]
-        kwargs={}
         kwargs['user']=request.user
+        vCard, vID, vAst=[], [], []   # process variables for store parse result from single file
         
         self.file_url=[]
         self.data_model=request.POST.get('file_data') or None
@@ -404,78 +409,35 @@ class Importhandler_VITEK(Importhandler):
             process_name=request.POST.get('type') # get process type: Validation, Delete, DB_Validation(Save to DB)
             file_list=request.POST.getlist("select_file_list[]") #get selected fileName List
             data_model=request.POST.get("datamodel")
-            # self.validatefile_name.clear()
             self.validate_result.clear()
             self.file_report.clear()
-            lCards={}
-            lID={}
-            lAst={}
+            lCards, lID, lAst={},{},{}
             for f in file_list:
-                lCards[f]=self.lCards[f]
-                lID[f]=self.lID[f]
-                lAst[f]=self.lAst[f]
-           
+                lCards[f], lID[f], lAst[f]=self.lCards[f], self.lID[f], self.lAst[f]     
         # Validating
             if process_name=='Validation':        
- 
                 self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=False, **kwargs)
                 self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=False, **kwargs)
                
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':'validating'})                                   
-       
         # Cancel and deleting Task                
             elif process_name=='Delete':
                 for f in file_list:
                     try:
-                        self.delete_file(file_name=f)
-                   
+                        self.delete_file(file_name=f)                   
                     except Exception as err:
-                        return JsonResponse({"status":"Delete", "systemErr":"File not existed!"})
-               
+                        return JsonResponse({"status":"Delete", "systemErr":"File not existed!"})               
                 return JsonResponse({"status":"Delete"})                                   
         # Saving
             elif process_name=='DB_Validation':
-                print("start saving to db")
-                             
+                print("start saving to db")                         
                 self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
                 self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                      
+                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)                     
                 return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
                 'status':'SavetoDB', 'savefile':str(file_list)})
-
         context["process_name"]=process_name   
         return render(request, 'ddrug/importhandler_vitek.html', context)
 
 
-# =========Vitek Ast==================
-class VitekastListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model=VITEK_AST  
-    template_name = 'ddrug/vitek_ast/vitekast_list.html' 
-    filterset_class=Vitekast_filter
-    model_fields=model.HEADER_FIELDS
-    context_list=''
-
-    def get_queryset(self):
-        # Get the queryset however you usually would.  For example:
-        queryset = super().get_queryset()
-
-        # queryset=Vitek_CARD.objects.all().values('drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
-        queryset=queryset.values('pk', 'drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
-        print(f'query: {queryset}')
-        # Then use the query parameters and the queryset to
-        # instantiate a filterset and save it as an attribute
-        # on the view instance for later.
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        # Return the filtered queryset
-        order=self.get_order_by()
-        if order:
-            return self.filterset.qs.distinct().order_by(order)
-        return self.filterset.qs.distinct()
-
-      
-
-
-  

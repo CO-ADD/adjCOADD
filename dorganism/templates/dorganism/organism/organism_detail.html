@@ -54,6 +54,8 @@
                             data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true"
                             aria-controls="collapseTwo">
                             Organism Batch & Stock
+                            {{batch_obj_count}}
+                            {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count%}
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
@@ -78,9 +80,9 @@
                     <h2 class="accordion-header" id="headingThree">
                         <button class="accordion-button" type="button" style="max-height:20px;"
                             data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
-                            aria-controls="collapseThree">Organism
-                            Culture
+                            aria-controls="collapseThree">Organism Culture
 
+                            {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count%}
                         </button>
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
@@ -88,7 +90,7 @@
                         <div class="accordion-body">
                             <h5>{%include 'utils/message.html'%}</h5>
                             <div class="table-responsive">
-                                {% include 'utils/datatable_cultr.html' %}
+                                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
                             </div>
                         </div>
                     </div>
@@ -96,7 +98,32 @@
             </div>
         </div>
 
+<!-- AST -->
+<div class="d-flex m-0 p-0">
+    {%include 'utils/lefticons.html'%}
 
+   <div class="accordion w-100" id="vitek_ast">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" style="max-height:20px;"
+          data-bs-target="#collapseAst" aria-expanded="true" aria-controls="collapseThree">
+          VITEK AST 
+         {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitekast_obj_count%}
+        </button>
+      </h2>
+      <div id="collapseAst" class="accordion-collapse collapse" aria-labelledby="headingThree"
+        data-bs-parent="#vitek_ast">
+        <div class="accordion-body">
+          <h5>{%include 'utils/message.html'%}</h5>
+          <div class="table-responsive">
+            <!-- prettier-ignore -->
+            {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
     <script>
         $(document).ready(function () {

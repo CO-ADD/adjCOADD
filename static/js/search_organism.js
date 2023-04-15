@@ -1,9 +1,9 @@
 var scheduled_function = false;
-var searchForm = document.getElementById("search-form");
-var searchInput = document.getElementById("search-input");
-var resultsBox = document.getElementById("results-box");
+var searchForm = $("#search-form");
+var searchInput = $("#search-input");
+var resultsBox = $("#results-box");
 
-var csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+var csrf = $("input[name='csrfmiddlewaretoken']").val();
 
 function sendSearchData(inputtext) {
   $.ajax({
@@ -16,33 +16,33 @@ function sendSearchData(inputtext) {
     success: (res) => {
       console.log(res);
       const data = res.data;
-      resultsBox.classList.add("scrollbar");
-      if (Array.isArray(data) && searchInput.value.length > 0) {
-        resultsBox.classList.add("scrollbar");
+      resultsBox.addClass("scrollbar");
+      if (Array.isArray(data) && searchInput.val().length > 0) {
+        resultsBox.addClass("scrollbar");
         for (var i = 0; i < data.length; i++) {
-          var block = document.createElement("button");
-          block.setAttribute("id", i);
-          block.setAttribute("class", "resultslist");
-          block.innerText = data[i]["name"] + " | " + data[i]["class"];
-          resultsBox.appendChild(block);
-          block.addEventListener("click", function () {
-            // alert(this.id)
-            let Taxonomy = this.innerText.split(" | ");
+          var block = $("<button>")
+            .attr("id", i)
+            .attr("class", "resultlist")
+            .text(data[i]["name"] + " | " + data[i]["class"])
+            .appendTo(resultsBox);
+          
+          block.on("click", function () {
+            let Taxonomy = $(this).text().split(" | ");
             console.log(Taxonomy);
-            searchInput.value = Taxonomy[0];
-            var setTaxo = document.getElementById("taxo-name");
-            setTaxo.value = Taxonomy[0];
-            console.log(setTaxo.value);
+            searchInput.val(Taxonomy[0]);
+            var setTaxo = $("#taxo-name");
+            setTaxo.val(Taxonomy[0]);
+            console.log(setTaxo.val());
 
-            resultsBox.innerHTML = "";
-            resultsBox.classList.remove("scrollbar");
+            resultsBox.html("");
+            resultsBox.removeClass("scrollbar");
           });
         }
       } else {
-        if (searchInput.value.length > 0) {
-          resultsBox.innerHTML = `<b>${data}</b>`;
+        if (searchInput.val().length > 0) {
+          resultsBox.html(`<b>${data}</b>`);
         } else {
-          resultsBox.classList.add("not-visible");
+          resultsBox.addClass("not-visible");
         }
       }
     },
@@ -52,10 +52,11 @@ function sendSearchData(inputtext) {
   });
 }
 
-searchInput.addEventListener("keyup", (e) => {
-  resultsBox.innerHTML = "";
-  if (resultsBox.classList.contains("not-visible")) {
-    resultsBox.classList.remove("not-visible");
+searchInput.on("keyup change", (e) => {
+  console.log("keyup event triggered"); 
+  resultsBox.html("");
+  if (resultsBox.hasClass("not-visible")) {
+    resultsBox.removeClass("not-visible");
   }
 
   if (scheduled_function) {
@@ -64,5 +65,5 @@ searchInput.addEventListener("keyup", (e) => {
 
   scheduled_function = setTimeout(function () {
     sendSearchData(e.target.value);
-  }, 500);
+  }, 300);
 });
