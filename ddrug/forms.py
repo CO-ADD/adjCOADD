@@ -1,3 +1,4 @@
+import django_filters
 from rdkit import Chem
 from django_rdkit.models import *
 
@@ -7,7 +8,8 @@ from django.contrib.postgres.forms import SimpleArrayField
 from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
-from .models import Drug
+from apputil.utils.filters_base import Filterbase
+from .models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD
 from adjcoadd.constants import *
 
 
@@ -64,3 +66,51 @@ class Drug_form(forms.ModelForm):
     #     print(data)
     #     return data
 
+
+
+# -------------fitlerset Forms---------------------------------------------------------------
+
+class Drug_filter(Filterbase):
+    Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
+    Drug_Type=django_filters.MultipleChoiceFilter(field_name='drug_type', method='multichoices_filter', widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
+    Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
+    Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
+    Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters["Drug_Type"].extra["choices"]=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_type'], showDesc = False)
+        self.filters['Drug_Name'].label='Drug Name'
+        self.filters['Drug_Type'].label='Drug Type'
+        self.filters['Target'].label='Drug Target'
+        self.filters['Drug_Class'].label='Drug Class'
+        self.filters['Antimicro'].label='Antimicro'
+    
+    class Meta:
+        model=Drug
+        fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro']
+
+
+
+class Vitekcard_filter(Filterbase):
+    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model=VITEK_Card
+        fields=['card_barcode']
+
+
+class Vitekast_filter(Filterbase):
+    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['Drug_Name'].label='Drug Name'
+    class Meta:
+        model=VITEK_AST
+        fields=['Drug_Name']
+
+
+class MIC_COADDfilter(Filterbase):
+    mic = django_filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model=MIC_COADD
+        fields=['mic']

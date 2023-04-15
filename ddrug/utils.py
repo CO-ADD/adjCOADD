@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import django_filters
 from django_rdkit.models import *
 from django_rdkit.config import config
 from rdkit.Chem import Draw
@@ -11,20 +10,18 @@ from rdkit.Chem.Draw import IPythonConsole
 from IPython.display import SVG
 import cairosvg
 
-from django import forms
 from django.conf import settings
 
-from apputil.models import Dictionary
-from apputil.utils import Filterbase, get_filewithpath
-from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
-from adjcoadd.constants import *
-# ======================================Util Func. (To SVG)=====================================================#
+from .models import  Drug
 
 
+
+# --Convert mol to Structure images--
+## convert function
 def molecule_to_svg(mol, file_name, width=500, height=500):
     """Save substance structure as SVG"""
    
-    file_path=get_filewithpath(file_name=file_name)
+    file_svg=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg")  #get_filewithpath(file_name=file_name) 
     # Render high resolution molecule
    
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
@@ -33,11 +30,10 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
 
     # Export to png
  
-    cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=file_path)
+    cairosvg.svg2svg(bytestring=drawer.GetDrawingText().encode(), write_to=file_svg)
   
 
-#=================================================Clear IMGFolder===========================================================#
-
+## folder clean
 def clearIMGfolder():
     if settings.DEVELOPMENT:
         path='static/images'
@@ -53,61 +49,7 @@ def clearIMGfolder():
             print(err)
 
 
-# def smiles_substructure_query(substructure):
-#     query = Compound.objects.filter(molecule__hassubstruct=substructure)
-#     for cmpd in query.annotate(smiles=MOL_TO_SMILES('molecule'))[:5]:
-#         print(cmpd.name, cmpd.smiles)
-
-# molecular choices:
-mol_choices=[(),(),()]
-
-
-class Drug_filter(Filterbase):
-    Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
-    Drug_Type=django_filters.MultipleChoiceFilter(field_name='drug_type', method='multichoices_filter', widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
-    Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
-    Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra["choices"]=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_type'], showDesc = False)
-        self.filters['Drug_Name'].label='Drug Name'
-        self.filters['Drug_Type'].label='Drug Type'
-        self.filters['Target'].label='Drug Target'
-        self.filters['Drug_Class'].label='Drug Class'
-        self.filters['Antimicro'].label='Antimicro'
-    
-    class Meta:
-        model=Drug
-        fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro']
-
-
-
-class Vitekcard_filter(Filterbase):
-    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
-    class Meta:
-        model=VITEK_Card
-        fields=['card_barcode']
-
-
-class Vitekast_filter(Filterbase):
-    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains')
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.filters['Drug_Name'].label='Drug Name'
-    class Meta:
-        model=VITEK_AST
-        fields=['Drug_Name']
-
-
-class MIC_COADDfilter(Filterbase):
-    mic = django_filters.CharFilter(lookup_expr='icontains')
-    class Meta:
-        model=MIC_COADD
-        fields=['mic']
-
-# Similarity Query Function
+# --Similarity Query Function--
 # config.tanimoto_threshold =0.4 # similarity_threshold_int/100
 def get_mfp2_neighbors(smiles):
     value = MORGANBV_FP(Value(smiles))
@@ -119,3 +61,8 @@ def get_mfp2_neighbors(smiles):
     queryset = queryset.order_by(TANIMOTO_DIST('mfp2', value))
     # queryset = queryset.values_list('drug_name',  ) #'smiles','smol'
     return queryset
+
+# def smiles_substructure_query(substructure):
+#     query = Compound.objects.filter(molecule__hassubstruct=substructure)
+#     for cmpd in query.annotate(smiles=MOL_TO_SMILES('molecule'))[:5]:
+#         print(cmpd.name, cmpd.smiles)

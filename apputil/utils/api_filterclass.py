@@ -1,3 +1,6 @@
+"""
+Used by all Api filter view as base view
+"""
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination

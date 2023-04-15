@@ -1,3 +1,4 @@
+import django_filters
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -7,6 +8,7 @@ from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
 
 from apputil.models import Dictionary, ApplicationUser
+from apputil.utils.filters_base import Filterbase
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from adjcoadd.constants import *
 
@@ -235,4 +237,60 @@ class Cultureupdate_form(forms.ModelForm):
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 
         exclude=['culture_type', 'culture_source',]
+
+# --Filterset Forms--
+## Taxonomy
+class Taxonomyfilter(Filterbase):
+    organism_name = django_filters.CharFilter(lookup_expr='icontains')
+    lineage = django_filters.CharFilter(lookup_expr='icontains')
+    org_class=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
+    division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['organism_name'].label='Organism Name'
+        self.filters['code'].label='Code'
+        self.filters['lineage'].label='Lineage'
+        self.filters['tax_rank'].label='Rank'
+        self.filters['division'].label='Division'
+        self.filters['org_class'].label='Class'
+        self.filters['tax_id'].label='Tax ID'
+        # print(Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
+
+    class Meta:
+        model=Taxonomy
+        fields=['organism_name', 'code', 'lineage', 'tax_rank','division', 'org_class', 'tax_id', ]
+
+## Organism
+class Organismfilter(Filterbase):
+    ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
+    Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
+    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  
+                                      widget=forms.RadioSelect, 
+                                      choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))
+    Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
+    Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
+    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
+    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
+    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=[] )#Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
+   
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
+        for i in self.filters:
+            self.filters[i].label=i       
+         
+    class Meta:
+        model=Organism
+        fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
+       
+
+
+## Batch
+class Batchfilter(Filterbase):
+    Stock_Date=django_filters.IsoDateTimeFilter(field_name='stock_date')
+    class Meta:
+        model=Organism_Batch
+        fields= ["stock_date",  "biologist"]
+
 

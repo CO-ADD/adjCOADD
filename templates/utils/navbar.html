@@ -78,6 +78,7 @@
             </li>
           </ul>
         </div>
+        {% if user.permission == 'Admin'%}
         <div class="dropdown d-inline-block">
           <a
             type="button"
@@ -111,6 +112,7 @@
             </li>
           </ul>
         </div>
+        {%endif%}
         <div>
           <a class="nav-link" href="{%url 'ketcher_test' %}">
             <p class="nav-title">Ketcher Test Page</p>
