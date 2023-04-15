@@ -163,8 +163,50 @@ def slugify(value, lower=False, allow_unicode=False):
         return value.lower()
     else:
         return value
+
+# Lookup related instances utilities  =====================================================================================
+
+#-----------------------------------------------------------------------------
+def get_number_related_instances(model,pk_value,include_deleted=False):
+    """
+    Get the number of instances related via ForeignKey (FK)
+    Returns: Dictionary with {Total : total number of instances, <model_name>: number of instances per model_name}
+
+        include_deleted
+            False - numbers of Valid entries sStatus > INVALID (-1) 
+            True - total numbers of entries, including INVALID and DELETED
+
+    Used to check if instances has related instances, to allow delete (if Total < 1) or not
+    """
+#-----------------------------------------------------------------------------
+    related_dict = {'Total': 0}
+    if include_deleted:
+        qryDict = {model._meta.pk.name: pk_value}
+    else:
+        qryDict = {model._meta.pk.name: pk_value, 'astatus__gt': model.INVALID}
+
+    lstModels = get_related_models(model)
+    for m in lstModels:
+        related_dict[m.__name__] = len(m.objects.all().filter(**qryDict))
+        related_dict['Total'] += related_dict[m.__name__]
+    return(related_dict)
+
+#-----------------------------------------------------------------------------
+def get_related_models(model):
+    """
+    Get the list of models related via ForeignKey (FK)
+    Returns: List of related Model Objects
+    """
+#-----------------------------------------------------------------------------
+    # print(model)
+    related_models = []
+    for related_object in model._meta.related_objects:
+        if isinstance(related_object, ManyToOneRel):
+            related_models.append(related_object.related_model)
+    return related_models
+
+
 #-----------------------------------------------------------------------------------
- 
 from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField
 
 

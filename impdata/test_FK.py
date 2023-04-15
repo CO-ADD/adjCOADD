@@ -87,8 +87,8 @@ def main():
     #print(Organism._meta.related_objects)
     #print(fg01.organism_batch_organism_id.all())
 
-    lstModels = get_related_models(Organism)
-#    lstN = get_number_related_instances(lstModels,Organism._meta.pk.name,OrgID)
+    #lstModels = get_related_models(Organism)
+
     OrgID = 'FG_0001'
     lstN = get_number_related_instances(Organism,OrgID)
     print(lstN)
@@ -97,13 +97,18 @@ def main():
     #     print(f"{m.__name__} : {len(m.objects.all().filter(organism_id=OrgID))}")
 
 
+
 #-----------------------------------------------------------------------------
-def get_number_related_instances(model,pk_value):
+def get_number_related_instances(model,pk_value,include_deleted=False):
 #-----------------------------------------------------------------------------
-    lstModels = get_related_models(model)
     related_dict = {'Total': 0}
-    for m in lstModels:
+    if include_deleted:
         qryDict = {model._meta.pk.name: pk_value}
+    else:
+        qryDict = {model._meta.pk.name: pk_value, 'astatus__gt': model.INVALID}
+
+    lstModels = get_related_models(model)
+    for m in lstModels:
         related_dict[m.__name__] = len(m.objects.all().filter(**qryDict))
         related_dict['Total'] += related_dict[m.__name__]
     return(related_dict)
@@ -117,17 +122,6 @@ def get_related_models(model):
         if isinstance(related_object, ManyToOneRel):
             related_models.append(related_object.related_model)
     return related_models
-
-#-----------------------------------------------------------------------------
-def get_number_related_instances_old(related_models,pk_field,pk_value):
-#-----------------------------------------------------------------------------
-    related_dict = {'Total': 0}
-    for m in related_models:
-        qryDict = {pk_field: pk_value}
-        related_dict[m.__name__] = len(m.objects.all().filter(**qryDict))
-        related_dict['Total'] += related_dict[m.__name__]
-    return(related_dict)
-
 
 #==============================================================================
 if __name__ == "__main__":
