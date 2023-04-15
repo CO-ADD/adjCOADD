@@ -265,6 +265,7 @@ class AuditModel(models.Model):
             # select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
             select_fields=None
+        print(select_fields)    
         return select_fields
     #------------------------------------------------
     # get class field names in the list/order provided by HEADER_FIELDS

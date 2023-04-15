@@ -12,7 +12,8 @@
     {%else%}
     {%include 'utils/miscellaneous/update_btn.html' with model_name='AppUser'%}
     {%endif%}
-    {%include 'apputil/appUsersDel.html'%}
+    {% url 'deleteAppUser' pk=object.pk as urlname%}
+    {%include 'apputil/appUsersDel.html' with modal_name='del_modal_'|add:object.pk trigger='del_'|add:object.pk urlname=urlname %}
   </td>
   <td>{{object.first_name}}</td>
   <td>{{object.last_name}}</td>

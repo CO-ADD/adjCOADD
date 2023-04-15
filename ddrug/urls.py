@@ -6,12 +6,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import  (DrugListView, DrugCardView,detailDrug, createDrug, updateDrug, 
     detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, 
-    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List)#VitekcardListView,
+    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, MIC_COADDListView)#VitekcardListView,
 
 
 
 urlpatterns = [
     # API path
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-vitek-ast/', API_VITEK_ASTList.as_view(), name="api_vitekast"),
     path('api-drug/', API_Drug_List.as_view(), name="api_drug"),
     # path('vitek-ast/create/', VITEK_ASTCreate.as_view()),
@@ -27,11 +29,13 @@ urlpatterns = [
     path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
     path('vitekast_list', VitekastListView.as_view(), name="vitekast_list"),
     path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),
+    path('mic-coadd_list', MIC_COADDListView.as_view(), name="mic_coadd_list"),
+    path('mic-coadd_card', MIC_COADDListView.as_view(), name="mic_coadd_card"),
+     
+
     path("import/<str:process_name>/", Importhandler_VITEK.as_view(), name="import-VITEK"),
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
     path("ketcher/", iframe_url, name="ketcher"),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     
 ]

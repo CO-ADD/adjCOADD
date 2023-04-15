@@ -18,7 +18,10 @@
         <!--  -->
         {% url 'drug_detail' object.pk as url_name %}
         <!--prettier-ignore-->
-        {%include 'utils/card.html' with url_name=url_name object_name=object.drug_name datatype='Drug' object_var1=object.pk object_img=object.pk object_id_slug=object.pk object_smiles=object.smiles %}
+        {%with url_name=url_name object_name=object.drug_name datatype='Drug' object_var1=object.pk object_img=object.pk object_id_slug=object.pk object_smiles=object.smiles object_var2b_label='MW' object_var2b=object.mw object_var3_label='MF ' object_var3=object.mf object_var6_label='Target ' object_var6=object.drug_target object_var7_label='Class ' object_var7=object.drug_class%}
+        <!--prettier-ignore-->
+        {%include 'utils/card.html' %}
+        {%endwith%}
         <!--prettier-ignore-->
         {%endfor%}
       </div>

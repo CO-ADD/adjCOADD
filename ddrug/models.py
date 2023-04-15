@@ -167,8 +167,7 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-
-        if not self.drug_id: 
+        if not self.drug_id:
             self.drug_id = self.find_Next_DrugID()
             if self.drug_id: 
                 super(Drug, self).save(*args, **kwargs)
@@ -193,14 +192,14 @@ class VITEK_Card(AuditModel):
 #     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id":"orgbatch_id",
-        "card_barcode":"Barcode",
+        "orgbatch_id":"Orgbatch",
+        #"card_barcode":"Barcode",
         "card_type":"Card Type",
         "card_code":"Card Code",
-        "expiry_date":"expiry_date",
-        "instrument":"instrument",
-        "proc_date":"proc_date",
-        "analysis_time":"Analysis with",
+        "expiry_date":"Expiry",
+        "instrument":"Instrument",
+        "proc_date":"Procesed",
+        "analysis_time":"Time",
     }
 
     Choice_Dictionary= {
@@ -542,7 +541,16 @@ class MIC_COADD(AuditModel):
      Antibiogram from CO-ADD screening    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {}
+    HEADER_FIELDS   = {
+        # example fields for test view
+        "mic":"MIC",
+        "mic_type":"Type",
+        "bp_profile":"Profile",
+        "run_id":"Run ID",
+        "bp_profile":"Break Point",
+        "media":"Media",
+    }
+    
     Choice_Dictionary = {
         'mic_type':'MIC_Type',
         'plate_size':'Plate_Size',

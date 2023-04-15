@@ -44,13 +44,13 @@
           VITEK ID
         </button>
       </h2>
-      <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
         data-bs-parent="#vitek_id">
         <div class="accordion-body">
           <h5>{%include 'utils/message.html'%}</h5>
           <div class="table-responsive">
             <!-- prettier-ignore -->
-            {%include 'utils/datatable_general.html' with page_obj=vitekid_obj fields=vitekid_fields %}
+            {%include 'utils/datatable_sm.html' with table_id='datatable_vitekid' objects=vitekid_obj data_fields=vitekid_fields %}
           </div>
         </div>
       </div>
@@ -63,16 +63,16 @@
       <h2 class="accordion-header" id="headingThree">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
           data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-          VITEK AST
+          VITEK AST {{vitekast_obj_count}}
         </button>
       </h2>
-      <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
         data-bs-parent="#vitek_ast">
         <div class="accordion-body">
           <h5>{%include 'utils/message.html'%}</h5>
           <div class="table-responsive">
             <!-- prettier-ignore -->
-            {%include 'utils/datatable_general.html' with page_obj=vitekast_obj fields=vitekast_fields %}
+            {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
           </div>
         </div>
       </div>

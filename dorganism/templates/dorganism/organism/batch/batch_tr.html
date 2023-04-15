@@ -1,8 +1,9 @@
 <tr>
-  <td width="6%" class="p-0">
+  <td width="10%" class="p-0">
     <a class="dt-control toggle-btn" data-value="{{object_batch.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip" data-bs-placement="right"
       title="Click to Open StockTable"></i>
     </a>
+   stocks number: {{ object_batch.OrgBatch_Stock_orgbatch_id.count }}
     <div class="mx-0 " style="float: right">
 
       <button hx-get="{% url 'batch_update' object_batch.pk %}" hx-trigger="click" class="border border-0 bg-transparent">

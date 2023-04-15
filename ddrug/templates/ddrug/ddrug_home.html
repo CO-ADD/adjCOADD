@@ -1,17 +1,36 @@
-<div class="card m-auto mt-5 bg-transparent rounded-3 border border-5" style="width: 36rem">
+<div
+  class="card m-auto mt-5 bg-transparent rounded-3 border border-5"
+  style="width: 36rem"
+>
   <div class="card-head">
-    <label for="Label-OrganismModel" class="ms-2 position-absolute" style="margin-top: -1rem !important">
+    <label
+      for="Label-OrganismModel"
+      class="ms-2 position-absolute"
+      style="margin-top: -1rem !important"
+    >
       <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Drugs</span>
     </label>
   </div>
   <!-- <input type="text" class="form-control mt-2" id="input1" /> -->
   <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
-    <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'drug_card'%}"
-      data-bs-toggle="tooltip" data-bs-placement="top" title=" drugs" inactivate>
+    <a
+      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
+      href="{%url 'drug_card'%}"
+      data-bs-toggle="tooltip"
+      data-bs-placement="left"
+      title="{{objects_drug}} entries"
+      inactivate
+    >
       DRUG
     </a>
-    <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'vitekcard_list'%}"
-      data-bs-toggle="tooltip" data-bs-placement="top" title="Vitekcard" inactivate>
+    <a
+      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
+      href="{%url 'vitekcard_list'%}"
+      data-bs-toggle="tooltip"
+      data-bs-placement="left"
+      title="{{objects_card}} entries"
+      inactivate
+    >
       VITEK CARD
     </a>
   </div>
