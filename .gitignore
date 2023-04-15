@@ -1,5 +1,4 @@
-# ignore migrations
-**/migrations/*.*
+
 # ignore log
 /applog/
 /impdata/**.log
@@ -60,11 +59,7 @@ coverage.xml
 *.log
 local_settings.py
 
-# Ignore Django Migrations in Development if you are working on team
-# Only for Development only
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+
 
 # adjCOADD stuff:
 applog/*.log

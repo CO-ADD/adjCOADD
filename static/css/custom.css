@@ -40,7 +40,7 @@ danger-color : #f3545d
   --bs-footer-bg: #f2f2f5;
   --bs-th-bg: #a7b6b6;
   --bs-topnav-bg: #2c7a84;
-  --bs-boxed-body-bg: #e7f1ff;
+  --bs-boxed-body-bg: #d8d8d8;
   --bs-form-item-color: #fff;
   /* Text Color */
   --bs-body-color: #575962;
@@ -495,10 +495,13 @@ i {
 
 /* ============== 2 edit table/form =========== */
 .results-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:flex-start;
   max-height: 300px;
-  width: 50%;
+  width: 100%;
   box-shadow: 0 8px 8px 0 var(--grey);
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 /* Js editablechoices */
@@ -516,7 +519,7 @@ i {
   z-index: 10;
   width: 100%;
   box-shadow: 0 8px 8px 0 var(--grey);
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 .select {
@@ -526,14 +529,20 @@ i {
   border: none; */
 }
 
-.resultslist {
+.resultlist {
+  margin:2px;
+  padding:1px;
+  font-size: small;
   background-color: var(--bs-light);
   color: var(--bs-dark);
-  border: 1px solid var(--bs-inform-color);
-}
+  border: none;
+  border-radius: 2px;
+  transition:0.2s;
+ }
 
-.resultslist:hover {
-  background-color: #ff6e00;
+.resultlist:hover {
+  background-color:var(--bs-dark);
+  color: var(--bs-light);
 }
 
 .not-visible {
@@ -682,6 +691,10 @@ table.dataTable {
 
 table.dataTable thead tr {
   background-color: var(--bs-th-bg) !important;
+}
+table.dataTable td {
+  border-color: var(--bs-light)!important;
+  padding:0.25em 0.25em !important;
 }
 
 .n_left_column {

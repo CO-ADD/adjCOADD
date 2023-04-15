@@ -1,13 +1,13 @@
 <tr>
   <td style="width: 10%">
-    <button hx-get="{% url 'cultr_update' object_cultr.pk %}" hx-trigger="click" class="text-success border-0">
+    <button hx-get="{% url 'cultr_update' object.pk %}" hx-trigger="click" class="text-success border-0">
       <i class="fa-regular fa-pen-to-square"></i>
     </button>
 
-      {%include './culture_d.html' with object_cultr=object_cultr.pk %}
+      {%include './culture_d.html' with object_cultr=object.pk %}
     
   </td>
-  {%for value in object_cultr.get_values%}
+  {%for value in object.get_values%}
   <td>{{value}}</td>
   {%endfor%}
 </tr>
