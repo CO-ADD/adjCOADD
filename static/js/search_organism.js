@@ -14,6 +14,7 @@ function sendSearchData(inputtext) {
       inputtext: inputtext,
     },
     success: (res) => {
+      resultsBox.html("");
       console.log(res);
       const data = res.data;
       resultsBox.addClass("scrollbar");
@@ -54,17 +55,30 @@ function sendSearchData(inputtext) {
 }
 
 searchInput.on("keyup", (e) => {
-  console.log("keyup event triggered"); 
-  resultsBox.html("");
-  if (resultsBox.hasClass("not-visible")) {
-    resultsBox.removeClass("not-visible");
+  if(searchInput.val().length > 0){
+    
+ 
+
+    if (resultsBox.hasClass("not-visible")) {
+      resultsBox.removeClass("not-visible");
+    }
+    resultsBox.html("start search...<a class='sendtoSearch'>click start</a>");
+    // if (scheduled_function) {
+    //   clearTimeout(scheduled_function);
+    // }
+  }else{
+    if (resultsBox.hasClass("not-visible") === false){
+      resultsBox.html("")
+      resultsBox.addClass("not-visible")
+    }
   }
 
-  // if (scheduled_function) {
-    // clearTimeout(scheduled_function);
-  // }
-
-  // scheduled_function = setTimeout(function () {
-    sendSearchData(e.target.value);
-  // }, 200);
 });
+
+$('body').on('click', '.sendtoSearch', ()=>{
+  resultsBox.append('<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>')
+  // scheduled_function = setTimeout(function () {
+    console.log(searchInput.val())
+    sendSearchData(searchInput.val());
+  // }, 100);
+})
