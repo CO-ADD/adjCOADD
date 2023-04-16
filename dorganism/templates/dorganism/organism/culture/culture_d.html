@@ -20,6 +20,6 @@
     <!--prettier-ignore-->
     {% url 'cultr_delete' pk=object_cultr as deleteurl %}
 
-    {%include 'utils/modal/delete.html' with title='Delete Culture' urlname=deleteurl entry=object_cultr%}
+    {%include 'utils/modal/delete.html' with title='Delete Culture' deleteurl=deleteurl entry=object_cultr%}
   </div>
 </div>

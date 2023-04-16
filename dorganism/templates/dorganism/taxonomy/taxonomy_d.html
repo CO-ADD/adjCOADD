@@ -14,6 +14,6 @@
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'taxonomy_delete' slug=object.urlname as deleteurl %}
-  {%include 'utils/modal/delete.html' with title='Delete Taxonomy' urlname=deleteurl entry=object.pk %}
+  {%include 'utils/modal/delete.html' with title='Delete Taxonomy' deleteurl=deleteurl entry=object.pk %}
   </div>
 </div>
