@@ -72,14 +72,14 @@ class Drug_form(forms.ModelForm):
 
 class Drug_filter(Filterbase):
     Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
-    Drug_Type=django_filters.MultipleChoiceFilter(field_name='drug_type', method='multichoices_filter', widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
+    Drug_Type=django_filters.ChoiceFilter(field_name='drug_type',widget=forms.RadioSelect, choices=[], empty_label=None)
     Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
     Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
     Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra["choices"]=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_type'], showDesc = False)
+        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.__repr__()) for obj in Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type'], astatus__gte=0)]
         self.filters['Drug_Name'].label='Drug Name'
         self.filters['Drug_Type'].label='Drug Type'
         self.filters['Target'].label='Drug Target'

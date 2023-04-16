@@ -339,7 +339,7 @@ def stockList(req, pk):
                 "location_col": str(i.location_column),
                 "location_slot": str(i.location_slot),
                 "stock_date": str(i.stock_date.strftime("%d-%m-%Y")),
-                "n_left": str(i.n_left) if i.n_left >1 else " ",
+                "n_left": str(i.n_left) if i.n_left >=1 else " ",
                 "n_created": str(i.n_created),
                 "stock_notes":str(i.stock_note),
                 "biologist": str(i.biologist),

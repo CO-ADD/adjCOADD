@@ -1,9 +1,14 @@
+{% load custom_filters %}
 <tr>
   <td width="10%" class="p-0">
     <a class="dt-control toggle-btn" data-value="{{object_batch.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip" data-bs-placement="right"
       title="Click to Open StockTable"></i>
     </a>
-    {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=object_batch.to_batch_organism_id.count%}
+
+<!-- Other template code -->
+
+<span class="badge text-light bg-info m-0 ms-1 p-1">{{ object_batch | count_filtered_instances }}</span>
+    
  
     <div class="mx-0 " style="float: right">
 
