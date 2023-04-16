@@ -120,11 +120,13 @@ class DrugCardView(DrugListView):
         # clearIMGfolder()
             for object_ in context["object_list"]:
                 filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
+                # print(filepath)
                 if os.path.exists(filepath):
                     continue
                 else:
                     m=object_.smol
                     try:
+                        print(object_.pk)
                         molecule_to_svg(m, object_.pk)
                     except Exception as err:
                         messages.error(self.request, f'**{object_.pk} mol may not exists**')

@@ -21,7 +21,8 @@ from .models import  Drug
 def molecule_to_svg(mol, file_name, width=500, height=500):
     """Save substance structure as SVG"""
    
-    file_svg=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg")  #get_filewithpath(file_name=file_name) 
+    file_svg=os.path.join(settings.STRUCTURE_FILES_DIR, f"{file_name}.svg")  #get_filewithpath(file_name=file_name) 
+    print(file_svg)
     # Render high resolution molecule
    
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
