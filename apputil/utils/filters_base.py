@@ -28,7 +28,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 q_object |= Q(**{lookup_field_name: int_value})
             except ValueError:
                 pass
-        # Add more field types as needed
+        # Add more field types as needed...
 
     return q_object
 # q_object = get_all_fields_q_object(MyModel, value, exclude_fields=exclude_fields)
@@ -79,7 +79,7 @@ class FilteredListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
-        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page'}
+        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page' and key!='csrfmiddlewaretoken'}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset

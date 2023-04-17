@@ -1,0 +1,842 @@
+django.utils.autoreload INFO 2023-04-17 09:23:29,047 autoreload 8176 18604 Watching for file changes with StatReloader
+django.server INFO 2023-04-17 09:23:32,075 basehttp 8176 6492 "GET / HTTP/1.1" 200 10786
+django.server INFO 2023-04-17 09:23:32,136 basehttp 8176 6492 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,136 basehttp 8176 5800 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,144 basehttp 8176 23440 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,145 basehttp 8176 29448 "GET /static/css/steps/jquery.steps.css HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,145 basehttp 8176 6492 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,146 basehttp 8176 3612 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,146 basehttp 8176 12012 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,149 basehttp 8176 5800 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,150 basehttp 8176 23440 "GET /static/js/js_utils/dataTables.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,154 basehttp 8176 29448 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,154 basehttp 8176 12012 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,154 basehttp 8176 6492 "GET /static/js/create_modal.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:32,221 basehttp 8176 6492 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:34,427 basehttp 8176 6492 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-04-17 09:23:34,522 basehttp 8176 6492 "GET /index/ HTTP/1.1" 200 18025
+django.server INFO 2023-04-17 09:23:34,535 basehttp 8176 6492 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:36,717 basehttp 8176 6492 "GET /organism_card HTTP/1.1" 200 169241
+django.server INFO 2023-04-17 09:23:36,736 basehttp 8176 6492 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:36,737 basehttp 8176 12012 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:23:45,806 basehttp 8176 12012 "GET /organism/FG_0004 HTTP/1.1" 200 85910
+django.server INFO 2023-04-17 09:23:45,935 basehttp 8176 12012 "GET /static/js/search_organism.js HTTP/1.1" 200 2436
+django.server INFO 2023-04-17 09:23:55,092 basehttp 8176 12012 "GET /stocklist/FG_0004_01?Batch_id=FG_0004_01&_=1681687425822 HTTP/1.1" 200 12
+django.server INFO 2023-04-17 09:23:57,352 basehttp 8176 12012 "GET /stocklist/FG_0004_02?Batch_id=FG_0004_02&_=1681687425823 HTTP/1.1" 200 825
+django.request ERROR 2023-04-17 09:26:33,059 log 8176 12012 Internal Server Error: /organism/FG_0004
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 179, in translate_token
+    op = OPERATORS[token]
+         ~~~~~~~~~^^^^^^^
+KeyError: '{{'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 183, in detailOrganism
+    return render(req, "dorganism/organism/organism_detail.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 953, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 886, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 170, in __init__
+    mapped_tokens.append(self.translate_token(token))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 181, in translate_token
+    return self.create_var(token)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 889, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 703, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '{{' from '{{'
+django.server ERROR 2023-04-17 09:26:33,063 basehttp 8176 12012 "GET /organism/FG_0004 HTTP/1.1" 500 379153
+django.request WARNING 2023-04-17 09:26:33,205 log 8176 12012 Not Found: /favicon.ico
+django.server WARNING 2023-04-17 09:26:33,205 basehttp 8176 12012 "GET /favicon.ico HTTP/1.1" 404 13001
+django.request ERROR 2023-04-17 09:26:57,194 log 8176 12012 Internal Server Error: /organism/FG_0004
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 179, in translate_token
+    op = OPERATORS[token]
+         ~~~~~~~~~^^^^^^^
+KeyError: '|'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 183, in detailOrganism
+    return render(req, "dorganism/organism/organism_detail.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 953, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 886, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 170, in __init__
+    mapped_tokens.append(self.translate_token(token))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 181, in translate_token
+    return self.create_var(token)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 889, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 703, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '|' from '|'
+django.server ERROR 2023-04-17 09:26:57,197 basehttp 8176 12012 "GET /organism/FG_0004 HTTP/1.1" 500 379075
+django.request ERROR 2023-04-17 09:34:22,969 log 8176 23324 Internal Server Error: /organism/FG_0004
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 183, in detailOrganism
+    return render(req, "dorganism/organism/organism_detail.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 1485, in do_with
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'with' expected at least one variable assignment
+django.server ERROR 2023-04-17 09:34:22,971 basehttp 8176 23324 "GET /organism/FG_0004 HTTP/1.1" 500 347969
+django.request ERROR 2023-04-17 09:34:47,948 log 8176 23324 Internal Server Error: /organism/FG_0004
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 179, in translate_token
+    op = OPERATORS[token]
+         ~~~~~~~~~^^^^^^^
+KeyError: 'stockumber>0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 183, in detailOrganism
+    return render(req, "dorganism/organism/organism_detail.html", context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 1492, in do_with
+    nodelist = parser.parse(("endwith",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 953, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 886, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 170, in __init__
+    mapped_tokens.append(self.translate_token(token))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\smartif.py", line 181, in translate_token
+    return self.create_var(token)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\defaulttags.py", line 889, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\template\base.py", line 703, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '>0' from 'stockumber>0'
+django.server ERROR 2023-04-17 09:34:47,950 basehttp 8176 23324 "GET /organism/FG_0004 HTTP/1.1" 500 397795
+django.server INFO 2023-04-17 09:35:04,187 basehttp 8176 23324 "GET /organism/FG_0004 HTTP/1.1" 200 85907
+django.server INFO 2023-04-17 09:35:04,357 basehttp 8176 23324 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-04-17 09:35:29,315 basehttp 8176 23324 "GET /organism/FG_0004 HTTP/1.1" 200 85907
+django.utils.autoreload INFO 2023-04-17 09:36:29,822 autoreload 8176 18604 C:\Users\uqwzhon4\project\adjCOADD\dorganism\templatetags\custom_filters.py changed, reloading.
+django.utils.autoreload INFO 2023-04-17 09:36:31,053 autoreload 26752 7200 Watching for file changes with StatReloader
+django.server INFO 2023-04-17 09:36:45,490 basehttp 26752 28564 "GET /organism/FG_0004 HTTP/1.1" 200 85907
+django.server INFO 2023-04-17 09:37:27,098 basehttp 26752 28564 "GET /organism/FG_0004 HTTP/1.1" 200 85907
+django.server INFO 2023-04-17 09:37:30,634 basehttp 26752 28564 "GET /organism_card HTTP/1.1" 200 169241
+django.server INFO 2023-04-17 09:37:33,186 basehttp 26752 28564 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 09:37:40,107 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 200 68646
+django.server INFO 2023-04-17 09:37:46,543 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 200 32
+django.server INFO 2023-04-17 09:37:51,380 basehttp 26752 28564 "GET /organism_card?csrfmiddlewaretoken=tUSuETe1IT6CbBHVX4K4nrK4Gmicn9ul5Zndbpy5bMl7KkMYilco3mljK0DNlVti HTTP/1.1" 200 169900
+django.server INFO 2023-04-17 09:37:53,478 basehttp 26752 28564 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 09:37:56,921 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 200 6513
+django.server INFO 2023-04-17 09:38:00,889 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 200 983
+django.server INFO 2023-04-17 09:38:20,702 basehttp 26752 28564 "GET /organism_card?Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 169916
+django.server INFO 2023-04-17 09:38:22,488 basehttp 26752 28564 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 09:38:28,087 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 200 6513
+django.server INFO 2023-04-17 09:38:36,021 basehttp 26752 28564 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 09:38:40,287 basehttp 26752 4216 "POST /search_organism/ HTTP/1.1" 200 443
+django.request WARNING 2023-04-17 09:38:40,364 log 26752 28564 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /search_organism/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 812, in save
+    self.save_base(
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 976, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\base.py", line 1040, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\query.py", line 1216, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 103, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\utils\deprecation.py", line 138, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-04-17 09:38:40,370 basehttp 26752 28564 "POST /search_organism/ HTTP/1.1" 400 167807
+django.server INFO 2023-04-17 09:38:45,134 basehttp 26752 4216 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169900
+django.server INFO 2023-04-17 09:44:15,923 basehttp 26752 9772 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169900
+django.server INFO 2023-04-17 09:51:16,811 basehttp 26752 22256 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169900
+django.server INFO 2023-04-17 09:56:11,741 basehttp 26752 22256 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169679
+django.server INFO 2023-04-17 09:56:11,845 basehttp 26752 22256 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 200 135
+django.server INFO 2023-04-17 09:56:37,615 basehttp 26752 22256 "GET /createOrg/ HTTP/1.1" 200 17701
+django.server INFO 2023-04-17 09:56:42,218 basehttp 26752 22256 "POST /search_organism/ HTTP/1.1" 200 6513
+django.request ERROR 2023-04-17 09:57:03,314 log 26752 22256 Internal Server Error: /createOrg/
+Traceback (most recent call last):
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\uqwzhon4\Anaconda3\envs\orgdb_env\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\views.py", line 135, in createOrganism
+    instance.save(**kwargs)
+  File "C:\users\uqwzhon4\project\adjCOADD\dorganism\models.py", line 231, in save
+    self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'dict_value'
+django.server ERROR 2023-04-17 09:57:03,315 basehttp 26752 22256 "POST /createOrg/ HTTP/1.1" 500 92476
+django.server INFO 2023-04-17 09:57:16,102 basehttp 26752 22256 "POST /search_organism/ HTTP/1.1" 200 6513
+django.server INFO 2023-04-17 09:57:32,194 basehttp 26752 22256 "POST /createOrg/ HTTP/1.1" 302 0
+django.server INFO 2023-04-17 09:57:32,403 basehttp 26752 22256 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169679
+django.server INFO 2023-04-17 09:57:32,418 basehttp 26752 22256 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-04-17 10:00:50,369 autoreload 26752 7200 C:\Users\uqwzhon4\project\adjCOADD\apputil\utils\filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-04-17 10:00:51,613 autoreload 10836 22324 Watching for file changes with StatReloader
+django.server INFO 2023-04-17 10:00:53,944 basehttp 10836 29460 "GET /organism_card?csrfmiddlewaretoken=CsdSoAaxI9VzJNO6uytXDH4CVrHa68tXexIBV6uBb2a4iwT9PPVhjCFRZ52L4UsU HTTP/1.1" 200 169465
+django.server INFO 2023-04-17 10:00:53,962 basehttp 10836 29460 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:00:55,446 basehttp 10836 29460 "GET /createOrg/ HTTP/1.1" 200 17701
+django.server INFO 2023-04-17 10:00:58,724 basehttp 10836 29460 "GET /organism_card?csrfmiddlewaretoken=IajzSShlMBGuOBGxb4kU41WqJ07HlKpWkfOipoBpfuVZnkLAwlMeKWxFNEsijwoT HTTP/1.1" 200 169465
+django.server INFO 2023-04-17 10:01:16,323 basehttp 10836 29460 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 10:01:19,491 basehttp 10836 29460 "POST /search_organism/ HTTP/1.1" 200 6513
+django.server INFO 2023-04-17 10:01:25,926 basehttp 10836 29460 "GET /organism_card?csrfmiddlewaretoken=7iL9d1bcN9QnaN6uAKM4hds1QQ6cvgYBJngSKxvgg25SJwbxV1eoX83gUurNt2Xy HTTP/1.1" 200 169465
+django.server INFO 2023-04-17 10:01:44,204 basehttp 10836 29460 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:01:44,222 basehttp 10836 29460 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:01:46,539 basehttp 10836 29460 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 7957
+django.security.csrf WARNING 2023-04-17 10:01:50,442 log 10836 29460 Forbidden (CSRF token missing.): /updateBat/FG_0004_01
+django.server WARNING 2023-04-17 10:01:50,489 basehttp 10836 29460 "PUT /updateBat/FG_0004_01 HTTP/1.1" 403 2506
+django.server INFO 2023-04-17 10:01:50,747 basehttp 10836 29460 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:01:55,173 basehttp 10836 29460 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 7957
+django.security.csrf WARNING 2023-04-17 10:01:58,624 log 10836 29460 Forbidden (CSRF token missing.): /updateBat/FG_0004_01
+django.server WARNING 2023-04-17 10:01:58,672 basehttp 10836 29460 "PUT /updateBat/FG_0004_01 HTTP/1.1" 403 2506
+django.server INFO 2023-04-17 10:01:58,918 basehttp 10836 29460 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:02:29,508 basehttp 10836 29460 "GET /updateBat/FG_0004_02 HTTP/1.1" 200 7957
+django.security.csrf WARNING 2023-04-17 10:02:33,514 log 10836 29460 Forbidden (CSRF token missing.): /updateBat/FG_0004_02
+django.server WARNING 2023-04-17 10:02:33,544 basehttp 10836 29460 "PUT /updateBat/FG_0004_02 HTTP/1.1" 403 2506
+django.server INFO 2023-04-17 10:02:33,819 basehttp 10836 29460 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:02:33,830 basehttp 10836 29460 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:02:37,757 basehttp 10836 29460 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:10:22,205 basehttp 10836 18828 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:10:22,295 basehttp 10836 18828 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 200 213
+django.server INFO 2023-04-17 10:10:25,192 basehttp 10836 18828 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 7957
+django.security.csrf WARNING 2023-04-17 10:10:28,094 log 10836 18828 Forbidden (CSRF token from the 'X-Csrftoken' HTTP header has incorrect length.): /updateBat/FG_0004_01
+django.server WARNING 2023-04-17 10:10:28,139 basehttp 10836 18828 "PUT /updateBat/FG_0004_01 HTTP/1.1" 403 2564
+django.server INFO 2023-04-17 10:10:28,437 basehttp 10836 18828 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:10:28,451 basehttp 10836 18828 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:11:34,820 basehttp 10836 18828 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:11:34,835 basehttp 10836 18828 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:11:36,890 basehttp 10836 18828 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 8039
+django.security.csrf WARNING 2023-04-17 10:11:40,473 log 10836 18828 Forbidden (CSRF token from the 'X-Csrftoken' HTTP header has incorrect length.): /updateBat/FG_0004_01
+django.server WARNING 2023-04-17 10:11:40,506 basehttp 10836 18828 "PUT /updateBat/FG_0004_01 HTTP/1.1" 403 2564
+django.server INFO 2023-04-17 10:11:40,798 basehttp 10836 18828 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:12:17,993 basehttp 10836 18828 "GET /organism/FG_0004 HTTP/1.1" 200 85686
+django.server INFO 2023-04-17 10:12:18,008 basehttp 10836 18828 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:12:19,762 basehttp 10836 18828 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 8240
+django.server INFO 2023-04-17 10:12:22,595 basehttp 10836 18828 "PUT /updateBat/FG_0004_01 HTTP/1.1" 200 2356
+django.server INFO 2023-04-17 10:12:22,761 basehttp 10836 5220 "GET /organism/FG_0004 HTTP/1.1" 200 85689
+django.server INFO 2023-04-17 10:14:03,901 basehttp 10836 5220 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 8244
+django.server INFO 2023-04-17 10:14:03,937 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:15:32,493 basehttp 10836 5220 "GET /organism/FG_0004 HTTP/1.1" 200 85689
+django.server INFO 2023-04-17 10:15:32,511 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 200 202
+django.server INFO 2023-04-17 10:15:35,593 basehttp 10836 5220 "GET /updateBat/FG_0004_01 HTTP/1.1" 200 8044
+django.server INFO 2023-04-17 10:15:35,629 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.security.csrf WARNING 2023-04-17 10:15:40,900 log 10836 5220 Forbidden (CSRF token from the 'X-Csrftoken' HTTP header has incorrect length.): /updateBat/FG_0004_01
+django.server WARNING 2023-04-17 10:15:40,942 basehttp 10836 5220 "PUT /updateBat/FG_0004_01 HTTP/1.1" 403 2564
+django.server INFO 2023-04-17 10:15:41,234 basehttp 10836 5220 "GET /organism/FG_0004 HTTP/1.1" 200 85689
+django.server INFO 2023-04-17 10:15:41,248 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 304 0
+django.server INFO 2023-04-17 10:17:36,581 basehttp 10836 5220 "GET /organism/FG_0004 HTTP/1.1" 200 85689
+django.server INFO 2023-04-17 10:17:36,597 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 200 232
+django.server INFO 2023-04-17 10:18:07,513 basehttp 10836 5220 "GET /organism/FG_0004 HTTP/1.1" 200 85689
+django.server INFO 2023-04-17 10:18:07,527 basehttp 10836 5220 "GET /static/js/js_utils/htmx_header.js HTTP/1.1" 200 219
+django.server INFO 2023-04-17 10:23:16,898 basehttp 10836 6324 "GET /organism/FG_0004 HTTP/1.1" 200 85857
+django.server INFO 2023-04-17 10:23:21,534 basehttp 10836 6324 "GET /organism_card HTTP/1.1" 200 169188
+django.server INFO 2023-04-17 10:23:23,965 basehttp 10836 6324 "GET /createOrg/ HTTP/1.1" 200 17711
+django.server INFO 2023-04-17 10:24:42,141 basehttp 10836 6324 "GET /organism/FG_0004 HTTP/1.1" 200 85857
+django.server INFO 2023-04-17 10:24:44,067 basehttp 10836 6324 "GET /createBatch/FG_0004/ HTTP/1.1" 200 9497
+django.server INFO 2023-04-17 10:24:58,990 basehttp 10836 6324 "GET /organism/FG_0004 HTTP/1.1" 200 85857
+django.server INFO 2023-04-17 10:31:20,017 basehttp 10836 17580 "GET /index/ HTTP/1.1" 200 17983
+django.server INFO 2023-04-17 10:31:21,638 basehttp 10836 17580 "GET /organism_card HTTP/1.1" 200 169199
+django.server INFO 2023-04-17 10:31:28,648 basehttp 10836 17580 "GET /drug_card HTTP/1.1" 200 270453
+django.server WARNING 2023-04-17 10:31:28,710 basehttp 10836 17580 "GET /static/images/AMD00002.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,731 basehttp 10836 9076 "GET /static/images/AMD00003.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,733 basehttp 10836 13952 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,746 basehttp 10836 20408 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,753 basehttp 10836 8228 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,773 basehttp 10836 14120 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,775 basehttp 10836 20316 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,780 basehttp 10836 25212 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,786 basehttp 10836 27256 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,792 basehttp 10836 12016 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,800 basehttp 10836 3332 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,822 basehttp 10836 7360 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,830 basehttp 10836 27852 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,833 basehttp 10836 2056 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,837 basehttp 10836 14412 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,849 basehttp 10836 14596 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,858 basehttp 10836 5904 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,869 basehttp 10836 21912 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,875 basehttp 10836 5556 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,881 basehttp 10836 22736 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,889 basehttp 10836 28992 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,895 basehttp 10836 29584 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,896 basehttp 10836 10328 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,902 basehttp 10836 8828 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,903 basehttp 10836 1556 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,906 basehttp 10836 24876 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,935 basehttp 10836 28704 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,939 basehttp 10836 4132 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,940 basehttp 10836 10596 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,940 basehttp 10836 12420 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,948 basehttp 10836 28360 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,960 basehttp 10836 13068 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,969 basehttp 10836 15292 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,984 basehttp 10836 2240 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:28,985 basehttp 10836 6084 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,000 basehttp 10836 6312 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,002 basehttp 10836 8084 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,010 basehttp 10836 21716 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,010 basehttp 10836 24096 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,021 basehttp 10836 14464 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,039 basehttp 10836 952 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,054 basehttp 10836 10792 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,059 basehttp 10836 15064 "GET /static/images/AMD00045.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,063 basehttp 10836 12600 "GET /static/images/AMD00046.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,063 basehttp 10836 17992 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,064 basehttp 10836 29080 "GET /static/images/AMD00047.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,071 basehttp 10836 16172 "GET /static/images/AMD00048.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,077 basehttp 10836 13468 "GET /static/images/AMD00049.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,081 basehttp 10836 22196 "GET /static/images/AMD00050.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-04-17 10:31:29,081 basehttp 10836 14068 "GET /static/images/AMD00051.svg HTTP/1.1" 404 1917
+django.server INFO 2023-04-17 10:31:30,281 basehttp 10836 17612 "GET /drug_detail_structure/AMD00002 HTTP/1.1" 200 18450
+django.server INFO 2023-04-17 10:31:30,434 basehttp 10836 17612 "GET /static/js/ketcher/index-bundle.min.js HTTP/1.1" 200 11323924
+django.request WARNING 2023-04-17 10:31:30,841 log 10836 25956 Not Found: /templates/fg.sdf
+django.server WARNING 2023-04-17 10:31:30,842 basehttp 10836 25956 "GET /templates/fg.sdf HTTP/1.1" 404 13016
+django.request WARNING 2023-04-17 10:31:30,857 log 10836 17612 Not Found: /templates/library.sdf
+django.server WARNING 2023-04-17 10:31:30,857 basehttp 10836 17612 "GET /templates/library.sdf HTTP/1.1" 404 13031
