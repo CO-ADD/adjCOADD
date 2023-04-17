@@ -13,7 +13,16 @@ from zUtils import zData
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, MIC_COADD, MIC_Pub
-from apputil.utils import Validation_Log
+from apputil.utils import validation_log
+
+
+#
+# PMC045_R01
+# PMC036_R01
+# PMC045_FDB1
+# AntiBio
+#
+
 
 #-----------------------------------------------------------------------------------
 def reformat_OrganismID(OrgID):
@@ -48,7 +57,7 @@ def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
     logger.info(f"[MIC-Pub] {nTotal} ")
     OrgDB.close()
 
-    vLog = Validation_Log('MIC-Pub')
+    vLog = validation_log.Validation_Log('MIC-Pub')
     nTime  = zData.Timer(nTotal)
     nProcessed = 0
 
@@ -109,7 +118,7 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
     CastDB.close()
 
     if nTotal>0:
-        vLog = Validation_Log('MIC-Pub')
+        vLog = validation_log.Validation_Log('MIC-Pub')
         nTime  = zData.Timer(nTotal)
         nProcessed = 0
 

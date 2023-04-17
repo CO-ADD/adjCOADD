@@ -12,7 +12,7 @@ import argparse
 
 import django
 #from djCOADD import djOrgDB
-# from oraCastDB import oraCastDB
+from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
 
 import logging
@@ -37,15 +37,14 @@ def main():
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    djDir = "/home/wz/adjCOADD" #"C:/Data/A02_WorkDB/03_Django/adjCOADD"
-    # uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
-    uploadDir="/home/wz/adjCOADD/impdata/Data"
+    djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
+    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
         uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
     elif prgArgs.database == 'WorkLinux':
-        djDir ="/home/wz/adjCOADD" #"/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/wz/adjCOADD/impdata/Data"#/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
+        djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
+        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
 
     xlFiles = {
         'Application': "ApplicationData_v03.xlsx",
@@ -59,8 +58,8 @@ def main():
     import a_upload_AppUtil as appUtil
     import b_upload_dOrganism as dOrg
     import c_upload_dDrug as dDrug
-    # import d_upload_Vitek as dVitek
-    # import e_upload_MIC as dMIC
+    import d_upload_Vitek as dVitek
+    import e_upload_MIC as dMIC
 
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()

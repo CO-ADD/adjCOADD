@@ -13,7 +13,7 @@ from zUtils import zData
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
-from apputil.utils import Validation_Log
+from apputil.utils import validation_log
 
 import ddrug.util_vitek as Vitek
 
@@ -23,7 +23,7 @@ def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchI
 #-----------------------------------------------------------------------------------
     lCards,lID,lAST = Vitek.process_VitekPDF(VitekFolder,PdfFile,OrgBatchID=OrgBatchID)
 
-    vLog = Validation_Log(PdfFile)
+    vLog = validation_log.Validation_Log(PdfFile)
 
     for c in lCards:
         djCard = VITEK_Card.check_from_dict(c,vLog)
