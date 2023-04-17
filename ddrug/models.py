@@ -706,6 +706,7 @@ class MIC_Pub(AuditModel):
     
     mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
+    zone_diameter = models.CharField(max_length=20, blank=True, verbose_name = "Zone Diameter")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
          db_column="mic_type", related_name="%(class)s_mictype")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
