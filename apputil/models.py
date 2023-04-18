@@ -202,7 +202,7 @@ class AuditModel(models.Model):
         return f"{self.pk}"
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.pk}"
+        return f"{self.__name__}: {self.pk}"
 
     #------------------------------------------------
     @classmethod
