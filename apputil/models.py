@@ -134,6 +134,10 @@ class AuditModel(models.Model):
     VALID_STATUS    = False
     HEADER_FIELDS   = {}
 
+    ID_SEQUENCE = ""
+    ID_PREFIX = ""
+    ID_PAD = 0
+
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
