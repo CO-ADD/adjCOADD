@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sequences import Sequence
 from asgiref.sync import sync_to_async
 
 from django.db import models
@@ -195,6 +196,44 @@ class AuditModel(models.Model):
                         setattr(self,field.name,defValue)
                         clFields[field.name]=defValue
         return(clFields)
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.pk}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.pk}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,pkID,verbose=0):
+        try:
+            retInstance = cls.objects.get(pk=pkID)
+        except:
+            if verbose:
+                print(f"[{cls.__name__} Not Found] {pkID} ")
+            retInstance = None
+        return(retInstance)
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,pkID,verbose=0):
+        return cls.objects.filter(pk=pkID).exists()
+
+   #------------------------------------------------
+    @classmethod
+    def str_id(cls,clsNo) -> str:
+        return(f"{cls.ID_PREFIX}{clsNo:0{cls.ID_PAD}d}")
+
+    #------------------------------------------------
+    @classmethod
+    def next_id(cls) -> str:
+        cls_IDSq=Sequence(cls.ID_SEQUENCE)
+        cls_nextNo = next(cls_IDSq)
+        cls_strID = cls.str_id(cls_nextNo)
+        while cls.exists(None,cls_strID):
+            cls_nextNo = next(cls_IDSq)
+            cls_strID = cls.str_id(cls_nextNo)
+        return(cls_strID)    
 
     #------------------------------------------------
     def delete(self,**kwargs):

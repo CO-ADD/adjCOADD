@@ -37,7 +37,12 @@ class Gene(AuditModel):
         'gene_type':'Gene_Type',
     }
 
-    gene_name = models.CharField(primary_key=True, unique=True, max_length=25, verbose_name = "Gene Name")
+    ID_SEQUENCE = 'Gene'
+    ID_PREFIC = 'GEN'
+    ID_PAD = 5
+
+    gene_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
+    gene_name = models.CharField(max_length=25, unique=True,  verbose_name = "Gene Name")
     urlname = models.SlugField(max_length=30, verbose_name = "URLGene")
     gene_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Gene Type", on_delete=models.DO_NOTHING,
          db_column="gene_type", related_name="%(class)s_genetype")
@@ -93,6 +98,15 @@ class Gene(AuditModel):
     def exists(cls,GeneName,verbose=0):
     # Returns an instance if found by [GeneName]
         return cls.objects.filter(gene_name=GeneName).exists()
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.gene_id:
+            self.gene_id = self.next_id()
+            if self.gene_id: 
+                super(Gene, self).save(*args, **kwargs)
+        else:
+            super(Gene, self).save(*args, **kwargs) 
 
 
 #=================================================================================================
