@@ -234,7 +234,7 @@ class AuditModel(models.Model):
         cls_IDSq=Sequence(cls.ID_SEQUENCE)
         cls_nextNo = next(cls_IDSq)
         cls_strID = cls.str_id(cls_nextNo)
-        while cls.exists(None,cls_strID):
+        while cls.objects.filter(pk=cls_strID).exists():
             cls_nextNo = next(cls_IDSq)
             cls_strID = cls.str_id(cls_nextNo)
         return(cls_strID)    
