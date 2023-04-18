@@ -39,6 +39,7 @@ danger-color : #f3545d
   --bs-body-bg: rgb(238, 238, 238);
   --bs-footer-bg: #f2f2f5;
   --bs-th-bg: #a7b6b6;
+  --bs-th-child-bg: #bdcaca;
   --bs-topnav-bg: #2c7a84;
   --bs-boxed-body-bg: #f1efef;
   --bs-form-item-color: #fff;
@@ -691,7 +692,10 @@ table.dataTable {
 }
 
 table.dataTable thead tr {
-  background-color: var(--bs-th-bg) !important;
+  background-color: var(--bs-th-bg) ;
+}
+.childtable thead tr{
+  background-color: var(--bs-th-child-bg)!important;
 }
 table.dataTable td {
   border-color: var(--bs-light)!important;

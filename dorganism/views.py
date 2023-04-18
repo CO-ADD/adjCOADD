@@ -404,15 +404,19 @@ def updateStock(req, pk):
             try:
                 with transaction.atomic(using='dorganism'):      
                     obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
+                    print(obj)
                     try:
-                        if form.is_valid():                  
+                        if form.is_valid(): 
+                            print('valid')                 
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
+                        print('formerror')
                         print(f'form erroro is {form.errors} and error {err}')
             except Exception as err:
+                print("error")
                 messages.warning(req, f'Update failed due to {err} error')
                 return redirect(req.META['HTTP_REFERER'])
     context={

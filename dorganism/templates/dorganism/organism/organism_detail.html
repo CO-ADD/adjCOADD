@@ -63,7 +63,8 @@
                         <div class="accordion-body">
                             <h5>{%include 'utils/message.html'%}</h5>
                             <div class="table-responsive">
-                                {%include 'utils/datatable_batch.html'%}
+                            
+                                {%include 'utils/datatable_sm.html'  with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
                             </div>
                         </div>
                     </div>

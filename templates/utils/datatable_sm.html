@@ -2,6 +2,9 @@
   <thead>
     <tr>
       <th style="width: 10em"></th>
+     {%if hiddenfield%}
+      <th class="not-visible">{{hiddenfield}}</th>
+     {%endif%}
       {%for th in data_fields %}
       <th>{{th}}</th>
       {%endfor%}
@@ -29,14 +32,29 @@
   integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV"
   crossorigin="anonymous"
 ></script>
+
+{%load static%}
+<script type="text/javascript" src="{% static 'js/create_modal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/create_childtable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/destroy_childtable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/childtable.js' %}"></script>
+
+
 <script>
   $(document).ready(function () {
-    console.log("{{html_name}}")
     // Table Batch
     var table = $('#'+'{{table_id}}').DataTable({
       searching: false,
       paging: "{{table_id}}" === 'datatable_vitekast' ? true : false,
       info:false
     });
+    
+    if ("{{table_id}}"==="datatable_batch"){
+
+      permission='{{user.permission}}'
+      childtable(permission, table)
+    }
+    const csrftoken = getCookie("csrftoken");
+    
   });
 </script>

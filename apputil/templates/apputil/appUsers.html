@@ -17,25 +17,7 @@
     {%include 'utils/main_horizalbar.html'%}
     <!-- prettier-ignore -->
 
-    <div class="fixTableHead">
-      <table class="table table-small table-bordered sorting_table table-hover bg-light">
-        <thead>
-          <tr>
-            <th>Edit</th>
-            {%for field in fields%}
-            <th class="order_field" style="width: fit-content">{{field}}</th>
-            {%endfor%}
-          </tr>
-        </thead>
-        <tbody hx-target="closest tr" hx-swap="outerHTML">
-          {% for object in page_obj %}
-          <!--  -->
-          {%include 'apputil/appuser_tr.html'%}
-          <!--  -->
-          {%endfor%}
-        </tbody>
-      </table>
-    </div>
+     {%include 'utils/datatable_general.html' with table_id='ApplicationUser' %}
   </div>
 </div>
 <!--prettier-ignore-->

@@ -1,15 +1,15 @@
 <tr class="editing">
-  {%for field in form%}
-  <td>{{field}}</td>
-  {%endfor%}
   <td>
-    <input
+    <button class="border border-0 bg-transparent"
       type="submit"
       value="update"
       hx-put="{%url 'updateAppUser' pk=object.name%}"
       hx-include="closest tr"
       hx-trigger="click"
-    />
-    <a href="{% url 'userslist' %}">Cancel</a>
+    ><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
+    {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
   </td>
+  {%for field in form%}
+  <td>{{field}}</td>
+  {%endfor%}
 </tr>
