@@ -34,7 +34,7 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
 from apputil.utils.api_filterclass import API_FilteredListView
-from apputil.utils.logs import Validation_Log
+from apputil.utils.validation_log import Validation_Log
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub

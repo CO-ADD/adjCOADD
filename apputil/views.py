@@ -226,7 +226,7 @@ def exportCSV(request):
 
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
-from .utils.logs import Validation_Log
+from .utils.validation_log import Validation_Log
 from impdata.a_upload_AppUtil import update_AppUser_xls, update_Dictionary_xls
 from impdata.c_upload_dDrug import update_Drug_xls
 

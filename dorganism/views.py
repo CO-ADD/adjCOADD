@@ -20,7 +20,7 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import DeleteView_FKeyExist, ModelDeleteView
-from apputil.views import permission_not_granted
+from apputil.utils.views_base import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 

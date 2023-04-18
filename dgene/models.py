@@ -386,8 +386,8 @@ class WGS_CheckM(AuditModel):
         db_table = 'wgs_checkm'
         ordering=['orgbatch_id','run_id']
         indexes = [
-             models.Index(name="fastqc_orgbid_idx",fields=['orgbatch_id']),
-             models.Index(name="fastqc_runid_idx",fields=['run_id']),
+             models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
+             models.Index(name="checkqc_runid_idx",fields=['run_id']),
         ]
 
     #------------------------------------------------

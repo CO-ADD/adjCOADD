@@ -12,7 +12,7 @@ import argparse
 
 import django
 #from djCOADD import djOrgDB
-from oraCastDB import oraCastDB
+# from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
 
 import logging

@@ -25,6 +25,7 @@ class HiddenSimpleArrayField(forms.Field):
 class CreateOrganism_form(ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
     risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
     pathogen_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['pathogen_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}),required=False,)
@@ -38,7 +39,6 @@ class CreateOrganism_form(ModelForm):
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
-        
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         self.fields['strain_type'].widget = forms.SelectMultiple(choices= Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
@@ -63,9 +63,10 @@ class CreateOrganism_form(ModelForm):
         return data
 
     def create_field_groups(self):
-        self.group1 = [self[name] for name in ("strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification" )]
-        self.group2 = [self[name] for name in ('res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_document', 'source', 'source_code')]
-        self.group3 = [self[name] for name in ('risk_group','pathogen_group','lab_restriction','biologist','tax_id')]    
+        self.group1 = [self[name] for name in Organism.FORM_GROUPS['Group1']]
+        self.group2 = [self[name] for name in Organism.FORM_GROUPS['Group2']]
+        self.group3 = [self[name] for name in Organism.FORM_GROUPS['Group3']]
+        self.group4 = [self[name] for name in Organism.FORM_GROUPS['Group4']] 
     
     class Meta:
         model=Organism
