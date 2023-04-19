@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sequences import Sequence
 from asgiref.sync import sync_to_async
 
 from django.db import models
@@ -133,6 +134,10 @@ class AuditModel(models.Model):
     VALID_STATUS    = False
     HEADER_FIELDS   = {}
 
+    ID_SEQUENCE = ""
+    ID_PREFIX = ""
+    ID_PAD = 0
+
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
@@ -195,6 +200,44 @@ class AuditModel(models.Model):
                         setattr(self,field.name,defValue)
                         clFields[field.name]=defValue
         return(clFields)
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.pk}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.__name__}: {self.pk}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,pkID,verbose=0):
+        try:
+            retInstance = cls.objects.get(pk=pkID)
+        except:
+            if verbose:
+                print(f"[{cls.__name__} Not Found] {pkID} ")
+            retInstance = None
+        return(retInstance)
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,pkID,verbose=0):
+        return cls.objects.filter(pk=pkID).exists()
+
+   #------------------------------------------------
+    @classmethod
+    def str_id(cls,clsNo) -> str:
+        return(f"{cls.ID_PREFIX}{clsNo:0{cls.ID_PAD}d}")
+
+    #------------------------------------------------
+    @classmethod
+    def next_id(cls) -> str:
+        cls_IDSq=Sequence(cls.ID_SEQUENCE)
+        cls_nextNo = next(cls_IDSq)
+        cls_strID = cls.str_id(cls_nextNo)
+        while cls.objects.filter(pk=cls_strID).exists():
+            cls_nextNo = next(cls_IDSq)
+            cls_strID = cls.str_id(cls_nextNo)
+        return(cls_strID)    
 
     #------------------------------------------------
     def delete(self,**kwargs):
@@ -264,8 +307,7 @@ class AuditModel(models.Model):
             select_fields=[fields[f] for f in fields.keys() if f in fieldsname]
             # select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
-            select_fields=None
-        print(select_fields)    
+            select_fields=None   
         return select_fields
     #------------------------------------------------
     # get class field names in the list/order provided by HEADER_FIELDS
@@ -277,7 +319,6 @@ class AuditModel(models.Model):
         if fields:
             # Ordered by _meta.fields (model)
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
-
             # Ordered by HEADER_FIELDS
             # model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
         else:

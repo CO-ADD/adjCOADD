@@ -541,10 +541,12 @@ class MIC_COADD(AuditModel):
      Antibiogram from CO-ADD screening    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
+    HEADER_FIELDS = {
         # example fields for test view
-        "mic":"MIC",
+        "drug_id.drug_name":"Drug Name",
         "mic_type":"Type",
+        "mic":"MIC",
+        "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
         "bp_profile":"Profile",
         "run_id":"Run ID",
         "bp_profile":"Break Point",
@@ -688,6 +690,56 @@ class MIC_COADD(AuditModel):
         
         return(retInstance)
     
+    # overide get value and get value from parent model
+    def get_values(self, fields=None):
+        from django.db.models import Model
+        if fields is None:
+            fields = self.HEADER_FIELDS
+
+        value_list=[]
+        fieldsname=[field.name for field in self._meta.fields]
+        for name in fields.keys():
+            n=len(name.split("."))
+            nameArray=name.split(".")
+            if n>1 and nameArray[0] in fieldsname:
+                obj_parent=getattr(self, nameArray[0])
+                obj = obj_parent
+                i=1
+                while i < n:
+                    obj = getattr(obj, name.split(".")[i])
+                    i += 1
+                    if i>=5:
+                        
+                        break
+                value_list.append(obj)
+                
+            elif name in fieldsname:
+                obj=getattr(self, name)
+                if obj:
+                    if isinstance(obj, Model):
+                        value_list.append(obj.pk)
+                    elif isinstance(obj, list):
+                        array_to_string=','.join(str(e) for e in obj)
+                        value_list.append(array_to_string) 
+                    else:   
+                        value_list.append(obj)
+                else:
+                    value_list.append(" ")
+                    
+        return value_list
+
+
+    # override to get field contains foreignkey fields
+    @classmethod
+    def get_fields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
+        if fields:
+            fieldsname=[field.name for field in cls._meta.fields]
+            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
+        else:
+            select_fields=None   
+        return select_fields
 #=================================================================================================
 class MIC_Pub(AuditModel):
     """
@@ -706,6 +758,7 @@ class MIC_Pub(AuditModel):
     
     mic = models.CharField(max_length=50, blank=True, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, blank=True, verbose_name = "Unit")
+    zone_diameter = models.CharField(max_length=20, blank=True, verbose_name = "Zone Diameter")
     mic_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MIC Type", on_delete=models.DO_NOTHING,
          db_column="mic_type", related_name="%(class)s_mictype")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")

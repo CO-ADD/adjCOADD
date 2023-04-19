@@ -5,7 +5,9 @@
         <!-- detail view link name if exists -->
         <th style="width: 1rem"></th>
         <!-- customized/verbose model fields name -->
+        {% if table_id != 'ApplicationUser' %}
         <th class="order_field " style="width: fit-content">ID</th>
+        {%endif%}
         {%for field in fields%}
         <th class="order_field" style="width: fit-content">{{field}}</th>
         {%endfor%}
@@ -17,10 +19,13 @@
       </tr>
     </thead>
 
-    <tbody>
+    <tbody hx-target="closest tr" hx-swap="outerHTML">
       {%if page_obj%}
-      <!--  -->
+      <!--prettier-ignore  -->
       {% for object in page_obj%}
+      {% if table_id == 'ApplicationUser' %}
+      {%include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
+      {%else%}
       <tr>
         <td>
           <!--prettier-ignore  -->
@@ -49,6 +54,7 @@
         </td>
         {%endif%}
       </tr>
+      {%endif%}
       {%endfor%}
       <!--  -->
       {%else%}

@@ -117,6 +117,13 @@ class Organism(AuditModel):
         'organism_id':'Organism ID', 
     }
 
+    FORM_GROUPS={
+       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification"],
+       'Group2': ['res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_document', 'source', 'source_code'],
+       'Group3': ['risk_group','pathogen_group','lab_restriction','biologist','tax_id'],
+       'Group4': ['received_date', 'received_as', 'prep_notes', 'collect_date', 'collect_notes', 'collect_city', 'collect_country', 'collect_institution', 'collect_specie', 'collect_body', 'collect_gender', 'collect_age']
+    }
+
     Choice_Dictionary = {
         'risk_group':'Risk_Group',
         'pathogen_group':'Pathogen_Group',
@@ -141,13 +148,26 @@ class Organism(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
     growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
     strain_notes= models.CharField(max_length=250, blank=True, verbose_name = "Strain Notes")
-    # tax_id contains a link, check django link field or class
+
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
-    #supplier_po = models.CharField(max_length=120, blank=True, verbose_name = "Purchase Order")
+
+    received_date = models.DateField(null=True, blank=True, verbose_name = "Recieved")
+    received_as = models.CharField(max_length=120, blank=True, verbose_name = "Recieved as")
+    prep_notes= models.CharField(max_length=250, blank=True, verbose_name = "Preparation Notes")
+    collect_date = models.DateField(null=True, blank=True, verbose_name = "Collection")
+    collect_notes = models.CharField(max_length=120, blank=True, verbose_name = "Notes")
+    collect_city = models.CharField(max_length=25, blank=True, verbose_name = "City")
+    collect_country = models.CharField(max_length=25, blank=True, verbose_name = "Country")
+    collect_institution = models.CharField(max_length=25, blank=True, verbose_name = "Institution")
+    collect_specie = models.CharField(max_length=20, blank=True, verbose_name = "From")
+    collect_body = models.CharField(max_length=20, blank=True, verbose_name = "Body")
+    collect_gender = models.CharField(max_length=5, blank=True, verbose_name = "Gender")
+    collect_age = models.CharField(max_length=10, blank=True, verbose_name = "Age")
+
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -155,12 +175,12 @@ class Organism(AuditModel):
         db_column="lab_restriction", related_name="%(class)s_lab")
     risk_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Risk Group", on_delete=models.DO_NOTHING,
         db_column="risk_group", related_name="%(class)s_risk")
-    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
-        db_column="biologist", related_name="%(class)s_biologist")
     pathogen_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pathogen", on_delete=models.DO_NOTHING,
         db_column="pathogen_group", related_name="%(class)s_pathogen")
     oxygen_pref = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Oxygen", on_delete=models.DO_NOTHING,
         db_column="oxygen_pref", related_name="%(class)s_oxygen")
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_biologist")
 
     #------------------------------------------------
     class Meta:

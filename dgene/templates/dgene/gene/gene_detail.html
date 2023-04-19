@@ -1,0 +1,50 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+
+    <div class="border border-2 w-100">
+
+        <div class="d-flex m-0 p-0">
+
+            {%include 'utils/lefticons.html' with title="Gene"%}
+            <div class="accordion bg-transparent w-100" id="gene-detail">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" style="max-height:20px;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">
+                            <h5 class="fs-6 my-0">{{object.pk}} |
+                                {{object.gene_name}}
+                            </h5>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show bg-transparent"
+                        aria-labelledby="headingOne" data-bs-parent="#gene-detail">
+                        <div class="accordion-body bg-transparent">
+
+
+
+                            <b>
+                                {%include 'utils/message.html'%}
+                            </b>
+                            {%include 'dgene/gene/gene_u.html'%}
+                            <!--prettier-ignore-->
+                            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+       
+
+
+    </div>
+
+</div>
+{%endblock%}

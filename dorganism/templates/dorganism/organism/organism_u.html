@@ -1,7 +1,7 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
   {% csrf_token %}
-  <div class="row">
-    <div class="col-md-4">
+  <div class="d-flex flex-wrap">
+    <div class="col-md-3 px-2">
       <input type="text" id="taxo-name" name="search_organism" style="display: none" />
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
@@ -27,7 +27,7 @@
            </tbody>
       </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3 px-2">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
              <!--prettier-ignore-->
@@ -41,7 +41,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3 px-2">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <!--prettier-ignore-->
@@ -54,6 +54,21 @@
           {%endfor%}
         </tbody>
       </table>
+    </div>
+    <div class="col-md-3 px-2">
+      <table class="table table-hover table-sm align-middle table-bordered">
+        <tbody>
+          <!--prettier-ignore-->
+          {% for field in form.group4 %}
+          <tr>
+          <!--prettier-ignore-->
+          {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+          <!--prettier-ignore-->
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
       <div class="col-md-3 updateformshow not-visible">
         <div class="d-flex justify-content-evenly align-baseline ">
           {%include 'utils/miscellaneous/save_btn.html'%}
@@ -62,7 +77,6 @@
           
         </div>
       </div>
-    </div>
   </div>
 </form>
 

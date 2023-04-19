@@ -4,6 +4,7 @@
     <label>{{field.label}}</label>
     <p>{{field | safe}}</p>
     <span class="badge bg-info text-light">{{field.help_text}}</span>
+    <span class="badge bg-info text-danger">{{field.errors}}</span>
   </div>
   {%endfor%}
 </div>
@@ -16,5 +17,5 @@
       replace_string = $(this).text().replace("<small class='not-visible'>", " | ").replace("</small>", "")
       $(this).text(replace_string)
     })
-  })
+  
 </script>

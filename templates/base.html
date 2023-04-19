@@ -84,6 +84,7 @@
         event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
       });
     </script>
+ 
     <!-- Create bootstrap Tooltip -->
     <script>
       var tooltipTriggerList = [].slice.call(
@@ -98,7 +99,7 @@
       document.addEventListener("DOMContentLoaded", function() {
         // Get all the links in the document
         {% comment %} const links = document.querySelectorAll("a[href]:not([href='#']):not([href='javascript:void(0)']):not([data-bs-toggle])::not([class='dropdown-item'])"); {% endcomment %}
-        const links=document.querySelectorAll("a[href]:not([data-bs-toggle]):not([class='dropdown-item'])")
+        const links=document.querySelectorAll("a[href]:not([data-bs-toggle])")
         let preloaderTimeout;
     
         // Function to show the preloader
@@ -115,23 +116,18 @@
         // Add click event listeners to all links
         for (let link of links) {
             link.addEventListener("click", function(event) {
-                // Set a timeout to show the preloader after 2 seconds
-                {% comment %} preloaderTimeout = setTimeout(showPreloader, 100); {% endcomment %}
                 showPreloader()
             });
         }
     
-        // Clear the timeout when the new page starts loading
-        {% comment %} window.addEventListener("beforeunload", function() {
-            clearTimeout(preloaderTimeout);
-        }); {% endcomment %}
+     
 
          // Hide the preloader when the cached page is shown
-    {% comment %} window.addEventListener("pageshow", function(event) {
+    window.addEventListener("pageshow", function(event) {
       if (event.persisted) {
           hidePreloader();
-      } {% endcomment %}
-  {% comment %} }); {% endcomment %}
+      } 
+   }); 
 
     });
       </script>

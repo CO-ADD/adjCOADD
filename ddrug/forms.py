@@ -22,6 +22,7 @@ class Drug_form(forms.ModelForm):
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
     # drug_class=forms.ChoiceField(choices=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_class'], showDesc=False), required=False)
     
@@ -40,7 +41,7 @@ class Drug_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def create_field_groups(self):
-        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", "drug_class", "drug_subclass", "drug_target", "drug_subtarget", "drug_panel",)]
+        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", "drug_class", "drug_subclass", "drug_target", "drug_subtarget", "drug_panel","drug_note")]
         self.group2 = [self[name] for name in ('approval_note','admin_routes','application','n_compounds','chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
         self.group3 = [self[name] for name in ( 'moa', 'antimicro', 'antimicro_class','max_phase','mw','mf',)]
             
@@ -110,7 +111,7 @@ class Vitekast_filter(Filterbase):
 
 
 class MIC_COADDfilter(Filterbase):
-    mic = django_filters.CharFilter(lookup_expr='icontains')
+    mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
     class Meta:
         model=MIC_COADD
         fields=['mic']

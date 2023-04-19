@@ -39,8 +39,9 @@ danger-color : #f3545d
   --bs-body-bg: rgb(238, 238, 238);
   --bs-footer-bg: #f2f2f5;
   --bs-th-bg: #a7b6b6;
+  --bs-th-child-bg: #bdcaca;
   --bs-topnav-bg: #2c7a84;
-  --bs-boxed-body-bg: #d8d8d8;
+  --bs-boxed-body-bg: #f1efef;
   --bs-form-item-color: #fff;
   /* Text Color */
   --bs-body-color: #575962;
@@ -74,7 +75,7 @@ danger-color : #f3545d
   --bs-th-bg: #226770;
   --bs-topnav-bg: #282e3f;
   --bs-boxed-body-bg: #32394f;
-  --bs-form-item-color: #f6f6f6;
+  --bs-form-item-color: #111111;
   /* Text Color */
   --bs-body-color: #f6f6f6;
   --bs-menu-item-color: #ebeef0;
@@ -269,7 +270,7 @@ button,
 
 /* ------------------------------ */
 /* ----custom Card Style */
-.card {
+.card, .card div {
   background-color: var(--bs-card-bg);
   border-color: var(--bs-card-border);
 }
@@ -691,7 +692,10 @@ table.dataTable {
 }
 
 table.dataTable thead tr {
-  background-color: var(--bs-th-bg) !important;
+  background-color: var(--bs-th-bg) ;
+}
+.childtable thead tr{
+  background-color: var(--bs-th-child-bg)!important;
 }
 table.dataTable td {
   border-color: var(--bs-light)!important;

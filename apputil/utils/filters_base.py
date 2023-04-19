@@ -28,7 +28,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 q_object |= Q(**{lookup_field_name: int_value})
             except ValueError:
                 pass
-        # Add more field types as needed
+        # Add more field types as needed...
 
     return q_object
 # q_object = get_all_fields_q_object(MyModel, value, exclude_fields=exclude_fields)
@@ -55,7 +55,7 @@ class Filterbase(django_filters.FilterSet):
 
 # --Filter view base class--
 class FilteredListView(ListView):
-    filterset_class = None
+    filterset_class = None #each filterset class based on class Filterbase
     paginate_by=50
     model_fields=None
     order_by=None
@@ -73,19 +73,22 @@ class FilteredListView(ListView):
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()
         if order:
+            
+            order=order.replace(".", "__")
+            print(order)
             return self.filterset.qs.distinct().order_by(order)
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
-        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page'}
+        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page' and key!='csrfmiddlewaretoken'}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
-        
+        print(context['fields'])
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()

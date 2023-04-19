@@ -34,7 +34,7 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
 from apputil.utils.api_filterclass import API_FilteredListView
-from apputil.utils.logs import Validation_Log
+from apputil.utils.validation_log import Validation_Log
 from apputil.views import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
@@ -120,11 +120,13 @@ class DrugCardView(DrugListView):
         # clearIMGfolder()
             for object_ in context["object_list"]:
                 filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
+                # print(filepath)
                 if os.path.exists(filepath):
                     continue
                 else:
                     m=object_.smol
                     try:
+                        print(object_.pk)
                         molecule_to_svg(m, object_.pk)
                     except Exception as err:
                         messages.error(self.request, f'**{object_.pk} mol may not exists**')

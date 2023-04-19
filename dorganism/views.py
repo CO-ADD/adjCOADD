@@ -20,7 +20,7 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import DeleteView_FKeyExist, ModelDeleteView
-from apputil.views import permission_not_granted
+from apputil.utils.views_base import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
@@ -404,15 +404,19 @@ def updateStock(req, pk):
             try:
                 with transaction.atomic(using='dorganism'):      
                     obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
+                    print(obj)
                     try:
-                        if form.is_valid():                  
+                        if form.is_valid(): 
+                            print('valid')                 
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
+                        print('formerror')
                         print(f'form erroro is {form.errors} and error {err}')
             except Exception as err:
+                print("error")
                 messages.warning(req, f'Update failed due to {err} error')
                 return redirect(req.META['HTTP_REFERER'])
     context={

@@ -1,11 +1,11 @@
 <div class="col-md-2 vh-80 m-0 p-1">
   <div class="card ms-3 px-1 rounded-3">
     <div class="d-flex justify-content-between border-bottom border-dark">
-      <p class="card-title px-1 fw-bold mb-0 fst-italic">
+      <p class="card-title px-1 fw-bold mb-0 ">
         <a class="card-link" href="{{url_name}}"> {{object_name}}</a>
       </p>
-      <p class="card-text m-0 fst-normal mb-0 my-auto" style="font-size: x-small">
-        {{object_var1}}
+      <p class="card-title px-1 fw-bold mb-0">
+        <a class="card-link" href="{{url_name}}"> {{object_name_ita}}</a>
       </p>
       <!-- Select Box -->
       {%include 'utils/selectbox.html' with datatype=datatype object_id=object.pk%}
@@ -60,7 +60,7 @@
         
       {%endif%}
     </p>
-    <p class="card-text m-0 fst-italic"> <strong>{{object_var2_label}}</strong> {{object_var2}}</p>
+    <p class="card-text m-0 fst-normal"> <strong>{{object_var2_label}}</strong> {{object_var2}}</p>
     <p class="card-text m-0 fst-normal"> <strong>{{object_var2b_label}}</strong> {{object_var2b}}</p>
     <p class="card-text m-0 fst-normal"> <strong>{{object_var3_label}}</strong>{{object_var3}}</p>
     <p class="card-text m-0 fst-normal">
@@ -80,7 +80,7 @@
       <!--  -->
     </p>
     <br />
-    <div class="text-center bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#{{object_id_slug}}"
+    <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object_id_slug}}"
       aria-expanded="false" aria-controls="{{object_id_slug}}">
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
     </div>

@@ -3,7 +3,7 @@ var searchForm = $("#search-form");
 var searchInput = $("#search-input");
 var resultsBox = $("#results-box");
 
-var csrf = $("input[name='csrfmiddlewaretoken']").val();
+var csrf = getCookie('csrftoken')//$("input[name='csrfmiddlewaretoken']").val();
 
 function sendSearchData(inputtext) {
   $.ajax({
