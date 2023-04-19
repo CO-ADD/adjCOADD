@@ -75,7 +75,7 @@ danger-color : #f3545d
   --bs-th-bg: #226770;
   --bs-topnav-bg: #282e3f;
   --bs-boxed-body-bg: #32394f;
-  --bs-form-item-color: #f6f6f6;
+  --bs-form-item-color: #111111;
   /* Text Color */
   --bs-body-color: #f6f6f6;
   --bs-menu-item-color: #ebeef0;
@@ -270,7 +270,7 @@ button,
 
 /* ------------------------------ */
 /* ----custom Card Style */
-.card {
+.card, .card div {
   background-color: var(--bs-card-bg);
   border-color: var(--bs-card-border);
 }

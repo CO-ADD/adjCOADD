@@ -99,7 +99,7 @@
       document.addEventListener("DOMContentLoaded", function() {
         // Get all the links in the document
         {% comment %} const links = document.querySelectorAll("a[href]:not([href='#']):not([href='javascript:void(0)']):not([data-bs-toggle])::not([class='dropdown-item'])"); {% endcomment %}
-        const links=document.querySelectorAll("a[href]:not([data-bs-toggle]):not([class='dropdown-item'])")
+        const links=document.querySelectorAll("a[href]:not([data-bs-toggle])")
         let preloaderTimeout;
     
         // Function to show the preloader

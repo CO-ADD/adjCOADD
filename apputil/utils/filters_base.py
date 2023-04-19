@@ -55,7 +55,7 @@ class Filterbase(django_filters.FilterSet):
 
 # --Filter view base class--
 class FilteredListView(ListView):
-    filterset_class = None
+    filterset_class = None #each filterset class based on class Filterbase
     paginate_by=50
     model_fields=None
     order_by=None
@@ -73,6 +73,9 @@ class FilteredListView(ListView):
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()
         if order:
+            
+            order=order.replace(".", "__")
+            print(order)
             return self.filterset.qs.distinct().order_by(order)
         return self.filterset.qs.distinct()
 
@@ -85,7 +88,7 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
-        
+        print(context['fields'])
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()

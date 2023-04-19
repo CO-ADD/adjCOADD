@@ -19,7 +19,8 @@
         {% for object in page_obj %}
         <!--  -->
           <!--prettier-ignore-->
-          {% include 'utils/card.html' with url_name=" " datatype='Gene' object_name=object object_id_slug=object.urlname object_var1="" object_var2=""  object_var3="" object_var4="" object_var5_label="Type" object_var5="" object_var6_label="Phenotype" object_var6="" object_var7_label="Genotype" object_var7="" %}
+          {% url 'gene_detail' object.pk as url_name %}
+          {% include 'utils/card.html' with url_name=url_name datatype='Gene' object_name=object.gene_name object_id_slug=object.urlname object_var1="" object_var2=""  object_var3="" object_var4="" object_var5_label="Type" object_var5="" object_var6_label="Phenotype" object_var6="" object_var7_label="Genotype" object_var7="" %}
         <!--prettier-ignore-->
         {%endfor%}
       </div>

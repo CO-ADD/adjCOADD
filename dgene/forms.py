@@ -11,7 +11,7 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import Filterbase
 from .models import Gene
 
-class CreateGene_form(ModelForm):
+class Gene_form(ModelForm):
 
      
     gene_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="gene_type"), required=False)
@@ -27,22 +27,24 @@ class CreateGene_form(ModelForm):
                 attrs = field.widget.attrs
                 attrs['class'] = attrs.get('class', '') + 'input-group'
                 field.widget.attrs = attrs
-    
-    
 
     def create_field_groups(self):
-        pass 
+        self.group1 = [self[name] for name in Gene.FORM_GROUPS['Group_gene']]
+        self.group2 = [self[name] for name in Gene.FORM_GROUPS['Group_protein']]
+ 
     
     class Meta:
         model=Gene
         exclude = ['gene_id']
-
+ 
 # -------------fitlerset Forms---------------------------------------------------------------
 
 class Genefilter(Filterbase):
    
     Gene_Type=django_filters.ChoiceFilter(field_name='gene_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-   
+    Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')
+    Othername=django_filters.CharFilter(field_name='gene_othernames', lookup_expr='icontains', label='Other Name')
+    Gene_Class=django_filters.CharFilter(field_name='protein_class', lookup_expr='icontains', label='Gene Class')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["Gene_Type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]

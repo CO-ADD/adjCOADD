@@ -29,12 +29,17 @@ class Gene(AuditModel):
         "gene_name":"Gene Name",
         "gene_othernames":"Other Name",
         "gene_type":"Gene Type",
-        "gene_class":"Gene Class",
+        "protein_class":"Gene Class",
         "gene_note":"Gene Note",
     }
 
     Choice_Dictionary = {
         'gene_type':'Gene_Type',
+    }
+
+    FORM_GROUPS={
+       'Group_gene': ["source", "gene_name", "gene_type", "organisms", "resistance_class", "uniprot", "variants"],
+       'Group_protein': ['protein_name','protein_class','protein_subclass','gene_note','gene_modification'],
     }
 
     ID_SEQUENCE = 'Gene'
@@ -43,7 +48,7 @@ class Gene(AuditModel):
 
     gene_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
     gene_name = models.CharField(max_length=25, unique=True,  verbose_name = "Gene Name")
-    urlname = models.SlugField(max_length=30, verbose_name = "URLGene")
+    # urlname = models.SlugField(max_length=30, verbose_name = "URLGene")
     gene_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Gene Type", on_delete=models.DO_NOTHING,
          db_column="gene_type", related_name="%(class)s_genetype")
     gene_note = models.CharField(max_length=120, verbose_name = "Gene Note")

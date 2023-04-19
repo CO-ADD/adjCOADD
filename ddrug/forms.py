@@ -111,7 +111,7 @@ class Vitekast_filter(Filterbase):
 
 
 class MIC_COADDfilter(Filterbase):
-    mic = django_filters.CharFilter(lookup_expr='icontains')
+    mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
     class Meta:
         model=MIC_COADD
         fields=['mic']
