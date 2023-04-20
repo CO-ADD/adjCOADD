@@ -23,15 +23,37 @@
     >
       Gene
     </a>
-    {% comment %} <a
+    <a
       class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'vitekcard_list'%}"
+      href="{%url 'sequence_card'%}"
       data-bs-toggle="tooltip"
       data-bs-placement="left"
-      title="{{objects_card}} entries"
-      inactivate
+      title=" entries"
+     
     >
-      VITEK CARD
-    </a> {% endcomment %}
+      Sequence
+    </a>
+    <div class="d-flex flex-column">
+    <a
+    class="btn btn-sm btn-success m-auto"
+    href="{%url 'wgs-fastqc_list'%}"
+    data-bs-toggle="tooltip"
+    data-bs-placement="left"
+    title=" entries"
+   
+  >
+    WGS_FastQC
+  </a>
+  <a
+  class="btn btn-sm btn-success m-auto"
+  href="{%url 'wgs-checkm_card'%}"
+  data-bs-toggle="tooltip"
+  data-bs-placement="left"
+  title=" entries"
+ 
+>
+  WGS_CheckM
+</a>
+</div>
   </div>
 </div>

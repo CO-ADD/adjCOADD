@@ -40,7 +40,7 @@ from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from .utils import (molecule_to_svg, 
                     clearIMGfolder, get_mfp2_neighbors)
-from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter
+from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
 from .serializers import Drug_Serializer, VITEK_ASTSerializer
 from .util_vitek import *
 
@@ -319,6 +319,17 @@ class MIC_COADDCardView(MIC_COADDListView):
     template_name = 'ddrug/mic_coadd/mic_coadd_card.html'
   
 
+## -----------
+class MIC_PubListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=MIC_Pub  
+    template_name = 'ddrug/mic_pub/mic_pub_list.html' 
+    filterset_class=MIC_Pubfilter
+    model_fields=model.HEADER_FIELDS
+
+## -------------
+class MIC_PubCardView(MIC_PubListView):
+    template_name = 'ddrug/mic_pub/mic_pub_card.html'
 
 # --API Views--
 ## Drug

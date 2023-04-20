@@ -33,15 +33,27 @@
     >
       VITEK CARD
     </a>
+    <div class="d-flex flex-column">
     <a
-    class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-    href="{%url 'mic_coadd_list'%}"
+    class="btn btn-outline-info"
+    href="{%url 'mic_coadd_card'%}"
     data-bs-toggle="tooltip"
     data-bs-placement="left"
-    title="{{objects_mic}} entries"
+    title="{{objects_miccoadd}} entries"
     inactivate
   >
     MIC COADD
   </a>
+  <a
+  class="btn btn-sm btn-outline-info m-auto"
+  href="{%url 'mic_pub_card'%}"
+  data-bs-toggle="tooltip"
+  data-bs-placement="left"
+  title="{{objects_micpub}} entries"
+  inactivate
+>
+  MIC Pub
+</a>
+</div>
   </div>
 </div>

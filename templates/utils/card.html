@@ -79,13 +79,24 @@
       {{object_var5 | join:","}}
       <!--  -->
     </p>
+       <!-- if fields provided  -->
+       {%if card_fields%}
+       {% for name, value in object.get_fieldsandvalues %}
+       <div class='d-flex' >
+         <p class='fw-bold' >{{name}}: </p>
+         <p style="font-size:small">{{value}}</p>
+       </div>
+       {%endfor%}
+ 
+     {%endif%}
     <br />
-    <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{object_id_slug}}"
+    <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#_{{object_id_slug}}"
       aria-expanded="false" aria-controls="{{object_id_slug}}">
       <i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
     </div>
 
-    <div class="collapse" id="{{object_id_slug}}">
+    <div class="collapse" id="_{{object_id_slug}}">
+   
       <br />
       <p class="card-text m-0 fst-normal" style="font-size: small">
         <strong>{{object_var6_label}}</strong><br />

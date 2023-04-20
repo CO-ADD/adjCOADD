@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import Filterbase
-from .models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD
+from .models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub
 from adjcoadd.constants import *
 
 
@@ -114,4 +114,10 @@ class MIC_COADDfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
     class Meta:
         model=MIC_COADD
+        fields=['mic']
+
+class MIC_Pubfilter(Filterbase):
+    mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+    class Meta:
+        model=MIC_Pub
         fields=['mic']

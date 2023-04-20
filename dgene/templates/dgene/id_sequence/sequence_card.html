@@ -4,7 +4,7 @@
 {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html' with list_url='gene_card' card_url='gene_card' create_object='createGene' create_objectModal='createGeneModal'%}
+  {%include 'utils/leftbar.html' with list_url='sequence_card' card_url='sequence_card' create_object='createSequence' create_objectModal='createSequenceModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
@@ -19,8 +19,8 @@
         {% for object in page_obj %}
         <!--  -->
           <!--prettier-ignore-->
-          {% url 'gene_detail' object.pk as url_name %}
-          {% include 'utils/card.html' with url_name=url_name datatype='Gene' object_name=object.gene_name object_id_slug=object.urlname card_fields=fields%}
+          
+          {% include 'utils/card.html' with datatype='sequence' object_name=object.orgbatch_id object_id_slug=object.urlname card_fields=fields%}
         <!--prettier-ignore-->
         {%endfor%}
       </div>
