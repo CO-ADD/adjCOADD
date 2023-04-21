@@ -15,42 +15,51 @@
   <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
     <a
       class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'gene_card'%}"
+      href="{%url 'gene_list'%}"
       data-bs-toggle="tooltip"
       data-bs-placement="left"
-      title=" entries"
-     
+      title=" entries"     
     >
       Gene
     </a>
+    <div class="d-flex flex-column mx-2">
     <a
-      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'sequence_card'%}"
+    class="btn btn-sm btn-outline-success m-auto"
+    href="{%url 'id_pub_list'%}"
+    data-bs-toggle="tooltip"
+    data-bs-placement="left"
+    title=" entries"    
+  >
+    ID_Pub
+  </a>
+    <a
+    class="btn btn-sm btn-outline-success m-auto"
+    style="float: right"
+      href="{%url 'sequence_list'%}"
       data-bs-toggle="tooltip"
       data-bs-placement="left"
-      title=" entries"
-     
+      title=" entries"    
     >
       Sequence
     </a>
-    <div class="d-flex flex-column">
+  </div>
+  <div class="d-flex flex-column mx-2">
     <a
-    class="btn btn-sm btn-success m-auto"
+    class="badge bg-info border m-auto"
+    style="float: right"
     href="{%url 'wgs-fastqc_list'%}"
     data-bs-toggle="tooltip"
     data-bs-placement="left"
-    title=" entries"
-   
+    title=" entries"   
   >
     WGS_FastQC
   </a>
   <a
-  class="btn btn-sm btn-success m-auto"
-  href="{%url 'wgs-checkm_card'%}"
+  class="badge bg-info border m-auto"
+  href="{%url 'wgs-checkm_list'%}"
   data-bs-toggle="tooltip"
   data-bs-placement="left"
   title=" entries"
- 
 >
   WGS_CheckM
 </a>

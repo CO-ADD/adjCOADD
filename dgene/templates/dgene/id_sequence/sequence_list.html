@@ -4,9 +4,9 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%url 'excel-import' process_name='Drug' as urlname%}
+  {%url 'excel-import' process_name='ID_Sequnce' as urlname%}
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with list_url='wgs-checkm_list' card_url='wgs-checkm_list'%}
+  {%include 'utils/leftbar.html' with list_url='sequence_list' card_url='sequence_list' create_object='createSequence' create_objectModal='createSequenceModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
@@ -15,7 +15,7 @@
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_filter.html' with modelname='WGS_CheckM' %}
+      {%include 'utils/datatable_general.html' with modelname='ID_Sequnce' %}
     </div>
   </div>
 </div>

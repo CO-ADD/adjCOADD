@@ -16,7 +16,6 @@ from .models import Gene, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
 ## 
 class Gene_form(ModelForm):
     gene_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="gene_type"), required=False)
-    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False,)
    
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
@@ -41,18 +40,56 @@ class Gene_form(ModelForm):
 ## fitler forms
 class Genefilter(Filterbase):
    
-    Gene_Type=django_filters.ChoiceFilter(field_name='gene_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')
-    Othername=django_filters.CharFilter(field_name='gene_othernames', lookup_expr='icontains', label='Other Name')
-    Gene_Class=django_filters.CharFilter(field_name='protein_class', lookup_expr='icontains', label='Gene Class')
+    gene_type=django_filters.ChoiceFilter(choices=[])
+    # Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')
+    # Othername=django_filters.CharFilter(field_name='gene_othernames', lookup_expr='icontains', label='Other Name')
+    # Gene_Class=django_filters.CharFilter(field_name='protein_class', lookup_expr='icontains', label='Gene Class')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Gene_Type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
+        self.filters["gene_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
         
     class Meta:
         model=Gene
-        fields=[ 'Gene_Type']
+        fields=list(model.HEADER_FIELDS.keys())
 
+# --ID_Pub Forms--
+## 
+class ID_Pub_form(ModelForm):
+    id_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="id_type"), required=False)
+   
+    def __init__(self, *args, **kwargs):    
+        super().__init__(*args, **kwargs)
+        self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
+        self.create_field_groups()
+        for field in self.fields.values():
+            if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
+                # Add the 'group-input' class to the widget attrs
+                attrs = field.widget.attrs
+                attrs['class'] = attrs.get('class', '') + 'input-group'
+                field.widget.attrs = attrs
+
+    def create_field_groups(self):
+        pass
+ 
+    
+    class Meta:
+        model=ID_Pub
+        fields="__all__"
+ 
+## fitler forms
+class ID_Pubfilter(Filterbase):
+   
+    # id_type=django_filters.ChoiceFilter(choices=[])
+    # Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')
+    # Othername=django_filters.CharFilter(field_name='gene_othernames', lookup_expr='icontains', label='Other Name')
+    # Gene_Class=django_filters.CharFilter(field_name='protein_class', lookup_expr='icontains', label='Gene Class')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.filters["id_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
+        
+    class Meta:
+        model=ID_Pub
+        fields=list(model.HEADER_FIELDS.keys())
 
 # --ID_Sequence forms--
 ##
@@ -83,32 +120,39 @@ class Sequence_form(ModelForm):
 
 ## fitler forms
 class Sequencefilter(Filterbase):
-    Run_Id=django_filters.CharFilter(field_name='run_id', lookup_expr='icontains', label='RUN ID')
-    
+    run_id=django_filters.CharFilter(lookup_expr='icontains', label='RUN ID')
+    id_organisms=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=[] )
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     class Meta:
         model=ID_Sequence
-        fields=[ 'Run_Id']
-
-
+        fields=list(model.HEADER_FIELDS.keys())
 
 # WGS_FastQCfilter forms
 class FastQCfilter(Filterbase):
     Run_Id=django_filters.CharFilter(field_name='run_id', lookup_expr='icontains', label='RUN ID')
-    
+    # OrgBatch_ID=django_filters.ModelChoiceFilter(field_name='orgbatch_id', queryset=Organism_Batch.objects.filter(astatus__gte=0))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
     class Meta:
         model=WGS_FastQC
-        fields=[ 'Run_Id']
+        fields=list(model.HEADER_FIELDS.keys())#[ 'Run_Id']
 
 # WGS_CheckMfilter forms
 class CheckMfilter(Filterbase):
     Run_Id=django_filters.CharFilter(field_name='run_id', lookup_expr='icontains', label='RUN ID')
-    
+    # OrgBatch_ID=django_filters.ModelChoiceFilter(field_name='orgbatch_id', queryset=Organism_Batch.objects.filter(astatus__gte=0))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # self.create_field_groups()
+        # self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
+    
+    def create_field_groups(self):
+        self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
+        print(self.group1[0].label)
+
     class Meta:
         model=WGS_CheckM
-        fields=[ 'Run_Id']
+        fields=list(model.HEADER_FIELDS.keys()) #[ 'Run_Id']

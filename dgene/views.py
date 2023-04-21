@@ -15,7 +15,7 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from .models import Gene, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
-from .forms import (Gene_form, Genefilter, Sequence_form, Sequencefilter, FastQCfilter, CheckMfilter)
+from .forms import (Gene_form, Genefilter, Sequence_form, Sequencefilter, FastQCfilter, CheckMfilter, ID_Pub_form, ID_Pubfilter)
 
 # --Gene Views--
 ##
@@ -50,6 +50,26 @@ class GeneUpdateView(SimpleupdateView):
     form_class=Gene_form
     template_name='dgene/gene/gene_u.html'
     model=Gene
+
+# -- ID-Pub Views--
+##
+class ID_PubListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model= ID_Sequence
+    template_name = 'dgene/id_pub/id_pub_list.html' 
+    filterset_class=ID_Pubfilter
+    model_fields=model.HEADER_FIELDS
+
+##
+class ID_PubCreateView(SimplecreateView):
+    form_class=ID_Pub_form
+    template_name='dgene/id_pub/id_pub_c.html'
+
+##
+class ID_PubUpdateView(SimpleupdateView):
+    form_class=ID_Pub_form
+    template_name='dgene/id_pub/id_pub_u.html'
+    model=ID_Sequence
     
 # --Sequence Views--
 ##
@@ -76,7 +96,6 @@ class SequenceUpdateView(SimpleupdateView):
     model=ID_Sequence
 
 # --WGS FastQC--
-#
 ##
 class WGS_FastQCListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -85,12 +104,7 @@ class WGS_FastQCListView(LoginRequiredMixin, FilteredListView):
     filterset_class=FastQCfilter
     model_fields=model.HEADER_FIELDS
 
-##
-class WGS_FastQCCardView(SequenceListView):
-    template_name = 'dgene/wgs_fastqc/fastqc_card.html'
-
 # --WGS CheckM--
-#
 ##
 class WGS_CheckMListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -99,6 +113,3 @@ class WGS_CheckMListView(LoginRequiredMixin, FilteredListView):
     filterset_class=CheckMfilter
     model_fields=model.HEADER_FIELDS
 
-##
-class WGS_CheckMCardView(SequenceListView):
-    template_name = 'dgene/wgs_checkm/checkm_card.html'

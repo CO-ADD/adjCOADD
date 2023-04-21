@@ -1,8 +1,7 @@
 function childtable(permission, table){
 
   console.log(permission)
-
-  const csrftoken = getCookie("csrftoken");
+  
     $("#datatable_batch tbody").on("click", "a.dt-control", function (e) {
 
       var tr = $(this).closest("tr");
