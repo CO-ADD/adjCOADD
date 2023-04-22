@@ -3,9 +3,9 @@
 {% block title%} COADD{% endblock %} {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%url 'excel-import' process_name='MIC_COADD' as urlname%}
+  {%url 'excel-import' process_name='MIC_Pub' as urlname%}
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with import_module=urlname list_url='mic_coadd_list' card_url='mic_coadd_card'%}
+  {%include 'utils/leftbar.html' with import_module=urlname list_url='mic_pub_list' card_url='mic_pub_card'%}
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
@@ -16,7 +16,7 @@
         {% for object in page_obj %}
         <!--detail URL  -->
         <!--prettier-ignore-->
-        {%include 'utils/card.html' with object_name=object.pk datatype='MIC_COADD' object_id_slug=object.pk card_fields=fields%}
+        {%include 'utils/card.html' with object_name=object.pk datatype='MIC_Pub' object_id_slug=object.pk card_fields=fields%}
         {%endfor%}
       </div>
     </div>

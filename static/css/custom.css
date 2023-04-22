@@ -217,6 +217,7 @@ span {
 }
 
 td {
+  max-width: 300px !important;
   white-space: wrap;
   word-wrap: break-word;
   color: var(--bs-body-color);
@@ -414,8 +415,7 @@ nav.shrink p {
 
 /* ------------------- */
 /* ----Landing page badges custom style */
-.landp-img-01,
-.landp-img-02 {
+.landp-img-01, .landp-img-02 {
   height: 8rem;
   width: 8rem;
 
@@ -424,8 +424,17 @@ nav.shrink p {
   color: var(--bs-light);
   font-weight: bolder;
 }
+.landp-img-03{
+  height: 2rem;
+  width: 4rem;
+  margin: 1rem;
+  border-radius: 5%;
+  color: var(--bs-light);
+  font-weight: bolder;
+  
 
-.landp-img-01 {
+}
+.landp-img-01, .landp-img-03 {
   animation: fadeIn 1s;
   background-color: var(--orange, orange);
 }
@@ -445,7 +454,8 @@ nav.shrink p {
 }
 
 .landp-img-01:hover,
-.landp-img-02:hover {
+.landp-img-02:hover,
+.landp-img-03:hover {
   transform: scale(1.1);
   transition: 0.3s ease-in;
   color: var(--bs-light);
@@ -735,16 +745,23 @@ form p {
 .fixTableHead {
   overflow-y: auto;
   height: 100vh;
+  border-collapse: collapse;
+  width:100%;
 }
-
+.fixTableHead thead tr {
+  position: relative;
+}
 .fixTableHead thead th {
-  position: sticky;
+  position: sticky !important;
   top: 0;
   background-color: var(--bs-th-bg);
+  resize: horizontal;
+  overflow: hidden;
+  min-width: 70px;
+  max-height: fit-content;
 }
 
 /* pivottable */
-
 .dataframe th,
 .dataframe td {
   padding: 0;

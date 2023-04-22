@@ -1,5 +1,6 @@
 function createChild(row, Batch_id_a, stock_create_id, stock_create_modal, permission) {
-// Define permission
+// Define
+const csrftoken = getCookie("csrftoken");
 var defaultContent = (data, type, row) => {
   
   return permission == 'Admin' ?
@@ -29,7 +30,7 @@ var defaultContent = (data, type, row) => {
       ajax: {
         url: `/stocklist/${Batch_id}`,
         type: "GET",
-        headers: { "X-CSRFToken":'{{csrf_token}}'},
+        headers: { "X-CSRFToken": csrftoken},
         data: { Batch_id },
       },
 
@@ -102,13 +103,13 @@ var defaultContent = (data, type, row) => {
               }
             
             }
-            console.log(`#btn_save_${rowData.stock_id}_nleft`);
+            
             $('body').on("click", `#btn_save_${rowData.stock_id}_nleft`, function () {
-              console.log("minus -1")
+              
               $.ajax({
                 url: `/organism/updateStock/${rowData.stock_id}`,
                 type: "POST",
-                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                headers: { "X-CSRFToken": csrftoken },
                 data: { 'value': n_left.toString() },
               })
                 .done((response) => {
@@ -120,8 +121,9 @@ var defaultContent = (data, type, row) => {
                 
                   cell.innerHTML = `${n_left}` + html;            
                 })
-                .fail(() => {
+                .fail((xhr, textStatus, errorThrown) => {
                   console.log("Error occured");
+                  cell.innerHTML=`${xhr}, ${textStatus}, ${errorThrown}`
                 });
             })
 

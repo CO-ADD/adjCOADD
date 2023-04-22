@@ -12,14 +12,10 @@ from django.db import transaction, IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic.detail import DetailView
-from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import DeleteView_FKeyExist, ModelDeleteView
+# from apputil.utils.views_base import SimplecreateView
 from apputil.utils.views_base import permission_not_granted
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
@@ -158,14 +154,7 @@ def detailOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
     context["object"]=object_
-    if object_.strain_type:
-        context["strain_type"]=",".join(object_.strain_type)
-    else:
-        context["strain_type"]=" "
-    if object_.strain_panel:
-        context["strain_panel"]=",".join(object_.strain_panel)
-    else:
-        context["strain_panel"]=" "
+
     context["form"]=form
     # context for related tables
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
@@ -251,8 +240,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
 ## 
 @login_required
 def createBatch(req, organism_id):
-    kwargs={}
-    kwargs['user']=req.user 
+    kwargs={'user': request.user}
     form=Batch_form()
     
     if req.method=='POST':

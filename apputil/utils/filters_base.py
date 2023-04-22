@@ -48,7 +48,7 @@ class Filterbase(django_filters.FilterSet):
     def filter_all_fields(self, queryset, name, value):
         if value:
             exclude_fields = ['password',]
-            q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
+            q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
 

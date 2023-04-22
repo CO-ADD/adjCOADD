@@ -346,10 +346,14 @@ class AuditModel(models.Model):
                     else:   
                         value_list.append(obj)
                 else:
-                    value_list.append(" ")
-                    
+                    value_list.append(" ")                    
         return value_list
-     
+        
+    # used to get fieds and values as a paire
+    def get_fieldsandvalues(self):
+        fields=self.__class__.get_fields()
+        values=self.get_values()
+        return [(fields[i], values[i]) for i in range(len(fields))]
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method

@@ -27,7 +27,6 @@ class Gene(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         "gene_name":"Gene Name",
-        "gene_othernames":"Other Name",
         "gene_type":"Gene Type",
         "protein_class":"Gene Class",
         "gene_note":"Gene Note",
@@ -123,7 +122,7 @@ class ID_Pub(AuditModel):
     HEADER_FIELDS   = {
         "organism_id":"Organism ID",
         "id_type":"ID Method",
-        "id_organism":"Organism",
+        # "id_organism":"Organism",
         #"id_probability": "Probability",
         #"id_confidence": "Confidence",
         "source": "Source",

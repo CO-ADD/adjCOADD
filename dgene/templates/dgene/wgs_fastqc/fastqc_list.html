@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row justify-content-between vh-100">
+  {%url 'excel-import' process_name='Drug' as urlname%}
+  <!--prettier-ignore-->
+  {%include 'utils/leftbar.html' with list_url='wgs-fastqc_list' card_url='wgs-fastqc_list'%}
+  <!-- Sidebar View -->
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="main d-flex flex-column">
+    {%include 'utils/main_horizalbar.html'%}
+    <!-- list View Content -->
+    <div class="fixTableHead">
+      <!--prettier-ignore-->
+      {%include 'utils/datatable_filter.html' with modelname='WGS_FastQC' %}
+    </div>
+  </div>
+</div>
+{% endblock%}
