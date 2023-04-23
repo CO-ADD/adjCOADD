@@ -37,7 +37,7 @@ class Drug(AuditModel):
     }
 
     drug_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
-    drug_name = models.CharField(max_length=50, unique=True, verbose_name = "Drug Name")
+    drug_name = models.CharField(max_length=50, unique=False, verbose_name = "Drug Name")
     drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True)
     drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True)
     drug_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Drug Type", on_delete=models.DO_NOTHING,

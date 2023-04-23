@@ -16,7 +16,7 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import SimplecreateView
-from apputil.utils.views_base import permission_not_granted
+from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
@@ -49,22 +49,10 @@ def detailTaxonomy(req, slug=None):
     return render(req, "dorganism/taxonomy/taxonomy_detail.html", context)
 
 ##
-@login_required
-def createTaxonomy(req):
-    kwargs={}
-    kwargs['user']=req.user 
-    form=Taxonomy_form
-    if req.method=='POST':
-        form=Taxonomy_form(req.POST)
-        if form.is_valid():
-            instance=form.save(commit=False)
-            instance.save(**kwargs)
-            return redirect(req.META['HTTP_REFERER']) 
-        else:
-            messages.error(req, form.errors)
-            return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/taxonomy/taxonomy_c.html', {'form':form})
-    
+class TaxonomyCreateView(SimplecreateView):
+    form_class=Taxonomy_form
+    template_name='dorganism/taxonomy/taxonomy_c.html'
+        
 ##
 @login_required
 def updateTaxonomy(req, slug=None):

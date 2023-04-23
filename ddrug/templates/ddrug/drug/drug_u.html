@@ -1,7 +1,7 @@
 <form
   id="DrugUpdateForm"
   method="POST"
-  action="{%url 'drug_update' object.pk %}"
+   action="{%url 'drug_update' object.pk %}"
 >
   {% csrf_token %}
 
@@ -11,7 +11,7 @@
         <tbody>
           <!--prettier-ignore-->
           <tr>
-            <th>Name</th>
+            <th>Name {{object.pk}}</th>
             <td>
               {{object.drug_name}}
               <div class="not-visible">{{form.drug_name}}</div>

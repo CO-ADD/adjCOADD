@@ -44,7 +44,8 @@ class Drug_form(forms.ModelForm):
         self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", "drug_class", "drug_subclass", "drug_target", "drug_subtarget", "drug_panel","drug_note")]
         self.group2 = [self[name] for name in ('approval_note','admin_routes','application','n_compounds','chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
         self.group3 = [self[name] for name in ( 'moa', 'antimicro', 'antimicro_class','max_phase','mw','mf',)]
-            
+
+
     class Meta:
         model =Drug
         fields='__all__'
@@ -67,6 +68,22 @@ class Drug_form(forms.ModelForm):
     #     print(data)
     #     return data
 
+class Drug_updateform(Drug_form):
+    # drug_name=forms.CharField(widget=forms.TextInput(attrs={'disabled': 'disabled'}),)
+
+    def clean_unique_field(self):
+        unique_field = self.cleaned_data['drug_name']
+        # Exclude the current instance from the queryset to avoid the unique constraint conflict
+        queryset =Drug.objects.exclude(pk=self.instance.pk)
+
+        if queryset.filter(unique_field=unique_field).exists():
+            raise forms.ValidationError("This unique_field value already exists.")
+        
+        return unique_field
+    class Meta:
+        model =Drug
+        fields='__all__'
+        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol']
 
 
 # -------------fitlerset Forms---------------------------------------------------------------
