@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy, createTaxonomy, updateTaxonomy, deleteTaxonomy, 
+from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCreateView, updateTaxonomy, deleteTaxonomy, 
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      updateBatch, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
@@ -15,7 +15,7 @@ urlpatterns = [
     path('taxonomy_card', TaxonomyCardView.as_view(), name="taxo_card"),
     path('taxonomy_list', TaxonomyListView.as_view(), name="taxo_list"),
     path('taxonomy/<slug:slug>', detailTaxonomy, name="taxo_detail"),
-    path('createTaxo/', createTaxonomy, name="taxo_create"),
+    path('createTaxo/', TaxonomyCreateView.as_view(), name="taxo_create"),
     path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
     path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
 

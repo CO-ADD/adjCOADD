@@ -24,8 +24,6 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.utils.functional import SimpleLazyObject
 
@@ -35,7 +33,7 @@ from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
 from apputil.utils.api_filterclass import API_FilteredListView
 from apputil.utils.validation_log import Validation_Log
-from apputil.views import permission_not_granted
+from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from .utils import (molecule_to_svg, 
@@ -95,17 +93,12 @@ class DrugCardView(DrugListView):
 
 
     def get_queryset(self):
-        # Get the queryset however you usually would.  For example:
-        queryset = super().get_queryset()
-        # Then use the query parameters and the queryset to
-        # instantiate a filterset and save it as an attribute
-        # on the view instance for later.
+        queryset = super().get_queryset()  
         smiles_str=self.request.GET.get("substructure") or None
         similarity_threshold_str=self.request.GET.get("similarity_threshold") or None
         if similarity_threshold_str!=str(100) and smiles_str:
             config.tanimoto_threshold = int(similarity_threshold_str)/100
             queryset=get_mfp2_neighbors(smiles_str)
-            # print(similarity_queryset)
         elif smiles_str:
             queryset=Drug.objects.filter(smol__hassubstruct=QMOL(Value(smiles_str)))
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
@@ -139,67 +132,23 @@ class DrugCardView(DrugListView):
 @login_required
 def detailDrug(req, pk):
     context={}
-    object_=get_object_or_404(Drug, drug_id=pk)
+    object_=get_object_or_404(Drug, pk=pk)
     form=Drug_form(instance=object_)
-    # Array display handler
-    if object_.drug_panel:
-        context["drug_panel"]=",".join(object_.drug_panel)
-    else:
-        context["drug_panel"]=""
-    if object_.drug_othernames:
-        context["drug_othernames"]=",".join(object_.drug_othernames)
-    else:
-        context["drug_othernames"]=""
-    if object_.drug_codes:
-        context["drug_codes"]=",".join(object_.drug_codes)
-    else:
-        context["drug_codes"]=""
     context["object"]=object_
     context["form"]=form
  
     return render(req, "ddrug/drug/drug_detail.html", context)
 
 ##
-@login_required
-def createDrug(req):
-    kwargs={}
-    kwargs['user']=req.user 
-    form=Drug_form
-    if req.method=='POST':
-        form=Drug_form(req.POST)
-        if form.is_valid():
-            instance=form.save(commit=False)
-            instance.save(**kwargs)
-            return redirect(req.META['HTTP_REFERER']) 
-        else:
-            messages.error(req, "Create new object failed: "+str(form.errors))
-            print(form.errors)
-            # return JsonResponse({"error":form.errors})
-            return redirect(req.META['HTTP_REFERER'])
-    return render(req, 'ddrug/drug/drug_c.html', {'form':form})
+class DrugCreateView(SimplecreateView):
+    form_class=Drug_form
+    template_name='ddrug/drug/drug_c.html'
     
 ##
-@login_required
-def updateDrug(req, pk):
-    object_=get_object_or_404(Drug, pk=pk)
-    kwargs={}
-    kwargs['user']=req.user 
-    form=Drug_form(instance=object_)
-    if req.method=='POST':
-        print("updateing")
-        form=Drug_form(req.POST, instance=object_)
-        if form.is_valid():
-            print("checkform")
-            instance=form.save(commit=False)
-            try:        
-                instance.save(**kwargs)
-                print("updated Drug")
-            except Exception as err:
-                messages.error(req, err)
-            return redirect(req.META['HTTP_REFERER']) 
-        else:
-            print(form.errors)
-    return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
+class DrugUpdateView(SimpleupdateView):
+    form_class=Drug_form
+    template_name='ddrug/drug/drug_u.html'
+    model=Drug
 
 # --Vitek Card--
 class VitekcardListView(LoginRequiredMixin, FilteredListView):

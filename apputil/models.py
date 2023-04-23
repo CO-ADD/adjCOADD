@@ -206,7 +206,8 @@ class AuditModel(models.Model):
         return f"{self.pk}"
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.__name__}: {self.pk}"
+        # return f"{self.__name__}: {self.pk}"
+        return f"{self.pk}"
 
     #------------------------------------------------
     @classmethod
@@ -278,6 +279,7 @@ class AuditModel(models.Model):
         kwargs.pop("clean",None)
         if modelClean:
             self.full_clean()
+        print("save instance")
                  
         super(AuditModel,self).save(*args, **kwargs)
 

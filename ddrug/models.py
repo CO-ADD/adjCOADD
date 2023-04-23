@@ -183,6 +183,7 @@ class Drug(AuditModel):
                 mfp2=MORGANBV_FP('smol'), 
                 torsionbv=TORSIONBV_FP('smol')
                 )
+            print("update Drug")
             super(Drug, self).save(*args, **kwargs) 
         
 #=================================================================================================

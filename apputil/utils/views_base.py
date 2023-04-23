@@ -8,7 +8,7 @@ from asgiref.sync import sync_to_async
 
 from django import forms
 from django.db import transaction, IntegrityError
-from django.shortcuts import HttpResponse, render, redirect
+from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.http import JsonResponse
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views import View
@@ -59,21 +59,25 @@ class SimpleupdateView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         pk=kwargs.get("pk")
-        instance=self.get_object(pk)
-        form=self.form_class(instance=instance)
+        object_=self.get_object(pk)
+        form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 
     def post(self, request, *args, **kwargs):
         pk=kwargs.get("pk")
-        instance=self.get_object(pk)
-        form =self.form_class(request.POST, instance=instance)
+        print(f"post {pk}")
+        object_=self.get_object(pk)
+        form =self.form_class(request.POST, instance=object_)
         if form.is_valid():
+            print("form is valid")
             with transaction.atomic():
-                instance=form.save(commit=False)
+                object_new=form.save(commit=False)
                 kwargs={'user': request.user}
-                instance.save(**kwargs)
+                print("form validaed")
+                object_new.save(**kwargs)
             return redirect(request.META['HTTP_REFERER'])
         else:
+            print("form is not valid")
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
