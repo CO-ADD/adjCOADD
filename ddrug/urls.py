@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
-from .views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, updateDrug,#createDrug, updateDrug, 
+from .views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, DrugUpdateView,#createDrug, updateDrug, 
     detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, 
     ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView)#VitekcardListView,
@@ -26,7 +26,7 @@ urlpatterns = [
     path('drug/<str:pk>', detailDrug, name="drug_detail"),
     path('drug_detail_structure/<str:pk>', smartsQuery, name="smartsquery"),
     path('createDrug/', DrugCreateView.as_view(), name="drug_create"),
-    path('updateDrug/<str:pk>', updateDrug, name="drug_update"),
+    path('updateDrug/<str:pk>', DrugUpdateView.as_view(), name="drug_update"),
     path('vitekcard_list', VitekcardListView.as_view(), name="vitekcard_list"),
     path('vitekast_list', VitekastListView.as_view(), name="vitekast_list"),
     path('vitekcard_detail/<str:pk>', detailVitekcard, name="vitekcard_detail"),

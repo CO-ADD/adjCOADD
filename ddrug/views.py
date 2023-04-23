@@ -33,12 +33,12 @@ from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
 from apputil.utils.api_filterclass import API_FilteredListView
 from apputil.utils.validation_log import Validation_Log
-from apputil.utils.views_base import permission_not_granted, SimplecreateView
+from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from .utils import (molecule_to_svg, 
                     clearIMGfolder, get_mfp2_neighbors)
-from .forms import Drug_form, Drug_updateform, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
+from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
 from .serializers import Drug_Serializer, VITEK_ASTSerializer
 from .util_vitek import *
 
@@ -145,27 +145,10 @@ class DrugCreateView(SimplecreateView):
     template_name='ddrug/drug/drug_c.html'
     
 ##
-@login_required
-def updateDrug(req, pk):
-    object_=get_object_or_404(Drug, pk=pk)
-    kwargs={}
-    kwargs['user']=req.user 
-    form=Drug_updateform(instance=object_)
-    if req.method=='POST':
-        print("updateing")
-        form=Drug_updateform(req.POST, instance=object_)
-        if form.is_valid():
-            print("checkform")
-            instance=form.save(commit=False)
-            try:        
-                instance.save(**kwargs)
-                print("updated Drug")
-            except Exception as err:
-                messages.error(req, err)
-            return redirect(req.META['HTTP_REFERER']) 
-        else:
-            print(form.errors)
-    return render(req, 'ddrug/drug/drug_u.html', {'form':form, 'object':object_})
+class DrugUpdateView(SimpleupdateView):
+    form_class=Drug_form
+    template_name='ddrug/drug/drug_u.html'
+    model=Drug
 
 # --Vitek Card--
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
