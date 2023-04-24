@@ -15,7 +15,7 @@ from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Cultur
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
 from apputil.utils import validation_log
 
-import ddrug.util_vitek as Vitek
+import ddrug.utils.vitek as Vitek
 
 #-----------------------------------------------------------------------------------
 def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchID=None,

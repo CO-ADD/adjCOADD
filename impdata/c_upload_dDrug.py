@@ -12,10 +12,14 @@ from oraCastDB import oraCastDB
 from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
+from apputil.utils.validation_log import *
+#from apputil.utils.data import *
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
-from apputil.utils import slugify
+from ddrug.utils.import_drug import *
+#from apputil.utils import slugify
 
+from django.utils.text import slugify
 from rdkit import Chem
 from rdkit.Chem import AllChem
 #from django_rdkit.models import *
@@ -27,27 +31,27 @@ def reformat_OrganismID(OrgID):
     xStr = OrgID.split("_")
     return(f"{xStr[0]}_{int(xStr[1]):04d}")
 
-#-----------------------------------------------------------------------------------
-def split_StrList(strList,sep=";"):
-#-----------------------------------------------------------------------------------
-    if strList:
-        retLst = str(strList).split(sep)
-        for i in range(len(retLst)):
-            retLst[i] = retLst[i].strip()
-    else:
-        retLst = None
-    return(retLst)
+# #-----------------------------------------------------------------------------------
+# def split_StrList(strList,sep=";"):
+# #-----------------------------------------------------------------------------------
+#     if strList:
+#         retLst = str(strList).split(sep)
+#         for i in range(len(retLst)):
+#             retLst[i] = retLst[i].strip()
+#     else:
+#         retLst = None
+#     return(retLst)
 
-#-----------------------------------------------------------------------------------
-def smiles2mol(Smiles,verbose=0):
-#-----------------------------------------------------------------------------------
-    try:
-        xmol = Chem.MolFromSmiles(Smiles)
-    except:
-        xmol = None
-        if verbose:
-            print(f"[Invalid SMILES] {Smiles} ")
-    return(xmol)
+# #-----------------------------------------------------------------------------------
+# def smiles2mol(Smiles,verbose=0):
+# #-----------------------------------------------------------------------------------
+#     try:
+#         xmol = Chem.MolFromSmiles(Smiles)
+#     except:
+#         xmol = None
+#         if verbose:
+#             print(f"[Invalid SMILES] {Smiles} ")
+#     return(xmol)
 
 #-----------------------------------------------------------------------------------
 def update_VitekAST_ora(upload=False,uploaduser=None,OutputN=1000):
@@ -227,6 +231,7 @@ def update_Drug_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lower=Tr
         # df -> lstDict and remove null items 
         #lstRows = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
 
+        vLog = Validation_Log('Drug')
         # check user
         appuser = ApplicationUser.get(uploaduser)
 
@@ -242,60 +247,13 @@ def update_Drug_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lower=Tr
                     row[c] = None
 
             # set instance
-            djDrug = Drug.get(None,row['drug_id'])
-            if djDrug is None:
-                djDrug = Drug()
-                djDrug.drug_id = row['drug_id']
-                djDrug.drug_name = row['drug_name']
-            djDrug.drug_type = Dictionary.get(djDrug.Choice_Dictionary["drug_type"],row['drug_type'])
+            djDrug = imp_Drug_fromDict(row,vLog)
 
-            # Mod	Drug_OtherNames	Drug_Code		Panel		SMILES_Solv	SMILES_Salt
 
-            djDrug.n_compounds = row['ncmpd']
-            djDrug.drug_othernames = split_StrList(row['drug_othernames'])
-            djDrug.drug_code = split_StrList(row['drug_code'])
-            djDrug.drug_note = row['drug_note']
-            djDrug.drug_panel = split_StrList(row['panel'])
-
-            djDrug.antimicro = row['antimicro']
-            djDrug.antimicro_class = row['antimicro_class']
-            djDrug.drug_class = row['drug_class']
-            djDrug.drug_subclass = row['drug_subclass']
-            djDrug.drug_target = row['drug_target']
-            #djDrug.drug_subtarget = row['drug_subtarget']
-            #djDrug.moa = row['moa']
-
-            djDrug.vendor = row['vendor']
-            djDrug.vendor_catno = row['vendor_catno']
-
-            djDrug.chembl = row['chembl']
-            djDrug.drugbank = row['drugbank']
-            djDrug.cas = row['cas']
-            djDrug.pubchem = row['pubchem']
-            djDrug.chemspider = row['chemspider']
-            djDrug.unii = row['unii']
-            djDrug.kegg = row['kegg']
-            djDrug.comptox = row['comptox']
-            djDrug.echa = row['echa']
-            djDrug.chebi = row['chebi']
-            djDrug.uq_imb = row['imb']
-
-            djDrug.smiles = row['smiles']
-            djDrug.smol = row['smiles']
-            djDrug.smol = smiles2mol(row['smiles'],verbose=1)
-            #torsionbv=TORSIONBV_FP('molecule'),
-            #mfp2=MORGANBV_FP('molecule'),
-            #djDrug.ffp2=FEATMORGANBV_FP(row['smiles'])
-            #AllChem.GetMorganFingerprintAsBitVect(djDrug.smol)
-
-            djDrug.clean_Fields()
-            validDict = djDrug.validate()
-            if validDict:
-                logger.info(f" XX {djDrug} {validDict} ")
             #--- Upload ---------------------------------------------------------
             if upload:
-                #print(f" -> {djTax} as {appuser}")
+                logger.info(f" -S-> {repr(djDrug)} ")
                 djDrug.save(user=appuser)
             else:
-                logger.info(f" >r {djDrug} as {appuser}")
+                logger.info(f" chk> {repr(djDrug)} ")
         #Drug.update_fp()

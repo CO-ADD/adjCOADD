@@ -96,6 +96,10 @@ class Drug(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
+        return f"{self.drug_id}"
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
         return f"{self.drug_name} ({self.drug_id})"
 
    #------------------------------------------------
@@ -183,7 +187,6 @@ class Drug(AuditModel):
                 mfp2=MORGANBV_FP('smol'), 
                 torsionbv=TORSIONBV_FP('smol')
                 )
-            print("update Drug")
             super(Drug, self).save(*args, **kwargs) 
         
 #=================================================================================================

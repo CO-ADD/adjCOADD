@@ -36,11 +36,10 @@ from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
-from .utils import (molecule_to_svg, 
-                    clearIMGfolder, get_mfp2_neighbors)
+from .utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
+from .utils.vitek import *
 from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
 from .serializers import Drug_Serializer, VITEK_ASTSerializer
-from .util_vitek import *
 
 # ===================================================================
 @login_required   

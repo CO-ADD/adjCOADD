@@ -257,7 +257,6 @@ class AuditModel(models.Model):
     def save(self, *args, **kwargs):
         #
         # Checks for application user
-        #   could also use middleware
         #
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
@@ -279,7 +278,6 @@ class AuditModel(models.Model):
         kwargs.pop("clean",None)
         if modelClean:
             self.full_clean()
-        print("save instance")
                  
         super(AuditModel,self).save(*args, **kwargs)
 
@@ -356,6 +354,7 @@ class AuditModel(models.Model):
         fields=self.__class__.get_fields()
         values=self.get_values()
         return [(fields[i], values[i]) for i in range(len(fields))]
+    
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method
