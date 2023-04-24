@@ -40,6 +40,7 @@ class Taxonomy(AuditModel):
         'tax_rank':'Rank',
         'division':'Division', 
         'org_class':'Class',
+        'tax_id':{'Tax-ID': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='}
     }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")

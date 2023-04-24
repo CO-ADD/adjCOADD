@@ -9,9 +9,15 @@
         <th class="order_field " style="width: fit-content">ID</th>
         {%endif%}
         {%for field in fields%}
+        {%if key in field %}
+        <th class="order_field" style="width: fit-content">
+          {{key}}
+         </th>
+         {%else%}
         <th class="order_field" style="width: fit-content">
           {{field}}
          </th>
+         {%endif%}
         {%endfor%}
         <!-- object ID -->
         <!--field with web link if exists  -->

@@ -228,7 +228,7 @@ class BatchCardView(LoginRequiredMixin, FilteredListView):
 ## 
 @login_required
 def createBatch(req, organism_id):
-    kwargs={'user': request.user}
+    kwargs={'user': req.user}
     form=Batch_form()
     
     if req.method=='POST':

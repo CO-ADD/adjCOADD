@@ -122,7 +122,7 @@ class ID_Pub(AuditModel):
     HEADER_FIELDS   = {
         "organism_id":"Organism ID",
         "id_type":"ID Method",
-        # "id_organism":"Organism",
+        #"id_organism":"Organism",
         #"id_probability": "Probability",
         #"id_confidence": "Confidence",
         "source": "Source",

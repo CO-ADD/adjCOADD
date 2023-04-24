@@ -28,7 +28,7 @@ var defaultContent = (data, type, row) => {
       dom: "Bfrtip",
       pageLength: 1,
       ajax: {
-        url: `/stocklist/${Batch_id}`,
+        url: `/dorganism/stocklist/${Batch_id}`,
         type: "GET",
         headers: { "X-CSRFToken": csrftoken},
         data: { Batch_id },
@@ -107,7 +107,7 @@ var defaultContent = (data, type, row) => {
             $('body').on("click", `#btn_save_${rowData.stock_id}_nleft`, function () {
               
               $.ajax({
-                url: `/organism/updateStock/${rowData.stock_id}`,
+                url: `/dorganism/updateStock/${rowData.stock_id}/`,
                 type: "POST",
                 headers: { "X-CSRFToken": csrftoken },
                 data: { 'value': n_left.toString() },
@@ -144,7 +144,7 @@ var defaultContent = (data, type, row) => {
       console.log(data);
       var pk = data["stock_id"].toString();
       console.log(pk);
-      my_modal.load(`deleteStock/${pk}`, function (response) {
+      my_modal.load(`/dorganism/deleteStock/${pk}/`, function (response) {
         if (response == "Permission Not Granted") {
           alert("permission!");
         } else {
@@ -152,15 +152,17 @@ var defaultContent = (data, type, row) => {
         }
       });
     });
-    console.log("#" + stock_create_id)
-    loadOrganismModal("#" + stock_create_modal, "#" + stock_create_id, `/createStock/${Batch_id_a}/`);
+
+    let url_stock= `/dorganism/createStock/${Batch_id_a}/`
+    
+    loadModal("#" + stock_create_modal, "#" + stock_create_id, url_stock);
     $(`#StockTable${Batch_id_a} tbody`).on("click", `#update_stock`, function () {
       var data = usersTable.row($(this).parents("tr")).data();
       let my_modal = $("#updateStockModal");
       console.log(data);
       var pk = data["stock_id"].toString();
       console.log(pk);
-      my_modal.load(`updateStock/${pk}`, function (response) {
+      my_modal.load(`/dorganism/updateStock/${pk}/`, function (response) {
         if (response == "Permission Not Granted") {
           alert("permission!");
         } else {

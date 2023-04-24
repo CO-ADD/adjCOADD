@@ -12,12 +12,17 @@
 (base)>cd /opt/django
 
 #------------------------------------------------------
-# stop django server (gunicorn application server)
+# use bash script update_application.sh to deploy automatically
+(base)>./etc/update_app.sh <version number (e.g, 10 )>
+
+#-OR-------------------------------------------------------
+#following the rest steps 1.-5. :
+# 1. stop django server (gunicorn application server)
 #  nginx (http server can keep-on running)
 (base)>./etc/dj_stop.sh
 
 #------------------------------------------------------
-# archive current project
+# 2. archive current project
 (base)>cd project
 (base)>tar czf 00_Archive/adjCOADD_v<version_number>_<date of archiving>.tgz adjCOADD
        example: tar czf 00_Archive/adjCOADD_v02_20230108.tgz adjCOADD
@@ -28,11 +33,11 @@
 (base)>mv static static_v02_20230108 # or rm -rf static
 
 #------------------------------------------------------
-# Create new project file
+# 3. Create new project file
 (base)>git clone https://github.com/CO-ADD/adjCOADD
 
 #------------------------------------------------------
-# Collect static and create uploads folder 
+# 4. Collect static and create uploads folder 
 (base)>cd adjCOADD
 (base)>conda activate dj41py310
 (dj41py310)>python manage.py collectstatic
@@ -41,7 +46,7 @@
 (dj41py310)>cd ..
 
 #------------------------------------------------------
-# start django server (gunicorn application server)
+# 5. start django server (gunicorn application server)
 (base)>./etc/dj_start.sh
 
 #------------------------------------------------------

@@ -128,9 +128,11 @@
     </div>
     <script>
         $(document).ready(function () {
-            console.log("{{object.pk}}")
-            loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/{{object.pk}}/");
-            loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/{{object.pk}}/");
+            let url_batch=`{% url 'batch_create' object.pk %}`;
+            let url_culture=`{% url 'culture_create' object.pk %}`
+            console.log(url_culture)
+            loadModal("#createCultureModal", "#createCulture", url_culture);
+            loadModal("#createBatchModal", "#createBatch",  url_batch);
 
         });
     </script>

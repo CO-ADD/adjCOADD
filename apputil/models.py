@@ -337,16 +337,25 @@ class AuditModel(models.Model):
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
         for name in fields.keys():
+            
             if name in fieldsname:
+                # check field value is dictionary 
+       
                 obj=getattr(self, name)
                 if obj:
-                    if isinstance(obj, Model):
-                        value_list.append(obj.pk)
-                    elif isinstance(obj, list):
-                        array_to_string=','.join(str(e) for e in obj)
-                        value_list.append(array_to_string) 
-                    else:   
-                        value_list.append(obj)
+                    if isinstance(fields[name], dict):
+                        if isinstance(obj, Model):
+                            value_list.append({obj.pk: name})
+                        else:
+                            value_list.append(obj)
+                    else:
+                        if isinstance(obj, Model):
+                            value_list.append(obj.pk)
+                        elif isinstance(obj, list):
+                            array_to_string=','.join(str(e) for e in obj)
+                            value_list.append(array_to_string) 
+                        else:   
+                            value_list.append(obj)
                 else:
                     value_list.append(" ")                    
         return value_list

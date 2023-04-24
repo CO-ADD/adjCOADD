@@ -38,11 +38,11 @@ urlpatterns = [
     # OrgBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
     path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
-    path('organism/updateStock/<str:pk>', updateStock, name="stock_update"),
-    path('organism/deleteStock/<str:pk>', deleteStock, name="stock_delete"),
+    path('updateStock/<str:pk>/', updateStock, name="stock_update"),
+    path('deleteStock/<str:pk>/', deleteStock, name="stock_delete"),
 
     # Organism Culture 
-    path('createCulture/<str:organism_id>/', createCulture, name="cultr_create"),
+    path('createCulture/<str:organism_id>/', createCulture, name="culture_create"),
     path('updateCulture/<str:pk>', updateCulture, name="cultr_update"),
     path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
   

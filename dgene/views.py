@@ -55,7 +55,7 @@ class GeneUpdateView(SimpleupdateView):
 ##
 class ID_PubListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
-    model= ID_Sequence
+    model= ID_Pub
     template_name = 'dgene/id_pub/id_pub_list.html' 
     filterset_class=ID_Pubfilter
     model_fields=model.HEADER_FIELDS

@@ -21,12 +21,13 @@
 
 <script>
   $(document).ready(function () {
-    loadOrganismModal("#createOrganismModal", "#createOrganism", "/createOrg/");
-    loadOrganismModal("#createTaxoModal", "#createTaxo", "/createTaxo/");
-    loadOrganismModal("#createDrugModal", "#createDrug", "/createDrug/");
-    loadOrganismModal("#createDictModal", "#createDict", "/dict_create/");
-    loadOrganismModal("#createAppUserModal", "#createAppUser", "/user_create/");
-    loadOrganismModal("#createGeneModal", "#createGene", "/createGene/");
-    loadOrganismModal("#createSequenceModal", "#createSequence", "/createSequence/");
+    loadModal("#createOrganismModal", "#createOrganism", "{% url 'org_create'%}");
+    loadModal("#createTaxoModal", "#createTaxo", "{% url 'taxo_create'%}");
+    loadModal("#createDrugModal", "#createDrug", "{% url 'drug_create'%}");
+    loadModal("#createDictModal", "#createDict", "{% url 'dict_create'%}");
+    loadModal("#createAppUserModal", "#createAppUser", "{% url 'createAppUser'%}");
+    loadModal("#createGeneModal", "#createGene", "{% url 'gene_create'%}");
+    loadModal("#createSequenceModal", "#createSequence", "{% url 'sequence_create'%}");
+    loadModal("#createSequenceModal", "#createSequence", "{% url 'id_pub_create'%}");
   });
 </script>
