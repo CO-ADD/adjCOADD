@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <div style="height: 100vh;overflow: auto;">
   <table class="table table-bordered table-hover sorting_table fixTableHead" style="width: 100%">
     <thead>
@@ -5,15 +6,16 @@
         <!-- detail view link name if exists -->
         <th style="width: 1rem"></th>
         <!-- customized/verbose model fields name -->
-        {% if table_id != 'ApplicationUser' %}
-        <th class="order_field " style="width: fit-content">ID</th>
-        {%endif%}
+       
         {%for field in fields%}
-        {%if key in field %}
+        {% if field|is_dict %}
+        {%for key in field.keys%}
         <th class="order_field" style="width: fit-content">
           {{key}}
          </th>
-         {%else%}
+         {%endfor%}
+       
+        {%else%}
         <th class="order_field" style="width: fit-content">
           {{field}}
          </th>
@@ -21,9 +23,6 @@
         {%endfor%}
         <!-- object ID -->
         <!--field with web link if exists  -->
-        {%if tax_id %}
-        <th>Tax ID</th>
-        {%endif%}
       </tr>
     </thead>
 
@@ -40,27 +39,22 @@
           {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
           <!--  -->
         </td>
+        
+        {%for item in object.get_values%}
         <td>
-          {%if url_name%}
-          <!--  -->
-          {%if object.urlname%}
-          <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
-          {%else%}
-          <a href="{%url url_name object.pk%}">{{object.pk}}</a>
-          {%endif%}
-          <!--  -->
-          {%endif%}
+        {% if item|is_dict %}
+
+        {% for key, value in item.items %}
+       
+          <a href="{{value}}" target="_blank">{{ key }}</a>
+        
+          {% endfor %}
+          {% else %}
+            {{ item }}
+        {% endif %}
         </td>
-        {%for value in object.get_values%}
-        <td>{{value}}</td>
         {%endfor%}
-        <!-- Special for Taxonomy Tax_id web Link -->
-        {%if object.tax_id %}
-        <td>
-          <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
-            target="_blank">{{object.tax_id}}</a>
-        </td>
-        {%endif%}
+       
       </tr>
       {%endif%}
       {%endfor%}

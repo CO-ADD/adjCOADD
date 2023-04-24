@@ -34,7 +34,7 @@ class Taxonomy(AuditModel):
     }
 
     HEADER_FIELDS = {
-        'organism_name':'Organism Name',  
+        'organism_name':{'Organism Name': {'urlname': '/dorganism/taxonomy/'}},  
         'code':'Code', 
         'lineage':'Lineage', 
         'tax_rank':'Rank',
@@ -102,6 +102,7 @@ class Organism(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
+        'organism_id':{'Organism ID': '/dorganism/organism/'}, 
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
@@ -115,7 +116,6 @@ class Organism(AuditModel):
         'growth_preference':'Growth Preference', 
         'biologist':'Biologist',
         'strain_origin':'Origin',
-        'organism_id':'Organism ID', 
     }
 
     FORM_GROUPS={

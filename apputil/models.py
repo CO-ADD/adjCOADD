@@ -337,17 +337,23 @@ class AuditModel(models.Model):
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
         for name in fields.keys():
-            
-            if name in fieldsname:
-                # check field value is dictionary 
-       
+            if name in fieldsname:       
                 obj=getattr(self, name)
                 if obj:
+                    # check field value is a dict with link value
                     if isinstance(fields[name], dict):
+                        
                         if isinstance(obj, Model):
-                            value_list.append({obj.pk: name})
+                            value_list.append({obj.pk: list(fields[name].values())[0]})
                         else:
-                            value_list.append(obj)
+                            if isinstance(list(fields[name].values())[0], dict):
+                                if 'urlname' in list(fields[name].values())[0].keys():
+                               
+                                    url=getattr(self, 'urlname')
+                                    print(url)
+                                    value_list.append({obj: list(list(fields[name].values())[0].values())[0]+url})
+                            else:
+                                value_list.append({obj:list(fields[name].values())[0]+str(obj)})
                     else:
                         if isinstance(obj, Model):
                             value_list.append(obj.pk)
