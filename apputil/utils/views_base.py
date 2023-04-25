@@ -54,19 +54,29 @@ class SimpleupdateView(LoginRequiredMixin, View):
     template_name=None
     model=None
 
+    def get_object_byurlname(self, slug):
+        return get_object_or_404(self.model, urlname=slug)
+    
     def get_object(self, pk):
         return get_object_or_404(self.model, pk=pk)
 
     def get(self, request, *args, **kwargs):
-        pk=kwargs.get("pk")
-        object_=self.get_object(pk)
+        if 'slug' in kwargs:
+            slug=kwargs.get("slug")
+            object_=self.get_object_byurlname(slug)
+        else: 
+            pk=kwargs.get("pk")
+            object_=self.get_object(pk)
         form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 
     def post(self, request, *args, **kwargs):
-        pk=kwargs.get("pk")
-        print(f"post {pk}")
-        object_=self.get_object(pk)
+        if 'slug' in kwargs:
+            slug=kwargs.get("slug")
+            object_=self.get_object_byurlname(slug)
+        else: 
+            pk=kwargs.get("pk")
+            object_=self.get_object(pk)
         form =self.form_class(request.POST, instance=object_)
         if form.is_valid():
             print("form is valid")

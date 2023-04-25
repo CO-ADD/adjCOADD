@@ -39,7 +39,7 @@ urlpatterns = [
 
     path("import/<str:process_name>/", Importhandler_VITEK.as_view(), name="import-VITEK"),
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
-    path("ketcher/", iframe_url, name="ketcher"),
+    # path("ketcher/", iframe_url, name="ketcher"),
 
     
 ]

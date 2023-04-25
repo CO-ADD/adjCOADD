@@ -17,13 +17,14 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import SimplecreateView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
+from apputil.utils.pivottable import custom_pivottable
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
                     Organismfilter, Taxonomyfilter, Batchfilter)
 
-from ddrug.models import VITEK_AST
+from ddrug.models import VITEK_AST, MIC_COADD
    
           
 # --TAXONOMY Views--
@@ -54,29 +55,15 @@ class TaxonomyCreateView(SimplecreateView):
     template_name='dorganism/taxonomy/taxonomy_c.html'
         
 ##
-@login_required
-def updateTaxonomy(req, slug=None):
-    object_=get_object_or_404(Taxonomy, urlname=slug)
-    kwargs={}
-    print(slug)
-    kwargs['user']=req.user 
-    form=Taxonomy_form(instance=object_)
-    if req.method=='POST':
-        form=Taxonomy_form(req.POST, instance=object_)
-        if form.is_valid():
-            print('update')
-            instance=form.save(commit=False)        
-            instance.save(**kwargs)
-            return redirect(req.META['HTTP_REFERER']) 
-        else:
-            print(form.errors)
-    return render(req, 'dorganism/taxonomy/taxonomy_u.html', {'form':form, 'object':object_})
+class TaxonomyUpdateView(SimpleupdateView):
+    form_class=Taxonomy_form
+    template_name='dorganism/taxonomy/taxonomy_u.html'
+    model=Taxonomy
 
 ##
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted')
 def deleteTaxonomy(req, slug=None):
-    kwargs={}
-    kwargs['user']=req.user 
+    kwargs={'user': req.user}
     object_=get_object_or_404(Taxonomy, urlname=slug)
     try:
         if req.method=='POST':
@@ -99,7 +86,6 @@ class OrganismCardView(OrganismListView):
     template_name = 'dorganism/organism/organism_card.html'
 
 ##
-    # =======#
     # =============================step 2. Create new record by form===================#
 @login_required
 def createOrganism(req):
@@ -130,7 +116,7 @@ def createOrganism(req):
 
 ##
 @login_required
-def detailOrganism(req, pk):
+def detailOrganism(request, pk):
     """
     - Detail view handle organism single entry
     display,update and delete.
@@ -157,7 +143,29 @@ def detailOrganism(req, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
-    return render(req, "dorganism/organism/organism_detail.html", context)
+    
+    # context pivottable of mic_coadd
+    context['defaultcolumns1']='drug_id.drug_name'
+    context['defaultcolumns2']='mic_type'
+    context['defaultindex1']='run_id'
+    context['defaultindex2']='bp_profile'
+    context['defaultvalues']='media'
+    context['model_fields']=MIC_COADD.get_modelfields()
+    querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
+    print(f"MIC_COADD data: {querydata}")
+    table=MIC_COADD.get_pivottable(querydata=querydata, columns_str='bp_profile', index_str='run_id',aggfunc='Sum', values='mic')
+    context["table"]=table.head().to_html(classes=["table-bordered",])
+    # print(table)
+    # custom_pivottable(request, MIC_COADD, 'orgbatch_id__organism_id__organism_id', pk)
+    return render(request, "dorganism/organism/organism_detail.html", context)
+
+def pivottable(request, pk):
+    print(request.POST.getlist)
+    querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+        custom_pivottable(request, querydata)
+    return JsonResponse({})
+
 
 ##
 @login_required

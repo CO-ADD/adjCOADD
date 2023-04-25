@@ -20,5 +20,7 @@ urlpatterns = [
     path('dict_delete/', deleteDictionary, name='dict_delete' ),
     path('exportData/', exportCSV, name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
+    
+
    
 ]

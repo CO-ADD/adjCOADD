@@ -2,11 +2,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCreateView, updateTaxonomy, deleteTaxonomy, 
+from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCreateView, TaxonomyUpdateView, deleteTaxonomy, 
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      updateBatch, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
-                     updateCulture, createCulture, deleteCulture) #StockListView 
+                     updateCulture, createCulture, deleteCulture, pivottable) #StockListView 
 from .utils import search_organism, search_organism_id
 
 
@@ -16,7 +16,7 @@ urlpatterns = [
     path('taxonomy_list', TaxonomyListView.as_view(), name="taxo_list"),
     path('taxonomy/<slug:slug>', detailTaxonomy, name="taxo_detail"),
     path('createTaxo/', TaxonomyCreateView.as_view(), name="taxo_create"),
-    path('updateTax/<slug:slug>', updateTaxonomy, name="taxonomy_update"),
+    path('updateTax/<slug:slug>', TaxonomyUpdateView.as_view(), name="taxonomy_update"),
     path('deleteTax/<slug:slug>', deleteTaxonomy, name="taxonomy_delete"),
 
     # Organism 
@@ -49,5 +49,7 @@ urlpatterns = [
     #Json search organism
     path('search_organism/', search_organism, name="search_organism"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),
+
+    path('pivottable/<str:pk>', pivottable, name="pivottable"),
   
 ]
