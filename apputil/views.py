@@ -19,7 +19,7 @@ from ddrug.models import Drug, VITEK_Card
 
 from .forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
 from .models import ApplicationUser, Dictionary
-from .utils.views_base import SuperUserRequiredMixin, permission_not_granted
+from .utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
 from .utils.filters_base import FilteredListView
 from .utils.files_upload import Importhandler
 
@@ -79,29 +79,44 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     filterset_class = AppUserfilter
     model_fields=model.HEADER_FIELDS
 
-
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def updateApplicationuser(req, pk):
-    object_=get_object_or_404(ApplicationUser, pk=pk)
-    form=ApplicationUser_form(instance=object_)
-    context={
-        "form":form,
-        "object":object_,
-        }
-    if req.method=='PUT':
-        qd=QueryDict(req.body).dict()       
-        form=ApplicationUser_form(data=qd, instance=object_)
-        if form.is_valid():
-            instance=form.save()
-            context={"object":object_}
-            return render(req, "apputil/appuser_tr.html", context)
-    return render(req, "apputil/appUsersUpdate.html", context)
-
-class AppUserCreateView(SuperUserRequiredMixin, CreateView):
-    model=ApplicationUser
+class AppUserCreateView(SimplecreateView):
     form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
-    success_url = reverse_lazy('userslist')
+
+    def post(self, request, *args, **kwargs):
+        form =self.form_class(request.POST)
+        if form.is_valid():
+            instance=form.save()
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            messages.error(request, form.errors)
+            return redirect(request.META['HTTP_REFERER'])
+
+##
+## here used HTMX
+from apputil.utils.views_base import HtmxupdateView
+class ApplicationUserUpdateView(HtmxupdateView):
+    form_class=ApplicationUser_form
+    template_name="apputil/appUsersUpdate.html"
+    template_partial="apputil/appuser_tr.html"
+    model=ApplicationUser
+
+    def put(self, request, *args, **kwargs):
+        pk=kwargs.get("pk")
+        object_=self.get_object(pk)
+        qd=QueryDict(request.body).dict()
+        form =self.form_class(data=qd, instance=object_)
+        context={
+        "form":form,
+        "object":object_,
+    }
+        if form.is_valid():           
+            object_new=form.save()                
+            return render(request, self.template_partial, context)
+        else:
+            messages.error(request, form.errors)
+            return render(request, self.template_partial, context)
+
 
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):

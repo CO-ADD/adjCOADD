@@ -258,37 +258,12 @@ def createBatch(req, organism_id):
     return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 ## here used HTMX
-from django.http import QueryDict
-@login_required
-def updateBatch(req, pk):
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
-    kwargs={}
-    kwargs['user']=req.user
-    form=Batchupdate_form(instance=object_)
-    context={
-        "form":form,
-        "object":object_,
-    }
-    if req.method=='PUT':
-        qd=QueryDict(req.body).dict()
-        print(qd["orgbatch_id"])
-        object_batch=object_ 
-        form=Batchupdate_form(data=qd, instance=object_batch, )
-        
-        if form.is_valid():
-            kwargs={}
-            kwargs['user']=req.user                  
-            instance=form.save(commit=False)
-            instance.save(**kwargs)
-            context={
-                "object_batch":object_batch,
-                'object':object_batch  # this object refer to the same entry of object_batch
-            }
-            return render(req, "dorganism/organism/batch/batch_tr.html", context)
-        else:
-            print(form.errors)
-            return render(req, "dorganism/organism/batch/batch_tr.html", context)
-    return render(req, "dorganism/organism/batch/batch_u.html", context)
+from apputil.utils.views_base import HtmxupdateView
+class BatchUpdateView(HtmxupdateView):
+    form_class=Batchupdate_form
+    template_name="dorganism/organism/batch/batch_u.html"
+    template_partial="dorganism/organism/batch/batch_tr.html"
+    model=Organism_Batch
 
 ##
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
