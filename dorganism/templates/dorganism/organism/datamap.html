@@ -6,11 +6,12 @@
     $(document).ready(function() {
        var table= $('table.dataframe').DataTable({
             pageLength: 10,
+            "paging": false,
             {% comment %} lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]], {% endcomment %}
             order: [],
             responsive: true,
-            dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7">><"fixed-pagination"p>',
-            //'<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            dom: //'<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7">><"fixed-pagination"p>',
+            '<"row"<"col-sm-12"tr>>',
             info: false,
             fixedHeader: true,
             columnDefs: [
