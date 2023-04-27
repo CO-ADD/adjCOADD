@@ -26,7 +26,7 @@ def main():
     prgParser = argparse.ArgumentParser(prog='upload_OrgDB_Data', 
                                 description="Uploading data to adjCOADD from Oracle or Excel")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("--upload",default=True,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
+    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
     prgParser.add_argument("-f","--vitekfolder",default=None,required=False, dest="vitekfolder", action='store', help="Vitek Folder to parse")
