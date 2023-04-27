@@ -134,7 +134,7 @@ input {
   border-width: 1px !important;
 }
 
-td > input {
+td>input {
   max-width: 150px !important;
 }
 
@@ -271,7 +271,8 @@ button,
 
 /* ------------------------------ */
 /* ----custom Card Style */
-.card, .card div {
+.card,
+.card div {
   background-color: var(--bs-card-bg);
   border-color: var(--bs-card-border);
 }
@@ -322,9 +323,11 @@ button,
   width: 100%;
   transition: 1s;
 }
+
 .navbar p {
   transition: 1s;
 }
+
 .navbar,
 .navbar-nav {
   background-color: var(--bs-heading-bg);
@@ -393,29 +396,35 @@ nav.navbar.shrink .header-profile-user,
 nav.shrink .brand .navbar-brand {
   opacity: 0;
 }
+
 nav.navbar ul,
 nav.navbar .dropdown {
   transition: 0.5s;
 }
+
 nav.navbar.shrink ul,
 nav.navbar.shrink .dropdown {
   height: 30px;
   padding: 0;
   margin-top: 0;
 }
+
 nav.navbar.shrink {
   height: 45px;
 }
+
 nav.shrink a {
   font-size: 12px;
 }
+
 nav.shrink p {
   font-size: 12px;
 }
 
 /* ------------------- */
 /* ----Landing page badges custom style */
-.landp-img-01, .landp-img-02 {
+.landp-img-01,
+.landp-img-02 {
   height: 8rem;
   width: 8rem;
 
@@ -424,17 +433,20 @@ nav.shrink p {
   color: var(--bs-light);
   font-weight: bolder;
 }
-.landp-img-03{
+
+.landp-img-03 {
   height: 2rem;
   width: 4rem;
   margin: 1rem;
   border-radius: 5%;
   color: var(--bs-light);
   font-weight: bolder;
-  
+
 
 }
-.landp-img-01, .landp-img-03 {
+
+.landp-img-01,
+.landp-img-03 {
   animation: fadeIn 1s;
   background-color: var(--orange, orange);
 }
@@ -475,10 +487,12 @@ a:hover .tooltiptext {
 i {
   transition: 0.5s;
 }
+
 #hidefilter:hover .bi {
   font-size: 20px;
   text-shadow: #1a1a1a;
 }
+
 .sidebar {
   background-color: var(--bs-th-bg);
   position: relative;
@@ -490,6 +504,7 @@ i {
   height: fit-content;
   transition: 0.5s;
 }
+
 .main {
   flex-basis: 0;
   flex-grow: 1;
@@ -508,7 +523,7 @@ i {
 .results-card {
   display: flex;
   flex-wrap: wrap;
-  justify-content:flex-start;
+  justify-content: flex-start;
   max-height: 300px;
   width: 100%;
   box-shadow: 0 8px 8px 0 var(--grey);
@@ -541,19 +556,19 @@ i {
 }
 
 .resultlist {
-  margin:2px;
-  padding:2px;
+  margin: 2px;
+  padding: 2px;
   font-size: 12px;
   background-color: var(--bs-light);
   color: var(--bs-dark);
   border: none;
   border-radius: 2px;
-  transition:0.2s;
+  transition: 0.2s;
   z-index: 10;
- }
+}
 
 .resultlist:hover {
-  background-color:var(--bs-dark);
+  background-color: var(--bs-dark);
   color: var(--bs-light);
 }
 
@@ -702,14 +717,16 @@ table.dataTable {
 }
 
 table.dataTable thead tr {
-  background-color: var(--bs-th-bg) ;
+  background-color: var(--bs-th-bg);
 }
-.childtable thead tr{
-  background-color: var(--bs-th-child-bg)!important;
+
+.childtable thead tr {
+  background-color: var(--bs-th-child-bg) !important;
 }
+
 table.dataTable td {
-  border-color: var(--bs-light)!important;
-  padding:0.25em 0.25em !important;
+  border-color: var(--bs-light) !important;
+  padding: 0.25em 0.25em !important;
 }
 
 .n_left_column {
@@ -746,11 +763,13 @@ form p {
   overflow-y: auto;
   /* height: 100vh; */
   border-collapse: collapse;
-  width:100%;
+  width: 100%;
 }
+
 .fixTableHead thead tr {
   position: relative;
 }
+
 .fixTableHead thead th {
   position: sticky !important;
   top: 0;
@@ -763,16 +782,17 @@ form p {
 
 /* pivottable */
 
-.dataframe{
+.dataframe {
   width: 100%;
 }
+
 .dataframe th,
 .dataframe td {
   padding: 0;
   margin: 0;
   /* font-size: xx-small; */
-  width: fit-content!important;
-  height:fit-content!important;
+  width: fit-content !important;
+  height: fit-content !important;
   color: var(--bs-body-color) !important;
 }
 
@@ -996,10 +1016,12 @@ form p {
   font-stretch: expanded;
   font-weight: bolder;
 }
+
 .Login-form {
   width: 50%;
   margin: auto;
 }
+
 .Login-form label {
   position: absolute;
   padding: 2px;
@@ -1030,8 +1052,9 @@ form p {
 .Login-form input:focus {
   border: 2px solid var(--teal) !important;
 }
-.Login-form input:focus + .Login-form label,
-.Login-form input:not(:placeholder-shown) + .Login-form label {
+
+.Login-form input:focus+.Login-form label,
+.Login-form input:not(:placeholder-shown)+.Login-form label {
   top: 5px;
   /* font-size: 12px; */
   color: var(--teal) !important;
@@ -1047,6 +1070,7 @@ form p {
 .Login-form input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px var(--bs-body-bg) inset !important;
 }
+
 .Login-form .form-control:focus {
   outline: none;
   box-shadow: none;
@@ -1062,33 +1086,48 @@ form p {
   padding: 3px 8px 3px 8px;
 }
 
-.login:hover{
-  opacity:0.5
+.login:hover {
+  opacity: 0.5
 }
 
 table.dataframe {
-  width: 100%;
+  padding: 2px;
+  width: 95%;
   border-collapse: collapse;
 }
+
 table.dataframe th,
 table.dataframe td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
 }
+
 table.dataframe th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
+
 table.dataframe tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
 table.dataframe tr:hover {
   background-color: #ddd;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-  min-width:1em;
-  padding:none;
+  min-width: 1em;
+  padding: none;
 
+}
+
+.fixed-pagination {
+  position: fixed;
+  top: 20px;
+  /* Adjust the distance from the top as needed */
+  right: 20px;
+  /* Adjust the distance from the right as needed */
+  z-index: 100;
+  /* Ensure the control stays above other elements */
 }

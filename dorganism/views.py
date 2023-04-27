@@ -158,8 +158,10 @@ def detailOrganism(request, pk):
     # print(f"MIC_COADD data: {querydata}")
     df = drugtbl.get_Antibiogram_byOrgID(pk)
     df.reset_index(inplace=True)
+    new_displaycols=['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+    df=df[new_displaycols]
     # table=MIC_COADD.get_pivottable(querydata=querydata, columns_str='bp_profile', index_str='run_id',aggfunc='Sum', values='mic')
-    context["table"]=df.to_html(classes=["dataframe", "table", "table-bordered"])
+    context["table"]=df.to_html(classes=["dataframe", "table", "table-bordered"], index=False)
     context["df_entries"]=len(df)
     # custom_pivottable(request, MIC_COADD, 'orgbatch_id__organism_id__organism_id', pk)
     return render(request, "dorganism/organism/organism_detail.html", context)

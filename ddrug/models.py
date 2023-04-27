@@ -729,7 +729,6 @@ class MIC_COADD(AuditModel):
                     
         return value_list
 
-
     # override to get field contains foreignkey fields
     @classmethod
     def get_fields(cls, fields=None):

@@ -21,7 +21,7 @@ def get_Antibiogram_byOrgID(OrgID):
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
+    showCol = ['Drug Name','Drug Class','MIC','BatchID','Source','BP Profile','BP Source']
     grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
     OrgObj = Organism.objects.get(organism_id=OrgID)
@@ -69,12 +69,8 @@ def get_Antibiogram_byOrgID(OrgID):
     cMIC = MIC_COADD.objects.filter(orgbatch_id__organism_id=OrgObj)
     for m in cMIC:
         aDict = {}
-        aDict['Drug Name'] = m.drug_id.drug_name
-        aDict['Drug Code'] = m.drug_id.drug_codes
         aDict['Drug Class'] = m.drug_id.antimicro_class
-        OrgBatchID = str(m.orgbatch_id)
-        aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
-        aDict['BatchID'] = OrgBatchID.split('_')[2]
+        aDict['Drug Name'] = m.drug_id.drug_name
         if '<=' in m.mic:
             aDict['MIC'] = m.mic
         elif '<' in m.mic:
@@ -82,8 +78,12 @@ def get_Antibiogram_byOrgID(OrgID):
         else:
             aDict['MIC'] = m.mic
         aDict['BP Profile'] =m.bp_profile
-        aDict['BP Source'] = m.run_id
+        aDict['BatchID'] = OrgBatchID.split('_')[2]
         aDict['Source'] = "CO-ADD"
+        aDict['BP Source'] = m.run_id
+        aDict['Drug Code'] = m.drug_id.drug_codes
+        OrgBatchID = str(m.orgbatch_id)
+        aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
         #aDict['Sel Organism'] = '-'
         #aDict['Card'] = '-'
         orgMIC.append(aDict)
