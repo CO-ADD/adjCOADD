@@ -16,6 +16,7 @@
     <!-- Card View Content -->
     <div class="contain-fluid">
       <div class="row d-flex flex-wrap mx-2">
+        <h5> Organism CARD</h5>
         {% for object in page_obj %}
         <!--  -->
           {% url 'org_detail' object.pk as url_name %}
