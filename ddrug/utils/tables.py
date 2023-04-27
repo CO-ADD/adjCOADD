@@ -21,7 +21,7 @@ def get_Antibiogram_byOrgID(OrgID):
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile']
+    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
     grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
     OrgObj = Organism.objects.get(organism_id=OrgID)
@@ -43,10 +43,11 @@ def get_Antibiogram_byOrgID(OrgID):
         else:
             aDict['MIC'] = m.mic
         aDict['BP Profile'] =m.bp_profile
-        aDict['BP Source'] = m.bp_source
+        #aDict['BP Source'] = m.bp_source
+        aDict['BP Source'] = m.card_barcode.card_code
         aDict['Source'] = "Vitek"
-        aDict['Sel Organism'] = m.organism
-        aDict['Card'] = m.card_barcode.card_code
+        #aDict['Sel Organism'] = m.organism
+        #aDict['Card'] = m.card_barcode.card_code
         orgMIC.append(aDict)
 
     pMIC = MIC_Pub.objects.filter(organism_id=OrgObj)
@@ -61,8 +62,8 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Profile'] = m.bp_profile
         aDict['BP Source'] = '-'
         aDict['Source'] = m.source
-        aDict['Sel Organism'] = '-'
-        aDict['Card'] = '-'
+        #aDict['Sel Organism'] = '-'
+        #aDict['Card'] = '-'
         orgMIC.append(aDict)
 
     cMIC = MIC_COADD.objects.filter(orgbatch_id__organism_id=OrgObj)
@@ -83,12 +84,12 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Profile'] =m.bp_profile
         aDict['BP Source'] = m.run_id
         aDict['Source'] = "CO-ADD"
-        aDict['Sel Organism'] = '-'
-        aDict['Card'] = '-'
+        #aDict['Sel Organism'] = '-'
+        #aDict['Card'] = '-'
         orgMIC.append(aDict)
 
     df = pd.DataFrame(orgMIC)
-    #df.to_excel(f"{OrgID}_Antibio.xlsx")
+    df.to_excel(f"{OrgID}_Antibio.xlsx")
     df = df.fillna("-")
 
     agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: ", ".join(list(np.unique(x))))

@@ -49,7 +49,7 @@ def main():
 
     import ddrug.utils.tables as djtbl
 
-    df = djtbl.get_Antibiogram("GN_0544")
+    df = djtbl.get_Antibiogram_byOrgID("GN_0544")
     print(df)
 
 #==============================================================================
