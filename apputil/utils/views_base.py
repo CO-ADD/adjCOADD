@@ -54,19 +54,29 @@ class SimpleupdateView(LoginRequiredMixin, View):
     template_name=None
     model=None
 
+    def get_object_byurlname(self, slug):
+        return get_object_or_404(self.model, urlname=slug)
+    
     def get_object(self, pk):
         return get_object_or_404(self.model, pk=pk)
 
     def get(self, request, *args, **kwargs):
-        pk=kwargs.get("pk")
-        object_=self.get_object(pk)
+        if 'slug' in kwargs:
+            slug=kwargs.get("slug")
+            object_=self.get_object_byurlname(slug)
+        else: 
+            pk=kwargs.get("pk")
+            object_=self.get_object(pk)
         form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 
     def post(self, request, *args, **kwargs):
-        pk=kwargs.get("pk")
-        print(f"post {pk}")
-        object_=self.get_object(pk)
+        if 'slug' in kwargs:
+            slug=kwargs.get("slug")
+            object_=self.get_object_byurlname(slug)
+        else: 
+            pk=kwargs.get("pk")
+            object_=self.get_object(pk)
         form =self.form_class(request.POST, instance=object_)
         if form.is_valid():
             print("form is valid")
@@ -80,6 +90,51 @@ class SimpleupdateView(LoginRequiredMixin, View):
             print("form is not valid")
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
+
+# --update view class with htmx put request--
+from django.http import QueryDict
+class HtmxupdateView(LoginRequiredMixin, View):
+    form_class=None
+    template_name=None
+    template_partial=None
+    model=None
+    
+    def get_object(self, pk):
+        return get_object_or_404(self.model, pk=pk)
+
+    def get(self, request, *args, **kwargs):
+        pk=kwargs.get("pk")
+        object_=self.get_object(pk)
+        form=self.form_class(instance=object_)
+        context={
+        "form":form,
+        "object":object_,
+    }
+        return render(request, self.template_name, context)
+
+    def put(self, request, *args, **kwargs):
+        pk=kwargs.get("pk")
+        object_=self.get_object(pk)
+        qd=QueryDict(request.body).dict()
+        form =self.form_class(data=qd, instance=object_)
+        context={
+        "form":form,
+        "object":object_,
+    }
+        if form.is_valid():
+            print("form is valid")
+            with transaction.atomic():
+                object_new=form.save(commit=False)
+                kwargs={'user': request.user}
+                print("form validaed")
+                object_new.save(**kwargs)
+                
+            return render(request, self.template_partial, context)
+        else:
+            print("form is not valid")
+            messages.error(request, form.errors)
+            return render(request, self.template_partial, context)
+
 
 
 

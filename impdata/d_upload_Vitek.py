@@ -7,15 +7,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 import django
-# from oraCastDB import oraCastDB
-# from zUtils import zData
+from oraCastDB import oraCastDB
+from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
+from apputil.utils import validation_log
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
-from apputil.utils import validation_log
+from ddrug.utils.import_drug import *
 
-import ddrug.util_vitek as Vitek
+import ddrug.utils.vitek as Vitek
 
 #-----------------------------------------------------------------------------------
 def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchID=None,
@@ -26,7 +27,7 @@ def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchI
     vLog = validation_log.Validation_Log(PdfFile)
 
     for c in lCards:
-        djCard = VITEK_Card.check_from_dict(c,vLog)
+        djCard = imp_VitekCard_fromDict(c,vLog)
         if upload:
             if djCard.VALID_STATUS:
                 logger.debug(f" {djCard} {appuser}")
@@ -35,7 +36,7 @@ def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchI
                 vLog.add_log('Error','Vitek Card not validated',f"{c['CARD_BARCODE']}",'-')    
 
     for c in lID:
-        djID = VITEK_ID.check_from_dict(c,vLog)
+        djID = imp_VitekID_fromDict(c,vLog)
         if upload:
             if djID.VALID_STATUS:
                 logger.debug(f" {djID} {appuser}")
@@ -44,7 +45,7 @@ def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchI
                 vLog.add_log('Error','Vitek ID not validated',f"{c['CARD_BARCODE']}",'-')    
 
     for c in lAST:
-        djAST = VITEK_AST.check_from_dict(c,vLog)
+        djAST = imp_VitekAST_fromDict(c,vLog)
         if upload:
             if djAST.VALID_STATUS:
                 logger.debug(f" {djAST} {appuser}")

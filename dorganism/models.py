@@ -7,8 +7,8 @@ from psqlextra.indexes import UniqueIndex
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
-#from django.utils.text import slugify
-from apputil.utils.slugify import slugify
+from django.utils.text import slugify
+#from apputil.utils.slugify import slugify
 
 from adjcoadd.constants import *
 
@@ -34,12 +34,13 @@ class Taxonomy(AuditModel):
     }
 
     HEADER_FIELDS = {
-        'organism_name':'Organism Name',  
+        'organism_name':{'Organism Name': {'urlname': '/dorganism/taxonomy/'}},  
         'code':'Code', 
         'lineage':'Lineage', 
         'tax_rank':'Rank',
         'division':'Division', 
         'org_class':'Class',
+        'tax_id':{'Tax-ID': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='}
     }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
@@ -101,6 +102,7 @@ class Organism(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
+        'organism_id':{'Organism ID': '/dorganism/organism/'}, 
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
@@ -114,7 +116,6 @@ class Organism(AuditModel):
         'growth_preference':'Growth Preference', 
         'biologist':'Biologist',
         'strain_origin':'Origin',
-        'organism_id':'Organism ID', 
     }
 
     FORM_GROUPS={

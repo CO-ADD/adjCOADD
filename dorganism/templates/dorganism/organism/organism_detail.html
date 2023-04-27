@@ -5,135 +5,286 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
+  <div class="border border-2 w-100">
+    <div class="d-flex m-0 p-0">
+      {%include 'utils/lefticons.html' with title="Organism"%}
+      <div class="accordion bg-transparent w-100" id="organism-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button"
+              style="max-height: 20px"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              <h5 class="fs-6 my-0">
+                Organism | {{object.pk}} | {{object.organism_name}}
+              </h5>
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show bg-transparent"
+            aria-labelledby="headingOne"
+            data-bs-parent="#organism-detail"
+          >
+            <div class="accordion-body bg-transparent">
+              <b> {%include 'utils/message.html'%} </b>
 
-    <div class="border border-2 w-100">
-
-        <div class="d-flex m-0 p-0">
-
-            {%include 'utils/lefticons.html' with title="Organism"%}
-            <div class="accordion bg-transparent w-100" id="organism-detail">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" style="max-height:20px;" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                            aria-controls="collapseOne">
-                            <h5 class="fs-6 my-0">{{object.pk}} |
-                                {{object.organism_name}}
-                            </h5>
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show bg-transparent"
-                        aria-labelledby="headingOne" data-bs-parent="#organism-detail">
-                        <div class="accordion-body bg-transparent">
-                            <b>
-                                {%include 'utils/message.html'%}
-                            </b>
-
-                            {%include 'dorganism/organism/organism_u.html'%}
-
-                            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
-                        </div>
-                    </div>
-                </div>
+              {%include 'dorganism/organism/organism_u.html'%}
+              <!-- prettier-ignore -->
+              {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
             </div>
-
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="d-flex m-0 p-0">
-            <div class="d-flex flex-column m-0 p-0">
-
-
-                {%include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
-
-
+    <div class="d-flex m-0 p-0">
+      <div class="d-flex flex-column m-0 p-0">
+        <!-- prettier-ignore -->
+        {%include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+      </div>
+      <div class="accordion w-100" id="organism-batch-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button
+              class="accordion-button"
+              type="button"
+              style="max-height: 20px"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="true"
+              aria-controls="collapseTwo"
+            >
+              Organism Batch & Stock {{batch_obj_count}}
+              <!-- prettier-ignore -->
+              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count%}
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#organism-batch-detail"
+          >
+            <div class="accordion-body">
+              <h5>{%include 'utils/message.html'%}</h5>
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {%include 'utils/datatable_sm.html'  with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+              </div>
             </div>
-            <div class="accordion w-100" id="organism-batch-detail">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button" type="button" style="max-height:20px;"
-                            data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true"
-                            aria-controls="collapseTwo">
-                            Organism Batch & Stock
-                            {{batch_obj_count}}
-                            {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count%}
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
-                        data-bs-parent="#organism-batch-detail">
-                        <div class="accordion-body">
-                            <h5>{%include 'utils/message.html'%}</h5>
-                            <div class="table-responsive">
-                            
-                                {%include 'utils/datatable_sm.html'  with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-
-        <div class="d-flex m-0 p-0">
-
-            {%include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
-            <div class="accordion w-100" id="organism-culture-detail">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button" type="button" style="max-height:20px;"
-                            data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
-                            aria-controls="collapseThree">Organism Culture
-
-                            {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count%}
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
-                        data-bs-parent="#organism-culture-detail">
-                        <div class="accordion-body">
-                            <h5>{%include 'utils/message.html'%}</h5>
-                            <div class="table-responsive">
-                                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+      {%include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
+      <div class="accordion w-100" id="organism-culture-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button
+              class="accordion-button"
+              type="button"
+              style="max-height: 20px"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="true"
+              aria-controls="collapseThree"
+            >
+              Organism Culture
+              <!-- prettier-ignore -->
+              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count%}
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingThree"
+            data-bs-parent="#organism-culture-detail"
+          >
+            <div class="accordion-body">
+              <h5>{%include 'utils/message.html'%}</h5>
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-<!-- AST -->
-<div class="d-flex m-0 p-0">
-    {%include 'utils/lefticons.html'%}
+    <!-- AST -->
+    {% comment %} <div class="d-flex m-0 p-0">
+      {%include 'utils/lefticons.html'%}
 
-   <div class="accordion w-100" id="vitek_ast">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingThree">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" style="max-height:20px;"
-          data-bs-target="#collapseAst" aria-expanded="true" aria-controls="collapseThree">
-          VITEK AST 
-         {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitekast_obj_count%}
-        </button>
-      </h2>
-      <div id="collapseAst" class="accordion-collapse collapse" aria-labelledby="headingThree"
-        data-bs-parent="#vitek_ast">
-        <div class="accordion-body">
-          <h5>{%include 'utils/message.html'%}</h5>
-          <div class="table-responsive">
-            <!-- prettier-ignore -->
-            {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
+      <div class="accordion w-100" id="vitek_ast">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              style="max-height: 20px"
+              data-bs-target="#collapseAst"
+              aria-expanded="true"
+              aria-controls="collapseThree"
+            >
+              VITEK AST
+              <!-- prettier-ignore -->
+              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitekast_obj_count%}
+            </button>
+          </h2>
+          <div
+            id="collapseAst"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingThree"
+            data-bs-parent="#vitek_ast"
+          >
+            <div class="accordion-body">
+              <h5>{%include 'utils/message.html'%}</h5>
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- MIC_COADD Pivot -->
+    <!-- AST -->
+    <div class="d-flex m-0 p-0">
+      {%include 'utils/lefticons.html'%}
+
+      <div class="accordion w-100" id="MIC_COADD">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingMIC_COADD">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              style="max-height: 20px"
+              data-bs-target="#collapseMIC_COADD"
+              aria-expanded="true"
+              aria-controls="collapseMIC_COADD"
+            >
+              <!-- prettier-ignore -->
+              Antibiogram {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries%}
+            </button>
+          </h2>
+          <div
+            id="collapseMIC_COADD"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingMIC_COADD"
+            data-bs-parent="#MIC_COADD"
+          >
+            <div class="accordion-body">
+              <h5>{%include 'utils/message.html'%}</h5>
+              
+                <!-- prettier-ignore -->
+                {%include './datamap.html'%}
+             
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            console.log("{{object.pk}}")
-            loadOrganismModal("#createCultureModal", "#createCulture", "/createCulture/{{object.pk}}/");
-            loadOrganismModal("#createBatchModal", "#createBatch", "/createBatch/{{object.pk}}/");
 
+  <script>
+    $(document).ready(function () {
+      let url_batch = `{% url 'batch_create' object.pk %}`;
+      let url_culture = `{% url 'culture_create' object.pk %}`;
+      let url_pivot = `{% url 'pivottable' object.pk %}`;
+      console.log(url_culture);
+      loadModal("#createCultureModal", "#createCulture", url_culture);
+      loadModal("#createBatchModal", "#createBatch", url_batch);
+      initialPivotTable(url_pivot);
+    });
+
+    function initialPivotTable(url) {
+      var savecsv = null;
+
+      $(document).ready(function () {
+        console.log("loading data vitek");
+
+        $(".submit_data").click(function () {
+          collectAndSendData();
         });
-    </script>
+      });
 
+      const collectAndSendData = () => {
+        var selected_data = [];
+        $("input:checkbox[name=type]:checked").each(function () {
+          selected_data.push($(this).val().toString());
+        });
+        var card_barcode = $("input[name=card_barcode]").val();
+        var value_str = $("[data-name=data_process_value] option:selected")
+          .val()
+          .toString();
+        var data_function_str = $(
+          "[data-name=data_function_type] option:selected"
+        )
+          .val()
+          .toString();
+
+        var index_value = [];
+        $("#sortable3 li").each(function () {
+          index_value.push($(this).data("name"));
+        });
+        var index_values_str = index_value.toString();
+
+        var column_value = [];
+        $("#sortable2 li").each(function () {
+          column_value.push($(this).data("name"));
+        });
+        var column_value_str = column_value.toString();
+
+        var data = {
+          values: value_str,
+          columns: column_value_str,
+          index: index_values_str,
+          functions: data_function_str,
+        };
+        console.log(data);
+        sendToServer(url, data);
+      };
+
+      const csrftoken = getCookie("csrftoken");
+      const sendToServer = (url, data) => {
+        console.log("send to server");
+
+        $.ajax({
+          url: url,
+          type: "POST",
+          headers: { "X-CSRFToken": csrftoken },
+          data: data,
+        })
+          .done((response) => {
+            console.log(response);
+            data = response["table_html"];
+            savecsv = response["table_csv"];
+            $("#pivotable").html("");
+            $("#pivotable").append(data);
+          })
+          .fail((XMLHttpRequest, textStatus, errorThrown) => {
+            console.log(XMLHttpRequest, textStatus, errorThrown);
+          });
+      };
+
+      $("#download_pt_as_csv").click(function () {
+        console.log("clicked!");
+        saveData(savecsv, "pivottable.csv");
+      });
+    }
+  </script>
 </div>
 {%endblock%}

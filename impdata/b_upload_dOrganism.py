@@ -10,12 +10,15 @@ import logging
 logger = logging.getLogger(__name__)
 
 import django
-# from oraCastDB import oraCastDB
-# from zUtils import zData
+from django.utils.text import slugify
+
+from oraCastDB import oraCastDB
+from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
-from apputil.utils import slugify
+from django.utils.text import slugify
+#from apputil.utils import slugify
 
 #-----------------------------------------------------------------------------------
 def reformat_OrganismID(OrgID):

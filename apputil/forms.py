@@ -3,6 +3,7 @@ from django import forms
 from .models import  ApplicationUser, Dictionary
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 
 from .utils.filters_base import Filterbase
 
@@ -27,7 +28,13 @@ class Login_form(AuthenticationForm):
 					code='user not existed',
 					params={'username': self.username_field.verbose_name},
 				)
-       
+        # for someone deleted to not an application user 
+        elif get_object_or_404(ApplicationUser, username=username).is_appuser == False:
+            raise forms.ValidationError(
+					self.error_messages['invalid_login'],
+					code='user is not appuser',
+					params={'username': self.username_field.verbose_name},
+				)
 
         return self.cleaned_data
 

@@ -22,9 +22,9 @@ urlpatterns = [
     path('permission_not_granted/', permission_not_granted, name='permission_not_granted'),
     path('', include('apputil.urls')),
     #========================OrgDB model views URL====View, Create, Updata, Delete=================================
-    path('', include('dorganism.urls')),
-    path('', include('ddrug.urls')),
-    path('', include('dgene.urls')),
+    path('dorganism/', include('dorganism.urls')),
+    path('ddrug/', include('ddrug.urls')),
+    path('dgene/', include('dgene.urls')),
 ]
 
 if settings.DEBUG:

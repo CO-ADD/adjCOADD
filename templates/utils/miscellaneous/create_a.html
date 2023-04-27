@@ -1,32 +1,70 @@
 {%if model_name == 'Dictionary' or model_name == 'AppUser' %}
 <!--  -->
 {%if user.permission != 'Admin'%}
-<a id="#" class="btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Admin Access"><i
-    class="bi bi-file-earmark-plus text-secondary"></i>
+<a
+  id="#"
+  class="btn-sm"
+  data-bs-toggle="tooltip"
+  data-bs-placement="right"
+  title="Admin Access"
+  ><i class="bi bi-file-earmark-plus text-secondary"></i>
 </a>
 <!--  -->
 {%else%}
-<a id="{{create_object}}" class="btn-sm" data-bs-toggle="tooltip" data-bs-placement="right"
-  title="Add New Entry {{create_object}}"><i class="bi bi-file-earmark-plus text-primary"></i>
+<a
+  id="{{create_object}}"
+  class="btn-sm"
+  data-bs-toggle="tooltip"
+  data-bs-placement="right"
+  title="Add New Entry {{create_object}}"
+  ><i class="bi bi-file-earmark-plus text-primary"></i>
 </a>
 <!--  -->
 {%endif%}
 <!--  -->
 {%else%}
-<a id="{{create_object}}" data-name="general" class="btn-sm" data-bs-toggle="tooltip" data-bs-placement="right"
-  title="Add New Entry {{create_object}}"><i class="bi bi-file-earmark-plus fs-6 text-primary"></i>
+<a
+  id="{{create_object}}"
+  data-name="general"
+  class="btn-sm"
+  data-bs-toggle="tooltip"
+  data-bs-placement="right"
+  title="Add New Entry {{create_object}}"
+  ><i class="bi bi-file-earmark-plus fs-6 text-primary"></i>
 </a>
 {%endif%}
-<div id="{{create_objectModal}}" class="modal fade" role="dialog" data-bs-backdrop="static"></div>
+<div
+  id="{{create_objectModal}}"
+  class="modal fade"
+  role="dialog"
+  data-bs-backdrop="static"
+></div>
 
 <script>
   $(document).ready(function () {
-    loadOrganismModal("#createOrganismModal", "#createOrganism", "/createOrg/");
-    loadOrganismModal("#createTaxoModal", "#createTaxo", "/createTaxo/");
-    loadOrganismModal("#createDrugModal", "#createDrug", "/createDrug/");
-    loadOrganismModal("#createDictModal", "#createDict", "/dict_create/");
-    loadOrganismModal("#createAppUserModal", "#createAppUser", "/user_create/");
-    loadOrganismModal("#createGeneModal", "#createGene", "/createGene/");
-    loadOrganismModal("#createSequenceModal", "#createSequence", "/createSequence/");
+    loadModal(
+      "#createOrganismModal",
+      "#createOrganism",
+      "{% url 'org_create'%}"
+    );
+    loadModal("#createTaxoModal", "#createTaxo", "{% url 'taxo_create'%}");
+    loadModal("#createDrugModal", "#createDrug", "{% url 'drug_create'%}");
+    loadModal("#createDictModal", "#createDict", "{% url 'dict_create'%}");
+    loadModal(
+      "#createAppUserModal",
+      "#createAppUser",
+      "{% url 'createAppUser'%}"
+    );
+    loadModal("#createGeneModal", "#createGene", "{% url 'gene_create'%}");
+    loadModal(
+      "#createSequenceModal",
+      "#createSequence",
+      "{% url 'sequence_create'%}"
+    );
+    loadModal(
+      "#createSequenceModal",
+      "#createSequence",
+      "{% url 'id_pub_create'%}"
+    );
   });
 </script>

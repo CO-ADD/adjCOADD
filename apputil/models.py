@@ -257,7 +257,6 @@ class AuditModel(models.Model):
     def save(self, *args, **kwargs):
         #
         # Checks for application user
-        #   could also use middleware
         #
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
@@ -279,7 +278,6 @@ class AuditModel(models.Model):
         kwargs.pop("clean",None)
         if modelClean:
             self.full_clean()
-        print("save instance")
                  
         super(AuditModel,self).save(*args, **kwargs)
 
@@ -337,16 +335,31 @@ class AuditModel(models.Model):
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
         for name in fields.keys():
-            if name in fieldsname:
+            if name in fieldsname:       
                 obj=getattr(self, name)
                 if obj:
-                    if isinstance(obj, Model):
-                        value_list.append(obj.pk)
-                    elif isinstance(obj, list):
-                        array_to_string=','.join(str(e) for e in obj)
-                        value_list.append(array_to_string) 
-                    else:   
-                        value_list.append(obj)
+                    # check field value is a dict with link value
+                    if isinstance(fields[name], dict):
+                        
+                        if isinstance(obj, Model):
+                            value_list.append({obj.pk: list(fields[name].values())[0]})
+                        else:
+                            if isinstance(list(fields[name].values())[0], dict):
+                                if 'urlname' in list(fields[name].values())[0].keys():
+                               
+                                    url=getattr(self, 'urlname')
+                                    print(url)
+                                    value_list.append({obj: list(list(fields[name].values())[0].values())[0]+url})
+                            else:
+                                value_list.append({obj:list(fields[name].values())[0]+str(obj)})
+                    else:
+                        if isinstance(obj, Model):
+                            value_list.append(obj.pk)
+                        elif isinstance(obj, list):
+                            array_to_string=','.join(str(e) for e in obj)
+                            value_list.append(array_to_string) 
+                        else:   
+                            value_list.append(obj)
                 else:
                     value_list.append(" ")                    
         return value_list
@@ -356,6 +369,7 @@ class AuditModel(models.Model):
         fields=self.__class__.get_fields()
         values=self.get_values()
         return [(fields[i], values[i]) for i in range(len(fields))]
+    
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method
