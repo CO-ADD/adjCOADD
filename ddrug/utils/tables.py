@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import numpy as np
+
 from pathlib import Path
 from django_rdkit.models import *
 from django_rdkit.config import config
@@ -13,23 +15,24 @@ from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.data import *
 
 # -----------------------------------------------------------------------------------------
-def get_Antibiogram(OrgID):
+def get_Antibiogram_byOrgID(OrgID):
     """
     get MIC values for Organism ID and prepare aggregate table as Dataframe 
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    OrgObj = Organism.objects.get(organism_id=OrgID)
-    print(f"{OrgObj}")
+    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile']
+    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
-    for i in VITEK_Card.objects.filter(orgbatch_id__organism_id=OrgObj):
-        print(f" - {i}")
+    OrgObj = Organism.objects.get(organism_id=OrgID)
+
     vMIC = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id=OrgObj)
     for m in vMIC:
         #print(f" -*- {m}")
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
         aDict['Drug Code'] = m.drug_id.drug_codes
+        aDict['Drug Class'] = m.drug_id.antimicro_class
         OrgBatchID = str(m.card_barcode.orgbatch_id)
         aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
         aDict['BatchID'] = OrgBatchID.split('_')[2]
@@ -51,6 +54,7 @@ def get_Antibiogram(OrgID):
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
         aDict['Drug Code'] = m.drug_id.drug_codes
+        aDict['Drug Class'] = m.drug_id.antimicro_class
         aDict['OrganismID'] = OrgID
         aDict['BatchID'] = 'pub'
         aDict['MIC'] = m.mic
@@ -66,6 +70,7 @@ def get_Antibiogram(OrgID):
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
         aDict['Drug Code'] = m.drug_id.drug_codes
+        aDict['Drug Class'] = m.drug_id.antimicro_class
         OrgBatchID = str(m.orgbatch_id)
         aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
         aDict['BatchID'] = OrgBatchID.split('_')[2]
@@ -83,5 +88,9 @@ def get_Antibiogram(OrgID):
         orgMIC.append(aDict)
 
     df = pd.DataFrame(orgMIC)
-    pivOrg = df.pivot_table(index=["OrganismID","BatchID"],columns=["Drug Name","Source"],values=["MIC"], aggfunc=lambda x: "; ".join(list(x)))
-    return(pivOrg)
+    #df.to_excel(f"{OrgID}_Antibio.xlsx")
+    df = df.fillna("-")
+
+    agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: ", ".join(list(np.unique(x))))
+
+    return(agg_df)
