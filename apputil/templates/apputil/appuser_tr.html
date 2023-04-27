@@ -8,30 +8,9 @@
       
     >
       <i class="fa fa-pencil" aria-hidden="true"></i>
-    </button>
-    {%else%}
-  
-
-    {%include 'utils/miscellaneous/delete_btn.html' with target='#user_del'|add:object.pk %}
-
-<div
-  class="modal fade"
-  id="user_del{{object.pk}}"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <!--prettier-ignore-->
-    {% url 'deleteAppUser' pk=object.pk as deleteurl %}
-    {%include 'utils/modal/delete.html' with title='Delete User' deleteurl=deleteurl entry=object%} 
-  </div>
-</div>
-    {%endif%}
- 
+    </button>    
     {%include 'apputil/appUsersDel.html' %}
+    {%endif%}
   </td>
   <td>{{object.first_name}}</td>
   <td>{{object.last_name}}</td>
