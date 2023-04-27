@@ -744,7 +744,7 @@ form p {
 /* fixed table header */
 .fixTableHead {
   overflow-y: auto;
-  height: 100vh;
+  /* height: 100vh; */
   border-collapse: collapse;
   width:100%;
 }
@@ -762,19 +762,24 @@ form p {
 }
 
 /* pivottable */
+.dataframe{
+  width: 100%;
+}
 .dataframe th,
 .dataframe td {
   padding: 0;
   margin: 0;
-  font-size: xx-small;
+  /* font-size: xx-small; */
+  width: fit-content!important;
+  height:fit-content!important;
   color: var(--bs-body-color) !important;
 }
+
 
 .dataframe thead th {
   text-align: center;
   white-space: nowrap;
   transform-origin: 50% 50%;
-  /* transform: rotate(90deg); */
   width: fit-content;
   height: fit-content;
   background-color: var(--bs-footer-bg);
@@ -783,7 +788,6 @@ form p {
 .dataframe thead th:before {
   content: "";
   padding-top: 20%;
-  /* takes width as reference, + 10% for faking some extra padding */
   display: inline-block;
   vertical-align: middle;
 }
@@ -797,23 +801,16 @@ form p {
 .dataframe thead th:before {
   content: "";
   padding-top: 0;
-  /* takes width as reference, + 10% for faking some extra padding */
   display: inline;
   vertical-align: middle;
 }
 
 .dataframe td {
-  /* width: fit-content !important; */
-  /* padding:0;
-  margin:0; */
   white-space: wrap;
 }
 
 .dataframe {
   text-align: center;
-  /* table-layout : fixed; */
-  width: fit-content;
-  height: fit-content;
   padding: 0;
   border: 1px solid;
 }

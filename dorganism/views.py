@@ -25,6 +25,9 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
                     Organismfilter, Taxonomyfilter, Batchfilter)
 
 from ddrug.models import VITEK_AST, MIC_COADD
+import ddrug.utils.tables as drugtbl
+   
+
    
           
 # --TAXONOMY Views--
@@ -145,17 +148,18 @@ def detailOrganism(request, pk):
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
     
     # context pivottable of mic_coadd
-    context['defaultcolumns1']='drug_id.drug_name'
-    context['defaultcolumns2']='mic_type'
-    context['defaultindex1']='run_id'
-    context['defaultindex2']='bp_profile'
-    context['defaultvalues']='media'
-    context['model_fields']=MIC_COADD.get_modelfields()
-    querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
-    print(f"MIC_COADD data: {querydata}")
-    table=MIC_COADD.get_pivottable(querydata=querydata, columns_str='bp_profile', index_str='run_id',aggfunc='Sum', values='mic')
-    context["table"]=table.head().to_html(classes=["table-bordered",])
-    # print(table)
+    # context['defaultcolumns1']='drug_id.drug_name'
+    # context['defaultcolumns2']='mic_type'
+    # context['defaultindex1']='run_id'
+    # context['defaultindex2']='bp_profile'
+    # context['defaultvalues']='media'
+    # context['model_fields']=MIC_COADD.get_modelfields()
+    # querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
+    # print(f"MIC_COADD data: {querydata}")
+    df = drugtbl.get_Antibiogram_byOrgID(pk)
+    # table=MIC_COADD.get_pivottable(querydata=querydata, columns_str='bp_profile', index_str='run_id',aggfunc='Sum', values='mic')
+    context["table"]=df.to_html(classes=["table", "table-bordered", "table-hover","sorting-table", "fixTableHead"])
+    context["df_entries"]=len(df)
     # custom_pivottable(request, MIC_COADD, 'orgbatch_id__organism_id__organism_id', pk)
     return render(request, "dorganism/organism/organism_detail.html", context)
 

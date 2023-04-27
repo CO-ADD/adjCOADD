@@ -242,8 +242,8 @@ def exportCSV(request):
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
 from .utils.validation_log import Validation_Log
-from impdata.a_upload_AppUtil import update_AppUser_xls, update_Dictionary_xls
-from impdata.c_upload_dDrug import update_Drug_xls
+# from impdata.a_upload_AppUtil import update_AppUser_xls, update_Dictionary_xls
+# from impdata.c_upload_dDrug import update_Drug_xls
 
 class Importhandler_apputils(Importhandler):
     form_class=FileUploadForm
@@ -282,13 +282,13 @@ class Importhandler_apputils(Importhandler):
                    
                     try:
                         if process_name=="Dictioanry":
-                            update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
+                            # update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
                             context["excel_upload_info"]="Saved in Dictionary Datatable"
                         elif process_name=="ApplicationUser":
-                            update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
+                            # update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
                             context["excel_upload_info"]="Saved in AppUser Datatable"
                         elif process_name=="Drug":
-                            update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
+                            # update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
                             context["excel_upload_info"]="Saved in Drug Datatable"
                             
                     except Exception as err:
