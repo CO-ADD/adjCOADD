@@ -13,10 +13,12 @@
     <div class="main d-flex flex-column">
       {%include 'utils/main_horizalbar.html' %}
         <!--  -->
-
+        <div class="contain-fluid data-contain">
+          <h5 class="fw-bold text-center text-info view-title"> TAXONOMY Table</h5>
       <!-- list View Content -->
              <!-- prettier-ignore -->
         {%include 'utils/datatable_general.html' with tax_id='TaxID' url_name='taxo_detail' modelname='Taxonomy'%}
+        </div>
     </div>
   </div>
 
