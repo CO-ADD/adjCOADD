@@ -803,8 +803,9 @@ form p {
   transform-origin: 50% 50%;
   width: fit-content;
   height: fit-content;
-  background-color: var(--bs-footer-bg);
+  background-color: var(--bs-th-bg) !important;
 }
+
 
 .dataframe thead th:before {
   content: "";
@@ -1103,10 +1104,7 @@ table.dataframe td {
   text-align: left;
 }
 
-table.dataframe th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
+
 
 table.dataframe tr:nth-child(even) {
   background-color: #f9f9f9;
@@ -1130,4 +1128,48 @@ table.dataframe tr:hover {
   /* Adjust the distance from the right as needed */
   z-index: 100;
   /* Ensure the control stays above other elements */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  cursor: pointer !important;
+  background-color: var(--bs-inform-color) !important;
+  color: #f8f9fa !important;
+  border: none !important;
+  padding: 0.1rem 0.5rem;
+
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  cursor: pointer !important;
+  background-color: transparent !important;
+  color: var(--bs-body-color) !important;
+  border: none !important;
+  padding: 0.1rem 0.5rem;
+
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: var(--bs-card-bg) !important;
+  /* color: var(--); */
+}
+
+.dataTables_length select {
+  width: fit-content !important;
+}
+
+.dataTables_paginate span {
+  background-color: transparent !important;
+}
+
+.cards-contain {
+  position: relative;
+  border-top: 1px solid var(--bs-custom-white);
+  padding-top: 10px;
+}
+
+.view-title {
+  position: absolute;
+  left: 45%;
+  top: -10px;
+  background-color: var(--bs-body-bg);
 }

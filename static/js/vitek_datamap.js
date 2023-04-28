@@ -50,7 +50,7 @@ const sendToServer = (data) => {
   // console.log(data);
 
   $.ajax({
-    url: "/vitekcard_list", //url,
+    url: "/ddrug/vitekcard_list", //url,
     type: "POST",
     headers: { "X-CSRFToken": csrftoken },
     data: data,
