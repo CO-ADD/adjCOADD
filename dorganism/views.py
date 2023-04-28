@@ -156,7 +156,6 @@ def detailOrganism(request, pk):
     # context['model_fields']=MIC_COADD.get_modelfields()
     # querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
     # print(f"MIC_COADD data: {querydata}")
-    # 
     try:
         df = drugtbl.get_Antibiogram_byOrgID(pk)
         df.reset_index(inplace=True)
