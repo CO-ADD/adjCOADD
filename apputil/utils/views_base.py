@@ -121,12 +121,12 @@ class HtmxupdateView(LoginRequiredMixin, View):
         "form":form,
         "object":object_,
     }
-        if form.is_valid():
-            print("form is valid")
+        if request.GET.get('_value') == 'cancel':
+            return render(request, self.template_partial, context)
+        elif form.is_valid():
             with transaction.atomic():
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
-                print("form validaed")
                 object_new.save(**kwargs)
                 
             return render(request, self.template_partial, context)

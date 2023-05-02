@@ -3,29 +3,24 @@
   <table class="table table-bordered table-hover sorting_table fixTableHead" style="width: 100%">
     <thead>
       <tr>
-        <!-- detail view link name if exists -->
+        <!-- spare for seleting or editing -->
         <th style="width: 1rem"></th>
         <!-- customized/verbose model fields name -->
-       
-        {%for field in fields%}
+       {%for field in fields%}
         {% if field|is_dict %}
         {%for key in field.keys%}
         <th class="order_field" style="width: fit-content">
           {{key}}
          </th>
          {%endfor%}
-       
         {%else%}
         <th class="order_field" style="width: fit-content">
           {{field}}
          </th>
          {%endif%}
         {%endfor%}
-        <!-- object ID -->
-        <!--field with web link if exists  -->
       </tr>
     </thead>
-
     <tbody hx-target="closest tr" hx-swap="outerHTML">
       {%if page_obj%}
       <!--prettier-ignore  -->
@@ -36,25 +31,20 @@
       <tr>
         <td>
           <!--prettier-ignore  -->
-          {%include 'utils/selectbox.html' with datatype=modelname object_id=object.pk%}
+          {%include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk%}
           <!--  -->
         </td>
-        
         {%for item in object.get_values%}
         <td>
-        {% if item|is_dict %}
-
-        {% for key, value in item.items %}
-       
+        {% if item|is_dict %} <!-- custom filter -->   
+        {% for key, value in item.items %}      
           <a href="{{value}}" target="_blank">{{ key }}</a>
-        
           {% endfor %}
           {% else %}
             {{ item }}
         {% endif %}
         </td>
-        {%endfor%}
-       
+        {%endfor%}       
       </tr>
       {%endif%}
       {%endfor%}

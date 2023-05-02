@@ -37,8 +37,6 @@
 <script type="text/javascript" src="{% static 'js/create_childtable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/destroy_childtable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/childtable.js' %}"></script>
-
-
 <script>
   $(document).ready(function () {
     // Table Batch
@@ -53,7 +51,6 @@
       permission='{{user.permission}}'
       childtable(permission, table)
     }
-    const csrftoken = getCookie("csrftoken");
-    
+    const csrftoken = getCookie("csrftoken");    
   });
 </script>

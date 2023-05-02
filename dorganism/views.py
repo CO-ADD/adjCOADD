@@ -26,9 +26,12 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
 
 from ddrug.models import VITEK_AST, MIC_COADD
 import ddrug.utils.tables as drugtbl
+<<<<<<< HEAD
+=======
    
 
    
+>>>>>>> main
           
 # --TAXONOMY Views--
 ##
@@ -147,6 +150,9 @@ def detailOrganism(request, pk):
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
     
+<<<<<<< HEAD
+    # 
+=======
     # context pivottable of mic_coadd
     # context['defaultcolumns1']='drug_id.drug_name'
     # context['defaultcolumns2']='mic_type'
@@ -156,20 +162,28 @@ def detailOrganism(request, pk):
     # context['model_fields']=MIC_COADD.get_modelfields()
     # querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
     # print(f"MIC_COADD data: {querydata}")
+>>>>>>> main
     try:
         df = drugtbl.get_Antibiogram_byOrgID(pk)
         df.reset_index(inplace=True)
         new_displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
         df = df[new_displaycols]
     
+<<<<<<< HEAD
+=======
     # table=MIC_COADD.get_pivottable(querydata=querydata, columns_str='bp_profile', index_str='run_id',aggfunc='Sum', values='mic')
+>>>>>>> main
         context["table"] = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
         context["df_entries"] = len(df)
     except Exception as err:
         context["table"] = err
+<<<<<<< HEAD
+
+=======
         # context["df_entries"]=len(df)
 
     # custom_pivottable(request, MIC_COADD, 'orgbatch_id__organism_id__organism_id', pk)
+>>>>>>> main
     return render(request, "dorganism/organism/organism_detail.html", context)
 
 def pivottable(request, pk):
@@ -376,10 +390,8 @@ def updateStock(req, pk):
             try:
                 with transaction.atomic(using='dorganism'):      
                     obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
-                    print(obj)
                     try:
-                        if form.is_valid(): 
-                            print('valid')                 
+                        if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
                             return redirect(req.META['HTTP_REFERER'])
@@ -437,41 +449,11 @@ def createCulture(req, organism_id):
     return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 ## Here used HTMX
-from django.http import QueryDict
-@login_required
-def updateCulture(req, pk):
-    object_=get_object_or_404(Organism_Culture, id=pk)
-    kwargs={}
-    kwargs['user']=req.user
-    form=Cultureupdate_form(instance=object_)
-    context={
-        "form":form,
-        "object":object_,
-    }
-    if req.method=='PUT':
-        qd=QueryDict(req.body).dict()
-        print(qd)
-        object_culture=object_
-        form=Cultureupdate_form(data=qd, instance=object_culture )
-        
-        if form.is_valid():
-            kwargs={}
-            kwargs['user']=req.user                  
-            instance=form.save(commit=False)
-            instance.save(**kwargs)
-            context={
-                "object_cultr":object_culture,
-                'object':object_culture  # this object refer to the same entry of object_batch
-            }
-            return render(req, "dorganism/organism/culture/culture_tr.html", context)
-        else:
-            context={
-                "object_cultr":object_culture,
-                'object':object_culture,  # this object refer to the same entry of object_batch
-                "form":form,
-            }
-            return render(req, "dorganism/organism/culture/culture_u.html", context)
-    return render(req, "dorganism/organism/culture/culture_u.html", context)
+class CultureUpdateView(HtmxupdateView):
+    form_class=Cultureupdate_form
+    template_name="dorganism/organism/culture/culture_u.html"
+    template_partial="dorganism/organism/culture/culture_tr.html"
+    model=Organism_Culture
 
 ##
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 

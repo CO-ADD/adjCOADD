@@ -35,7 +35,75 @@
             </div>
             <div class="fixTableHead">
               <!--prettier-ignore-->
-              {%include 'utils/datatable_ast.html' with modelname='VITEK_AST' %}
+              <table class="table table-hover table-bordered sorting_table" style="width: 100%">
+                <thead>
+                  <tr>
+                    <!-- detail view link name if exists -->
+                    <th style="width:1rem">
+                    </th>
+                    <!-- customized/verbose model fields name -->
+                    <th class="order_field" style="width: fit-content">pk</th>
+              
+                    <th class="order_field" style="width: fit-content">Drug Name</th>
+                    <th class="order_field" style="width: fit-content">Code</th>
+                    <th class="order_field" style="width: fit-content">Organism Name</th>
+                    <th class="order_field" style="width: fit-content">MIC</th>
+              
+                    <!-- object ID -->
+                    <!--field with web link if exists  -->
+                    {%if tax_id %}
+                    <th>Tax ID</th>
+                    {%endif%}
+                  </tr>
+                </thead>
+              
+                <tbody>
+                  {%if page_obj%}
+                  <!--  -->
+                  {% for object in page_obj%}
+                  <tr>
+                    <td></td>
+                    <td>
+                      <!--prettier-ignore  -->
+                      {{object.pk}}
+                      <!--  -->
+              
+                    </td>
+              
+                    <td>
+                      <!--prettier-ignore  -->
+                      {{object.drug_id__drug_name}}
+                      <!--  -->
+              
+                    </td>
+                    <td>
+                      {{object.drug_id__drug_codes}}
+                    </td>
+                    <td>
+                      {{object.card_barcode__orgbatch_id__organism_id__organism_name}}
+                    </td>
+                    <td>
+                      {{object.mic}}
+                    </td>
+              
+              
+                    <!-- Special for Taxonomy Tax_id web Link -->
+                    {%if object.tax_id %}
+                    <td>
+                      <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+                        target="_blank">{{object.tax_id}}</a>
+                    </td>
+                    {%endif%}
+                  </tr>
+                  {%endfor%}
+                  <!--  -->
+                  {%else%}
+                  <tr>
+                    No Data
+                  </tr>
+                  {%endif%}
+                </tbody>
+              </table>
             </div>
           </div>
 

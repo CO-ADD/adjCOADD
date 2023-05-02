@@ -2,13 +2,14 @@
   <div class="card ms-3 px-1 rounded-3">
     <div class="d-flex justify-content-between border-bottom border-dark">
       <p class="card-title px-1 fw-bold mb-0 ">
+        <!-- link to Detail View -->
         <a class="card-link" href="{{url_name}}"> {{object_name}}</a>
       </p>
       <p class="card-title px-1 fw-bold mb-0">
         <a class="card-link" href="{{url_name}}"> {{object_name_ita}}</a>
       </p>
       <!-- Select Box -->
-      {%include 'utils/selectbox.html' with datatype=datatype object_id=object.pk%}
+      {%include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk%}
     </div>
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}
@@ -43,20 +44,6 @@
           // });
         </script>
 
-        <!--
-        <div class="d-flex flex-wrap mt-2">
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">SA</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">EC</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">KP</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">PA5</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">AB</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CA</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">CN</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">HEK</div>
-          <div class="badge bg-secondary text-light m-1" style="font-size: xx-small;">hRBC</div>
-        </div>
-        -->
         
       {%endif%}
     </p>

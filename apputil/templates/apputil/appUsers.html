@@ -7,7 +7,6 @@
 <div class="d-flex flex-row justify-content-between vh-100">
   <!-- prettier-ignore -->
   {%url 'excel-import' process_name='ApplicationUser' as urlname%}
-  <!-- prettier-ignore -->
   {%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
@@ -15,10 +14,7 @@
   <div class="main d-flex flex-column">
     <!-- prettier-ignore -->
     {%include 'utils/main_horizalbar.html'%}
-    <!-- prettier-ignore -->
-
-     {%include 'utils/datatable_general.html' with table_id='ApplicationUser' %}
+    {%include 'utils/datatable_general.html' with table_id='ApplicationUser' %}
   </div>
 </div>
-
 {%endblock%}

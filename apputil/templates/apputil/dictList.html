@@ -41,7 +41,7 @@
 
 <script>
   $(document).ready(function () { });
-  $('[data-type="deleteDict"] button').click(function () {
+  $('[data-type="deleteDict"] [data-type="deleteDictButton"]').click(function () {
     console.log("click");
     var td = $(this).parent();
     var dict_value = td.data("name");
@@ -59,13 +59,9 @@
     })
       .done((response) => {
         console.log(response);
-        if (!response.result) {
+        if (response.error) {
           td.append(
-            '<p class="text-danger"> You have no permission to change. click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>'
-          );
-        } else {
-          td.append(
-            `<p class="text-success"> ${response.result} click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>`
+            `<p class="text-danger"> Error: ${response.result} click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>`
           ); 
         }
       })
@@ -76,8 +72,4 @@
 </script>
 {%load static%}
 <script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
-<script>
-  var table = document.getElementsByTagName("table")[0];
-  resizableGrid(table);
-</script>
 {%endblock%}

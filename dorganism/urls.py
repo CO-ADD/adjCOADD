@@ -6,7 +6,11 @@ from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCr
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      BatchUpdateView, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
+<<<<<<< HEAD
+                     CultureUpdateView, createCulture, deleteCulture, pivottable) #StockListView 
+=======
                      updateCulture, createCulture, deleteCulture, pivottable) #StockListView 
+>>>>>>> main
 from .utils import search_organism, search_organism_id
 
 
@@ -43,7 +47,11 @@ urlpatterns = [
 
     # Organism Culture 
     path('createCulture/<str:organism_id>/', createCulture, name="culture_create"),
+<<<<<<< HEAD
+    path('updateCulture/<str:pk>', CultureUpdateView.as_view(), name="cultr_update"),
+=======
     path('updateCulture/<str:pk>', updateCulture, name="cultr_update"),
+>>>>>>> main
     path('deleteCulture/<str:pk>', deleteCulture, name="cultr_delete"),
   
     #Json search organism

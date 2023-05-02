@@ -1,20 +1,18 @@
-<tr>
-  
+{% load custom_filters %}
+<tr> 
   <td>
+    <!-- Trigger for Modal -->
     {%if user.permission == 'Admin'%}
-    <button class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#{{object.pk}}" >
+    <button class="card-link text-danger fs-6" data-bs-toggle="modal" data-bs-target="#{{ object.pk|to_valid_selector }}" >
       <i class="fa-regular fa-trash-can"></i>
     </button>
     {%else%}
     <button class="btn btn-small border-0 m-0 p-0" disabled>
       <i class="fa-regular fa-trash-can"></i>
     </button>
-    {%endif%}
-   
-  </td>
-  
+    {%endif%}  
+  </td> 
   <td class="" data-type="dict_value" data-value="{{object.dict_value}}">
-
     {{object.dict_value}}
   </td>
   <td class="editablerow" data-name="{{object.dict_value}}" data-type="dict_class" data-value="{{object.dict_class}}">
@@ -28,20 +26,12 @@
   </td>
 </tr>
 
-<!-- trigger modal -->
-
 <!-- Modal -->
-<div class="modal fade" id="{{object.pk}}" data-bs-backdrop="static" data-bs-keyboard="false"
+<div class="modal fade" id="{{object.pk|to_valid_selector}}" data-bs-backdrop="static" data-bs-keyboard="false"
   tabindex="-1"  aria-hidden="true">
   <div class="modal-dialog">
-    <!--prettier-ignore-->
-    
+    <!--prettier-ignore--> 
     {%include 'utils/modal/delete.html' with title=object.pk model_name="Dictionary" %}
   </div>
 </div>
 
-<script>
-
-  $('#{{object.pk}}').attr('id', 'a'+encodeURI('{{object.pk}}'));
-  $('[data-bs-target="#{{object.pk}}"]').attr('data-bs-target', '#'+'a'+encodeURI('{{object.pk}}') )
-</script>
