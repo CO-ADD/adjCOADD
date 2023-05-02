@@ -14,7 +14,7 @@ from apputil.utils.data import *
 # ----------------------------------------------------------------------------------------------------
 def imp_Drug_fromDict(iDict,valLog):
     """
-    Create Drug instance from Dictionary
+    Create Drug instance from {Dict}
     """
 # ----------------------------------------------------------------------------------------------------
     # Change Key names to Lowercase
