@@ -27,12 +27,12 @@ def run_impProcess(lstDict,toDictFunc,procName,appuser=None,upload=False,OutputN
 
     nTotal = len(lstDict)
     nTime  = zData.Timer(nTotal)
-    vLog = validation_log.Validation_Log('WGS-COADD')
+    vLog = validation_log.Validation_Log(procName)
+    logger.info(f"[{procName}] Processing {nTotal} for import")
     for f in lstDict:
         vLog.reset()
         djInst = toDictFunc(f,vLog)
 
-        # --- Upload ---------------------------------------------------------
         nProcessed = nProcessed + 1
         if djInst.VALID_STATUS:
             if upload:
@@ -49,7 +49,7 @@ def run_impProcess(lstDict,toDictFunc,procName,appuser=None,upload=False,OutputN
             vLog.show(logTypes= ['Error'])
             nProc['notValid'] = nProc['notValid'] + 1
     eTime,sTime = nTime.remains(nProcessed)
-    logger.info(f"[WGS-FastQC] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
+    logger.info(f"[{procName}] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
 
 #-----------------------------------------------------------------------------------
 def update_WGSCOADD_zAssembly(upload=False,uploaduser=None,OutputN=100):
