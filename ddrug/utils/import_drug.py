@@ -279,14 +279,14 @@ def imp_MICCOADD_fromDict(iDict,valLog):
 # ----------------------------------------------------------------------------------------------------
 def imp_MICPub_fromDict(iDict,valLog):
     """
-    Create VITEK_ID instance from a {Dict}
+    Create MIC_Pub instance from a {Dict}
     """
 # ----------------------------------------------------------------------------------------------------
     # Change Key names to Lowercase
     iDict =  {k.lower(): v for k, v in iDict.items()} 
 
     validStatus = True
-    DrugID = Drug.get(iDict['drug_name'])
+    DrugID = Drug.get(iDict['drug_name'].strip())
     if DrugID is None:
         validStatus = False
         valLog.add_log('Error','Drug does not Exists',f"{iDict['drug_name']} ",'-')
@@ -308,11 +308,18 @@ def imp_MICPub_fromDict(iDict,valLog):
         djMIC.source = iDict['source']
         valLog.add_log('Info','New MIC ',f"{iDict['organism_id']} {iDict['drug_name']} {iDict['source']}",'-')
     
-    djMIC.mic = iDict['mic']
-    djMIC.mic_unit = iDict['mic_unit']
-    djMIC.mic_type = Dictionary.get(MIC_Pub.Choice_Dictionary["mic_type"],iDict['source_type'],None,verbose=1)
-    djMIC.bp_profile = iDict['bp_profile']
-    djMIC.bp_source = iDict['bp_source']
+    if 'source_type' in iDict:
+        djMIC.mic_type = Dictionary.get(MIC_Pub.Choice_Dictionary["mic_type"],iDict['source_type'],None,verbose=1)
+    if 'mic' in iDict:
+        djMIC.mic = iDict['mic']
+        djMIC.mic_unit = iDict['mic_unit']
+    if 'bp_profile' in iDict:
+        djMIC.bp_profile = iDict['bp_profile']
+        if 'bp_source' in iDict:
+            djMIC.bp_source = iDict['bp_source']
+    if 'zone_diameter' in iDict:
+        djMIC.zone_diameter = iDict['zone_diameter']
+
 
     djMIC.clean_Fields()
     validDict = djMIC.validate()

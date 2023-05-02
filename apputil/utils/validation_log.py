@@ -50,6 +50,15 @@ class Validation_Log():
                     uLogs[t].append(l)
         self.Logs = uLogs
 
+    def reset(self):
+        self.nLogs = {}
+        self.Logs  = {}
+        self.Info  = {}
+
+        for t in self.logTypes:
+            self.nLogs[t] = 0
+            self.Logs[t] = []        
+
     def info(self,logTypes= ['Error','Warning', 'Info']):
         self.info={}
         for t in logTypes:
@@ -76,3 +85,4 @@ class Validation_Log():
                 info[t].append(print_info) # info.append(print_info)
        
         return info
+    
