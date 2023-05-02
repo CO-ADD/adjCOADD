@@ -12,7 +12,9 @@ from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
+from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
 from ddrug.models import Drug, MIC_COADD, MIC_Pub
+from ddrug.utils.import_drug import imp_MICCOADD_fromDict, imp_MICPub_fromDict
 from apputil.utils import validation_log
 
 
@@ -24,18 +26,18 @@ from apputil.utils import validation_log
 #
 
 
-#-----------------------------------------------------------------------------------
-def reformat_OrganismID(OrgID):
-#-----------------------------------------------------------------------------------
-    xStr = OrgID.split("_")
-    return(f"{xStr[0]}_{int(xStr[1]):04d}")
+# #-----------------------------------------------------------------------------------
+# def reformat_OrganismID(OrgID):
+# #-----------------------------------------------------------------------------------
+#     xStr = OrgID.split("_")
+#     return(f"{xStr[0]}_{int(xStr[1]):04d}")
 
-#-----------------------------------------------------------------------------------
-def reformat_OrgBatchID(OrgBatchID):
-#-----------------------------------------------------------------------------------
-    xStr = OrgBatchID.split(":")
-    #print(xStr)
-    return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
+# #-----------------------------------------------------------------------------------
+# def reformat_OrgBatchID(OrgBatchID):
+# #-----------------------------------------------------------------------------------
+#     xStr = OrgBatchID.split(":")
+#     #print(xStr)
+#     return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
 
 #-----------------------------------------------------------------------------------
 def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
@@ -72,7 +74,7 @@ def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
 
     for mic in micLst:
         mic['ORGANISM_ID'] = reformat_OrganismID(mic['ORGANISM_ID'])
-        djMIC = MIC_Pub.check_from_dict(mic,vLog)
+        djMIC = imp_MICPub_fromDict(mic,vLog)
         djMIC.clean_Fields()
         validDict = djMIC.validate()
 
@@ -95,6 +97,63 @@ def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
     eTime,sTime = nTime.remains(nProcessed)
     logger.info(f"[MIC-Pub] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
 
+#-----------------------------------------------------------------------------------
+def update_MICPub_xls(XlsFile, XlsSheet=0, upload=False,uploaduser=None,OutputN=100):
+#-----------------------------------------------------------------------------------
+
+    if os.path.exists(XlsFile):
+        logger.info(f"[adjCOADD] Read {XlsFile}[{XlsSheet}] ")
+        dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
+        mvColumns = {}
+        for c in dfSheet.columns:
+            mvColumns[c] = c.lower()
+        #logger.info(mvColumns)
+        dfSheet = dfSheet.rename(mvColumns,axis='columns') 
+
+        # df -> lstDict and remove null items 
+        micLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
+        nTotal = len(micLst)
+
+        vLog = validation_log.Validation_Log('MIC-Collab')
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
+
+        # check user
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
+
+        nProc = {}
+        nProc['Saved'] = 0
+        nProc['notValid'] = 0
+
+        for mic in micLst:
+            mic['organism_id'] = reformat_OrganismID(mic['organism_id'])
+            mic['mic_unit'] = "ug/mL"
+            djMIC = imp_MICPub_fromDict(mic,vLog)
+            djMIC.clean_Fields()
+            validDict = djMIC.validate()
+
+            if validDict:
+                logger.info(f"{mic['organism_id']} {mic['drug_name']} {mic['source']} {validDict} ")
+
+            # --- Upload ---------------------------------------------------------
+            nProcessed = nProcessed + 1
+            if djMIC.VALID_STATUS:
+                if upload:
+                    djMIC.save(user=appuser)
+                    nProc['Saved'] = nProc['Saved'] + 1
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
+                else:
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {djMIC} ")
+            else:
+                nProc['notValid'] = nProc['notValid'] + 1
+        eTime,sTime = nTime.remains(nProcessed)
+        logger.info(f"[MIC-Pub] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
 
 #-----------------------------------------------------------------------------------
 def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
@@ -154,7 +213,7 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
             mic['DYE'] = mic['TEST_DYE']
             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
-            djMIC = MIC_COADD.check_from_dict(mic,vLog)
+            djMIC = imp_MICCOADD_fromDict(mic,vLog)
             djMIC.clean_Fields()
             validDict = djMIC.validate()
 

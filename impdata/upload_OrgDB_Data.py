@@ -49,6 +49,7 @@ def main():
     xlFiles = {
         'Application': "ApplicationData_v03.xlsx",
         'Drug': "DrugData_v02.xlsx",
+        'MIC': "LMIC_Data_v04.xlsx",
     }
 
     sys.path.append(djDir)
@@ -60,6 +61,7 @@ def main():
     import c_upload_dDrug as dDrug
     import d_upload_Vitek as dVitek
     import e_upload_MIC as dMIC
+    import f_upload_gene as dGene
 
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
@@ -129,13 +131,21 @@ def main():
     elif prgArgs.table == 'MICPub':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    elif prgArgs.table == 'MICCollab':
+        uploadFile = os.path.join(uploadDir,xlFiles['MIC']) 
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile}")
+        dMIC.update_MICPub_xls(uploadFile,XlsSheet="MIC",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     elif prgArgs.table == 'MICCOADD':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
         if  prgArgs.runid:
             dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
+    elif prgArgs.table == 'WGSCOADD':
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} ")
+        dGene.update_WGSCOADD_zAssembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
         
-    #print(prgArgs)uploadFile,
+    logger.info(f"-------------------------------------------------------------------")
+    logger.info(f"LogFile        : {logFileName}")
 
     #
 
