@@ -16,7 +16,10 @@ def is_dict(value):
 def is_list(value):
     return isinstance(value, list)
 
+<<<<<<< HEAD
 @register.filter
 def to_valid_selector(value):
     return "a" + re.sub(r"[\s\.\#\[\]\(\)\+\>\~\=\'\*\^\$]", "_", str(value))
+=======
+>>>>>>> main
 
