@@ -9,14 +9,10 @@
        {%for field in fields%}
         {% if field|is_dict %}
         {%for key in field.keys%}
-        <th class="order_field" style="width: fit-content">
-          {{key}}
-         </th>
+        <th class="order_field" style="width: fit-content">{{key}}</th>
          {%endfor%}
         {%else%}
-        <th class="order_field" style="width: fit-content">
-          {{field}}
-         </th>
+        <th class="order_field" style="width: fit-content">{{field}}</th>
          {%endif%}
         {%endfor%}
       </tr>
@@ -41,7 +37,7 @@
           <a href="{{value}}" target="_blank">{{ key }}</a>
           {% endfor %}
           {% else %}
-            {{ item }}
+            {{item}}
         {% endif %}
         </td>
         {%endfor%}       
