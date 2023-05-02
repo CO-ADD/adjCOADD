@@ -38,7 +38,7 @@ def imp_FastQC_fromDict(iDict,valLog):
         djInst.orgbatch_id = OrgBatch
         djInst.seq = iDict['seq']
         djInst.run_id = iDict['run_id']
-        #print(f"[FastQC] New {iDict['orgbatch_id']} {iDict['seq']} {iDict['run_id']}")
+        valLog.add_log('Info','New FastQC',f"{iDict['orgbatch_id']} {iDict['seq']} {iDict['run_id']}",'-')
 
     djInst.base_stat = iDict['basic statistics']
     djInst.base_sequal = iDict['per base sequence quality']
@@ -89,7 +89,7 @@ def imp_CheckM_fromDict(iDict,valLog):
         djInst = WGS_CheckM()
         djInst.orgbatch_id = OrgBatch
         djInst.run_id = iDict['run_id']
-        #print(f"[CheckM] New {djInst.orgbatch_id} {djInst.run_id}")
+        valLog.add_log('Info','New CheckM',f"{djInst.orgbatch_id} {djInst.run_id}",'-')
 
     djInst.marker_lineage = iDict['marker_lineage']
     djInst.n_genomes = iDict['n_genomes']
@@ -154,8 +154,7 @@ def imp_IDSeq_fromDict(iDict,valLog):
         djInst.orgbatch_id = OrgBatch
         djInst.id_type = IDType
         djInst.run_id = iDict['run_id']
-        #print(f"[CheckM] New {djInst.orgbatch_id} {djInst.id_type} {djInst.run_id}")
-
+        valLog.add_log('Info','New ID-Seq',f"{djInst.orgbatch_id} {djInst.id_type} {djInst.run_id}",'-')
 
     djInst.id_method = iDict['id_method']
     djInst.id_organisms =iDict['id_organisms']
