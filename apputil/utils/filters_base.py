@@ -52,7 +52,18 @@ class Filterbase(django_filters.FilterSet):
             return queryset.filter(q_object)
         return queryset
 
-
+# utils for filteredListView method def ordered_by
+def find_item_index(lst, item):
+    print(item)
+    for i, element in enumerate(lst):
+        if isinstance(element, dict):
+            print(element.keys())
+            if item in element.keys():
+                print(i)
+                return i
+        elif element == item:
+            return i
+    return -1
 # --Filter view base class--
 class FilteredListView(ListView):
     filterset_class = None #each filterset class based on class Filterbase
@@ -88,7 +99,6 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by']=self.get_paginate_by(self, **kwargs)
         context['fields']=self.model.get_fields(fields=self.model_fields)
-        print(context['fields'])
         context['model_fields']=self.model.get_modelfields(fields=self.model_fields)
         context['filterset']=filter_record
         context['Count']=self.model.objects.count()
@@ -101,8 +111,7 @@ class FilteredListView(ListView):
         paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
         return paginate_by
  
-    def get_order_by(self):
-       
+    def get_order_by(self):      
         order_by=self.request.GET.get("order_by", self.order_by) or None
         model_constants_field=self.model_fields
         acs_decs=""
@@ -114,10 +123,12 @@ class FilteredListView(ListView):
             else:
                 order_field=order_by
                 
-            if order_field in model_constants_field.values():
-                order_by=acs_decs+ list(model_constants_field.keys())[list(model_constants_field.values()).index(order_field)]
-            elif order_field == 'ID':
-                order_by=acs_decs+'pk'
+            # if order_field in model_constants_field.values():
+            index=find_item_index(list(model_constants_field.values()), order_field)
+            order_by=acs_decs+ list(model_constants_field.keys())[index]
+            print(list(model_constants_field.keys())[index])
+            # elif order_field == 'ID':
+            #     order_by=acs_decs+'pk'
            
             return order_by
         return order_by

@@ -113,11 +113,7 @@
               <h5>{%include 'utils/message.html'%}</h5>
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-<<<<<<< HEAD
               {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
-=======
-                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
->>>>>>> main
               </div>
             </div>
           </div>
@@ -125,58 +121,12 @@
       </div>
     </div>
 
-<<<<<<< HEAD
     
     <!-- MIC_COADD Pivot -->
     <!-- AST -->
     <div class="d-flex m-0 p-0">
       {%include 'utils/lefticons.html'%}
 
-=======
-    <!-- AST -->
-    {% comment %} <div class="d-flex m-0 p-0">
-      {%include 'utils/lefticons.html'%}
-
-      <div class="accordion w-100" id="vitek_ast">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingThree">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              style="max-height: 20px"
-              data-bs-target="#collapseAst"
-              aria-expanded="true"
-              aria-controls="collapseThree"
-            >
-              VITEK AST
-              <!-- prettier-ignore -->
-              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitekast_obj_count%}
-            </button>
-          </h2>
-          <div
-            id="collapseAst"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingThree"
-            data-bs-parent="#vitek_ast"
-          >
-            <div class="accordion-body">
-              <h5>{%include 'utils/message.html'%}</h5>
-              <div class="table-responsive">
-                <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> {% endcomment %}
-    <!-- MIC_COADD Pivot -->
-    <!-- AST -->
-    <div class="d-flex m-0 p-0">
-      {%include 'utils/lefticons.html'%}
-
->>>>>>> main
       <div class="accordion w-100" id="MIC_COADD">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingMIC_COADD">
