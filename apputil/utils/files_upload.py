@@ -3,6 +3,8 @@ File-upload...
 """
 import os
 import magic
+import logging
+logger = logging.getLogger(__name__)
 
 from django import forms
 from django.conf import settings
@@ -13,7 +15,9 @@ from django.utils.deconstruct import deconstructible
 from django.views import View
 from django.shortcuts import render
 
-from .views_base import SuperUserRequiredMixin
+from apputil.utils.views_base import SuperUserRequiredMixin
+from apputil.utils.validation_log import Validation_Log
+from apputil.utils.data import Timer
 
 
 # --files upload--
@@ -126,6 +130,7 @@ class Importhandler(SuperUserRequiredMixin, View):
             print("removed!")
         except Exception as err:
             raise Exception
+        
     # use to validate records
     def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
         if any(newentry_dict.values()):
@@ -156,4 +161,56 @@ class Importhandler(SuperUserRequiredMixin, View):
 
 
 
+# --------------------------------------------------------------------------------------------
+def run_impProcess(lstDict,toDictFunc,procName,appuser=None,upload=False,OutputN=100):
+    """
+    Run an upload process - currently designed only for command line:
 
+        lstDict         [List of {Dict}] for entries to upload
+
+        toDictFunc      Function to convert a {Dict} to (djClass)
+
+        procName        Name of the Data/Process for output only
+
+        appuser=None    AppUser used for upload
+
+        upload=False    If upload to database, or just dry/validation of data
+
+        OutputN=100     Output frequency to logger
+    """
+# --------------------------------------------------------------------------------------------
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+    nProcessed = 0
+
+    nTotal = len(lstDict)
+    nTime  = Timer(nTotal)
+    vLog = Validation_Log(procName)
+    logger.info(f"[{procName}] Processing {nTotal} for import")
+
+    for f in lstDict:
+        nProcessed = nProcessed + 1
+        vLog.reset()
+
+        djInst = toDictFunc(f,vLog)
+
+        if djInst.VALID_STATUS:
+            if upload:
+                if nProcessed%OutputN == 0:
+                    eTime,sTime = nTime.remains(nProcessed)
+                    logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -Save-> {djInst} ")
+                djInst.save(user=appuser)
+                nProc['Saved'] = nProc['Saved'] + 1
+            else:
+                if nProcessed%OutputN == 0:
+                    eTime,sTime = nTime.remains(nProcessed)
+                    logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >Check< {djInst} ")
+        else:
+            vLog.show(logTypes= ['Error'])
+            nProc['notValid'] = nProc['notValid'] + 1
+
+    eTime,sTime = nTime.remains(nProcessed)
+    logger.info(f"[{procName}] {sTime} : {nTotal} {nProc} ({nTotal-(nProc['Saved']+nProc['notValid'])})")
+
+    return(vLog)

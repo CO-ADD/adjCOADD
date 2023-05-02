@@ -1,4 +1,5 @@
 import os
+import datetime
 
 # ==================================================================================
 # General utilities for processing List, Dictionaries
@@ -97,3 +98,31 @@ def listFolders(Path):
 def listFiles(Path):
     return([ name for name in os.listdir(Path) if os.path.isfile(os.path.join(Path, name)) ])
 #-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Estimated time : t = Timer(12987) ... print(t.remains(37))
+#-----------------------------------------------------------------------------
+class Timer(object):
+    def __init__(self, total):
+        self.start = datetime.datetime.now()
+        self.total = total
+ 
+    def remains(self, done):
+        now  = datetime.datetime.now()
+        #print(now-start)  # elapsed time
+        time_spent = (now - self.start)
+        time_left = (self.total - done) * (time_spent) / done
+    
+        sec_left = int(time_left.total_seconds())
+        hms_left = datetime.timedelta(seconds=sec_left)
+        sec_spent = int(time_spent.total_seconds())
+        hms_spent = datetime.timedelta(seconds=sec_spent)
+
+        return(str(hms_left),str(hms_spent))
+
+    def format_sec_to_hms(seconds):
+        hours = seconds // (60*60)
+        seconds %= (60*60)
+        minutes = seconds // 60
+        seconds %= 60
+        return "%02i:%02i:%02i" % (hours, minutes, seconds)

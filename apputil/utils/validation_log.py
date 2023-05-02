@@ -4,10 +4,17 @@
 import logging
 logger = logging.getLogger(__name__)
 
-
-# ----------------------VLog 
+# --------------------------------------------------------------------------- 
 class Validation_Log():
+    """
+    In-process Logging class to capture outcomes of validation and processing tasks
+        as logTypes = ['Error','Warning','Info']
+    """
+# ---------------------------------------------------------------------------
 
+    #-----------------------------------------------------
+    # Inits the log with a logProcess as Name
+    #-----------------------------------------------------
     def __init__(self,logProcess,logTypes= ['Error','Warning','Info']):
         self.logProcess = logProcess
         self.logTypes = logTypes
@@ -19,7 +26,9 @@ class Validation_Log():
             self.nLogs[t] = 0
             self.Logs[t] = []
            
-
+    #-----------------------------------------------------
+    # Adds an entry in the Log
+    #-----------------------------------------------------
     def add_log(self, logType, logDesc, logItem, logHelp, ):
         lDict = {
             'Process': self.logProcess, 
@@ -33,6 +42,9 @@ class Validation_Log():
             self.Logs[logType].append(lDict)
             self.nLogs[logType] = self.nLogs[logType] + 1
 
+    #-----------------------------------------------------
+    # Remove duplicate log enties
+    #-----------------------------------------------------
     def select_unique(self,logTypes= ['Error','Warning', 'Info']):
         uLogs={}
         for t in logTypes:
@@ -50,6 +62,9 @@ class Validation_Log():
                     uLogs[t].append(l)
         self.Logs = uLogs
 
+    #-----------------------------------------------------
+    # Reset the log entries to 0
+    #-----------------------------------------------------
     def reset(self):
         self.nLogs = {}
         self.Logs  = {}
@@ -58,6 +73,14 @@ class Validation_Log():
         for t in self.logTypes:
             self.nLogs[t] = 0
             self.Logs[t] = []        
+
+    #-----------------------------------------------------
+    # Show log entries in logger.info
+    #-----------------------------------------------------
+    def show(self,logTypes= ['Error','Warning', 'Info']):
+        for t in logTypes:
+            for l in self.Logs[t]:
+                logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
 
     def info(self,logTypes= ['Error','Warning', 'Info']):
         self.info={}
@@ -68,10 +91,6 @@ class Validation_Log():
                 print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
                 self.info[t].append(print_info) 
 
-    def show(self,logTypes= ['Error','Warning', 'Info']):
-        for t in logTypes:
-            for l in self.Logs[t]:
-                logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
     
     def log_to_UI(self,logTypes= ['Error','Warning', 'Info']):
         info={} #info=[]
