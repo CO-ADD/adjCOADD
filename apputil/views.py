@@ -79,7 +79,7 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     filterset_class = AppUserfilter
     model_fields=model.HEADER_FIELDS
 
-class AppUserCreateView(SimplecreateView):
+class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
     form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
 
@@ -141,42 +141,19 @@ class DictionaryView(LoginRequiredMixin, FilteredListView):
 
     
 # 
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='/')
-def createDictionary(req):
-    kwargs={}
-    kwargs['user']=req.user
-    form=Dictionary_form()
-    form_error=False
-    if req.method=='POST':
-        form=Dictionary_form(req.POST)
-        try:
-            if form.is_valid:
-                instance=form.save(commit=False)
-                print("dictionary form")
-                instance.save(**kwargs)
-                print("save")
-                return redirect("dict_view")
-        except Exception as err:
-       
-            form_error=True    
-            messages.error(req, form.errors)
-            return redirect("dict_view")
-    
-    return render(req, 'apputil/dictCreate.html', {'form': form, 'form_error':form_error})
+class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
+    form_class=Dictionary_form
+    template_name='apputil/dictCreate.html'
+
 ## ============================Dictionary View======================================##
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
-    kwargs={}
-    kwargs['user']=req.user
+    kwargs={'user': req.user}
     if req.user.has_permission('Admin'):
-        print(req.user.has_permission('Admin'))
-
         if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
             dict_value=req.POST.get("dict_value") 
             type=req.POST.get("type") or None
-            print(type)
             value=req.POST.get("value").strip() or None
-            print(value)
             object_=get_object_or_404(Dictionary, dict_value=dict_value)
             try:
                 if object_:
@@ -184,7 +161,6 @@ def updateDictionary(req):
                         object_.dict_class=value
                     if type=='dict_desc':
                         object_.dict_desc=value
-                    print(object_.dict_desc)
                     object_.save(**kwargs)
                     return JsonResponse({"result": "Saved"})
             except Exception as err:
@@ -201,12 +177,13 @@ def deleteDictionary(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
         dict_value=req.POST.get("dict_value") 
         object_=get_object_or_404(Dictionary, dict_value=dict_value)
+        print(object_)
         try:
             if object_:
                 object_.delete(**kwargs)
-                return JsonResponse({"result": "Deleted!"})
+                return JsonResponse({"success": 'data deleted'})
         except Exception as err:
-            return JsonResponse({"result": err})
+            return JsonResponse({"error": err})
     
     return JsonResponse({})
 

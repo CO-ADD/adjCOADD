@@ -14,7 +14,10 @@
   >
   <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
   </button>
-  {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+  {% url 'cultr_update' pk=object.pk as my_url %}
+  {% with urlname=my_url|add:'?_value=cancel' %}
+  {%include 'utils/miscellaneous/cancel_btn_htmx.html'%}
+  {% endwith %}
 </td>
 {%for field in form.group_updatebatch%}
 <td>
