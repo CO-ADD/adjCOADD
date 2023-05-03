@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'dgene',
     'rest_framework',
     'rest_framework.authtoken',
+    'formtools',
 ]
 
 REST_FRAMEWORK = {

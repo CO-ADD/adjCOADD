@@ -1,0 +1,57 @@
+{% block content %}
+    <h1>My Wizard</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        
+        {% if wizard.steps.current == 'upload_file' %}
+            <h2>Upload File</h2>
+            {{ wizard.form.as_p }}
+        {% elif wizard.steps.current == 'check_validation' %}
+            <h2>Check Validation</h2>
+            {{ wizard.form.as_p }}
+        {% elif wizard.steps.current == 'confirm_validation' %}
+            <h2>Confirm Validation</h2>
+            {{ wizard.form.as_p }}
+        {% elif wizard.steps.current == 'finalize' %}
+            <h2>Finalize</h2>
+            {{ wizard.form.as_p }}
+        {% endif %}
+        
+        {% if wizard.steps.prev %}
+            <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">previous</button>
+        {% endif %}
+        <input type="submit" value="next">
+    </form>
+
+{% comment %}     
+    
+{%load static%}
+<script src="{% static 'js/formWizard/jquery.steps.min.js'%}"></script>
+    
+    <script>
+        $(function () {
+            var form = $("#wizard-form");
+            var steps = $("#wizard").steps({
+                headerTag: "h2",
+                bodyTag: "section",
+                transitionEffect: "fade",
+                autoFocus: true,
+                stepsOrientation: "vertical",
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    // Trigger the form submission
+                    if (newIndex > currentIndex) {
+                        $("#wizard-form").submit();
+                        return false; // Prevent the step change
+                    }
+                    return true;
+                },
+                onFinishing: function (event, currentIndex) {
+                    // Finalize and submit the form
+                    $("#wizard-form").submit();
+                },
+            });
+        });
+    </script> {% endcomment %}
+<!-- jQuery steps init -->
+    {% endblock %}
