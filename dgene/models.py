@@ -148,7 +148,7 @@ class ID_Pub(AuditModel):
         db_table = 'id_pub'
         ordering=['organism_id','id_type']
         indexes = [
-             models.Index(name="idp_org_idx",fields=['id_organism']),
+             models.Index(name="idp_org_idx",fields=['id_organisms']),
              models.Index(name="idp_idtype_idx",fields=['id_type']),
              models.Index(name="idp_source_idx",fields=['source']),
         ]

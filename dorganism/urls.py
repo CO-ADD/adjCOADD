@@ -7,7 +7,7 @@ from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCr
                      BatchUpdateView, BatchCardView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
                      CultureUpdateView, createCulture, deleteCulture, pivottable) #StockListView 
-from .utils import search_organism, search_organism_id
+from .utils.utils import search_organism, search_organism_id
 
 
 urlpatterns = [
