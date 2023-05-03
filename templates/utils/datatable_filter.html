@@ -9,15 +9,12 @@
           <!-- detail view link name if exists -->
           <th style="width: 1rem"></th>
           <!-- customized/verbose model fields name -->
-          {% if table_id != 'ApplicationUser' %}
-          <th class="order_field" style="width: fit-content">ID</th>
-          {%endif%}
           <!--prettier-ignore  -->
           {%for field in filter.form %}
         {%if field.name != 'Search_all_fields' and field.name != 'tax_id'%}
-          <th class="order_field" style="width: fit-content">
+          <th class="order_field" style="width: fit-content" data-name="{{field.label}}">
             {{field.label}}<br />{{field}}
-          </th>
+         </th>
           {%endif%} {%endfor%}
           <!-- object ID -->
           <!--field with web link if exists  -->
@@ -38,15 +35,6 @@
           <td>
             <!--prettier-ignore  -->
             {%include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk%}
-            <!--  -->
-          </td>
-          <td>
-            <!--  -->
-            {%if object.urlname%}
-            <a href="{%url url_name object.urlname%}">{{object.urlname}}</a>
-            {%else%}
-            <a href="{%url url_name object.pk%}">{{object.pk}}</a>
-            {%endif%}
             <!--  -->
           </td>
           {%for value in object.get_values%}

@@ -54,12 +54,9 @@ class Filterbase(django_filters.FilterSet):
 
 # utils for filteredListView method def ordered_by
 def find_item_index(lst, item):
-    print(item)
     for i, element in enumerate(lst):
         if isinstance(element, dict):
-            print(element.keys())
             if item in element.keys():
-                print(i)
                 return i
         elif element == item:
             return i

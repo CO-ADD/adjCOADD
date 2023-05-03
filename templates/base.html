@@ -99,7 +99,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         // Get all the links in the document
-        {% comment %} const links = document.querySelectorAll("a[href]:not([href='#']):not([href='javascript:void(0)']):not([data-bs-toggle])::not([class='dropdown-item'])"); {% endcomment %}
+       
         const links=document.querySelectorAll("a[href]:not([data-bs-toggle])")
         let preloaderTimeout;
     
@@ -117,10 +117,12 @@
         // Add click event listeners to all links
         for (let link of links) {
             link.addEventListener("click", function(event) {
-                showPreloader()
+                 // Only show the preloader if the target is not "_blank"
+        if (link.getAttribute("target") !== "_blank") {
+          showPreloader();
+        }
             });
         }
-    
      
 
          // Hide the preloader when the cached page is shown

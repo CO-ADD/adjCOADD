@@ -74,7 +74,6 @@ def ketcher_test(req):
     n=Chem.MolFromSmiles("CC(C)([C@@H]1C(O)=O)S[C@H]([C@@H]2NC([C@@H](c(cc3)ccc3O)N)=O)N1C2=O")
     m=Chem.MolToMolBlock(n)
     context["object_mol"]="\\n".join(m.split("\n"))
-    print(context["object_mol"])
     return render(req, "utils/ketcher_test.html", context)
 
 # --Drug View--
@@ -118,7 +117,6 @@ class DrugCardView(DrugListView):
                 else:
                     m=object_.smol
                     try:
-                        print(object_.pk)
                         molecule_to_svg(m, object_.pk)
                     except Exception as err:
                         messages.error(self.request, f'**{object_.pk} mol may not exists**')
@@ -166,10 +164,9 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
         context['defaultindex1']='analysis_time'
         context['defaultindex2']='proc_date'
         context['defaultvalues']='instrument'
-        print(context['fields'])
+      
       
         data=list(context["object_list"].values())
-        print(data)
         df=pd.DataFrame(data)
         try:
             table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
@@ -189,7 +186,6 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             index_str=request.POST.get("index") or None
             card_barcode=request.POST.get("card_barcode")
             aggfunc_name=request.POST.get("functions")
-            print(f'columns_str is {columns_str}')
             if selected_data:
                 querydata=queryset.filter(pk__in=selected_data)
             else:
@@ -241,7 +237,6 @@ class VitekastListView(LoginRequiredMixin, FilteredListView):
 
         # queryset=Vitek_CARD.objects.all().values('drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
         queryset=queryset.values('pk', 'drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
-        print(f'query: {queryset}')
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
@@ -359,7 +354,6 @@ class Importhandler_VITEK(Importhandler):
                 context['data_model']=self.data_model
                 context['cards']=self.lCards
                 context['ids']=self.lID   
-                print(self.lAst) 
 
         except Exception as err:
             messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')

@@ -78,7 +78,62 @@
             </li>
           </ul>
         </div>
-        {% if user.permission == 'Admin'%}
+        <div class="dropdown d-inline-block">
+          <a
+            type="button"
+            class="nav-link active"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <p class="d-xl-inline-block nav-title">Import</p>
+            <i class="fa-solid fa-chevron-down nav-title"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- item-->
+            <li>
+              <a
+                class="dropdown-item"
+                href="{%url 'import-VITEK' 'Vitek'%}"
+                target="_blank"
+              >
+                <p>Vitek</p>
+              </a>
+            </li>
+            
+            <li>
+              <a
+                class="dropdown-item"
+                href="{%url 'excel-import' process_name='Drug'%}"
+                target="_blank"
+              >
+                <p>Drug</p>
+              </a>
+            </li>
+            <hr>
+            {% if user.permission == 'Admin'%}
+            <li>
+              <a
+                class="dropdown-item"
+                href="{% url 'excel-import' process_name='ApplicationUser' %}"
+                target="_blank"
+              >
+                <p>ApplicationUser</p>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="{% url 'excel-import' process_name='Dictionary' %}"
+                target="_blank"
+              >
+                <p>Dictionary</p>
+              </a>
+            </li>
+           {%endif%}
+          </ul>
+        </div>
+        {% comment %} {% if user.permission == 'Admin'%}
         <div class="dropdown d-inline-block">
           <a
             type="button"
@@ -113,12 +168,13 @@
           </ul>
         </div>
         {%endif%}
-        <div>
+        {% endcomment %}
+        {% comment %} <div>
           <a class="nav-link" href="{%url 'ketcher_test' %}">
             <p class="nav-title">Ketcher Test Page</p>
           </a>
-        </div>
-      </div>
+        </div> {% endcomment %}
+      </div> 
       {%endif%}
       <!-- </li>
       </ul>
