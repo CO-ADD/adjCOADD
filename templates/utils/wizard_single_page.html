@@ -1,13 +1,17 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
 {% block content %}
-    <h1>My Wizard</h1>
+<h1>My Wizard</h1>
       <!-- Step line container -->
-      <div class="step-line">
+<div class="d-flex vh-100">
+      <div class="step-line m-3 h-25">
         <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">Upload File</div>
         <div class="step {% if wizard.steps.current == 'check_validation' %}active{% endif %}">Check Validation</div>
         <div class="step {% if wizard.steps.current == 'confirm_validation' %}active{% endif %}">Confirm Validation</div>
         <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">Finalize</div>
     </div>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="border w-75 h-75">
         {% csrf_token %}
         {{ wizard.management_form }}
         
@@ -28,37 +32,10 @@
         {% if wizard.steps.prev %}
             <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">previous</button>
         {% endif %}
-        <input type="submit" value="next">
+        <div class="m-5 mb-0">
+        <input type="submit" value="next" >
+        <div>
     </form>
+</div>
 
-{% comment %}     
-    
-{%load static%}
-<script src="{% static 'js/formWizard/jquery.steps.min.js'%}"></script>
-    
-    <script>
-        $(function () {
-            var form = $("#wizard-form");
-            var steps = $("#wizard").steps({
-                headerTag: "h2",
-                bodyTag: "section",
-                transitionEffect: "fade",
-                autoFocus: true,
-                stepsOrientation: "vertical",
-                onStepChanging: function (event, currentIndex, newIndex) {
-                    // Trigger the form submission
-                    if (newIndex > currentIndex) {
-                        $("#wizard-form").submit();
-                        return false; // Prevent the step change
-                    }
-                    return true;
-                },
-                onFinishing: function (event, currentIndex) {
-                    // Finalize and submit the form
-                    $("#wizard-form").submit();
-                },
-            });
-        });
-    </script> {% endcomment %}
-<!-- jQuery steps init -->
     {% endblock %}
