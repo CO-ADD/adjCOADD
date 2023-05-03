@@ -8,7 +8,6 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
-#from apputil.utils.slugify import slugify
 
 from adjcoadd.constants import *
 
@@ -89,7 +88,6 @@ class Taxonomy(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         self.urlname = slugify(self.organism_name,lower=False,allow_unicode=False)
-    #    self.urlname = slugify(self.organism_name,allow_unicode=False)
         super(Taxonomy, self).save()
 
         

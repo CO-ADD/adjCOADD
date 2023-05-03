@@ -47,9 +47,8 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
-    import ddrug.utils.tables as djtbl
-
-    df = djtbl.get_Antibiogram_byOrgID("GN_0544")
+    import ddrug.utils.tables as drugtbl
+    df = drugtbl.get_Antibiogram_byOrgID("GN_0544")
     print(df)
 
 #==============================================================================

@@ -101,7 +101,7 @@ def update_Dictionary_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lo
             
             #djDict=Dictionary(**entry)
             if upload:
-                logger.info(f" -> {djDict} as {appuser}")
+                logger.info(f" -> {repr(djDict)}")
                 djDict.save(user=appuser)
             else:
-                logger.info(f" >r {djDict} as {appuser}")
+                logger.info(f" >r {repr(djDict)}")

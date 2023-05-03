@@ -18,7 +18,6 @@ from zUtils import zData
 from apputil.models import ApplicationUser, Dictionary
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from django.utils.text import slugify
-#from apputil.utils import slugify
 
 #-----------------------------------------------------------------------------------
 def reformat_OrganismID(OrgID):

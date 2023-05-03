@@ -89,9 +89,37 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
 
     df = pd.DataFrame(orgMIC)
-    # df.to_excel(f"{OrgID}_Antibio.xlsx")
+    #df.to_excel(f"{OrgID}_Antibio.xlsx")
     df = df.fillna("-")
 
     agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: ", ".join(list(np.unique(x))))
 
     return(agg_df)
+
+
+# -----------------------------------------------------------------------------------------
+def get_Identification_byOrgID(OrgID):
+    """
+    get Identification values for Organism ID and prepare aggregate table as Dataframe 
+    """
+# -----------------------------------------------------------------------------------------
+    orgMIC = []
+    showCol = ['BatchID','Source','Organism Name','Method','Date']
+    grbyCol = ['BatchID','Source']
+
+    OrgObj = Organism.objects.get(organism_id=OrgID)
+
+    #vMIC = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id=OrgObj)
+
+# -----------------------------------------------------------------------------------------
+def get_Genes_byOrgID(OrgID):
+    """
+    get MIC values for Organism ID and prepare aggregate table as Dataframe 
+    """
+# -----------------------------------------------------------------------------------------
+    orgMIC = []
+    showCol = ['Gene Name','Gene Class','BatchID','Source','MIC','BP Profile','BP Source']
+    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
+
+    OrgObj = Organism.objects.get(organism_id=OrgID)
+

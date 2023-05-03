@@ -1,5 +1,25 @@
 from django.http import JsonResponse
-from .models import Organism, Taxonomy
+from dorganism.models import Organism, Taxonomy
+
+
+#-----------------------------------------------------------------------------------
+def reformat_OrganismID(OrgID):
+    """
+    Reformat Organism ID from old GN_001 (3 digits) to new GN_0001 (3 digits) 
+    """
+#-----------------------------------------------------------------------------------
+    xStr = OrgID.split("_")
+    return(f"{xStr[0]}_{int(xStr[1]):04d}")
+
+#-----------------------------------------------------------------------------------
+def reformat_OrgBatchID(OrgBatchID):
+    """
+    Reformat OrganismBatch ID from old GN_001:02 (3 digits,':') to new GN_0001_02 (3 digits,'_') 
+    """
+#-----------------------------------------------------------------------------------
+    xStr = OrgBatchID.split(":")
+    #print(xStr)
+    return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
 
 #--Ajax search funcion--
 ## Search Organism Name in Taxonomy

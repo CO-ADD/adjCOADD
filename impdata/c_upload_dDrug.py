@@ -14,12 +14,12 @@ from zUtils import zData
 from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.validation_log import *
 #from apputil.utils.data import *
+
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
 from ddrug.utils.import_drug import *
-#from apputil.utils import slugify
-
 from django.utils.text import slugify
+
 from rdkit import Chem
 from rdkit.Chem import AllChem
 #from django_rdkit.models import *
