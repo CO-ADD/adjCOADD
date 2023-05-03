@@ -1105,10 +1105,6 @@ table.dataframe td {
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 table.dataframe tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -1175,4 +1171,34 @@ table.dataframe tr:hover {
   left: 45%;
   top: -10px;
   background-color: var(--bs-body-bg);
+}
+
+.step-line {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.step {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(100% - 4px);
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  background-color: #ccc;
+}
+
+.step.active {
+  background-color: #4285f4;
+  color: white;
 }

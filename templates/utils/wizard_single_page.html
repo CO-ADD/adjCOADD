@@ -1,5 +1,12 @@
 {% block content %}
     <h1>My Wizard</h1>
+      <!-- Step line container -->
+      <div class="step-line">
+        <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">Upload File</div>
+        <div class="step {% if wizard.steps.current == 'check_validation' %}active{% endif %}">Check Validation</div>
+        <div class="step {% if wizard.steps.current == 'confirm_validation' %}active{% endif %}">Confirm Validation</div>
+        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">Finalize</div>
+    </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ wizard.management_form }}
