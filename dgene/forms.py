@@ -78,6 +78,7 @@ class ID_Pub_form(ModelForm):
  
 ## fitler forms
 class ID_Pubfilter(Filterbase):
+    id_organisms=django_filters.CharFilter(method='filter_arrayfields')
    
     # id_type=django_filters.ChoiceFilter(choices=[])
     # Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')

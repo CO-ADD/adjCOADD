@@ -46,7 +46,7 @@ $(document).ready(() => {
         : "none";
       // sending input data to server: files, process name,
       $.ajax({
-        url: "/import/VITEK/",
+        url: "/ddrug/import/VITEK/",
         data: {
           type: $(this).data("type"),
           select_file_list: select_file_list,
@@ -160,8 +160,8 @@ $(document).ready(() => {
               <td>${error_num.toString()}</td>
               <td>${warning_num.toString()}</td>
               <td><div id="upload_report">${JSON.stringify(
-                ew_description
-              )}</div></td>
+                  ew_description
+                )}</div></td>
               </tr>`;
                 $("#tasks").append(tr);
                 $("#tasksreport").append(`***
@@ -187,8 +187,8 @@ $(document).ready(() => {
               <td>${error_num.toString()}</td>
               <td>${warning_num.toString()}</td>
               <td><div id="upload_report">${JSON.stringify(
-                ew_description
-              )}</div></td>
+                  ew_description
+                )}</div></td>
               </tr>`;
                 $("#tasks").append(tr);
                 $("#tasksreport").append(`***

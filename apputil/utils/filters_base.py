@@ -6,7 +6,8 @@ import django_filters
 from django import forms
 from django.views.generic import ListView
 from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField
-
+from django.db.models import CharField, Value
+from django.db.models.functions import Cast
 # -- create a function for search all fields--
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
     q_object = Q()
@@ -51,15 +52,18 @@ class Filterbase(django_filters.FilterSet):
             q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
+    
+    def filter_arrayfields(self, queryset, name, value):
+        if value:
+            value_as_text = Value(value, output_field=CharField())
+            return queryset.annotate(array_field_as_text=Cast(name, CharField())).filter(array_field_as_text__icontains=value_as_text)
+        return queryset
 
 # utils for filteredListView method def ordered_by
 def find_item_index(lst, item):
-    print(item)
     for i, element in enumerate(lst):
         if isinstance(element, dict):
-            print(element.keys())
             if item in element.keys():
-                print(i)
                 return i
         elif element == item:
             return i

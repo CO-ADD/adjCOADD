@@ -6,8 +6,8 @@ $(document).ready(function () {
         $(".order_field").toggleClass("asc")
     }
     $(".order_field").dblclick(function () {
-       console.log($(this).text().toString())
-        var order_name = $(this).text().toString()
+        console.log($(this).data('name').toString())
+        var order_name = $(this).data('name').toString()
         if (sessionStorage.getItem('dorder') !== null) {
             order_name = order_name
             sessionStorage.removeItem('dorder')

@@ -121,12 +121,12 @@ class ID_Pub(AuditModel):
 #=================================================================================================
     HEADER_FIELDS   = {
         "organism_id":"Organism ID",
-        "id_type":"ID Method",
-        #"id_organism":"Organism",
-        #"id_probability": "Probability",
-        #"id_confidence": "Confidence",
+        "id_type":"ID Type",
+        "id_method":"ID Method",
+        "id_organisms":"Organisms",
         "source": "Source",
         "id_date":"Date",
+        "id_notes":"Notes",
     }
     Choice_Dictionary = {
         'id_type':'ID_Type',
@@ -136,10 +136,10 @@ class ID_Pub(AuditModel):
         db_column="organism_id", related_name="%(class)s_organism_id") 
     id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
          db_column="id_type", related_name="%(class)s_idtype")
-    id_organism = models.CharField(max_length=120,  blank=True, verbose_name = "ID Organism")
-    #id_probability = models.CharField(max_length=120, blank=True,  verbose_name = "ID Probability")
-    #id_confidence = models.CharField(max_length=120, blank=True,  verbose_name = "ID Confidence")
-    id_date = models.DateField(blank=True, verbose_name = "ID Date")
+    id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
+    id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
+    id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
+    id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
     #------------------------------------------------
@@ -148,7 +148,7 @@ class ID_Pub(AuditModel):
         db_table = 'id_pub'
         ordering=['organism_id','id_type']
         indexes = [
-             models.Index(name="idp_org_idx",fields=['id_organism']),
+             models.Index(name="idp_org_idx",fields=['id_organisms']),
              models.Index(name="idp_idtype_idx",fields=['id_type']),
              models.Index(name="idp_source_idx",fields=['source']),
         ]
@@ -194,6 +194,7 @@ class ID_Sequence(AuditModel):
         "id_organisms":"Organisms",
         "source": "Source",
         "id_date":"Date",
+        "id_notes":"Notes",
     }
     Choice_Dictionary = {
         'id_type':'ID_Type',
@@ -206,7 +207,7 @@ class ID_Sequence(AuditModel):
     run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
-    id_date = models.DateField(blank=True, verbose_name = "ID Date")
+    id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
     id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
@@ -239,7 +240,7 @@ class ID_Sequence(AuditModel):
     def get(cls,OrgBatchID,IDType,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,id_type=IDType,source=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,id_type=IDType,run_id=RunID)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {OrgBatchID} {IDType} {RunID}")
@@ -250,7 +251,7 @@ class ID_Sequence(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,IDType,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,id_type=IDType,source=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,id_type=IDType,run_id=RunID).exists()
 
 #=================================================================================================
 class WGS_FastQC(AuditModel):
@@ -320,7 +321,7 @@ class WGS_FastQC(AuditModel):
     def get(cls,OrgBatchID,Seq,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq=Seq,source=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq=Seq,run_id=RunID)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {OrgBatchID} {Seq} {RunID}")
@@ -331,7 +332,7 @@ class WGS_FastQC(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,Seq,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,seq=Seq,source=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,seq=Seq,run_id=RunID).exists()
     
 #=================================================================================================
 class WGS_CheckM(AuditModel):
@@ -410,10 +411,10 @@ class WGS_CheckM(AuditModel):
     def get(cls,OrgBatchID,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,source=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,run_id=RunID)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {Seq} {RunID}")
+                print(f"[ID-WGS Not Found] {OrgBatchID} {RunID}")
             retInstance = None
         return(retInstance)
 
@@ -421,4 +422,4 @@ class WGS_CheckM(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,RunID,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,source=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,run_id=RunID).exists()

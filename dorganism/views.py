@@ -144,6 +144,7 @@ def detailOrganism(request, pk):
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
     
+    # 
     try:
         df = drugtbl.get_Antibiogram_byOrgID(pk)
         df.reset_index(inplace=True)
