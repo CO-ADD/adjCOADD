@@ -361,6 +361,7 @@ class Import_VitekView(ImportHandler_WizardView):
                     if scan_result and scan_result['stream'][0] == 'FOUND':
                         form.add_error('multi_files', f'Virus found in {f.name}')
                         return None
+
                  
                 self.organism_batch=request.POST.get("upload_file-orgbatch_id")
                 print(f"organismbatchis {self.organism_batch}")
