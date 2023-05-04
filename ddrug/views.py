@@ -35,6 +35,7 @@ from apputil.utils.api_filterclass import API_FilteredListView
 from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
+from dorganism.models import Organism_Batch
 from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from .utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from .utils.vitek import *
@@ -301,98 +302,147 @@ class API_VITEK_ASTList(API_FilteredListView):
 #
 
 
-# --upload file view--
-
 class Importhandler_VITEK(Importhandler):
+    pass
 
-    success_url="/import-VITEK/"
-    template_name='ddrug/importhandler_vitek.html'
-    upload_model_type="Vitek"
-    lCards={}   # self.lCards, lID and lAst store results parsed by all uploaded files with key-filename, value-parsed result array
-    lID={}
-    lAst={}
-    # vLog = Validation_Log("Vitek-pdf")
-    
-    def post(self, request, process_name):
-        location=file_location(request) # define file store path during file process
-        form = self.form_class(request.POST, request.FILES)
-        context, kwargs = {}, {}
-        context['form'] = form
-        kwargs['user']=request.user
-        vCard, vID, vAst=[], [], []   # process variables for store parse result from single file
-        
-        self.file_url=[]
-        self.data_model=request.POST.get('file_data') or None
-        myfiles=request.FILES.getlist('file_field')
-      
-        try:
-        # Uploading Verifying     
+
+# --upload file view--
+import clamd
+from django import forms
+from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, StepForm_2, FinalizeForm
+from django.shortcuts import render
+from formtools.wizard.views import SessionWizardView
+from django.core.files.storage import FileSystemStorage
+
+# customized Form
+class VitekUploadFileForm(UploadFileForm):
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
+
+class Import_VitekView(ImportHandler_WizardView):
+    name_step1="Check Validation"
+    name_step2="Confirm Validation"
+    form_list = [
+        ('upload_file', VitekUploadFileForm),
+        ('step1', StepForm_1),
+        ('step2', StepForm_2),
+        ('finalize', FinalizeForm),
+    ]
+
+    template_name = 'ddrug/importhandler_vitek.html'
+    # Define a file storage for handling file uploads
+    file_storage = FileSystemStorage(location='/tmp/')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lCards = {}
+        self.lID = {}
+        self.lAst = {}
+        self.filelist=[]
+        self.organism_batch=None
+
+    def process_step(self, form):
+        current_step = self.steps.current
+        request = self.request
+
+        if current_step == 'upload_file':
+            location = file_location(request)  # define file store path during file process
+            files = []
             if form.is_valid():
-                self.lCards.clear()
-                self.lID.clear()
-                self.lAst.clear()
-                
-        # Uploading Parsing 
-                for f in myfiles:
-                    fs=OverwriteStorage(location=location)
-                    filename=fs.save(f.name, f)
-                    print(f"fs is {fs} location is {location}, filename is {filename}")
-              
-                    try:
-                        vCards, vID, vAst=process_VitekPDF(DirName=location, PdfName=filename)
-                        print("file checked")
-                        self.lCards[filename]=vCards
-                        self.lID[filename]=vID
-                        self.lAst[filename]=vAst
-                        self.file_url.append(filename)
-                    except Exception as err:
-                        self.delete_file(file_name=filename)
-                        messages.warning(request, f'{filename} contains {err} erro , cannot to upload, choose a correct file')
-                        return render(request, 'ddrug/importhandler_vitek.html', context)
-                  
-                context['file_list']=self.file_url
-                context['data_model']=self.data_model
-                context['cards']=self.lCards
-                context['ids']=self.lID   
+                # Connect to ClamAV daemon
+                cd = clamd.ClamdUnixSocket()
 
-        except Exception as err:
-            messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
+                if 'upload_file-multi_files' in request.FILES:
+                    files.extend(request.FILES.getlist('upload_file-multi_files'))
+            
+                if 'upload_file-folder_files' in request.FILES:
+                    files.extend(request.FILES.getlist('upload_file-folder_files'))
+                # scann with ClamAV
+                for f in files:
+                    scan_result = cd.instream(f.read())
+                    if scan_result and scan_result['stream'][0] == 'FOUND':
+                        form.add_error('multi_files', f'Virus found in {f.name}')
+                        return None
+                 
+                self.organism_batch=request.POST.get("upload_file-orgbatch_id")
+                print(f"organismbatchis {self.organism_batch}")
+            # else:
+            #     return redirect(self.request.META['HTTP_REFERER']) 
 
-        # Ajax Call steps for validation, cancel/delete or savetoDB 
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":          
-            vLog = Validation_Log("Vitek-pdf") # create process Log instance
-            process_name=request.POST.get('type') # get process type: Validation, Delete, DB_Validation(Save to DB)
-            file_list=request.POST.getlist("select_file_list[]") #get selected fileName List
-            data_model=request.POST.get("datamodel")
-            self.validate_result.clear()
-            self.file_report.clear()
-            lCards, lID, lAst={},{},{}
-            for f in file_list:
-                lCards[f], lID[f], lAst[f]=self.lCards[f], self.lID[f], self.lAst[f]     
-        # Validating
-            if process_name=='Validation':        
-                self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=False, **kwargs)
-               
-                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 'status':'validating'})                                   
-        # Cancel and deleting Task                
-            elif process_name=='Delete':
-                for f in file_list:
-                    try:
-                        self.delete_file(file_name=f)                   
-                    except Exception as err:
-                        return JsonResponse({"status":"Delete", "systemErr":"File not existed!"})               
-                return JsonResponse({"status":"Delete"})                                   
-        # Saving
-            elif process_name=='DB_Validation':
-                print("start saving to db")                         
-                self.validates(lCards, VITEK_Card, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(lID, VITEK_ID, vLog, self.validate_result, self.file_report, save=True, **kwargs)
-                self.validates(lAst, VITEK_AST, vLog, self.validate_result, self.file_report, save=True, **kwargs)                     
-                return JsonResponse({ 'validate_result':str(self.validate_result), 'file_report':str(self.file_report).replace("\\", "").replace("_[", "_").replace("]_", "_"), 
-                'status':'SavetoDB', 'savefile':str(file_list)})
-        context["process_name"]=process_name   
-        return render(request, 'ddrug/importhandler_vitek.html', context)
+            # Uploading Parsing
+                for f in files:
+                    fs = OverwriteStorage(location=location)
+                    filename = fs.save(f.name, f)
+                    print("1")
+                    vCards, vID, vAst =process_VitekPDF(DirName=location, PdfName=filename)
 
+                    self.lCards[filename] = vCards
+                    self.lID[filename] = vID
+                    self.lAst[filename] = vAst
+                    self.filelist.append(filename)
 
+            # Store the extracted data in self.storage.extra_data
+                self.storage.extra_data['lCards'] = self.lCards
+                self.storage.extra_data['lID'] = self.lID
+                self.storage.extra_data['lAst'] = self.lAst
+                self.storage.extra_data['filelist'] = self.filelist
+                self.storage.extra_data['organism_batch']=self.organism_batch
+                # return form.cleaned_data
+
+        elif current_step == 'step1':
+            print("check_Validation")
+            # get data from last steps:
+            lID = self.storage.extra_data['lID']
+            print(lID)
+            # with save to DB = False
+            # perform further validation for each of vCards, vID, vAst
+            # result = check_validation(lID, other_arguments...)
+            # Store the result of check_validation
+            self.storage.extra_data['check_validation_result'] ='test' # result
+
+        elif current_step == 'step2':
+            print('confirm_validation')
+            # get data from last steps:
+            lID = self.storage.extra_data['lID']
+            print(lID)
+            # perform further validation for each of vCards, vID, vAst
+            # with save to DB = True
+            # result = check_validation(lID, other_arguments...)
+            # Store the result of check_validation
+            self.storage.extra_data['check_validation_result'] ='final result'
+            
+
+        return self.get_form_step_data(form)
+
+    def done(self, form_list, **kwargs):
+        print("Finalize")
+        # Redirect to the desired page after finishing
+        # delete uploaded files
+        filelist=self.storage.extra_data['filelist']
+        for f in filelist:
+            self.delete_file(f)
+            print(filelist)
+        return redirect(self.request.META['HTTP_REFERER'])  
+
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form, **kwargs)
+        context['step1']=self.name_step1
+        context['step2']=self.name_step2
+
+        current_step = self.steps.current
+
+        if current_step == 'check_validation':
+            # In this step, you can perform further validation for each of vCards, vID, vAst
+            lID = self.storage.extra_data['lID']
+            # result = check_validation(lID, other_arguments...)
+            # Store the result of check_validation
+            # self.storage.extra_data['check_validation_result'] = result
+            check_validation_result = self.storage.extra_data['check_validation_result']
+            context['check_validation_result'] = check_validation_result
+
+        if current_step == 'confirm_validation':
+            # In this step, you can show a summary of the check_validation results
+            check_validation_result = self.storage.extra_data['check_validation_result']
+            context['check_validation_result'] = check_validation_result
+
+        return context
+    
+   

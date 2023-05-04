@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, DrugUpdateView,#createDrug, updateDrug, 
     detailVitekcard,  VitekcardListView, VitekastListView, Importhandler_VITEK, smartsQuery, 
     ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, MIC_COADDListView, MIC_COADDCardView, 
-    MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView)#VitekcardListView,
+    MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView, Import_VitekView)#VitekcardListView,
 
 
 
@@ -39,6 +39,7 @@ urlpatterns = [
 
     path("import/<str:process_name>/", Importhandler_VITEK.as_view(), name="import-VITEK"),
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
+    path('import-vitek/', Import_VitekView.as_view(), name='import-vitek'),
     # path("ketcher/", iframe_url, name="ketcher"),
 
     

@@ -1,0 +1,79 @@
+
+<h1 >Import Data {{data_model}}</h1>
+      <!-- Step line container -->
+<div class="d-flex vh-100">
+    <div class="step-line m-3 h-25">
+        <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">Upload File</div>
+        <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}">{{step1}}</div>
+        <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div>
+        <!-- add more steps here-->
+        <!-- <div ... -->
+        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">Finalize</div>
+    </div>
+    <form method="post" enctype="multipart/form-data" class="mx-5 w-75 h-75">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        
+        {% if wizard.steps.current == 'upload_file' %}
+            <h2>Upload File</h2>
+            Please only use one of path. 
+            {{ wizard.form.as_p }}
+           
+            <div id="folder-file-names"></div>
+        {% elif wizard.steps.current == 'step1' %}
+            <h2>{{step1}}</h2>
+            Here Show Validation result: {{check_validation_result}}
+            {{ wizard.form.as_p }}
+        {% elif wizard.steps.current == 'step2' %}
+            <h2>{{step2}}</h2>
+            Here Show Validation result: {{check_validation_result}}
+            {{ wizard.form.as_p }}
+
+        <!-- add more steps here-->
+      
+        {% elif wizard.steps.current == 'finalize' %}
+            <h2>Finalize</h2>
+            {{ wizard.form.as_p }}
+        {% endif %}
+        
+        <div class="m-5 mb-0">
+        {% if wizard.steps.prev %}
+            <button class="btn btn-sm"  name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">previous</button>
+        {% endif %}
+        {%if wizard.steps.next%}
+        <input class="btn btn-sm"  type="submit" value="Next" >
+        {%else%}
+        <input class="btn btn-sm" type="submit" value="Finalize" >
+        {%endif%}
+        <a type="button" class="btn btn-sm m-auto border-0" href="{%url 'import-vitek'%}" onclick="window.location.reload(true);">Cancel
+        </a>
+        <div>
+    </form>
+</div>
+<script>
+    const $fileNamesContainer = $("#folder-file-names");
+    if ($("#folder-file-names").length){
+        $fileNamesContainer.empty();
+    }
+
+    if(("{{ form.folder_files.auto_id }}") && ("{{ form.multi_files.auto_id }}")){
+
+        $("#{{ form.folder_files.auto_id }}").on("change", function() {
+            $fileNamesContainer.empty();
+            const files = this.files;
+        for (let i = 0; i < files.length; i++) {
+            const fileInfo = $("<div></div>").text(files[i].webkitRelativePath || files[i].name);
+            $fileNamesContainer.append(fileInfo);
+        }
+    });
+    $("#{{ form.multi_files.auto_id }}").on("change", function() {
+        $fileNamesContainer.empty();
+        const files = this.files;
+        for (let i = 0; i < files.length; i++) {
+            const fileInfo = $("<div></div>").text(files[i].webkitRelativePath || files[i].name);
+            $fileNamesContainer.append(fileInfo);
+        }
+    });
+    
+    } 
+</script>

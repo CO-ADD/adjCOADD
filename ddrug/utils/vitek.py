@@ -101,7 +101,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                                 #df['ID_Card'] = row[1].split(' ')[1]
                                 df['ID_Card_LotN'] = row[2].split(' ')[1]
                                 dt = parser.parse(row[3].replace('Expires: ',''),tzinfos={'AEST':10 * 3600})
-                                df['ID_Expiry'] = dt.date()
+                                df['ID_Expiry'] = dt.date().strftime('%Y-%m-%d')
                                 prev_col1 = 'ID'
 
                         # - Organism Origin Section (1 row)-----------------------------
@@ -161,15 +161,15 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                             df['AST_Card_LotN'] = row[2].split(' ')[1]
                             df['AST'] = {}
                             dt = parser.parse(row[3].replace('Expires: ',''),tzinfos={'AEST':10 * 3600})
-                            df['AST_Expiry'] = dt.date()
+                            df['AST_Expiry'] = dt.date().strftime('%Y-%m-%d')
                             prev_col1 = 'AST'
 
                         if 'AST' == col1:
                             dt = parser.parse(row[3].replace('Completed: ',''),tzinfos={'AEST':10 * 3600})
-                            df['AST_Date'] = dt.date()
+                            df['AST_Date'] = dt.date().strftime('%Y-%m-%d')
                         if 'ID' == col1:
                             dt = parser.parse(row[3].replace('Completed: ',''),tzinfos={'AEST':10 * 3600})
-                            df['ID_Date'] = dt.date()
+                            df['ID_Date'] = dt.date().strftime('%Y-%m-%d')
 
                         # - AES Findings Section --------------------------------------------    
                         if 'AES Findings:' == col1:
@@ -358,7 +358,7 @@ def dict_Vitek_AST(pCard):
 def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
 #-----------------------------------------------------------------------------
 
-    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=OrgBatchID)
+    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=None)#OrgBatchID)
 
     lstCards = []
     lstID = []
