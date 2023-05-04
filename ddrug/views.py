@@ -349,7 +349,7 @@ class Import_VitekView(ImportHandler_WizardView):
             if form.is_valid():
                 # Connect to ClamAV daemon
                 cd = clamd.ClamdUnixSocket()
-                
+
                 if 'upload_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-multi_files'))
             
