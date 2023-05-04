@@ -348,19 +348,19 @@ class Import_VitekView(ImportHandler_WizardView):
             files = []
             if form.is_valid():
                 # Connect to ClamAV daemon
-                cd = clamd.ClamdUnixSocket()
-
+                # cd = clamd.ClamdUnixSocket()
+                
                 if 'upload_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-multi_files'))
             
                 if 'upload_file-folder_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
                 # scann with ClamAV
-                for f in files:
-                    scan_result = cd.instream(f.read())
-                    if scan_result and scan_result['stream'][0] == 'FOUND':
-                        form.add_error('multi_files', f'Virus found in {f.name}')
-                        return None
+                # for f in files:
+                #     scan_result = cd.instream(f.read())
+                #     if scan_result and scan_result['stream'][0] == 'FOUND':
+                #         form.add_error('multi_files', f'Virus found in {f.name}')
+                #         return None
                  
                 self.organism_batch=request.POST.get("upload_file-orgbatch_id")
                 print(f"organismbatchis {self.organism_batch}")
