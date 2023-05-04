@@ -308,6 +308,7 @@ class Importhandler_VITEK(Importhandler):
 
 # --upload file view--
 import clamd
+from io import BytesIO
 from django import forms
 from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, StepForm_2, FinalizeForm
 from django.shortcuts import render
@@ -357,7 +358,8 @@ class Import_VitekView(ImportHandler_WizardView):
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
                 # scann with ClamAV
                 for f in files:
-                    scan_result = cd.instream(f.read())
+                    file_like_object = BytesIO(f.read())
+                    scan_result = cd.instream(file_like_object)
                     if scan_result and scan_result['stream'][0] == 'FOUND':
                         form.add_error('multi_files', f'Virus found in {f.name}')
                         return None
