@@ -5,6 +5,8 @@ import os
 import magic
 import logging
 logger = logging.getLogger(__name__)
+import clamd
+from io import BytesIO
 
 from django import forms
 from django.conf import settings

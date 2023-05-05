@@ -307,8 +307,6 @@ class Importhandler_VITEK(Importhandler):
 
 
 # --upload file view--
-import clamd
-from io import BytesIO
 from django import forms
 from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, StepForm_2, FinalizeForm
 from django.shortcuts import render
