@@ -60,8 +60,8 @@ class FileValidator(object):
         
         # Scan File 
         # Connect to ClamAV daemon 
-        # cd = clamd.ClamdUnixSocket(path="/run/clamd.scan/clamd.sock")
-        # self.scan_file(data, cd)
+        cd = clamd.ClamdUnixSocket(path="/run/clamd.scan/clamd.sock")
+        self.scan_file(data, cd)
 
         # Type validation
         if self.content_types:
