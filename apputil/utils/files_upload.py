@@ -24,6 +24,7 @@ from apputil.utils.data import Timer
 ## create user folder
 def file_location(req):
     location=settings.MEDIA_ROOT+'/'+str(req.user)
+    print(f"file is {location}")
     return location
 
 ## Override filename in FileStorage
