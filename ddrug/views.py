@@ -312,14 +312,22 @@ from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFile
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
+from ddrug.utils.vitek import upload_VitekPDF_List
 
 # customized Form
+# ---------------------------------------------------------------------------------------------------------
 class VitekUploadFileForm(UploadFileForm):
-    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
+# ---------------------------------------------------------------------------------------------------------
+    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
+                                       queryset=Organism_Batch.objects.filter(astatus__gte=0), 
+                                       widget=forms.Select(attrs={'class': 'form-control'}), 
+                                       required=False, help_text='**Optional to choose a Organism_Batch ID',)
 
+# ---------------------------------------------------------------------------------------------------------
 class Import_VitekView(ImportHandler_WizardView):
-    name_step1="Check Validation"
-    name_step2="Confirm Validation"
+# ---------------------------------------------------------------------------------------------------------
+    name_step1="Check Data"
+    name_step2="Confirm Upload"
     form_list = [
         ('upload_file', VitekUploadFileForm),
         ('step1', StepForm_1),
@@ -330,13 +338,14 @@ class Import_VitekView(ImportHandler_WizardView):
     template_name = 'ddrug/importhandler_vitek.html'
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.lCards = {}
-        self.lID = {}
-        self.lAst = {}
+        # self.lCards = {}
+        # self.lID = {}
+        # self.lAst = {}
         self.filelist=[]
-        self.organism_batch=None
+        self.orgbatch_id=None
 
     def process_step(self, form):
         current_step = self.steps.current
@@ -350,35 +359,42 @@ class Import_VitekView(ImportHandler_WizardView):
                     files.extend(request.FILES.getlist('upload_file-multi_files'))          
                 if 'upload_file-folder_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
-                self.organism_batch=request.POST.get("upload_file-orgbatch_id")
+                self.orgbatch_id=request.POST.get("upload_file-orgbatch_id")
 
-            # Uploading Parsing
+                # Get clean FileList 
                 for f in files:
                     fs = OverwriteStorage(location=location)
                     filename = fs.save(f.name, f)
-                    print("1")
-                    vCards, vID, vAst =process_VitekPDF(DirName=location, PdfName=filename)
-
-                    self.lCards[filename] = vCards
-                    self.lID[filename] = vID
-                    self.lAst[filename] = vAst
                     self.filelist.append(filename)
-
-            # Store the extracted data in self.storage.extra_data
-                self.storage.extra_data['lCards'] = self.lCards
-                self.storage.extra_data['lID'] = self.lID
-                self.storage.extra_data['lAst'] = self.lAst
+                
+                # Parse PDF -> valLog 
+                valLog = upload_VitekPDF_List(location,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                print("1")
                 self.storage.extra_data['filelist'] = self.filelist
-                self.storage.extra_data['organism_batch']=self.organism_batch
+                self.storage.extra_data['orgbatch_id']=self.orgbatch_id
+                self.storage.extra_data['valLog'] = valLog
+
                 # return form.cleaned_data
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1':
-            print("check_Validation")
-            # get data from last steps:
-            lID = self.storage.extra_data['lID']
-            print(lID)
+            print("Check Data")
+
+            # get valLog
+            valLog = self.storage.extra_data['valLog']
+            if valLog.nLog['Error'] >0 :
+                dfLog = valLog.get_aslist(logTypes= ['Error'])
+                allowUpload = False
+            else:
+                dfLog = valLog.get_aslist()
+                allowUpload = True
+            if form.is_valid():
+                valLog = upload_VitekPDF_List(location,self.filelist,OrgBatchID=self.orgbatch_id,upload=True)
+                self.storage.extra_data['valLog'] = valLog
+                
+            # Show dfLog (Type, Process, Description, Item, Help)
+ 
             # with save to DB = False
             # perform further validation for each of vCards, vID, vAst
             # result = check_validation(lID, other_arguments...)
@@ -387,6 +403,17 @@ class Import_VitekView(ImportHandler_WizardView):
 
         elif current_step == 'step2':
             print('confirm_validation')
+
+            valLog = self.storage.extra_data['valLog']
+            if valLog.nLog['Error'] >0 :
+                dfLog = valLog.get_aslist(logTypes= ['Error'])
+                allowUpload = False
+            else:
+                dfLog = valLog.get_aslist()
+                allowUpload = True
+
+            # Show dfLog (Type, Process, Description, Item, Help)
+
             # get data from last steps:
             lID = self.storage.extra_data['lID']
             print(lID)
