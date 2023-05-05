@@ -111,4 +111,13 @@ class Validation_Log():
                 info[t].append(print_info) # info.append(print_info)
        
         return info
+
+    @classmethod
+    def from_aslist(cls, logProcess, logTypes, aslist):
+        instance = cls(logProcess=logProcess, logTypes=logTypes)
+        for log in aslist:
+            logType = log['Type']
+            instance.Logs[logType].append({k: v for k, v in log.items() if k != 'Type'})
+            instance.nLogs[logType] += 1
+        return instance
     

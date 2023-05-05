@@ -88,7 +88,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 djCard.save(user=appuser)
                 nProc['Saved'] = nProc['Saved'] + 1
             else:
-                nFailed += 1
+                # nFailed += 1
                 valLog.add_log('Error','Vitek Card not validated',f"{c['CARD_BARCODE']}",'-')    
                 nProc['notValid'] = nProc['notValid'] + 1
 

@@ -312,6 +312,7 @@ from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFile
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
+from apputil.utils.validation_log import * 
 
 # customized Form
 class VitekUploadFileForm(UploadFileForm):
@@ -336,7 +337,7 @@ class Import_VitekView(ImportHandler_WizardView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filelist=[]
-        self.organism_batch=None
+        self.orgbatch_id=None
 
     def process_step(self, form):
         current_step = self.steps.current
@@ -360,55 +361,86 @@ class Import_VitekView(ImportHandler_WizardView):
 
                 
                 # Parse PDF -> valLog 
-                valLog = upload_VitekPDF_List(location,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                valLog = upload_VitekPDF_List(DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
                 print("1")
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['orgbatch_id']=self.orgbatch_id
-                self.storage.extra_data['valLog'] = valLog.get
-                    
+                self.storage.extra_data['valLog'] =valLog.get_aslist()
+                
+                #upload file step report 
+                dfLog = pd.DataFrame(valLog.get_aslist())
+                self.storage.extra_data['uploadfile_report'] =dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
             # Store the extracted data in self.storage.extra_data
-                # self.storage.extra_data['lCards'] = self.lCards
-                # self.storage.extra_data['lID'] = self.lID
-                # self.storage.extra_data['lAst'] = self.lAst
+             
                 self.storage.extra_data['DirName'] = DirName
                 self.storage.extra_data['filelist'] = self.filelist
-                self.storage.extra_data['organism_batch']=self.organism_batch
-            # Generating upload log:
-                self.storage.extra_data['check_uploadfile_result'] = upload_VitekPDF_List(DirName,self.filelist, OrgBatchID=self.organism_batch,upload=False,appuser=self.request.user)
-                # return form.cleaned_data
+                self.storage.extra_data['organism_batch']=self.orgbatch_id
+           
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1':
-            print("check_Validation")
-            result=[]
-            # get data from last steps:
-            FileList=self.storage.extra_data['filelist']
+            print("Check Data")
+            result_table=None
+
             DirName=self.storage.extra_data['DirName']
+            FileList=self.storage.extra_data['filelist']
             OrgBatchID=self.storage.extra_data['organism_batch'] or None
-            for FileName in FileList:
-                result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
+            # get valLog
+            log_data = self.storage.extra_data['valLog']
+            logProcess = "upload_VitekPDF_List"
+            logTypes = ['Error', 'Warning', 'Info'] 
+            valLog = Validation_Log.from_aslist(logProcess, logTypes, log_data)
+            if valLog.nLogs['Error'] >0 :
+                dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))
+                result_table=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+                allowUpload = False
+            else:
+                dfLog = pd.DataFrame(valLog.get_aslist())
+                result_table=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+                allowUpload = True
+            if form.is_valid():
+                valLog = upload_VitekPDF_List(DirName,FileList, OrgBatchID=OrgBatchID,upload=True)
+                self.storage.extra_data['valLog'] = valLog.get_aslist()
+                self.storage.extra_data['reporttoUI']=result_table
+                
+
+            # print("check_Validation")
+            # result=[]
+            # # get data from last steps:
+            # for FileName in FileList:
+            #     result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
 
             # with save to DB = False
             # perform further validation for each of vCards, vID, vAst
             # result = check_validation(lID, other_arguments...)
             # Store the result of check_validation
-            self.storage.extra_data['check_validation_result'] =result # result
+            # self.storage.extra_data['check_validation_result'] =result # result
 
         elif current_step == 'step2':
             print('confirm_validation')
-            result=[]
-            # get data from last steps:
-            FileList=self.storage.extra_data['filelist']
-            DirName=self.storage.extra_data['DirName']
-            OrgBatchID=self.storage.extra_data['organism_batch'] or None
-            # with save to DB = True
-            # perform further validation for each of vCards, vID, vAst
-            for FileName in FileList:
-                result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
+            #  get vlog
+            log_data = self.storage.extra_data['valLog']
+            logProcess = "upload_VitekPDF_List"
+            logTypes = ['Error', 'Warning', 'Info'] 
+            valLog = Validation_Log.from_aslist(logProcess, logTypes, log_data)
+
+            dfLog = pd.DataFrame(valLog.get_aslist())
+            result_table=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+            self.storage.extra_data['reporttoUI']=result_table
+            # print('confirm_validation')
+            # result=[]
+            # # get data from last steps:
+            # FileList=self.storage.extra_data['filelist']
+            # DirName=self.storage.extra_data['DirName']
+            # OrgBatchID=self.storage.extra_data['organism_batch'] or None
+            # # with save to DB = True
+            # # perform further validation for each of vCards, vID, vAst
+            # for FileName in FileList:
+            #     result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
        
-            # Store the result of check_validation
-            self.storage.extra_data['check_validation_result'] =result
+            # # Store the result of check_validation
+            # self.storage.extra_data['check_validation_result'] =result
             
 
         return self.get_form_step_data(form)
@@ -431,12 +463,12 @@ class Import_VitekView(ImportHandler_WizardView):
         current_step = self.steps.current
 
         if current_step == 'step1':
-            context['check_uploadfile_result'] = self.storage.extra_data['check_uploadfile_result'] 
+            context['check_uploadfile_result'] = self.storage.extra_data['uploadfile_report'] 
         if current_step == 'step2':
-            check_validation_result = self.storage.extra_data['check_validation_result']
+            check_validation_result = self.storage.extra_data['reporttoUI']
             context['check_validation_result'] = check_validation_result
         if current_step == 'finalize':
-            check_validation_result = self.storage.extra_data['check_validation_result']
+            check_validation_result = self.storage.extra_data['reporttoUI']
             context['check_validation_result'] = check_validation_result
 
         return context
