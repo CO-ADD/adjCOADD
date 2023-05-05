@@ -13,7 +13,8 @@
     <form method="post" enctype="multipart/form-data" class="mx-5 mt-2 d-flex flex-column align-items-center w-75 h-75 border text-center">
         {% csrf_token %}
         {{ wizard.management_form }}
-        
+
+        <!-- This is a start step 0 -->
         {% if wizard.steps.current == 'upload_file' %}
             <h2>Upload File</h2>
             Please only use one of path. 
@@ -26,11 +27,14 @@
                 {% endfor %}
             </p>
         {% endfor %}
-           
+          
             <div id="folder-file-names"></div>
+
+         <!-- This is step 1-->
         {% elif wizard.steps.current == 'step1' %}
-            <h2>{{step1}}</h2>
-            Here Show Validation result: {{check_validation_result}}
+        <p>upload result: {{check_uploadfile_result}}</p>
+        <hr>
+        <h2>{{step1}}</h2>
             {% for field in wizard.form %}
             <p>
                 {{ field.label_tag }} {{ field }}
@@ -40,9 +44,13 @@
                 {% endfor %}
             </p>
         {% endfor %}
+
+        <!-- This is step 2-->
         {% elif wizard.steps.current == 'step2' %}
+        <h5> Here Show Validation result:<h5>
+        {{check_validation_result}}
+        <hr>
             <h2>{{step2}}</h2>
-            Here Show Validation result: {{check_validation_result}}
             {% for field in wizard.form %}
     <p>
         {{ field.label_tag }} {{ field }}
@@ -54,8 +62,12 @@
 {% endfor %}
 
         <!-- add more steps here-->
-      
-        {% elif wizard.steps.current == 'finalize' %}
+
+        <!-- This is the final-->
+       {% elif wizard.steps.current == 'finalize' %}
+        <h5>   Here Show Finalize result: <h5>
+            {{check_validation_result}}
+            <hr>
             <h2>Finalize</h2>
             {% for field in wizard.form %}
             <p>

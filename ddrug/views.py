@@ -318,18 +318,21 @@ class VitekUploadFileForm(UploadFileForm):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
 
 class Import_VitekView(ImportHandler_WizardView):
-    name_step1="Check Validation"
+    
+    name_step1="Check Validation" # step label in template
     name_step2="Confirm Validation"
+    # define each step's form
     form_list = [
         ('upload_file', VitekUploadFileForm),
         ('step1', StepForm_1),
         ('step2', StepForm_2),
         ('finalize', FinalizeForm),
     ]
-
+    # define template
     template_name = 'ddrug/importhandler_vitek.html'
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.lCards = {}
@@ -343,7 +346,7 @@ class Import_VitekView(ImportHandler_WizardView):
         request = self.request
 
         if current_step == 'upload_file':
-            location = file_location(request)  # define file store path during file process
+            DirName = file_location(request)  # define file store path during file process
             files = []
             if form.is_valid():
                 if 'upload_file-multi_files' in request.FILES:
@@ -351,50 +354,61 @@ class Import_VitekView(ImportHandler_WizardView):
                 if 'upload_file-folder_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
                 self.organism_batch=request.POST.get("upload_file-orgbatch_id")
-
-            # Uploading Parsing
                 for f in files:
-                    fs = OverwriteStorage(location=location)
+                    fs = OverwriteStorage(location=DirName)
                     filename = fs.save(f.name, f)
                     print("1")
-                    vCards, vID, vAst =process_VitekPDF(DirName=location, PdfName=filename)
+            # Uploading Parsing
+                    # vCards, vID, vAst =process_VitekPDF(DirName=DirName, PdfName=filename)
 
-                    self.lCards[filename] = vCards
-                    self.lID[filename] = vID
-                    self.lAst[filename] = vAst
+                    # self.lCards[filename] = vCards
+                    # self.lID[filename] = vID
+                    # self.lAst[filename] = vAst
                     self.filelist.append(filename)
-
+                    
             # Store the extracted data in self.storage.extra_data
-                self.storage.extra_data['lCards'] = self.lCards
-                self.storage.extra_data['lID'] = self.lID
-                self.storage.extra_data['lAst'] = self.lAst
+                # self.storage.extra_data['lCards'] = self.lCards
+                # self.storage.extra_data['lID'] = self.lID
+                # self.storage.extra_data['lAst'] = self.lAst
+                self.storage.extra_data['DirName'] = DirName
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['organism_batch']=self.organism_batch
+            # Generating upload log:
+                self.storage.extra_data['check_uploadfile_result'] = upload_VitekPDF_List(DirName,self.filelist, OrgBatchID=self.organism_batch,upload=False,appuser=self.request.user)
                 # return form.cleaned_data
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1':
             print("check_Validation")
+            result=[]
             # get data from last steps:
-            lID = self.storage.extra_data['lID']
-            print(lID)
+            FileList=self.storage.extra_data['filelist']
+            DirName=self.storage.extra_data['DirName']
+            OrgBatchID=self.storage.extra_data['organism_batch'] or None
+            for FileName in FileList:
+                result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
+
             # with save to DB = False
             # perform further validation for each of vCards, vID, vAst
             # result = check_validation(lID, other_arguments...)
             # Store the result of check_validation
-            self.storage.extra_data['check_validation_result'] ='test' # result
+            self.storage.extra_data['check_validation_result'] =result # result
 
         elif current_step == 'step2':
             print('confirm_validation')
+            result=[]
             # get data from last steps:
-            lID = self.storage.extra_data['lID']
-            print(lID)
-            # perform further validation for each of vCards, vID, vAst
+            FileList=self.storage.extra_data['filelist']
+            DirName=self.storage.extra_data['DirName']
+            OrgBatchID=self.storage.extra_data['organism_batch'] or None
             # with save to DB = True
-            # result = check_validation(lID, other_arguments...)
+            # perform further validation for each of vCards, vID, vAst
+            for FileName in FileList:
+                result.append(upload_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID,upload=False,appuser=self.request.user,valLog=None))
+       
             # Store the result of check_validation
-            self.storage.extra_data['check_validation_result'] ='final result'
+            self.storage.extra_data['check_validation_result'] =result
             
 
         return self.get_form_step_data(form)
@@ -416,17 +430,12 @@ class Import_VitekView(ImportHandler_WizardView):
 
         current_step = self.steps.current
 
-        if current_step == 'check_validation':
-            # In this step, you can perform further validation for each of vCards, vID, vAst
-            lID = self.storage.extra_data['lID']
-            # result = check_validation(lID, other_arguments...)
-            # Store the result of check_validation
-            # self.storage.extra_data['check_validation_result'] = result
+        if current_step == 'step1':
+            context['check_uploadfile_result'] = self.storage.extra_data['check_uploadfile_result'] 
+        if current_step == 'step2':
             check_validation_result = self.storage.extra_data['check_validation_result']
             context['check_validation_result'] = check_validation_result
-
-        if current_step == 'confirm_validation':
-            # In this step, you can show a summary of the check_validation results
+        if current_step == 'finalize':
             check_validation_result = self.storage.extra_data['check_validation_result']
             context['check_validation_result'] = check_validation_result
 
