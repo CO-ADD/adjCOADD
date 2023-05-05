@@ -24,7 +24,6 @@ from apputil.utils.data import Timer
 ## create user folder
 def file_location(req):
     location=settings.MEDIA_ROOT+'/'+str(req.user)
-    print(f"file is {location}")
     return location
 
 ## Override filename in FileStorage
@@ -58,6 +57,23 @@ class FileValidator(object):
         self.content_types = content_types
 
     def __call__(self, data):
+        
+        # Scan File 
+        # Connect to ClamAV daemon 
+        # cd = clamd.ClamdUnixSocket(path="/run/clamd.scan/clamd.sock")
+        # self.scan_file(data, cd)
+
+        # Type validation
+        if self.content_types:
+            content_type = magic.from_buffer(data.read(), mime=True)
+            data.seek(0)
+
+            if content_type not in self.content_types:
+                params = { 'content_type': content_type }
+                raise ValidationError(self.error_messages['content_type'],
+                                   'content_type', params)
+
+        # Size validation:
         # if self.max_size is not None and data.size > self.max_size:
         #     params = {
         #         'max_size': filesizeformat(self.max_size), 
@@ -74,14 +90,16 @@ class FileValidator(object):
         #     raise ValidationError(self.error_messages['min_size'], 
         #                            'min_size', params)
 
-        if self.content_types:
-            content_type = magic.from_buffer(data.read(), mime=True)
-            data.seek(0)
+       
 
-            if content_type not in self.content_types:
-                params = { 'content_type': content_type }
-                raise ValidationError(self.error_messages['content_type'],
-                                   'content_type', params)
+    def scan_file(self, file, cd):
+        file_like_object = BytesIO(file.read())
+        scan_result = cd.instream(file_like_object)
+        file.seek(0)
+
+        if scan_result and scan_result['stream'][0] == 'FOUND':
+            raise ValidationError(f"Virus found in {file.name}")
+
 
     def __eq__(self, other):
         return (

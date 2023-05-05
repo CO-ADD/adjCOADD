@@ -22,23 +22,23 @@ function sendSearchData(inputtext) {
         resultsBox.addClass("scrollbar");
         for (var i = 0; i < data.length; i++) {
           var block = $("<button>")
-            .attr("id", 'taxo_'+i.toString())
+            .attr("id", 'taxo_' + i.toString())
             .attr("class", "resultlist")
             .text(data[i]["name"] + " | " + data[i]["class"])
             .appendTo(resultsBox);
-          
-          
-            block.on("click", function () {
-              console.log("click")
-              select_text= $(this).text()
-              searchInput.val(select_text);
-              var setTaxo = $("#taxo-name");
-              let Taxonomy = select_text.split(" | ");
-              setTaxo.val(Taxonomy[0]);
-              console.log(Taxonomy[0])
-              resultsBox.html("");
-              resultsBox.removeClass("scrollbar");
-            });
+
+
+          block.on("click", function () {
+            console.log("click")
+            select_text = $(this).text()
+            searchInput.val(select_text);
+            var setTaxo = $("#taxo-name");
+            let Taxonomy = select_text.split(" | ");
+            setTaxo.val(Taxonomy[0]);
+            console.log(Taxonomy[0])
+            resultsBox.html("");
+            resultsBox.removeClass("scrollbar");
+          });
         }
       } else {
         if (searchInput.val().length > 0) {
@@ -55,10 +55,7 @@ function sendSearchData(inputtext) {
 }
 
 searchInput.on("keyup", (e) => {
-  if(searchInput.val().length > 0){
-    
- 
-
+  if (searchInput.val().length > 0) {
     if (resultsBox.hasClass("not-visible")) {
       resultsBox.removeClass("not-visible");
     }
@@ -66,8 +63,8 @@ searchInput.on("keyup", (e) => {
     // if (scheduled_function) {
     //   clearTimeout(scheduled_function);
     // }
-  }else{
-    if (resultsBox.hasClass("not-visible") === false){
+  } else {
+    if (resultsBox.hasClass("not-visible") === false) {
       resultsBox.html("")
       resultsBox.addClass("not-visible")
     }
@@ -75,10 +72,10 @@ searchInput.on("keyup", (e) => {
 
 });
 
-$('body').on('click', '.sendtoSearch', ()=>{
+$('body').on('click', '.sendtoSearch', () => {
   resultsBox.append('<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>')
   // scheduled_function = setTimeout(function () {
-    console.log(searchInput.val())
-    sendSearchData(searchInput.val());
+  console.log(searchInput.val())
+  sendSearchData(searchInput.val());
   // }, 100);
 })
