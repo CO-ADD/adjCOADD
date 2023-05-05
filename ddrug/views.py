@@ -335,9 +335,6 @@ class Import_VitekView(ImportHandler_WizardView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.lCards = {}
-        self.lID = {}
-        self.lAst = {}
         self.filelist=[]
         self.organism_batch=None
 
@@ -354,17 +351,20 @@ class Import_VitekView(ImportHandler_WizardView):
                 if 'upload_file-folder_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
                 self.organism_batch=request.POST.get("upload_file-orgbatch_id")
+
+                # Get clean FileList
                 for f in files:
                     fs = OverwriteStorage(location=DirName)
                     filename = fs.save(f.name, f)
-                    print("1")
-            # Uploading Parsing
-                    # vCards, vID, vAst =process_VitekPDF(DirName=DirName, PdfName=filename)
-
-                    # self.lCards[filename] = vCards
-                    # self.lID[filename] = vID
-                    # self.lAst[filename] = vAst
                     self.filelist.append(filename)
+
+                
+                # Parse PDF -> valLog 
+                valLog = upload_VitekPDF_List(location,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                print("1")
+                self.storage.extra_data['filelist'] = self.filelist
+                self.storage.extra_data['orgbatch_id']=self.orgbatch_id
+                self.storage.extra_data['valLog'] = valLog.get
                     
             # Store the extracted data in self.storage.extra_data
                 # self.storage.extra_data['lCards'] = self.lCards

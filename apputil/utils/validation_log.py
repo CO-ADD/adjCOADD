@@ -82,6 +82,13 @@ class Validation_Log():
             for l in self.Logs[t]:
                 logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
 
+    def get_aslist(self,logTypes= ['Error','Warning', 'Info']):
+        retLst = []
+        for t in logTypes:
+            for l in self.Logs[t]:
+                retLst.append({'Type': t, } | l)
+        return(retLst)
+
     def info(self,logTypes= ['Error','Warning', 'Info']):
         self.info={}
         for t in logTypes:

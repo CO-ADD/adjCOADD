@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDict
 from apputil.utils.views_base import SuperUserRequiredMixin
-from apputil.utils.files_upload import validate_file, file_location
+from apputil.utils.files_upload import validate_file,file_location
 
 class UploadFileForm(SuperUserRequiredMixin, forms.Form):
     multi_files = forms.FileField(label='Select files', widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_file],  required=False)
@@ -18,9 +18,11 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
         # List of file fields to validate
         file_fields = ['multi_files','folder_input']
+        
+        # check if filelist is MultiValueDict
         if not isinstance(self.files, MultiValueDict):
             return cleaned_data
-
+        
         for field in file_fields:
             files = self.files.getlist(f'upload_file-{field}')
             
@@ -41,7 +43,7 @@ class StepForm_2(forms.Form):
     confirm_to_save = forms.BooleanField(required=True)
 
 class FinalizeForm(forms.Form):
-    pass
+    log_entry = forms.CharField(widget=forms.Textarea)
 
 class ImportHandler_WizardView(SessionWizardView):
     # here add steps name

@@ -49,13 +49,13 @@ def upload_VitekPDF_List(DirName,FileList,OrgBatchID=None,upload=False,appuser=N
 
         for i in range(nFiles):
             valLog = Validation_Log("upload_VitekPDF_List")
-            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]} [{appuser}] ")
+            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
-    return(valLog.log_to_UI())
+    return(valLog)
 
 #-----------------------------------------------------------------------------
 def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,valLog=None):
@@ -127,7 +127,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
             #   removeFile(DirName,FileName)
 
     valLog.select_unique()    
-    return(valLog.log_to_UI())
+    return(valLog)
 
 #-----------------------------------------------------------------------------
 def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
