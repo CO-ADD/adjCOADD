@@ -3,15 +3,34 @@ from django import forms
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
-
+from django.core.exceptions import ValidationError
 from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location
 
 class UploadFileForm(SuperUserRequiredMixin, forms.Form):
-    # single_file = forms.FileField(label='Select a single file', required=False)
     multi_files = forms.FileField(label='Select files', widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_file],  required=False)
-    folder_files = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
+    folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        print('clean data')
 
+        # List of file fields to validate
+        file_fields = ['multi_files','folder_input']
+        
+        for field in file_fields:
+            files = self.files.getlist(f'upload_file-{field}')
+            
+            for file in files:
+                for validator in self.fields[field].validators:
+                    try:
+                        validator(file)
+                    except ValidationError as e:
+                        self.add_error(field, f"{file.name}: {str(e)}")
+        return cleaned_data
+    
+
+    
 class StepForm_1(forms.Form):
     pass
 

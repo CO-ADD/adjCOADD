@@ -317,7 +317,7 @@ from django.core.files.storage import FileSystemStorage
 
 # customized Form
 class VitekUploadFileForm(UploadFileForm):
-    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
+    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
 
 class Import_VitekView(ImportHandler_WizardView):
     name_step1="Check Validation"
@@ -348,26 +348,11 @@ class Import_VitekView(ImportHandler_WizardView):
             location = file_location(request)  # define file store path during file process
             files = []
             if form.is_valid():
-                # Connect to ClamAV daemon
-                cd = clamd.ClamdUnixSocket(path="/run/clamd.scan/clamd.sock")
-                
                 if 'upload_file-multi_files' in request.FILES:
-                    files.extend(request.FILES.getlist('upload_file-multi_files'))
-            
+                    files.extend(request.FILES.getlist('upload_file-multi_files'))          
                 if 'upload_file-folder_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-folder_files'))
-                # scann with ClamAV
-                for f in files:
-                    file_like_object = BytesIO(f.read())
-                    scan_result = cd.instream(file_like_object)
-                    if scan_result and scan_result['stream'][0] == 'FOUND':
-                        form.add_error('multi_files', f'Virus found in {f.name}')
-                        return None
-                 
                 self.organism_batch=request.POST.get("upload_file-orgbatch_id")
-                print(f"organismbatchis {self.organism_batch}")
-            # else:
-            #     return redirect(self.request.META['HTTP_REFERER']) 
 
             # Uploading Parsing
                 for f in files:
@@ -388,6 +373,8 @@ class Import_VitekView(ImportHandler_WizardView):
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['organism_batch']=self.organism_batch
                 # return form.cleaned_data
+            else:
+                return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1':
             print("check_Validation")
