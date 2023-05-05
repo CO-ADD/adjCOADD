@@ -9,9 +9,169 @@ import pandas as pd
 import pdfplumber
 import re
 
+from apputil.models import ApplicationUser, Dictionary, ApplicationLog
+from apputil.utils.validation_log import Validation_Log
+from ddrug.utils.import_drug import *
+
 import logging
 logger = logging.getLogger(__name__)
 __version__ = "1.1"
+
+#-----------------------------------------------------------------------------------
+def upload_VitekPDF_List(DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+#-----------------------------------------------------------------------------------
+    """
+    Uploads (upload=True) the data from a single Vitek PDF, given by:
+        DirName : FolderName
+        PdfName : PdfName without FolderName
+        OrgBatchID: Optional to overwrite OrgBatchID from PDF
+        upload : Validation only (False) or Validation and Upload (True)
+        appuser : User Instance of user uploading
+
+    """
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+
+    # Get PDF Files in case none given
+    if nFiles == 0:
+        if DirName:
+            DirFiles = os.listdir(DirName)
+            FileList = [f for f in DirFiles if f.endswith(".pdf")]
+            nFiles = len(FileList)
+
+    if nFiles > 0:
+        #ProcessedFolder = os.path.join(VitekFolder,".Uploaded")
+        #if not os.path.exists(ProcessedFolder):
+        #    os.makedirs(ProcessedFolder)
+
+        for i in range(nFiles):
+            valLog = Validation_Log("upload_VitekPDF_List")
+            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
+            upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
+    else:
+        logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
+
+    valLog.select_unique()
+    return(valLog)
+
+#-----------------------------------------------------------------------------
+def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,valLog=None):
+    """
+    Uploads (upload=True) the data from a single Vitek PDF, given by:
+        DirName : FolderName
+        PdfName : PdfName without FolderName
+        OrgBatchID: Optional to overwrite OrgBatchID from PDF
+        upload : Validation only (False) or Validation and Upload (True)
+        appuser : User Instance of user uploading
+        volLog: Validation_Log to collect ['Info','Warning','Error']
+
+    """
+#-----------------------------------------------------------------------------
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+
+    if not valLog:
+        valLog = Validation_Log(FileName)
+
+    lCards,lID,lAST = process_VitekPDF(DirName,FileName,OrgBatchID=OrgBatchID)
+
+    nProcess = {'Uploaded':0,'Invalid':0}
+    for c in lCards:
+        djCard = imp_VitekCard_fromDict(c,valLog)
+        if upload:
+            if djCard.VALID_STATUS:
+                logger.debug(f" {djCard} <- {FileName}")
+                djCard.save(user=appuser)
+                nProc['Saved'] = nProc['Saved'] + 1
+            else:
+                nFailed += 1
+                valLog.add_log('Error','Vitek Card not validated',f"{c['CARD_BARCODE']}",'-')    
+                nProc['notValid'] = nProc['notValid'] + 1
+
+    for c in lID:
+        djID = imp_VitekID_fromDict(c,valLog)
+        if upload:
+            if djID.VALID_STATUS:
+                logger.debug(f" {djID} <- {FileName}")
+                djID.save(user=appuser)
+                nProc['Saved'] = nProc['Saved'] + 1
+            else:
+                valLog.add_log('Error','Vitek ID not validated',f"{c['CARD_BARCODE']}",'-')    
+                nProc['notValid'] = nProc['notValid'] + 1
+
+    for c in lAST:
+        djAST = imp_VitekAST_fromDict(c,valLog)
+        if upload:
+            if djAST.VALID_STATUS:
+                logger.debug(f" {djAST} <- {FileName}")
+                djAST.save(user=appuser)
+                nProc['Saved'] = nProc['Saved'] + 1
+            else:
+                valLog.add_log('Error','Vitek AST not validated',f"{c['CARD_BARCODE']} {c['DRUG_NAME']}",'-')    
+                nProc['notValid'] = nProc['notValid'] + 1
+
+    # if valLog.nLogs['Error'] > 0:
+    #     if upload:
+    #         logger.info(f"[upload_VitekPDF] NOT UPLOADED - {FileName}  ")
+    #     valLog.select_unique()
+    #     valLog.show(logTypes=['Error'])
+    else:
+        if upload:
+            logDesc = f'{FileName} [{len(lCards)} {len(lID)} {len(lAST)}] : {nProc}'
+            ApplicationLog.add('Import','upload_VitekPDF','Info',appuser,'Vitek',logDesc,'Completed')
+            # if nProc['notValid'] == 0:
+            #   removeFile(DirName,FileName)
+
+    valLog.select_unique()    
+    return(valLog)
+
+#-----------------------------------------------------------------------------
+def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
+    """
+    Reads a single Vitek PDF extraxts the information into
+    Lists of Cards, AST and ID dictionaries
+
+    """
+#-----------------------------------------------------------------------------
+    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=None)
+
+    lstCards = []
+    lstID = []
+    lstAST = []
+    for pv in pVitek:
+        k = pv.keys()
+        #print(f"\n**\n {pv}\n**\n")
+
+        # if any('Barcode' in x for x in k):
+        # #if 'ID_Card_Barcode' in pv or 'AST_Card_Barcode' in pv:
+        #     lstCards.append(dict_Vitek_Card(pv))
+        #     print("Card")
+
+        if 'ID' in k :
+            if pv['ID']:
+                logger.info(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
+                xCard = dict_Vitek_Card(pv,'ID')
+                for x in xCard:
+                    lstCards.append(x)
+                xID = dict_Vitek_ID(pv)
+                for x in xID:
+                    lstID.append(x)
+
+        if 'AST' in k :
+            if pv['AST']:
+                logger.info(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
+                xCard = dict_Vitek_Card(pv,'AST')
+                for x in xCard:
+                    lstCards.append(x)
+                xAST = dict_Vitek_AST(pv)
+                for x in xAST:
+                    lstAST.append(x)
+    logger.info(f"[Vitek    ] Cards: {len(lstCards):4d} - ID: {len(lstID):4d} - AST: {len(lstAST):4d} ")
+    return(lstCards,lstID,lstAST)
 
 #-----------------------------------------------------------------------------
 def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
@@ -354,45 +514,4 @@ def dict_Vitek_AST(pCard):
     return(lAST)
 
 
-#-----------------------------------------------------------------------------
-def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
-#-----------------------------------------------------------------------------
 
-    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=None)#OrgBatchID)
-
-    lstCards = []
-    lstID = []
-    lstAST = []
-    for pv in pVitek:
-        k = pv.keys()
-        #print(f"\n**\n {pv}\n**\n")
-
-        # if any('Barcode' in x for x in k):
-        # #if 'ID_Card_Barcode' in pv or 'AST_Card_Barcode' in pv:
-        #     lstCards.append(dict_Vitek_Card(pv))
-        #     print("Card")
-
-        if 'ID' in k :
-            if pv['ID']:
-                logger.info(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
-                xCard = dict_Vitek_Card(pv,'ID')
-                for x in xCard:
-                    lstCards.append(x)
-                xID = dict_Vitek_ID(pv)
-                for x in xID:
-                    lstID.append(x)
-
-        if 'AST' in k :
-            if pv['AST']:
-                logger.info(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
-                xCard = dict_Vitek_Card(pv,'AST')
-                for x in xCard:
-                    lstCards.append(x)
-                xAST = dict_Vitek_AST(pv)
-                for x in xAST:
-                    lstAST.append(x)
-    logger.info(f"[Vitek    ] Cards: {len(lstCards):4d} - ID: {len(lstID):4d} - AST: {len(lstAST):4d} ")
-    # print(f"{len(lstCards)} {lstCards} \n")
-    # print(f"{len(lstID)} {lstID} \n")
-    # print(f"{len(lstAST)} {lstAST} \n")
-    return(lstCards,lstID,lstAST)
