@@ -384,10 +384,10 @@ class Import_VitekView(ImportHandler_WizardView):
             # get valLog
             valLog = self.storage.extra_data['valLog']
             if valLog.nLog['Error'] >0 :
-                dfLog = valLog.get_aslist(logTypes= ['Error'])
+                dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))
                 allowUpload = False
             else:
-                dfLog = valLog.get_aslist()
+                dfLog = pd.DataFrame(valLog.get_aslist())
                 allowUpload = True
             if form.is_valid():
                 valLog = upload_VitekPDF_List(location,self.filelist,OrgBatchID=self.orgbatch_id,upload=True)
@@ -405,12 +405,7 @@ class Import_VitekView(ImportHandler_WizardView):
             print('confirm_validation')
 
             valLog = self.storage.extra_data['valLog']
-            if valLog.nLog['Error'] >0 :
-                dfLog = valLog.get_aslist(logTypes= ['Error'])
-                allowUpload = False
-            else:
-                dfLog = valLog.get_aslist()
-                allowUpload = True
+            dfLog = pd.DataFrame(valLog.get_aslist())
 
             # Show dfLog (Type, Process, Description, Item, Help)
 
