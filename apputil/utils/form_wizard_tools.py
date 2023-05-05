@@ -4,6 +4,7 @@ from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
+from django.utils.datastructures import MultiValueDict
 from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location
 
@@ -17,6 +18,10 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
         # List of file fields to validate
         file_fields = ['multi_files','folder_input']
+        
+        # check if filelist is MultiValueDict
+        if not isinstance(self.files, MultiValueDict):
+            return cleaned_data
         
         for field in file_fields:
             files = self.files.getlist(f'upload_file-{field}')
