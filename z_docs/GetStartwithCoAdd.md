@@ -51,13 +51,14 @@ Install all the following packages in the conda environment.
 11. pip install django-model-utils
 12. pip install django-filter
 13. pip install pdfplumber
-14. pip install 
+14. pip install
 15. pip install djangorestframework
 16. pip install djangorestframework_simplejwt
-17. pip install request 
-(this is just for test purpose)
+17. pip install request
+    (this is just for test purpose)
 18. pip install openpyxl
-19. pip install
+19. pip install django-formtools
+20. pip install clamd
     ...
 
 ### Module Introduction

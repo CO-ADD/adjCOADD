@@ -33,7 +33,10 @@
       href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css"
     />
     <!-- Include the Select2 CSS -->
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css"
+      rel="stylesheet"
+    />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.21.2/bootstrap-table.min.css"
     integrity="sha512-nR/UyMwqN3G7hUXj555TPsmLNyBHbTuJal56HT4p1iYzJ6wdI8CFQfkHe6POuosBt7FC2dsrhBEGM71TCJyxXQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
@@ -53,28 +56,44 @@
       href="{% static 'css/main.6a646761.css' %}"
     />
     <link
-    rel="stylesheet"
-    type="text/css"
-    href="{% static 'css/custom_select2.css' %}"
-  /> 
-
-
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/custom_select2.css' %}"
+    />
 
     {% include 'utils/scripts.html' %}
   </head>
 
   <body>
-    <div id="preloader" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.8); z-index: 10000;">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-          <!-- Use an animated GIF, SVG, or custom CSS for the spinner -->
-          <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+    <div
+      id="preloader"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 10000;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        "
+      >
+        <!-- Use an animated GIF, SVG, or custom CSS for the spinner -->
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-        
+        </div>
       </div>
-  </div>
+    </div>
     <!-- Navigation bar -->
     {%include "utils/navbar.html"%}
     <!-- Main Body -->
@@ -89,7 +108,7 @@
         event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
       });
     </script>
- 
+
     <!-- Create bootstrap Tooltip -->
     <script>
       var tooltipTriggerList = [].slice.call(
@@ -100,7 +119,7 @@
       });
     </script>
 
-    {% comment %} <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", function() {
         // Get all the links in the document
        
@@ -137,6 +156,6 @@
    }); 
 
     });
-      </script> {% endcomment %}
+      </script>  -->
   </body>
 </html>

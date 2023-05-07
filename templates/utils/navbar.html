@@ -100,7 +100,7 @@
                 <p>Vitek</p>
               </a>
             </li>
-            
+
             <li>
               <a
                 class="dropdown-item"
@@ -110,7 +110,9 @@
                 <p>Drug</p>
               </a>
             </li>
-            <hr>
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
             {% if user.permission == 'Admin'%}
             <li>
               <a
@@ -130,51 +132,10 @@
                 <p>Dictionary</p>
               </a>
             </li>
-           {%endif%}
+            {%endif%}
           </ul>
         </div>
-        {% comment %} {% if user.permission == 'Admin'%}
-        <div class="dropdown d-inline-block">
-          <a
-            type="button"
-            class="nav-link active"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <p class="d-xl-inline-block nav-title">API VIEWS</p>
-            <i class="fa-solid fa-chevron-down nav-title"></i>
-          </a>
-          <ul class="dropdown-menu">
-            <!-- item-->
-            <li>
-              <a
-                class="dropdown-item"
-                href="{%url 'api_drug'%}"
-                target="_blank"
-              >
-                <p>Drug</p>
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="{%url 'api_vitekast'%}"
-                target="_blank"
-              >
-                <p>VitekAST</p>
-              </a>
-            </li>
-          </ul>
-        </div>
-        {%endif%}
-        {% endcomment %}
-        {% comment %} <div>
-          <a class="nav-link" href="{%url 'ketcher_test' %}">
-            <p class="nav-title">Ketcher Test Page</p>
-          </a>
-        </div> {% endcomment %}
-      </div> 
+      </div>
       {%endif%}
       <!-- </li>
       </ul>
@@ -300,9 +261,7 @@
     if (darkMode_screen !== "enabled") {
       enabledarkMode();
       e.target.checked = true;
-      console.log(e.target.checked);
     } else {
-      console.log(e.target.checked);
       disabledarkMode();
       e.target.checked = false;
     }
