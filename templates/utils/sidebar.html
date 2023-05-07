@@ -4,6 +4,7 @@
             <input id="filter-apply" class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
             
             <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
+            <input data-name= "submit-reset" type="text" name="reset" value="False" hidden>
         </div>
         <div class="input-group input-group-sm my-2 p-1 w-100">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>   
@@ -76,12 +77,12 @@
 
         console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
-        form.querySelectorAll('input').forEach(item => item.removeAttribute("value"))
+        form.querySelectorAll('input').forEach(item => item.removeAttribute("value"));
         // form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
-
-        form.querySelectorAll('select option').forEach(item => item.removeAttribute("selected"))
-        form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"))
-        form.querySelectorAll('input[type=checkbox]').forEach(item => item.removeAttribute("checked"))
+        form.querySelector('[data-name="submit-reset"]').setAttribute("value", "True");
+        form.querySelectorAll('select option').forEach(item => item.removeAttribute("selected"));
+        form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"));
+        form.querySelectorAll('input[type=checkbox]').forEach(item => item.removeAttribute("checked"));
         form.submit();
     }
 </script>

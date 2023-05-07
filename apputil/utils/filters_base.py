@@ -59,6 +59,7 @@ class Filterbase(django_filters.FilterSet):
             return queryset.annotate(array_field_as_text=Cast(name, CharField())).filter(array_field_as_text__icontains=value_as_text)
         return queryset
 
+
 # utils for filteredListView method def ordered_by
 def find_item_index(lst, item):
     for i, element in enumerate(lst):
@@ -68,6 +69,7 @@ def find_item_index(lst, item):
         elif element == item:
             return i
     return -1
+
 # --Filter view base class--
 class FilteredListView(ListView):
     filterset_class = None #each filterset class based on class Filterbase
@@ -80,6 +82,25 @@ class FilteredListView(ListView):
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
+        # the following steps are optmized search performance with sessionstorage
+        # Check if the reset request is submitted
+        if self.request.GET.get('reset')=='True':
+        # Remove the stored queryset from the session
+            if 'cached_queryset' in self.request.session:
+                del self.request.session['cached_queryset']
+
+        # Instantiate the filterset with either the stored queryset from the session or the default queryset
+        if 'cached_queryset' in self.request.session:
+            stored_queryset_pks = self.request.session['cached_queryset']
+            stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+            self.filterset = self.filterset_class(self.request.GET, queryset=stored_queryset)
+        else:
+            self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+
+        # Cache the filtered queryset in the session
+        filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+        self.request.session['cached_queryset'] = list(filtered_queryset_pks)
+
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
@@ -97,7 +118,7 @@ class FilteredListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
-        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key != 'paginate_by' and key!='page' and key!='csrfmiddlewaretoken'}
+        filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset']}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset
