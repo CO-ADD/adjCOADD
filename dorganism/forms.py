@@ -24,7 +24,7 @@ class HiddenSimpleArrayField(forms.Field):
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
 
-    strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False)
     prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     oxygen_pref=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['oxygen_pref'], astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
     risk_group=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['risk_group'], astatus__gte=0),widget=forms.Select(attrs={'class': 'form-control'}), required=False,)
@@ -60,7 +60,11 @@ class CreateOrganism_form(ModelForm):
     def clean_organism_name(self):       
         data=self.cleaned_data['organism_name']
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
-        return data
+        if data:
+            return data
+        else:
+            self.add_error('organism_name', "Found No Organism")
+            raise ValidationError
 
     def create_field_groups(self):
         self.group1 = [self[name] for name in Organism.FORM_GROUPS['Group1']]

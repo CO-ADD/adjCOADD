@@ -48,6 +48,10 @@ class SimplecreateView(LoginRequiredMixin, View):
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
+## create view with searching input:
+
+
+
 # --update view class--
 class SimpleupdateView(LoginRequiredMixin, View):
     form_class=None

@@ -42,10 +42,13 @@
 
 <script>
   $(document).ready(function () {
+    const csrftoken = getCookie("csrftoken");
     loadModal(
       "#createOrganismModal",
       "#createOrganism",
-      "{% url 'org_create'%}"
+      "{% url 'org_create'%}",
+      csrftoken,
+      "#Create_Organism",
     );
     loadModal("#createTaxoModal", "#createTaxo", "{% url 'taxo_create'%}");
     loadModal("#createDrugModal", "#createDrug", "{% url 'drug_create'%}");

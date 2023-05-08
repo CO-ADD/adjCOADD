@@ -101,11 +101,12 @@ class FilteredListView(ListView):
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
         self.request.session['cached_queryset'] = list(filtered_queryset_pks)
+        
 
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        # self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         # Return the filtered queryset
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()
