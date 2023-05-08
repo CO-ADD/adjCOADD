@@ -16,6 +16,7 @@ class ClearSessionMiddleware:
             reverse('taxo_card'),
             reverse('wgs-fastqc_list'),
             reverse('wgs-checkm_list'),
+            reverse('drug_list'),
         ]
 
         # Clear the session if the user is navigating to any of the listed views
