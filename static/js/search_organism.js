@@ -8,7 +8,7 @@ var csrf = getCookie('csrftoken')//$("input[name='csrfmiddlewaretoken']").val();
 function sendSearchData(inputtext) {
   $.ajax({
     type: "POST",
-    url: "/search_organism/",
+    url: "/dorganism/search_organism/",
     data: {
       csrfmiddlewaretoken: csrf,
       inputtext: inputtext,

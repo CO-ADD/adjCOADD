@@ -15,7 +15,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         print('clean data')
-
+        uploadfiles=[]
         # List of file fields to validate
         file_fields = ['multi_files','folder_input']
         
@@ -26,12 +26,18 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
         for field in file_fields:
             files = self.files.getlist(f'upload_file-{field}')
             
+            uploadfiles.extend(files)
+
             for file in files:
                 for validator in self.fields[field].validators:
                     try:
                         validator(file)
                     except ValidationError as e:
                         self.add_error(field, f"{file.name}: {str(e)}")
+                        
+        if len(uploadfiles)<1: 
+            self.add_error('multi_files', "at least choose one file")
+            raise forms.ValidationError("didn't choose any file")
         return cleaned_data
     
 
