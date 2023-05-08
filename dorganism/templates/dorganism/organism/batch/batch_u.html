@@ -7,7 +7,7 @@
     </button>
     {% url 'batch_update' pk=object.pk as my_url %}
     {% with urlname=my_url|add:'?_value=cancel' %}
-    {%include 'utils/miscellaneous/cancel_btn_htmx.html'%}
+    {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
     {% endwith %}
   </td>
 

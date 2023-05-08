@@ -127,8 +127,7 @@ class HtmxupdateView(LoginRequiredMixin, View):
             with transaction.atomic():
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
-                object_new.save(**kwargs)
-                
+                object_new.save(**kwargs)                
             return render(request, self.template_partial, context)
         else:
             print("form is not valid")

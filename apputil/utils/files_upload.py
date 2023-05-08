@@ -117,11 +117,8 @@ class FileValidator(object):
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
                              content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-# create array for files if infected
-# infected_files = []
-# setup unix socket to scan stream
-# cd = clamd.ClamdUnixSocket()
-##
+
+## set uploading/import data forms
 class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
@@ -131,7 +128,7 @@ class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(),  validators=[validate_file])
 
-##
+## Import data base view
 class Importhandler(SuperUserRequiredMixin, View):  
     """
     upload, parse and import data from pdf

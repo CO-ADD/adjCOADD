@@ -345,12 +345,14 @@ class AuditModel(models.Model):
                             value_list.append({obj.pk: list(fields[name].values())[0]})
                         else:
                             if isinstance(list(fields[name].values())[0], dict):
+                                # check a external link exists or not in HEADER_FIELDS Value
                                 if 'urlname' in list(fields[name].values())[0].keys():
                                
                                     url=getattr(self, 'urlname')
-                                    print(url)
+                                    # Append link to the value list, get value in dict type 
                                     value_list.append({obj: list(list(fields[name].values())[0].values())[0]+url})
                             else:
+                                # Append internal link(Fkey link) to the value list, get value in dict type
                                 value_list.append({obj:list(fields[name].values())[0]+str(obj)})
                     else:
                         if isinstance(obj, Model):

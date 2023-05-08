@@ -9,10 +9,10 @@
        {%for field in fields%}
         {% if field|is_dict %}
         {%for key in field.keys%}
-        <th class="order_field" style="width: fit-content" data-name={{key}}>{{key}}</th>
+        <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
          {%endfor%}
         {%else%}
-        <th class="order_field" style="width: fit-content" data-name={{field}}>{{field}}</th>
+        <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
          {%endif%}
         {%endfor%}
       </tr>

@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField
 from django.db.models import CharField, Value
 from django.db.models.functions import Cast
+
 # -- create a function for search all fields--
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
     q_object = Q()
@@ -32,7 +33,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
         # Add more field types as needed...
 
     return q_object
-# q_object = get_all_fields_q_object(MyModel, value, exclude_fields=exclude_fields)
+
 
 # -- Filterset base Class--
 class Filterbase(django_filters.FilterSet):
