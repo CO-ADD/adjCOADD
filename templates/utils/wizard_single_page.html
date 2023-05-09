@@ -16,20 +16,30 @@
 
         <!-- This is a start step 0 -->
         {% if wizard.steps.current == 'upload_file' %}
+        <div class="d-flex">
+        <div>
             <h2>Upload File</h2>
             Please only use one of path. 
             {% for field in wizard.form %}
             <p>
                 {{ field.label_tag }} {{ field }}
                 <span class="badge bg-info text-light">{{ field.help_text }}</span>
+            </p>
+          
+            <p>
                 {% for error in field.errors %}
                     <span class="badge bg-danger text-white">{{ error }}</span>
                 {% endfor %}
+                {%include 'utils/message.html'%}
             </p>
+            
         {% endfor %}
-          
-            <div id="folder-file-names"></div>
-
+        </div>
+        <div>
+            <ul class="text-start" id="multi-files-list"></ul>
+            <ul class="text-start" id="folder-files-list"></ul>
+        </div>
+        </div>
          <!-- This is step 1-->
         {% elif wizard.steps.current == 'step1' %}
         <p>upload result: {{check_uploadfile_result | safe}}</p>
@@ -48,7 +58,9 @@
         <!-- This is step 2-->
         {% elif wizard.steps.current == 'step2' %}
         <h5> Here Show Validation result:<h5>
-        {{check_validation_result | safe}}
+            {%for table in check_validation_result%}
+        {{table | safe}}
+        {%endfor%}
         <hr>
             <h2>{{step2}}</h2>
             {% for field in wizard.form %}
@@ -66,7 +78,9 @@
         <!-- This is the final-->
        {% elif wizard.steps.current == 'finalize' %}
         <h5>   Here Show Finalize result: <h5>
-            {{check_validation_result | safe}}
+            {%for table in check_validation_result%}
+        {{table | safe}}
+        {%endfor%}
             <hr>
             <h2>Finalize</h2>
             {% for field in wizard.form %}
@@ -95,27 +109,21 @@
     </form>
 </div>
 <script>
-    const $fileNamesContainer = $("#folder-file-names");
-    if ($("#folder-file-names").length){
+ 
+    const $fileNamesContainer_files = $("#multi-files-list");
+    {% comment %} if ($("#folder-file-names").length){
         $fileNamesContainer.empty();
-    }
+    } {% endcomment %}
+  
+    if("{{ form.multi_files.auto_id }}"){
 
-    if(("{{ form.folder_files.auto_id }}") && ("{{ form.multi_files.auto_id }}")){
-
-        $("#{{ form.folder_files.auto_id }}").on("change", function() {
-            $fileNamesContainer.empty();
-            const files = this.files;
-        for (let i = 0; i < files.length; i++) {
-            const fileInfo = $("<div></div>").text(files[i].webkitRelativePath || files[i].name);
-            $fileNamesContainer.append(fileInfo);
-        }
-    });
+      
     $("#{{ form.multi_files.auto_id }}").on("change", function() {
-        $fileNamesContainer.empty();
+        $fileNamesContainer_files.empty();
         const files = this.files;
         for (let i = 0; i < files.length; i++) {
-            const fileInfo = $("<div></div>").text(files[i].webkitRelativePath || files[i].name);
-            $fileNamesContainer.append(fileInfo);
+            const fileInfo = $("<li></li>").text(files[i].webkitRelativePath || files[i].name);
+            $fileNamesContainer_files.append(fileInfo);
         }
     });
     

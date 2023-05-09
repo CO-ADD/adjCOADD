@@ -51,7 +51,7 @@ class FileValidator(object):
                   " Your file size is %(size)s."),
      'min_size': ("Ensure this file size is not less than %(min_size)s. "
                   "Your file size is %(size)s."),
-     'content_type': "Files of type %(content_type)s are not supported.",
+     'content_type': "Files is not correct type.",
     }
 
     def __init__(self, max_size=None, min_size=None, content_types=()):
@@ -128,7 +128,7 @@ class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(),  validators=[validate_file])
 
-## Import data base view
+## Import data base view, Legacy
 class Importhandler(SuperUserRequiredMixin, View):  
     """
     upload, parse and import data from pdf

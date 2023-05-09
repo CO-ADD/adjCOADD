@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Local'
+DEVELOPMENT='Work'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,7 +128,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
-
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 import psycopg2.extensions

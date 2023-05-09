@@ -1,3 +1,8 @@
+'''
+Steps process driven by form submission requests. for imporing data with PDFs
+-uploading PDFs
+-parsing, validating and saving to DB 
+'''
 import os
 from django import forms
 from django.shortcuts import render
@@ -10,14 +15,14 @@ from apputil.utils.files_upload import validate_file,file_location
 
 class UploadFileForm(SuperUserRequiredMixin, forms.Form):
     multi_files = forms.FileField(label='Select files', widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_file],  required=False)
-    folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
+    # folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
     
     def clean(self):
         cleaned_data = super().clean()
         print('clean data')
         uploadfiles=[]
         # List of file fields to validate
-        file_fields = ['multi_files','folder_input']
+        file_fields = ['multi_files',]
         
         # check if filelist is MultiValueDict
         if not isinstance(self.files, MultiValueDict):

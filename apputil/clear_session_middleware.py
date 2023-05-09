@@ -9,14 +9,31 @@ class ClearSessionMiddleware:
         
         # List the views for which you want to clear the session
         clear_session_views = [
+            reverse('userslist'),
+            reverse('dict_view'),
+
+            reverse('api_drug'),
+            reverse('api_vitekast'),
+            reverse('drug_list'),
+            reverse('drug_card'),
+            reverse('vitekcard_list'),
+            reverse('vitekast_list'),
+            reverse('mic_coadd_list'),
+            reverse('mic_coadd_card'),
+            reverse('mic_pub_list'),
+            reverse('mic_pub_card'),
+
+            reverse('gene_list'),
+            reverse('id_pub_list'),
+            reverse('sequence_list'),
+            reverse('wgs-fastqc_list'),
+            reverse('wgs-checkm_list'),
+
             reverse('org_card'),
             reverse('org_list'),
             reverse('taxo_list'),
             reverse('taxo_card'),
-            reverse('taxo_card'),
-            reverse('wgs-fastqc_list'),
-            reverse('wgs-checkm_list'),
-            reverse('drug_list'),
+            
         ]
 
         # Clear the session if the user is navigating to any of the listed views

@@ -5,11 +5,21 @@ Used and import for all application filter views
 import django_filters
 from django import forms
 from django.views.generic import ListView
-from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField
+from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value
 from django.db.models import CharField, Value
 from django.db.models.functions import Cast
+from django.contrib.postgres.fields import ArrayField
+from django.db.models.expressions import RawSQL
 
 # -- create a function for search all fields--
+
+class LowerAny(Func):
+    template = "LOWER(%(search_value)s) = ANY(%(array_field)s)"
+    arity = 2
+
+    def __init__(self, search_value, array_field, **extra):
+        super().__init__(Value(search_value), array_field, **extra)
+
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
     q_object = Q()
     exclude_fields = exclude_fields or []
@@ -30,6 +40,11 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 q_object |= Q(**{lookup_field_name: int_value})
             except ValueError:
                 pass
+        elif isinstance(field, ArrayField):
+            search_value_lower =  f"%{search_value}%".lower()
+            primary_key_field_name = model._meta.pk.name
+            table_name = model._meta.db_table
+            q_object |= Q(**{f"{primary_key_field_name}__in": RawSQL(f"SELECT {table_name}.{primary_key_field_name} FROM {table_name}, unnest({table_name}.{lookup_field_name}) AS elem WHERE elem ILIKE %s", (search_value_lower,))})
         # Add more field types as needed...
 
     return q_object
@@ -151,9 +166,9 @@ class FilteredListView(ListView):
                 order_field=order_by
                 
             # if order_field in model_constants_field.values():
-            index=find_item_index(list(model_constants_field.values()), order_field)
-            order_by=acs_decs+ list(model_constants_field.keys())[index]
-            print(list(model_constants_field.keys())[index])
+            index=find_item_index(list(self.model_fields.values()), order_field)
+            order_by=acs_decs+ list(self.model_fields.keys())[index]
+            print(list(self.model_fields.values()))
             # elif order_field == 'ID':
             #     order_by=acs_decs+'pk'
            

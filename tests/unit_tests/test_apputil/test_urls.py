@@ -15,4 +15,4 @@ class TestUrls(SimpleTestCase):
 
     def test_AppUserUpdate_url_is_resolved(self):
         url=reverse('updateAppUser', args=['somePk'] )
-        self.assertEquals(resolve(url).func, updateApplicationuser)
+        self.assertEquals(resolve(url).func.view_class, ApplicationUserUpdateView)
