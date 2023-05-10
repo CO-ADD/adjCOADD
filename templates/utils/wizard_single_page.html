@@ -109,15 +109,18 @@
             >
               previous
             </button>
-
-            {% endif %} {%if wizard.steps.next%}
+            <!--prettier-ignore-->
+            {% endif %} 
+            {%if wizard.steps.next%}
             <input class="btn btn-sm col-md-3" type="submit" value="Next" />
             {%else%}
             <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
             {%endif%}
           </div>
           <p class="badge ms-0 text-start text-info">
-            Click button move to next step, or back to previous step.
+            Click button move to next step, <br />Click previous to
+            <strong class="text-danger"> upload file </strong>will need a
+            re-upload. <br />Click cancel to refresh page and start again.
           </p>
         </div>
       </div>
