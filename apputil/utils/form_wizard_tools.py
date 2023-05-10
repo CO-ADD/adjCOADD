@@ -48,18 +48,18 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    pass
-
-class StepForm_2(forms.Form):
     confirm_to_save = forms.BooleanField(required=True)
+
+
+# class StepForm_2(forms.Form):
 
 class FinalizeForm(forms.Form):
     log_entry = forms.CharField(widget=forms.Textarea)
 
-class ImportHandler_WizardView(SessionWizardView):
+class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
     # here add steps name
     step1='step1'
-    step2='step2'
+    # step2='step2'
     # ...
 
     form_list = [
@@ -100,14 +100,12 @@ class ImportHandler_WizardView(SessionWizardView):
             print("2")
             # In this step, you can perform further steps
 
-        elif current_step == 'step2':
-            print("3")
-            # more steps
+        #     # more steps
 
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
-        print("4")
+      
         # Save data to the database or perform any other final actions
         # Redirect to the desired page after finishing
         return redirect(self.request.META['HTTP_REFERER'])  
@@ -119,16 +117,13 @@ class ImportHandler_WizardView(SessionWizardView):
         if current_step == 'step1':
             pass
         #    here can define extra context for step1 result 
-
-        if current_step == 'confirm_validation':
-            pass
-         #    here can define extra context for step2 result         
+     
 
         return context
     
         # Use to delete uploaded files
     def delete_file(self, file_name):
-        location=file_location(self.request)
+        location=file_location(instance=self.request.user)
         file_full_path=os.path.join(location, file_name)
         print(file_full_path)
         try:

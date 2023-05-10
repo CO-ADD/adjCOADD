@@ -1176,7 +1176,7 @@ table.dataframe tr:hover {
   top: -10px;
   background-color: var(--bs-body-bg);
 }
-
+/* Import data steps Line style */
 .step-line {
   display: flex;
   flex-direction: column;
@@ -1184,21 +1184,22 @@ table.dataframe tr:hover {
 }
 
 .step {
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ccc;
   background-color: #f5f5f5;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   position: relative;
+  width:100px;
 }
 
 .step:not(:last-child)::after {
   content: "";
   display: block;
   position: absolute;
-  top: calc(100% - 4px);
+  top: calc(100%);
   left: 50%;
   width: 2px;
-  height: 14px;
+  height: 20px;
   background-color: #ccc;
 }
 

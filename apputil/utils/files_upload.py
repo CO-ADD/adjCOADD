@@ -24,8 +24,8 @@ from apputil.utils.data import Timer
 
 # --files upload--
 ## create user folder
-def file_location(req):
-    location=settings.MEDIA_ROOT+'/'+str(req.user)
+def file_location(instance, filename=None):
+    location=settings.MEDIA_ROOT+'/'+str(instance)
     print(f"file is {location}")
     return location
 
@@ -74,26 +74,7 @@ class FileValidator(object):
             if content_type not in self.content_types:
                 params = { 'content_type': content_type }
                 raise ValidationError(self.error_messages['content_type'],
-                                   'content_type', params)
-
-        # Size validation:
-        # if self.max_size is not None and data.size > self.max_size:
-        #     params = {
-        #         'max_size': filesizeformat(self.max_size), 
-        #         'size': filesizeformat(data.size),
-        #     }
-        #     raise ValidationError(self.error_messages['max_size'],
-        #                            'max_size', params)
-
-        # if self.min_size is not None and data.size < self.min_size:
-        #     params = {
-        #         'min_size': filesizeformat(self.min_size),
-        #         'size': filesizeformat(data.size)
-        #     }
-        #     raise ValidationError(self.error_messages['min_size'], 
-        #                            'min_size', params)
-
-       
+                                   'content_type', params)       
 
     def scan_file(self, file, cd):
         file_like_object = BytesIO(file.read())

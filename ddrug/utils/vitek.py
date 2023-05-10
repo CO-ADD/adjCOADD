@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(DirName,FileList,OrgBatchID=None,upload=False,appuser=None, instance=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -47,10 +47,17 @@ def upload_VitekPDF_List(DirName,FileList,OrgBatchID=None,upload=False,appuser=N
         #if not os.path.exists(ProcessedFolder):
         #    os.makedirs(ProcessedFolder)
 
+
         for i in range(nFiles):
             valLog = Validation_Log("upload_VitekPDF_List")
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
+            #  get progress and save to session  
+            if instance:
+                instance.request.session['upload_progress'] = {'processed': i + 1, 'total': nFiles}
+                instance.request.session.modified = True
+                print(f"Updated session progress_data: {instance.request.session['upload_progress']}")
+
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 

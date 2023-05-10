@@ -1,131 +1,213 @@
-
 <!-- Step line container -->
-<div class="d-flex vh-100 m-auto w-50">
-    <div class="step-line m-3 h-25">
-        <h5 class="m-auto badge bg-info">Import Data {{data_model}}</h5>
-        <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">Upload File</div>
-        <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}">{{step1}}</div>
-        <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div>
-        <!-- add more steps here-->
-        <!-- <div ... -->
-        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">Finalize</div>
-    </div>
-    <form method="post" enctype="multipart/form-data" class="mx-5 mt-2 d-flex flex-column align-items-center w-75 h-75 border text-center">
-        {% csrf_token %}
+<h1 class="text-center">{{data_model}} Data Import</h1>
+<div class="row m-5 w-80 h-100 border">
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    class="col-md-8 mx-5 d-flex flex-column align-items-center w-75 h-75 text-center"
+  >
+    <!--prettier-ignore-->
+    {% csrf_token %}
         {{ wizard.management_form }}
 
-        <!-- This is a start step 0 -->
-        {% if wizard.steps.current == 'upload_file' %}
-        <div class="d-flex">
-        <div>
-            <h2>Upload File</h2>
-            Please only use one of path. 
-            {% for field in wizard.form %}
-            <p>
-                {{ field.label_tag }} {{ field }}
-                <span class="badge bg-info text-light">{{ field.help_text }}</span>
-            </p>
-          
-            <p>
-                {% for error in field.errors %}
-                    <span class="badge bg-danger text-white">{{ error }}</span>
-                {% endfor %}
-                {%include 'utils/message.html'%}
-            </p>
-            
-        {% endfor %}
-        </div>
-        <div>
-            <ul class="text-start" id="multi-files-list"></ul>
-            <ul class="text-start" id="folder-files-list"></ul>
-        </div>
-        </div>
-         <!-- This is step 1-->
-        {% elif wizard.steps.current == 'step1' %}
-        <p>upload result: {{check_uploadfile_result | safe}}</p>
-        <hr>
-        <h2>{{step1}}</h2>
-            {% for field in wizard.form %}
-            <p>
-                {{ field.label_tag }} {{ field }}
-                <span class="badge bg-info text-light">{{ field.help_text }}</span>
-                {% for error in field.errors %}
-                    <span class="badge bg-danger text-white">{{ error }}</span>
-                {% endfor %}
-            </p>
-        {% endfor %}
+    <div class="row h-75 gx-5 mt-3" style="width: 100%">
+      <!-- Left column -->
+      <div class="col-md-5 border-end" style="position: relative">
+        <h5 class="bg-light" style="position: absolute; left: 0; top: -25px">
+          Processing TimeLine:
+        </h5>
 
-        <!-- This is step 2-->
-        {% elif wizard.steps.current == 'step2' %}
-        <h5> Here Show Validation result:<h5>
-            {%for table in check_validation_result%}
-        {{table | safe}}
-        {%endfor%}
-        <hr>
-            <h2>{{step2}}</h2>
-            {% for field in wizard.form %}
-    <p>
-        {{ field.label_tag }} {{ field }}
-        <span class="badge bg-info text-light">{{ field.help_text }}</span>
-        {% for error in field.errors %}
-            <span class="badge bg-danger text-white">{{ error }}</span>
-        {% endfor %}
-    </p>
-{% endfor %}
+        <div class="d-flex justify-content-around mt-5">
+          <div class="step-line h-25 mx-2">
+            <div
+              class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
+            >
+              Upload File
+            </div>
+            <div
+              class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
+            >
+              {{step1}}
+            </div>
 
-        <!-- add more steps here-->
+            <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
 
-        <!-- This is the final-->
-       {% elif wizard.steps.current == 'finalize' %}
-        <h5>   Here Show Finalize result: <h5>
-            {%for table in check_validation_result%}
-        {{table | safe}}
-        {%endfor%}
-            <hr>
-            <h2>Finalize</h2>
+            <div
+              class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
+            >
+              Finalize
+            </div>
+          </div>
+          {% if wizard.steps.current == 'upload_file' %}
+          <div>
             {% for field in wizard.form %}
-            <p>
-                {{ field.label_tag }} {{ field }}
-                <span class="badge bg-info text-light">{{ field.help_text }}</span>
-                {% for error in field.errors %}
-                    <span class="badge bg-danger text-white">{{ error }}</span>
-                {% endfor %}
+            <p class="m-5">
+              {{ field.label_tag }} {{ field }}
+              <span class="badge bg-info text-light"
+                >{{ field.help_text }}</span
+              >
             </p>
-        {% endfor %}
-        {% endif %}
-        
-        <div class="m-5 mb-0">
-        {% if wizard.steps.prev %}
-            <button class="btn btn-sm"  name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">previous</button>
-        {% endif %}
-        {%if wizard.steps.next%}
-        <input class="btn btn-sm"  type="submit" value="Next" >
-        {%else%}
-        <input class="btn btn-sm" type="submit" value="Finalize" >
-        {%endif%}
-        <a type="button" class="btn btn-sm m-auto border-0" href="{%url 'import-vitek'%}" onclick="window.location.reload(true);">Cancel
-        </a>
-        <div>
-    </form>
+            {% endfor %}
+          </div>
+          <!-- This is step 1-->
+          {% elif wizard.steps.current == 'step1' %}
+          <div>
+            {% for field in wizard.form %}
+            <p class="m-5">
+              {{ field.label_tag }} {{ field }}
+              <span class="badge bg-info text-light"
+                >{{ field.help_text }}</span
+              >
+            </p>
+            {% endfor %}
+          </div>
+
+          <!-- add more steps here: ...-->
+
+          <!-- This is the final-->
+          {% elif wizard.steps.current == 'finalize' %}
+          <div>
+            {% for field in wizard.form %}
+            <p class="m-5">
+              {{ field.label_tag }} {{ field }}
+              <span class="badge bg-info text-light"
+                >{{ field.help_text }}</span
+              >
+            </p>
+
+            <!--prettier-ignore-->
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="row m-2 p-0 mt-5 px-4" style="width: 90%">
+          <div class="row gx-5">
+            {% if wizard.steps.prev %}
+            <a
+              type="button"
+              class="btn btn-sm col-md-3"
+              href="{%url 'import-vitek'%}"
+              onclick="window.location.reload(true);"
+              >Cancel
+            </a>
+            <button
+              class="btn btn-sm col-md-3"
+              name="wizard_goto_step"
+              type="submit"
+              value="{{ wizard.steps.prev }}"
+            >
+              previous
+            </button>
+            {%else%}
+            <button type="button" class="btn btn-sm col-md-3" disabled>
+              cancel
+            </button>
+            <button
+              class="btn btn-sm col-md-3"
+              name="wizard_goto_step"
+              disabled
+            >
+              previous
+            </button>
+
+            {% endif %} {%if wizard.steps.next%}
+            <input class="btn btn-sm col-md-3" type="submit" value="Next" />
+            {%else%}
+            <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
+            {%endif%}
+          </div>
+          <p class="badge ms-0 text-start text-info">
+            Click button move to next step, or back to previous step.
+          </p>
+        </div>
+      </div>
+      <!-- Right column with fixed position and size -->
+      <div class="col-md-5" style="position: relative">
+        <h5 class="bg-light" style="position: absolute; left: 5%; top: -25px">
+          Processing Messages:
+        </h5>
+
+        <div class="mt-5">
+          <ul class="text-start" id="multi-files-list"></ul>
+          <!--prettier-ignore-->
+          {% for field in wizard.form %}
+          {% for error in field.errors %}
+          <p class="text-danger show-error">{{ error }}</p>
+          {% endfor %}
+          <!--prettier-ignore-->
+          {% endfor %}
+          {%if validation_result%}
+          {% for table in validation_result %}
+          {{table | safe}}
+          {% endfor %} 
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="progress" style="height: 20px">
+    <div
+      id="progress-bar"
+      class="progress-bar"
+      role="progressbar"
+      style="width: 0%"
+      aria-valuenow="0"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      0%
+    </div>
+  </div>
 </div>
-<script>
- 
-    const $fileNamesContainer_files = $("#multi-files-list");
-    {% comment %} if ($("#folder-file-names").length){
-        $fileNamesContainer.empty();
-    } {% endcomment %}
-  
-    if("{{ form.multi_files.auto_id }}"){
 
-      
-    $("#{{ form.multi_files.auto_id }}").on("change", function() {
-        $fileNamesContainer_files.empty();
-        const files = this.files;
-        for (let i = 0; i < files.length; i++) {
-            const fileInfo = $("<li></li>").text(files[i].webkitRelativePath || files[i].name);
-            $fileNamesContainer_files.append(fileInfo);
-        }
+<script>
+  const $fileNamesContainer_files = $("#multi-files-list");
+
+  if ("{{ form.multi_files.auto_id }}") {
+    $("#{{ form.multi_files.auto_id }}").on("change", function () {
+      $fileNamesContainer_files.empty();
+      const files = this.files;
+      for (let i = 0; i < files.length; i++) {
+        const fileInfo = $("<li></li>").text(
+          files[i].webkitRelativePath || files[i].name
+        );
+        $fileNamesContainer_files.append(fileInfo);
+      }
     });
-    
-    } 
+    $("#id_upload_file-multi_files").click(() => {
+      $(".show-error").text("");
+    });
+  }
+</script>
+<script>
+  $(document).ready(function () {
+    function updateProgress() {
+      console.log("call function");
+      $.ajax({
+        url: "{% url 'import-vitek' %}?action=progress",
+        type: "GET",
+        success: function (data) {
+          let processed = data.processed;
+          console.log("Progress data fetched:", data);
+          let total = data.total;
+          let percentage =
+            total > 0 ? Math.round((processed / total) * 100) : 0;
+
+          $("#progress-bar")
+            .css("width", percentage + "%")
+            .attr("aria-valuenow", percentage)
+            .text(percentage + "%");
+
+          if (processed < total) {
+            console.log("called ...");
+            setTimeout(updateProgress, 100);
+          }
+        },
+      });
+    }
+
+    // Start updating progress when the page loads
+    updateProgress();
+  });
 </script>
