@@ -3,13 +3,13 @@
     <h5 class="modal-title">{{title}}</h5>
     {%if title == 'Create Batch' or title == 'Create Culture' %}
     <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="modal"
-    aria-label="Close"
-    onclick="window.location.reload(true);"
-  ></button>
-  {%else%}
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      onclick="window.location.reload(true);"
+    ></button>
+    {%else%}
     <button
       type="button"
       class="btn-close"
@@ -25,41 +25,34 @@
     <!--  -->
     {%endif%}
     <!--  -->
-    <hr>
+    <hr />
 
     <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
       {% csrf_token %}
-       <!--  -->
-   
-       <!--  -->
+      <!--  -->
+
+      <!--  -->
       {%if title == 'Create Organism' %}
-      <input
-        type="text"
-        id="taxo-name"
-        name="search_organism"
-        style="display: none"
-      />
+      <input type="text" id="taxo-name" name="search_organism" hidden />
       {%endif%}
       <!--  -->
-     
+
       <!--  -->
       {%include 'utils/django_form_lgtable.html'%}
-       <hr>
-        <div class="d-flex justify-content-center align-center">
-          {%include 'utils/miscellaneous/save_btn.html'%}
-          <!--  -->
-          {%if title == 'Create Batch' or title == 'Create Culture' %}
-          <!--  -->
-          {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
-          <!--  -->
-          {%else%}
-          <!--  -->
-          {%include 'utils/miscellaneous/cancel_btn.html'%}
+      <hr />
+      <div class="d-flex justify-content-center align-center">
+        {%include 'utils/miscellaneous/save_btn.html'%}
+        <!--  -->
+        {%if title == 'Create Batch' or title == 'Create Culture' %}
+        <!--  -->
+        {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+        <!--  -->
+        {%else%}
+        <!--  -->
+        {%include 'utils/miscellaneous/cancel_btn.html'%}
         <!--  -->
         {%endif%}
-        
       </div>
     </form>
   </div>
 </div>
-

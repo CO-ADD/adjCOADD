@@ -15,20 +15,34 @@
       placeholder="search Toxonomy"
       class="form-control"
       value="{{form.organism_name.initial}}"
-    
     />
     {%else%}
     <input
-    type="text"
-    id="search-input"
-    placeholder="search Toxonomy"
-    class="form-control"
-   
-  />
-  {%endif%}
+      type="text"
+      id="search-input"
+      placeholder="Please search and select a Taxonomy firstly"
+      class="form-control"
+      required
+    />
+    {%endif%}
   </form>
   <div id="results-box" class="results-card"></div>
 </div>
 
 {%load static%}
 <script src="{%static 'js/search_organism.js'%}"></script>
+
+<!-- validate organism name input -->
+<script>
+  $(document).ready(function () {
+    $('button[type="submit"]').click(function (e) {
+      if ($("#taxo-name").length) {
+        var searchName = $("#taxo-name").val(); //
+        if (searchName == "") {
+          e.preventDefault(); // prevent form submission
+          $("#search-input").focus();
+        }
+      }
+    });
+  });
+</script>
