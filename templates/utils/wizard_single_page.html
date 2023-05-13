@@ -150,7 +150,8 @@
   </form>
 
   <div class="progress" style="height: 20px">
-    <div
+    <p class="text-info"></p>
+    <span
       id="progress-bar"
       class="progress-bar"
       role="progressbar"
@@ -160,7 +161,7 @@
       aria-valuemax="100"
     >
       0%
-    </div>
+    </span>
   </div>
 </div>
 
@@ -188,7 +189,7 @@
     function updateProgress() {
       console.log("call function");
       $.ajax({
-        url: "{% url 'import-vitek' %}?action=progress",
+        url: "{% url 'get_upload_progress' %}",
         type: "GET",
         success: function (data) {
           let processed = data.processed;
@@ -201,6 +202,7 @@
             .css("width", percentage + "%")
             .attr("aria-valuenow", percentage)
             .text(percentage + "%");
+          $(".progress p").html(`${processed}/${total}</span>`);
 
           if (processed < total) {
             console.log("called ...");

@@ -317,11 +317,11 @@ from apputil.utils.validation_log import *
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
-# 
-from django.http import JsonResponse
 
+# progress bar
 def get_upload_progress(request):
-    progress = request.session.get('upload_progress', {'processed': 0, 'total': 0})
+    session_key = f'upload_progress_{request.user}'
+    progress = request.session.get(session_key, {'processed': 0, 'total': 0})
     return JsonResponse(progress)
 # 
 class Import_VitekView(ImportHandler_WizardView):
@@ -348,7 +348,6 @@ class Import_VitekView(ImportHandler_WizardView):
         
 
     def process_step(self, form):
-        self.request.session['upload_progress']={'processed': 0, 'total': 0}
         current_step = self.steps.current
         request = self.request
 
@@ -369,7 +368,7 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                valLog = upload_VitekPDF_List(DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False, instance=self)
+                valLog = upload_VitekPDF_List(request,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
                 # -> valLog
                 if valLog.nLogs['Error'] >0 :
                     dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
@@ -397,7 +396,7 @@ class Import_VitekView(ImportHandler_WizardView):
             
             # get valLog for each file
             # Parse PDF 
-            valLog = upload_VitekPDF_List(DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=False, instance=self)
+            valLog = upload_VitekPDF_List(request, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=False)
                 # -> valLog
             if valLog.nLogs['Error'] >0 :
                 dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
@@ -439,17 +438,4 @@ class Import_VitekView(ImportHandler_WizardView):
             context['validation_result'] = self.storage.extra_data['valLog']
 
         return context
-    # progress bar
-    def get(self, request, *args, **kwargs):
-        if request.GET.get('action') == 'progress':
-            print("ajax call")
-            return self.get_upload_progress()
-        else:
-            return super().get(request, *args, **kwargs)
   
-    def get_upload_progress(self):
-        progress = self.request.session.get('upload_progress', {'processed': 0, 'total': 0})
-
-        print(self.request.session.get('upload_progress'))
-        return JsonResponse(progress)
-   
