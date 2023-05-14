@@ -51,6 +51,8 @@
           </div>
           <!-- This is step 1-->
           {% elif wizard.steps.current == 'step1' %}
+          <!-- Check to next step, if upload files contain errors(Confirm_to_Save=False) -->
+          {%if Confirm_to_Save%}
           <div>
             {% for field in wizard.form %}
             <p class="m-5">
@@ -61,7 +63,16 @@
             </p>
             {% endfor %}
           </div>
-
+          {%else%}
+          <div>
+            <p class="m-5">
+              <span class="badge bg-info text-light">
+                Upload files contain errors, please follow the info in right
+                column to correct them.
+              </span>
+            </p>
+          </div>
+          {%endif%}
           <!-- add more steps here: ...-->
 
           <!-- This is the final-->
@@ -150,7 +161,7 @@
   </form>
 
   <div class="progress" style="height: 20px">
-    <p class="text-info"></p>
+    <!-- <p class="text-info"></p> -->
     <span
       id="progress-bar"
       class="progress-bar"
@@ -201,8 +212,16 @@
           $("#progress-bar")
             .css("width", percentage + "%")
             .attr("aria-valuenow", percentage)
-            .text(percentage + "%");
-          $(".progress p").html(`${processed}/${total}</span>`);
+            .text(
+              percentage +
+                "%" +
+                " (" +
+                processed +
+                " in " +
+                total +
+                "total files)"
+            );
+          // $(".progress p").html(`${processed}/${total}</span>`);
 
           if (processed < total) {
             console.log("called ...");

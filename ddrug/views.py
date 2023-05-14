@@ -316,7 +316,8 @@ from apputil.utils.validation_log import *
 
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
-    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
+    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control w-50'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
+    field_order = ['orgbatch_id', 'confirm']
 
 # progress bar
 def get_upload_progress(request):
@@ -328,7 +329,7 @@ class Import_VitekView(ImportHandler_WizardView):
     
     name_step1="Validation" # step label in template
     # define more steps name
-
+    #... 
     # define each step's form
     form_list = [
         ('upload_file', UploadFileForm),
@@ -346,10 +347,10 @@ class Import_VitekView(ImportHandler_WizardView):
         self.filelist=[]
         self.orgbatch_id=None
         
-
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
+        session_key=f'upload_progress_{request.user}'
 
         if current_step == 'upload_file':
             print("upload and parse")
@@ -359,8 +360,6 @@ class Import_VitekView(ImportHandler_WizardView):
             if form.is_valid():
                 if 'upload_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-multi_files'))          
-            
-
                 # Get clean FileList
                 for f in files:
                     fs = OverwriteStorage(location=DirName)
@@ -368,54 +367,51 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                valLog = upload_VitekPDF_List(request,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                valLog = upload_VitekPDF_List(request, session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
                 # -> valLog
                 if valLog.nLogs['Error'] >0 :
-                    dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
+                    dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
+                    self.storage.extra_data['Confirm_to_Save'] = False
                 else:
                     dfLog = pd.DataFrame(valLog.get_aslist())
+                    self.storage.extra_data['Confirm_to_Save'] = True
                 # -> store valLog
-                result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))
-
-                 
-                # Store the extracted data in self.storage.extra_data
+                result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                 
+               # Store the extracted data in self.storage.extra_data
                 self.storage.extra_data['valLog'] =result_table          
                 self.storage.extra_data['filelist'] = self.filelist
-                self.storage.extra_data['DirName'] = DirName
-
-           
+                self.storage.extra_data['DirName'] = DirName          
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1': # first validation
+            request.session[session_key] = {'processed': 0, 'total': 0}
+            upload=self.storage.extra_data['Confirm_to_Save']
             print("step validation again")
+            form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
             result_table=[] # first validation result tables
             DirName=self.storage.extra_data['DirName'] #get file path
-            FileList=self.storage.extra_data['filelist'] #get files' name
-            
-            # get valLog for each file
+            FileList=self.storage.extra_data['filelist'] #get files' name            
+           # get valLog for each file
             # Parse PDF 
-            valLog = upload_VitekPDF_List(request, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=False)
-                # -> valLog
+            valLog = upload_VitekPDF_List(request, session_key, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=upload)
+            # -> valLog
             if valLog.nLogs['Error'] >0 :
                 dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
             else:
                 dfLog = pd.DataFrame(valLog.get_aslist())
-                # -> store valLog
-            result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))
-                    
-            self.storage.extra_data['valLog'] =result_table 
-   
-       
-            
+            # -> store valLog
+            result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                   
+            self.storage.extra_data['valLog'] =result_table             
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
         print("Finalize")
         # Redirect to the desired page after finishing
         # delete uploaded files
-        self.request.session['upload_progress'] = {'processed': 0, 'total': 0}
+        session_key=f'upload_progress_{self.request.user}'
+        self.request.session[session_key] = {'processed': 0, 'total': 0}
         filelist=self.storage.extra_data['filelist']
         for f in filelist:
             self.delete_file(f)
@@ -424,18 +420,15 @@ class Import_VitekView(ImportHandler_WizardView):
 
     def get_context_data(self, form, **kwargs):
         # save information to context,
-        # then display in templates
-   
+        # then display in templates  
         context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
-       
-       
-        current_step = self.steps.current
-        
+        current_step = self.steps.current        
         if current_step == 'step1':
-            context['validation_result'] = self.storage.extra_data['valLog'] 
+            context['validation_result'] = self.storage.extra_data['valLog']
+            context['Confirm_to_Save']=self.storage.extra_data['Confirm_to_Save']
         if current_step == 'finalize':
             context['validation_result'] = self.storage.extra_data['valLog']
-
         return context
-  
+
+    

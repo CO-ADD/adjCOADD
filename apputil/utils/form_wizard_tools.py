@@ -48,13 +48,13 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    confirm_to_save = forms.BooleanField(required=True)
+    confirm = forms.BooleanField(required=True, help_text="Confirm to save data in Organism Database")
 
 
 # class StepForm_2(forms.Form):
 
 class FinalizeForm(forms.Form):
-    log_entry = forms.CharField(widget=forms.Textarea)
+    log_entry = forms.CharField(widget=forms.Textarea, required=False)
 
 class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
     # here add steps name

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(request,DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(request,session_key, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -53,7 +53,7 @@ def upload_VitekPDF_List(request,DirName,FileList,OrgBatchID=None,upload=False,a
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
             #  get progress and save to session, including the user ID in session key:  
-            session_key=f'upload_progress_{request.user}'
+            
             request.session[session_key]={'processed':i+1, 'total':nFiles}
             request.session.modified=True
             print(f"Updated session progress_data: {request.session[session_key]}")
