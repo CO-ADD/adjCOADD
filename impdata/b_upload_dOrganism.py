@@ -10,7 +10,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 import django
-from django.utils.text import slugify
 
 from oraCastDB import oraCastDB
 from zUtils import zData
@@ -356,7 +355,8 @@ def update_Taxonomy_ora(upload=False,uploaduser=None,OutputN=1000):
         djTax.division = Dictionary.get(djTax.Choice_Dictionary["division"],tax['DIVISION_CODE'],None,verbose=1)            
         if tax['LINEAGE']:
             djTax.lineage = split_StrList(tax['LINEAGE'])
-        djTax.urlname = slugify(tax['ORGANISM_NAME'],lower=False,allow_unicode=False)
+        #djTax.urlname = slugify(tax['ORGANISM_NAME'],lower=False,allow_unicode=False)
+        djTax.urlname = slugify(tax['ORGANISM_NAME'],allow_unicode=False)
         
         djTax.clean_Fields()
         validDict = djTax.validate()

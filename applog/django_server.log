@@ -1,0 +1,80 @@
+django.utils.autoreload INFO 2023-05-15 16:31:58,548 autoreload 25308 28580 Watching for file changes with StatReloader
+django.server INFO 2023-05-15 16:32:14,238 basehttp 25308 12964 "GET / HTTP/1.1" 200 11197
+django.server INFO 2023-05-15 16:32:15,144 basehttp 25308 12964 "GET /static/css/overideboot.css HTTP/1.1" 200 6661
+django.server INFO 2023-05-15 16:32:15,152 basehttp 25308 12964 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 515
+django.server INFO 2023-05-15 16:32:15,157 basehttp 25308 12964 "GET /static/js/editableTable.js HTTP/1.1" 200 659
+django.server INFO 2023-05-15 16:32:15,164 basehttp 25308 18824 "GET /static/css/custom_select2.css HTTP/1.1" 200 699
+django.server INFO 2023-05-15 16:32:15,167 basehttp 25308 12964 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102515
+django.server INFO 2023-05-15 16:32:15,219 basehttp 25308 28440 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89666
+django.server INFO 2023-05-15 16:32:15,257 basehttp 25308 18824 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-05-15 16:32:15,258 basehttp 25308 12964 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-05-15 16:32:15,259 basehttp 25308 28440 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-05-15 16:32:15,462 basehttp 25308 28116 "GET /static/css/custom.css HTTP/1.1" 200 21868
+django.server INFO 2023-05-15 16:32:15,538 basehttp 25308 17644 "GET /static/css/main.6a646761.css HTTP/1.1" 200 169393
+django.server INFO 2023-05-15 16:32:15,591 basehttp 25308 15548 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-05-15 16:32:15,815 basehttp 25308 17644 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-05-15 16:32:16,118 basehttp 25308 17644 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-05-15 16:32:24,808 basehttp 25308 17644 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-05-15 16:32:26,122 basehttp 25308 17644 "GET /index/ HTTP/1.1" 200 20567
+django.server INFO 2023-05-15 16:32:26,338 basehttp 25308 17644 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-05-15 16:32:30,896 basehttp 25308 17644 "GET /dorganism/organism_card HTTP/1.1" 200 174595
+django.server INFO 2023-05-15 16:32:31,029 basehttp 25308 28440 "GET /static/js/filter_toggle.js HTTP/1.1" 200 172
+django.server INFO 2023-05-15 16:32:31,031 basehttp 25308 17644 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.request ERROR 2023-05-15 16:32:50,008 log 25308 17644 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column taxonomy.organism_name__lineage does not exist
+LINE 1: ...LECT taxonomy.organism_name FROM taxonomy, unnest(taxonomy.o...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 118, in get_queryset
+    self.request.session['cached_queryset'] = list(filtered_queryset_pks)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\models\query.py", line 394, in __iter__
+    self._fetch_all()
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\models\query.py", line 1866, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\models\query.py", line 281, in __iter__
+    for row in compiler.results_iter(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\models\sql\compiler.py", line 1349, in results_iter
+    results = self.execute_sql(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\models\sql\compiler.py", line 1398, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 103, in execute
+    return super().execute(sql, params)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column taxonomy.organism_name__lineage does not exist
+LINE 1: ...LECT taxonomy.organism_name FROM taxonomy, unnest(taxonomy.o...
+                                                             ^
+
+django.server ERROR 2023-05-15 16:32:50,029 basehttp 25308 17644 "GET /dorganism/organism_card?reset=False&Search_all_fields=0001&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 250284
+django.request WARNING 2023-05-15 16:32:50,648 log 25308 17644 Not Found: /favicon.ico
+django.server WARNING 2023-05-15 16:32:50,648 basehttp 25308 17644 "GET /favicon.ico HTTP/1.1" 404 5219
+django.server INFO 2023-05-15 16:33:12,430 basehttp 25308 17644 "GET /dorganism/organism_list HTTP/1.1" 200 119988
+django.server INFO 2023-05-15 16:33:15,794 basehttp 25308 17644 "GET /dorganism/organism_card HTTP/1.1" 200 174595
+django.server INFO 2023-05-15 16:33:19,715 basehttp 25308 17644 "GET /dorganism/organism_list HTTP/1.1" 200 119988
