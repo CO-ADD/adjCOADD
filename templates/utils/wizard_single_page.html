@@ -4,7 +4,7 @@
   <form
     method="post"
     enctype="multipart/form-data"
-    class="col-md-8 mx-5 d-flex flex-column align-items-center w-75 h-75 text-center"
+    class="mx-5 d-flex flex-column align-items-center w-75 h-75 text-center"
   >
     <!--prettier-ignore-->
     {% csrf_token %}
@@ -14,32 +14,27 @@
       <!-- Left column -->
       <div class="col-md-5 border-end" style="position: relative">
         <h5 class="bg-light" style="position: absolute; left: 0; top: -25px">
-          Processing TimeLine:
+          Upload Wizard
         </h5>
 
         <div class="d-flex justify-content-around mt-5">
+          <!-- Left Wizard -->
           <div class="step-line h-25 mx-2">
-            <div
-              class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
-            >
+            <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">
               Upload File
             </div>
-            <div
-              class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
-            >
+            <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}" >
               {{step1}}
             </div>
-
             <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
-
-            <div
-              class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
-            >
-              Finalize
+            <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}" >
+              Finalise
             </div>
           </div>
+
+          <!-- Right Wizard -->
           {% if wizard.steps.current == 'upload_file' %}
-          <div>
+            <div >
             {% for field in wizard.form %}
             <p class="m-5">
               {{ field.label_tag }} {{ field }}
@@ -48,36 +43,36 @@
               >
             </p>
             {% endfor %}
-          </div>
+            </div>
           <!-- This is step 1-->
           {% elif wizard.steps.current == 'step1' %}
-          <!-- Check to next step, if upload files contain errors(Confirm_to_Save=False) -->
-          {%if Confirm_to_Save%}
-          <div>
-            {% for field in wizard.form %}
-            <p class="m-5">
-              {{ field.label_tag }} {{ field }}
-              <span class="badge bg-info text-light"
-                >{{ field.help_text }}</span
-              >
-            </p>
-            {% endfor %}
-          </div>
-          {%else%}
-          <div>
-            <p class="m-5">
-              <span class="badge bg-info text-light">
-                Upload files contain errors, please follow the info in right
-                column to correct them.
-              </span>
-            </p>
-          </div>
-          {%endif%}
+            <!-- Check to next step, if upload files contain errors(Confirm_to_Save=False) -->
+            {% if Confirm_to_Save %}
+            <div>
+              {% for field in wizard.form %}
+              <p class="m-5">
+                {{ field.label_tag }} {{ field }}
+                <span class="badge bg-info text-light"
+                  >{{ field.help_text }}</span
+                >
+              </p>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div>
+              <p class="m-5">
+                <span class="badge bg-info text-light">
+                  Upload files contain errors, please follow the info in right
+                  column to correct them.
+                </span>
+              </p>
+            </div>
+            {% endif %}
           <!-- add more steps here: ...-->
 
           <!-- This is the final-->
           {% elif wizard.steps.current == 'finalize' %}
-          <div>
+            <div>
             {% for field in wizard.form %}
             <p class="m-5">
               {{ field.label_tag }} {{ field }}
@@ -88,12 +83,12 @@
 
             <!--prettier-ignore-->
             {% endfor %}
-          </div>
+            </div>
           {% endif %}
-        </div>
-        <div class="row m-2 p-0 mt-5 px-4" style="width: 90%">
+          </div>
+
+        <div class="row m-2 p-0 mt-5 px-4" style="width: 100%">
           <div class="row gx-5">
-            {% if wizard.steps.prev %}
             <a
               type="button"
               class="btn btn-sm col-md-3"
@@ -101,60 +96,61 @@
               onclick="window.location.reload(true);"
               >Cancel
             </a>
-            <button
-              class="btn btn-sm col-md-3"
-              name="wizard_goto_step"
-              type="submit"
-              value="{{ wizard.steps.prev }}"
-            >
-              previous
-            </button>
+
+            {% if wizard.steps.prev %}
+              <button
+                class="btn btn-sm col-md-3"
+                name="wizard_goto_step"
+                type="submit"
+                value="{{ wizard.steps.prev }}"
+              >Previous
+              </button>
             {%else%}
-            <button type="button" class="btn btn-sm col-md-3" disabled>
-              cancel
-            </button>
-            <button
-              class="btn btn-sm col-md-3"
-              name="wizard_goto_step"
-              disabled
-            >
-              previous
-            </button>
-            <!--prettier-ignore-->
+              <button
+                class="btn btn-sm col-md-3"
+                name="wizard_goto_step"
+                disabled
+              >Previous
+              </button>
+              <!--prettier-ignore-->
             {% endif %} 
-            {%if wizard.steps.next%}
-            <input class="btn btn-sm col-md-3" type="submit" value="Next" />
-            {%else%}
-            <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
-            {%endif%}
+
+            {% if wizard.steps.next %}
+              <input class="btn btn-sm col-md-3" type="submit" value="Next" />
+            {% else %}
+              <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
+            {% endif %}
           </div>
-          <p class="badge ms-0 text-start text-info">
-            Click button move to next step, <br />Click previous to
-            <strong class="text-danger"> upload file </strong>will need a
-            re-upload. <br />Click cancel to refresh page and start again.
-          </p>
+            <!--
+            <p class="badge ms-0 text-start text-info">
+              Click button move to next step, <br />Click previous to
+              <strong class="text-danger"> upload file </strong>will need a
+              re-upload. <br />Click cancel to refresh page and start again.
+            </p>
+            -->
         </div>
+
       </div>
       <!-- Right column with fixed position and size -->
-      <div class="col-md-5" style="position: relative">
+      <div class="col-md-7" style="position: relative">
         <h5 class="bg-light" style="position: absolute; left: 5%; top: -25px">
-          Processing Messages:
+          Messages
         </h5>
 
         <div class="mt-5">
           <ul class="text-start" id="multi-files-list"></ul>
           <!--prettier-ignore-->
           {% for field in wizard.form %}
-          {% for error in field.errors %}
-          <p class="text-danger show-error">{{ error }}</p>
+            {% for error in field.errors %}
+              <p class="text-danger show-error">{{ error }}</p>
+            {% endfor %}
+            <!--prettier-ignore-->
           {% endfor %}
-          <!--prettier-ignore-->
-          {% endfor %}
-          {%if validation_result%}
-          {% for table in validation_result %}
-          {{table | safe}}
-          {% endfor %} 
-          {%endif%}
+          {% if validation_result%}
+            {% for table in validation_result %}
+              {{table | safe}}
+            {% endfor %} 
+          {% endif %}
         </div>
       </div>
     </div>

@@ -36,11 +36,11 @@ from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from dorganism.models import Organism_Batch
-from .models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
-from .utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
-from .utils.vitek import *
-from .forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
-from .serializers import Drug_Serializer, VITEK_ASTSerializer
+from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
+from ddrug.utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
+from ddrug.utils.vitek import upload_VitekPDF_List
+from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
+from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
 
 # ===================================================================
 @login_required   
@@ -77,8 +77,8 @@ def ketcher_test(req):
     context["object_mol"]="\\n".join(m.split("\n"))
     return render(req, "utils/ketcher_test.html", context)
 
-# --Drug View--
-## 
+#==  Drug View =============================================================
+#--  DrugList --------------------------------------------------------------
 class DrugListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Drug  
@@ -86,7 +86,7 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Drug_filter
     model_fields=model.HEADER_FIELDS
 
-##
+#--  DrugCard --------------------------------------------------------------
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
@@ -138,16 +138,21 @@ def detailDrug(req, pk):
     return render(req, "ddrug/drug/drug_detail.html", context)
 
 ##
+#--  DrugCreate --------------------------------------------------------------
 class DrugCreateView(SimplecreateView):
     form_class=Drug_form
     template_name='ddrug/drug/drug_c.html'
     
 ##
+#--  DrugUpdate --------------------------------------------------------------
 class DrugUpdateView(SimpleupdateView):
     form_class=Drug_form
     template_name='ddrug/drug/drug_u.html'
     model=Drug
 
+
+
+#==  VITEK Card View =============================================================
 # --Vitek Card--
 class VitekcardListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -302,9 +307,9 @@ class API_VITEK_ASTList(API_FilteredListView):
 #
 
 
+#==  VITEK Import View =============================================================
 class Importhandler_VITEK(Importhandler):
     pass
-
 
 # --upload file view--
 from django import forms
@@ -316,7 +321,11 @@ from apputil.utils.validation_log import *
 
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
-    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control w-50'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
+    orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
+                                       widget=forms.Select(attrs={'class': 'form-control w-50'}), 
+                                       required=False, 
+                                       help_text='Optional: Select OrganismBatch for all Uploads (!)',
+                                       queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 
 # progress bar
@@ -327,7 +336,7 @@ def get_upload_progress(request):
 # 
 class Import_VitekView(ImportHandler_WizardView):
     
-    name_step1="Validation" # step label in template
+    name_step1="Validation" 
     # define more steps name
     #... 
     # define each step's form
@@ -339,6 +348,7 @@ class Import_VitekView(ImportHandler_WizardView):
     ]
     # define template
     template_name = 'ddrug/importhandler_vitek.html'
+
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
 
@@ -367,16 +377,16 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                valLog = upload_VitekPDF_List(request, session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                valLog = upload_VitekPDF_List(request,session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
                 # -> valLog
                 if valLog.nLogs['Error'] >0 :
                     dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
                     self.storage.extra_data['Confirm_to_Save'] = False
                 else:
-                    dfLog = pd.DataFrame(valLog.get_aslist())
+                    dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Warning']))
                     self.storage.extra_data['Confirm_to_Save'] = True
                 # -> store valLog
-                result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                 
+                result_table.append(dfLog.to_html(classes=["table", "table-bordered", "fixTableHead"], index=False))                 
                # Store the extracted data in self.storage.extra_data
                 self.storage.extra_data['valLog'] =result_table          
                 self.storage.extra_data['filelist'] = self.filelist
@@ -387,7 +397,9 @@ class Import_VitekView(ImportHandler_WizardView):
         elif current_step == 'step1': # first validation
             request.session[session_key] = {'processed': 0, 'total': 0}
             upload=self.storage.extra_data['Confirm_to_Save']
+
             print("step validation again")
+            
             form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
             result_table=[] # first validation result tables

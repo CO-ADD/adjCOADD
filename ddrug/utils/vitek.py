@@ -17,11 +17,14 @@ import logging
 logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
+
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(request,session_key, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
+        Request :
+        SessionKey :
         DirName : FolderName
         PdfName : PdfName without FolderName
         OrgBatchID: Optional to overwrite OrgBatchID from PDF
@@ -49,14 +52,15 @@ def upload_VitekPDF_List(request,session_key, DirName,FileList,OrgBatchID=None,u
 
 
         for i in range(nFiles):
-            valLog = Validation_Log("upload_VitekPDF_List")
+            valLog = Validation_Log("Upload VitekPDF")
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
+            print(f"[DEBUG] {FileList[i]} from {DirName}")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
             #  get progress and save to session, including the user ID in session key:  
             
-            request.session[session_key]={'processed':i+1, 'total':nFiles}
-            request.session.modified=True
-            print(f"Updated session progress_data: {request.session[session_key]}")
+            Request.session[SessionKey]={'processed':i+1, 'total':nFiles}
+            Request.session.modified=True
+            print(f"Updated session progress_data: {Request.session[SessionKey]}")
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
@@ -100,7 +104,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lID:
-        djID = imp_VitekID_fromDict(c,valLog)
+        djID = imp_VitekID_fromDict(c,valLog,upload=upload)
         if upload:
             if djID.VALID_STATUS:
                 logger.debug(f" {djID} <- {FileName}")
@@ -111,7 +115,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lAST:
-        djAST = imp_VitekAST_fromDict(c,valLog)
+        djAST = imp_VitekAST_fromDict(c,valLog,upload=upload)
         if upload:
             if djAST.VALID_STATUS:
                 logger.debug(f" {djAST} <- {FileName}")
@@ -128,7 +132,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
     #     valLog.show(logTypes=['Error'])
     else:
         if upload:
-            logDesc = f'{FileName} [{len(lCards)} {len(lID)} {len(lAST)}] : {nProc}'
+            logDesc = f'{FileName} [Cards:{len(lCards)} ID:{len(lID)} AST:{len(lAST)}] : {nProc}'
             ApplicationLog.add('Import','upload_VitekPDF','Info',appuser,'Vitek',logDesc,'Completed')
             # if nProc['notValid'] == 0:
             #   removeFile(DirName,FileName)
@@ -409,6 +413,7 @@ def dict_Vitek_Card(pCard,card_type):
             dfCard['CARD_CODE'] = pCard['AST_Card']
             dfCard['CARD_BARCODE'] = pCard['AST_Card_Barcode']
             dfCard['INSTRUMENT'] = pCard['AST_Instrument']
+            dfCard['FILENAME'] = pCard['FileName']
             dfCard['EXPIRY_DATE'] = pCard['AST_Expiry']
             dfCard['PROCESSING_DATE'] = pCard['AST_Date']
             dfCard['ANALYSIS_TIME'] = pCard['AST_Analysis']
@@ -428,6 +433,7 @@ def dict_Vitek_Card(pCard,card_type):
             dfCard['CARD_CODE'] = pCard['ID_Card']
             dfCard['CARD_BARCODE'] = pCard['ID_Card_Barcode']
             dfCard['INSTRUMENT'] = pCard['ID_Instrument']
+            dfCard['FILENAME'] = pCard['FileName']
             if 'ID_Expiry' in pCard:
                 dfCard['EXPIRY_DATE'] = pCard['ID_Expiry']
                 dfCard['PROCESSING_DATE'] = pCard['ID_Date']

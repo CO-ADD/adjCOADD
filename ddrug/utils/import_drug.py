@@ -31,7 +31,7 @@ def imp_Drug_fromDict(iDict,valLog):
         djDrug = Drug()
         #djDrug.drug_id = iDict['drug_id']
         djDrug.drug_name = iDict['drug_name']
-        valLog.add_log('Info','New Drug',f"{iDict['drug_name']}",'-')
+        valLog.add_log('Info',"",f"{iDict['drug_name']},'New Drug'",'-')
     djDrug.drug_type = Dictionary.get(djDrug.Choice_Dictionary["drug_type"],iDict['drug_type'])
 
     djDrug.n_compounds = iDict['ncmpd']
@@ -73,7 +73,7 @@ def imp_Drug_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
+            valLog.add_log('Warning','',k,validDict[k],'-')
 
     djDrug.VALID_STATUS = validStatus
 
@@ -81,7 +81,7 @@ def imp_Drug_fromDict(iDict,valLog):
 
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekCard_fromDict(iDict,valLog):
+def imp_VitekCard_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_Card instance from a {Dict}
     """
@@ -91,23 +91,33 @@ def imp_VitekCard_fromDict(iDict,valLog):
 
     validStatus = True
     
+    OrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
+    if OrgBatch is None:
+        valLog.add_log('Error',iDict['filename'],iDict['orgbatch_id'],'Organism Batch does not exists','Use existing OrganismBatch ID')
+        validStatus = False
+
     djVitekCard = VITEK_Card.get(iDict['card_barcode'])
     if djVitekCard is None:
         djVitekCard = VITEK_Card()
         djVitekCard.card_barcode = iDict['card_barcode']
-        valLog.add_log('Info','New VITEK card',f"{iDict['card_barcode']}-{iDict['card_code']}",'-')
+        if upload:
+            valLog.add_log('Info',iDict['filename'],
+                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
+                           f"New {iDict['card_type']} VITEK card",'-')
+        else:
+            valLog.add_log('Warning',iDict['filename'],
+                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
+                           f"New {iDict['card_type']} VITEK card",'-')
+
     else:
-        valLog.add_log('Info','Update VITEK card',f"{iDict['card_barcode']} -{iDict['card_code']}",'-')
+        valLog.add_log('Warning',iDict['filename'],
+                       f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
+                       f"Update {iDict['card_type']} VITEK card",'-')
 
-    OrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
-    if OrgBatch is None:
-        valLog.add_log('Error','Organism Batch does not Exists',iDict['orgbatch_id'],'Use existing OrganismBatch ID')
-        validStatus = False
     djVitekCard.orgbatch_id = OrgBatch
-
     djVitekCard.card_type = Dictionary.get(djVitekCard.Choice_Dictionary["card_type"],iDict['card_type'])
     if djVitekCard.card_type is None:
-        valLog.add_log('Error','Vitek Card Type not Correct',iDict['card_type'],'-')
+        valLog.add_log('Error',iDict['filename'],iDict['card_type'],'Vitek Card Type not correct','-')
         validStatus = False
 
     djVitekCard.card_code = iDict['card_code']
@@ -121,13 +131,13 @@ def imp_VitekCard_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
+            valLog.add_log('Warning',iDict['filename'],k,validDict[k],'-')
 
     djVitekCard.VALID_STATUS = validStatus
     return(djVitekCard)
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekID_fromDict(iDict,valLog):
+def imp_VitekID_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_ID instance from a {Dict}
     """
@@ -138,16 +148,19 @@ def imp_VitekID_fromDict(iDict,valLog):
     validStatus = True
     Barcode = VITEK_Card.get(iDict['card_barcode']) 
     if Barcode is None:
-        validStatus = False
-        valLog.add_log('Error','VITEK card does not Exists',f"{iDict['card_code']} ({iDict['card_barcode']})",'-')
+        if upload:
+            validStatus = False
+            valLog.add_log('Error',iDict['filename'],f"{iDict['card_barcode']} ({iDict['card_code']})",'[ID] VITEK card does not exists','-')
+        else:
+            valLog.add_log('Info',iDict['filename'],f"{iDict['card_barcode']} ({iDict['card_code']})",'New [ID] VITEK card will be uploaded','-')
 
     djVitekID = VITEK_ID.get(Barcode)
     if djVitekID is None:
         djVitekID = VITEK_ID()
         djVitekID.card_barcode = Barcode
-        valLog.add_log('Info','New VITEK ID',f"{iDict['card_code']} ({iDict['card_barcode']})",'-')
+        valLog.add_log('Info',iDict['filename'],f"{iDict['card_barcode']} ({iDict['card_code']})",'New VITEK ID','-')
     else:
-        valLog.add_log('Info','Update VITEK ID',f"{iDict['card_code']} ({Barcode})",'-')
+        valLog.add_log('Info',iDict['filename'],f"{iDict['card_barcode']} ({iDict['card_code']})",'Update VITEK ID','-')
 
     djVitekID.process = iDict['vitek_process']
     djVitekID.id_organism = iDict['id_organism']
@@ -162,15 +175,18 @@ def imp_VitekID_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
-
+            if k == 'card_barcode':
+                if upload:
+                    valLog.add_log('Error',iDict['filename'],f"[ID] {k}",validDict[k],'-')
+            else:
+                valLog.add_log('Warning',iDict['filename'],f"[ID] {k}",validDict[k],'-')
 
     djVitekID.VALID_STATUS = validStatus
     return(djVitekID)
 
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekAST_fromDict(iDict,valLog):
+def imp_VitekAST_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_ID instance from a {Dict}
     """
@@ -181,13 +197,16 @@ def imp_VitekAST_fromDict(iDict,valLog):
     validStatus = True
     Barcode = VITEK_Card.get(iDict['card_barcode']) 
     if Barcode is None:
-        validStatus = False
-        valLog.add_log('Error','VITEK card does not Exists',f"{iDict['card_code']} ({iDict['card_barcode']})",'-')
+        if upload:
+            validStatus = False
+            valLog.add_log('Error',iDict['filename'],f"{iDict['card_code']} ({iDict['card_barcode']})",'[AST] VITEK card does not exists','-')
+        else:
+            valLog.add_log('Info',iDict['filename'],f"{iDict['card_barcode']} ({iDict['card_code']})",'New [AST] VITEK card will be uploaded','-')
 
     DrugID = Drug.get(iDict['drug_name'])
     if DrugID is None:
         validStatus = False
-        valLog.add_log('Error','Drug does not Exists',f"{iDict['drug_name']} ({iDict['card_barcode']})",'-')
+        valLog.add_log('Error',iDict['filename'],f"{iDict['drug_name']} ({iDict['card_barcode']})",'[AST] VITEK Drug does not Exists','-')
 
     if validStatus:
         djVitekAST = VITEK_AST.get(Barcode,DrugID,iDict['bp_source'],iDict['selected_organism'])
@@ -199,7 +218,7 @@ def imp_VitekAST_fromDict(iDict,valLog):
         djVitekAST.card_barcode = Barcode
         djVitekAST.drug_id = DrugID
         djVitekAST.bp_source = iDict['bp_source']
-        valLog.add_log('Info','New VITEK AST',f"{Barcode} {DrugID} {iDict['bp_source']}",'-')
+        valLog.add_log('Info',iDict['filename'],f"{DrugID.drug_name} ({iDict['bp_source']})",'New [AST] VITEK','-')
     
     djVitekAST.mic = iDict['mic']
     djVitekAST.process = iDict['vitek_process']
@@ -215,7 +234,11 @@ def imp_VitekAST_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
+            if k == 'card_barcode':
+                if upload:
+                    valLog.add_log('Error',iDict['filename'],f"[AST] {k}",validDict[k],'-')
+            else:
+                valLog.add_log('Warning',iDict['filename'],f"[AST] {k}",validDict[k],'-')
 
     djVitekAST.VALID_STATUS = validStatus
     return(djVitekAST)
@@ -233,12 +256,12 @@ def imp_MICCOADD_fromDict(iDict,valLog):
     DrugID = Drug.get(iDict['drug_name'])
     if DrugID is None:
         validStatus = False
-        valLog.add_log('Error','Drug does not Exists',f"{iDict['drug_name']} ",'-')
+        valLog.add_log('Error','',f"{iDict['drug_name']} ",'Drug does not Exists','-')
 
     OrgBatchID = Organism_Batch.get(iDict['orgbatch_id']) 
     if OrgBatchID is None:
         validStatus = False
-        valLog.add_log('Error','OrgBatchID does not Exists',f"{iDict['orgbatch_id']} ",'-')
+        valLog.add_log('Error','',f"{iDict['orgbatch_id']} ",'OrgBatchID does not Exists','-')
 
     if validStatus:
         djMIC = MIC_COADD.get(OrgBatchID,DrugID,iDict['testplate_id'],iDict['testwell_id'])
@@ -252,7 +275,7 @@ def imp_MICCOADD_fromDict(iDict,valLog):
         djMIC.run_id = iDict['run_id']
         djMIC.testplate_id = iDict['testplate_id']
         djMIC.testwell_id = iDict['testwell_id']
-        valLog.add_log('Info','New MIC ',f"{OrgBatchID} {DrugID} {iDict['testplate_id']}:{iDict['testwell_id']}",'-')
+        valLog.add_log('Info','',f"{OrgBatchID} {DrugID} {iDict['testplate_id']}:{iDict['testwell_id']}",'New MIC ','-')
     
     djMIC.mic = iDict['mic']
     djMIC.mic_unit = iDict['mic_unit']
@@ -270,7 +293,7 @@ def imp_MICCOADD_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
+            valLog.add_log('Warning','',k,validDict[k],'-')
 
     djMIC.VALID_STATUS = validStatus
     
@@ -289,12 +312,12 @@ def imp_MICPub_fromDict(iDict,valLog):
     DrugID = Drug.get(iDict['drug_name'].strip())
     if DrugID is None:
         validStatus = False
-        valLog.add_log('Error','Drug does not Exists',f"{iDict['drug_name']} ",'-')
+        valLog.add_log('Error','',f"{iDict['drug_name']} ",'Drug does not Exists','-')
 
     OrganismID = Organism.get(iDict['organism_id']) 
     if OrganismID is None:
         validStatus = False
-        valLog.add_log('Error','OrganismID does not Exists',f"{iDict['organism_id']} ",'-')
+        valLog.add_log('Error','',f"{iDict['organism_id']} ",'OrganismID does not Exists','-')
 
     if validStatus:
         djMIC = MIC_Pub.get(OrganismID,DrugID,iDict['source'])
@@ -306,7 +329,7 @@ def imp_MICPub_fromDict(iDict,valLog):
         djMIC.organism_id = OrganismID
         djMIC.drug_id = DrugID
         djMIC.source = iDict['source']
-        valLog.add_log('Info','New MIC ',f"{iDict['organism_id']} {iDict['drug_name']} {iDict['source']}",'-')
+        valLog.add_log('Info','',f"{iDict['organism_id']} {iDict['drug_name']} {iDict['source']}",'New MIC ','-')
     
     if 'source_type' in iDict:
         djMIC.mic_type = Dictionary.get(MIC_Pub.Choice_Dictionary["mic_type"],iDict['source_type'],None,verbose=1)
@@ -326,7 +349,7 @@ def imp_MICPub_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k,'-')
+            valLog.add_log('Warning','',k,validDict[k],'-')
 
     djMIC.VALID_STATUS = validStatus
     

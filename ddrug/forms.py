@@ -15,23 +15,21 @@ from adjcoadd.constants import *
 
 #========================================Drug Form================================================================
 class Drug_form(forms.ModelForm):
-    drug_type = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type']), 
-                                       widget=forms.Select(attrs={'class':'form-select'}), required=False)
-    #max_phase = forms.ChoiceField(choices= Dictionary.get_aschoices(Drug.Choice_Dictionary['max_phase'], showDesc=False), 
-    #                              widget=forms.Select(attrs={'class':'form-select'}), required=False,)
+    drug_type = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'form-select'}), required=False, queryset=Dictionary.objects.all())
+    max_phase = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-select'}), required=False, choices= [], )
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
-    # drug_class=forms.ChoiceField(choices=Dictionary.get_aschoices(Drug.Choice_Dictionary['drug_class'], showDesc=False), required=False)
-    
+    # drug_class=forms.ChoiceField(required=False, choices=[],)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['drug_panel'].widget = forms.CheckboxSelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['drug_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.fields['drug_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type'], astatus__gte=0)]
-        self.fields['max_phase'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['max_phase'], astatus__gte=0)]
+        self.fields['drug_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
+        self.fields['max_phase'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['max_phase'])]
         self.create_field_groups()
         for field in self.fields.values():
             if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
@@ -41,11 +39,9 @@ class Drug_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def create_field_groups(self):
-        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", "drug_class", "drug_subclass", "drug_target", "drug_subtarget", "drug_panel","drug_note",)]
-        self.group2 = [self[name] for name in ('approval_note','admin_routes','application','n_compounds','chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
-        self.group3 = [self[name] for name in ( 'moa', 'antimicro', 'antimicro_class','max_phase','mw','mf',)]
-
-   
+        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", 'n_compounds',"drug_panel",'mw','mf',"drug_note",)]
+        self.group2 = [self[name] for name in ("drug_class", "drug_subclass", "drug_target", "drug_subtarget", 'moa', 'antimicro', 'antimicro_class','max_phase','approval_note','admin_routes','application',)]
+        self.group3 = [self[name] for name in ('chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
 
     class Meta:
         model =Drug
@@ -77,7 +73,7 @@ class Drug_filter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.__repr__()) for obj in Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type'], astatus__gte=0)]
+        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.__repr__()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
         self.filters['Drug_Name'].label='Drug Name'
         self.filters['Drug_Type'].label='Drug Type'
         self.filters['Target'].label='Drug Target'

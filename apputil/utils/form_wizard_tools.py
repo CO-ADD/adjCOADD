@@ -14,7 +14,11 @@ from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location
 
 class UploadFileForm(SuperUserRequiredMixin, forms.Form):
-    multi_files = forms.FileField(label='Select files', widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_file],  required=False)
+    multi_files = forms.FileField(label='Select one or multiple files', 
+                                  widget=forms.ClearableFileInput(attrs={'multiple': True,'size':40}),
+                                  validators=[validate_file], 
+                                  required=False)
+
     # folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
     
     def clean(self):
@@ -41,8 +45,8 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
                         self.add_error(field, f"{file.name}: {str(e)}")
                         
         if len(uploadfiles)<1: 
-            self.add_error('multi_files', "at least choose one file")
-            raise forms.ValidationError("didn't choose any file")
+            self.add_error('multi_files', "Select at least one file")
+            raise forms.ValidationError("No files selected")
         return cleaned_data
     
 
@@ -54,7 +58,8 @@ class StepForm_1(forms.Form):
 # class StepForm_2(forms.Form):
 
 class FinalizeForm(forms.Form):
-    log_entry = forms.CharField(widget=forms.Textarea, required=False)
+    pass
+    #log_entry = forms.CharField(widget=forms.Textarea, required=False)
 
 class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
     # here add steps name
