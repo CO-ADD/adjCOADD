@@ -60,19 +60,17 @@ def upload_VitekPDF_List(request,session_key, DirName,FileList, storage=None, Or
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
+    # Create vLog save to Cache
     cache_key = f'valLog_{request.user}'
-    # cache.set(request.session.session_key, {'processed':0, 'file_name':"", 'total':0})
     if valLog.nLogs['Error'] >0 :
         dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-        # storage.extra_data['Confirm_to_Save'] = False
+        Confirm_to_Save = False
     else:
         dfLog = pd.DataFrame(valLog.get_aslist())
-        # storage.extra_data['Confirm_to_Save'] = True
-    # storage.extra_data['valLog']=
+        Confirm_to_Save = True
     valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
-    cache.set(cache_key, valLog, 3600)
+    cache.set(cache_key, {'Confirm_to_Save':Confirm_to_Save, 'valLog':valLog})
     print(cache.get(cache_key))
-    # print(storage.extra_data['valLog'])
     return(valLog)
 
 #-----------------------------------------------------------------------------

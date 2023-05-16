@@ -207,6 +207,9 @@
 </script>
 <script>
   $(document).ready(function () {
+    if($('input:checkbox')){
+      $('input:checkbox').attr("disabled", true);
+    }
     function updateProgress() {
       console.log("call function");
       $.ajax({
@@ -275,9 +278,13 @@ function fetchResults() {
   $.ajax({
         url: "{% url 'fetch-results' %}",  // Set this to the appropriate URL in your Django app.
         success: function(data) {
+            let result_table=data.validation_result.valLog
             if (data.results_ready) {
+              $('#fetchResults').addClass('text-success')
+              $('input:checkbox').attr("disabled", false);
               // If the results are ready, update the page.
-              $('.validation_result').html(data.validation_result);
+              $('.validation_result').html(result_table);
+              
               // You could also stop the polling here, if you want.
             } else {
               // If the results are not ready, try again in 2 seconds.
