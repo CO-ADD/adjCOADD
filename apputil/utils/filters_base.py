@@ -21,6 +21,7 @@ class LowerAny(Func):
         super().__init__(Value(search_value), array_field, **extra)
 
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
+    # print(model)
     q_object = Q()
     exclude_fields = exclude_fields or []
 
@@ -41,11 +42,8 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
             except ValueError:
                 pass
         elif isinstance(field, ArrayField):
-            search_value_lower =  f"%{search_value}%".lower()
-            primary_key_field_name = model._meta.pk.name
-            table_name = model._meta.db_table
-            q_object |= Q(**{f"{primary_key_field_name}__in": RawSQL(f"SELECT {table_name}.{primary_key_field_name} FROM {table_name}, unnest({table_name}.{lookup_field_name}) AS elem WHERE elem ILIKE %s", (search_value_lower,))})
-        # Add more field types as needed...
+            q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
+        # # Add more field types as needed...
 
     return q_object
 
@@ -115,8 +113,7 @@ class FilteredListView(ListView):
 
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
-        self.request.session['cached_queryset'] = list(filtered_queryset_pks)
-        
+        self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
 
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute

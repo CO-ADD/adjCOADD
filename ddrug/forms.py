@@ -17,7 +17,7 @@ from adjcoadd.constants import *
 class Drug_form(forms.ModelForm):
     drug_type = forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class=Drug.Choice_Dictionary['drug_type']), 
                                        widget=forms.Select(attrs={'class':'form-select'}), required=False)
-    max_phase = forms.ChoiceField(choices= Dictionary.get_aschoices(Drug.Choice_Dictionary['max_phase'], showDesc=False), 
+    max_phase = forms.ChoiceField(choices=[] , 
                                   widget=forms.Select(attrs={'class':'form-select'}), required=False,)
     drug_codes= SimpleArrayField(forms.CharField(), required=False)
     drug_othernames = SimpleArrayField(forms.CharField(), required=False)

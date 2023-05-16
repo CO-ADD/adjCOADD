@@ -307,24 +307,49 @@ class Importhandler_VITEK(Importhandler):
 
 
 # --upload file view--
+import threading
+from asgiref.sync import async_to_sync, sync_to_async
 from django import forms
 from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, FinalizeForm
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from apputil.utils.validation_log import * 
-
+from django.core.cache import cache
+from django.views import View
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',queryset=Organism_Batch.objects.filter(astatus__gte=0), widget=forms.Select(attrs={'class': 'form-control w-50'}), required=False, help_text='**Optional to choose a Organism_Batch ID',)
     field_order = ['orgbatch_id', 'confirm']
 
 # progress bar
-def get_upload_progress(request):
-    session_key = f'upload_progress_{request.user}'
-    progress = request.session.get(session_key, {'processed': 0, 'total': 0})
+def get_session_key(request):
+    return request.session.session_key
+async def get_upload_progress(request):
+    # session_key = f'upload_progress_{request.user}'
+    session_key = await sync_to_async(get_session_key)(request)
+    progress = await cache.aget(session_key) or {'processed': 0, 'file_name':"",'total': 0}
+    print("show progress")
+    print(progress)
     return JsonResponse(progress)
 # 
+def get_vlog_session_key(request):
+    
+    return f'valLog_{request.user}'
+async def fetchResult(request):
+    cache_key = await sync_to_async(get_vlog_session_key)(request)
+    valLog = await cache.aget(cache_key) or None
+        # cache_key = f'valLog_{session_key}'
+        # valLog = cache.get(cache_key)
+    print(valLog)
+    if valLog is not None:
+        return JsonResponse({
+            'results_ready': True,
+            'validation_result': valLog,
+        })
+    else:
+        return JsonResponse({'results_ready': False})
+#            
 class Import_VitekView(ImportHandler_WizardView):
     
     name_step1="Validation" # step label in template
@@ -367,18 +392,22 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                valLog = upload_VitekPDF_List(request, session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
-                # -> valLog
-                if valLog.nLogs['Error'] >0 :
-                    dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-                    self.storage.extra_data['Confirm_to_Save'] = False
-                else:
-                    dfLog = pd.DataFrame(valLog.get_aslist())
-                    self.storage.extra_data['Confirm_to_Save'] = True
-                # -> store valLog
-                result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                 
-               # Store the extracted data in self.storage.extra_data
-                self.storage.extra_data['valLog'] =result_table          
+                thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'storage':self.storage, 'OrgBatchID': self.orgbatch_id, 'upload': False})
+                thread.start()
+            #     valLog = upload_VitekPDF_List(request, session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+            #     # -> valLog
+            #     if valLog.nLogs['Error'] >0 :
+            #         dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
+            #         self.storage.extra_data['Confirm_to_Save'] = False
+            #     else:
+            #         dfLog = pd.DataFrame(valLog.get_aslist())
+            #         self.storage.extra_data['Confirm_to_Save'] = True
+            #     # -> store valLog
+            #     result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                 
+            #    # Store the extracted data in self.storage.extra_data
+            #     # log_session_key=f'valLog_vitek_{request.user}'
+            #     self.storage.extra_data['valLog'] =result_table
+                # del request.session[log_session_key]        
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['DirName'] = DirName          
             else:
@@ -386,24 +415,26 @@ class Import_VitekView(ImportHandler_WizardView):
 
         elif current_step == 'step1': # first validation
             request.session[session_key] = {'processed': 0, 'total': 0}
-            upload=self.storage.extra_data['Confirm_to_Save']
+            upload=False#self.storage.extra_data['Confirm_to_Save']
             print("step validation again")
             form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
             result_table=[] # first validation result tables
             DirName=self.storage.extra_data['DirName'] #get file path
-            FileList=self.storage.extra_data['filelist'] #get files' name            
+            FileList=self.storage.extra_data['filelist'] #get files' name   
+            thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'storage':self.storage, 'OrgBatchID': self.orgbatch_id, 'upload': False})
+            thread.start()         
            # get valLog for each file
             # Parse PDF 
-            valLog = upload_VitekPDF_List(request, session_key, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=upload)
-            # -> valLog
-            if valLog.nLogs['Error'] >0 :
-                dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
-            else:
-                dfLog = pd.DataFrame(valLog.get_aslist())
-            # -> store valLog
-            result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                   
-            self.storage.extra_data['valLog'] =result_table             
+            # valLog = upload_VitekPDF_List(request, session_key, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=upload)
+            # # -> valLog
+            # if valLog.nLogs['Error'] >0 :
+            #     dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
+            # else:
+            #     dfLog = pd.DataFrame(valLog.get_aslist())
+            # # -> store valLog
+            # result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                   
+            # self.storage.extra_data['valLog'] =result_table             
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
@@ -425,10 +456,15 @@ class Import_VitekView(ImportHandler_WizardView):
         context['step1']=self.name_step1
         current_step = self.steps.current        
         if current_step == 'step1':
-            context['validation_result'] = self.storage.extra_data['valLog']
-            context['Confirm_to_Save']=self.storage.extra_data['Confirm_to_Save']
+            print("step1")
+            
+            # log_session_key=f'valLog_vitek_{self.request.user}'
+            # # del self.request.session[log_session_key]
+            # context['validation_result'] = self.storage.extra_data.get('valLog', 'Default Value')
+            # context['Confirm_to_Save'] = self.storage.extra_data.get('Confirm_to_Save', 'Default Value')
         if current_step == 'finalize':
-            context['validation_result'] = self.storage.extra_data['valLog']
+            pass
+            # context['validation_result'] = self.storage.extra_data.get('valLog', 'Default Value')
         return context
 
     

@@ -7,6 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 import clamd
 from io import BytesIO
+import mimetypes
 
 from django import forms
 from django.conf import settings
@@ -68,7 +69,8 @@ class FileValidator(object):
 
         # Type validation
         if self.content_types:
-            content_type = magic.from_buffer(data.read(), mime=True)
+            print(data)
+            content_type =magic.from_buffer(data.read(), mime=True)
             data.seek(0)
 
             if content_type not in self.content_types:
@@ -101,8 +103,12 @@ validate_file = FileValidator(#max_size=1024 * 100,
 
 ## set uploading/import data forms
 class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
+    pass
     
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
+    # file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file])
+    # def save(self):
+    #     for each in self.files.getlist('files'):
+    #         MyModel.objects.create(file=each)
 
 ##
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):

@@ -8,6 +8,7 @@ import pandas as pd
 
 import pdfplumber
 import re
+from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(request,session_key, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(request,session_key, DirName,FileList, storage=None, OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -42,26 +43,36 @@ def upload_VitekPDF_List(request,session_key, DirName,FileList,OrgBatchID=None,u
             FileList = [f for f in DirFiles if f.endswith(".pdf")]
             nFiles = len(FileList)
 
+    valLog = Validation_Log("upload_VitekPDF_List")
+    # cache.delete(cache_key)
+    # cache.delete(request.session.session_key)
+    cache.clear()
     if nFiles > 0:
-        #ProcessedFolder = os.path.join(VitekFolder,".Uploaded")
-        #if not os.path.exists(ProcessedFolder):
-        #    os.makedirs(ProcessedFolder)
-
-
+        processed_filelist=[]
         for i in range(nFiles):
-            valLog = Validation_Log("upload_VitekPDF_List")
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
-            #  get progress and save to session, including the user ID in session key:  
-            
-            request.session[session_key]={'processed':i+1, 'total':nFiles}
-            request.session.modified=True
-            print(f"Updated session progress_data: {request.session[session_key]}")
+            processed_filelist.append(FileList[i])
+            cache.set(request.session.session_key, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
+            print(cache.get(request.session.session_key))
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
+    cache_key = f'valLog_{request.user}'
+    # cache.set(request.session.session_key, {'processed':0, 'file_name':"", 'total':0})
+    if valLog.nLogs['Error'] >0 :
+        dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
+        # storage.extra_data['Confirm_to_Save'] = False
+    else:
+        dfLog = pd.DataFrame(valLog.get_aslist())
+        # storage.extra_data['Confirm_to_Save'] = True
+    # storage.extra_data['valLog']=
+    valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+    cache.set(cache_key, valLog, 3600)
+    print(cache.get(cache_key))
+    # print(storage.extra_data['valLog'])
     return(valLog)
 
 #-----------------------------------------------------------------------------
