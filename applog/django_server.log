@@ -2240,3 +2240,40 @@ django.server INFO 2023-05-16 15:16:34,611 basehttp 14604 20228 "GET /ddrug/get_
 django.server INFO 2023-05-16 15:17:28,747 basehttp 14604 20228 "POST /ddrug/import-vitek/ HTTP/1.1" 302 0
 django.server INFO 2023-05-16 15:17:28,889 basehttp 14604 20228 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20932
 django.server INFO 2023-05-16 15:17:29,086 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 28
+django.server INFO 2023-05-16 15:19:58,170 basehttp 14604 20228 "POST /ddrug/import-vitek/ HTTP/1.1" 200 121917
+django.server INFO 2023-05-16 15:19:58,482 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:25:25,978 basehttp 14604 27748 "POST /ddrug/import-vitek/ HTTP/1.1" 200 121917
+django.server INFO 2023-05-16 15:25:26,008 basehttp 14604 27748 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-05-16 15:25:26,423 basehttp 14604 27748 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:30:40,943 basehttp 14604 27748 "POST /ddrug/import-vitek/ HTTP/1.1" 200 121917
+django.server INFO 2023-05-16 15:30:41,289 basehttp 14604 27748 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:35:20,807 basehttp 14604 27748 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20932
+django.server INFO 2023-05-16 15:35:20,826 basehttp 14604 27748 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-05-16 15:35:21,082 basehttp 14604 27748 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:40:36,733 basehttp 14604 11100 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20932
+django.server INFO 2023-05-16 15:40:36,933 basehttp 14604 11100 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:42:34,949 basehttp 14604 11100 - Broken pipe from ('127.0.0.1', 5086)
+django.server INFO 2023-05-16 15:42:41,532 basehttp 14604 12148 - Broken pipe from ('127.0.0.1', 5148)
+django.server INFO 2023-05-16 15:42:41,983 basehttp 14604 26476 - Broken pipe from ('127.0.0.1', 5140)
+django.utils.autoreload INFO 2023-05-16 15:44:41,609 autoreload 14604 17612 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:44:43,656 autoreload 14076 22408 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:44:49,483 autoreload 14076 22408 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:44:51,527 autoreload 22304 31656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:45:17,033 autoreload 22304 31656 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:45:18,942 autoreload 26496 13440 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:45:33,188 autoreload 26496 13440 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:45:35,475 autoreload 23788 10732 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:45:41,143 autoreload 23788 10732 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:45:43,091 autoreload 4680 19476 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:45:48,564 autoreload 4680 19476 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:45:50,576 autoreload 17984 31736 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:45:54,873 autoreload 17984 31736 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:45:56,886 autoreload 31056 21884 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:46:14,163 autoreload 31056 21884 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:46:16,295 autoreload 10980 14636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:46:29,325 autoreload 10980 14636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:46:31,247 autoreload 13368 31300 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:46:40,225 autoreload 13368 31300 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:46:42,222 autoreload 24900 15140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-16 15:46:48,652 autoreload 24900 15140 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-16 15:46:50,508 autoreload 7584 19116 Watching for file changes with StatReloader

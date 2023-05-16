@@ -113,7 +113,7 @@ class Validation_Log():
                 info[t].append(print_info) # info.append(print_info)
        
         return info
-
+    
     @classmethod
     def from_aslist(cls, logProcess, logTypes, aslist):
         instance = cls(logProcess=logProcess, logTypes=logTypes)
