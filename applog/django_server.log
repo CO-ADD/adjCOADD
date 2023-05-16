@@ -2230,3 +2230,13 @@ django.utils.autoreload INFO 2023-05-16 15:12:35,663 autoreload 15532 14308 C:\D
 django.utils.autoreload INFO 2023-05-16 15:12:37,979 autoreload 17084 13016 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-05-16 15:15:18,173 autoreload 17084 13016 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
 django.utils.autoreload INFO 2023-05-16 15:15:20,461 autoreload 14604 17612 Watching for file changes with StatReloader
+django.server INFO 2023-05-16 15:15:29,406 basehttp 14604 20228 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20932
+django.server INFO 2023-05-16 15:15:29,435 basehttp 14604 20228 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-05-16 15:15:30,004 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:15:48,684 basehttp 14604 20228 "POST /ddrug/import-vitek/ HTTP/1.1" 200 120492
+django.server INFO 2023-05-16 15:15:49,345 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:16:34,127 basehttp 14604 20228 "POST /ddrug/import-vitek/ HTTP/1.1" 200 52733
+django.server INFO 2023-05-16 15:16:34,611 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 30
+django.server INFO 2023-05-16 15:17:28,747 basehttp 14604 20228 "POST /ddrug/import-vitek/ HTTP/1.1" 302 0
+django.server INFO 2023-05-16 15:17:28,889 basehttp 14604 20228 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20932
+django.server INFO 2023-05-16 15:17:29,086 basehttp 14604 20228 "GET /ddrug/get_upload_progress/ HTTP/1.1" 200 28
