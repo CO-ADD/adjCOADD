@@ -415,7 +415,7 @@ class Import_VitekView(ImportHandler_WizardView):
                 dfLog = pd.DataFrame(valLog.get_aslist())
             # -> store valLog
             result_table.append(dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False))                   
-            self.storage.extra_data['valLog'] =result_table             
+            self.storage.extra_data['valLog'] = result_table             
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):

@@ -51,8 +51,8 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
         #    os.makedirs(ProcessedFolder)
 
 
+        valLog = Validation_Log("Upload VitekPDF")
         for i in range(nFiles):
-            valLog = Validation_Log("Upload VitekPDF")
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             print(f"[DEBUG] {FileList[i]} from {DirName}")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
