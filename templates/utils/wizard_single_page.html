@@ -16,28 +16,23 @@
         </h4>
 
         <div class="d-flex justify-content-around mt-5">
+          <!-- Left Wizard -->
           <div class="step-line h-25 mx-2">
-            <div
-              class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
-            >
+            <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">
               Upload File
             </div>
-            <div
-              class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
-            >
+            <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}" >
               {{step1}}
             </div>
-
             <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
-
-            <div
-              class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
-            >
-              Finalize
+            <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}" >
+              Finalise
             </div>
           </div>
+
+          <!-- Right Wizard -->
           {% if wizard.steps.current == 'upload_file' %}
-          <div>
+            <div >
             {% for field in wizard.form %}
             <p class="m-5">
               {{ field.label_tag }} {{ field }}
@@ -46,7 +41,7 @@
               >
             </p>
             {% endfor %}
-          </div>
+            </div>
           <!-- This is step 1-->
           {% elif wizard.steps.current == 'step1' %}
           <!-- Check to next step, if upload files contain errors(Confirm_to_Save=False) -->
@@ -85,7 +80,7 @@
 
           <!-- This is the final-->
           {% elif wizard.steps.current == 'finalize' %}
-          <div>
+            <div>
             {% for field in wizard.form %}
             <p class="m-5">
               {{ field.label_tag }} {{ field }}
@@ -96,7 +91,7 @@
 
             <!--prettier-ignore-->
             {% endfor %}
-          </div>
+            </div>
           {% endif %}
         </div>
         <!-- Button Actions -->
@@ -110,32 +105,30 @@
               onclick="window.location.reload(true);"
               >Cancel
             </a>
-            <button
-              class="btn btn-sm col-md-3"
-              name="wizard_goto_step"
-              type="submit"
-              value="{{ wizard.steps.prev }}"
-            >
-              previous
-            </button>
+
+            {% if wizard.steps.prev %}
+              <button
+                class="btn btn-sm col-md-3"
+                name="wizard_goto_step"
+                type="submit"
+                value="{{ wizard.steps.prev }}"
+              >Previous
+              </button>
             {%else%}
-            <button type="button" class="btn btn-sm col-md-3" disabled>
-              cancel
-            </button>
-            <button
-              class="btn btn-sm col-md-3"
-              name="wizard_goto_step"
-              disabled
-            >
-              previous
-            </button>
-            <!--prettier-ignore-->
+              <button
+                class="btn btn-sm col-md-3"
+                name="wizard_goto_step"
+                disabled
+              >Previous
+              </button>
+              <!--prettier-ignore-->
             {% endif %} 
-            {%if wizard.steps.next%}
-            <input class="btn btn-sm col-md-3" type="submit" value="Next" />
-            {%else%}
-            <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
-            {%endif%}
+
+            {% if wizard.steps.next %}
+              <input class="btn btn-sm col-md-3" type="submit" value="Next" />
+            {% else %}
+              <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
+            {% endif %}
           </div>
           <div class="m-auto p-auto w-70" style="text-align: left">
 
@@ -155,6 +148,7 @@
             </ul>
           </div>
         </div>
+
       </div>
       <!-- Right column with fixed position and size -->
       <div class="col-md-7 border border-2" style="position: relative">
@@ -180,8 +174,10 @@
           <p class="progressfilename text-info text-start"></p>
           <!--prettier-ignore-->
           {% for field in wizard.form %}
-          {% for error in field.errors %}
-          <p class="text-danger show-error">{{ error }}</p>
+            {% for error in field.errors %}
+              <p class="text-danger show-error">{{ error }}</p>
+            {% endfor %}
+            <!--prettier-ignore-->
           {% endfor %}
           <!--prettier-ignore-->
           {% endfor %}

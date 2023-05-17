@@ -227,7 +227,7 @@ def update_Drug_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lower=Tr
             #logger.info(mvColumns)
             dfSheet = dfSheet.rename(mvColumns,axis='columns') 
 
-        lstRows = [{k:v for k,v in m.items()} for m in dfSheet.to_dict("rows")]
+        lstRows = [{k:v for k,v in m.items()} for m in dfSheet.to_dict("records")]
         # df -> lstDict and remove null items 
         #lstRows = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
 

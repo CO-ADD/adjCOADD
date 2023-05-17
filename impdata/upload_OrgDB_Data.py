@@ -113,9 +113,9 @@ def main():
     elif prgArgs.table == 'OrgBatch':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-    elif prgArgs.table == 'OrgBatchStock':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        dOrg.update_OrgBatchStock_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    #elif prgArgs.table == 'OrgBatchStock':
+    #    logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+    #    dOrg.update_OrgBatchStock_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
     elif prgArgs.table == 'Drug':
         uploadFile = os.path.join(uploadDir,xlFiles['Drug'])

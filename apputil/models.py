@@ -165,9 +165,9 @@ class AuditModel(models.Model):
             for key in e.message_dict:
                 if e.message_dict[key] == ['This field cannot be null.']:
                     if ~self._meta.get_field(key).null:
-                        retValid[key] = e.message_dict[key] 
+                        retValid[key] = ", ".join(e.message_dict[key])
                 else:
-                    retValid[key] = e.message_dict[key] 
+                    retValid[key] = ", ".join(e.message_dict[key])
         return(retValid)
 
 
@@ -401,7 +401,7 @@ class Dictionary(AuditModel):
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
-    dict_desc = models.CharField(max_length=120, blank=True, verbose_name = "Description")
+    dict_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
     dict_sort = models.IntegerField(default=0, verbose_name = "Order")
    
     #------------------------------------------------
@@ -463,6 +463,17 @@ class Dictionary(AuditModel):
         else:
             retValue = False
         return(retValue)
+
+    #------------------------------------------------
+    @classmethod
+    #
+    # Returns the objects based on the default filter for dict_class= and aStatus>=0
+    #
+    def get_filterobj(cls,DictClass,showDeleted=False):
+        if showDeleted:
+            return cls.objects.filter(dict_class=DictClass)
+        else:
+            return cls.objects.filter(dict_class=DictClass, astatus__gte=0)
 
     #------------------------------------------------
     @classmethod

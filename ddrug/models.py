@@ -25,8 +25,8 @@ class Drug(AuditModel):
     HEADER_FIELDS = {
         "drug_id":"Drug ID",
         "drug_name":"Drug Name",
-        "drug_othernames":"Other Name",
-        "drug_codes":"Drug Code",
+        "drug_othernames":"Other Names",
+        "drug_codes":"Drug Codes",
         "drug_type":"Drug Type",
         "drug_note":"Drug Note"
     }
@@ -38,11 +38,11 @@ class Drug(AuditModel):
 
     drug_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
     drug_name = models.CharField(max_length=50, unique=True, verbose_name = "Drug Name")
-    drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True)
+    drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True,verbose_name = "Other Names")
     drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True)
     drug_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Drug Type", on_delete=models.DO_NOTHING,
         db_column="drug_type", related_name="%(class)s_drugtype")
-    drug_note = models.CharField(max_length=50, blank=True, verbose_name = "Drug Notes")
+    drug_note = models.CharField(max_length=50, blank=True, verbose_name = "Drug Note")
     drug_panel=ArrayField(models.CharField(max_length=20, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
 
     drug_target = models.CharField(max_length=50, blank=True,  verbose_name = "Target")

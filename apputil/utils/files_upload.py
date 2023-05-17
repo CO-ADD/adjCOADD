@@ -5,7 +5,7 @@ import os
 import magic
 import logging
 logger = logging.getLogger(__name__)
-import clamd
+#import clamd
 from io import BytesIO
 import mimetypes
 

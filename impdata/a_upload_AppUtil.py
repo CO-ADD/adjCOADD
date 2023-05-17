@@ -46,7 +46,7 @@ def update_AppUser_xls(XlsFile, XlsSheet=0,upload=False):
         dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
 
         # df -> lstDict and remove null items 
-        lstDict = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
+        lstDict = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
         for entry in lstDict:
 
             # remove additional (non-model) columns
@@ -78,7 +78,7 @@ def update_Dictionary_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lo
             dfSheet = dfSheet.rename(mvColumns,axis='columns') 
 
         # df -> lstDict and remove null items 
-        lstDict = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
+        lstDict = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
 
         # check user
         appuser = ApplicationUser.get(uploaduser)

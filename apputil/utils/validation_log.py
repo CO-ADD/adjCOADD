@@ -21,19 +21,21 @@ class Validation_Log():
         self.nLogs = {}
         self.Logs  = {}
         self.Info  = {}
+        self.logInfo = ['Process','Filename','Item','Note','Help']
 
         for t in self.logTypes:
             self.nLogs[t] = 0
             self.Logs[t] = []
            
     #-----------------------------------------------------
-    # Adds an entry in the Log
+    # Adds a standard entry in the Log
     #-----------------------------------------------------
-    def add_log(self, logType, logDesc, logItem, logHelp, ):
+    def add_log(self, logType, logFile, logItem, logNote, logHelp, ):
         lDict = {
             'Process': self.logProcess, 
-            'Description': logDesc, 
+            'Note': logNote, 
             'Item': str(logItem), 
+            'Filename': logFile, 
             'Help': logHelp,
 #            'Time': datetime.now() 
             }
@@ -80,7 +82,7 @@ class Validation_Log():
     def show(self,logTypes= ['Error','Warning', 'Info']):
         for t in logTypes:
             for l in self.Logs[t]:
-                logger.info(f"{t:7s} - {l['Process']} : {l['Description']} ({l['Item']}) {l['Help']} ")
+                logger.info(f"{t:7s} - {l['Process']} : {l['Filename']} {l['Item']} {l['Note']} () {l['Help']} ")
 
     def get_aslist(self,logTypes= ['Error','Warning', 'Info']):
         retLst = []
@@ -94,8 +96,8 @@ class Validation_Log():
         for t in logTypes:
             self.info[t]=[]
             for l in self.Logs[t]:
-                description=str(l['Description']).replace("'", "").replace('"', '')
-                print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
+                note=str(l['note']).replace("'", "").replace('"', '')
+                print_info=f"{l['Process']}_{note}_{l['Item']}_{l['Help']}"
                 self.info[t].append(print_info) 
 
     
@@ -105,13 +107,13 @@ class Validation_Log():
             # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
             info[t]=[]
             for l in self.Logs[t]:
-                print(f"{l['Process']}-{l['Description']} ({l['Item']}) {l['Help']} ")
-                description=str(l['Description']).replace("'", "").replace('"', '')
+                print(f"{l['Process']}-{l['Note']} ({l['Item']}) {l['Help']} ")
+                description=str(l['Note']).replace("'", "").replace('"', '')
                 print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
                 info[t].append(print_info) # info.append(print_info)
        
         return info
-
+    
     @classmethod
     def from_aslist(cls, logProcess, logTypes, aslist):
         instance = cls(logProcess=logProcess, logTypes=logTypes)
