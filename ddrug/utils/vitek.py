@@ -46,7 +46,7 @@ def upload_VitekPDF_List(request,session_key, DirName,FileList, storage=None, Or
     valLog = Validation_Log("upload_VitekPDF_List")
     # cache.delete(cache_key)
     # cache.delete(request.session.session_key)
-    cache.clear()
+    # cache.clear()
     if nFiles > 0:
         processed_filelist=[]
         for i in range(nFiles):
@@ -68,9 +68,9 @@ def upload_VitekPDF_List(request,session_key, DirName,FileList, storage=None, Or
     else:
         dfLog = pd.DataFrame(valLog.get_aslist())
         Confirm_to_Save = True
-    valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+    valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead", "bg-light"], index=False)
     cache.set(cache_key, {'Confirm_to_Save':Confirm_to_Save, 'valLog':valLog})
-    print(cache.get(cache_key))
+    print(valLog)
     return(valLog)
 
 #-----------------------------------------------------------------------------

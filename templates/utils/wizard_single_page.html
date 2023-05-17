@@ -1,21 +1,19 @@
 <!-- Step line container -->
-<h1 class="text-center">{{data_model}} Data Import</h1>
-<div class="row m-5 w-80 h-100 border">
+<div class="m-2 vh-100">
+  <h1 class="m-5 text-center" >{{data_model}} Data Import</h1>
   <form
     method="post"
     enctype="multipart/form-data"
-    class="col-md-8 mx-5 d-flex flex-column align-items-center w-75 h-75 text-center"
+    class="row m-5  text-center border"
   >
     <!--prettier-ignore-->
     {% csrf_token %}
         {{ wizard.management_form }}
-
-    <div class="row h-75 gx-5 mt-3" style="width: 100%">
       <!-- Left column -->
-      <div class="col-md-5 border-end" style="position: relative">
-        <h5 class="bg-light" style="position: absolute; left: 0; top: -25px">
-          Processing TimeLine:
-        </h5>
+      <div class="col-md-5 border border-2" style="position: relative">
+        <h4 class="bg-light px-5" style="position: absolute; left:30%; top: -15px">
+          Process
+        </h4>
 
         <div class="d-flex justify-content-around mt-5">
           <div class="step-line h-25 mx-2">
@@ -101,8 +99,9 @@
           </div>
           {% endif %}
         </div>
-        <div class="row m-2 p-0 mt-5 px-4" style="width: 90%">
-          <div class="row gx-5">
+        <!-- Button Actions -->
+        <div class="row m-auto gx-5">
+          <div class="">
             {% if wizard.steps.prev %}
             <a
               type="button"
@@ -138,19 +137,31 @@
             <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
             {%endif%}
           </div>
-          <p class="badge ms-0 text-start text-info">
-            Click button move to next step, <br />Click previous to
-            <strong class="text-danger"> upload file </strong>will need a
-            re-upload. <br />Click cancel to refresh page and start again.
-          </p>
+          <div class="m-auto p-auto w-70" style="text-align: left">
+
+            <ul class=" text-info border">
+              <li class="">
+                Click button move to next step,
+              </li>
+              <li>
+                Click previous to
+                <strong class="text-danger"> upload file </strong>will need a
+                re-upload.
+              </li>
+              <li>
+                Click cancel to refresh page and start again.
+              </li>
+              
+            </ul>
+          </div>
         </div>
       </div>
       <!-- Right column with fixed position and size -->
-      <div class="col-md-5" style="position: relative">
-        <h5 class="bg-light" style="position: absolute; left: 5%; top: -25px">
-          Processing Messages:
-        </h5>
-        <div class="progress" style="height: 20px">
+      <div class="col-md-7 border border-2" style="position: relative">
+        <h4 class="bg-light px-4" style="position: absolute; left: 30%; top: -15px">
+          Message
+        </h4>
+        <div class="progress mt-3" style="height: 20px">
     
           <span
             id="progress-bar"
@@ -166,7 +177,7 @@
         </div>
         <div class="mt-5">
           <ul class="text-start" id="multi-files-list"></ul>
-          <p class="progressfilename text-info"></p>
+          <p class="progressfilename text-info text-start"></p>
           <!--prettier-ignore-->
           {% for field in wizard.form %}
           {% for error in field.errors %}
@@ -174,16 +185,17 @@
           {% endfor %}
           <!--prettier-ignore-->
           {% endfor %}
-          <button class="btn btn-sm" id="fetchResults" type="button">fetch result</button>
-          <div class="validation_result"></div>
+          
+          <div class="validation_result overflow-auto h-50"></div>
         </div>
       </div>
-    </div>
+    
   </form>
 
  
 </div>
 
+<!-- Display the selected files on the message -->
 <script>
   const $fileNamesContainer_files = $("#multi-files-list");
 
@@ -205,73 +217,63 @@
     });
   }
 </script>
+<!-- Scheduled Ajax Call to retrieve Progress and Result Async.Django  -->
 <script>
   $(document).ready(function () {
     if($('input:checkbox')){
       $('input:checkbox').attr("disabled", true);
     }
-    function updateProgress() {
-      console.log("call function");
-      $.ajax({
-        url: "{% url 'get_upload_progress' %}",
-        type: "GET",
-        success: function (data) {
-          let processed = data.processed;
-          console.log("Progress data fetched:", data);
-          let total = data.total;
-          let file_name=data.file_name
-          let percentage =
-            total > 0 ? Math.round((processed / total) * 100) : 0;
-          $("#multi-files-list li").each(()=>{
-            console.log($(this).data("name"))
-            if ($(this).data("name").toString() === file_name.toString()) {
-           $(this).addClass("text-danger");
-}
-          })
-          if($("#progress-bar").hasClass("not-visible")){
-        $("#progress-bar").removeClass("not-visible")
-      }
+
+let timefunction; // Declare it outside the function so it can be accessed later.
+function updateProgress() {
+  console.log("call function");
+  $.ajax({
+    url: "{% url 'get_upload_progress' %}",
+    type: "GET",
+    success: function (data) {
+      let processed = data.processed;
+      let total = data.total;
+      let file_name = data.file_name;
+      let percentage = total > 0 ? Math.round((processed / total) * 100) : 0;
+      
           $("#progress-bar")
             .css("width", percentage + "%")
             .attr("aria-valuenow", percentage)
-            .text(
-              percentage +
-                "%" +
-                " (" +
-                processed +
-                " in " +
-                total +
-                "total files)"
-            );
-          // if (file_name){
-
+            .text(percentage +"%" +" (" + processed + " in " + total + "total files)");
             $(".progressfilename").html(`<span>${file_name}</span>`);
-          // }
+      if (processed == total && processed > 0) {
+        clearTimeout(timefunction);
+        fetchResults();
+      }  else if (isActive) { // Only set new timeout if user is active
+        timefunction = setTimeout(updateProgress, 500);
+      }
+    },
+  });
+}
 
-          if (processed==0 || processed < total) {
-            console.log("called ...");
-            setTimeout(updateProgress, 200);
-            // setInterval(updateProgress, 1000);
-          }
-       
-        },
-      });
-    }
+// Start the initial timeout
+let timeoutDelay = 5000; // Adjust this value to set the inactivity timeout (in milliseconds)
+let inactivityTimeout;
 
-    // Start updating progress when the page loads
-    updateProgress();
-    $('input[value="Next"]').click(()=>{
-     
-      updateProgress() 
-  
-  })
-  $('input[value="Finalize"], input[value="Cancel"]').click(()=>{
-      console.log('empty progress-bar')
-      $("#progress-bar").empty()
-                        .addClass("not-visible");
-      $(".progressfilename").empty();
-  
-  })
+function resetInactivityTimeout() {
+  console.log("restart");
+  clearTimeout(inactivityTimeout);
+  isActive = true; // User is active
+  inactivityTimeout = setTimeout(stopProgressUpdate, timeoutDelay);
+}
+
+function stopProgressUpdate() {
+  console.log("Inactivity detected. Stopping progress update.");
+  clearTimeout(timefunction);
+  isActive = false; // User is inactive
+}
+
+// Add event listeners to reset the inactivity timeout on user interaction
+$(document).on("click keydown", resetInactivityTimeout);
+
+// Start the initial progress update
+updateProgress();
+resetInactivityTimeout();
 
 // This function sends a GET request to the server every 2 seconds to check if the results are ready.
 function fetchResults() {
@@ -279,13 +281,24 @@ function fetchResults() {
         url: "{% url 'fetch-results' %}",  // Set this to the appropriate URL in your Django app.
         success: function(data) {
             let result_table=data.validation_result.valLog
+            let Confirm_to_Save=data.validation_result.Confirm_to_Save
+            console.log(result_table)
             if (data.results_ready) {
-              $('#fetchResults').addClass('text-success')
-              $('input:checkbox').attr("disabled", false);
-              // If the results are ready, update the page.
-              $('.validation_result').html(result_table);
-              
-              // You could also stop the polling here, if you want.
+              $(".progressfilename").empty();
+  
+              if (Confirm_to_Save){
+                 console.log(Confirm_to_Save)
+               
+                $('input:checkbox').attr("disabled", false)
+                // If the results are ready, update the page.
+                $('.validation_result').html(result_table);
+              }else{
+                //Showing Error Alert
+                $('input:checkbox').parent().append("<span class='text-danger'>Files contain errors, please check the result table</span>")
+                $('.validation_result').html(result_table)
+                                      .addClass("bg-warning");
+              }
+    
             } else {
               // If the results are not ready, try again in 2 seconds.
               setTimeout(fetchResults, 500);
@@ -293,10 +306,6 @@ function fetchResults() {
           }
         });
       }
-      $('#fetchResults').click(()=>{
-        console.log("result...")
-        fetchResults();
-
-      })
+    
     });
 </script>

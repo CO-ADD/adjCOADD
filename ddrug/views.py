@@ -407,7 +407,7 @@ class Import_VitekView(ImportHandler_WizardView):
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
             result_table=[] # first validation result tables
             DirName=self.storage.extra_data['DirName'] #get file path
-            FileList=self.storage.extra_data['filelist'] #get files' name   
+            self.filelist=self.storage.extra_data['filelist'] #get files' name   
             thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'storage':self.storage, 'OrgBatchID': self.orgbatch_id, 'upload': False})
             thread.start()         
                   
@@ -417,12 +417,15 @@ class Import_VitekView(ImportHandler_WizardView):
         print("Finalize")
         # Redirect to the desired page after finishing
         # delete uploaded files
-        session_key=f'upload_progress_{self.request.user}'
-        self.request.session[session_key] = {'processed': 0, 'total': 0}
+
+        cache_key = f'valLog_{self.request.user}'
+
         filelist=self.storage.extra_data['filelist']
         for f in filelist:
             self.delete_file(f)
             print(filelist)
+        cache.delete(cache_key)
+        cache.delete(self.request.session.session_key)
         return redirect(self.request.META['HTTP_REFERER'])  
 
     def get_context_data(self, form, **kwargs):

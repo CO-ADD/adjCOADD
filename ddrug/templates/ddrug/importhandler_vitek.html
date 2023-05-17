@@ -3,20 +3,7 @@
 {% block title%} mysite{% endblock %}
 {% block content %}
 <!-- -->
-<div class="d-flex flex-column m-auto">
+
 {%include 'utils/wizard_single_page.html' with data_model='Vitek'%}
-</div>
-<!--  -->
-<script>
-    // Apply Select2 to the orgbatch_id field using jQuery
-    $(document).ready(function () {
-      const orgbatchIdField = $('#id_upload_file-orgbatch_id');
-      if (orgbatchIdField.length) {
-        orgbatchIdField.select2({
-          width: '100%',  // Adjust the width as needed
-          placeholder: 'Select an Organism Batch',  // Customize the placeholder text
-        });
-      }
-    });
-  </script>
+
 {%endblock%}
