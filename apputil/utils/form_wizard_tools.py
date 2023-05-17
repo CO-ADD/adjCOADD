@@ -52,7 +52,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    confirm = forms.BooleanField(required=True, help_text="Confirm to save data in Organism Database")
+    confirm = forms.BooleanField(required=False, help_text="")
 
 
 # class StepForm_2(forms.Form):

@@ -325,9 +325,9 @@ from django.views import View
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
-                                       widget=forms.Select(attrs={'class': 'form-control w-50'}), 
+                                       widget=forms.Select(attrs={'class': 'form-control'}), 
                                        required=False, 
-                                       help_text='Optional: Select OrganismBatch for all Uploads (!)',
+                                       help_text='(**Optional)',
                                        queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 
@@ -339,8 +339,6 @@ async def get_upload_progress(request):
     # session_key = f'upload_progress_{request.user}'
     session_key = await sync_to_async(get_session_key)(request)
     progress = await cache.aget(session_key) or {'processed': 0, 'file_name':"",'total': 0}
-    print("show progress")
-    print(progress)
     return JsonResponse(progress)
 # 
 # For get result
@@ -360,7 +358,7 @@ async def fetchResult(request):
 #            
 class Import_VitekView(ImportHandler_WizardView):
     
-    name_step1="Validation" 
+    name_step1="Validation" # step label in template
     # define more steps name
     #... 
     # define each step's form
@@ -372,7 +370,6 @@ class Import_VitekView(ImportHandler_WizardView):
     ]
     # define template
     template_name = 'ddrug/importhandler_vitek.html'
-
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
 
@@ -385,7 +382,7 @@ class Import_VitekView(ImportHandler_WizardView):
         current_step = self.steps.current
         request = self.request
         session_key=f'upload_progress_{request.user}'
-
+       
         if current_step == 'upload_file':
             print("upload and parse")
             DirName = file_location(instance=request.user)  # define file store path during file process
@@ -401,7 +398,7 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'storage':self.storage, 'OrgBatchID': self.orgbatch_id, 'upload': False})
+                thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'OrgBatchID': self.orgbatch_id, 'upload': False, 'appuser':request.user})
                 thread.start()
               
                 self.storage.extra_data['filelist'] = self.filelist
@@ -411,15 +408,21 @@ class Import_VitekView(ImportHandler_WizardView):
 
         elif current_step == 'step1': # first validation
             request.session[session_key] = {'processed': 0, 'total': 0}
-            upload=False#self.storage.extra_data['Confirm_to_Save']
+            upload=False
             print("step validation again")
-            
             form = VitekValidation_StepForm(request.POST)
+            if form.is_valid():
+                confirm = form.cleaned_data.get('confirm')
+                print(confirm)
+                if confirm:
+                    upload=confirm
+                    print("data will be uploaded")
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
+            print(request.POST.get("step1-confirm")=='on')
             result_table=[] # first validation result tables
             DirName=self.storage.extra_data['DirName'] #get file path
             self.filelist=self.storage.extra_data['filelist'] #get files' name   
-            thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'storage':self.storage, 'OrgBatchID': self.orgbatch_id, 'upload': False})
+            thread = threading.Thread(target=upload_VitekPDF_List, args=(request, session_key, DirName, self.filelist ), kwargs={'OrgBatchID': self.orgbatch_id, 'upload':upload, 'appuser':request.user})
             thread.start()         
                   
         return self.get_form_step_data(form)
@@ -429,13 +432,13 @@ class Import_VitekView(ImportHandler_WizardView):
         # Redirect to the desired page after finishing
         # delete uploaded files
 
-        cache_key = f'valLog_{self.request.user}'
+        # cache_key = f'valLog_{self.request.user}'
 
         filelist=self.storage.extra_data['filelist']
         for f in filelist:
             self.delete_file(f)
             print(filelist)
-        cache.delete(cache_key)
+        cache.delete(f'valLog_{self.request.user}')
         cache.delete(self.request.session.session_key)
         return redirect(self.request.META['HTTP_REFERER'])  
 
@@ -446,5 +449,7 @@ class Import_VitekView(ImportHandler_WizardView):
         context['step1']=self.name_step1
         current_step = self.steps.current        
         return context
+  
+
 
     

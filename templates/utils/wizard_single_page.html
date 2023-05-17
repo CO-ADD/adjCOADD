@@ -4,157 +4,120 @@
   <form
     method="post"
     enctype="multipart/form-data"
-    class="row m-5  text-center border"
+    class="row m-5  text-center border vh-100"
   >
     <!--prettier-ignore-->
     {% csrf_token %}
         {{ wizard.management_form }}
       <!-- Left column -->
-      <div class="col-md-5 border border-2" style="position: relative">
+      <div class="col-md-5 border border-2 h-75" style="position: relative">
         <h4 class="bg-light px-5" style="position: absolute; left:30%; top: -15px">
           Process
         </h4>
+         
+         <!-- Button Actions -->
+        <div class="row mt-5">
+          <div class="">
+            {% if wizard.steps.prev and wizard.steps.next %}
+            <button
+              class="btn btn-sm col-md-3"
+              name="wizard_goto_step"
+              type="submit"
+              value="{{ wizard.steps.prev }}"
+            >
+              Previous
+            </button>
+            <!--prettier-ignore-->
+            <input class="btn btn-sm col-md-3" type="submit" value="Next" />
+            {%elif wizard.steps.next%}
+            <input class="btn btn-sm col-md-3" type="submit" value="Click to start" />
+            {%else%}
+            <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
+            {%endif%}
+          </div>
+          <div class="" style="text-align: left">
 
-        <div class="d-flex justify-content-around mt-5">
-          <!-- Left Wizard -->
-          <div class="step-line h-25 mx-2">
-            <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">
+            <ul class=" text-info border">
+              <li class="">
+                Click button "Next" move to next step,
+              </li>
+              
+              <li>
+                Click button "Previous" to review and reload files.
+              </li>
+              <li>
+                When button "Finalize" appeared, click it to clean up all history and start again.
+              </li>
+            </ul>
+          </div>
+        </div> 
+
+
+        <div class="row">
+          <div class="col-md-2 step-line mx-2">
+            <div
+              class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
+            >
               Upload File
             </div>
-            <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}" >
+            <div
+              class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
+            >
               {{step1}}
             </div>
-            <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
-            <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}" >
-              Finalise
-            </div>
-          </div>
 
-          <!-- Right Wizard -->
-          {% if wizard.steps.current == 'upload_file' %}
-            <div >
-            {% for field in wizard.form %}
-            <p class="m-5">
-              {{ field.label_tag }} {{ field }}
-              <span class="badge bg-info text-light"
-                >{{ field.help_text }}</span
-              >
-            </p>
-            {% endfor %}
+            <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
+
+            <div
+              class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
+            >
+              Finalize 
             </div>
-          <!-- This is step 1-->
-          {% elif wizard.steps.current == 'step1' %}
-          <!-- Check to next step, if upload files contain errors(Confirm_to_Save=False) -->
-          {%if Confirm_to_Save%}
-          <div>
+          </div>
+          <div class="col-md-8 border bg-light" style="height: 20em;">
+          {% if wizard.steps.current == 'upload_file' %}
+          <div class="p-3">
             {% for field in wizard.form %}
-            <p class="m-5">
-              {{ field.label_tag }} {{ field }}
-              <span class="badge bg-info text-light"
-                >{{ field.help_text }}</span
-              >
+            <p  class="m-auto">
+              {{ field.label_tag }} <strong>{{ field.help_text }}</strong>{{ field }}
             </p>
             {% endfor %}
           </div>
-          {%else%}
-          <div>
-            <p class="m-5">
-              <div>
+          <!-- This is step 1-->
+          {% elif wizard.steps.current == 'step1' %}            
+          <div class="p-3">
                 {% for field in wizard.form %}
-                <p class="m-5">
-                  {{ field.label_tag }} {{ field }}
-                  <span class="badge bg-info text-light"
-                    >{{ field.help_text }}</span
-                  >
+                <p class="m-auto">
+                  {{ field.label_tag }} <strong>{{ field.help_text }}</strong>{{ field }}
                 </p>
                 {% endfor %}
-              </div>
-              <span class="badge bg-info text-light">
-                Upload files contain errors, please follow the info in right
-                column to correct them.
-              </span>
-            </p>
-          </div>
-          {%endif%}
+            </div>
+         
           <!-- add more steps here: ...-->
 
           <!-- This is the final-->
           {% elif wizard.steps.current == 'finalize' %}
-            <div>
+          <div class="p-3">
             {% for field in wizard.form %}
-            <p class="m-5">
-              {{ field.label_tag }} {{ field }}
-              <span class="badge bg-info text-light"
-                >{{ field.help_text }}</span
-              >
+            <p class="m-auto">
+              {{ field.label_tag }} <strong>{{ field.help_text }}</strong>{{ field }}
             </p>
 
             <!--prettier-ignore-->
             {% endfor %}
-            </div>
+          </div>
           {% endif %}
-        </div>
-        <!-- Button Actions -->
-        <div class="row m-auto gx-5">
-          <div class="">
-            {% if wizard.steps.prev %}
-            <a
-              type="button"
-              class="btn btn-sm col-md-3"
-              href="{%url 'import-vitek'%}"
-              onclick="window.location.reload(true);"
-              >Cancel
-            </a>
-
-            {% if wizard.steps.prev %}
-              <button
-                class="btn btn-sm col-md-3"
-                name="wizard_goto_step"
-                type="submit"
-                value="{{ wizard.steps.prev }}"
-              >Previous
-              </button>
-            {%else%}
-              <button
-                class="btn btn-sm col-md-3"
-                name="wizard_goto_step"
-                disabled
-              >Previous
-              </button>
-              <!--prettier-ignore-->
-            {% endif %} 
-
-            {% if wizard.steps.next %}
-              <input class="btn btn-sm col-md-3" type="submit" value="Next" />
-            {% else %}
-              <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
-            {% endif %}
           </div>
-          <div class="m-auto p-auto w-70" style="text-align: left">
-
-            <ul class=" text-info border">
-              <li class="">
-                Click button move to next step,
-              </li>
-              <li>
-                Click previous to
-                <strong class="text-danger"> upload file </strong>will need a
-                re-upload.
-              </li>
-              <li>
-                Click cancel to refresh page and start again.
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-
+      </div>
+        
       </div>
       <!-- Right column with fixed position and size -->
-      <div class="col-md-7 border border-2" style="position: relative">
+      <div class="col-md-7 border border-2 h-75" style="position: relative">
         <h4 class="bg-light px-4" style="position: absolute; left: 30%; top: -15px">
           Message
         </h4>
+       <div class="progress_message">
+        
         <div class="progress mt-3" style="height: 20px">
     
           <span
@@ -174,16 +137,16 @@
           <p class="progressfilename text-info text-start"></p>
           <!--prettier-ignore-->
           {% for field in wizard.form %}
-            {% for error in field.errors %}
-              <p class="text-danger show-error">{{ error }}</p>
-            {% endfor %}
-            <!--prettier-ignore-->
+          {% for error in field.errors %}
+          <p class="text-danger show-error">{{ error }}</p>
           {% endfor %}
           <!--prettier-ignore-->
           {% endfor %}
           
           <div class="validation_result overflow-auto h-50"></div>
         </div>
+          
+      </div>
       </div>
     
   </form>
@@ -287,11 +250,14 @@ function fetchResults() {
                
                 $('input:checkbox').attr("disabled", false)
                 // If the results are ready, update the page.
-                $('.validation_result').html(result_table);
+                $('.validation_result').html("<span class='text-success'>It is ok to save, please tick 'confirm' if you decided to save to DB</span>"+result_table);
               }else{
                 //Showing Error Alert
-                $('input:checkbox').parent().append("<span class='text-danger'>Files contain errors, please check the result table</span>")
-                $('.validation_result').html(result_table)
+                if($('input:checkbox')){
+                  $('input:checkbox').addClass("not-visible");
+                }
+                html="<span class='text-danger'>Files contain errors, please check the result table </span><span class='text-info'>Select OrganismBatch for all Uploads (!)</span>"+result_table
+                $('.validation_result').html("<span class='text-danger'>Files contain errors, please check the result table</span>"+result_table)
                                       .addClass("bg-warning");
               }
     

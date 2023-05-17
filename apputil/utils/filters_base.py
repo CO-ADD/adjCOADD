@@ -43,15 +43,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 pass
         elif isinstance(field, ArrayField):
             q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
-<<<<<<< HEAD
         # # Add more field types as needed...
-=======
-        #     search_value_lower =  f"%{search_value}%".lower()
-        #     primary_key_field_name = model._meta.pk.name
-        #     table_name = model._meta.db_table
-        #     q_object |= Q(**{f"{primary_key_field_name}__in": RawSQL(f"SELECT {table_name}.{primary_key_field_name} FROM {table_name}, unnest({table_name}.{lookup_field_name}) AS elem WHERE elem ILIKE %s", (search_value_lower,))})
-        # Add more field types as needed...
->>>>>>> jzgedit_dev
 
     return q_object
 

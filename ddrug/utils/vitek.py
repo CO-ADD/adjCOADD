@@ -53,15 +53,15 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
             processed_filelist.append(FileList[i])
-            cache.set(request.session.session_key, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
-            print(cache.get(request.session.session_key))
+            cache.set(Request.session.session_key, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
+            print(cache.get(Request.session.session_key))
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
     # Create vLog save to Cache
-    cache_key = f'valLog_{request.user}'
+    cache_key = f'valLog_{Request.user}'
     if valLog.nLogs['Error'] >0 :
         dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
         Confirm_to_Save = False
@@ -70,7 +70,7 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
         Confirm_to_Save = True
     valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead", "bg-light"], index=False)
     cache.set(cache_key, {'Confirm_to_Save':Confirm_to_Save, 'valLog':valLog})
-    print(valLog)
+    print('Thread is running')
     return(valLog)
 
 #-----------------------------------------------------------------------------
