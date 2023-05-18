@@ -171,11 +171,13 @@
           if (processed == total && processed > 0) {
             clearTimeout(timefunction);
             fetchResults();
-          } else if (processed !== lastProcessed) {
+          } 
+          //else if (processed !== lastProcessed) {
             // Update the last processed value and reset the inactivity timeout
-            lastProcessed = processed;
-            resetInactivityTimeout();
-          } else if (isActive) { // Only set new timeout if user is active
+            //lastProcessed = processed;
+           // resetInactivityTimeout();
+        //  } 
+        else if (isActive) { // Only set new timeout if user is active
             timefunction = setTimeout(updateProgress, 2000);
           }
         },
@@ -183,7 +185,7 @@
     }
 
     // Start the initial timeout
-    let timeoutDelay = 360000; // Adjust this value to set the inactivity timeout (in milliseconds)
+    let timeoutDelay = 900000; // Adjust this value to set the inactivity timeout 15min (in milliseconds)
     let inactivityTimeout;
 
     function resetInactivityTimeout() {
