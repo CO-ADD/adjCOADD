@@ -15,7 +15,7 @@ from apputil.utils.files_upload import validate_file,file_location
 
 class UploadFileForm(SuperUserRequiredMixin, forms.Form):
     multi_files = forms.FileField(label='Select one or multiple files', 
-                                  widget=forms.ClearableFileInput(attrs={'multiple': True,'size':40}),
+                                  widget=forms.ClearableFileInput(attrs={'multiple': True,}),
                                   validators=[validate_file], 
                                   required=False)
 
@@ -52,7 +52,10 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    confirm = forms.BooleanField(required=False, help_text="")
+    confirm = forms.BooleanField(required=True, help_text="")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['confirm'].error_messages = {'required': 'Contains Error, please correct firstly'}
 
 
 # class StepForm_2(forms.Form):
