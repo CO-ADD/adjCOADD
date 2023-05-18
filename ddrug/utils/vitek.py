@@ -19,7 +19,7 @@ __version__ = "1.1"
 
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(Request, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -56,11 +56,6 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{Request.user}] ")
             logger.debug(f"VITEK Processing {FileList[i]} from {DirName}")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=Request.user,valLog=valLog)
-            #  get progress and save to session, including the user ID in session key:  
-            
-            Request.session[SessionKey]={'processed':i+1, 'total':nFiles}
-            Request.session.modified=True
-            print(f"Updated session progress_data: {Request.session[SessionKey]}")
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")

@@ -308,13 +308,9 @@ class API_VITEK_ASTList(API_FilteredListView):
 
 
 #==  VITEK Import View =============================================================
-class Importhandler_VITEK(Importhandler):
-    pass
-
 # --upload file view--
 from django import forms
 from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, FinalizeForm
-from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from apputil.utils.validation_log import * 
@@ -324,15 +320,15 @@ class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
                                        widget=forms.Select(attrs={'class': 'form-control w-50'}), 
                                        required=False, 
-                                       help_text='Optional: Select OrganismBatch for all Uploads (!)',
+                                       help_text='Optional',
                                        queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 
 # progress bar
-def get_upload_progress(request):
-    session_key = f'upload_progress_{request.user}'
-    progress = request.session.get(session_key, {'processed': 0, 'total': 0})
-    return JsonResponse(progress)
+# def get_upload_progress(request):
+#     session_key = f'upload_progress_{request.user}'
+#     progress = request.session.get(session_key, {'processed': 0, 'total': 0})
+#     return JsonResponse(progress)
 # 
 class Import_VitekView(ImportHandler_WizardView):
     
@@ -348,7 +344,6 @@ class Import_VitekView(ImportHandler_WizardView):
     ]
     # define template
     template_name = 'ddrug/importhandler_vitek.html'
-
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
 
@@ -377,7 +372,7 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF 
-                valLog = upload_VitekPDF_List(request,session_key,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
+                valLog = upload_VitekPDF_List(request,DirName,self.filelist,OrgBatchID=self.orgbatch_id, upload=False)
                 # -> valLog
                 if valLog.nLogs['Error'] >0 :
                     dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
@@ -395,11 +390,8 @@ class Import_VitekView(ImportHandler_WizardView):
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1': # first validation
-            request.session[session_key] = {'processed': 0, 'total': 0}
             upload=self.storage.extra_data['Confirm_to_Save']
-
             print("step validation again")
-            
             form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
             result_table=[] # first validation result tables
@@ -407,7 +399,7 @@ class Import_VitekView(ImportHandler_WizardView):
             FileList=self.storage.extra_data['filelist'] #get files' name            
            # get valLog for each file
             # Parse PDF 
-            valLog = upload_VitekPDF_List(request, session_key, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=upload)
+            valLog = upload_VitekPDF_List(request, DirName,self.filelist, OrgBatchID=self.orgbatch_id, upload=False)
             # -> valLog
             if valLog.nLogs['Error'] >0 :
                 dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error'])) #convert result in a table
@@ -422,8 +414,6 @@ class Import_VitekView(ImportHandler_WizardView):
         print("Finalize")
         # Redirect to the desired page after finishing
         # delete uploaded files
-        session_key=f'upload_progress_{self.request.user}'
-        self.request.session[session_key] = {'processed': 0, 'total': 0}
         filelist=self.storage.extra_data['filelist']
         for f in filelist:
             self.delete_file(f)
