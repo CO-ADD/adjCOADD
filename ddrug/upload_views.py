@@ -49,23 +49,19 @@ class VitekValidation_StepForm(StepForm_1):
                                        queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 # 
-# for progress bar
-def get_session_key(request):
-    return request.session.session_key
+
 # 
-async def get_upload_progress(request):
+def get_upload_progress(request):
     # session_key = f'upload_progress_{request.user}'
-    SessionKey = await sync_to_async(get_session_key)(request)
-    progress = await cache.aget(SessionKey) or {'processed': 0, 'file_name':"",'total': 0}
+    SessionKey = request.session.session_key
+    progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0}
     return JsonResponse(progress)
 # 
 # For get result
-def get_vlog_session_key(request):   
-    return f'valLog_{request.user}'
 # 
-async def fetchResult(request):
-    cache_key = await sync_to_async(get_vlog_session_key)(request)
-    valLog = await cache.aget(cache_key) or None
+def fetchResult(request):
+    cache_key = f'valLog_{request.user}'
+    valLog = cache.get(cache_key) or None
     if valLog is not None:
         return JsonResponse({
             'results_ready': True,
@@ -159,7 +155,8 @@ class Import_VitekView(ImportHandler_WizardView):
                 thread.start()
                 print(f"Currently running threads: {threading.enumerate()}")             
                 self.storage.extra_data['filelist'] = self.filelist
-                self.storage.extra_data['DirName'] = DirName          
+                self.storage.extra_data['DirName'] = DirName
+                print(self.storage.extra_data['filelist'])          
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
@@ -199,6 +196,14 @@ class Import_VitekView(ImportHandler_WizardView):
         # then display in templates  
         context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
-        current_step = self.steps.current        
+        current_step = self.steps.current  
+        session_key = self.request.session.session_key
+        progress = cache.get(session_key) or {'processed': 0, 'file_name':"", 'total': 0}
+        cache_key = f'valLog_{self.request.user}'
+        valLog = cache.get(cache_key) or None
+        context.update({
+           'progress': progress,
+           'valLog': valLog,
+    })
+         
         return context
-  

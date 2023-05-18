@@ -140,6 +140,7 @@
           >
             0%
           </span>
+          {{progress}}
         </div>
         <div class="mt-5">
           <ul class="text-start" id="multi-files-list"></ul>
@@ -151,7 +152,7 @@
           {% endfor %}
           <!--prettier-ignore-->
           {% endfor %}
-
+          <div>{{valLog}}</div>
           <div
             class="validation_result overflow-auto"
             style="max-height: 500px"
