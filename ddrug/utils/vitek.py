@@ -33,6 +33,8 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
         appuser : User Instance of user uploading
 
     """
+    # Setting up the cancel flag key
+    cancel_flag_key = f'cancel_flag_{SessionKey}'
 
     if FileList:
         nFiles = len(FileList)
@@ -50,27 +52,23 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
     if nFiles > 0:
         processed_filelist=[]
         for i in range(nFiles):
+            # Cancel Process, If the cancel flag is set, break the loop, 
+            # For break a running upload
+            if cache.get(cancel_flag_key):
+                print("interrupt process")
+                cache.delete(f'valLog_{Request.user}')
+                cache.delete(SessionKey)
+                break
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
             processed_filelist.append(FileList[i])
-            cache.set(Request.session.session_key, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
-            print(cache.get(Request.session.session_key))
+            cache.set(SessionKey, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
-    # Create vLog save to Cache
-    cache_key = f'valLog_{Request.user}'
-    if valLog.nLogs['Error'] >0 :
-        dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-        Confirm_to_Save = False
-    else:
-        dfLog = pd.DataFrame(valLog.get_aslist())
-        Confirm_to_Save = True
-    valLog=dfLog.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead", "bg-light"], index=False)
-    cache.set(cache_key, {'Confirm_to_Save':Confirm_to_Save, 'valLog':valLog})
-    print('Thread is running')
+    
     return(valLog)
 
 #-----------------------------------------------------------------------------

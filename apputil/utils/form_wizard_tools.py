@@ -134,6 +134,8 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
         try:
             os.unlink(file_full_path)
             print("removed!")
+        except FileNotFoundError:
+            print(f"File {file_path} does not exist.")
         except Exception as err:
             raise Exception
 
