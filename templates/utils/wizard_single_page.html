@@ -36,12 +36,14 @@
         <!--  -->
         {%if wizard.steps.prev%}
         <!--  -->
-        <input
-          class="btn btn-sm m-auto col-md-3"
+        <button
+          class="btn btn-sm col-md-3"
           name="wizard_goto_step"
           type="submit"
-          value="Prev"
-        />
+          value="{{ wizard.steps.prev }}"
+        >
+          Pre
+        </button>
         {%else%}
         <button type="button" class="btn btn-sm m-auto col-md-3" disabled>
           Prev

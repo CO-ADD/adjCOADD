@@ -52,7 +52,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    confirm = forms.BooleanField(required=True, help_text="")
+    confirm = forms.BooleanField(required=False, help_text="")
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['confirm'].error_messages = {'required': 'Contains Error, please correct firstly'}
