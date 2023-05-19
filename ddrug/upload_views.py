@@ -35,7 +35,7 @@ class VitekValidation_StepForm(StepForm_1):
 def get_upload_progress(request):
     # session_key = f'upload_progress_{request.user}'
     SessionKey = request.session.session_key
-    progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0, 'uploadpdf_version':0}   
+    progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0, 'uploadpdf_version':1}   
     return JsonResponse(progress)
 # 
 # For get result

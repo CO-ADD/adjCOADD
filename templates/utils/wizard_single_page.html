@@ -206,7 +206,9 @@
         url: "{% url 'get_upload_progress' %}",
         type: "GET",
         success: function (data) {
-          if (data.uploadpdf_version !== preVersion) {
+          if (data.uploadpdf_version.toString() !== preVersion) {
+            console.log(data.uploadpdf_version);
+            console.log(preVersion);
             //Ensure only display updated Data
             $("#loading").hide();
             // Set Progress bar and list finished files
@@ -242,7 +244,9 @@
               timefunction = setTimeout(updateProgress, 2000);
             }
             sessionStorage.setItem("preVersion", data.uploadpdf_version);
-            preVersion = data.uploadpdf_version;
+            // preVersion = data.uploadpdf_version;
+          } else {
+            timefunction = setTimeout(updateProgress, 2000);
           }
         },
       });
