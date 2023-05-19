@@ -1,45 +1,26 @@
-import json
-import os
+'''
+View for uploading Vitek PDFs
+'''
+from asgiref.sync import async_to_sync, sync_to_async
 import pandas as pd
-import numpy as np
-from django.core.serializers.json import DjangoJSONEncoder
-from time import localtime, strftime
+import threading
 
-
-
-import logging
-logger = logging.getLogger("django")
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import transaction, IntegrityError
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from django.urls import reverse_lazy
+from django import forms
 from django.conf import settings
-from django.views.generic import ListView, TemplateView
-from django.utils.functional import SimpleLazyObject
+from django.core.cache import cache
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse, render, redirect
 
-
-from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
-from apputil.utils.validation_log import Validation_Log
+from apputil.utils.files_upload import file_location, OverwriteStorage
+from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, FinalizeForm
+from apputil.utils.validation_log import * 
 from dorganism.models import Organism_Batch
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
 from ddrug.utils.vitek import upload_VitekPDF_List
+
 #==  VITEK Import View =============================================================
 
-# --upload file view--
-import threading
-from asgiref.sync import async_to_sync, sync_to_async
-from django import forms
-from apputil.utils.form_wizard_tools import ImportHandler_WizardView, UploadFileForm, StepForm_1, FinalizeForm
-from formtools.wizard.views import SessionWizardView
-from django.core.files.storage import FileSystemStorage
-from apputil.utils.validation_log import * 
-from django.core.cache import cache
-from django.views import View
 # customized Form
 class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
@@ -54,7 +35,7 @@ class VitekValidation_StepForm(StepForm_1):
 def get_upload_progress(request):
     # session_key = f'upload_progress_{request.user}'
     SessionKey = request.session.session_key
-    progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0}
+    progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0, 'uploadpdf_version':0}   
     return JsonResponse(progress)
 # 
 # For get result
@@ -79,6 +60,7 @@ def uplod_utils(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=Fal
         cache.delete(SessionKey)
         return None
     valLog=upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None)
+    print(valLog)
     # Create vLog save to Cache
     cache_key = f'valLog_{Request.user}'
     if valLog.nLogs['Error'] >0 :
@@ -135,9 +117,9 @@ class Import_VitekView(ImportHandler_WizardView):
         cache.set(cancel_flag_key, False)
         
         if current_step == 'upload_file':
-            print(self.storage)
+            # print(self.storage)
             print("upload and parse")
-            print(self.request.session.get('formtools_wizard'))
+            # print(self.request.session.get('formtools_wizard'))
             DirName = file_location(instance=request.user)  # define file store path during file process
             files = []
             result_table=[]
@@ -166,7 +148,7 @@ class Import_VitekView(ImportHandler_WizardView):
             form = VitekValidation_StepForm(request.POST)
             if form.is_valid():
                 confirm = form.cleaned_data.get('confirm')
-                print(confirm)
+                # print(confirm)
                 if confirm:
                     upload=confirm
                     print("data will be uploaded")
@@ -176,7 +158,7 @@ class Import_VitekView(ImportHandler_WizardView):
             self.filelist=self.storage.extra_data['filelist'] #get files' name   
             thread = threading.Thread(target=uplod_utils, args=(request, SessionKey, DirName, self.filelist ), kwargs={'OrgBatchID': self.orgbatch_id, 'upload':upload, 'appuser':request.user})
             thread.start()
-            print(f"Currently running threads: {threading.enumerate()}")                 
+            # print(f"Currently running threads: {threading.enumerate()}")                 
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
@@ -196,14 +178,5 @@ class Import_VitekView(ImportHandler_WizardView):
         # then display in templates  
         context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
-        current_step = self.steps.current  
-        session_key = self.request.session.session_key
-        progress = cache.get(session_key) or {'processed': 0, 'file_name':"", 'total': 0}
-        cache_key = f'valLog_{self.request.user}'
-        valLog = cache.get(cache_key) or None
-        context.update({
-           'progress': progress,
-           'valLog': valLog,
-    })
-         
+        current_step = self.steps.current           
         return context

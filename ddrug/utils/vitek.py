@@ -62,7 +62,7 @@ def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,u
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
             processed_filelist.append(FileList[i])
-            cache.set(SessionKey, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles})
+            cache.set(SessionKey, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles, 'uploadpdf_version': datetime.datetime.now().timestamp()})
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")

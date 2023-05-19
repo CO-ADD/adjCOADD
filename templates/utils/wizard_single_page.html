@@ -25,7 +25,7 @@
         </button>
         {% if wizard.steps.prev %}
         <button
-          class="btn btn-sm"
+          class="btn btn-sm col-md-3"
           name="wizard_goto_step"
           type="submit"
           value="{{ wizard.steps.prev }}"
@@ -140,7 +140,6 @@
           >
             0%
           </span>
-          {{progress}}
         </div>
         <div class="mt-5">
           <ul class="text-start" id="multi-files-list"></ul>
@@ -152,7 +151,10 @@
           {% endfor %}
           <!--prettier-ignore-->
           {% endfor %}
-          <div>{{valLog}}</div>
+          <div>{{progress}}</div>
+          <div class="spinner-border" role="status" id="loading">
+            <span class="sr-only">Loading...</span>
+          </div>
           <div
             class="validation_result overflow-auto"
             style="max-height: 500px"
@@ -163,7 +165,7 @@
   </form>
 </div>
 
-<!-- Display the selected files on the message -->
+<!-- Display the selected files in upload form on the message -->
 <script>
   const $fileNamesContainer_files = $("#multi-files-list");
 
@@ -185,57 +187,62 @@
     });
   }
 </script>
-<!-- Scheduled Ajax Call to retrieve Progress and Result Async.Django  -->
+
+<!-- Scheduled Ajax Call to retrieve Progress and Result -->
 <script>
   $(document).ready(function () {
-    if ($("input:checkbox")) {
-      $("input:checkbox").attr("disabled", true);
-    }
-    if ($(".nextstep").hasClass("not-visible")) {
-      $(".nextstep").removeClass("not-visible");
-    }
     let timefunction; // Declare it outside the function so it can be accessed later.
     let isActive = true; // Variable to track user activity
     let lastProcessed = 0; // Variable to store the last processed value
-
+    let preVersion = sessionStorage.getItem("preVersion") || null; //identify retrieved data from server
+    // Disable Confirm (save to dB) Button initially
+    if ($("input:checkbox")) {
+      $("input:checkbox").attr("disabled", true);
+    }
+    // retrieve progress and call fetch_result func.
     function updateProgress() {
-      console.log("call function");
+      $("#loading").show();
       $.ajax({
         url: "{% url 'get_upload_progress' %}",
         type: "GET",
         success: function (data) {
-          let processed = data.processed;
-          let total = data.total;
-          let file_name = data.file_name;
-          let percentage =
-            total > 0 ? Math.round((processed / total) * 100) : 0;
-
-          $("#progress-bar")
-            .css("width", percentage + "%")
-            .attr("aria-valuenow", percentage)
-            .text(
-              percentage +
-                "%" +
-                " (" +
-                processed +
-                " in " +
-                total +
-                "total files)"
-            );
-          $(".progressfilename").html(`<span>${file_name}</span>`);
-
-          if (processed == total && processed > 0) {
-            clearTimeout(timefunction);
-            fetchResults();
-          }
-          //else if (processed !== lastProcessed) {
-          // Update the last processed value and reset the inactivity timeout
-          //lastProcessed = processed;
-          // resetInactivityTimeout();
-          //  }
-          else if (isActive) {
-            // Only set new timeout if user is active
-            timefunction = setTimeout(updateProgress, 2000);
+          if (data.uploadpdf_version !== preVersion) {
+            //Ensure only display updated Data
+            $("#loading").hide();
+            // Set Progress bar and list finished files
+            let processed = data.processed;
+            let total = data.total;
+            let file_name = data.file_name;
+            let percentage =
+              total > 0 ? Math.round((processed / total) * 100) : 0;
+            $("#progress-bar")
+              .css("width", percentage + "%")
+              .attr("aria-valuenow", percentage)
+              .text(
+                percentage +
+                  "%" +
+                  " (" +
+                  processed +
+                  " in " +
+                  total +
+                  "total files)"
+              );
+            $(".progressfilename").html(`<span>${file_name}</span>`);
+            if (processed == total && processed > 0) {
+              clearTimeout(timefunction);
+              fetchResults();
+            }
+            //else if (processed !== lastProcessed) {
+            // Update the last processed value and reset the inactivity timeout
+            //lastProcessed = processed;
+            // resetInactivityTimeout();
+            //  }
+            else if (isActive) {
+              // Only set new timeout if user is active
+              timefunction = setTimeout(updateProgress, 2000);
+            }
+            sessionStorage.setItem("preVersion", data.uploadpdf_version);
+            preVersion = data.uploadpdf_version;
           }
         },
       });
@@ -267,7 +274,7 @@
     updateProgress();
     resetInactivityTimeout();
 
-    // This function sends a GET request to the server every 2 seconds to check if the results are ready.
+    // This function sends a GET request to the server every .. seconds to check if the results are ready.
     function fetchResults() {
       $.ajax({
         url: "{% url 'fetch-results' %}", // Set this to the appropriate URL in your Django app.
@@ -279,10 +286,8 @@
             $(".progressfilename").empty();
 
             if (Confirm_to_Save) {
-              console.log(Confirm_to_Save);
-
+              //if no error or error is Orgbatch ID missing (need choose a ID)
               $("input:checkbox").attr("disabled", false);
-              $(".nextstep").removeClass("not-visible");
               // If the results are ready, update the page.
               $(".validation_result").html(
                 "<span class='text-success'>It is ok to save, please tick 'confirm' if you decided to save to DB</span>" +
@@ -304,15 +309,15 @@
                 .addClass("bg-warning");
             }
           } else {
-            // If the results are not ready, try again in 2 seconds.
-            setTimeout(fetchResults, 500);
+            // If the results are not ready, try again .
+            setTimeout(fetchResults, 2000);
           }
         },
       });
     }
   });
 </script>
-
+<!-- This call will interrupt thread, reset process -->
 <script>
   $(document).ready(function () {
     $("#cancel-button").click(function () {
