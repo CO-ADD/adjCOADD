@@ -72,7 +72,6 @@
             data-bs-parent="#organism-batch-detail"
           >
             <div class="accordion-body">
-              <h5>{%include 'utils/message.html'%}</h5>
               <div class="table-responsive">
                 <!-- prettier-ignore -->
                 {%include 'utils/datatable_sm.html'  with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
@@ -110,7 +109,6 @@
             data-bs-parent="#organism-culture-detail"
           >
             <div class="accordion-body">
-              <h5>{%include 'utils/message.html'%}</h5>
               <div class="table-responsive">
                 <!-- prettier-ignore -->
               {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
@@ -148,9 +146,7 @@
             aria-labelledby="headingMIC_COADD"
             data-bs-parent="#MIC_COADD"
           >
-            <div class="accordion-body">
-              <h5>{%include 'utils/message.html'%}</h5>
-              
+            <div class="accordion-body">              
                 <!-- prettier-ignore -->
                 {%include './datamap.html'%}
              

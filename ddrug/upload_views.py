@@ -1,7 +1,7 @@
 '''
 View for uploading Vitek PDFs
 '''
-from asgiref.sync import async_to_sync, sync_to_async
+import concurrent
 import pandas as pd
 import threading
 
@@ -30,48 +30,13 @@ class VitekValidation_StepForm(StepForm_1):
                                        queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 # 
-
 # 
+# get Progress 
 def get_upload_progress(request):
     # session_key = f'upload_progress_{request.user}'
     SessionKey = request.session.session_key
     progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0, 'uploadpdf_version':1}   
     return JsonResponse(progress)
-# 
-# For get result
-# 
-def fetchResult(request):
-    cache_key = f'valLog_{request.user}'
-    valLog = cache.get(cache_key) or None
-    if valLog is not None:
-        return JsonResponse({
-            'results_ready': True,
-            'validation_result': valLog,
-        })
-    else:
-        return JsonResponse({'results_ready': False})
-# 
-# call uploading function(upload_Vitek_List ....)
-def uplod_utils(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
-    # Cancel Process, for restart a uploading
-    cancel_flag_key = f'cancel_flag_{SessionKey}' # Setting up the cancel flag key
-    if cache.get(cancel_flag_key):
-        cache.delete(f'valLog_{self.request.user}')
-        cache.delete(SessionKey)
-        return None
-    valLog=upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None)
-    print(valLog)
-    # Create vLog save to Cache
-    cache_key = f'valLog_{Request.user}'
-    if valLog.nLogs['Error'] >0 :
-        dfLog = pd.DataFrame(valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-        Confirm_to_Save = False
-    else:
-        dfLog = pd.DataFrame(valLog.get_aslist())
-        Confirm_to_Save = True
-    valLog=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "overflow-auto"], index=False)
-    cache.set(cache_key, {'Confirm_to_Save':Confirm_to_Save, 'valLog':valLog})
-    return None
 # 
 # Cancel Thread
 def cancel_upload(request):
@@ -79,12 +44,12 @@ def cancel_upload(request):
     print(f"this is cancel process set{SessionKey}")
     cancel_flag_key = f'cancel_flag_{SessionKey}'
     cache.set(cancel_flag_key, True)
-    cache.delete(f'valLog_{request.user}')
     cache.delete(request.session.session_key)
     # Reset/clear Wizard Session per request 
     del request.session['wizard_import__vitek_view']
     return HttpResponse('Upload canceled.')
 # 
+# Process View
 class Import_VitekView(ImportHandler_WizardView):
     
     name_step1="Validation" # step label in template
@@ -106,6 +71,7 @@ class Import_VitekView(ImportHandler_WizardView):
         super().__init__(*args, **kwargs)
         self.filelist=[]
         self.orgbatch_id=None
+        self.valLog=None
         
     def process_step(self, form):
         current_step = self.steps.current
@@ -117,12 +83,9 @@ class Import_VitekView(ImportHandler_WizardView):
         cache.set(cancel_flag_key, False)
         
         if current_step == 'upload_file':
-            # print(self.storage)
-            print("upload and parse")
-            # print(self.request.session.get('formtools_wizard'))
             DirName = file_location(instance=request.user)  # define file store path during file process
             files = []
-            result_table=[]
+
             if form.is_valid():
                 if 'upload_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-multi_files'))          
@@ -132,44 +95,53 @@ class Import_VitekView(ImportHandler_WizardView):
                     filename = fs.save(f.name, f)
                     self.filelist.append(filename)
 
-                # Parse PDF 
-                thread = threading.Thread(target=uplod_utils, args=(request, SessionKey, DirName, self.filelist ), kwargs={'OrgBatchID': self.orgbatch_id, 'upload': False, 'appuser':request.user})
-                thread.start()
-                print(f"Currently running threads: {threading.enumerate()}")             
+                # Parse PDF and Validation
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(upload_VitekPDF_List, request, SessionKey, DirName, self.filelist, OrgBatchID=self.orgbatch_id, upload=False, appuser=request.user)
+                    # block until the function finishes
+                    self.valLog = future.result()  
+                if self.valLog.nLogs['Error'] >0 :
+                    dfLog = pd.DataFrame(self.valLog.get_aslist(logTypes= ['Error']))#convert result in a table
+                    self.storage.extra_data['Confirm_to_Save'] = False
+                else:
+                    dfLog = pd.DataFrame(self.valLog.get_aslist())
+                    self.storage.extra_data['Confirm_to_Save'] = True
+                self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)       
                 self.storage.extra_data['filelist'] = self.filelist
-                self.storage.extra_data['DirName'] = DirName
-                print(self.storage.extra_data['filelist'])          
+                self.storage.extra_data['DirName'] = DirName          
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
-        elif current_step == 'step1': # first validation
-            upload=False
+        elif current_step == 'step1': # recheck and save to DB
             print("step validation again")
+            upload=self.storage.extra_data['Confirm_to_Save']
             form = VitekValidation_StepForm(request.POST)
-            if form.is_valid():
-                confirm = form.cleaned_data.get('confirm')
-                # print(confirm)
-                if confirm:
-                    upload=confirm
-                    print("data will be uploaded")
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
-            result_table=[] # first validation result tables
             DirName=self.storage.extra_data['DirName'] #get file path
             self.filelist=self.storage.extra_data['filelist'] #get files' name   
-            thread = threading.Thread(target=uplod_utils, args=(request, SessionKey, DirName, self.filelist ), kwargs={'OrgBatchID': self.orgbatch_id, 'upload':upload, 'appuser':request.user})
-            thread.start()
-            # print(f"Currently running threads: {threading.enumerate()}")                 
+
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(upload_VitekPDF_List, request, SessionKey, DirName, self.filelist, OrgBatchID=self.orgbatch_id, upload=upload, appuser=request.user)
+                    # block until the function finishes
+                    self.valLog = future.result()
+           
+            if self.valLog.nLogs['Error'] >0 :
+                dfLog = pd.DataFrame(self.valLog.get_aslist(logTypes= ['Error']))#convert result in a table
+            else:
+                dfLog = pd.DataFrame(self.valLog.get_aslist())
+            self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)
+   
+                            
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
         print("Finalize")
         # Redirect to the desired page after finishing
-        # delete uploaded files
+        # delete uploaded files and clear cache
         filelist=self.storage.extra_data['filelist']
         for f in filelist:
             self.delete_file(f)
             print(filelist)
-        cache.delete(f'valLog_{self.request.user}')
         cache.delete(self.request.session.session_key)
         return redirect(self.request.META['HTTP_REFERER'])  
 
@@ -178,5 +150,10 @@ class Import_VitekView(ImportHandler_WizardView):
         # then display in templates  
         context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
-        current_step = self.steps.current           
+        current_step = self.steps.current        
+        if current_step == 'step1':
+            context['validation_result'] = self.storage.extra_data['valLog']
+            context['Confirm_to_Save']=self.storage.extra_data['Confirm_to_Save']
+        if current_step == 'finalize':
+            context['validation_result'] = self.storage.extra_data['valLog']
         return context

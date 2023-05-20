@@ -31,18 +31,3 @@
 
 {%load static%}
 <script src="{%static 'js/search_organism.js'%}"></script>
-
-<!-- validate organism name input -->
-<script>
-  $(document).ready(function () {
-    $('button[type="submit"]').click(function (e) {
-      if ($("#taxo-name").length) {
-        var searchName = $("#taxo-name").val(); //
-        if (searchName == "") {
-          e.preventDefault(); // prevent form submission
-          $("#search-input").focus();
-        }
-      }
-    });
-  });
-</script>

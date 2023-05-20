@@ -20,36 +20,62 @@
 
       <!-- Button Actions -->
       <div class="row m-5 border">
-        <button class="btn btn-sm col-md-3" type="button" id="cancel-button">
-          Cancel
-        </button>
         {% if wizard.steps.prev %}
         <button
-          class="btn btn-sm col-md-3"
+          class="btn btn-sm m-auto col-md-3"
+          type="button"
+          id="cancel-button"
+        >
+          <i class="fa-solid fa-ban"></i>
+        </button>
+        <button
+          class="btn btn-sm m-auto col-md-3"
           name="wizard_goto_step"
           type="submit"
           value="{{ wizard.steps.prev }}"
         >
-          previous
+          <i class="fa-solid fa-left-long"></i>
+        </button>
+        {%else%}
+        <button class="btn btn-sm m-auto col-md-3" disabled>
+          <i class="fa-solid fa-ban"></i>
+        </button>
+        <button
+          class="btn btn-sm m-auto col-md-3"
+          name="wizard_goto_step"
+          disabled
+        >
+          <i class="fa-solid fa-left-long"></i>
         </button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-
-        <input
-          class="btn btn-sm col-md-3 nextstep"
+        <button
+          class="btn btn-sm m-auto col-md-3 nextstep"
           type="submit"
           value="Next"
-        />
+        >
+          <i class="fa-solid fa-right-long"></i>
+        </button>
         {%elif wizard.steps.next%}
-        <input
-          class="btn btn-sm col-md-3 nextstep"
+
+        <button
+          class="btn btn-sm m-auto col-md-3 nextstep"
           type="submit"
           value="Click to start"
-        />
+        >
+          <i class="fa-solid fa-play"></i>
+        </button>
         {%else%}
-        <input class="btn btn-sm col-md-3" type="submit" value="Finalize" />
+        <button
+          class="btn btn-sm m-auto col-md-3"
+          type="submit"
+          value="Finalize"
+        >
+          <i class="fa-solid fa-check"></i>
+        </button>
+
         {%endif%}
       </div>
       <!-- Process steps Area -->
@@ -143,7 +169,7 @@
         </div>
         <div class="mt-5">
           <ul class="text-start" id="multi-files-list"></ul>
-          <p class="progressfilename text-info text-start"></p>
+          <ul class="progressfilename text-info text-start"></ul>
           <!--prettier-ignore-->
           {% for field in wizard.form %}
           {% for error in field.errors %}
@@ -153,12 +179,14 @@
           {% endfor %}
           <div>{{progress}}</div>
           <div class="spinner-border" role="status" id="loading">
-            <span class="sr-only">Loading...</span>
+            <span class="text-info"><i class="fa-solid fa-gear"></i></span>
           </div>
           <div
-            class="validation_result overflow-auto"
+            class="validation_result overflow-auto p-0"
             style="max-height: 500px"
-          ></div>
+          >
+            {{validation_result | safe}}
+          </div>
         </div>
       </div>
     </div>
@@ -191,6 +219,7 @@
 <!-- Scheduled Ajax Call to retrieve Progress and Result -->
 <script>
   $(document).ready(function () {
+    $("#loading").show();
     let timefunction; // Declare it outside the function so it can be accessed later.
     let isActive = true; // Variable to track user activity
     let lastProcessed = 0; // Variable to store the last processed value
@@ -201,14 +230,11 @@
     }
     // retrieve progress and call fetch_result func.
     function updateProgress() {
-      $("#loading").show();
       $.ajax({
         url: "{% url 'get_upload_progress' %}",
         type: "GET",
         success: function (data) {
           if (data.uploadpdf_version.toString() !== preVersion) {
-            console.log(data.uploadpdf_version);
-            console.log(preVersion);
             //Ensure only display updated Data
             $("#loading").hide();
             // Set Progress bar and list finished files
@@ -229,17 +255,17 @@
                   total +
                   "total files)"
               );
-            $(".progressfilename").html(`<span>${file_name}</span>`);
+
+            $("#multi-files-list li")
+              .filter(function () {
+                var multi_files_list = $(this).data("name");
+                return file_name.includes(multi_files_list);
+              })
+              .addClass("text-success");
+
             if (processed == total && processed > 0) {
               clearTimeout(timefunction);
-              fetchResults();
-            }
-            //else if (processed !== lastProcessed) {
-            // Update the last processed value and reset the inactivity timeout
-            //lastProcessed = processed;
-            // resetInactivityTimeout();
-            //  }
-            else if (isActive) {
+            } else if (isActive) {
               // Only set new timeout if user is active
               timefunction = setTimeout(updateProgress, 2000);
             }
@@ -277,48 +303,6 @@
     // Start the initial progress update
     updateProgress();
     resetInactivityTimeout();
-
-    // This function sends a GET request to the server every .. seconds to check if the results are ready.
-    function fetchResults() {
-      $.ajax({
-        url: "{% url 'fetch-results' %}", // Set this to the appropriate URL in your Django app.
-        success: function (data) {
-          let result_table = data.validation_result.valLog;
-          let Confirm_to_Save = data.validation_result.Confirm_to_Save;
-          console.log(result_table);
-          if (data.results_ready) {
-            $(".progressfilename").empty();
-
-            if (Confirm_to_Save) {
-              //if no error or error is Orgbatch ID missing (need choose a ID)
-              $("input:checkbox").attr("disabled", false);
-              // If the results are ready, update the page.
-              $(".validation_result").html(
-                "<span class='text-success'>It is ok to save, please tick 'confirm' if you decided to save to DB</span>" +
-                  result_table
-              );
-            } else {
-              //Showing Error Alert
-              if ($("input:checkbox")) {
-                $("input:checkbox").addClass("not-visible");
-              }
-              html =
-                "<span class='text-danger'>Files contain errors, please check the result table </span><span class='text-info'>Select OrganismBatch for all Uploads (!)</span>" +
-                result_table;
-              $(".validation_result")
-                .html(
-                  "<span class='text-danger'>Files contain errors, please check the result table, your data won't be saved to DB</span>" +
-                    result_table
-                )
-                .addClass("bg-warning");
-            }
-          } else {
-            // If the results are not ready, try again .
-            setTimeout(fetchResults, 2000);
-          }
-        },
-      });
-    }
   });
 </script>
 <!-- This call will interrupt thread, reset process -->
