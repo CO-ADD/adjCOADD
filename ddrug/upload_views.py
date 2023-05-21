@@ -33,7 +33,6 @@ class VitekValidation_StepForm(StepForm_1):
 # 
 # get Progress 
 def get_upload_progress(request):
-    # session_key = f'upload_progress_{request.user}'
     SessionKey = request.session.session_key
     progress =cache.get(SessionKey) or {'processed': 0, 'file_name':"",'total': 0, 'uploadpdf_version':1}   
     return JsonResponse(progress)
@@ -41,7 +40,7 @@ def get_upload_progress(request):
 # Cancel Thread
 def cancel_upload(request):
     SessionKey = request.session.session_key
-    print(f"this is cancel process set{SessionKey}")
+    # print(f"this is cancel process set{SessionKey}")
     cancel_flag_key = f'cancel_flag_{SessionKey}'
     cache.set(cancel_flag_key, True)
     cache.delete(request.session.session_key)
@@ -72,20 +71,27 @@ class Import_VitekView(ImportHandler_WizardView):
         self.filelist=[]
         self.orgbatch_id=None
         self.valLog=None
+        if cache.get('vitek_process_step')==None:
+            cache.set('vitek_process_step', 'upload_file')
+            # self.storage.current_step =cache.get('vitek_process_step')
         
     def process_step(self, form):
+        cache.set('vitek_process_step', self.steps.next)
+        step=cache.get('vitek_process_step')
+        print(f"next step: {step}")
+
         current_step = self.steps.current
         request = self.request
-        print(request.session.keys()) 
+        # print(request.session.keys()) 
         # config session save and process cancel 
         SessionKey=self.request.session.session_key
         cancel_flag_key = f'cancel_flag_{SessionKey}'
         cache.set(cancel_flag_key, False)
-        
+        print(current_step)
         if current_step == 'upload_file':
+            cache.set(f'current_step_{self.request.session.session_key}', current_step)
             DirName = file_location(instance=request.user)  # define file store path during file process
             files = []
-
             if form.is_valid():
                 if 'upload_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('upload_file-multi_files'))          
@@ -106,14 +112,17 @@ class Import_VitekView(ImportHandler_WizardView):
                 else:
                     dfLog = pd.DataFrame(self.valLog.get_aslist())
                     self.storage.extra_data['Confirm_to_Save'] = True
-                self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)       
+                # self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False) 
+                html=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)
+                cache.set(f'vitek_valLog_{request.user}', html)      
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['DirName'] = DirName          
             else:
                 return render(request, 'ddrug/importhandler_vitek.html', context)
 
         elif current_step == 'step1': # recheck and save to DB
-            print("step validation again")
+            # cache.set(f'current_step_{self.request.session.session_key}', current_step)
+            # print("step validation again")
             upload=self.storage.extra_data['Confirm_to_Save']
             form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
@@ -129,8 +138,9 @@ class Import_VitekView(ImportHandler_WizardView):
                 dfLog = pd.DataFrame(self.valLog.get_aslist(logTypes= ['Error']))#convert result in a table
             else:
                 dfLog = pd.DataFrame(self.valLog.get_aslist())
-            self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)
-   
+            # self.storage.extra_data['valLog']=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)
+            html=dfLog.to_html(classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], index=False)
+            cache.set(f'vitek_valLog_{request.user}', html)  
                             
         return self.get_form_step_data(form)
 
@@ -143,6 +153,8 @@ class Import_VitekView(ImportHandler_WizardView):
             self.delete_file(f)
             print(filelist)
         cache.delete(self.request.session.session_key)
+        cache.delete('vitek_process_step')
+        cache.delete(f'vitek_valLog_{request.user}')
         return redirect(self.request.META['HTTP_REFERER'])  
 
     def get_context_data(self, form, **kwargs):
@@ -150,10 +162,19 @@ class Import_VitekView(ImportHandler_WizardView):
         # then display in templates  
         context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
-        current_step = self.steps.current        
+        current_step = self.steps.current     
+
+        context['validation_result'] = cache.get(f'vitek_valLog_{self.request.user}') or "*/*"
         if current_step == 'step1':
-            context['validation_result'] = self.storage.extra_data['valLog']
             context['Confirm_to_Save']=self.storage.extra_data['Confirm_to_Save']
-        if current_step == 'finalize':
-            context['validation_result'] = self.storage.extra_data['valLog']
+        # if current_step == 'finalize':
+        #     context['validation_result'] = self.storage.extra_data['valLog']
         return context
+    
+    # def get(self, request, *args, **kwargs):
+    #     # Check if a step was saved in the cache
+    #     current_step =cache.get('vitek_process_step')
+    #     print(f"current_step {current_step}")
+    #     if current_step is not None:
+    #         self.storage.current_step = current_step
+    #     return super().get(request, *args, **kwargs)

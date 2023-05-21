@@ -37,7 +37,11 @@
           <i class="fa-solid fa-left-long"></i>
         </button>
         {%else%}
-        <button class="btn btn-sm m-auto col-md-3" disabled>
+          <button
+          class="btn btn-sm m-auto col-md-3"
+          type="button"
+          id="cancel-button"
+        >
           <i class="fa-solid fa-ban"></i>
         </button>
         <button
@@ -104,6 +108,7 @@
         <!-- Steps Forms -->
         <div class="col-md-8 border bg-light ms-0" style="height: 20em">
           {% if wizard.steps.current == 'upload_file' %}
+           
           <div class="p-3">
             {% for field in wizard.form %}
             <p class="p-auto">

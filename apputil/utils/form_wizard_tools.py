@@ -19,8 +19,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
                                   validators=[validate_file], 
                                   required=False)
 
-    # folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
-    
+      
     def clean(self):
         cleaned_data = super().clean()
         print('clean data')
