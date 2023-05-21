@@ -158,19 +158,16 @@ class Import_VitekView(ImportHandler_WizardView):
         return redirect(self.request.META['HTTP_REFERER'])  
 
     def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form, **kwargs)
         # save information to context,
         # then display in templates  
-        context = super().get_context_data(form=form, **kwargs)
         context['step1']=self.name_step1
         current_step = self.steps.current     
-
-        context['validation_result'] = cache.get(f'vitek_valLog_{self.request.user}') or "*/*"
+        context['validation_result'] = cache.get(f'vitek_valLog_{self.request.user}') or "***result***"
         if current_step == 'step1':
             context['Confirm_to_Save']=self.storage.extra_data['Confirm_to_Save']
-        # if current_step == 'finalize':
-        #     context['validation_result'] = self.storage.extra_data['valLog']
         return context
-    
+    # Restore current step
     # def get(self, request, *args, **kwargs):
     #     # Check if a step was saved in the cache
     #     current_step =cache.get('vitek_process_step')

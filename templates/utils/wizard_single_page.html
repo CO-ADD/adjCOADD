@@ -225,6 +225,8 @@
 <script>
   $(document).ready(function () {
     $("#loading").show();
+    console.log("loading")
+    
     let timefunction; // Declare it outside the function so it can be accessed later.
     let isActive = true; // Variable to track user activity
     let lastProcessed = 0; // Variable to store the last processed value
@@ -235,6 +237,8 @@
     }
     // retrieve progress and call fetch_result func.
     function updateProgress() {
+      $("#loading").show();
+       console.log("loading")
       $.ajax({
         url: "{% url 'get_upload_progress' %}",
         type: "GET",
