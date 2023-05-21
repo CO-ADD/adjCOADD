@@ -24,36 +24,36 @@
       DRUG
     </a>
     <a
-      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
+      class="hex m-4 text-light"
       href="{%url 'vitekcard_list'%}"
       data-bs-toggle="tooltip"
       data-bs-placement="left"
       title="{{objects_card}} entries"
       inactivate
     >
-      VITEK CARD
+      <span class="hex-txt"> VITEK CARD </span>
     </a>
     <div class="d-flex flex-column">
-    <a
-    class="btn btn-outline-info"
-    href="{%url 'mic_coadd_card'%}"
-    data-bs-toggle="tooltip"
-    data-bs-placement="left"
-    title="{{objects_miccoadd}} entries"
-    inactivate
-  >
-    MIC COADD
-  </a>
-  <a
-  class="btn btn-sm btn-outline-info m-auto"
-  href="{%url 'mic_pub_card'%}"
-  data-bs-toggle="tooltip"
-  data-bs-placement="left"
-  title="{{objects_micpub}} entries"
-  inactivate
->
-  MIC Pub
-</a>
-</div>
+      <a
+        class="badge bg-info border m-auto"
+        href="{%url 'mic_coadd_card'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="{{objects_miccoadd}} entries"
+        inactivate
+      >
+        MIC COADD
+      </a>
+      <a
+        class="badge bg-info border m-auto"
+        href="{%url 'mic_pub_card'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title="{{objects_micpub}} entries"
+        inactivate
+      >
+        MIC Pub
+      </a>
+    </div>
   </div>
 </div>

@@ -39,13 +39,15 @@ def get_upload_progress(request):
 # 
 # Cancel Thread
 def cancel_upload(request):
+   
     SessionKey = request.session.session_key
-    # print(f"this is cancel process set{SessionKey}")
     cancel_flag_key = f'cancel_flag_{SessionKey}'
     cache.set(cancel_flag_key, True)
     cache.delete(request.session.session_key)
-    # Reset/clear Wizard Session per request 
-    del request.session['wizard_import__vitek_view']
+    cache.delete(f'vitek_valLog_{request.user}')
+        # Check if the session key exists before deleting it
+    if 'wizard_import__vitek_view' in request.session:
+        del request.session['wizard_import__vitek_view']
     return HttpResponse('Upload canceled.')
 # 
 # Process View

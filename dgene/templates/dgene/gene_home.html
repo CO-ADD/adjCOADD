@@ -11,58 +11,55 @@
       <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Gene</span>
     </label>
   </div>
-  <!-- <input type="text" class="form-control mt-2" id="input1" /> -->
   <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
     <a
       class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
       href="{%url 'gene_list'%}"
       data-bs-toggle="tooltip"
       data-bs-placement="left"
-      title=" entries"     
+      title=" entries"
     >
       Gene
     </a>
     <div class="d-flex flex-column mx-2">
-    <a
-    class="btn btn-sm btn-outline-success m-auto"
-    href="{%url 'id_pub_list'%}"
-    data-bs-toggle="tooltip"
-    data-bs-placement="left"
-    title=" entries"    
-  >
-    ID_Pub
-  </a>
-    <a
-    class="btn btn-sm btn-outline-success m-auto"
-    style="float: right"
-      href="{%url 'sequence_list'%}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="left"
-      title=" entries"    
-    >
-      Sequence
-    </a>
-  </div>
-  <div class="d-flex flex-column mx-2">
-    <a
-    class="badge bg-info border m-auto"
-    style="float: right"
-    href="{%url 'wgs-fastqc_list'%}"
-    data-bs-toggle="tooltip"
-    data-bs-placement="left"
-    title=" entries"   
-  >
-    WGS_FastQC
-  </a>
-  <a
-  class="badge bg-info border m-auto"
-  href="{%url 'wgs-checkm_list'%}"
-  data-bs-toggle="tooltip"
-  data-bs-placement="left"
-  title=" entries"
->
-  WGS_CheckM
-</a>
-</div>
+      <a
+        class="hex text-light"
+        href="{%url 'id_pub_list'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title=" entries"
+      >
+        <span class="hex-txt"> ID_Pub </span>
+      </a>
+      <a
+        class="hex text-light"
+        href="{%url 'sequence_list'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title=" entries"
+      >
+        <span class="hex-txt"> Sequence </span>
+      </a>
+    </div>
+    <div class="d-flex flex-column mx-2">
+      <a
+        class="badge land-badge bg-info border m-auto"
+        href="{%url 'wgs-fastqc_list'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title=" entries"
+      >
+        WGS_FastQC
+      </a>
+      <a
+        class="badge land-badge bg-info border m-auto"
+        href="{%url 'wgs-checkm_list'%}"
+        data-bs-toggle="tooltip"
+        data-bs-placement="left"
+        title=" entries"
+      >
+        WGS_CheckM
+      </a>
+    </div>
   </div>
 </div>

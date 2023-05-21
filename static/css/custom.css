@@ -13,7 +13,7 @@ info-color : #36a3f7
 success-color : #35cd3a
 warning-color : #ffa534
 danger-color : #f3545d 
-
+#f3f3f9
 
 
 */
@@ -36,14 +36,14 @@ danger-color : #f3545d
   /* Background Color */
   --bs-card-bg: #fefefe;
   --bs-heading-bg: var(--teal);
-  --bs-body-bg: rgb(238, 238, 238);
+  --bs-body-bg: #ebebf4;
   --bs-footer-bg: #f2f2f5;
   --bs-th-bg: #a7b6b6;
   --bs-th-child-bg: #bdcaca;
   --bs-dropdown-bg: #eef6f7;
   --bs-topnav-bg: #2c7a84b0;
   --bs-boxed-body-bg: #f1efef;
-  --bs-form-item-color: #fff;
+  --bs-form-item-color: #eeeef5;
   /* Text Color */
   --bs-body-color: #575962;
   --bs-menu-item-color: #6a8bf8;
@@ -136,7 +136,7 @@ input {
   border-width: 1px !important;
 }
 
-td>input {
+td > input {
   max-width: 150px !important;
 }
 
@@ -424,46 +424,20 @@ nav.shrink p {
   font-size: 12px;
 }
 
-nav.shrink li,
-nav.shrink .dropdown-divider {
-  background-color: var(--bs-dropdown-bg) !important;
-}
-
 nav.shrink .dropdown-divider {
   margin: 0 !important;
 }
 
 /* ------------------- */
 /* ----Landing page badges custom style */
-.landp-img-01,
-.landp-img-02 {
+.landp-img-01 {
   height: 8rem;
   width: 8rem;
-
+  background-color: var(--orange, orange);
   border-radius: 50%;
   margin: 1rem;
   color: var(--bs-light);
   font-weight: bolder;
-}
-
-.landp-img-03 {
-  height: 2rem;
-  width: 4rem;
-  margin: 1rem;
-  border-radius: 5%;
-  color: var(--bs-light);
-  font-weight: bolder;
-}
-
-.landp-img-01,
-.landp-img-03 {
-  animation: fadeIn 1s;
-  background-color: var(--orange, orange);
-}
-
-.landp-img-02 {
-  background-color: var(--teal, teal);
-  animation: fadeIn 1.5s;
 }
 
 .landp-div {
@@ -475,14 +449,6 @@ nav.shrink .dropdown-divider {
   /* border: 1px solid black; */
 }
 
-.landp-img-01:hover,
-.landp-img-02:hover,
-.landp-img-03:hover {
-  transform: scale(1.1);
-  transition: 0.3s ease-in;
-  color: var(--bs-light);
-}
-
 a .tooltiptext {
   visibility: hidden;
 }
@@ -490,7 +456,60 @@ a .tooltiptext {
 a:hover .tooltiptext {
   visibility: visible;
 }
+.hex {
+  width: 100px;
+  height: 100px;
+  background: var(--teal);
+  overflow: hidden;
+  transform: rotate(90deg);
+  -webkit-clip-path: polygon(
+    0% 50%,
+    25% 95%,
+    75% 95%,
+    100% 50%,
+    75% 5%,
+    25% 5%
+  );
+  clip-path: polygon(0% 50%, 25% 95%, 75% 95%, 100% 50%, 75% 5%, 25% 5%);
+  -webkit-clip-path: polygon(
+    50% 0%,
+    95% 25%,
+    95% 75%,
+    50% 100%,
+    5% 75%,
+    5% 25%
+  );
+  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+}
 
+.hex-txt {
+  position: absolute;
+  left: 10%;
+  top: 40%;
+  background-color: transparent;
+  transform: rotate(-90deg);
+  font-size: small;
+  color: var(--bs-custom-white);
+  font-weight: bold;
+}
+.landp-img-01:hover {
+  transform: scale(1.1);
+  transition: 0.3s ease-in;
+  color: var(--bs-light);
+  opacity: 80%;
+}
+.hex:hover {
+  opacity: 80%;
+}
+.landp-img-01 {
+  animation: fadeIn 0.6s;
+}
+.hex {
+  animation: fadeIn-rotate 1s;
+}
+.land-badge {
+  animation: fadeIn 1.5s;
+}
 /* ---------------------------------- */
 /* =================Css style in JS Func========================================= */
 /* ===== 1 Drag to resize sidebar start ======== */
@@ -944,6 +963,18 @@ form p {
   }
 }
 
+@keyframes fadeIn-rotate {
+  0% {
+    transform: scale(0);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: scale(1);
+    transform: rotate(90deg);
+  }
+}
+
 .blink {
   animation: blink-animation 0.5s steps(5, start);
   -webkit-animation: blink-animation 1s steps(5, start);
@@ -1054,7 +1085,7 @@ form p {
 
 .Login-form input {
   color: var(--teal) !important;
-  background-color: var(--bs-body-bg) !important;
+  background-color: var(--bs-form-item-color) !important;
   border: 1px solid var(--bs-body-color) !important;
 }
 
@@ -1062,8 +1093,8 @@ form p {
   border: 2px solid var(--teal) !important;
 }
 
-.Login-form input:focus+.Login-form label,
-.Login-form input:not(:placeholder-shown)+.Login-form label {
+.Login-form input:focus + .Login-form label,
+.Login-form input:not(:placeholder-shown) + .Login-form label {
   top: 5px;
   /* font-size: 12px; */
   color: var(--teal) !important;
@@ -1191,7 +1222,7 @@ table.dataframe tr:hover {
   background-color: #f5f5f5;
   margin-bottom: 20px;
   position: relative;
-  width:100px;
+  width: 100px;
 }
 
 .step:not(:last-child)::after {

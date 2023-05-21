@@ -237,7 +237,7 @@
     }
     // retrieve progress and call fetch_result func.
     function updateProgress() {
-      $("#loading").show();
+     
        console.log("loading")
       $.ajax({
         url: "{% url 'get_upload_progress' %}",
@@ -318,10 +318,12 @@
 <script>
   $(document).ready(function () {
     $("#cancel-button").click(function () {
+      console.log("cancel")
       $.ajax({
         url: "{% url 'cancel_upload' %}",
         success: function (result) {
-          alert("process restarted");
+          $("#loading").hide()
+          $(".validation_result").append("<h4 class=text-info>"+result+"</h4>")
           window.location.href = "{% url 'import-vitek' %}";
         },
       });
