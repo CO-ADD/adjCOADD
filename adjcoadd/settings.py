@@ -89,7 +89,6 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
     'JTI_CLAIM': 'jti',
-
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
@@ -270,11 +269,11 @@ CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.
 
 
 # Django Session timeout setting
-INACTIVE_TIME= 120
-if DEVELOPMENT:
-    SESSION_COOKIE_AGE=3000
-else:
-    SESSION_COOKIE_AGE=3000
+# INACTIVE_TIME= 120
+# if DEVELOPMENT:
+#     SESSION_COOKIE_AGE=3000
+# else:
+#     SESSION_COOKIE_AGE=3000
 # SESSION_EXPIRE_SECONDS =  120   
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True   
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

@@ -119,3 +119,5 @@ media/
 *.db
 *.pid
 
+*.dll
+*.mgc

@@ -122,10 +122,8 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Get all the links in the document
-
-        const links = document.querySelectorAll(
-          "a[href]:not([data-bs-toggle])"
-        );
+       
+        const links=document.querySelectorAll("a[href]:not([data-bs-toggle]), input[type=submit]:not([data-bs-toggle])")
         let preloaderTimeout;
 
         // Function to show the preloader

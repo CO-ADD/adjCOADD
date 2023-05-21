@@ -8,6 +8,7 @@ import pandas as pd
 
 import pdfplumber
 import re
+from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
@@ -19,7 +20,7 @@ __version__ = "1.1"
 
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(Request, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_List(Request, SessionKey, DirName,FileList,OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -32,6 +33,8 @@ def upload_VitekPDF_List(Request, DirName,FileList,OrgBatchID=None,upload=False,
         appuser : User Instance of user uploading
 
     """
+    # Setting up the cancel flag key
+    cancel_flag_key = f'cancel_flag_{SessionKey}'
 
     if FileList:
         nFiles = len(FileList)
@@ -45,22 +48,27 @@ def upload_VitekPDF_List(Request, DirName,FileList,OrgBatchID=None,upload=False,
             FileList = [f for f in DirFiles if f.endswith(".pdf")]
             nFiles = len(FileList)
 
+    valLog = Validation_Log("upload_VitekPDF_List")
     if nFiles > 0:
-        #ProcessedFolder = os.path.join(VitekFolder,".Uploaded")
-        #if not os.path.exists(ProcessedFolder):
-        #    os.makedirs(ProcessedFolder)
-
-
-        valLog = Validation_Log("Upload VitekPDF")
+        processed_filelist=[]
         for i in range(nFiles):
-            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{Request.user}] ")
-            logger.debug(f"VITEK Processing {FileList[i]} from {DirName}")
-            upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=Request.user,valLog=valLog)
+            # Cancel Process, If the cancel flag is set, break the loop, 
+            # For break a running upload
+            if cache.get(cancel_flag_key):
+                print("interrupt process")
+                cache.delete(f'valLog_{Request.user}')
+                cache.delete(SessionKey)
+                break
+            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
+            upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
+            processed_filelist.append(FileList[i])
+            cache.set(SessionKey, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles, 'uploadpdf_version': datetime.datetime.now().timestamp()})
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
 
     valLog.select_unique()
+    
     return(valLog)
 
 #-----------------------------------------------------------------------------

@@ -15,7 +15,6 @@ from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
-# from apputil.utils.views_base import SimplecreateView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from apputil.utils.pivottable import custom_pivottable
 from adjcoadd.constants import *

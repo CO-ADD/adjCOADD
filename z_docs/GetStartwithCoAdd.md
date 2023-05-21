@@ -33,7 +33,17 @@ Then create a conda environment with: `conda create -n <your-environment-name>` 
 
 #### Package installations:
 
-Install all the following packages in the conda environment.
+##### Way 1
+
+- step1. run: conda env create -f environment.yml
+- step2. install python-ldap (https://www.python-ldap.org/en/python-ldap-3.4.3/installing.html)
+- step3. pip install django-auth-ldap
+- step4. pip install git+https://github.com/rdkit/django-rdkit.git
+- step5. (Linux)sudo apt-get install libmagic1; (windows) download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/tree/master, copy to the project root.
+
+##### Way 2 :
+
+Manually install all the following packages in the conda environment.
 
 1. conda install -c conda-forge django
 2. prerequistion for python-ldap
@@ -59,6 +69,8 @@ Install all the following packages in the conda environment.
 18. pip install openpyxl
 19. pip install django-formtools
 20. pip install clamd
+21. sudo apt-get install libmagic1
+22. pip install python-magic
     ...
 
 ### Module Introduction

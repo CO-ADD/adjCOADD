@@ -266,6 +266,7 @@ class Taxonomyfilter(Filterbase):
 
 ## Organism
 class Organismfilter(Filterbase):
+    
     ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
     Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
     Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  
@@ -282,8 +283,9 @@ class Organismfilter(Filterbase):
         super().__init__(*args, **kwargs)
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
         for i in self.filters:
-            self.filters[i].label=i       
-         
+            self.filters[i].label=i
+    
+    
     class Meta:
         model=Organism
         fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]

@@ -19,8 +19,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
                                   validators=[validate_file], 
                                   required=False)
 
-    # folder_input = forms.FileField(label='Select a folder', widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory':True}), validators=[validate_file], required=False)
-    
+      
     def clean(self):
         cleaned_data = super().clean()
         print('clean data')
@@ -52,7 +51,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
 
     
 class StepForm_1(forms.Form):
-    confirm = forms.BooleanField(required=False, help_text="")
+    confirm = forms.BooleanField(required=True, help_text="")
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['confirm'].error_messages = {'required': 'Contains Error, please correct firstly'}
@@ -137,6 +136,8 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
         try:
             os.unlink(file_full_path)
             print("removed!")
+        except FileNotFoundError:
+            print(f"File {file_path} does not exist.")
         except Exception as err:
             raise Exception
 

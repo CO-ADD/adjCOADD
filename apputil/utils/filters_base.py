@@ -21,6 +21,7 @@ class LowerAny(Func):
         super().__init__(Value(search_value), array_field, **extra)
 
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
+    # print(model)
     q_object = Q()
     exclude_fields = exclude_fields or []
 
@@ -42,6 +43,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 pass
         elif isinstance(field, ArrayField):
             q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
+        # # Add more field types as needed...
 
     return q_object
 
@@ -111,8 +113,7 @@ class FilteredListView(ListView):
 
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
-        self.request.session['cached_queryset'] = list(filtered_queryset_pks)
-        
+        self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
 
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
