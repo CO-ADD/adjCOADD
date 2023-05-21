@@ -103,7 +103,7 @@ class Import_VitekView(ImportHandler_WizardView):
 
                 # Parse PDF and Validation
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    future = executor.submit(upload_VitekPDF_List, request, SessionKey, DirName, self.filelist, OrgBatchID=self.orgbatch_id, upload=False, appuser=request.user)
+                    future = executor.submit(upload_VitekPDF_List, request,  DirName, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=False, appuser=request.user)
                     # block until the function finishes
                     self.valLog = future.result()  
                 if self.valLog.nLogs['Error'] >0 :
@@ -130,7 +130,7 @@ class Import_VitekView(ImportHandler_WizardView):
             self.filelist=self.storage.extra_data['filelist'] #get files' name   
 
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                    future = executor.submit(upload_VitekPDF_List, request, SessionKey, DirName, self.filelist, OrgBatchID=self.orgbatch_id, upload=upload, appuser=request.user)
+                    future = executor.submit(upload_VitekPDF_List, request, DirName, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=upload, appuser=request.user)
                     # block until the function finishes
                     self.valLog = future.result()
            
