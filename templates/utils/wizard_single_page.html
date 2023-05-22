@@ -1,16 +1,16 @@
 <!-- Step line container -->
-<div class="m-2 vh-100">
+<div class="m-2" style="height: fit-content;">
   <h1 class="m-5 text-center">{{data_model}} Data Import</h1>
   <form
     method="post"
     enctype="multipart/form-data"
-    class="row m-5 text-center border vh-100"
+    class="row m-5 text-center"
   >
     {% csrf_token %}
     <!--  -->
     {{ wizard.management_form }}
     <!-- Left column (Prcoess Action Area) -->
-    <div class="col-md-5 border border-2" style="position: relative">
+    <div class="col-md-5 border border-2" style="position: relative;">
       <h4
         class="bg-light px-5"
         style="position: absolute; left: 30%; top: -15px"
@@ -18,6 +18,73 @@
         Process
       </h4>
 
+      <div class="step-line">
+        <div
+          class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
+        >
+          Upload File
+        </div>
+        <div
+          class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
+        >
+          {{step1}}
+        </div>
+
+        <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
+
+        <div
+          class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
+        >
+          Finalize
+        </div>
+      </div>
+      <!-- Process steps Area -->
+   
+        <!-- Process step Line -->
+        
+        <!-- Steps Forms -->
+        <div class="row border bg-light" style="height: 20em">
+          {% if wizard.steps.current == 'upload_file' %}
+           
+          <div class="p-3 m-auto border">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto border">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
+            {% endfor %}
+          </div>
+          <!-- This is step 1-->
+          {% elif wizard.steps.current == 'step1' %}
+          <div class="p-3 m-auto border">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto border">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
+            {% endfor %}
+          </div>
+
+          <!-- add more steps here: ...-->
+
+          <!-- This is the final-->
+          {% elif wizard.steps.current == 'finalize' %}
+          <div class="p-3 m-auto border">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto border">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
+
+            <!--prettier-ignore-->
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+   
       <!-- Button Actions -->
       <div class="row m-5 border">
         {% if wizard.steps.prev %}
@@ -82,72 +149,6 @@
 
         {%endif%}
       </div>
-      <!-- Process steps Area -->
-      <div class="row">
-        <!-- Process step Line -->
-        <div class="col-md-2 step-line border">
-          <div
-            class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
-          >
-            Upload File
-          </div>
-          <div
-            class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
-          >
-            {{step1}}
-          </div>
-
-          <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
-
-          <div
-            class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
-          >
-            Finalize
-          </div>
-        </div>
-        <!-- Steps Forms -->
-        <div class="col-md-8 border bg-light ms-0" style="height: 20em">
-          {% if wizard.steps.current == 'upload_file' %}
-           
-          <div class="p-3">
-            {% for field in wizard.form %}
-            <p class="p-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
-          </div>
-          <!-- This is step 1-->
-          {% elif wizard.steps.current == 'step1' %}
-          <div class="p-3">
-            {% for field in wizard.form %}
-            <p class="p-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
-          </div>
-
-          <!-- add more steps here: ...-->
-
-          <!-- This is the final-->
-          {% elif wizard.steps.current == 'finalize' %}
-          <div class="p-3">
-            {% for field in wizard.form %}
-            <p class="p-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-
-            <!--prettier-ignore-->
-            {% endfor %}
-          </div>
-          {% endif %}
-        </div>
-      </div>
     </div>
     <!-- Right column (Process Message)-->
     <!--  -->
@@ -173,6 +174,7 @@
           </span>
         </div>
         <div class="mt-5">
+          <h3 class="selectfiles not-visible">Selected Files</h3>
           <ul class="text-start" id="multi-files-list"></ul>
           <ul class="progressfilename text-info text-start"></ul>
           <!--prettier-ignore-->
@@ -187,7 +189,7 @@
             <span class="text-info"><i class="fa-solid fa-gear"></i></span>
           </div>
           <div
-            class="validation_result overflow-auto p-0"
+            class="validation_result overflow-auto p-0 m-2"
             style="max-height: 500px"
           >
             {{validation_result | safe}}
@@ -204,6 +206,10 @@
 
   if ("{{ form.multi_files.auto_id }}") {
     $("#{{ form.multi_files.auto_id }}").on("change", function () {
+      if($(".selectfiles").hasClass("not-visible")){
+
+        $(".selectfiles").removeClass("not-visible")
+      }
       $fileNamesContainer_files.empty();
       const files = this.files;
       for (let i = 0; i < files.length; i++) {
@@ -226,7 +232,9 @@
   $(document).ready(function () {
     $("#loading").show();
     console.log("loading")
-    
+    if(!$(".selectfiles").hasClass("not-visible")){
+      $(".selectfiles").addClass("not-visible")
+    }
     let timefunction; // Declare it outside the function so it can be accessed later.
     let isActive = true; // Variable to track user activity
     let lastProcessed = 0; // Variable to store the last processed value
@@ -276,13 +284,14 @@
               clearTimeout(timefunction);
             } else if (isActive) {
               // Only set new timeout if user is active
-              timefunction = setTimeout(updateProgress, 2000);
+              timefunction = setTimeout(updateProgress, 500);
             }
             sessionStorage.setItem("preVersion", data.uploadpdf_version);
             // preVersion = data.uploadpdf_version;
-          } else {
-            timefunction = setTimeout(updateProgress, 2000);
-          }
+          } 
+          // else {
+          //   timefunction = setTimeout(updateProgress, 500);
+          // }
         },
       });
     }

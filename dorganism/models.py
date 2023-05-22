@@ -141,7 +141,7 @@ class Organism(AuditModel):
     strain_code= models.CharField(max_length=30, blank=True, verbose_name = "Strain Code")
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
-    res_property= models.CharField(max_length=1024, blank=True, verbose_name = "Susceptibility ")
+    res_property= models.CharField(max_length=1024, blank=True, verbose_name = "Susceptibility")
     gen_property= models.CharField(max_length=1024, blank=True, verbose_name = "Genetic Property")
     strain_origin = models.CharField(max_length=350, blank=True, verbose_name = "Origin of Strain")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")

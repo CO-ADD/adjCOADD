@@ -26,7 +26,7 @@ class VitekValidation_StepForm(StepForm_1):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
                                        widget=forms.Select(attrs={'class': 'form-control'}), 
                                        required=False, 
-                                       help_text='(**Optional)',
+                                       help_text='(**Optional, if you choose an Organism Batch ID, it will be applied in all uploaded files)',
                                        queryset=Organism_Batch.objects.filter(astatus__gte=0), )
     field_order = ['orgbatch_id', 'confirm']
 # 

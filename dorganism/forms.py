@@ -24,7 +24,7 @@ class HiddenSimpleArrayField(forms.Field):
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
 
-    strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False)
+    strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     oxygen_pref=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
     risk_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
@@ -40,6 +40,8 @@ class CreateOrganism_form(ModelForm):
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
         self.fields['strain_type'].widget = forms.SelectMultiple(choices= Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)

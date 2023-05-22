@@ -22,10 +22,12 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
-    # drug_class=forms.ChoiceField(required=False, choices=[],)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
         self.fields['drug_panel'].widget = forms.CheckboxSelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['drug_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
         self.fields['drug_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
@@ -47,6 +49,7 @@ class Drug_form(forms.ModelForm):
         model =Drug
         fields='__all__'
         exclude=['ffp2', 'torsionbv', 'mfp2', 'smol']
+       
     
 
     # def clean_smol(self):
