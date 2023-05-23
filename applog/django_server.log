@@ -308,3 +308,8 @@ django.utils.autoreload INFO 2023-05-24 08:44:52,069 autoreload 18136 25888 Watc
 django.server INFO 2023-05-24 08:45:34,751 basehttp 18136 23988 "GET /index/ HTTP/1.1" 200 21843
 django.utils.autoreload INFO 2023-05-24 08:46:01,156 autoreload 18136 25888 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
 django.utils.autoreload INFO 2023-05-24 08:46:02,790 autoreload 25032 16512 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:46:45,256 basehttp 25032 19920 "GET /ddrug/vitekast_list HTTP/1.1" 200 86774
+django.server INFO 2023-05-24 08:47:16,209 basehttp 25032 19920 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 94045
+django.server INFO 2023-05-24 08:48:03,675 basehttp 25032 19920 "GET /index/ HTTP/1.1" 200 21842
+django.server INFO 2023-05-24 08:48:09,219 basehttp 25032 19920 "GET /ddrug/mic-pub_list HTTP/1.1" 200 69252
+django.server INFO 2023-05-24 08:48:20,138 basehttp 25032 19920 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 94045
