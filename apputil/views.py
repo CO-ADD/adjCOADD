@@ -15,26 +15,33 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
-from ddrug.models import Drug, VITEK_Card
+from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoints
 
-from .forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
-from .models import ApplicationUser, Dictionary
-from .utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
-from .utils.filters_base import FilteredListView
-from .utils.files_upload import Importhandler
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
+from apputil.models import ApplicationUser, Dictionary
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
+from apputil.utils.filters_base import FilteredListView
+from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
 # import setup
 @login_required(login_url='/')
 def index(req):
-    # print(setup.version)
-    object_1=Organism.objects.count()
-    object_2=Taxonomy.objects.count()
-    object_3=Drug.objects.count()
-    object_4=VITEK_Card.objects.count()
-    
-    return render(req, 'home.html', {'objects_org': object_1, 'objects_taxo':object_2, 'objects_drug':object_3, 'objects_card':object_4})
+
+    nDict = {    
+        'nOrg':    Organism.objects.count(),
+        'nTax':    Taxonomy.objects.count(),
+        'nDrug':   Drug.objects.count(),
+        'nVCard':  VITEK_Card.objects.count(),
+        'nVID':    VITEK_ID.objects.count(),
+        'nVAST':   VITEK_AST.objects.count(),
+        'nMICC':   MIC_COADD.objects.count(),
+        'nMICP':   MIC_Pub.objects.count(),
+        'nBP':     Breakpoints.objects.count(),
+    }
+    return render(req, 'home.html', nDict)
+
 ## =================================APP Home======================================##
 
 ## =================================APP Log in/out =================================

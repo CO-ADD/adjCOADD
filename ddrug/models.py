@@ -209,10 +209,10 @@ class Breakpoints(AuditModel):
         db_column="drug_id", related_name="%(class)s_drug_id")
     org_name = models.CharField(max_length=50, blank=False, verbose_name = "Organism") 
     org_rank = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Rank", on_delete=models.DO_NOTHING,
-        db_column="org_type", related_name="%(class)s_orgtype")
+        db_column="org_rank", related_name="%(class)s_orgtype")
     notorg_name = models.CharField(max_length=50, blank=False, verbose_name = "Not(Organism)") 
     notorg_rank = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Not(Rank)", on_delete=models.DO_NOTHING,
-        db_column="org_type", related_name="%(class)s_orgtype")
+        db_column="notorg_rank", related_name="%(class)s_notorgtype")
     med_application = models.CharField(max_length=50, blank=False, verbose_name = "Application")
     bp_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "BP Type", on_delete=models.DO_NOTHING,
         db_column="bp_type", related_name="%(class)s_bptype")
@@ -227,7 +227,7 @@ class Breakpoints(AuditModel):
     class Meta:
         app_label = 'ddrug'
         db_table = 'breakpoints'
-        ordering=['drug_id','org_type','org_genus','org_family']
+        ordering=['drug_id','org_rank','org_name','bp_type']
         indexes = [
             models.Index(name="bp_drug_idx", fields=['drug_id']),
             models.Index(name="bp_org_idx",fields=['org_name']),
@@ -488,45 +488,6 @@ class VITEK_ID(AuditModel):
     # Returns if an instance exists by CardBarcode
         return cls.objects.filter(card_barcode=CardBarcode).exists()
 
-   #------------------------------------------------
-    # @classmethod
-    # def check_from_dict(cls,cDict,valLog):
-    # #
-    # # Returns an instance from dictionary 
-    # #  with Validation_Log for validation check
-    # #  .validStatus if validated 
-    # #
-    #     validStatus = True
-    #     Barcode = VITEK_Card.get(cDict['CARD_BARCODE']) 
-    #     if Barcode is None:
-    #         validStatus = False
-    #         valLog.add_log('Error','VITEK card does not Exists',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
-
-    #     retInstance = cls.get(Barcode)
-    #     if retInstance is None:
-    #         retInstance = cls()
-    #         retInstance.card_barcode = Barcode
-    #         valLog.add_log('Info','New VITEK ID',f"{cDict['CARD_CODE']} ({cDict['CARD_BARCODE']})",'-')
-    #     else:
-    #         valLog.add_log('Info','Update VITEK ID',f"{cDict['CARD_CODE']} ({Barcode})",'-')
-
-    #     retInstance.process = cDict['VITEK_PROCESS']
-    #     retInstance.id_organism = cDict['ID_ORGANISM']
-    #     retInstance.id_probability = cDict['ID_PROBABILITY']
-    #     retInstance.id_confidence = cDict['ID_CONFIDENCE']
-    #     #retInstance.id_source = cDict['CARD_BARCODE']
-    #     retInstance.filename = cDict['FILENAME']
-    #     retInstance.page_no = cDict['PAGENO']  
-
-    #     retInstance.clean_Fields()
-    #     validDict = retInstance.validate()
-    #     if validDict:
-    #         validStatus = False
-    #         for k in validDict:
-    #             valLog.add_log('Warning',validDict[k],k,'-')
-
-    #     retInstance.VALID_STATUS = validStatus
-    #     return(retInstance)
 
 #=================================================================================================
 class MIC_COADD(AuditModel):
@@ -625,60 +586,6 @@ class MIC_COADD(AuditModel):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
 
-    # #------------------------------------------------
-    # @classmethod
-    # def check_from_dict(cls,cDict,valLog):
-    # #
-    # # Returns an instance from dictionary 
-    # #  with Validation_Log for validation check
-    # #  .validStatus if validated 
-    # #
-    #     validStatus = True
-    #     DrugID = Drug.get(cDict['DRUG_NAME'])
-    #     if DrugID is None:
-    #         validStatus = False
-    #         valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ",'-')
-
-    #     OrgBatchID = Organism_Batch.get(cDict['ORGBATCH_ID']) 
-    #     if OrgBatchID is None:
-    #         validStatus = False
-    #         valLog.add_log('Error','OrgBatchID does not Exists',f"{cDict['ORGBATCH_ID']} ",'-')
-
-    #     if validStatus:
-    #         retInstance = cls.get(OrgBatchID,DrugID,cDict['TESTPLATE_ID'],cDict['TESTWELL_ID'])
-    #     else:
-    #         retInstance = None
-               
-    #     if retInstance is None:
-    #         retInstance = cls()
-    #         retInstance.orgbatch_id = OrgBatchID
-    #         retInstance.drug_id = DrugID
-    #         retInstance.run_id = cDict['RUN_ID']
-    #         retInstance.testplate_id = cDict['TESTPLATE_ID']
-    #         retInstance.testwell_id = cDict['TESTWELL_ID']
-    #         valLog.add_log('Info','New MIC ',f"{OrgBatchID} {DrugID} {cDict['TESTPLATE_ID']}:{cDict['TESTWELL_ID']}",'-')
-        
-    #     retInstance.mic = cDict['MIC']
-    #     retInstance.mic_unit = cDict['MIC_UNIT']
-    #     retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],'BMD',None,verbose=1)
-
-    #     retInstance.plate_size = Dictionary.get(cls.Choice_Dictionary["plate_size"],cDict['PLATE_SIZE'],None,verbose=1)
-    #     retInstance.plate_material = Dictionary.get(cls.Choice_Dictionary["plate_material"],cDict['PLATE_MATERIAL'],None,verbose=1)
-
-    #     #retInstance.bp_profile = cDict['BP_PROFILE']
-    #     #retInstance.bp_source = cDict['BP_SOURCE']
-    #     #retInstance.media = Dictionary.get(cls.Choice_Dictionary["media"],cDict['MEDIA'],None,verbose=1)
-
-    #     retInstance.clean_Fields()
-    #     validDict = retInstance.validate()
-    #     if validDict:
-    #         validStatus = False
-    #         for k in validDict:
-    #             valLog.add_log('Warning',validDict[k],k,'-')
-
-    #     retInstance.VALID_STATUS = validStatus
-        
-    #     return(retInstance)
     
     # overide get value and get value from parent model
     def get_values(self, fields=None):
@@ -806,56 +713,6 @@ class MIC_Pub(AuditModel):
     def exists(cls,OrgID,DrugID,Source,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(organism_id=OrgID,drug_id=DrugID,source=Source).exists()
-
-    # #------------------------------------------------
-    # @classmethod
-    # def check_from_dict(cls,cDict,valLog):
-    # #
-    # # Returns an instance from dictionary 
-    # #  with Validation_Log for validation check
-    # #  .validStatus if validated 
-    # #
-    #     #print(cDict)
-    #     validStatus = True
-    #     DrugID = Drug.get(cDict['DRUG_NAME'])
-    #     if DrugID is None:
-    #         validStatus = False
-    #         valLog.add_log('Error','Drug does not Exists',f"{cDict['DRUG_NAME']} ",'-')
-
-    #     OrganismID = Organism.get(cDict['ORGANISM_ID']) 
-    #     if OrganismID is None:
-    #         validStatus = False
-    #         valLog.add_log('Error','OrganismID does not Exists',f"{cDict['ORGANISM_ID']} ",'-')
-
-    #     if validStatus:
-    #         retInstance = cls.get(OrganismID,DrugID,cDict['SOURCE'])
-    #     else:
-    #         retInstance = None
-               
-    #     if retInstance is None:
-    #         retInstance = cls()
-    #         retInstance.organism_id = OrganismID
-    #         retInstance.drug_id = DrugID
-    #         retInstance.source = cDict['SOURCE']
-    #         valLog.add_log('Info','New MIC ',f"{OrganismID} {DrugID} {cDict['SOURCE']}",'-')
-        
-    #     retInstance.mic = cDict['MIC']
-    #     retInstance.mic_unit = cDict['MIC_UNIT']
-    #     retInstance.mic_type = Dictionary.get(cls.Choice_Dictionary["mic_type"],cDict['SOURCE_TYPE'],None,verbose=1)
-    #     retInstance.bp_profile = cDict['BP_PROFILE']
-    #     retInstance.bp_source = cDict['BP_SOURCE']
-
-    #     retInstance.clean_Fields()
-    #     validDict = retInstance.validate()
-    #     if validDict:
-    #         validStatus = False
-    #         for k in validDict:
-    #             valLog.add_log('Warning',validDict[k],k,'-')
-
-    #     retInstance.VALID_STATUS = validStatus
-        
-    #     return(retInstance)
-
 
          # overide get value and get value from parent model
     def get_values(self, fields=None):

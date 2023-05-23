@@ -5,47 +5,59 @@
     </label>
 
   <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
-    <a
-      class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'drug_card'%}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="left"
-      title="{{objects_drug}} entries"
-      inactivate
-    >
+    <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" 
+      data-bs-toggle="tooltip" data-bs-placement="left" 
+      href="{%url 'drug_card' %}" title="{{objects_drug}} entries"
+      >
       DRUG
     </a>
-    <a
-      class="hex m-4 text-light"
-      href="{%url 'vitekcard_list'%}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="left"
-      title="{{objects_card}} entries"
-      inactivate
-    >
-      <span class="hex-txt"> VITEK CARD </span>
-    </a>
-    <div class="d-flex flex-column">
-      <a
-        class="badge land-badge bg-info border m-auto"
-        href="{%url 'mic_coadd_card'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title="{{objects_miccoadd}} entries"
-        inactivate
-      >
-        MIC COADD
-      </a>
-      <a
-        class="badge land-badge bg-info border m-auto"
-        href="{%url 'mic_pub_card'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title="{{objects_micpub}} entries"
-        inactivate
-      >
-        MIC Pub
-      </a>
-    </div>
+    <div class="row">
+      <div class="col">
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'vitekcard_list'%}" title="{{nVID}} entries"          
+          inactivate
+        >
+          Vitek Id
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'vitekcard_list'%}" title="{{nVAST}} entries"          
+          inactivate
+        >
+          Vitek AST
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'vitekast_list'%}" title="{{nVCard}} entries"          
+          inactivate
+        >
+          Vitek Cards
+        </a>
+      </div>
+      <div class="col">
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip"
+          data-bs-placement="left"
+          href="{%url 'mic_coadd_list'%}" title="{{nMICC}} entries"
+          inactivate
+          >
+          Antibiograms
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'mic_pub_list'%}" title="{{nMICP}} entries"          
+          inactivate
+          >
+          MIC Public
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'mic_pub_card'%}" title="{{nBP}} entries"          
+          inactivate
+          >
+          Breakpoints
+        </a>
+      </div>
   </div>
 </div>

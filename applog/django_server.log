@@ -166,3 +166,145 @@ django.utils.autoreload INFO 2023-05-23 14:49:34,775 autoreload 15140 25904 C:\D
 django.utils.autoreload INFO 2023-05-23 14:49:37,631 autoreload 592 15176 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-05-23 14:50:37,710 autoreload 592 15176 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
 django.utils.autoreload INFO 2023-05-23 14:50:40,031 autoreload 24844 17612 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:01:48,914 autoreload 18848 2692 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:02:30,317 autoreload 13000 23148 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:02:39,356 basehttp 13000 18792 "GET / HTTP/1.1" 200 11224
+django.server INFO 2023-05-24 08:02:39,393 basehttp 13000 18792 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,396 basehttp 13000 9204 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,413 basehttp 13000 9752 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,413 basehttp 13000 9204 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,414 basehttp 13000 18792 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,416 basehttp 13000 8416 "GET /static/css/custom_select2.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,429 basehttp 13000 18792 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,430 basehttp 13000 9204 "GET /static/js/loadModal.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,431 basehttp 13000 8416 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,432 basehttp 13000 9752 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,432 basehttp 13000 20652 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,432 basehttp 13000 24952 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,488 basehttp 13000 9752 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:02:39,761 basehttp 13000 9752 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-05-24 08:02:41,633 basehttp 13000 9752 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-05-24 08:02:42,433 basehttp 13000 9752 "GET /index/ HTTP/1.1" 200 20911
+django.server INFO 2023-05-24 08:02:42,461 basehttp 13000 9752 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-05-24 08:08:03,739 autoreload 13000 23148 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:08:05,592 autoreload 6832 7896 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:09:26,745 autoreload 6832 7896 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:09:28,772 autoreload 11732 28432 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:09:35,252 autoreload 11732 28432 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:09:37,145 autoreload 8424 7888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:09:40,282 autoreload 8424 7888 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:09:42,181 autoreload 17124 13280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:09:46,434 autoreload 17124 13280 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:09:48,343 autoreload 5008 11156 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:09:50,677 basehttp 5008 14820 "GET /index/ HTTP/1.1" 200 20910
+django.server INFO 2023-05-24 08:11:13,767 basehttp 5008 14820 "GET /index/ HTTP/1.1" 200 20919
+django.server INFO 2023-05-24 08:16:20,120 basehttp 5008 10400 "GET /index/ HTTP/1.1" 200 20920
+django.server INFO 2023-05-24 08:19:00,347 basehttp 5008 10400 "GET /index/ HTTP/1.1" 200 20896
+django.server INFO 2023-05-24 08:26:11,939 basehttp 5008 22524 "GET /index/ HTTP/1.1" 200 21076
+django.server INFO 2023-05-24 08:26:39,248 basehttp 5008 22524 "GET /ddrug/vitekcard_list HTTP/1.1" 200 135642
+django.server INFO 2023-05-24 08:26:39,289 basehttp 5008 22524 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:26:39,291 basehttp 5008 7896 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 08:26:39,453 basehttp 5008 7896 "GET /static/js/vitek_datamap.js HTTP/1.1" 200 2703
+django.server INFO 2023-05-24 08:27:08,751 basehttp 5008 7896 "GET /index/ HTTP/1.1" 200 21096
+django.server INFO 2023-05-24 08:28:38,046 basehttp 5008 7896 "GET /index/ HTTP/1.1" 200 21016
+django.utils.autoreload INFO 2023-05-24 08:31:11,875 autoreload 5008 11156 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:31:14,074 autoreload 24692 21232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:31:17,718 autoreload 24692 21232 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:31:19,385 autoreload 27280 22096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:31:38,261 autoreload 27280 22096 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:31:40,162 autoreload 26576 17072 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:31:55,422 autoreload 26576 17072 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:31:57,254 autoreload 27124 27340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:32:16,462 autoreload 27124 27340 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:32:18,190 autoreload 26696 20032 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:33:08,477 basehttp 26696 12032 "GET /index/ HTTP/1.1" 200 21717
+django.server INFO 2023-05-24 08:34:02,534 basehttp 26696 12032 "GET /ddrug/mic-pub_card HTTP/1.1" 200 194204
+django.server INFO 2023-05-24 08:34:27,983 basehttp 26696 12032 "GET /index/ HTTP/1.1" 200 21717
+django.server INFO 2023-05-24 08:36:19,500 basehttp 26696 12032 "GET /index/ HTTP/1.1" 200 21834
+django.server INFO 2023-05-24 08:37:14,362 basehttp 26696 12032 "GET /dorganism/taxonomy_card HTTP/1.1" 200 274295
+django.utils.autoreload INFO 2023-05-24 08:39:28,895 autoreload 26696 20032 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:39:30,689 autoreload 27252 16996 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:39:36,701 autoreload 27252 16996 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:39:38,416 autoreload 12792 27232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:39:42,116 autoreload 12792 27232 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:39:43,880 autoreload 19460 14996 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:39:52,282 autoreload 19460 14996 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:39:53,999 autoreload 1392 25680 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:39:58,889 autoreload 1392 25680 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:00,594 autoreload 10424 9484 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:03,907 autoreload 10424 9484 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:05,532 autoreload 27340 5584 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:12,413 autoreload 27340 5584 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:14,023 autoreload 8276 12300 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:28,110 autoreload 8276 12300 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:29,960 autoreload 22988 17264 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:33,441 autoreload 22988 17264 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:35,238 autoreload 17724 22680 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:37,909 autoreload 17724 22680 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:39,569 autoreload 15184 25284 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:42,178 autoreload 15184 25284 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:43,814 autoreload 23544 5104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:47,808 autoreload 23544 5104 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:49,436 autoreload 24184 19124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:53,279 autoreload 24184 19124 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:54,955 autoreload 8256 22276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:40:57,697 autoreload 8256 22276 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:40:59,456 autoreload 26968 25744 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:03,364 autoreload 26968 25744 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:05,047 autoreload 12244 26244 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:08,898 autoreload 12244 26244 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:10,574 autoreload 27188 2100 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:15,774 autoreload 27188 2100 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:17,439 autoreload 11664 23500 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:20,062 autoreload 11664 23500 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:21,826 autoreload 19516 3640 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:24,554 autoreload 19516 3640 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:26,271 autoreload 2416 12264 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:31,262 autoreload 2416 12264 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:33,023 autoreload 22016 8452 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:39,283 autoreload 22016 8452 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:41,183 autoreload 14032 24164 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:41:43,733 autoreload 14032 24164 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:41:45,412 autoreload 10396 26752 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:42:24,547 basehttp 10396 25476 "GET /index/ HTTP/1.1" 200 21824
+django.utils.autoreload INFO 2023-05-24 08:42:46,609 autoreload 10396 26752 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:42:48,274 autoreload 11764 15948 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:42:56,692 autoreload 11764 15948 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:42:58,316 autoreload 18360 27436 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:04,024 autoreload 18360 27436 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:05,681 autoreload 21584 19196 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:13,140 autoreload 21584 19196 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:14,796 autoreload 18888 26156 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:17,459 autoreload 18888 26156 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:19,162 autoreload 20120 18228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:21,837 autoreload 20120 18228 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:23,463 autoreload 13236 17220 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:30,541 autoreload 13236 17220 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:32,320 autoreload 7880 9192 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:36,957 autoreload 7880 9192 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:38,725 autoreload 15724 23912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:44,606 autoreload 15724 23912 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:46,445 autoreload 4044 26372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:43:50,024 autoreload 4044 26372 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:43:51,877 autoreload 9844 23208 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:02,474 autoreload 9844 23208 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:04,189 autoreload 21032 25528 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:08,932 autoreload 21032 25528 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:10,544 autoreload 26196 15104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:14,090 autoreload 26196 15104 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:15,805 autoreload 1072 20340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:19,303 autoreload 1072 20340 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:21,012 autoreload 21964 21380 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:24,526 autoreload 21964 21380 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:26,302 autoreload 19976 4904 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:32,162 autoreload 19976 4904 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:34,020 autoreload 25476 26752 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:37,628 autoreload 25476 26752 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:39,497 autoreload 13788 17004 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:43,471 autoreload 13788 17004 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:45,367 autoreload 12340 27272 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 08:44:50,372 autoreload 12340 27272 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:44:52,069 autoreload 18136 25888 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 08:45:34,751 basehttp 18136 23988 "GET /index/ HTTP/1.1" 200 21843
+django.utils.autoreload INFO 2023-05-24 08:46:01,156 autoreload 18136 25888 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 08:46:02,790 autoreload 25032 16512 Watching for file changes with StatReloader

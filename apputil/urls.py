@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
+from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
     exportCSV, Importhandler_apputils) 
 
