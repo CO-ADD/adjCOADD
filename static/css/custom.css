@@ -430,6 +430,22 @@ nav.shrink .dropdown-divider {
 
 /* ------------------- */
 /* ----Landing page badges custom style */
+.Land-frame-hidden, .Land-frame-hidden label span{
+  color: transparent !important;
+  border: None !important;
+  
+}
+.Land_frame_show{
+   /* Initial border style */
+   /* border: 0 solid grey; */
+
+   /* Animation */
+   animation-name: borderAnimation;
+   animation-duration: 2s;
+   animation-timing-function: linear;
+   animation-fill-mode: forwards;
+}
+
 .landp-img-01 {
   height: 8rem;
   width: 8rem;
@@ -972,6 +988,21 @@ form p {
   100% {
     transform: scale(1);
     transform: rotate(90deg);
+  }
+}
+
+@keyframes borderAnimation {
+  0% {
+    border-width: 0;
+    border-color:transparent;
+    border-style:solid;
+    
+  }
+
+  100% {
+    border-width: 5px;
+    border-color: grey;
+    border-style:solid;
   }
 }
 

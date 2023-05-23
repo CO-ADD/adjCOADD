@@ -8,8 +8,7 @@ from .views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, Drug
     detailVitekcard,  VitekcardListView, VitekastListView, smartsQuery, 
     ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView)#VitekcardListView,
-from .upload_views import Import_VitekView, get_upload_progress, cancel_upload
-
+from .upload_views import Import_VitekView
 
 
 urlpatterns = [
@@ -42,9 +41,6 @@ urlpatterns = [
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
 
     path('import-vitek/', Import_VitekView.as_view(), name='import-vitek'),
-    # path("ketcher/", iframe_url, name="ketcher"),
-    path('import-vitek/get_upload_progress/', get_upload_progress, name='get_upload_progress'),
-    path('cancel_upload/', cancel_upload, name='cancel_upload'),
 
     
 ]

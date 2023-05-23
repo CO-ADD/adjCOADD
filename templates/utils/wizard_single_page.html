@@ -1,149 +1,105 @@
 <!-- Step line container -->
 <div class="m-2" style="height: fit-content;">
   <h1 class="m-5 text-center">{{data_model}} Data Import</h1>
-  <form
-    method="post"
-    enctype="multipart/form-data"
-    class="row m-5 text-center"
-  >
+  <form method="post" enctype="multipart/form-data" class="row m-5 text-center">
     {% csrf_token %}
     <!--  -->
     {{ wizard.management_form }}
     <!-- Left column (Prcoess Action Area) -->
     <div class="col-md-5 border border-2" style="position: relative;">
-      <h4
-        class="bg-light px-5"
-        style="position: absolute; left: 30%; top: -15px"
-      >
+      <h4 class="bg-light px-5" style="position: absolute; left: 30%; top: -15px">
         Process
       </h4>
-
+      <!-- Process step Line -->
       <div class="step-line">
-        <div
-          class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}"
-        >
+        <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">
           Upload File
         </div>
-        <div
-          class="step {% if wizard.steps.current == 'step1' %}active{% endif %}"
-        >
+        <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}">
           {{step1}}
         </div>
 
         <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
 
-        <div
-          class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}"
-        >
+        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
           Finalize
         </div>
       </div>
       <!-- Process steps Area -->
-   
-        <!-- Process step Line -->
-        
-        <!-- Steps Forms -->
-        <div class="row border bg-light" style="height: 20em">
-          {% if wizard.steps.current == 'upload_file' %}
-           
-          <div class="p-3 m-auto border">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto border">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
-          </div>
-          <!-- This is step 1-->
-          {% elif wizard.steps.current == 'step1' %}
-          <div class="p-3 m-auto border">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto border">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
-          </div>
+      <!-- Steps Forms -->
+      <div class="row border bg-light" style="height: 20em">
+        {% if wizard.steps.current == 'upload_file' %}
 
-          <!-- add more steps here: ...-->
-
-          <!-- This is the final-->
-          {% elif wizard.steps.current == 'finalize' %}
-          <div class="p-3 m-auto border">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto border">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
             <!--prettier-ignore-->
-            {% endfor %}
-          </div>
-          {% endif %}
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          {% endfor %}
         </div>
-   
+        <!-- This is step 1-->
+        {% elif wizard.steps.current == 'step1' %}
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
+            <!--prettier-ignore-->
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          {% endfor %}
+        </div>
+
+        <!-- add more steps here: ...-->
+
+        <!-- This is the final-->
+        {% elif wizard.steps.current == 'finalize' %}
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
+            <!--prettier-ignore-->
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+
+          <!--prettier-ignore-->
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
       <!-- Button Actions -->
       <div class="row m-5 border">
         {% if wizard.steps.prev %}
-        <button
-          class="btn btn-sm m-auto col-md-3"
-          type="button"
-          id="cancel-button"
-        >
+        <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button" onclick="window.location.reload(true);">
           <i class="fa-solid fa-ban"></i>
         </button>
-        <button
-          class="btn btn-sm m-auto col-md-3"
-          name="wizard_goto_step"
-          type="submit"
-          value="{{ wizard.steps.prev }}"
-        >
+        <button class="btn btn-sm m-auto col-md-3" name="wizard_goto_step" type="submit"
+          value="{{ wizard.steps.prev }}">
           <i class="fa-solid fa-left-long"></i>
         </button>
         {%else%}
-          <button
-          class="btn btn-sm m-auto col-md-3"
-          type="button"
-          id="cancel-button"
-        >
+        <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button" onclick="window.location.reload(true);">
           <i class="fa-solid fa-ban"></i>
         </button>
-        <button
-          class="btn btn-sm m-auto col-md-3"
-          name="wizard_goto_step"
-          disabled
-        >
+        <button class="btn btn-sm m-auto col-md-3" disabled>
           <i class="fa-solid fa-left-long"></i>
         </button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-        <button
-          class="btn btn-sm m-auto col-md-3 nextstep"
-          type="submit"
-          value="Next"
-        >
+        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Next">
           <i class="fa-solid fa-right-long"></i>
         </button>
         {%elif wizard.steps.next%}
 
-        <button
-          class="btn btn-sm m-auto col-md-3 nextstep"
-          type="submit"
-          value="Click to start"
-        >
+        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Click to start">
           <i class="fa-solid fa-play"></i>
         </button>
         {%else%}
-        <button
-          class="btn btn-sm m-auto col-md-3"
-          type="submit"
-          value="Finalize"
-        >
+        <button class="btn btn-sm m-auto col-md-3" type="submit" value="Finalize">
           <i class="fa-solid fa-check"></i>
         </button>
 
@@ -153,30 +109,20 @@
     <!-- Right column (Process Message)-->
     <!--  -->
     <div class="col-md-7 border border-2" style="position: relative">
-      <h4
-        class="bg-light px-4"
-        style="position: absolute; left: 30%; top: -15px"
-      >
+      <h4 class="bg-light px-4" style="position: absolute; left: 30%; top: -15px">
         Message
       </h4>
       <div class="progress_message">
         <div class="progress mt-3" style="height: 20px">
-          <span
-            id="progress-bar"
-            class="progress-bar"
-            role="progressbar"
-            style="width: 0%"
-            aria-valuenow="0"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >
+          <span id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">
             0%
           </span>
         </div>
         <div class="mt-5">
-          <h3 class="selectfiles not-visible">Selected Files</h3>
-          <ul class="text-start" id="multi-files-list"></ul>
-          <ul class="progressfilename text-info text-start"></ul>
+          <h3 class="selectfiles not-visible text-start text-info ms-2">Selected Files</h3>
+          <ul class="text-start mb-5" id="multi-files-list"></ul>
+          
           <!--prettier-ignore-->
           {% for field in wizard.form %}
           {% for error in field.errors %}
@@ -185,13 +131,8 @@
           <!--  -->
           {% endfor %}
           <div>{{progress}}</div>
-          <div class="spinner-border" role="status" id="loading">
-            <span class="text-info"><i class="fa-solid fa-gear"></i></span>
-          </div>
-          <div
-            class="validation_result overflow-auto p-0 m-2"
-            style="max-height: 500px"
-          >
+         
+          <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
             {{validation_result | safe}}
           </div>
         </div>
@@ -206,7 +147,7 @@
 
   if ("{{ form.multi_files.auto_id }}") {
     $("#{{ form.multi_files.auto_id }}").on("change", function () {
-      if($(".selectfiles").hasClass("not-visible")){
+      if ($(".selectfiles").hasClass("not-visible")) {
 
         $(".selectfiles").removeClass("not-visible")
       }
@@ -226,116 +167,8 @@
     });
   }
 </script>
-
-<!-- Scheduled Ajax Call to retrieve Progress and Result -->
 <script>
-  $(document).ready(function () {
-    $("#loading").show();
-    console.log("loading")
-    if(!$(".selectfiles").hasClass("not-visible")){
-      $(".selectfiles").addClass("not-visible")
-    }
-    let timefunction; // Declare it outside the function so it can be accessed later.
-    let isActive = true; // Variable to track user activity
-    let lastProcessed = 0; // Variable to store the last processed value
-    let preVersion = sessionStorage.getItem("preVersion") || null; //identify retrieved data from server
-    // Disable Confirm (save to dB) Button initially
-    if ($("input:checkbox")) {
-      $("input:checkbox").attr("disabled", true);
-    }
-    // retrieve progress and call fetch_result func.
-    function updateProgress() {
-     
-       console.log("loading")
-      $.ajax({
-        url: "{% url 'get_upload_progress' %}",
-        type: "GET",
-        success: function (data) {
-          if (data.uploadpdf_version.toString() !== preVersion) {
-            //Ensure only display updated Data
-            $("#loading").hide();
-            // Set Progress bar and list finished files
-            let processed = data.processed;
-            let total = data.total;
-            let file_name = data.file_name;
-            let percentage =
-              total > 0 ? Math.round((processed / total) * 100) : 0;
-            $("#progress-bar")
-              .css("width", percentage + "%")
-              .attr("aria-valuenow", percentage)
-              .text(
-                percentage +
-                  "%" +
-                  " (" +
-                  processed +
-                  " in " +
-                  total +
-                  "total files)"
-              );
-
-            $("#multi-files-list li")
-              .filter(function () {
-                var multi_files_list = $(this).data("name");
-                return file_name.includes(multi_files_list);
-              })
-              .addClass("text-success");
-
-            if (processed == total && processed > 0) {
-              clearTimeout(timefunction);
-            } else if (isActive) {
-              // Only set new timeout if user is active
-              timefunction = setTimeout(updateProgress, 500);
-            }
-            sessionStorage.setItem("preVersion", data.uploadpdf_version);
-            // preVersion = data.uploadpdf_version;
-          } 
-          // else {
-          //   timefunction = setTimeout(updateProgress, 500);
-          // }
-        },
-      });
-    }
-
-    // Start the initial timeout
-    let timeoutDelay = 900000; // Adjust this value to set the inactivity timeout 15min (in milliseconds)
-    let inactivityTimeout;
-
-    function resetInactivityTimeout() {
-      console.log("restart");
-      clearTimeout(inactivityTimeout);
-      inactivityTimeout = setTimeout(stopProgressUpdate, timeoutDelay);
-    }
-
-    function stopProgressUpdate() {
-      console.log("Inactivity detected. Stopping progress update.");
-      clearTimeout(timefunction);
-      isActive = false; // User is inactive
-    }
-
-    // Add event listeners to reset the inactivity timeout on user interaction
-    $(document).on("click keydown", function () {
-      isActive = true; // User is active
-      resetInactivityTimeout();
-    });
-
-    // Start the initial progress update
-    updateProgress();
-    resetInactivityTimeout();
-  });
-</script>
-<!-- This call will interrupt thread, reset process -->
-<script>
-  $(document).ready(function () {
-    $("#cancel-button").click(function () {
-      console.log("cancel")
-      $.ajax({
-        url: "{% url 'cancel_upload' %}",
-        success: function (result) {
-          $("#loading").hide()
-          $(".validation_result").append("<h4 class=text-info>"+result+"</h4>")
-          window.location.href = "{% url 'import-vitek' %}";
-        },
-      });
-    });
-  });
+  $('button[name="wizard_goto_step"').click(()=>{
+    $("#id_step1-confirm").removeAttr('required')
+  })
 </script>

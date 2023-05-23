@@ -34,7 +34,7 @@ def index(req):
     object_3=Drug.objects.count()
     object_4=VITEK_Card.objects.count()
     
-    return render(req, 'dorganism/home.html', {'objects_org': object_1, 'objects_taxo':object_2, 'objects_drug':object_3, 'objects_card':object_4})
+    return render(req, 'home.html', {'objects_org': object_1, 'objects_taxo':object_2, 'objects_drug':object_3, 'objects_card':object_4})
 ## =================================APP Home======================================##
 
 ## =================================APP Log in/out =================================
