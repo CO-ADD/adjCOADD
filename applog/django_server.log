@@ -104,3 +104,65 @@ django.server INFO 2023-05-23 14:34:02,604 basehttp 23672 1872 "GET /static/js/f
 django.server INFO 2023-05-23 14:34:02,623 basehttp 23672 1872 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
 django.server INFO 2023-05-23 14:34:02,624 basehttp 23672 8752 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
 django.server INFO 2023-05-23 14:34:16,654 basehttp 23672 8752 "GET /ddrug/vitekast_list HTTP/1.1" 200 86774
+django.utils.autoreload INFO 2023-05-23 14:38:07,813 autoreload 23672 24376 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:38:10,416 autoreload 11280 13492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:38:15,825 autoreload 11280 13492 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:38:18,392 autoreload 25652 7368 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:38:42,023 autoreload 25652 7368 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:38:44,427 autoreload 17424 3480 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:39:30,449 autoreload 17424 3480 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:39:32,807 autoreload 11672 14636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:39:47,299 autoreload 11672 14636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:39:49,406 autoreload 13264 13456 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:40:50,403 autoreload 13264 13456 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:40:53,941 autoreload 21496 23092 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:40:58,827 autoreload 21496 23092 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:41:01,772 autoreload 21940 21196 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:41:11,228 autoreload 21940 21196 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:41:13,612 autoreload 15780 23300 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:41:21,028 autoreload 15780 23300 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:41:23,161 autoreload 17788 15076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:41:28,098 autoreload 17788 15076 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:41:30,742 autoreload 15256 14052 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:41:37,366 autoreload 15256 14052 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:41:40,191 autoreload 26064 28412 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:41:59,042 autoreload 26064 28412 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:42:01,822 autoreload 1644 27864 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:42:06,819 autoreload 1644 27864 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:42:09,141 autoreload 6348 28216 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:42:24,828 autoreload 6348 28216 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:42:26,848 autoreload 15420 9720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:42:33,057 autoreload 15420 9720 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:42:35,478 autoreload 8072 13900 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:43:41,468 autoreload 8072 13900 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:43:43,713 autoreload 12276 27044 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:43:57,349 autoreload 12276 27044 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:44:00,581 autoreload 12000 20292 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:44:39,988 autoreload 12000 20292 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:44:42,709 autoreload 13104 19464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:44:50,081 autoreload 13104 19464 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:44:51,774 autoreload 2196 26092 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:44:59,210 autoreload 2196 26092 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:01,382 autoreload 13720 23560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:06,278 autoreload 13720 23560 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:08,674 autoreload 8824 27972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:13,585 autoreload 8824 27972 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:16,376 autoreload 20956 4740 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:24,942 autoreload 20956 4740 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:27,192 autoreload 25184 1144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:32,501 autoreload 25184 1144 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:34,809 autoreload 21524 7536 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:45,018 autoreload 21524 7536 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:46,981 autoreload 27268 20608 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:45:55,453 autoreload 27268 20608 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:45:57,348 autoreload 17736 13492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:46:14,292 autoreload 17736 13492 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:46:16,672 autoreload 13720 11372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:46:21,010 autoreload 13720 11372 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:46:23,457 autoreload 20468 15956 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:46:41,470 autoreload 20468 15956 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:46:44,756 autoreload 15140 25904 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:49:34,775 autoreload 15140 25904 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:49:37,631 autoreload 592 15176 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-23 14:50:37,710 autoreload 592 15176 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-05-23 14:50:40,031 autoreload 24844 17612 Watching for file changes with StatReloader
