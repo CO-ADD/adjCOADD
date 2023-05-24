@@ -5,109 +5,109 @@
     {% csrf_token %}
     <!--  -->
     {{ wizard.management_form }}
-    <!-- Left column (Prcoess Action Area) -->
+
+    <!-- Top row (Process Action Area) -->
     <div class="col-md-5 border border-2" style="position: relative;">
       <h4 class="bg-light px-5" style="position: absolute; left: 30%; top: -15px">
         Process
       </h4>
       <!-- Process step Line -->
       <div class="step-line">
-        <div class="step {% if wizard.steps.current == 'upload_file' %}active{% endif %}">
-          Upload File
+        <div class="step {% if wizard.steps.current == 'select_file' %}active{% endif %}">
+          Select Files
         </div>
-        <div class="step {% if wizard.steps.current == 'step1' %}active{% endif %}">
+        <div class="step {% if wizard.steps.current == 'upload' %}active{% endif %}">
           {{step1}}
         </div>
 
         <!-- add more steps here for example:    <div class="step {% if wizard.steps.current == 'step2' %}active{% endif %}">{{step2}}</div> -->
 
         <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
-          Finalize
+          Finalise
         </div>
       </div>
       <!-- Process steps Area -->
       <!-- Steps Forms -->
       <div class="row border bg-light" style="height: 20em">
-        {% if wizard.steps.current == 'upload_file' %}
+        {% if wizard.steps.current == 'select_file' %}
+          <div class="p-3 m-auto">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
+            {% endfor %}
+        </div>
 
-        <div class="p-3 m-auto">
-          {% for field in wizard.form %}
-          <p class="p-auto m-auto">
-            <!--prettier-ignore-->
-            {{ field.label_tag }}
-            <strong>{{ field.help_text }}</strong>{{field }}
-          </p>
-          {% endfor %}
-        </div>
         <!-- This is step 1-->
-        {% elif wizard.steps.current == 'step1' %}
-        <div class="p-3 m-auto">
-          {% for field in wizard.form %}
-          <p class="p-auto m-auto">
-            <!--prettier-ignore-->
-            {{ field.label_tag }}
-            <strong>{{ field.help_text }}</strong>{{field }}
-          </p>
-          {% endfor %}
-        </div>
+        {% elif wizard.steps.current == 'upload' %}
+          <div class="p-3 m-auto">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
+            {% endfor %}
+          </div>
 
         <!-- add more steps here: ...-->
 
         <!-- This is the final-->
         {% elif wizard.steps.current == 'finalize' %}
-        <div class="p-3 m-auto">
-          {% for field in wizard.form %}
-          <p class="p-auto m-auto">
-            <!--prettier-ignore-->
-            {{ field.label_tag }}
-            <strong>{{ field.help_text }}</strong>{{field }}
-          </p>
+          <div class="p-3 m-auto">
+            {% for field in wizard.form %}
+            <p class="p-auto m-auto">
+              <!--prettier-ignore-->
+              {{ field.label_tag }}
+              <strong>{{ field.help_text }}</strong>{{field }}
+            </p>
 
-          <!--prettier-ignore-->
-          {% endfor %}
-        </div>
+            <!--prettier-ignore-->
+            {% endfor %}
+          </div>
         {% endif %}
       </div>
 
       <!-- Button Actions -->
       <div class="row m-5 border">
         {% if wizard.steps.prev %}
-        <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
-          onclick="window.location.reload(true);">
-          <i class="fa-solid fa-ban"></i>
-        </button>
-        <button class="btn btn-sm m-auto col-md-3" name="wizard_goto_step" type="submit"
-          value="{{ wizard.steps.prev }}">
-          <i class="fa-solid fa-left-long"></i>
-        </button>
-        {%else%}
-        <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
-          onclick="window.location.reload(true);">
-          <i class="fa-solid fa-ban"></i>
-        </button>
-        <button class="btn btn-sm m-auto col-md-3" disabled>
-          <i class="fa-solid fa-left-long"></i>
-        </button>
+          <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
+            onclick="window.location.reload(true);">
+            <i class="fa-solid fa-ban"></i>
+          </button>
+          <button class="btn btn-sm m-auto col-md-3" name="wizard_goto_step" type="submit"
+            value="{{ wizard.steps.prev }}">
+            <i class="fa-solid fa-left-long"></i>
+          </button>
+        {% else %}
+          <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
+            onclick="window.location.reload(true);">
+            <i class="fa-solid fa-ban"></i>
+          </button>
+          <button class="btn btn-sm m-auto col-md-3" disabled>
+            <i class="fa-solid fa-left-long"></i>
+          </button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Next">
-          <i class="fa-solid fa-right-long"></i>
-        </button>
-        {%elif wizard.steps.next%}
-
-        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Click to start">
-          <i class="fa-solid fa-play"></i>
-        </button>
-        {%else%}
-        <button class="btn btn-sm m-auto col-md-3" type="submit" value="Finalize">
-          <i class="fa-solid fa-check"></i>
-        </button>
-
-        {%endif%}
+          <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Next">
+            <i class="fa-solid fa-right-long"></i>
+          </button>
+        {% elif wizard.steps.next %}
+          <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Click to start">
+            <i class="fa-solid fa-play"></i>
+          </button>
+        {% else %}
+          <button class="btn btn-sm m-auto col-md-3" type="submit" value="Finalize">
+            <i class="fa-solid fa-check"></i>
+          </button>
+        {% endif %}
       </div>
     </div>
+
     <!-- Right column (Process Message)-->
     <!--  -->
     <div class="col-md-7 border border-2" style="position: relative">
@@ -127,9 +127,9 @@
 
           <!--prettier-ignore-->
           {% for field in wizard.form %}
-          {% for error in field.errors %}
-          <p class="text-danger show-error">{{ error }}</p>
-          {% endfor %}
+            {% for error in field.errors %}
+              <p class="text-danger show-error">{{ error }}</p>
+            {% endfor %}
           <!--  -->
           {% endfor %}
           <div>{{progress}}</div>

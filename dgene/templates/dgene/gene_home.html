@@ -1,58 +1,51 @@
 <div class="Land_banner m-auto mt-5 bg-transparent Land-frame-hidden"  style="width: 36rem">
 
     <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
-      <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Gene</span>
+      <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Genetics</span>
     </label>
 
-  <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
+  <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
     <a
       class="landp-img-01 d-flex align-items-center justify-content-center h4 lead"
-      href="{%url 'gene_list'%}"
-      data-bs-toggle="tooltip"
-      data-bs-placement="left"
-      title=" entries"
+      data-bs-toggle="tooltip" data-bs-placement="left"
+      href="{%url 'gene_list'%}" title=" {{nGene}} entries"
     >
       Gene
     </a>
-    <div class="d-flex flex-column mx-2">
-      <a
-        class="hex text-light"
-        href="{%url 'id_pub_list'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title=" entries"
-      >
-        <span class="hex-txt"> ID_Pub </span>
-      </a>
-      <a
-        class="hex text-light"
-        href="{%url 'sequence_list'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title=" entries"
-      >
-        <span class="hex-txt"> Sequence </span>
-      </a>
-    </div>
-    <div class="d-flex flex-column mx-2">
-      <a
-        class="badge land-badge bg-info border m-auto"
-        href="{%url 'wgs-fastqc_list'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title=" entries"
-      >
-        WGS_FastQC
-      </a>
-      <a
-        class="badge land-badge bg-info border m-auto"
-        href="{%url 'wgs-checkm_list'%}"
-        data-bs-toggle="tooltip"
-        data-bs-placement="left"
-        title=" entries"
-      >
-        WGS_CheckM
-      </a>
+
+    <div class="row">
+      <div class="col">
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'sequence_list'%}" title="{{nIDS}} entries"          
+          inactivate
+        >
+          ID by Sequence
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'id_pub_list'%}" title="{{nIDP}} entries"          
+          inactivate
+        >
+          ID from Public
+      </div>
+      <div class="col">
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip"
+          data-bs-placement="left"
+          href="{%url 'wgs-fastqc_list'%}" title="{{nFastQC}} entries"
+          inactivate
+          >
+          FastQC - WGS
+        </a>
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'wgs-checkm_list'%}" title="{{nCheckM}} entries"          
+          inactivate
+          >
+          CheckM - WGS
+        </a>
+      </div>
     </div>
   </div>
 </div>
