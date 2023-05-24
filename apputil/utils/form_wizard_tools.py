@@ -117,6 +117,7 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
                 files.append(request.FILES['single_file'])
             if 'folder_files' in request.FILES:
                 files.extend(request.FILES.getlist('folder_files'))
+ 
             # here can add extra functions for files
 
 

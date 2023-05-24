@@ -1,6 +1,7 @@
 """
 
 """
+import pandas as pd
 import logging
 logger = logging.getLogger(__name__)
 
@@ -90,6 +91,14 @@ class Validation_Log():
             for l in self.Logs[t]:
                 retLst.append({'Type': t, } | l)
         return(retLst)
+
+    def get_asdf(self,logTypes= ['Error','Warning', 'Info']):
+        return(pd.DataFrame(self.get_aslist(logTypes=logTypes)))
+
+    def get_ashtml(self,logTypes= ['Error','Warning', 'Info'],classes=None,columns=None,index=False):
+        df = self.get_asdf(logTypes=logTypes)
+        html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
+        return(html)
 
     def info(self,logTypes= ['Error','Warning', 'Info']):
         self.info={}

@@ -26,9 +26,12 @@
           Finalise
         </div>
       </div>
+
       <!-- Process steps Area -->
       <!-- Steps Forms -->
       <div class="row border bg-light" style="height: 20em">
+
+        <!-- This is Select File Step -->
         {% if wizard.steps.current == 'select_file' %}
           <div class="p-3 m-auto">
             {% for field in wizard.form %}
@@ -40,7 +43,7 @@
             {% endfor %}
         </div>
 
-        <!-- This is step 1-->
+        <!-- This is Upload Step -->
         {% elif wizard.steps.current == 'upload' %}
           <div class="p-3 m-auto">
             {% for field in wizard.form %}
@@ -52,9 +55,7 @@
             {% endfor %}
           </div>
 
-        <!-- add more steps here: ...-->
-
-        <!-- This is the final-->
+        <!-- This is the Final Step-->
         {% elif wizard.steps.current == 'finalize' %}
           <div class="p-3 m-auto">
             {% for field in wizard.form %}
@@ -72,6 +73,7 @@
 
       <!-- Button Actions -->
       <div class="row m-5 border">
+
         {% if wizard.steps.prev %}
           <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
             onclick="window.location.reload(true);">
@@ -110,6 +112,7 @@
 
     <!-- Right column (Process Message)-->
     <!--  -->
+
     <div class="col-md-7 border border-2" style="position: relative">
       <h4 class="bg-light px-4" style="position: absolute; left: 30%; top: -15px">
         Message
@@ -122,7 +125,9 @@
           </span>
         </div>
         <div class="mt-5">
-          <h3 class="selectfiles not-visible text-start text-info ms-2">Selected Files</h3>
+          <h3 class="selectfiles not-visible text-start text-info ms-2">
+          Selected Files
+          </h3>
           <ul class="text-start mb-5" id="multi-files-list"></ul>
 
           <!--prettier-ignore-->
@@ -134,8 +139,16 @@
           {% endfor %}
           <div>{{progress}}</div>
 
-          <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
-            {{validation_result | safe}}
+          {% if validation_message != None %}
+            <h3>
+              {{validation_message}}
+            </h3>
+          {% endif %}
+
+          {% if validation_result != None %}
+            <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
+              {{validation_result | safe}}
+          {% endif %}
           </div>
         </div>
       </div>
@@ -170,7 +183,7 @@
   }
 </script>
 <script>
-  let confirm = "{{Confirm_to_Save}}"
+  let confirm = "{{confirm_to_upload}}"
   if ($("input:checkbox")) {
     if (confirm === 'True') {
 

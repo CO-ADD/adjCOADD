@@ -14,12 +14,12 @@ from apputil.utils.form_wizard_tools import ImportHandler_WizardView, SelectFile
 from apputil.utils.validation_log import * 
 from dorganism.models import Organism_Batch
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
-from ddrug.utils.vitek import upload_VitekPDF_List
+from ddrug.utils.vitek import upload_VitekPDF_Process
 
 #==  VITEK Import Wizard =============================================================
 
 # customized Form
-class VitekValidation_StepForm(StepForm_1):
+class VitekValidation_StepForm(Upload_StepForm):
     orgbatch_id=forms.ModelChoiceField(label='Choose an Organism Batch',
                                        widget=forms.Select(attrs={'class': 'form-control'}), 
                                        required=False, 
@@ -37,7 +37,6 @@ class Import_VitekView(ImportHandler_WizardView):
     # define each step's form
     form_list = [
         ('select_file', SelectFile_StepForm),
-#        ('step1', VitekValidation_StepForm),
         ('upload', VitekValidation_StepForm),
         # add more step -> StepForm
         ('finalize', Finalize_StepForm),
@@ -54,8 +53,10 @@ class Import_VitekView(ImportHandler_WizardView):
         self.orgbatch_id=None
         self.valLog=None
         self.upload=False
-
-        
+        self.storage = None
+        self.html_columns = ['Type','Note','Item','Filename','Help']
+        self.html_classes = [ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"]
+         
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
@@ -75,20 +76,17 @@ class Import_VitekView(ImportHandler_WizardView):
                     self.filelist.append(filename)
 
                 # Parse PDF and Validation
-                self.valLog=upload_VitekPDF_List(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
+                self.valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
                 if self.valLog.nLogs['Error'] >0 :
-                    dfLog = pd.DataFrame(self.valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-                    self.storage.extra_data['Confirm_to_Save'] = False
+                    dfLog = self.valLog.get_asdf(logTypes= ['Error'])
+                    self.storage.extra_data['confirm_to_upload'] = False
                 else:
-                    dfLog = pd.DataFrame(self.valLog.get_aslist())
-                    self.storage.extra_data['Confirm_to_Save'] = True
+                    dfLog = self.valLog.get_asdf()
+                    self.storage.extra_data['confirm_to_upload'] = True
 
-                html=dfLog.to_html(
-                    columns=['Type','Note','Item','Filename','Help'],
-                    classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], 
-                    index=False)
-
-                self.storage.extra_data['validation_result']=html      
+                html=dfLog.to_html(columns=self.html_columns,classes=self.html_classes,index=False).replace("\\n","<br>")
+                self.storage.extra_data['validation_result'] = html      
+                self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) checked for errors." 
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['dirname'] = self.dirname          
             else:
@@ -97,23 +95,22 @@ class Import_VitekView(ImportHandler_WizardView):
 
         elif current_step == 'upload': # recheck and save to DB
             # print("step validation again")
-            self.upload=self.storage.extra_data['Confirm_to_Save']
             form = VitekValidation_StepForm(request.POST)
             self.organism_batch=request.POST.get("upload_file-orgbatch_id") #get organism_batch
+            self.upload=True
             self.dirname=self.storage.extra_data['dirname'] #get file path
             self.filelist=self.storage.extra_data['filelist'] #get files' name   
        
-            self.valLog=upload_VitekPDF_List(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user)
-            if self.valLog.nLogs['Error'] >0 :
-                dfLog = pd.DataFrame(self.valLog.get_aslist(logTypes= ['Error']))#convert result in a table
-            else:
-                dfLog = pd.DataFrame(self.valLog.get_aslist())
+            self.valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user)
 
-            html=dfLog.to_html(
-                columns=['Type','Note','Item','Filename','Help'],
-                classes=[ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"], 
-                index=False)
-            self.storage.extra_data['validation_result']=html  
+            if self.valLog.nLogs['Error'] >0 :
+                dfLog = self.valLog.get_asdf(logTypes= ['Error']) 
+            else:
+                dfLog = self.valLog.get_asdf()
+
+            html=dfLog.to_html(columns=self.html_columns,classes=self.html_classes,index=False).replace("\\n","<br>")
+            self.storage.extra_data['validation_result'] = html  
+            self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) Uploaded." 
                             
         return self.get_form_step_data(form)
 
@@ -135,8 +132,8 @@ class Import_VitekView(ImportHandler_WizardView):
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
         else:
-            context['validation_result'] = self.storage.extra_data.get('validation_result', None)# 
+            context['validation_result'] = self.storage.extra_data.get('validation_result', None) 
         # if current_step == 'step1':
-            context['Confirm_to_Save']=self.storage.extra_data.get('Confirm_to_Save', None)
+            context['confirm_to_upload']=self.storage.extra_data.get('confirm_to_upload', None)
         return context
     

@@ -96,23 +96,24 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
         valLog.add_log('Error',iDict['filename'],iDict['orgbatch_id'],'Organism Batch does not exists','Use existing OrganismBatch ID')
         validStatus = False
 
+    infoCard = f"Card: {iDict['card_code']} ({iDict['card_barcode']})\n OrgBatch: {iDict['orgbatch_id']}"
     djVitekCard = VITEK_Card.get(iDict['card_barcode'])
     if djVitekCard is None:
         djVitekCard = VITEK_Card()
         djVitekCard.card_barcode = iDict['card_barcode']
         if upload:
-            valLog.add_log('Info',iDict['filename'],
-                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                           f"New {iDict['card_type']} VITEK card",'-')
+            print(f"New [{upload}] -> Info")
+            valLog.add_log('Info',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
         else:
-            valLog.add_log('Warning',iDict['filename'],
-                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                           f"New {iDict['card_type']} VITEK card",'-')
-
+            print(f"New [{upload}] -> Warning")
+            valLog.add_log('Warning',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
     else:
-        valLog.add_log('Warning',iDict['filename'],
-                       f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                       f"Update {iDict['card_type']} VITEK card",'-')
+        if upload:
+            print(f"Update [{upload}] -> Info")
+            valLog.add_log('Info',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
+        else:
+            print(f"Update [{upload}] -> Warning")
+            valLog.add_log('Warning',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
 
     djVitekCard.orgbatch_id = OrgBatch
     djVitekCard.card_type = Dictionary.get(djVitekCard.Choice_Dictionary["card_type"],iDict['card_type'])

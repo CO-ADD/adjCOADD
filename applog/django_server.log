@@ -590,3 +590,751 @@ django.utils.autoreload INFO 2023-05-24 09:56:29,456 autoreload 22848 5508 C:\Da
 django.utils.autoreload INFO 2023-05-24 09:56:31,132 autoreload 21556 5100 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-05-24 09:56:40,609 autoreload 21556 5100 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\form_wizard_tools.py changed, reloading.
 django.utils.autoreload INFO 2023-05-24 09:56:42,344 autoreload 16268 16700 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:01:07,992 basehttp 16268 15956 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20700
+django.server INFO 2023-05-24 10:06:42,972 basehttp 16268 16936 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19724
+django.request ERROR 2023-05-24 10:06:45,369 log 16268 9692 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 100, in process_step
+    self.upload=self.storage.extra_data['Confirm_to_Save']
+KeyError: 'Confirm_to_Save'
+django.server INFO 2023-05-24 10:06:45,374 basehttp 16268 9692 - Broken pipe from ('127.0.0.1', 25579)
+django.server INFO 2023-05-24 10:06:47,706 basehttp 16268 22672 - Broken pipe from ('127.0.0.1', 25578)
+django.utils.autoreload INFO 2023-05-24 10:08:39,396 autoreload 16268 16700 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:08:41,453 autoreload 15576 15148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:08:46,880 autoreload 15576 15148 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:08:48,748 autoreload 4284 7148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:09:05,259 autoreload 4284 7148 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:09:07,170 autoreload 14252 25472 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:09:49,344 autoreload 14252 25472 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:09:51,283 autoreload 25720 19048 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:09:55,239 autoreload 25720 19048 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:09:57,205 autoreload 7828 16328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:10:37,957 autoreload 7828 16328 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:10:39,833 autoreload 26876 18672 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:10:46,143 autoreload 26876 18672 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:10:48,119 autoreload 12308 2652 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:10:54,019 basehttp 12308 28296 "POST /ddrug/import-vitek/ HTTP/1.1" 200 21262
+django.utils.autoreload INFO 2023-05-24 10:11:40,929 autoreload 12308 2652 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:11:42,779 autoreload 9676 7280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:12:04,946 autoreload 9676 7280 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:12:07,197 autoreload 8600 22872 Watching for file changes with StatReloader
+django.request ERROR 2023-05-24 10:12:08,919 log 8600 22584 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 96, in view
+    self = cls(**initkwargs)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 56, in __init__
+    self.storage.extra_data['validation_result']=""
+AttributeError: 'Import_VitekView' object has no attribute 'storage'
+django.server ERROR 2023-05-24 10:12:08,944 basehttp 8600 22584 "GET /ddrug/import-vitek/ HTTP/1.1" 500 84798
+django.utils.autoreload INFO 2023-05-24 10:12:20,240 autoreload 8600 22872 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:12:22,094 autoreload 29072 25952 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:12:37,473 autoreload 29072 25952 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:12:39,527 autoreload 25348 22764 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:12:45,135 basehttp 25348 15892 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19724
+django.utils.autoreload INFO 2023-05-24 10:13:24,193 autoreload 25348 22764 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:13:26,056 autoreload 17924 10156 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:13:32,435 autoreload 17924 10156 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:13:34,582 autoreload 14896 21900 Watching for file changes with StatReloader
+django.request ERROR 2023-05-24 10:13:36,269 log 14896 23724 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 96, in view
+    self = cls(**initkwargs)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 57, in __init__
+    self.storage.extra_data['validation_result']="-"
+AttributeError: 'NoneType' object has no attribute 'extra_data'
+django.server ERROR 2023-05-24 10:13:36,296 basehttp 14896 23724 "GET /ddrug/import-vitek/ HTTP/1.1" 500 84761
+django.utils.autoreload INFO 2023-05-24 10:14:08,968 autoreload 14896 21900 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:14:11,037 autoreload 28840 13872 Watching for file changes with StatReloader
+django.request ERROR 2023-05-24 10:14:18,308 log 28840 8248 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 96, in view
+    self = cls(**initkwargs)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 57, in __init__
+    self.storage.extra_data = {}
+AttributeError: 'NoneType' object has no attribute 'extra_data'
+django.server ERROR 2023-05-24 10:14:18,331 basehttp 28840 8248 "GET /ddrug/import-vitek/ HTTP/1.1" 500 84681
+django.utils.autoreload INFO 2023-05-24 10:14:23,161 autoreload 28840 13872 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:14:25,161 autoreload 24776 8972 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:14:28,855 basehttp 24776 7028 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19724
+django.server INFO 2023-05-24 10:16:25,687 basehttp 24776 7028 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19616
+django.server INFO 2023-05-24 10:17:47,164 basehttp 24776 7028 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19615
+django.server INFO 2023-05-24 10:17:49,755 basehttp 24776 7028 "POST /ddrug/import-vitek/ HTTP/1.1" 200 19705
+django.server INFO 2023-05-24 10:19:00,795 basehttp 24776 7028 "POST /ddrug/import-vitek/ HTTP/1.1" 200 19705
+django.server INFO 2023-05-24 10:20:07,867 basehttp 24776 7028 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115107
+django.server INFO 2023-05-24 10:20:26,829 basehttp 24776 7028 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20772
+django.server INFO 2023-05-24 10:25:33,761 basehttp 24776 28344 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20772
+django.utils.autoreload INFO 2023-05-24 10:25:48,194 autoreload 24776 8972 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:25:50,353 autoreload 17552 27784 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:25:59,540 autoreload 17552 27784 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:26:01,462 autoreload 20208 12324 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:26:16,576 autoreload 20208 12324 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:26:18,566 autoreload 25920 10572 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:28:41,475 autoreload 25920 10572 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:28:43,351 autoreload 18732 25164 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:28:48,478 autoreload 18732 25164 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:28:50,118 autoreload 13484 9908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:28:54,701 autoreload 13484 9908 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:28:56,405 autoreload 13124 29488 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:29:00,088 autoreload 13124 29488 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:29:01,739 autoreload 28956 10976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:29:11,131 autoreload 28956 10976 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:29:12,911 autoreload 15220 25420 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:29:18,212 autoreload 15220 25420 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:29:19,862 autoreload 28032 2840 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:29:23,327 autoreload 28032 2840 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:29:25,307 autoreload 12268 28800 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:29:27,182 basehttp 12268 1952 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19615
+django.server INFO 2023-05-24 10:29:57,989 basehttp 12268 1952 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115107
+django.server INFO 2023-05-24 10:30:12,015 basehttp 12268 1952 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20772
+django.utils.autoreload INFO 2023-05-24 10:31:26,847 autoreload 12268 28800 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:31:28,625 autoreload 18252 14096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:31:32,146 autoreload 18252 14096 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:31:34,142 autoreload 10264 28148 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:31:35,638 basehttp 10264 19536 "POST /ddrug/import-vitek/ HTTP/1.1" 302 0
+django.server INFO 2023-05-24 10:31:35,939 basehttp 10264 19536 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19615
+django.utils.autoreload INFO 2023-05-24 10:31:59,246 autoreload 10264 28148 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:32:00,949 autoreload 10432 12868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:32:12,859 autoreload 10432 12868 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:32:14,553 autoreload 21368 22076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:33:09,610 autoreload 21368 22076 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:33:11,321 autoreload 24356 29092 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:33:18,396 autoreload 24356 29092 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:33:20,051 autoreload 25000 23704 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:33:24,628 autoreload 25000 23704 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:33:26,355 autoreload 23028 26324 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:35:52,880 basehttp 23028 12916 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.utils.autoreload INFO 2023-05-24 10:38:19,081 autoreload 23028 26324 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:38:20,823 autoreload 11304 21788 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:38:29,153 autoreload 11304 21788 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:38:30,786 autoreload 21624 6536 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:38:39,534 autoreload 21624 6536 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:38:41,237 autoreload 1556 17252 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:38:44,650 autoreload 1556 17252 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:38:46,241 autoreload 11152 11968 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:39:13,448 autoreload 11152 11968 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:39:15,161 autoreload 29364 14116 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:39:18,585 autoreload 29364 14116 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:39:20,218 autoreload 1484 22344 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:39:36,004 basehttp 1484 15440 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115129
+django.server INFO 2023-05-24 10:39:48,908 basehttp 1484 15440 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20794
+django.server INFO 2023-05-24 10:41:21,345 basehttp 1484 20396 "POST /ddrug/import-vitek/ HTTP/1.1" 302 0
+django.server INFO 2023-05-24 10:41:21,605 basehttp 1484 20396 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.request ERROR 2023-05-24 10:41:26,847 log 1484 15440 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 99, in process_step
+    self.upload=self.storage.extra_data['confirm_to_upload']
+KeyError: 'confirm_to_upload'
+django.server INFO 2023-05-24 10:41:26,870 basehttp 1484 15440 - Broken pipe from ('127.0.0.1', 27772)
+django.server INFO 2023-05-24 10:41:35,855 basehttp 1484 20396 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114542
+django.server INFO 2023-05-24 10:42:13,408 basehttp 1484 20396 - Broken pipe from ('127.0.0.1', 27923)
+django.server INFO 2023-05-24 10:42:15,525 basehttp 1484 20016 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20207
+django.utils.autoreload INFO 2023-05-24 10:43:21,053 autoreload 1484 22344 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:43:22,875 autoreload 14856 5116 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:43:26,361 autoreload 14856 5116 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:43:28,582 autoreload 29616 17764 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:43:32,260 autoreload 29616 17764 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:43:34,025 autoreload 28896 29656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:43:40,513 autoreload 28896 29656 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:43:42,229 autoreload 16092 2596 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:43:48,575 autoreload 16092 2596 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:43:50,356 autoreload 26048 16440 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:05,095 autoreload 26048 16440 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:06,977 autoreload 28452 19720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:13,304 autoreload 28452 19720 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:15,089 autoreload 10524 26028 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:17,859 autoreload 10524 26028 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:19,560 autoreload 18956 21752 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:27,686 autoreload 18956 21752 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:29,551 autoreload 9068 27264 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:33,111 autoreload 9068 27264 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:34,842 autoreload 26352 26684 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:41,889 autoreload 26352 26684 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:43,471 autoreload 24520 8560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:50,513 autoreload 24520 8560 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:52,196 autoreload 25812 23428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:44:55,905 autoreload 25812 23428 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:44:57,571 autoreload 28156 12512 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:45:05,748 autoreload 28156 12512 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:45:07,393 autoreload 26812 23912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:47:08,126 autoreload 26812 23912 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:47:09,940 autoreload 16752 3676 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:47:13,427 autoreload 16752 3676 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:47:15,166 autoreload 13988 8128 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:47:20,658 autoreload 13988 8128 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:47:22,381 autoreload 19920 17788 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:47:25,953 autoreload 19920 17788 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:47:27,623 autoreload 24664 28896 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:48:30,365 basehttp 24664 25440 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.utils.autoreload INFO 2023-05-24 10:50:42,678 autoreload 24664 28896 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:50:44,733 autoreload 25796 27912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:50:54,078 autoreload 25796 27912 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:50:55,803 autoreload 23764 22864 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:51:00,938 basehttp 23764 2080 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 10:51:09,869 basehttp 23764 2080 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 10:51:36,818 basehttp 23764 2080 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.server INFO 2023-05-24 10:51:49,061 basehttp 23764 2080 - Broken pipe from ('127.0.0.1', 28543)
+django.server INFO 2023-05-24 10:51:49,089 basehttp 23764 12500 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.utils.autoreload INFO 2023-05-24 10:51:59,351 autoreload 23764 22864 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:52:01,142 autoreload 18104 17988 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:52:06,329 autoreload 18104 17988 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:52:08,048 autoreload 14112 4588 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:52:11,612 autoreload 14112 4588 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:52:13,377 autoreload 19144 1392 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:52:18,010 autoreload 19144 1392 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:52:19,667 autoreload 29664 2372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:52:23,145 autoreload 29664 2372 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:52:24,810 autoreload 16496 3244 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:52:29,375 basehttp 16496 6344 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 10:52:40,792 basehttp 16496 6344 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 10:52:50,763 basehttp 16496 6344 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.utils.autoreload INFO 2023-05-24 10:52:58,461 autoreload 16496 3244 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:53:00,159 autoreload 16804 13576 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:53:53,961 autoreload 16804 13576 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:53:55,707 autoreload 5100 27240 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:01,594 autoreload 5100 27240 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:03,304 autoreload 29128 26744 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:06,731 autoreload 29128 26744 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:08,469 autoreload 28344 14832 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:11,248 autoreload 28344 14832 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:12,972 autoreload 1632 2124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:16,611 autoreload 1632 2124 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:18,258 autoreload 27468 19812 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:26,485 autoreload 27468 19812 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:28,157 autoreload 29292 27476 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:32,728 autoreload 29292 27476 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:34,458 autoreload 20084 6708 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:40,309 autoreload 20084 6708 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:41,966 autoreload 29104 5080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:47,956 autoreload 29104 5080 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:49,662 autoreload 21648 25604 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:54:53,183 autoreload 21648 25604 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:54:55,034 autoreload 27432 21116 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:54:56,725 basehttp 27432 26744 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 10:55:06,096 basehttp 27432 26744 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 10:55:21,849 basehttp 27432 26744 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.utils.autoreload INFO 2023-05-24 10:57:05,776 autoreload 27432 21116 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:57:07,453 autoreload 29156 11404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:57:10,830 autoreload 29156 11404 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:57:12,523 autoreload 24964 10216 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:57:24,720 autoreload 24964 10216 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:57:26,402 autoreload 9488 22344 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:57:29,096 autoreload 9488 22344 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:57:30,737 autoreload 15960 4024 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:58:01,803 autoreload 15960 4024 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:58:03,488 autoreload 19868 18716 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:58:59,523 autoreload 19868 18716 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:59:01,817 autoreload 29232 17912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 10:59:17,065 autoreload 29232 17912 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 10:59:19,111 autoreload 16212 26264 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 10:59:20,841 basehttp 16212 2800 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 10:59:32,379 basehttp 16212 2800 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 10:59:39,289 basehttp 16212 2800 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.server INFO 2023-05-24 11:00:12,828 basehttp 16212 2800 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 11:00:23,592 basehttp 16212 2800 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.utils.autoreload INFO 2023-05-24 11:00:43,807 autoreload 16212 26264 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:00:45,686 autoreload 6616 19124 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:00:50,197 basehttp 6616 22652 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 11:01:00,168 basehttp 6616 22652 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 11:01:09,980 basehttp 6616 22652 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.utils.autoreload INFO 2023-05-24 11:03:03,845 autoreload 6616 19124 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:03:05,853 autoreload 9592 21908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:03:45,501 autoreload 9592 21908 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:03:47,414 autoreload 8792 17612 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:03:51,879 autoreload 8792 17612 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:03:53,718 autoreload 24232 23208 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:04:50,142 autoreload 24232 23208 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:04:51,989 autoreload 24136 25164 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:01,193 autoreload 24136 25164 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:05:03,347 autoreload 19144 22140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:09,959 autoreload 19144 22140 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:05:11,950 autoreload 9196 27476 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:25,881 autoreload 9196 27476 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:05:27,883 autoreload 14932 3272 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:44,162 autoreload 14932 3272 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:05:46,373 autoreload 27352 16820 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:50,377 autoreload 27352 16820 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:05:52,337 autoreload 17192 28704 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:05:58,950 autoreload 17192 28704 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:06:00,738 autoreload 23280 28376 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:06:05,928 autoreload 23280 28376 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:06:07,836 autoreload 7252 18928 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:06:12,566 autoreload 7252 18928 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:06:14,563 autoreload 28832 13072 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:06:41,444 basehttp 28832 27224 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.utils.autoreload INFO 2023-05-24 11:07:05,153 autoreload 28832 13072 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:07,214 autoreload 12076 19716 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:07:11,027 autoreload 12076 19716 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:12,828 autoreload 11796 17764 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:07:16,845 autoreload 11796 17764 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:18,736 autoreload 8628 3584 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:07:23,149 autoreload 8628 3584 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:24,968 autoreload 21552 16076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:07:45,312 autoreload 21552 16076 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:47,341 autoreload 9404 23572 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:07:51,599 autoreload 9404 23572 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:07:53,625 autoreload 15220 8552 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:07:55,739 basehttp 15220 24544 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 11:08:07,136 basehttp 15220 24544 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 11:08:15,057 basehttp 15220 24544 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20211
+django.utils.autoreload INFO 2023-05-24 11:08:44,386 autoreload 15220 8552 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:08:46,260 autoreload 14944 8424 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:08:57,946 autoreload 14944 8424 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:09:00,161 autoreload 17268 13872 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:09:02,040 basehttp 17268 18316 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19637
+django.server INFO 2023-05-24 11:09:11,983 basehttp 17268 18316 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114546
+django.server INFO 2023-05-24 11:09:23,475 basehttp 17268 18316 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20205
+django.utils.autoreload INFO 2023-05-24 11:09:40,178 autoreload 17268 13872 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:09:42,049 autoreload 21312 13696 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:09:51,092 autoreload 21312 13696 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\vitek.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:09:52,968 autoreload 18196 14520 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:14:10,195 autoreload 18196 14520 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:12,275 autoreload 23224 28388 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:14:16,345 autoreload 23224 28388 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:18,625 autoreload 15732 4328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:14:24,712 autoreload 15732 4328 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:26,482 autoreload 28012 28008 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:14:31,962 basehttp 28012 29468 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20217
+django.utils.autoreload INFO 2023-05-24 11:14:39,167 autoreload 28012 28008 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:41,160 autoreload 3584 12096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:14:44,967 autoreload 3584 12096 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:46,949 autoreload 21044 23464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:14:50,963 autoreload 21044 23464 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:14:52,781 autoreload 4332 20280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:04,330 autoreload 4332 20280 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:06,105 autoreload 23304 22188 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:12,748 autoreload 23304 22188 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:14,570 autoreload 26852 23624 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:21,162 autoreload 26852 23624 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:22,943 autoreload 12088 14128 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:29,346 autoreload 12088 14128 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:31,242 autoreload 11236 17500 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:38,939 autoreload 11236 17500 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:40,770 autoreload 18272 25440 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:15:57,261 autoreload 18272 25440 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:15:59,229 autoreload 11664 15904 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:16:04,533 autoreload 11664 15904 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:16:06,466 autoreload 26936 12464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:16:17,010 autoreload 26936 12464 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:16:19,019 autoreload 25212 14656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:16:27,950 autoreload 25212 14656 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:16:30,153 autoreload 12656 27308 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:16:32,015 basehttp 12656 15520 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:16:42,642 basehttp 12656 15520 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114647
+django.utils.autoreload INFO 2023-05-24 11:16:52,813 autoreload 12656 27308 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:16:54,808 autoreload 22584 20120 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:17:09,944 autoreload 22584 20120 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:17:11,822 autoreload 11544 17880 Watching for file changes with StatReloader
+django.request ERROR 2023-05-24 11:17:16,919 log 11544 18748 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 117, in process_step
+    self.storage.extra_data['validation_message']= f" {len(files)} file(s) Uploaded."
+UnboundLocalError: local variable 'files' referenced before assignment
+django.server ERROR 2023-05-24 11:17:16,944 basehttp 11544 18748 "POST /ddrug/import-vitek/ HTTP/1.1" 500 112463
+django.utils.autoreload INFO 2023-05-24 11:17:37,113 autoreload 11544 17880 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:17:39,035 autoreload 19024 2936 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:17:45,399 autoreload 19024 2936 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:17:47,265 autoreload 26828 24264 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:17:51,862 basehttp 26828 20916 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:18:08,389 basehttp 26828 20916 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115448
+django.server INFO 2023-05-24 11:18:27,400 basehttp 26828 20916 "POST /ddrug/import-vitek/ HTTP/1.1" 200 21088
+django.utils.autoreload INFO 2023-05-24 11:19:43,498 autoreload 26828 24264 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:19:45,394 autoreload 2972 29620 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:19:51,934 autoreload 2972 29620 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:19:53,897 autoreload 19100 21032 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:20:00,444 autoreload 19100 21032 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:20:02,356 autoreload 10540 18316 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:20:06,256 autoreload 10540 18316 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:20:08,284 autoreload 21092 15116 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:20:13,690 autoreload 21092 15116 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:20:15,838 autoreload 24480 428 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:20:38,502 basehttp 24480 23144 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:20:53,876 basehttp 24480 23144 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115518
+django.utils.autoreload INFO 2023-05-24 11:21:06,926 autoreload 24480 428 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:21:08,714 autoreload 28952 12536 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:22:42,786 autoreload 28952 12536 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:22:44,584 autoreload 10540 20884 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:22:50,562 autoreload 10540 20884 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\utils\import_drug.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:22:52,223 autoreload 27548 24636 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:22:57,836 basehttp 27548 12440 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:23:13,040 basehttp 27548 12440 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115754
+django.utils.autoreload INFO 2023-05-24 11:23:59,260 autoreload 27548 24636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:24:01,017 autoreload 6872 12088 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:27:30,687 basehttp 6872 972 "POST /ddrug/import-vitek/ HTTP/1.1" 200 21391
+django.utils.autoreload INFO 2023-05-24 11:30:01,918 autoreload 6872 12088 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:03,714 autoreload 1512 26004 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:30:08,357 autoreload 1512 26004 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:09,976 autoreload 9856 14428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:30:18,191 autoreload 9856 14428 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:19,853 autoreload 16076 9596 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:30:29,817 autoreload 16076 9596 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:31,533 autoreload 15072 12748 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:30:51,761 autoreload 15072 12748 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:53,613 autoreload 29472 23860 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:30:56,265 autoreload 29472 23860 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:30:57,873 autoreload 28032 22460 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:01,388 autoreload 28032 22460 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:03,081 autoreload 20544 24972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:11,362 autoreload 20544 24972 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:13,115 autoreload 23188 13224 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:16,645 autoreload 23188 13224 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:18,281 autoreload 22120 21880 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:28,812 autoreload 22120 21880 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:30,536 autoreload 8220 12672 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:36,633 autoreload 8220 12672 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:38,766 autoreload 22404 26392 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:42,631 autoreload 22404 26392 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:44,346 autoreload 28764 20472 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:31:51,515 autoreload 28764 20472 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:31:53,286 autoreload 23572 21960 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:32:01,723 autoreload 23572 21960 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:32:03,380 autoreload 29052 13804 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:32:10,436 autoreload 29052 13804 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:32:12,265 autoreload 9700 23996 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:32:47,091 basehttp 9700 19904 "POST /ddrug/import-vitek/ HTTP/1.1" 200 21391
+django.utils.autoreload INFO 2023-05-24 11:32:56,419 autoreload 9700 23996 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:32:58,248 autoreload 17568 6608 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:00,985 autoreload 17568 6608 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:33:02,670 autoreload 19668 13940 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:06,580 autoreload 19668 13940 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:33:08,143 autoreload 29664 1528 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:32,986 autoreload 29664 1528 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:33:34,924 autoreload 12112 27020 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:41,100 autoreload 12112 27020 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:33:42,795 autoreload 13648 26300 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:50,154 autoreload 13648 26300 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:33:52,021 autoreload 20696 24684 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:33:59,477 autoreload 20696 24684 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:01,402 autoreload 9272 28588 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:34:06,310 autoreload 9272 28588 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:07,964 autoreload 9348 22848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:34:13,143 autoreload 9348 22848 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:14,911 autoreload 3536 16180 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:34:19,994 autoreload 3536 16180 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:21,719 autoreload 26020 1452 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:34:25,610 autoreload 26020 1452 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:27,292 autoreload 23860 28532 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:34:39,457 autoreload 23860 28532 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:34:41,377 autoreload 9220 10272 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:35:27,939 autoreload 9220 10272 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:35:29,660 autoreload 16496 3824 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:35:44,029 autoreload 16496 3824 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:35:45,735 autoreload 10776 25304 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:35:48,482 autoreload 10776 25304 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:35:50,187 autoreload 9732 29224 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:35:53,000 autoreload 9732 29224 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:35:54,622 autoreload 13872 29576 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:08,892 autoreload 13872 29576 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:10,556 autoreload 18284 15028 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:21,214 autoreload 18284 15028 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:22,925 autoreload 26252 9652 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:32,742 autoreload 26252 9652 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:34,435 autoreload 21252 23412 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:38,112 autoreload 21252 23412 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:39,810 autoreload 28396 13692 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:49,228 autoreload 28396 13692 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:51,024 autoreload 23188 17216 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:36:54,667 autoreload 23188 17216 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:36:56,414 autoreload 16064 15276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:00,177 autoreload 16064 15276 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:02,122 autoreload 11596 11972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:06,958 autoreload 11596 11972 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:08,876 autoreload 9632 5664 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:20,827 autoreload 9632 5664 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:22,567 autoreload 380 19112 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:29,694 autoreload 380 19112 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:31,410 autoreload 25304 10776 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:35,015 autoreload 25304 10776 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:36,662 autoreload 21552 3904 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:37:40,611 autoreload 21552 3904 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:37:42,890 autoreload 17920 28524 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:37:44,554 basehttp 17920 21796 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:38:02,984 basehttp 17920 21796 "POST /ddrug/import-vitek/ HTTP/1.1" 200 115304
+django.request ERROR 2023-05-24 11:38:12,970 log 17920 21796 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 115, in process_step
+    _html = self.valLog.get_ashtml(columns=_columns,classes=_classes,index=_index)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py", line 100, in get_ashtml
+    df_html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3109, in to_html
+    formatter = fmt.DataFrameFormatter(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 586, in __init__
+    self.columns = self._initialize_columns(columns)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 694, in _initialize_columns
+    self.frame = self.frame[cols]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5871, in _get_indexer_strict
+    indexer = self.get_indexer_for(keyarr)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5858, in get_indexer_for
+    return self.get_indexer(target)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3801, in get_indexer
+    return self._get_indexer(target, method, limit, tolerance)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3828, in _get_indexer
+    indexer = self._engine.get_indexer(tgt_values)
+  File "pandas\_libs\index.pyx", line 321, in pandas._libs.index.IndexEngine.get_indexer
+  File "pandas\_libs\hashtable_class_helper.pxi", line 7131, in pandas._libs.hashtable.PyObjectHashTable.lookup
+TypeError: unhashable type: 'list'
+django.server ERROR 2023-05-24 11:38:12,980 basehttp 17920 21796 "POST /ddrug/import-vitek/ HTTP/1.1" 500 162054
+django.utils.autoreload INFO 2023-05-24 11:38:56,910 autoreload 17920 28524 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:38:58,844 autoreload 24060 22188 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:39:02,378 autoreload 24060 22188 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:39:04,194 autoreload 28804 22680 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:39:08,897 autoreload 28804 22680 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:39:10,556 autoreload 13272 28956 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:39:23,791 basehttp 13272 3324 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:39:32,385 basehttp 13272 3324 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114681
+django.request ERROR 2023-05-24 11:39:37,725 log 13272 3324 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 114, in process_step
+    _html = self.valLog.get_ashtml(columns=_columns,classes=_classes)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py", line 100, in get_ashtml
+    df_html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3109, in to_html
+    formatter = fmt.DataFrameFormatter(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 586, in __init__
+    self.columns = self._initialize_columns(columns)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 694, in _initialize_columns
+    self.frame = self.frame[cols]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5871, in _get_indexer_strict
+    indexer = self.get_indexer_for(keyarr)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5858, in get_indexer_for
+    return self.get_indexer(target)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3801, in get_indexer
+    return self._get_indexer(target, method, limit, tolerance)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3828, in _get_indexer
+    indexer = self._engine.get_indexer(tgt_values)
+  File "pandas\_libs\index.pyx", line 321, in pandas._libs.index.IndexEngine.get_indexer
+  File "pandas\_libs\hashtable_class_helper.pxi", line 7131, in pandas._libs.hashtable.PyObjectHashTable.lookup
+TypeError: unhashable type: 'list'
+django.server ERROR 2023-05-24 11:39:37,732 basehttp 13272 3324 "POST /ddrug/import-vitek/ HTTP/1.1" 500 159989
+django.utils.autoreload INFO 2023-05-24 11:39:53,195 autoreload 13272 28956 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:39:55,092 autoreload 23932 13036 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:40:05,861 autoreload 23932 13036 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:40:07,491 autoreload 24520 26956 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:40:11,011 autoreload 24520 26956 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:40:12,621 autoreload 23016 12668 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:40:15,929 autoreload 23016 12668 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:40:17,529 autoreload 16792 26816 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:40:21,820 basehttp 16792 7936 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:40:31,543 basehttp 16792 7936 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114681
+django.request ERROR 2023-05-24 11:40:37,445 log 16792 7936 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\formtools\wizard\views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py", line 114, in process_step
+    _html = self.valLog.get_ashtml(columns=_columns,classes=_classes)
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\validation_log.py", line 100, in get_ashtml
+    html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3109, in to_html
+    formatter = fmt.DataFrameFormatter(
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 586, in __init__
+    self.columns = self._initialize_columns(columns)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\io\formats\format.py", line 694, in _initialize_columns
+    self.frame = self.frame[cols]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5871, in _get_indexer_strict
+    indexer = self.get_indexer_for(keyarr)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 5858, in get_indexer_for
+    return self.get_indexer(target)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3801, in get_indexer
+    return self._get_indexer(target, method, limit, tolerance)
+  File "C:\Local\Miniconda\envs\dj41py310\lib\site-packages\pandas\core\indexes\base.py", line 3828, in _get_indexer
+    indexer = self._engine.get_indexer(tgt_values)
+  File "pandas\_libs\index.pyx", line 321, in pandas._libs.index.IndexEngine.get_indexer
+  File "pandas\_libs\hashtable_class_helper.pxi", line 7131, in pandas._libs.hashtable.PyObjectHashTable.lookup
+TypeError: unhashable type: 'list'
+django.server ERROR 2023-05-24 11:40:37,452 basehttp 16792 7936 "POST /ddrug/import-vitek/ HTTP/1.1" 500 159980
+django.utils.autoreload INFO 2023-05-24 11:41:14,547 autoreload 16792 26816 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:41:16,293 autoreload 14616 9348 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:41:19,851 autoreload 14616 9348 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:41:21,585 autoreload 1768 19088 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:41:23,241 basehttp 1768 2160 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:41:32,365 basehttp 1768 2160 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114681
+django.server INFO 2023-05-24 11:41:37,516 basehttp 1768 2160 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20330
+django.utils.autoreload INFO 2023-05-24 11:42:09,694 autoreload 1768 19088 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:11,585 autoreload 27616 12096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:42:16,362 autoreload 27616 12096 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:18,098 autoreload 15904 6424 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:42:26,809 autoreload 15904 6424 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:28,547 autoreload 1784 6848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:42:33,294 autoreload 1784 6848 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:35,116 autoreload 29440 24288 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:42:37,851 autoreload 29440 24288 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:39,570 autoreload 27408 13276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:42:47,745 autoreload 27408 13276 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:42:49,484 autoreload 24944 29600 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:07,638 autoreload 24944 29600 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:09,366 autoreload 19088 20556 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:12,975 autoreload 19088 20556 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:14,699 autoreload 29196 13900 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:17,436 autoreload 29196 13900 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:19,246 autoreload 26452 26848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:23,431 autoreload 26452 26848 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:25,211 autoreload 12136 3964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:28,506 autoreload 12136 3964 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:30,140 autoreload 18016 29084 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:40,077 autoreload 18016 29084 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:41,717 autoreload 19688 14408 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:47,039 autoreload 19688 14408 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:48,708 autoreload 27476 19124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:43:52,277 autoreload 27476 19124 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:43:54,554 autoreload 26112 8560 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:43:56,525 basehttp 26112 25756 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:44:03,704 basehttp 26112 25756 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114290
+django.utils.autoreload INFO 2023-05-24 11:44:17,986 autoreload 26112 8560 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:44:20,007 autoreload 12308 18388 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:44:21,778 basehttp 12308 19640 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:44:32,934 basehttp 12308 19640 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114687
+django.server INFO 2023-05-24 11:44:40,874 basehttp 12308 19640 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20336
+django.utils.autoreload INFO 2023-05-24 11:44:46,978 autoreload 12308 18388 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:44:48,867 autoreload 21032 5148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:44:52,280 autoreload 21032 5148 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:44:54,002 autoreload 19332 968 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:07,028 autoreload 19332 968 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:45:08,610 autoreload 24644 13536 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:13,400 autoreload 24644 13536 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:45:15,364 autoreload 17216 20340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:24,264 autoreload 17216 20340 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:45:25,892 autoreload 22912 7420 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:28,627 autoreload 22912 7420 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:45:30,272 autoreload 25420 2144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:52,880 autoreload 25420 2144 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:45:54,764 autoreload 18876 17360 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:45:59,633 autoreload 18876 17360 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:46:01,360 autoreload 14452 2428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:46:06,178 autoreload 14452 2428 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:46:07,976 autoreload 1324 27188 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:46:13,419 autoreload 1324 27188 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:46:15,140 autoreload 27308 18784 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:46:18,785 autoreload 27308 18784 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:46:20,997 autoreload 6876 11916 Watching for file changes with StatReloader
+django.server INFO 2023-05-24 11:46:22,933 basehttp 6876 23268 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19649
+django.server INFO 2023-05-24 11:46:22,974 basehttp 6876 23268 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,977 basehttp 6876 15148 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,979 basehttp 6876 20292 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,994 basehttp 6876 15148 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,995 basehttp 6876 23268 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,996 basehttp 6876 20396 "GET /static/css/custom_select2.css HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,998 basehttp 6876 18668 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:22,999 basehttp 6876 20292 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,002 basehttp 6876 5408 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,013 basehttp 6876 15148 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,016 basehttp 6876 20396 "GET /static/js/loadModal.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,017 basehttp 6876 23268 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,026 basehttp 6876 20396 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:23,026 basehttp 6876 23268 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-05-24 11:46:31,999 basehttp 6876 23268 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114681
+django.server INFO 2023-05-24 11:46:37,667 basehttp 6876 23268 "POST /ddrug/import-vitek/ HTTP/1.1" 200 20330
+django.utils.autoreload INFO 2023-05-24 11:46:54,324 autoreload 6876 11916 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:46:56,054 autoreload 26956 11928 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-05-24 11:46:59,465 autoreload 26956 11928 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-05-24 11:47:01,114 autoreload 12184 244 Watching for file changes with StatReloader
