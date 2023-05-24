@@ -1394,3 +1394,20 @@ django.server INFO 2023-05-24 12:53:18,724 basehttp 12184 28068 "GET /dorganism/
 django.server INFO 2023-05-24 12:53:32,303 basehttp 12184 28068 "GET /dorganism/createOrg/ HTTP/1.1" 200 23009
 django.server INFO 2023-05-24 12:56:17,321 basehttp 12184 28068 "GET /dorganism/organism_list HTTP/1.1" 200 156096
 django.server INFO 2023-05-24 12:56:23,138 basehttp 12184 28068 "GET /dorganism/createOrg/ HTTP/1.1" 200 23009
+django.server INFO 2023-05-24 12:57:36,991 basehttp 12184 28068 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:02:44,529 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:05:33,632 basehttp 12184 22712 "POST /exportData/ HTTP/1.1" 200 35
+django.server INFO 2023-05-24 13:06:12,937 basehttp 12184 22712 "POST /exportData/ HTTP/1.1" 200 1532
+django.server INFO 2023-05-24 13:06:50,521 basehttp 12184 22712 "GET /dorganism/organism_card HTTP/1.1" 200 175143
+django.server INFO 2023-05-24 13:06:54,652 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:07:31,803 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:07:46,726 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:07:48,551 basehttp 12184 9692 "GET /dorganism/organism_list HTTP/1.1" 200 156096
+django.server INFO 2023-05-24 13:10:02,387 basehttp 12184 9692 - Broken pipe from ('127.0.0.1', 36557)
+django.server INFO 2023-05-24 13:10:03,456 basehttp 12184 22712 "GET /dorganism/organism_card HTTP/1.1" 200 175143
+django.server INFO 2023-05-24 13:11:28,183 basehttp 12184 22712 "GET /dorganism/organism_card HTTP/1.1" 200 175485
+django.server INFO 2023-05-24 13:11:34,682 basehttp 12184 22712 "GET /dorganism/organism_card HTTP/1.1" 200 175485
+django.server INFO 2023-05-24 13:11:37,422 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 155885
+django.server INFO 2023-05-24 13:11:39,207 basehttp 12184 22712 "GET /dorganism/organism_card HTTP/1.1" 200 175485
+django.server INFO 2023-05-24 13:11:41,717 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 155885
+django.server INFO 2023-05-24 13:12:48,810 basehttp 12184 22712 "GET /dorganism/organism_list HTTP/1.1" 200 155885

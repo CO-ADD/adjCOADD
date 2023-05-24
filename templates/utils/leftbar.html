@@ -43,9 +43,9 @@
           />
           <label for=""> {{field}} </label>
         </li>
-        {%endfor%}
+        {% endfor %}
         <button class="data_export bg-dark text-light" style="float: right">
-          <i class="fa-solid fa-download"></i>
+          <i class="fa-solid fa-download" style='color: green'></i>
         </button>
       </ul>
     </div>
@@ -53,7 +53,7 @@
 </div>
 
 
-{%load static %}
+{% load static %}
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>
 
 <script>
