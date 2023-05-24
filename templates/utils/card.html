@@ -9,14 +9,15 @@
         <a class="card-link" href="{{url_name}}"> {{object_name_ita}}</a>
       </p>
       <!-- Select Box -->
-      {%include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk%}
+      {% include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk %}
     </div>
+
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
-      {%if object_img%}
+      {% if object_img %}
 
         <a id="drug_detail{{object.pk}} " href="" class="card-link">
           SUBSTRUCTURE_query
-          {%load static%}
+          {% load static %}
           <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
             style="background-color: transparent !important" />
         </a>

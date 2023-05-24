@@ -5,22 +5,49 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
+
+  {% include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
+  
+
+  <!--
+  <h2 class="accordion-header fs-6 my-0 text-info view-title" > Organism </h2>
+  <h2 class="accordion-header" id="headingOne"> Organism </h2>
+   <h5 class="fw-bold text-center "> Organism </h5> 
+   -->
+ 
   <!-- Main View -->
   <div class="main d-flex flex-column">
+    <!-- Table Title -->
+    <h2 class="accordion-header" id="headingOne">
+      <button
+        class="accordion-button"
+        style="max-height: 20px"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseOne"
+        aria-expanded="true"
+        aria-controls="collapseOne"
+      >
+        <h2 class="fs-6 my-0">
+          <b>Organism</b>
+        </h2>
+      </button>
+    </h2>
+
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' %}
+    {% include 'utils/main_horizalbar.html' %}
     <!-- prettier-ignore -->
     <!--  -->
+
+
     <!-- list View Content -->
-    <div class="contain-fluid data-contain">
-    <h5 class="fw-bold text-center text-info view-title"> ORGANISM Table</h5>
+   <div class="contain-fluid data-contain">
       <!-- prettier-ignore --> <!-- Here include datatable_general --> 
-      {%include 'utils/datatable_general.html' with tax_id='TaxID' url_name='org_detail' modelname='Organism'%}
+      {% include 'utils/datatable_general.html' with tax_id='TaxID' url_name='org_detail' modelname='Organism' %}
     </div>
     </div>
 
 </div>
-{%endblock%}
+{% endblock %}

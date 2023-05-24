@@ -1,15 +1,15 @@
-{%if model_name == 'Dictionary' or model_name == 'AppUser'%}
-  {%if user.permission != 'Admin'%}
-<!--No permission to Update Object-->
- <button class="edit_organismdetail border-0 text-secondary bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
- title="No permission to Update Object" disable><i class="fa-regular fa-pen-to-square"></i></button>
-  {%else%}
-<!-- Update Object-->
-<button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
-title="Update Object" ><i class="fa-regular fa-pen-to-square"></i></button>
-  {%endif%}
-{%else%}
-<!-- Update Object-->
-<button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
-title="Update Object" ><i class="fa-regular fa-pen-to-square"></i></button>
-{%endif%}
+{% if model_name == 'Dictionary' or model_name == 'AppUser' %}
+  {% if user.permission != 'Admin' %}
+    <!--No permission to Update Object-->
+    <button class="edit_organismdetail border-0 text-secondary bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="No permission to Update Object" disable><i class="fa-regular fa-pen-to-square"></i></button>
+  {% else %}
+    <!-- Update Object-->
+    <button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="Update Object" ><i class="fa-regular fa-pen-to-square"></i></button>
+  {% endif %}
+{% else %}
+  <!-- Update Object-->
+  <button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
+  title="Update Object" ><i class="fa-regular fa-pen-to-square"></i></button>
+{% endif %}
