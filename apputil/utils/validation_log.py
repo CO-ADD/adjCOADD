@@ -96,9 +96,22 @@ class Validation_Log():
         return(pd.DataFrame(self.get_aslist(logTypes=logTypes)))
 
     def get_ashtml(self,logTypes= ['Error','Warning', 'Info'],classes=None,columns=None,index=False):
-        df = self.get_asdf(logTypes=logTypes)
-        html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
-        return(html)
+    #     df = self.get_asdf(logTypes=logTypes)
+    #     html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
+    #     return(html)
+        log_data=self.get_asdf(logTypes=logTypes)
+        if columns:
+            log_data=log_data[columns]
+        # Convert the DataFrame's rows to a list of tuples
+        table_data = [row for row in log_data.itertuples(index=index)]
+        # Convert the DataFrame's columns to a list of strings
+        table_header = list(log_data.columns)
+        table_dict= {
+                    'rows': table_data,
+                    'columns': table_header
+                    }
+        return(table_dict)
+
 
     def info(self,logTypes= ['Error','Warning', 'Info']):
         self.info={}
@@ -122,6 +135,7 @@ class Validation_Log():
                 info[t].append(print_info) # info.append(print_info)
        
         return info
+
     
     @classmethod
     def from_aslist(cls, logProcess, logTypes, aslist):

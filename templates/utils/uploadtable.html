@@ -1,0 +1,23 @@
+<table class="table table-bordered fixTableHead bg-light m-0">
+    <thead>
+        <tr>
+            {% for col in validation_result.columns %}
+            <th>{{ col|safe }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in validation_result.rows %}
+        <tr>
+            {% for item in row %}
+            <td
+                style = "{% if item == 'Info' %} background-color: green; color: white; {%elif item == 'Warning' %} background-color: yellow; color: black; {% elif item == 'Error' %} background-color: red; color: white;{%endif%}">
+                {{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    

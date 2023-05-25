@@ -147,7 +147,7 @@
 
           {% if validation_result != None %}
             <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
-              {{validation_result | safe}}
+             {% include 'utils/uploadtable.html' %}
           {% endif %}
           </div>
         </div>

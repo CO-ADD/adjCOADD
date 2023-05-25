@@ -55,7 +55,7 @@ class Import_VitekView(ImportHandler_WizardView):
         self.upload=False
         self.storage = None
         self.html_columns = ['Type','Note','Item','Filename','Help']
-        self.html_classes = [ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"]
+        # self.html_classes = [ "table", "table-bordered", "fixTableHead", "bg-light", "m-0"]
          
     def process_step(self, form):
         current_step = self.steps.current
@@ -78,14 +78,13 @@ class Import_VitekView(ImportHandler_WizardView):
                 # Parse PDF and Validation
                 self.valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
                 if self.valLog.nLogs['Error'] >0 :
-                    dfLog = self.valLog.get_asdf(logTypes= ['Error'])
+                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
                     self.storage.extra_data['confirm_to_upload'] = False
                 else:
-                    dfLog = self.valLog.get_asdf()
+                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
                     self.storage.extra_data['confirm_to_upload'] = True
 
-                html=dfLog.to_html(columns=self.html_columns,classes=self.html_classes,index=False).replace("\\n","<br>")
-                self.storage.extra_data['validation_result'] = html      
+                self.storage.extra_data['validation_result'] = dfLog
                 self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) checked for errors." 
                 self.storage.extra_data['filelist'] = self.filelist
                 self.storage.extra_data['dirname'] = self.dirname          
@@ -128,7 +127,8 @@ class Import_VitekView(ImportHandler_WizardView):
         # save information to context,
         # then display in templates  
         context['step1']=self.name_step1
-        current_step = self.steps.current  
+        current_step = self.steps.current
+        context['validation_message'] = self.storage.extra_data.get('validation_message', None)
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
         else:
