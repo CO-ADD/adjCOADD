@@ -103,12 +103,12 @@ class Import_VitekView(ImportHandler_WizardView):
             self.valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, SessionKey=SessionKey, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user)
 
             if self.valLog.nLogs['Error'] >0 :
-                dfLog = self.valLog.get_asdf(logTypes= ['Error']) 
+                dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
             else:
-                dfLog = self.valLog.get_asdf()
+                dfLog = self.valLog.get_ashtml(columns=self.html_columns)
 
-            html=dfLog.to_html(columns=self.html_columns,classes=self.html_classes,index=False).replace("\\n","<br>")
-            self.storage.extra_data['validation_result'] = html  
+            # html=dfLog.to_html(columns=self.html_columns,classes=self.html_classes,index=False).replace("\\n","<br>")
+            self.storage.extra_data['validation_result'] = dfLog  
             self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) Uploaded." 
                             
         return self.get_form_step_data(form)
