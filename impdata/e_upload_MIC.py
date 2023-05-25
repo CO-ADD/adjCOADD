@@ -168,7 +168,7 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
     From vDoseResponse
       Where Result_Type = 'MIC' 
     """
-    micSQL += f" And Run_ID = '{RunID}'"
+    micSQL += f" And Run_ID like '{RunID}%'"
     CastDB = oraCastDB.openCastDB()
     logger.info(f"[MIC-COADD] ... ")
     micLst = CastDB.get_dict_list(micSQL)

@@ -178,7 +178,7 @@ class AuditModel(models.Model):
                     else:
                         retMsg.append(errMsg)
                 if len(retMsg) > 0 :
-                    retValid[key] = ", ".join(retMsg)
+                    retValid[key] = "; ".join(retMsg)
                 #print(len(e.message_dict[key]))
                 # if e.message_dict[key] == ['This field cannot be null.']:
                 #     if ~self._meta.get_field(key).null:
@@ -192,11 +192,12 @@ class AuditModel(models.Model):
 
 
     #-------------------------------------------------------------------
-    def clean_Fields(self,default_Char="",default_Integer=0):
+    def clean_Fields(self, default_Char="", default_Integer=0, default_Decimal=0.0):
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #   sets CharField    to "" (empty) or 'default' 
     #   sets IntegerField to 0 or 'default'
+    #   sets DecimalField to 0.0 or 'default'
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
@@ -205,6 +206,15 @@ class AuditModel(models.Model):
                 if hasattr(self,field.name):
                     if getattr(self,field.name) is None:
                         defValue = default_Integer
+                        fDict = field.deconstruct()[3]
+                        if 'default' in fDict:
+                            defValue = fDict['default']
+                        setattr(self,field.name,defValue)
+                        clFields[field.name]=defValue
+            if fType == "DecimalField":
+                if hasattr(self,field.name):
+                    if getattr(self,field.name) is None:
+                        defValue = default_Decimal
                         fDict = field.deconstruct()[3]
                         if 'default' in fDict:
                             defValue = fDict['default']
