@@ -5,22 +5,27 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
+
+  {% include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
+  
+
   <!-- Main View -->
-  <div class="main d-flex flex-column">
+  <div class="main d-flex flex-column"> 
+
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' %}
+    {% include 'utils/main_horizalbar.html' with model_name='Organism' %}
     <!-- prettier-ignore -->
     <!--  -->
+
+
     <!-- list View Content -->
-    <div class="contain-fluid data-contain">
-    <h5 class="fw-bold text-center text-info view-title"> ORGANISM Table</h5>
+   <div class="contain-fluid data-contain">
       <!-- prettier-ignore --> <!-- Here include datatable_general --> 
-      {%include 'utils/datatable_general.html' with tax_id='TaxID' url_name='org_detail' modelname='Organism'%}
+      {% include 'utils/datatable_general.html' with tax_id='TaxID' url_name='org_detail' modelname='Organism' %}
     </div>
     </div>
 
 </div>
-{%endblock%}
+{% endblock %}

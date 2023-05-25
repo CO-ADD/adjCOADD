@@ -7,6 +7,6 @@
   <div class="modal-dialog">
     <!--prettier-ignore-->
     {% url 'organism_delete' pk=object.pk as deleteurl %}
-    {%include 'utils/modal/delete.html' with title='Delete Organism' deleteurl=deleteurl entry=object%}
+    {% include 'utils/modal/delete.html' with title='Delete Organism' deleteurl=deleteurl entry=object %}
   </div>
 </div>

@@ -13,13 +13,15 @@ from django.utils.datastructures import MultiValueDict
 from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location
 
-class UploadFileForm(SuperUserRequiredMixin, forms.Form):
+
+# --------------------------------------------------------------------------------------------------
+class SelectFile_StepForm(SuperUserRequiredMixin, forms.Form):
+# --------------------------------------------------------------------------------------------------
     multi_files = forms.FileField(label='Select one or multiple files', 
                                   widget=forms.ClearableFileInput(attrs={'multiple': True,}),
                                   validators=[validate_file], 
                                   required=False)
 
-      
     def clean(self):
         cleaned_data = super().clean()
         print('clean data')
@@ -32,7 +34,7 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
             return cleaned_data
         
         for field in file_fields:
-            files = self.files.getlist(f'upload_file-{field}')
+            files = self.files.getlist(f'select_file-{field}')
             
             uploadfiles.extend(files)
 
@@ -49,9 +51,19 @@ class UploadFileForm(SuperUserRequiredMixin, forms.Form):
         return cleaned_data
     
 
-    
+# --------------------------------------------------------------------------------------------------
+class Upload_StepForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
+    confirm = forms.BooleanField(required=True, help_text="Confirm to upload Data")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['confirm'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+
+
+# --------------------------------------------------------------------------------------------------
 class StepForm_1(forms.Form):
-    confirm = forms.BooleanField(required=True, help_text="Conform to save importing Data")
+# --------------------------------------------------------------------------------------------------
+    confirm = forms.BooleanField(required=True, help_text="Confirm to upload Data")
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['confirm'].error_messages = {'required': 'Contains Error, please correct firstly'}
@@ -59,22 +71,27 @@ class StepForm_1(forms.Form):
 
 # class StepForm_2(forms.Form):
 
-class FinalizeForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
+class Finalize_StepForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
     pass
     #log_entry = forms.CharField(widget=forms.Textarea, required=False)
 
+# --------------------------------------------------------------------------------------------------
 class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
+# --------------------------------------------------------------------------------------------------
     # here add steps name
-    step1='step1'
+    step1='upload'
     # step2='step2'
     # ...
 
     form_list = [
-        ('upload_file', UploadFileForm),
+        ('select_file', SelectFile_StepForm),
+        ('upload', Upload_StepForm),
         # Here adding steps:
         # ('Step1', StepForm_1),
         # ...
-        ('finalize', FinalizeForm),
+        ('finalize', Finalize_StepForm),
     ]
 
     template_name = None
@@ -92,7 +109,7 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
         current_step = self.steps.current
         request = self.request
 
-        if current_step == 'upload_file':
+        if current_step == 'select_file':
             # here uploads files and define file name and path
             location = file_location(request)  # define file store path during file process
             files = []
@@ -100,11 +117,12 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
                 files.append(request.FILES['single_file'])
             if 'folder_files' in request.FILES:
                 files.extend(request.FILES.getlist('folder_files'))
+ 
             # here can add extra functions for files
 
 
-        elif current_step == 'step1':
-            print("2")
+        elif current_step == 'upload':
+            print("Upload")
             # In this step, you can perform further steps
 
         #     # more steps
@@ -121,9 +139,9 @@ class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
         context = super().get_context_data(form=form, **kwargs)
         current_step = self.steps.current
 
-        if current_step == 'step1':
+        if current_step == 'upload':
             pass
-        #    here can define extra context for step1 result 
+        #    here can define extra context for upload result 
      
 
         return context

@@ -15,26 +15,39 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
-from ddrug.models import Drug, VITEK_Card
+from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub
+from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from .forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
-from .models import ApplicationUser, Dictionary
-from .utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
-from .utils.filters_base import FilteredListView
-from .utils.files_upload import Importhandler
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
+from apputil.models import ApplicationUser, Dictionary
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
+from apputil.utils.filters_base import FilteredListView
+from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
 # import setup
 @login_required(login_url='/')
 def index(req):
-    # print(setup.version)
-    object_1=Organism.objects.count()
-    object_2=Taxonomy.objects.count()
-    object_3=Drug.objects.count()
-    object_4=VITEK_Card.objects.count()
-    
-    return render(req, 'home.html', {'objects_org': object_1, 'objects_taxo':object_2, 'objects_drug':object_3, 'objects_card':object_4})
+
+    nDict = {    
+        'nOrg':    Organism.objects.count(),
+        'nTax':    Taxonomy.objects.count(),
+        'nDrug':   Drug.objects.count(),
+        'nVCard':  VITEK_Card.objects.count(),
+        'nVID':    VITEK_ID.objects.count(),
+        'nVAST':   VITEK_AST.objects.count(),
+        'nMICC':   MIC_COADD.objects.count(),
+        'nMICP':   MIC_Pub.objects.count(),
+#        'nBP':     Breakpoints.objects.count(),
+        'nGene':   Gene.objects.count(),
+        'nCheckM': WGS_CheckM.objects.count(),
+        'nFastQC': WGS_FastQC.objects.count(),
+        'nIDP':    ID_Pub.objects.count(),
+        'nIDS':    ID_Sequence.objects.count(),
+    }
+    return render(req, 'home.html', nDict)
+
 ## =================================APP Home======================================##
 
 ## =================================APP Log in/out =================================
@@ -188,32 +201,67 @@ def deleteDictionary(req):
     return JsonResponse({})
 
 
-############################################### Export CSV View ###########################################
+# =========================== Export CSV View =============================
 import csv
+import json
 import datetime 
 from django.apps import apps
+import pandas as pd
+from django.http import HttpResponse
+
 
 @login_required
 @user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
-def exportCSV(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-        data_arr = request.POST.getlist('data_arr[]')
-        data_fields = request.POST.getlist('fields[]')
-        model_name=request.POST.get('model_name')
+def data_export(request):
+    app_name = request.POST.get('app_name')
+    model_name = request.POST.get('model_name')
 
-        try:
-            model=apps.get_model('dorganism', model_name)
-        except:
-            model=apps.get_model('ddrug', model_name)
-        query=model.objects.filter(pk__in=data_arr)
+    if not app_name or not model_name:
+        messages.error(request, "No application or model name were provided for export.")
+        return redirect(request.path)
+
+    try:
+        Model = apps.get_model(app_name, model_name)
+        print(Model)
+    except LookupError:
+        # Handle the case where the model does not exist.
+        return HttpResponse("Model not found.")
+    
+    selected_pks_string = request.POST.get('selected_pks')
+    print('selected_pks_string:', selected_pks_string)
+    if selected_pks_string == 'SelectAll':
+        items = Model.objects.all()
+    elif selected_pks_string:
+        selected_pks = json.loads(selected_pks_string)
+        items = Model.objects.filter(pk__in=selected_pks)   
+    else:
+        messages.error(request, "No items were selected for export.")
+        return redirect(request.META['HTTP_REFERER'])
+   
+    df = pd.DataFrame.from_records(items.values())
+ 
+    if 'acreated_at' in df.columns:
+        df['acreated_at'] = pd.to_datetime(df['acreated_at']).dt.tz_localize(None).apply(lambda a: a.date())
+    if 'aupdated_at' in df.columns:
+        df['aupdated_at'] = pd.to_datetime(df['aupdated_at']).dt.tz_localize(None).apply(lambda a: a.date())
+    if 'adeleted_at' in df.columns:
+        df['adeleted_at'] = pd.to_datetime(df['adeleted_at']).dt.tz_localize(None).apply(lambda a: a.date())
+
+    current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+    filename = f'{model_name}_{current_date}'
+    response = HttpResponse("No valid export option was selected.")
+    print(request.POST)
+    if "csvdownload" in request.POST:
         response = HttpResponse(content_type='text/csv')
-        file_name = "fltred_loaction_data" + str(datetime.date.today()) + ".csv"
-        writer = csv.writer(response)
-        writer.writerow(data_fields)
-        for i in query.values_list(*data_fields):
-            writer.writerow(i)
-        response['Content-Disposition'] = 'attachment; filename = "' + file_name + '"'
-        return response
+        response['Content-Disposition'] = f'attachment; filename="{filename}.csv"' 
+        df.to_csv(path_or_buf=response, index=False)
+
+    elif "xlsxdownload" in request.POST:
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
+        df.to_excel(excel_writer=response, index=False)
+
+    return response
 
 
 # =============Import Dictionary and appUsers via Excel==================

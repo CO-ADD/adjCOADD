@@ -257,3 +257,5 @@ def update_Drug_xls(XlsFile, XlsSheet=0, upload=False, uploaduser=None, lower=Tr
             else:
                 logger.info(f" chk> {repr(djDrug)} ")
         #Drug.update_fp()
+
+

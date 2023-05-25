@@ -14,7 +14,7 @@ from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
 from ddrug.models import Drug, MIC_COADD, MIC_Pub
-from ddrug.utils.import_drug import imp_MICCOADD_fromDict, imp_MICPub_fromDict
+from ddrug.utils.import_drug import imp_MICCOADD_fromDict, imp_MICPub_fromDict, imp_Breakpoint_fromDict
 from apputil.utils import validation_log
 
 
@@ -168,7 +168,7 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
     From vDoseResponse
       Where Result_Type = 'MIC' 
     """
-    micSQL += f" And Run_ID = '{RunID}'"
+    micSQL += f" And Run_ID like '{RunID}%'"
     CastDB = oraCastDB.openCastDB()
     logger.info(f"[MIC-COADD] ... ")
     micLst = CastDB.get_dict_list(micSQL)
@@ -239,3 +239,84 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
         logger.info(f"[MIC-COADD] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
     else:
         logger.info(f"[MIC-COADD] [0 No records found]")
+
+
+#-----------------------------------------------------------------------------------
+def update_Breakpoints_ora(upload=False,uploaduser=None,OutputN=10):
+#-----------------------------------------------------------------------------------
+
+    firstStockDate = datetime.date(2010, 1, 1)
+    cardSQL = """
+    Select Drug_ID, Drug_Name,  
+        Org_Family, Org_Genus, Org_Specie, Medical_Application,
+        Combination_Type, 
+        BP_Type, BP_Sensitive_LE, BP_Resistant_GT, BP_Unit, BP_Source, BP_Source_Version, BP_Status
+    From Breakpoints
+    -- Where Organism_Name like 'Klebsiella%'
+    """
+    OrgDB = oraCastDB.openOrgDB()
+    logger.info(f"[BP] ... ")
+    bpLst = OrgDB.get_dict_list(cardSQL)
+    nTotal = len(bpLst)
+    logger.info(f"[BP] {nTotal} ")
+    OrgDB.close()
+
+    if nTotal>0:
+        vLog = validation_log.Validation_Log('Breakpoint')
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
+
+        # check user
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
+
+        nProc = {}
+        nProc['Saved'] = 0
+        nProc['notValid'] = 0
+
+        for bp in bpLst:
+            if bp['ORG_FAMILY']:
+                if 'Not' in bp['ORG_FAMILY']:
+                    bp['NOTORG_NAME'] = bp['ORG_FAMILY'].replace('Not(','').replace(')','')
+                    bp['NOTORG_RANK'] = 'Family'
+                else:
+                    bp['ORG_NAME'] = bp['ORG_FAMILY']
+                    bp['ORG_RANK'] = 'Family'
+            if bp['ORG_GENUS']:
+                if 'Not' in bp['ORG_GENUS']:
+                    bp['NOTORG_NAME'] = bp['ORG_GENUS'].replace('Not(','').replace(')','')
+                    bp['NOTORG_RANK'] = 'Genus'
+                else:
+                    bp['ORG_NAME'] = bp['ORG_GENUS']
+                    bp['ORG_RANK'] = 'Genus'
+
+            if bp['ORG_SPECIE']:
+                if 'Not' in bp['ORG_SPECIE']:
+                    bp['NOTORG_NAME'] = bp['ORG_SPECIE'].replace('Not(','').replace(')','')
+                    bp['NOTORG_RANK'] = 'Specie'
+                else:
+                    bp['ORG_NAME'] = bp['ORG_SPECIE']
+                    bp['ORG_RANK'] = 'Specie'
+
+            djBP = imp_Breakpoint_fromDict(bp,vLog)
+
+            # --- Upload ---------------------------------------------------------
+            nProcessed = nProcessed + 1
+            if djBP.VALID_STATUS:
+                if upload:
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {repr(djBP)} ")
+                    djBP.save(user=appuser)
+                    nProc['Saved'] = nProc['Saved'] + 1
+                else:
+                    if nProcessed%OutputN == 0:
+                        eTime,sTime = nTime.remains(nProcessed)
+                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {repr(djBP)} ")
+            else:
+                nProc['notValid'] = nProc['notValid'] + 1
+        eTime,sTime = nTime.remains(nProcessed)
+        logger.info(f"[BP] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
+    else:
+        logger.info(f"[BP] [0 No records found]")

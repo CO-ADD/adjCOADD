@@ -9,8 +9,9 @@
         <a class="card-link" href="{{url_name}}"> {{object_name_ita}}</a>
       </p>
       <!-- Select Box -->
-      {%include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk%}
+      {% include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk %}
     </div>
+
     <p class="card-text m-auto" style="font-size: xx-small; width: 190px">
       {%if object_img%}
       <a id="drug_detail{{object.pk}}" class="card-link">

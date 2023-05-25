@@ -6,50 +6,50 @@
         <!-- spare for seleting or editing -->
         <th style="width: 1rem"></th>
         <!-- customized/verbose model fields name -->
-       {%for field in fields%}
-        {% if field|is_dict %}
-        {%for key in field.keys%}
-        <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
-         {%endfor%}
-        {%else%}
-        <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
-         {%endif%}
-        {%endfor%}
+        {% for field in fields %}
+          {% if field|is_dict %}
+            {% for key in field.keys %}
+              <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
+            {% endfor %}
+          {% else %}
+            <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
+          {% endif %}
+        {% endfor %}
       </tr>
     </thead>
     <tbody hx-target="closest tr" hx-swap="outerHTML">
-      {%if page_obj%}
-      <!--prettier-ignore  -->
-      {% for object in page_obj%}
-      {% if table_id == 'ApplicationUser' %}
-      {%include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
-      {%else%}
-      <tr>
-        <td>
-          <!--prettier-ignore  -->
-          {%include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk%}
-          <!--  -->
-        </td>
-        {%for item in object.get_values%}
-        <td>
-        {% if item|is_dict %} <!-- custom filter -->   
-        {% for key, value in item.items %}      
-          <a href="{{value}}" target="_blank">{{ key }}</a>
-          {% endfor %}
+      {% if page_obj %}
+        <!--prettier-ignore  -->
+        {% for object in page_obj%}
+          {% if table_id == 'ApplicationUser' %}
+            {% include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
           {% else %}
-            {{item}}
-        {% endif %}
-        </td>
-        {%endfor%}       
-      </tr>
-      {%endif%}
-      {%endfor%}
-      <!--  -->
-      {%else%}
-      <tr>
-        No Data
-      </tr>
-      {%endif%}
+            <tr>
+              <td>
+                <!--prettier-ignore  -->
+                {% include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk %}
+                <!--  -->
+              </td>
+              {% for item in object.get_values %}
+                <td>
+                {% if item|is_dict %} <!-- custom filter -->   
+                  {% for key, value in item.items %}      
+                    <a href="{{value}}" target="_blank">{{ key }}</a>
+                  {% endfor %}
+                {% else %}
+                  {{item}}
+                {% endif %}
+                </td>
+              {% endfor %}       
+            </tr>
+          {% endif %}
+        {% endfor %}
+        <!--  -->
+      {% else %}
+        <tr>
+          No Data
+        </tr>
+      {% endif %}
     </tbody>
   </table>
 </div>

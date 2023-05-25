@@ -1,8 +1,67 @@
-{%include 'utils/message.html'%}
+{% include 'utils/message.html' %}
+<!-- Table Title -->
+<h2 class="accordion-header" id="headingOne">
+  <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+    <h2 class="fs-6 my-0">
+      <b>{{model_name}}</b>
+    </h2>
+  </button>
+</h2>
 <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
-    <!-- <div class="d-flex align-items-baseline"> -->
-    {% include 'utils/pagination.html'%}
-    <!--  -->
-    {%include 'utils/miscellaneous/selectAllExp.html'%}
+  <!-- <div class="d-flex align-items-baseline"> -->
+  {% include 'utils/pagination.html'%}
+  <!--  -->
+  {% include 'utils/miscellaneous/selectAllExp.html' %}
+
+  <div class="mx-5" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="">
    
+
+    <form class="d-flex flex-wrap" method="POST" action="{% url 'dataexport' %}" id="form_export_model_data">
+      {% csrf_token %}
+      <input type="hidden" name="selected_pks" id="selectedIdsInput">
+      <input type="hidden" name="app_name" value="{{application}}">
+      <input type="hidden" name="model_name" value="{{model}}">
+
+      <input type="hidden" name="submit" value> <!-- get button value to formdetail-->
+      <button class="btn btn-sm border border-3 mx-2" type="submit" name="csvdownload" value="csvdownload" data-name="exportData"><i class="fa-solid fa-download text-success"></i> .CSV</button>
+      <button class="btn btn-sm border border-3" type="submit" name="xlsxdownload" value="xlsxdownload" data-name="exportData"><i class="fa-solid fa-download text-success"></i> .XLSX</button>
+    </form>
+
+  </div>
+
 </div>
+
+<script>
+  // select wanted data to export
+  var selected_data = [];
+  var selected_data_string = '';
+
+  $('button[data-name="exportData"]').click(function (e) {
+
+    // e.preventDefault();
+    let submit_value = $(this).val()
+    console.log(submit_value)
+    if ($("input:checkbox[name=selectAll]").is(':checked')) {
+      selected_data_string = 'SelectAll';
+    } else {
+      $("input:checkbox[name=type]:checked").each(function () {
+        selected_data.push($(this).val().toString());
+      });
+
+      // Stringify the array
+      if (selected_data.length > 0) {
+        selected_data_string = JSON.stringify(selected_data);
+      }
+    }
+
+    // Set the value of the hidden input field
+    $('input[name="selected_pks"]').val(selected_data_string);
+    $('input[name="submit"]').val(submit_value)
+
+
+  });
+
+
+</script>

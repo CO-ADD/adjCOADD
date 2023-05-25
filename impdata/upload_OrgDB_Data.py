@@ -47,9 +47,9 @@ def main():
         uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
 
     xlFiles = {
-        'Application': "ApplicationData_v03.xlsx",
-        'Drug': "DrugData_v02.xlsx",
-        'MIC': "LMIC_Data_v04.xlsx",
+        'Application': "ApplicationData_v04.xlsx",
+        'Drug': "DrugData_v03.xlsx",
+        'MIC': "LMIC_Data_v06.xlsx",
     }
 
     sys.path.append(djDir)
@@ -139,6 +139,9 @@ def main():
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
         if  prgArgs.runid:
             dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    elif prgArgs.table == 'BP':
+        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB")
+        dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
     elif prgArgs.table == 'WGSCOADD':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} ")

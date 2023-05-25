@@ -2,9 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
+from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
-    exportCSV, Importhandler_apputils) 
+    data_export, Importhandler_apputils) 
 
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path('dict_create/', DictionaryCreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
     path('dict_delete/', deleteDictionary, name='dict_delete' ),
-    path('exportData/', exportCSV, name="dataexport"),
+    path('exportData/', data_export, name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
     
 

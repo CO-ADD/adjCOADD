@@ -5,17 +5,23 @@
     <span class="fs-4 text-muted px-1 rounded-3">Organisms</span>
   </label>
 
- 
-
     <div class="d-flex justify-content-center">
-      <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" href="{%url 'org_card' %}"
-        data-bs-toggle="tooltip" data-bs-placement="left" title="{{objects_org}} organims">
+      <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" 
+        data-bs-toggle="tooltip" data-bs-placement="left" 
+        href="{%url 'org_card' %}" title="{{nOrg}} organims">
         ORGANISM
       </a>
-      <a class="hex m-4" href="{%url 'taxo_card' %}" data-bs-toggle="tooltip" data-bs-placement="right"
-        title="{{objects_taxo}} spieces">
-        <span class="hex-txt">TAXONOMY</span>
-      </a>
+
+    <div class="row">
+      <div class="col">
+        <a class="badge land-badge bg-info border m-auto"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          href="{%url 'taxo_card'%}" title="{{nTax}} entries"          
+          inactivate
+        >
+          Taxonomy
+        </a>
+      </div>
     </div>
   
 </div>

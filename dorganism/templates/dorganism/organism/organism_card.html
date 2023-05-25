@@ -4,18 +4,19 @@
 {% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal'%}
+
+  {% include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
+
   <!-- Main View -->
   <div class="main d-flex flex-column">
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' %}
+    {% include 'utils/main_horizalbar.html' with model_name='Organism' application='dorganism' model='Organism' %}
     <!-- prettier-ignore -->
 
     <!-- Card View Content -->
     <div class="contain-fluid data-contain">
-      <h5 class="fw-bold text-center text-info view-title"> ORGANISM CARDs</h5>
       <div class="row d-flex flex-wrap mx-2">
         {% for object in page_obj %}
         <!--  -->

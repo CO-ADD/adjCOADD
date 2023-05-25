@@ -7,7 +7,7 @@
 <div class="d-flex flex-row vh-100">
   <div class="border border-2 w-100">
     <div class="d-flex m-0 p-0">
-      {%include 'utils/lefticons.html' with title="Organism"%}
+      {% include 'utils/lefticons.html' with title="Organism" %}
       <div class="accordion bg-transparent w-100" id="organism-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -21,7 +21,7 @@
               aria-controls="collapseOne"
             >
               <h5 class="fs-6 my-0">
-                Organism | {{object.pk}} | {{object.organism_name}}
+                {{object.pk}} | {{object.organism_name}}
               </h5>
             </button>
           </h2>
@@ -32,11 +32,11 @@
             data-bs-parent="#organism-detail"
           >
             <div class="accordion-body bg-transparent">
-              <b> {%include 'utils/message.html'%} </b>
+              <b> {% include 'utils/message.html' %} </b>
 
-              {%include 'dorganism/organism/organism_u.html'%}
+              {% include 'dorganism/organism/organism_u.html' %}
               <!-- prettier-ignore -->
-              {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
+              {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@
     <div class="d-flex m-0 p-0">
       <div class="d-flex flex-column m-0 p-0">
         <!-- prettier-ignore -->
-        {%include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+        {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
       </div>
       <div class="accordion w-100" id="organism-batch-detail">
         <div class="accordion-item">
@@ -60,9 +60,9 @@
               aria-expanded="true"
               aria-controls="collapseTwo"
             >
-              Organism Batch & Stock {{batch_obj_count}}
+              Batch and Stock
               <!-- prettier-ignore -->
-              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count%}
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
             </button>
           </h2>
           <div
@@ -84,7 +84,7 @@
 
     <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
-      {%include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
+      {% include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
       <div class="accordion w-100" id="organism-culture-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingThree">
@@ -97,9 +97,9 @@
               aria-expanded="true"
               aria-controls="collapseThree"
             >
-              Organism Culture
+              Culture
               <!-- prettier-ignore -->
-              {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count%}
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
             </button>
           </h2>
           <div
@@ -123,7 +123,7 @@
     <!-- MIC_COADD Pivot -->
     <!-- AST -->
     <div class="d-flex m-0 p-0">
-      {%include 'utils/lefticons.html'%}
+      {% include 'utils/lefticons.html' %}
       <div class="accordion w-100" id="MIC_COADD">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingMIC_COADD">

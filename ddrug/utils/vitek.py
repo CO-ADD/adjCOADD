@@ -12,15 +12,14 @@ from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
-from ddrug.utils.import_drug import *
+from ddrug.utils.import_drug import imp_VitekCard_fromDict,imp_VitekAST_fromDict,imp_VitekID_fromDict
 
 import logging
 logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
-
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_List(Request, DirName,FileList, SessionKey=None, OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_Process(Request, DirName, FileList, SessionKey=None, OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -49,6 +48,7 @@ def upload_VitekPDF_List(Request, DirName,FileList, SessionKey=None, OrgBatchID=
             nFiles = len(FileList)
 
     valLog = Validation_Log("upload_VitekPDF_List")
+
     if nFiles > 0:
         processed_filelist=[]
         for i in range(nFiles):
@@ -69,6 +69,43 @@ def upload_VitekPDF_List(Request, DirName,FileList, SessionKey=None, OrgBatchID=
 
     valLog.select_unique()
     
+    return(valLog)
+
+#-----------------------------------------------------------------------------------
+def upload_VitekPDF_List(DirName, FileList, OrgBatchID=None,upload=False,appuser=None):
+#-----------------------------------------------------------------------------------
+    """
+    Uploads (upload=True) the data from a single Vitek PDF, given by:
+        DirName : FolderName
+        PdfName : PdfName without FolderName
+        OrgBatchID: Optional to overwrite OrgBatchID from PDF
+        upload : Validation only (False) or Validation and Upload (True)
+        appuser : User Instance of user uploading
+
+    """
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+
+    # Get PDF Files in case none given
+    if nFiles == 0:
+        if DirName:
+            DirFiles = os.listdir(DirName)
+            FileList = [f for f in DirFiles if f.endswith(".pdf")]
+            nFiles = len(FileList)
+
+    valLog = Validation_Log("upload_VitekPDF_List")
+    if nFiles > 0:
+        for i in range(nFiles):
+            # Cancel Process, If the cancel flag is set, break the loop, 
+            # For break a running upload
+            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
+            upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
+    else:
+        logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
+
+    valLog.select_unique()    
     return(valLog)
 
 #-----------------------------------------------------------------------------
@@ -95,7 +132,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
 
     nProcess = {'Uploaded':0,'Invalid':0}
     for c in lCards:
-        djCard = imp_VitekCard_fromDict(c,valLog)
+        djCard = imp_VitekCard_fromDict(c,valLog,upload=upload)
         if upload:
             if djCard.VALID_STATUS:
                 logger.debug(f" {djCard} <- {FileName}")

@@ -163,20 +163,41 @@ class AuditModel(models.Model):
             self.full_clean(**kwargs)
         except ValidationError as e:
             for key in e.message_dict:
-                if e.message_dict[key] == ['This field cannot be null.']:
-                    if ~self._meta.get_field(key).null:
-                        retValid[key] = ", ".join(e.message_dict[key])
-                else:
-                    retValid[key] = ", ".join(e.message_dict[key])
+                errMsgList = e.message_dict[key]
+                retMsg = []
+                for errMsg in errMsgList:
+                    if 'This field cannot be null.' == errMsg: 
+                        if ~self._meta.get_field(key).null:
+                            retMsg.append(errMsg)
+                    elif 'This field cannot be blank.' == errMsg:
+                        if ~self._meta.get_field(key).blank:
+                            retMsg.append(errMsg)
+                    elif 'Ensure that there are no more than' in errMsg:
+                        if self._meta.get_field(key).get_internal_type() != 'DecimalField':
+                            retMsg.append(errMsg)
+                    else:
+                        retMsg.append(errMsg)
+                if len(retMsg) > 0 :
+                    retValid[key] = "; ".join(retMsg)
+                #print(len(e.message_dict[key]))
+                # if e.message_dict[key] == ['This field cannot be null.']:
+                #     if ~self._meta.get_field(key).null:
+                #         retValid[key] = ", ".join(e.message_dict[key])
+                # elif e.message_dict[key] == ['This field cannot be blank.']:
+                #     if ~self._meta.get_field(key).blank:
+                #         retValid[key] = ", ".join(e.message_dict[key])
+                # else:
+                #     retValid[key] = ", ".join(e.message_dict[key])
         return(retValid)
 
 
     #-------------------------------------------------------------------
-    def clean_Fields(self,default_Char="",default_Integer=0):
+    def clean_Fields(self, default_Char="", default_Integer=0, default_Decimal=0.0):
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #   sets CharField    to "" (empty) or 'default' 
     #   sets IntegerField to 0 or 'default'
+    #   sets DecimalField to 0.0 or 'default'
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
@@ -185,6 +206,15 @@ class AuditModel(models.Model):
                 if hasattr(self,field.name):
                     if getattr(self,field.name) is None:
                         defValue = default_Integer
+                        fDict = field.deconstruct()[3]
+                        if 'default' in fDict:
+                            defValue = fDict['default']
+                        setattr(self,field.name,defValue)
+                        clFields[field.name]=defValue
+            if fType == "DecimalField":
+                if hasattr(self,field.name):
+                    if getattr(self,field.name) is None:
+                        defValue = default_Decimal
                         fDict = field.deconstruct()[3]
                         if 'default' in fDict:
                             defValue = fDict['default']
@@ -414,7 +444,7 @@ class Dictionary(AuditModel):
         ]
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.dict_value} "
+        return str(self.dict_value)
 
     def __repr__(self) -> str:
         return f"[{self.dict_class}] {self.dict_value} ({self.dict_desc})"

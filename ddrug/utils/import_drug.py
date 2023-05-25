@@ -5,7 +5,7 @@ from django_rdkit.config import config
 from django.conf import settings
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
-from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub
+from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import *
 
 from apputil.models import ApplicationUser, Dictionary
@@ -79,6 +79,80 @@ def imp_Drug_fromDict(iDict,valLog):
 
     return(djDrug)
 
+# ----------------------------------------------------------------------------------------------------
+def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
+    """
+    Create Breakpoint instance from a {Dict}
+    """
+# ----------------------------------------------------------------------------------------------------
+    # Change Key names to Lowercase
+    iDict =  {k.lower(): v for k, v in iDict.items()} 
+
+    validStatus = True
+
+    DrugID = Drug.get(iDict['drug_name'])
+    if DrugID is None:
+        validStatus = False
+        valLog.add_log('Error','oraOrgDB',f"{iDict['drug_name']} ",'BP Drug does not Exists','-')
+
+
+    if 'org_name' in iDict:
+        OrgName = iDict['org_name']
+        OrgRank = Dictionary.get(Breakpoint.Choice_Dictionary["org_rank"],iDict['org_rank'])
+        if OrgRank is None:
+            valLog.add_log('Error','oraOrgDB',iDict['org_rank'],'Tax Rank not correct','-')
+            validStatus = False
+    else:
+        OrgName = None
+        OrgRank = None
+
+    if 'notorg_name' in iDict:
+        NotOrgName = iDict['notorg_name']
+        NotOrgRank = Dictionary.get(Breakpoint.Choice_Dictionary["notorg_rank"],iDict['notorg_rank'])
+        if NotOrgRank is None:
+            valLog.add_log('Error','oraOrgDB',iDict['notorg_rank'],'(Not) Tax Rank not correct','-')
+            validStatus = False
+    else:
+        NotOrgName = None
+        NotOrgRank = None
+
+    djBP = Breakpoint.get(DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank,
+                        iDict['medical_application'], iDict['bp_type'], iDict['bp_source'])
+    if djBP is None:
+        djBP = Breakpoint()
+        djBP.drug_id = DrugID
+        djBP.org_name = OrgName
+        djBP.org_rank = OrgRank
+        djBP.notorg_name = NotOrgName
+        djBP.notorg_rank = NotOrgRank
+
+        valLog.add_log('Info',"",f"{iDict['drug_name']} {OrgRank} {OrgName} {NotOrgRank} {NotOrgName}",'New BP','-')
+
+    djBP.bp_type = Dictionary.get(djBP.Choice_Dictionary["bp_type"],iDict['bp_type'])
+    if djBP.bp_type is None:
+        valLog.add_log('Error','oraOrgDB',iDict['bp_type'],'BP Type not correct','-')
+        validStatus = False
+
+    djBP.med_application = iDict['medical_application']
+    djBP.bp_res_gt = iDict['bp_resistant_gt']
+    djBP.bp_sens_le = iDict['bp_sensitive_le']
+    djBP.bp_unit = iDict['bp_unit']
+    djBP.bp_comb = iDict['combination_type']
+    djBP.bp_source = iDict['bp_source']
+    djBP.bp_source_version = iDict['bp_source_version']
+
+    djBP.clean_Fields()
+    validStatus = True
+    validDict = djBP.validate()
+    if validDict:
+        validStatus = False
+        for k in validDict:
+            valLog.add_log('Warning','',k,validDict[k],'-')
+            print(f"Warning : {k} {validDict[k]}")
+    djBP.VALID_STATUS = validStatus
+
+    return(djBP)
+
 
 # ----------------------------------------------------------------------------------------------------
 def imp_VitekCard_fromDict(iDict,valLog,upload=False):
@@ -96,23 +170,24 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
         valLog.add_log('Error',iDict['filename'],iDict['orgbatch_id'],'Organism Batch does not exists','Use existing OrganismBatch ID')
         validStatus = False
 
+    infoCard = f"Card: {iDict['card_code']} ({iDict['card_barcode']})\n OrgBatch: {iDict['orgbatch_id']}"
     djVitekCard = VITEK_Card.get(iDict['card_barcode'])
     if djVitekCard is None:
         djVitekCard = VITEK_Card()
         djVitekCard.card_barcode = iDict['card_barcode']
         if upload:
-            valLog.add_log('Info',iDict['filename'],
-                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                           f"New {iDict['card_type']} VITEK card",'-')
+            print(f"New [{upload}] -> Info")
+            valLog.add_log('Info',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
         else:
-            valLog.add_log('Warning',iDict['filename'],
-                           f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                           f"New {iDict['card_type']} VITEK card",'-')
-
+            print(f"New [{upload}] -> Warning")
+            valLog.add_log('Warning',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
     else:
-        valLog.add_log('Warning',iDict['filename'],
-                       f"{iDict['card_barcode']} ({iDict['card_code']}) for {iDict['orgbatch_id']}",
-                       f"Update {iDict['card_type']} VITEK card",'-')
+        if upload:
+            print(f"Update [{upload}] -> Info")
+            valLog.add_log('Info',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
+        else:
+            print(f"Update [{upload}] -> Warning")
+            valLog.add_log('Warning',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
 
     djVitekCard.orgbatch_id = OrgBatch
     djVitekCard.card_type = Dictionary.get(djVitekCard.Choice_Dictionary["card_type"],iDict['card_type'])

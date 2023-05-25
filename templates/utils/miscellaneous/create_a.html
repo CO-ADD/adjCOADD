@@ -1,44 +1,44 @@
-{%if model_name == 'Dictionary' or model_name == 'AppUser' %}
+{% if model_name == 'Dictionary' or model_name == 'AppUser' %}
 <!--  -->
-{%if user.permission != 'Admin'%}
-<a
-  id="#"
-  class="btn-sm"
-  data-bs-toggle="tooltip"
-  data-bs-placement="right"
-  title="Admin Access"
-  ><i class="bi bi-file-earmark-plus text-secondary"></i>
-</a>
-<!--  -->
-{%else%}
-<a
-  id="{{create_object}}"
-  class="btn-sm"
-  data-bs-toggle="tooltip"
-  data-bs-placement="right"
-  title="Add New Entry {{create_object}}"
-  ><i class="bi bi-file-earmark-plus text-primary"></i>
-</a>
-<!--  -->
-{%endif%}
-<!--  -->
-{%else%}
-<a
-  id="{{create_object}}"
-  data-name="general"
-  class="btn-sm"
-  data-bs-toggle="tooltip"
-  data-bs-placement="right"
-  title="Add New Entry {{create_object}}"
-  ><i class="bi bi-file-earmark-plus fs-6 text-primary"></i>
-</a>
-{%endif%}
-<div
-  id="{{create_objectModal}}"
-  class="modal fade"
-  role="dialog"
-  data-bs-backdrop="static"
-></div>
+  {% if user.permission != 'Admin' %}
+    <a
+      id="#"
+      class="btn-sm"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      title="Admin Access"
+      ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+    </a>
+    <!--  -->
+  {% else %}
+    <a
+      id="{{create_object}}"
+      class="btn-sm"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      title="Add New Entry {{create_object}}"
+      ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+    </a>
+  <!--  -->
+  {% endif %}
+  <!--  -->
+{% else %}
+  <a
+    id="{{create_object}}"
+    data-name="general"
+    class="btn-sm"
+    data-bs-toggle="tooltip"
+    data-bs-placement="right"
+    title="Add New Entry {{create_object}}"
+    ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+  </a>
+  {% endif %}
+  <div
+    id="{{create_objectModal}}"
+    class="modal fade"
+    role="dialog"
+    data-bs-backdrop="static"
+  ></div>
 
 <script>
   $(document).ready(function () {

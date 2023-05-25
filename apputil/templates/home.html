@@ -1,14 +1,14 @@
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title%}COADD{% endblock %}
 {% block content %}
 <div class="mt-5" style="margin-top: 20px; height: 50px"></div>
 
-{%include 'dorganism/dorganism_home.html' %}
+{% include 'dorganism/dorganism_home.html' %}
 <!--  -->
-{%include 'ddrug/ddrug_home.html' %} 
+{% include 'ddrug/ddrug_home.html' %} 
 <!--  -->
-{%include 'dgene/gene_home.html' %}
+{% include 'dgene/gene_home.html' %} 
 
 <div
   class="modal fade"
@@ -17,7 +17,7 @@
   aria-labelledby="exampleModalToggleLabel"
   tabindex="-1"
 >
-  {%include 'utils/messagebox.html'%}
+  {% include 'utils/messagebox.html' %}
 </div>
 
 <!-- Generated markup by the plugin -->
@@ -45,4 +45,4 @@
     });
 </script>
 
-{%endblock%}
+{% endblock %}
