@@ -4,7 +4,9 @@ from django.urls import path, include, re_path
 
 from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
-    data_export, Importhandler_apputils) 
+    DataExportView, Importhandler_apputils)
+
+
 
 
 
@@ -18,9 +20,7 @@ urlpatterns = [
     path('dict_create/', DictionaryCreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
     path('dict_delete/', deleteDictionary, name='dict_delete' ),
-    path('exportData/', data_export, name="dataexport"),
+    path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
-    
-
    
 ]

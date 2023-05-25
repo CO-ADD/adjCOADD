@@ -22,7 +22,7 @@
       {% csrf_token %}
       <input type="hidden" name="selected_pks" id="selectedIdsInput">
       <input type="hidden" name="app_name" value="{{application}}">
-      <input type="hidden" name="model_name" value="{{model}}">
+      <input type="hidden" name="model_name" value="{{model_name}}">
 
       <input type="hidden" name="submit" value> <!-- get button value to formdetail-->
       <button class="btn btn-sm border border-3 mx-2" type="submit" name="csvdownload" value="csvdownload" data-name="exportData"><i class="fa-solid fa-download text-success"></i> .CSV</button>

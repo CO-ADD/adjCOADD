@@ -3,35 +3,39 @@
 {% block title%}COADD{% endblock %}
 {% block content %}
 <div class="mt-5" style="margin-top: 20px; height: 50px"></div>
+<div class="container">
 
-{% include 'dorganism/dorganism_home.html' %}
-<!--  -->
-{% include 'ddrug/ddrug_home.html' %} 
-<!--  -->
-{% include 'dgene/gene_home.html' %} 
-
-<div
-  class="modal fade"
-  id="exampleModalToggle"
-  aria-hidden="true"
-  aria-labelledby="exampleModalToggleLabel"
-  tabindex="-1"
->
-  {% include 'utils/messagebox.html' %}
+    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
+        {% include 'dorganism/dorganism_home.html' %}
+    </div>
+    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
+        
+        {% include 'ddrug/ddrug_home.html' %}
+    </div>
+    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
+        
+        {% include 'dgene/gene_home.html' %}
+    </div>
+    
+</div>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    {% include 'utils/messagebox.html' %}
 </div>
 
 <!-- Generated markup by the plugin -->
 
-<script>
+<!-- <script>
     $(window).on("load", function () {
         if ($(".Land_banner").hasClass("Land_frame_show")) {
-            $(".Land_banner").removeClass("Land_frame_show");}
+            $(".Land_banner").removeClass("Land_frame_show");
+        }
         const Land_visible = () => {
-          if ($(".Land_banner").hasClass("Land-frame-hidden")) {
-              $(".Land_banner").removeClass("Land-frame-hidden");
-              $(".Land_banner").addClass("Land_frame_show");
-          }
-      };
+            if ($(".Land_banner").hasClass("Land-frame-hidden")) {
+                $(".Land_banner").removeClass("Land-frame-hidden");
+                $(".Land_banner").addClass("Land_frame_show");
+            }
+        };
         const Land_banner = setTimeout(Land_visible, 2000);
 
         if (window.sessionStorage.fist_load_modal1 === undefined) {
@@ -43,6 +47,6 @@
             clearTimeout(Land_banner);
         }
     });
-</script>
+</script> -->
 
 {% endblock %}

@@ -31,24 +31,23 @@ from apputil.utils.files_upload import Importhandler
 def index(req):
 
     nDict = {    
-        'nOrg':    Organism.objects.count(),
-        'nTax':    Taxonomy.objects.count(),
-        'nDrug':   Drug.objects.count(),
-        'nVCard':  VITEK_Card.objects.count(),
-        'nVID':    VITEK_ID.objects.count(),
-        'nVAST':   VITEK_AST.objects.count(),
-        'nMICC':   MIC_COADD.objects.count(),
-        'nMICP':   MIC_Pub.objects.count(),
-#        'nBP':     Breakpoints.objects.count(),
-        'nGene':   Gene.objects.count(),
-        'nCheckM': WGS_CheckM.objects.count(),
-        'nFastQC': WGS_FastQC.objects.count(),
-        'nIDP':    ID_Pub.objects.count(),
-        'nIDS':    ID_Sequence.objects.count(),
+#         'nOrg':    Organism.objects.count(),
+#         'nTax':    Taxonomy.objects.count(),
+#         'nDrug':   Drug.objects.count(),
+#         'nVCard':  VITEK_Card.objects.count(),
+#         'nVID':    VITEK_ID.objects.count(),
+#         'nVAST':   VITEK_AST.objects.count(),
+#         'nMICC':   MIC_COADD.objects.count(),
+#         'nMICP':   MIC_Pub.objects.count(),
+# #        'nBP':     Breakpoints.objects.count(),
+#         'nGene':   Gene.objects.count(),
+#         'nCheckM': WGS_CheckM.objects.count(),
+#         'nFastQC': WGS_FastQC.objects.count(),
+#         'nIDP':    ID_Pub.objects.count(),
+#         'nIDS':    ID_Sequence.objects.count(),
     }
     return render(req, 'home.html', nDict)
 
-## =================================APP Home======================================##
 
 ## =================================APP Log in/out =================================
 def login_user(req):
@@ -75,8 +74,6 @@ def login_user(req):
 def logout_user(req):
     logout(req)    
     return redirect("/")
-
-# =================================APP Log in/out ==================================##
 
 ## =========================Application Users View====================================
 
@@ -130,8 +127,6 @@ class ApplicationUserUpdateView(HtmxupdateView):
             messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
-
-
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model=ApplicationUser
     template_name='apputil/appUsersDel.html'
@@ -141,7 +136,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.is_appuser==False
         return super().form_valid(form)
-# =========================Application Users View==================================##
+
 
 ## ========================Dictionary View===========================================
 
@@ -200,75 +195,14 @@ def deleteDictionary(req):
     
     return JsonResponse({})
 
-
 # =========================== Export CSV View =============================
-import csv
-import json
-import datetime 
-from django.apps import apps
-import pandas as pd
-from django.http import HttpResponse
-
-
-@login_required
-@user_passes_test(lambda u:u.has_permission('Admin'), login_url='permission_not_granted') 
-def data_export(request):
-    app_name = request.POST.get('app_name')
-    model_name = request.POST.get('model_name')
-
-    if not app_name or not model_name:
-        messages.error(request, "No application or model name were provided for export.")
-        return redirect(request.path)
-
-    try:
-        Model = apps.get_model(app_name, model_name)
-        print(Model)
-    except LookupError:
-        # Handle the case where the model does not exist.
-        return HttpResponse("Model not found.")
-    
-    selected_pks_string = request.POST.get('selected_pks')
-    print('selected_pks_string:', selected_pks_string)
-    if selected_pks_string == 'SelectAll':
-        items = Model.objects.all()
-    elif selected_pks_string:
-        selected_pks = json.loads(selected_pks_string)
-        items = Model.objects.filter(pk__in=selected_pks)   
-    else:
-        messages.error(request, "No items were selected for export.")
-        return redirect(request.META['HTTP_REFERER'])
-   
-    df = pd.DataFrame.from_records(items.values())
- 
-    if 'acreated_at' in df.columns:
-        df['acreated_at'] = pd.to_datetime(df['acreated_at']).dt.tz_localize(None).apply(lambda a: a.date())
-    if 'aupdated_at' in df.columns:
-        df['aupdated_at'] = pd.to_datetime(df['aupdated_at']).dt.tz_localize(None).apply(lambda a: a.date())
-    if 'adeleted_at' in df.columns:
-        df['adeleted_at'] = pd.to_datetime(df['adeleted_at']).dt.tz_localize(None).apply(lambda a: a.date())
-
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    filename = f'{model_name}_{current_date}'
-    response = HttpResponse("No valid export option was selected.")
-    print(request.POST)
-    if "csvdownload" in request.POST:
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="{filename}.csv"' 
-        df.to_csv(path_or_buf=response, index=False)
-
-    elif "xlsxdownload" in request.POST:
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
-        df.to_excel(excel_writer=response, index=False)
-
-    return response
-
+from .utils.views_base import DataExportBaseView
+class DataExportView(DataExportBaseView):
+    pass
 
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
 from .utils.validation_log import Validation_Log
-# from impdata.a_upload_AppUtil import update_AppUser_xls, update_Dictionary_xls
-# from impdata.c_upload_dDrug import update_Drug_xls
 
 class Importhandler_apputils(Importhandler):
     form_class=FileUploadForm
@@ -283,8 +217,7 @@ class Importhandler_apputils(Importhandler):
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
-        context["process_name"]=process_name
-        
+        context["process_name"]=process_name  
        
         kwargs={}
         kwargs['user']=request.user

@@ -1,7 +1,15 @@
 {% if messages %}
-<div class="messages">
+<div class="messages m-auto w-25" id="msg" >
     {% for message in messages %}
-    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    <span {% if message.tags %} class="{{ message.tags }} bg-warning" {% endif %} >{{ message }}</span>
     {% endfor %}
 </div>
 {% endif %}
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#msg").remove();
+        }, 3000); // this will remove the message after 5 seconds
+    });
+</script>

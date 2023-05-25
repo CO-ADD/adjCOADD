@@ -437,32 +437,26 @@ nav.shrink .dropdown-divider {
 
 }
 
-/* .Land_frame_show{
-  border:1px solid transparent;
-} */
 .Land_frame_show {
   /* Initial border style */
   position: relative;
   /* Animation */
-  animation: borderAnimation 3s linear;
-  border: 3px solid white;
-
-  /* border-top-color:#60daaa;border-right-color:#60daaa;
-    transition:width 0.25s ease-out, height 0.25s ease-out 0.25s; */
-
+  animation:borderAnimation 5s linear;
+  border: 3px solid rgb(165, 164, 164);
 
 }
 
 .Land_frame_show:after {
 
-  width: 3px;
-  background-color: white;
-  height: 0px;
+  width: 10px;
+  background-color: rgb(240, 169, 16);
+  height: 0;
+  /* box-shadow: 5px 10px 8px 10px #888888; */
   position: absolute;
   bottom: 0;
   left: -3px;
   z-index: 1;
-  animation: bordermovedown 2s linear;
+  animation: bordermovedown 3s linear;
   animation-fill-mode: forwards;
   content: '';
   display: inline-block;
@@ -499,47 +493,10 @@ a:hover .tooltiptext {
   visibility: visible;
 }
 
-.hex {
-  width: 100px;
-  height: 100px;
-  background: var(--teal);
-  overflow: hidden;
-  transform: rotate(90deg);
-  -webkit-clip-path: polygon(0% 50%,
-      25% 95%,
-      75% 95%,
-      100% 50%,
-      75% 5%,
-      25% 5%);
-  clip-path: polygon(0% 50%, 25% 95%, 75% 95%, 100% 50%, 75% 5%, 25% 5%);
-  -webkit-clip-path: polygon(50% 0%,
-      95% 25%,
-      95% 75%,
-      50% 100%,
-      5% 75%,
-      5% 25%);
-  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-}
-
-.hex-txt {
-  position: absolute;
-  left: 10%;
-  top: 40%;
-  background-color: transparent;
-  transform: rotate(-90deg);
-  font-size: small;
-  color: var(--bs-custom-white);
-  font-weight: bold;
-}
-
 .landp-img-01:hover {
   transform: scale(1.1);
   transition: 0.3s ease-in;
   color: var(--bs-light);
-  opacity: 80%;
-}
-
-.hex:hover {
   opacity: 80%;
 }
 
@@ -1023,28 +980,28 @@ form p {
 @keyframes borderAnimation {
   0% {
     border: solid 5px var(--bs-body-bg);
-    border-left: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
 
   }
 
   25% {
     border: solid 5px  var(--bs-body-bg);
-    border-left: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
     /* border-right: 3px solid var(--bs-th-bg); */
   }
 
   25.02% {
     border: solid 5px  var(--bs-body-bg);
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
+    border-bottom: 3px solid rgb(165, 164, 164);
     /* border-bottom: 3px solid var(--bs-th-bg); */
 
   }
 
   50% {
     border: solid 5px  var(--bs-body-bg);
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
+    border-bottom: 3px solid rgb(165, 164, 164);
     /* border-bottom: 3px solid var(--bs-th-bg); */
     /* border-left: 3px solid var(--bs-th-bg); */
 
@@ -1052,23 +1009,23 @@ form p {
 
   50.02% {
     border: solid 5px  var(--bs-body-bg);
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
-    border-right: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
+    border-bottom: 3px solid rgb(165, 164, 164);
+    border-right: 3px solid rgb(165, 164, 164);
     /* border-left: 3px solid var(--bs-th-bg); */
   }
 
   75% {
     border: solid 5px  var(--bs-body-bg);
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
-    border-right: 3px solid white;
+    border-left: 3px solid rgb(165, 164, 164);
+    border-bottom: 3px solid rgb(165, 164, 164);
+    border-right: 3px solid rgb(165, 164, 164);
     /* border-left: 3px solid var(--bs-th-bg); */
 
   }
 
   75.02% {
-    border: solid 5px white;
+    border: solid 5px rgb(165, 164, 164);
   }
 
 }
@@ -1076,9 +1033,10 @@ form p {
 @keyframes bordermovedown {
 
   0% {
-    height: calc(100% + 10px);
+    /* height: calc(100% - 10px);
+    height: ; */
     width: 5px;
-    bottom: -5px;
+    bottom: 100%;
     left: -5px;
   }
   25% {
@@ -1089,7 +1047,7 @@ form p {
   }
   25.01% {
     height: 5px;
-    width: calc(100% + 10px);
+    /* width: calc(100% + 10px); */
     bottom: -5px;
     left: -5px;
   }
@@ -1100,7 +1058,7 @@ form p {
     bottom: -5px;
   }
   50.01% {
-    height: calc(100% + 10px);
+    /* height: calc(100% + 10px); */
     width: 5px;
     left: 100%;
     bottom: -5px;
@@ -1113,14 +1071,14 @@ form p {
   }
   75.01% {
     height: 5px;
-    width: calc(100% + 10px);
-    left: 0%;
+    /* width: 75%; */
+    left: 50%;
     bottom: 100%;
   }
   99.01% {
     height: 5px;
     width: 0;
-    left: 130px;
+    /* left: 50%; */
     bottom: 100%;
   }
 }

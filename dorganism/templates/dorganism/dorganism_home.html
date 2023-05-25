@@ -1,28 +1,21 @@
-<div class="Land_banner m-auto mt-5 bg-transparent Land-frame-hidden"  style="width: 36rem">
-  <!-- <div class="card-head"> -->
+<!-- <div class="card-head"> -->
 
-  <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
-    <span class="fs-4 text-muted px-1 rounded-3">Organisms</span>
-  </label>
+<label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
+  <span class="fs-4 text-muted px-1 rounded-3">Organisms</span>
+</label>
 
-    <div class="d-flex justify-content-center">
-      <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" 
-        data-bs-toggle="tooltip" data-bs-placement="left" 
-        href="{%url 'org_card' %}" title="{{nOrg}} organims">
-        ORGANISM
+<div class="d-flex justify-content-center">
+  <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
+    data-bs-placement="left" href="{%url 'org_card' %}" title="{{nOrg}} organims">
+    ORGANISM
+  </a>
+
+  <div class="row w-75">
+    <div class="col align-items-center m-auto ps-5">
+      <a class="badge land-badge bg-info border m-auto" data-bs-toggle="tooltip" data-bs-placement="left"
+        href="{%url 'taxo_card'%}" title="{{nTax}} entries" inactivate>
+        Taxonomy
       </a>
-
-    <div class="row">
-      <div class="col">
-        <a class="badge land-badge bg-info border m-auto"
-          data-bs-toggle="tooltip" data-bs-placement="left"
-          href="{%url 'taxo_card'%}" title="{{nTax}} entries"          
-          inactivate
-        >
-          Taxonomy
-        </a>
-      </div>
     </div>
-  
+  </div>
 </div>
-

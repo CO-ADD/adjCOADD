@@ -13,7 +13,7 @@
   <!-- Main View -->
   <div class="main d-flex flex-column">
     <!-- prettier-ignore -->
-    {% include 'utils/main_horizalbar.html' model_name='ApplicationUser'%}
+    {% include 'utils/main_horizalbar.html' with model_name='ApplicationUser' application='apputil' %}
     {%include 'utils/datatable_general.html' with table_id='ApplicationUser' %}
   </div>
 </div>
