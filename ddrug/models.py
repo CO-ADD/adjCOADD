@@ -190,7 +190,7 @@ class Drug(AuditModel):
             super(Drug, self).save(*args, **kwargs) 
 
 #=================================================================================================
-class Breakpoints(AuditModel):
+class Breakpoint(AuditModel):
     """
     List of Breakpoints 
     """
@@ -199,34 +199,33 @@ class Breakpoints(AuditModel):
     }
 
     Choice_Dictionary= {
-        'org_type':'Tax_Rank',
-        'notorg_type':'Tax_Rank',
+        'org_rank':'Tax_Rank',
+        'notorg_rank':'Tax_Rank',
         'bp_type':'BP_Type',
     }
 
-
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
         db_column="drug_id", related_name="%(class)s_drug_id")
-    org_name = models.CharField(max_length=50, blank=False, verbose_name = "Organism") 
+    org_name = models.CharField(max_length=50, blank=True, verbose_name = "Organism") 
     org_rank = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Rank", on_delete=models.DO_NOTHING,
         db_column="org_rank", related_name="%(class)s_orgtype")
-    notorg_name = models.CharField(max_length=50, blank=False, verbose_name = "Not(Organism)") 
+    notorg_name = models.CharField(max_length=50, blank=True, verbose_name = "Not(Organism)") 
     notorg_rank = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Not(Rank)", on_delete=models.DO_NOTHING,
         db_column="notorg_rank", related_name="%(class)s_notorgtype")
-    med_application = models.CharField(max_length=50, blank=False, verbose_name = "Application")
+    med_application = models.CharField(max_length=50, blank=True, verbose_name = "Application")
     bp_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "BP Type", on_delete=models.DO_NOTHING,
         db_column="bp_type", related_name="%(class)s_bptype")
     bp_res_gt = models.DecimalField(max_digits=9, decimal_places=3, blank=False, verbose_name = ">Res") 
     bp_sens_le = models.DecimalField(max_digits=9, decimal_places=3, blank=False, verbose_name = "<=Sens") 
     bp_unit = models.CharField(max_length=5, blank=False, verbose_name = "Unit") 
-    bp_comb = models.CharField(max_length=20, blank=False, verbose_name = "Combination") 
+    bp_comb = models.CharField(max_length=20, blank=True, verbose_name = "Combination") 
     bp_source = models.CharField(max_length=50, blank=False, verbose_name = "BP Source") 
     bp_source_version = models.CharField(max_length=50, blank=False, verbose_name = "BP Version") 
 
     #------------------------------------------------
     class Meta:
         app_label = 'ddrug'
-        db_table = 'breakpoints'
+        db_table = 'breakpoint'
         ordering=['drug_id','org_rank','org_name','bp_type']
         indexes = [
             models.Index(name="bp_drug_idx", fields=['drug_id']),
@@ -240,7 +239,7 @@ class Breakpoints(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.pkid}"
+        return f"{self.id}"
 
     #------------------------------------------------
     def __repr__(self) -> str:

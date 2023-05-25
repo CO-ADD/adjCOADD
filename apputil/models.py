@@ -163,11 +163,31 @@ class AuditModel(models.Model):
             self.full_clean(**kwargs)
         except ValidationError as e:
             for key in e.message_dict:
-                if e.message_dict[key] == ['This field cannot be null.']:
-                    if ~self._meta.get_field(key).null:
-                        retValid[key] = ", ".join(e.message_dict[key])
-                else:
-                    retValid[key] = ", ".join(e.message_dict[key])
+                errMsgList = e.message_dict[key]
+                retMsg = []
+                for errMsg in errMsgList:
+                    if 'This field cannot be null.' == errMsg: 
+                        if ~self._meta.get_field(key).null:
+                            retMsg.append(errMsg)
+                    elif 'This field cannot be blank.' == errMsg:
+                        if ~self._meta.get_field(key).blank:
+                            retMsg.append(errMsg)
+                    elif 'Ensure that there are no more than' in errMsg:
+                        if self._meta.get_field(key).get_internal_type() != 'DecimalField':
+                            retMsg.append(errMsg)
+                    else:
+                        retMsg.append(errMsg)
+                if len(retMsg) > 0 :
+                    retValid[key] = ", ".join(retMsg)
+                #print(len(e.message_dict[key]))
+                # if e.message_dict[key] == ['This field cannot be null.']:
+                #     if ~self._meta.get_field(key).null:
+                #         retValid[key] = ", ".join(e.message_dict[key])
+                # elif e.message_dict[key] == ['This field cannot be blank.']:
+                #     if ~self._meta.get_field(key).blank:
+                #         retValid[key] = ", ".join(e.message_dict[key])
+                # else:
+                #     retValid[key] = ", ".join(e.message_dict[key])
         return(retValid)
 
 

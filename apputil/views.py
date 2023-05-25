@@ -15,7 +15,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
-from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoints
+from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
 from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
@@ -39,7 +39,7 @@ def index(req):
         'nVAST':   VITEK_AST.objects.count(),
         'nMICC':   MIC_COADD.objects.count(),
         'nMICP':   MIC_Pub.objects.count(),
-        'nBP':     Breakpoints.objects.count(),
+#        'nBP':     Breakpoints.objects.count(),
         'nGene':   Gene.objects.count(),
         'nCheckM': WGS_CheckM.objects.count(),
         'nFastQC': WGS_FastQC.objects.count(),
