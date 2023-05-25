@@ -11,25 +11,8 @@
 
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    <!-- Table Title -->
-    <h2 class="accordion-header" id="headingOne">
-      <button
-        class="accordion-button"
-        style="max-height: 20px"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapseOne"
-        aria-expanded="true"
-        aria-controls="collapseOne"
-      >
-        <h2 class="fs-6 my-0">
-          <b>Organism</b>
-        </h2>
-      </button>
-    </h2>
-
     <!-- prettier-ignore -->
-    {% include 'utils/main_horizalbar.html' %}
+    {% include 'utils/main_horizalbar.html' model_name='Organism'%}
     <!-- prettier-ignore -->
 
     <!-- Card View Content -->

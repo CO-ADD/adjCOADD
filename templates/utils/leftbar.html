@@ -23,38 +23,14 @@
       <a class="btn-sm btn-outline-success" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="right"
         title="Import Data via Files"><i class="fa fa-file-import fs-6" style='color: red'></i>
       </a>
-    </div>
-
-    <div class="btn-group p-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Click to Export DATA with selecting Fields ">
-      <a class="btn-sm btn-outline-success" data-bs-toggle="dropdown" aria-expanded="false" href="javascript:void(0)">
-        <i class="fa fa-file-export fs-6 " style='color: green'></i>
-      </a>
-      <ul class="dropdown-menu">
-        <!--  -->
-
-        {% for field in model_fields %}
-        <li>
-          <input
-            class="filled-in"
-            type="checkbox"
-            value="{{field}}"
-            name="model_field_select"
-          />
-          <label for=""> {{field}} </label>
-        </li>
-        {% endfor %}
-        <button class="data_export bg-dark text-light" style="float: right">
-          <i class="fa-solid fa-download" style='color: green'></i>
-        </button>
-      </ul>
-    </div>
+    </div>   
   </div>
 </div>
 
 
 {% load static %}
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>
+
 
 <script>
   $(document).ready(function () {

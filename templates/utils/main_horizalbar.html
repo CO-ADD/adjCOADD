@@ -1,8 +1,49 @@
 {% include 'utils/message.html' %}
+<!-- Table Title -->
+<h2 class="accordion-header" id="headingOne">
+    <button
+      class="accordion-button"
+      style="max-height: 20px"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseOne"
+      aria-expanded="true"
+      aria-controls="collapseOne"
+    >
+      <h2 class="fs-6 my-0">
+        <b>{{model_name}}</b>
+      </h2>
+    </button>
+  </h2>
 <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
     <!-- <div class="d-flex align-items-baseline"> -->
     {% include 'utils/pagination.html'%}
     <!--  -->
     {% include 'utils/miscellaneous/selectAllExp.html' %}
+
+    <div class="btn-group p-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="Click to Export DATA with selecting Fields ">
+    <a class="btn-sm btn-outline-success" data-bs-toggle="dropdown" aria-expanded="false" href="javascript:void(0)">
+      <i class="fa fa-file-export fs-6 " style='color: green'></i>
+    </a>
+    <ul class="dropdown-menu">
+      <!--  -->
+
+      {% for field in model_fields %}
+      <li>
+        <input
+          class="filled-in"
+          type="checkbox"
+          value="{{field}}"
+          name="model_field_select"
+        />
+        <label for=""> {{field}} </label>
+      </li>
+      {% endfor %}
+      <button class="data_export bg-dark text-light" style="float: right">
+        <i class="fa-solid fa-download" style='color: green'></i>
+      </button>
+    </ul>
+  </div>
    
 </div>
