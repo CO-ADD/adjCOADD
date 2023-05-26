@@ -36,10 +36,10 @@ from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from dorganism.models import Organism_Batch
-from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub
+from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from ddrug.utils.vitek import upload_VitekPDF_List
-from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter
+from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
 from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
 
 # ===================================================================
@@ -279,6 +279,15 @@ class MIC_PubListView(LoginRequiredMixin, FilteredListView):
 ## -------------
 class MIC_PubCardView(MIC_PubListView):
     template_name = 'ddrug/mic_pub/mic_pub_card.html'
+
+
+## -------------
+class BreakpointListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=Breakpoint  
+    template_name = 'ddrug/breakpoint/breakpoint_list.html' 
+    filterset_class=Breakpointfilter
+    model_fields=model.HEADER_FIELDS  
 
 # --API Views--
 ## Drug

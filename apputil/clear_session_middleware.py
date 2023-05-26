@@ -22,6 +22,7 @@ class ClearSessionMiddleware:
             reverse('mic_coadd_card'),
             reverse('mic_pub_list'),
             reverse('mic_pub_card'),
+            reverse('breakpoint_list'),
 
             reverse('gene_list'),
             reverse('id_pub_list'),
@@ -33,7 +34,6 @@ class ClearSessionMiddleware:
             reverse('org_list'),
             reverse('taxo_list'),
             reverse('taxo_card'),
-            
         ]
 
         # Clear the session if the user is navigating to any of the listed views
