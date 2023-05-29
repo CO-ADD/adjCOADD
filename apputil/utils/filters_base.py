@@ -21,7 +21,6 @@ class LowerAny(Func):
         super().__init__(Value(search_value), array_field, **extra)
 
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
-    # print(model)
     q_object = Q()
     exclude_fields = exclude_fields or []
 
@@ -114,18 +113,15 @@ class FilteredListView(ListView):
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
         self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
-        print(self.request.session['cached_queryset'])
+     
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
-        # self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         # Return the filtered queryset
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()
-        if order:
-            
+        if order:           
             order=order.replace(".", "__")
-            print(order)
             return self.filterset.qs.distinct().order_by(order)
         return self.filterset.qs.distinct()
 
@@ -165,7 +161,6 @@ class FilteredListView(ListView):
             # if order_field in model_constants_field.values():
             index=find_item_index(list(self.model_fields.values()), order_field)
             order_by=acs_decs+ list(self.model_fields.keys())[index]
-            print(list(self.model_fields.values()))
             # elif order_field == 'ID':
             #     order_by=acs_decs+'pk'
            

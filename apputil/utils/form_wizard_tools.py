@@ -1,17 +1,26 @@
 '''
-Steps process driven by form submission requests. for imporing data with PDFs
--uploading PDFs
--parsing, validating and saving to DB 
+Steps process driven by form submission requests. for imporing data with PDFs, Excels
+-Select Files to upload : parsing, validating
+-Upload: parsing, validating and saving to DB
+-Finalize: return to first step (Select Files)
+
+Process variables in sessionView storages: 
+        valLog - validation result table store in "validation-result"; 
+        confirm-to-upload - enable upload data store in "validation-result";
+        dirname - files store path store in "dirname";
+        filelist - uploaded files' namelist store in "filelist";
+        validation_message - summarize progress store in "validation_message";
+        step_1 - store step name.
 '''
 import os
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import HttpResponse, render, redirect
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDict
 from apputil.utils.views_base import SuperUserRequiredMixin
-from apputil.utils.files_upload import validate_file,file_location
+from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
 
 
 # --------------------------------------------------------------------------------------------------
@@ -24,7 +33,6 @@ class SelectFile_StepForm(SuperUserRequiredMixin, forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        print('clean data')
         uploadfiles=[]
         # List of file fields to validate
         file_fields = ['multi_files',]
@@ -59,104 +67,118 @@ class Upload_StepForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['confirm'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
 
+# --------------------------------------------------------------------------------------------------   
 
-# --------------------------------------------------------------------------------------------------
-class StepForm_1(forms.Form):
-# --------------------------------------------------------------------------------------------------
-    confirm = forms.BooleanField(required=True, help_text="Confirm to upload Data")
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['confirm'].error_messages = {'required': 'Contains Error, please correct firstly'}
-
-
-# class StepForm_2(forms.Form):
+# Add more class StepForm_2(forms.Form), if needed
 
 # --------------------------------------------------------------------------------------------------
 class Finalize_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
     pass
-    #log_entry = forms.CharField(widget=forms.Textarea, required=False)
 
 # --------------------------------------------------------------------------------------------------
-class ImportHandler_WizardView(SuperUserRequiredMixin,SessionWizardView):
+class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
 # --------------------------------------------------------------------------------------------------
-    # here add steps name
-    step1='upload'
-    # step2='step2'
-    # ...
-
+    name_step1="Upload" # step label in template
+    # define more steps name
+    #... 
+    # define each step's form
     form_list = [
-        ('select_file', SelectFile_StepForm),
-        ('upload', Upload_StepForm),
-        # Here adding steps:
-        # ('Step1', StepForm_1),
-        # ...
-        ('finalize', Finalize_StepForm),
+        ('select_file', None),
+        ('upload',None),
+        # add more step -> StepForm
+        ('finalize', None),
     ]
-
+    # define template
     template_name = None
-
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Here add process variables
-    # 
-    # process_step should be customized per application data
+        self.filelist=[]
+        self.dirname=None
+        self.valLog=None
+        self.upload=False
+        self.html_columns = ['Type','Note','Item','Filename','Help']
+    
+    def file_process_handler(self, request, *args, **kwargs):
+        pass
+        
+         
     def process_step(self, form):
-        # Here control steps
         current_step = self.steps.current
         request = self.request
 
         if current_step == 'select_file':
-            # here uploads files and define file name and path
-            location = file_location(request)  # define file store path during file process
+            self.storage.extra_data['validation_result']="-"
+            self.dirname = file_location(instance=request.user)  # define file store path during file process
             files = []
-            if 'single_file' in request.FILES:
-                files.append(request.FILES['single_file'])
-            if 'folder_files' in request.FILES:
-                files.extend(request.FILES.getlist('folder_files'))
- 
-            # here can add extra functions for files
+            if form.is_valid():
+                if 'select_file-multi_files' in request.FILES:
+                    files.extend(request.FILES.getlist('select_file-multi_files'))          
+                # Get clean FileList
+                for f in files:
+                    fs = OverwriteStorage(location=self.dirname)
+                    filename = fs.save(f.name, f)
+                    self.filelist.append(filename)
 
+                # Parse and Validation
+                self.valLog=self.file_process_handler(request, self.dirname, self.filelist, form_data=form.cleaned_data, upload=self.upload, appuser=request.user) 
+                if self.valLog.nLogs['Error'] >0 :
+                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
+                    self.storage.extra_data['confirm_to_upload'] = False
+                else:
+                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+                    self.storage.extra_data['confirm_to_upload'] = True
 
-        elif current_step == 'upload':
-            print("Upload")
-            # In this step, you can perform further steps
+                self.storage.extra_data['validation_result'] = dfLog
+                self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) checked for errors." 
+                self.storage.extra_data['filelist'] = self.filelist
+                self.storage.extra_data['dirname'] = self.dirname          
+            else:
+                self.storage.extra_data['validation_result']="No files selected"
+                return render(request, template_name, context)
 
-        #     # more steps
+        elif current_step == 'upload': # recheck and save to DB
+            form =self.form_list['upload'](request.POST)
+            self.upload=True
+            self.dirname=self.storage.extra_data['dirname'] #get file path
+            self.filelist=self.storage.extra_data['filelist'] #get files' name  
+            self.valLog=self.file_process_handler(request, self.dirname, self.filelist, form_data=request.POST, upload=self.upload, appuser=request.user)
+            if self.valLog.nLogs['Error'] >0 :
+                dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
+            else:
+                dfLog = self.valLog.get_ashtml(columns=self.html_columns)
 
+            self.storage.extra_data['validation_result'] = dfLog  
+            self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) Uploaded." 
         return self.get_form_step_data(form)
 
     def done(self, form_list, **kwargs):
-      
-        # Save data to the database or perform any other final actions
+        import shutil
         # Redirect to the desired page after finishing
-        return redirect(self.request.META['HTTP_REFERER'])  
+        dirname=self.storage.extra_data['dirname']
+        if dirname:
+            try:
+                shutil.rmtree(dirname)
+            except FileNotFoundError as err:
+                print(err)
+            except Exception as err:
+                print(err)
+        return redirect(self.request.META['HTTP_REFERER'])
+
 
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
+        # save information to context,
+        # then display in templates  
+        context['step1']=self.name_step1
         current_step = self.steps.current
-
-        if current_step == 'upload':
-            pass
-        #    here can define extra context for upload result 
-     
-
+        context['validation_message'] = self.storage.extra_data.get('validation_message', None)
+        if current_step == 'upload_file':
+            context['validation_result']="Select VITEK PDF files"
+        else:
+            context['validation_result'] = self.storage.extra_data.get('validation_result', None)
+            context['confirm_to_upload']=self.storage.extra_data.get('confirm_to_upload', None)
         return context
-    
-        # Use to delete uploaded files
-    def delete_file(self, file_name):
-        location=file_location(instance=self.request.user)
-        file_full_path=os.path.join(location, file_name)
-        print(file_full_path)
-        try:
-            os.unlink(file_full_path)
-            print("removed!")
-        except FileNotFoundError:
-            print(f"File {file_path} does not exist.")
-        except Exception as err:
-            raise Exception
-
-    

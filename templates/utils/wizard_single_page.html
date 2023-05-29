@@ -33,41 +33,40 @@
 
         <!-- This is Select File Step -->
         {% if wizard.steps.current == 'select_file' %}
-          <div class="p-3 m-auto">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
+            <!--prettier-ignore-->
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          {% endfor %}
         </div>
 
         <!-- This is Upload Step -->
         {% elif wizard.steps.current == 'upload' %}
-          <div class="p-3 m-auto">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-            {% endfor %}
-          </div>
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
+            <!--prettier-ignore-->
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          {% endfor %}
+        </div>
 
         <!-- This is the Final Step-->
         {% elif wizard.steps.current == 'finalize' %}
-          <div class="p-3 m-auto">
-            {% for field in wizard.form %}
-            <p class="p-auto m-auto">
-              <!--prettier-ignore-->
-              {{ field.label_tag }}
-              <strong>{{ field.help_text }}</strong>{{field }}
-            </p>
-
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
             <!--prettier-ignore-->
-            {% endfor %}
-          </div>
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          <!--prettier-ignore-->
+          {% endfor %}
+        </div>
         {% endif %}
       </div>
 
@@ -75,37 +74,33 @@
       <div class="row m-5 border">
 
         {% if wizard.steps.prev %}
-          <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
-            onclick="window.location.reload(true);">
-            <i class="fa-solid fa-ban"></i>
-          </button>
-          <button class="btn btn-sm m-auto col-md-3" name="wizard_goto_step" type="submit"
-            value="{{ wizard.steps.prev }}">
-            <i class="fa-solid fa-left-long"></i>
-          </button>
+        <a class="btn btn-sm m-auto col-md-3" href="{{reset_url}}?reset"><i class="fa-solid fa-ban"></i></a>
+        <button class="btn btn-sm m-auto col-md-3" name="wizard_goto_step" type="submit"
+          value="{{ wizard.steps.prev }}">
+          <i class="fa-solid fa-left-long"></i>
+        </button>
         {% else %}
-          <button class="btn btn-sm m-auto col-md-3" type="button" id="cancel-button"
-            onclick="window.location.reload(true);">
-            <i class="fa-solid fa-ban"></i>
-          </button>
-          <button class="btn btn-sm m-auto col-md-3" disabled>
-            <i class="fa-solid fa-left-long"></i>
-          </button>
+        <button class="btn btn-sm m-auto col-md-3" disabled>
+          <i class="fa-solid fa-ban"></i>
+        </button>
+        <button class="btn btn-sm m-auto col-md-3" disabled>
+          <i class="fa-solid fa-left-long"></i>
+        </button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-          <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Next">
-            <i class="fa-solid fa-right-long"></i>
-          </button>
+        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Next">
+          <i class="fa-solid fa-right-long"></i>
+        </button>
         {% elif wizard.steps.next %}
-          <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Click to start">
-            <i class="fa-solid fa-play"></i>
-          </button>
+        <button class="btn btn-sm m-auto col-md-3 nextstep" type="submit" value="Click to start">
+          <i class="fa-solid fa-play"></i>
+        </button>
         {% else %}
-          <button class="btn btn-sm m-auto col-md-3" type="submit" value="Finalize">
-            <i class="fa-solid fa-check"></i>
-          </button>
+        <button class="btn btn-sm m-auto col-md-3" type="submit" value="Finalize">
+          <i class="fa-solid fa-check"></i>
+        </button>
         {% endif %}
       </div>
     </div>
@@ -126,29 +121,29 @@
         </div>
         <div class="mt-5">
           <h3 class="selectfiles not-visible text-start text-info ms-2">
-          Selected Files
+            Selected Files
           </h3>
           <ul class="text-start mb-5" id="multi-files-list"></ul>
 
           <!--prettier-ignore-->
           {% for field in wizard.form %}
-            {% for error in field.errors %}
-              <p class="text-danger show-error">{{ error }}</p>
-            {% endfor %}
+          {% for error in field.errors %}
+          <p class="text-danger show-error">{{ error }}</p>
+          {% endfor %}
           <!--  -->
           {% endfor %}
           <div>{{progress}}</div>
 
           {% if validation_message != None %}
-            <h3>
-              {{validation_message}}
-            </h3>
+          <h3>
+            {{validation_message}}
+          </h3>
           {% endif %}
 
           {% if validation_result != None %}
-            <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
-             {% include 'utils/uploadtable.html' %}
-          {% endif %}
+          <div class="validation_result overflow-auto p-0 m-2" style="max-height: 500px">
+            {% include 'utils/uploadtable.html' %}
+            {% endif %}
           </div>
         </div>
       </div>

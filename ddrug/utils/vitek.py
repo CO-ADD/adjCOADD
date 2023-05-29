@@ -19,12 +19,11 @@ logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_Process(Request, DirName, FileList, SessionKey=None, OrgBatchID=None,upload=False,appuser=None):
+def upload_VitekPDF_Process(Request, DirName, FileList, OrgBatchID=None,upload=False,appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
-        Request :
-        SessionKey :
+        Request : Objects to pass state through the system, including user model instance: e.g., request.user
         DirName : FolderName
         PdfName : PdfName without FolderName
         OrgBatchID: Optional to overwrite OrgBatchID from PDF
@@ -32,8 +31,6 @@ def upload_VitekPDF_Process(Request, DirName, FileList, SessionKey=None, OrgBatc
         appuser : User Instance of user uploading
 
     """
-    # Setting up the cancel flag key
-    cancel_flag_key = f'cancel_flag_{SessionKey}'
 
     if FileList:
         nFiles = len(FileList)
@@ -50,19 +47,9 @@ def upload_VitekPDF_Process(Request, DirName, FileList, SessionKey=None, OrgBatc
     valLog = Validation_Log("upload_VitekPDF_List")
 
     if nFiles > 0:
-        processed_filelist=[]
         for i in range(nFiles):
-            # Cancel Process, If the cancel flag is set, break the loop, 
-            # For break a running upload
-            if cache.get(cancel_flag_key):
-                print("interrupt process")
-                cache.delete(f'valLog_{Request.user}')
-                cache.delete(SessionKey)
-                break
             logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
             upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
-            processed_filelist.append(FileList[i])
-            cache.set(SessionKey, {'processed':i+1, 'file_name':processed_filelist, 'total':nFiles, 'uploadpdf_version': datetime.datetime.now().timestamp()})
 
     else:
         logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
