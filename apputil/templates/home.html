@@ -2,51 +2,113 @@
 <!--prettier-ignore-->
 {% block title%}COADD{% endblock %}
 {% block content %}
-<div class="mt-5" style="margin-top: 20px; height: 50px"></div>
-<div class="container">
+<div style="margin-top: 20px; height: 50px"></div>
+<div class="container d-flex flex-wrap justify-content-around">
 
-    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
-        {% include 'dorganism/dorganism_home.html' %}
+    <div class="Land_banner mt-5 me-3 bg-transparent Land_frame_show flex-grow-1">
+
+        <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
+            <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Organisms</span>
+        </label>
+        <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
+            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
+                data-bs-placement="left" href="{%url 'org_card' %}" title="{{nOrg}} organims">
+                ORGANISM
+            </a>
+
+            <div class="row w-50">
+                <div class="col text-center m-auto">
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'taxo_card'%}" title="{{nTax}} entries" inactivate>
+                        Taxonomy
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
-        
-        {% include 'ddrug/ddrug_home.html' %}
+    <div class="Land_banner mt-5 bg-transparent Land_frame_show">
+        <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
+            <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Properties</span>
+        </label>
+
+        <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
+            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
+                data-bs-placement="left" href="{%url 'drug_card' %}" title="{{objects_drug}} entries">
+                DRUG
+            </a>
+            <div class="row w-50">
+                <div class="col text-center m-auto">
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'vitekcard_list'%}" title="{{nVID}} entries" inactivate>
+                        Vitek Id
+                    </a>
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'vitekcard_list'%}" title="{{nVAST}} entries" inactivate>
+                        Vitek AST
+                    </a>
+                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'vitekast_list'%}" title="{{nVCard}} entries" inactivate>
+                        Vitek Cards
+                    </a>
+                </div>
+                <div class="col text-center m-auto">
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'mic_coadd_list'%}" title="{{nMICC}} entries" inactivate>
+                        Antibiograms
+                    </a>
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'mic_pub_list'%}" title="{{nMICP}} entries" inactivate>
+                        MIC Public
+                    </a>
+                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'breakpoint_list'%}" title="{{nBP}} entries" inactivate>
+                        Breakpoint
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="Land_banner m-auto mt-5 bg-transparent Land_frame_show" style="width: 38rem">
-        
-        {% include 'dgene/gene_home.html' %}
+    <div class="Land_banner mt-5 ms-5 bg-transparent Land_frame_show">
+        <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
+            <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Genetics</span>
+        </label>
+
+        <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
+            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
+                data-bs-placement="left" href="{%url 'gene_list'%}" title=" {{nGene}} entries">
+                Gene
+            </a>
+
+            <div class="row w-50">
+                <div class="col text-center m-auto">
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'sequence_list'%}" title="{{nIDS}} entries" inactivate>
+                        ID by Sequence
+                    </a>
+                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'id_pub_list'%}" title="{{nIDP}} entries" inactivate>
+                        ID from Public</a>
+                </div>
+                <div class="col text-center">
+                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'wgs-fastqc_list'%}" title="{{nFastQC}} entries" inactivate>
+                        FastQC - WGS
+                    </a>
+                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                        href="{%url 'wgs-checkm_list'%}" title="{{nCheckM}} entries" inactivate>
+                        CheckM - WGS
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
 </div>
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
     {% include 'utils/messagebox.html' %}
 </div>
 
-<!-- Generated markup by the plugin -->
-
-<!-- <script>
-    $(window).on("load", function () {
-        if ($(".Land_banner").hasClass("Land_frame_show")) {
-            $(".Land_banner").removeClass("Land_frame_show");
-        }
-        const Land_visible = () => {
-            if ($(".Land_banner").hasClass("Land-frame-hidden")) {
-                $(".Land_banner").removeClass("Land-frame-hidden");
-                $(".Land_banner").addClass("Land_frame_show");
-            }
-        };
-        const Land_banner = setTimeout(Land_visible, 2000);
-
-        if (window.sessionStorage.fist_load_modal1 === undefined) {
-            $("#exampleModalToggle").modal("show");
-            window.sessionStorage.fist_load_modal1 = true;
-        }
-
-        if (!$(".Land_banner").hasClass("Land-frame-hidden")) {
-            clearTimeout(Land_banner);
-        }
-    });
-</script> -->
-
 {% endblock %}
+<!-- include 'util/home_base.html' with Main_Model='Gene' Model_Col1_A='' Model_Col1_B='' Model_Col2_A='' Model_Col2_B='' -->

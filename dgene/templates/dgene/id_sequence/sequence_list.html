@@ -4,18 +4,18 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%url 'excel-import' process_name='ID_Sequnce' as urlname%}
+  {%url 'excel-import' process_name='ID_Sequence' as urlname%}
   <!--prettier-ignore-->
   {%include 'utils/leftbar.html' with list_url='sequence_list' card_url='sequence_list' create_object='createSequence' create_objectModal='createSequenceModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="main d-flex flex-column">
-    {% include 'utils/main_horizalbar.html' with title='ID_Sequnce'  model_name='ID_Sequnce' application='dgene'%}
+    {% include 'utils/main_horizalbar.html' with title='ID_Sequence'  model_name='ID_Sequence' application='dgene'%}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with modelname='ID_Sequnce' %}
+      {%include 'utils/datatable_general.html' with modelname='ID_Sequence' %}
     </div>
   </div>
 </div>
