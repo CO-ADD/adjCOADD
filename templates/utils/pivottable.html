@@ -1,0 +1,24 @@
+{%load custom_filters%}
+<table class="table table-bordered fixTableHead bg-light m-0">
+    <thead>
+        <tr>
+            {% for col in pivottable.columns %}
+            <th>{{ col|safe }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in pivottable.rows %}
+        <tr>
+            {% for item in row %}
+            <td
+                style = "{% if item|to_int < 20 %} background-color: grey; color: white; {%elif item|to_int > 20 and item < 100 %} background-color: yellow; color: black; {% elif item|to_int > 100 %} background-color: red; color: white;{%endif%}">
+                {{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    

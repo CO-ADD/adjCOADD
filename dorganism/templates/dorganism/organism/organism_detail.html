@@ -127,122 +127,131 @@
       <div class="accordion w-100" id="MIC_COADD">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingMIC_COADD">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              style="max-height: 20px"
-              data-bs-target="#collapseMIC_COADD"
-              aria-expanded="true"
-              aria-controls="collapseMIC_COADD"
-            >
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" style="max-height: 20px"
+              data-bs-target="#collapseMIC_COADD" aria-expanded="true" aria-controls="collapseMIC_COADD">
               <!-- prettier-ignore -->
               Antibiogram {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries%}
             </button>
           </h2>
-          <div
-            id="collapseMIC_COADD"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingMIC_COADD"
-            data-bs-parent="#MIC_COADD"
-          >
-            <div class="accordion-body">              
-                <!-- prettier-ignore -->
-                {%include './datamap.html'%}
-             
+          <div id="collapseMIC_COADD" class="accordion-collapse collapse" aria-labelledby="headingMIC_COADD"
+            data-bs-parent="#MIC_COADD">
+            <div class="accordion-body p-0">
+              <!-- prettier-ignore -->
+          
+          
+              <div class="d-flex align-items-start border m-0 mt-2">
+                <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width:fit-content">
+                  <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-messages-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
+                    aria-selected="false"><i class="bi bi-table"></i></button>
+                    {%load static%}
+                  <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
+                    type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="bi bi-arrow-repeat"></i>
+                  </button>
+          
+                </div>
+                <div class="tab-content" id="v-pills-tabContent">
+                  <div class="tab-pane w-100 fade active show" id="v-pills-messages" role="tabpanel"
+                    aria-labelledby="v-pills-messages-tab">{%include './datamap.html'%}</div>
+                  <div class="tab-pane w-100 fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    {%include 'utils/pivottable.html'%}</div>
+          
+                </div>
+          
+              </div>
+          
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <script>
-    $(document).ready(function () {
-      let url_batch = `{% url 'batch_create' object.pk %}`;
-      let url_culture = `{% url 'culture_create' object.pk %}`;
-      let url_pivot = `{% url 'pivottable' object.pk %}`;
-      console.log(url_culture);
-      loadModal("#createCultureModal", "#createCulture", url_culture);
-      loadModal("#createBatchModal", "#createBatch", url_batch);
-      initialPivotTable(url_pivot);
-    });
-
-    function initialPivotTable(url) {
-      var savecsv = null;
-
+    
+    <script>
       $(document).ready(function () {
-        console.log("loading data vitek");
-
-        $(".submit_data").click(function () {
-          collectAndSendData();
-        });
+        let url_batch = `{% url 'batch_create' object.pk %}`;
+        let url_culture = `{% url 'culture_create' object.pk %}`;
+        let url_pivot = `{% url 'pivottable' object.pk %}`;
+        console.log(url_culture);
+        loadModal("#createCultureModal", "#createCulture", url_culture);
+        loadModal("#createBatchModal", "#createBatch", url_batch);
+        initialPivotTable(url_pivot);
       });
 
-      const collectAndSendData = () => {
-        var selected_data = [];
-        $("input:checkbox[name=type]:checked").each(function () {
-          selected_data.push($(this).val().toString());
-        });
-        var card_barcode = $("input[name=card_barcode]").val();
-        var value_str = $("[data-name=data_process_value] option:selected")
-          .val()
-          .toString();
-        var data_function_str = $(
-          "[data-name=data_function_type] option:selected"
-        )
-          .val()
-          .toString();
+      function initialPivotTable(url) {
+        var savecsv = null;
 
-        var index_value = [];
-        $("#sortable3 li").each(function () {
-          index_value.push($(this).data("name"));
-        });
-        var index_values_str = index_value.toString();
+        $(document).ready(function () {
+          console.log("loading data vitek");
 
-        var column_value = [];
-        $("#sortable2 li").each(function () {
-          column_value.push($(this).data("name"));
-        });
-        var column_value_str = column_value.toString();
-
-        var data = {
-          values: value_str,
-          columns: column_value_str,
-          index: index_values_str,
-          functions: data_function_str,
-        };
-        console.log(data);
-        sendToServer(url, data);
-      };
-
-      const csrftoken = getCookie("csrftoken");
-      const sendToServer = (url, data) => {
-        console.log("send to server");
-
-        $.ajax({
-          url: url,
-          type: "POST",
-          headers: { "X-CSRFToken": csrftoken },
-          data: data,
-        })
-          .done((response) => {
-            console.log(response);
-            data = response["table_html"];
-            savecsv = response["table_csv"];
-            $("#pivotable").html("");
-            $("#pivotable").append(data);
-          })
-          .fail((XMLHttpRequest, textStatus, errorThrown) => {
-            console.log(XMLHttpRequest, textStatus, errorThrown);
+          $(".submit_data").click(function () {
+            collectAndSendData();
           });
-      };
+        });
 
-      $("#download_pt_as_csv").click(function () {
-        console.log("clicked!");
-        saveData(savecsv, "pivottable.csv");
-      });
-    }
-  </script>
-</div>
-{%endblock%}
+        const collectAndSendData = () => {
+          var selected_data = [];
+          $("input:checkbox[name=type]:checked").each(function () {
+            selected_data.push($(this).val().toString());
+          });
+          var card_barcode = $("input[name=card_barcode]").val();
+          var value_str = $("[data-name=data_process_value] option:selected")
+            .val()
+            .toString();
+          var data_function_str = $(
+            "[data-name=data_function_type] option:selected"
+          )
+            .val()
+            .toString();
+
+          var index_value = [];
+          $("#sortable3 li").each(function () {
+            index_value.push($(this).data("name"));
+          });
+          var index_values_str = index_value.toString();
+
+          var column_value = [];
+          $("#sortable2 li").each(function () {
+            column_value.push($(this).data("name"));
+          });
+          var column_value_str = column_value.toString();
+
+          var data = {
+            values: value_str,
+            columns: column_value_str,
+            index: index_values_str,
+            functions: data_function_str,
+          };
+          console.log(data);
+          sendToServer(url, data);
+        };
+
+        const csrftoken = getCookie("csrftoken");
+        const sendToServer = (url, data) => {
+          console.log("send to server");
+
+          $.ajax({
+            url: url,
+            type: "POST",
+            headers: { "X-CSRFToken": csrftoken },
+            data: data,
+          })
+            .done((response) => {
+              console.log(response);
+              data = response["table_html"];
+              savecsv = response["table_csv"];
+              $("#pivotable").html("");
+              $("#pivotable").append(data);
+            })
+            .fail((XMLHttpRequest, textStatus, errorThrown) => {
+              console.log(XMLHttpRequest, textStatus, errorThrown);
+            });
+        };
+
+        $("#download_pt_as_csv").click(function () {
+          console.log("clicked!");
+          saveData(savecsv, "pivottable.csv");
+        });
+      }
+    </script>
+    </div>
+    {%endblock%}

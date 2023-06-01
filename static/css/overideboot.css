@@ -496,3 +496,14 @@ body {
 .form-select {
   width: fit-content !important;
 }
+#v-pills-tab .nav-link{
+  background-color: #bec2d1 !important;
+  color: rgb(0, 0, 0);
+}
+#v-pills-tab .nav-link.active {
+  background-color: #bbc5f1 !important;
+  color: rgb(4, 142, 255);
+}
+#v-pills-tab .nav-link:hover{
+  background-color:#556eec !important; ;
+}

@@ -20,3 +20,10 @@ def is_list(value):
 def to_valid_selector(value):
     return "a" + re.sub(r"[\s\.\#\[\]\(\)\+\>\~\=\'\*\^\$]", "_", str(value))
 
+@register.filter
+def to_int(value):
+    if value != "":
+        return int(value)
+    else:
+        return 0
+
