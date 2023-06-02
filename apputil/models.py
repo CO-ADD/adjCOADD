@@ -641,3 +641,163 @@ class ApplicationLog(models.Model):
         log_inst.log_desc = LogDesc
         log_inst.log_status = LogStatus
         log_inst.save()
+
+#-------------------------------------------------------------------------------------------------
+class Image(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'image_name':'Name', 
+        'image_file':'Image',  
+        'image_type':'Type',  
+        'image_desc':'Description',
+        'image_source':'Source',
+        'image_object':'Object',
+        'image_objectid':'Object ID',
+    }
+    
+    image_name =models.CharField(primary_key=True, unique=True, max_length=120, verbose_name = "Name"  )
+    image_file= models.ImageField(upload_to='images/', verbose_name = "Image")
+    image_type = models.CharField(max_length=10, verbose_name = "Type")
+    image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
+    image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
+    image_object = models.CharField(max_length=30, verbose_name = "Object")
+    image_objectid = models.CharField(max_length=30, verbose_name = "Object ID")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_image'
+        ordering=['image_object','image_name',]
+        indexes = [
+            models.Index(name="img_obj_idx",fields=['image_object']),
+            models.Index(name="img_objid_idx",fields=['image_objectid']),
+            models.Index(name="img_scr_idx",fields=['image_source']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return str(self.image_name)
+
+    def __repr__(self) -> str:
+        return f"[{self.image_name}] {self.image_object} ({self.image_objectid})"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+    #
+    # Returns a Image instance if found 
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if ImgName:
+            try:
+                retDict = cls.objects.get(image_name=ImgName)
+            except:
+                if verbose:
+                    print(f"[Image Not Found] {ImgName}")
+                retDict = None
+        elif ImgObj:
+            try:
+                retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
+            except:
+                if verbose:
+                    print(f"[Image Not Found] {ImgObj} {ImgObjID}")
+                retDict = None
+        else:
+            retDict = None
+        return(retDict)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+    #
+    # Returns if Image instance exists
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if ImgName:
+            retValue = cls.objects.filter(image_name=ImgName).exists()
+        elif ImgObj:
+            retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+#-------------------------------------------------------------------------------------------------
+class Document(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'doc_name':'Name', 
+        'doc_file':'Document',  
+        'doc_type':'Type',  
+        'doc_desc':'Description',
+        'doc_source':'Source',
+        'doc_object':'Object',
+        'doc_objectid':'Object ID',
+    }
+    
+    doc_name =models.CharField(primary_key=True, unique=True, max_length=120, verbose_name = "Name"  )
+    doc_file= models.ImageField(upload_to='documents/', verbose_name = "Document")
+    doc_type = models.CharField(max_length=10, verbose_name = "Type")
+    doc_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
+    doc_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
+    doc_object = models.CharField(max_length=30, verbose_name = "Object")
+    doc_objectid = models.CharField(max_length=30, verbose_name = "Object ID")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_document'
+        ordering=['doc_object','doc_name',]
+        indexes = [
+            models.Index(name="doc_obj_idx",fields=['doc_object']),
+            models.Index(name="doc_objid_idx",fields=['doc_objectid']),
+            models.Index(name="doc_scr_idx",fields=['doc_source']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return str(self.doc_name)
+
+    def __repr__(self) -> str:
+        return f"[{self.doc_name}] {self.doc_object} ({self.doc_objectid})"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,DocName,DocObj=None,DocObjID=None,verbose=1):
+    #
+    # Returns a Document instance if found 
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if DocName:
+            try:
+                retDict = cls.objects.get(doc_name=DocName)
+            except:
+                if verbose:
+                    print(f"[Document Not Found] {DocName}")
+                retDict = None
+        elif DocObj:
+            try:
+                retDict = cls.objects.get(image_object=DocObj, image_objectid=DocObjID)
+            except:
+                if verbose:
+                    print(f"[Document Not Found] {DocObj} {DocObjID}")
+                retDict = None
+        else:
+            retDict = None
+        return(retDict)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,DocName,DocObj=None,DocObjID=None,verbose=1):
+    #
+    # Returns if Document instance exists
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if DocName:
+            retValue = cls.objects.filter(doc_name=DocName).exists()
+        elif DocObj:
+            retValue = cls.objects.filter(image_object=DocObj, image_objectid=DocObjID).exists()
+        else:
+            retValue = False
+        return(retValue)

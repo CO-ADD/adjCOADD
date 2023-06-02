@@ -1,0 +1,113 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+
+<div class="d-flex flex-row justify-content-between vh-100">
+    {% url 'import-VITEK' as urlname%}
+    {% include 'utils/leftbar.html' with import_module=urlname  list_url='vitekast_list' card_url='vitekast_list' %}
+    {% include "utils/sidebar.html"%}
+
+    <div class="main d-flex flex-column">
+      <div>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active border border-2" id="nav-home-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+              <strong class="tab-text">VITEK_ID</strong>
+            </button>
+            <button class="nav-link border border-2" id="nav-chart-table-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-chart-table" type="button" role="tab" aria-controls="nav-profile"
+              aria-selected="false">
+              <strong class="tab-text">Chart/Table</strong>
+            </button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="d-flex flex-wrap justify-content-between m-2 align-items-baseline">
+              <!--  -->
+              {% include 'utils/pagination.html'%}
+              <!--  -->
+              {% include 'utils/miscellaneous/selectAllExp.html' %}
+            </div>
+            <div class="fixTableHead">
+              <!--prettier-ignore-->
+              <table class="table table-hover table-bordered sorting_table" style="width: 100%">
+                <thead>
+                  <tr>
+                    <!-- detail view link name if exists -->
+                    <th style="width:1rem">
+                    </th>
+                    <!-- customized/verbose model fields name -->
+                    <th class="order_field" style="width: fit-content">pk</th>
+              
+                    <th class="order_field" style="width: fit-content">Drug Name</th>
+                    <th class="order_field" style="width: fit-content">Code</th>
+                    <th class="order_field" style="width: fit-content">Organism Name</th>
+                    <th class="order_field" style="width: fit-content">MIC</th>
+              
+                    <!-- object ID -->
+                    <!--field with web link if exists  -->
+                    {% if tax_id %}
+                    <th>Tax ID</th>
+                    {% endif %}
+                  </tr>
+                </thead>
+              
+                <tbody>
+                  {% if page_obj %}
+                  <!--  -->
+                  {% for object in page_obj%}
+                  <tr>
+                    <td></td>
+                    <td>
+                      <!--prettier-ignore  -->
+                      {{object.pk}}
+                      <!--  -->
+                    </td>
+                    <td>
+                      <!--prettier-ignore  -->
+                      {{object.drug_id__drug_name}}
+                      <!--  -->             
+                    </td>
+                    <td>
+                      {{object.drug_id__drug_codes}}
+                    </td>
+                    <td>
+                      {{object.card_barcode__orgbatch_id__organism_id__organism_name}}
+                    </td>
+                    <td>
+                      {{object.mic}}
+                    </td>
+              
+              
+                    <!-- Special for Taxonomy Tax_id web Link -->
+                    {% if object.tax_id %}
+                    <td>
+                      <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object.tax_id}}"
+                        target="_blank">{{object.tax_id}}</a>
+                    </td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                  <!--  -->
+                  {% else %}
+                  <tr>
+                    No Data
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!--prettier-ignore-->
+
+{% endblock%}

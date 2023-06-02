@@ -15,13 +15,14 @@
                 data-bs-placement="left" href="{%url 'org_card' %}" title="{{nOrg}} organims">
                 ORGANISM
             </a>
-
             <div class="row w-50">
                 <div class="col text-center m-auto">
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <h3>
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'taxo_card'%}" title="{{nTax}} entries" inactivate>
                         Taxonomy
                     </a>
+                    </h3>
                 </div>
             </div>
         </div>
@@ -38,32 +39,38 @@
             </a>
             <div class="row w-50">
                 <div class="col text-center m-auto">
+                    <h3>
+<!--
                     <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'vitekcard_list'%}" title="{{nVID}} entries" inactivate>
                         Vitek Id
                     </a>
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+-->
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'vitekcard_list'%}" title="{{nVAST}} entries" inactivate>
                         Vitek AST
                     </a>
-                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'vitekast_list'%}" title="{{nVCard}} entries" inactivate>
                         Vitek Cards
                     </a>
+                    </h3>
                 </div>
                 <div class="col text-center m-auto">
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <h3>
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'mic_coadd_list'%}" title="{{nMICC}} entries" inactivate>
                         Antibiograms
                     </a>
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'mic_pub_list'%}" title="{{nMICP}} entries" inactivate>
                         MIC Public
                     </a>
-                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'breakpoint_list'%}" title="{{nBP}} entries" inactivate>
                         Breakpoint
                     </a>
+                    </h3>
                 </div>
             </div>
         </div>
@@ -77,28 +84,32 @@
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
             <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
                 data-bs-placement="left" href="{%url 'gene_list'%}" title=" {{nGene}} entries">
-                Gene
+                GENE
             </a>
 
             <div class="row w-50">
                 <div class="col text-center m-auto">
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <h3>
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'sequence_list'%}" title="{{nIDS}} entries" inactivate>
                         ID by Sequence
                     </a>
-                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'id_pub_list'%}" title="{{nIDP}} entries" inactivate>
                         ID from Public</a>
+                    </h3>
                 </div>
-                <div class="col text-center">
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
+                <div class="col text-center m-auto">
+                    <h3>
+                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'wgs-fastqc_list'%}" title="{{nFastQC}} entries" inactivate>
                         FastQC - WGS
                     </a>
-                    <a class="badge land-badge bg-info border" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
                         href="{%url 'wgs-checkm_list'%}" title="{{nCheckM}} entries" inactivate>
                         CheckM - WGS
                     </a>
+                    </h3>
                 </div>
             </div>
         </div>
