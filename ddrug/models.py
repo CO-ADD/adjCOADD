@@ -196,6 +196,20 @@ class Breakpoint(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
+       'drug_id':'drug_id', 
+       'org_name':'org_name', 
+       'org_rank':'org_rank', 
+       'notorg_name':'notorg_name', 
+       'notorg_rank':'notorg_rank',
+       'med_application':'med_application',
+        'bp_type':'bp_type', 
+        'bp_res_gt':'bp_res_gt', 
+        'bp_sens_le':'bp_sens_le',
+        'bp_unit':'bp_unit', 
+        'bp_comb':'bp_comb', 
+        'bp_source':'bp_source', 
+        'bp_source_version':'bp_source_version',
+
     }
 
     Choice_Dictionary= {

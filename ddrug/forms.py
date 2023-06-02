@@ -122,5 +122,4 @@ class Breakpointfilter(Filterbase):
     # mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
     class Meta:
         model=Breakpoint
-        fields=['drug_id', 'org_name', 'org_rank', 'notorg_name', 'notorg_rank','med_application',
-                'bp_type', 'bp_res_gt', 'bp_sens_le','bp_unit', 'bp_comb', 'bp_source', 'bp_source_version']
+        fields=list(model.HEADER_FIELDS.keys())
