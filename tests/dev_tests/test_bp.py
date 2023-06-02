@@ -47,11 +47,14 @@ def main():
     django.setup()
 
     import ddrug.utils.bio_analysis as ba
+    from ddrug.utils.bio_updates import update_Breakpoint_Profile
+
     print("...")
-    objBP = ba.get_BreakPoint("Tigecycline","Escherichia coli","MIC")
+    objBP = ba.get_BreakPoint_Object("Tigecycline","Escherichia coli","MIC")
     print(repr(objBP))
     #print(df)
 
+    update_Breakpoint_Profile(upload=True,overwrite=False)
 #==============================================================================
 if __name__ == "__main__":
 

@@ -245,6 +245,15 @@ class Breakpoint(AuditModel):
     def __repr__(self) -> str:
         return f"{self.drug_id} : {self.org_name} ({self.org_rank}) Not: {self.notorg_name} ({self.notorg_rank}) Med: {self.med_application} BP: {self.bp_type} {self.bp_source}"
 
+    #------------------------------------------------
+    def info(self) -> str:
+        if self.org_rank:
+            return(f"{self.bp_source} ({self.org_rank})")
+        elif self.notorg_rank:
+            return(f"{self.bp_source} (Not({self.notorg_rank}))")
+        else:
+            return(f"{self.bp_source}")
+
    #------------------------------------------------
     @classmethod
     def get(cls,DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank, MedAppl, BPType, BPSource, verbose=0):
