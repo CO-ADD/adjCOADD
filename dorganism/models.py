@@ -1,7 +1,7 @@
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
-from apputil.models import AuditModel, Dictionary, ApplicationUser
+from apputil.models import AuditModel, Dictionary, ApplicationUser, Image, Document
 from psqlextra.indexes import UniqueIndex
 
 from django.contrib.postgres.fields import ArrayField
@@ -180,6 +180,11 @@ class Organism(AuditModel):
         db_column="oxygen_pref", related_name="%(class)s_oxygen")
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
+
+    assoc_images = models.ManyToManyField(Image,verbose_name = "Images",
+        db_table = "org_img", related_name="%(class)s_image")
+    assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments",
+        db_table = "org_doc", related_name="%(class)s_document")
 
     #------------------------------------------------
     class Meta:

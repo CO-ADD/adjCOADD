@@ -5,8 +5,16 @@ from django_rdkit.models import *
 from django_rdkit.config import config
 from django.conf import settings
 
-from models import  Drug
+from adjcoadd.constants import COMPOUND_SEP
 import apputil.utils.data as djdata
+
+# ==================================================================================
+# Aggregation function
+# ==================================================================================
+
+# --------------------------------------------------------------------
+def agg_Lst(x,sep=";"):
+    return(djdata.join_lst(x,sep=sep))
 
 # --------------------------------------------------------------------
 def agg_DR(x):
@@ -121,10 +129,10 @@ def Sort2DR(strSort,zLength=4):
 def DR2Sort_lst(lstDR,zLength=4):
     lstSort = []
     for i in lstDR:
-        if '|' in i:
-            v = djdata.split_lst(i,sep='|')
+        if COMPOUND_SEP in i:
+            v = djdata.split_lst(i,sep=COMPOUND_SEP)
             v[0] = DR2Sort(str(v[0]),zLength=zLength)
-            lstSort.append("|".join(v))
+            lstSort.append(COMPOUND_SEP.join(v))
         else:
             lstSort.append(DR2Sort(str(i),zLength=zLength))
     return(lstSort)
@@ -133,10 +141,10 @@ def DR2Sort_lst(lstDR,zLength=4):
 def Sort2DR_lst(lstSort,zLength=4):
     lstDR = []
     for i in lstSort:
-        if '|' in i:
-            v = djdata.split_lst(i,sep='|')
+        if COMPOUND_SEP in i:
+            v = djdata.split_lst(i,sep=COMPOUND_SEP)
             v[0] = Sort2DR(v[0],zLength=zLength)
-            lstDR.append("|".join(v))
+            lstDR.append(COMPOUND_SEP.join(v))
         else:
             lstDR.append(Sort2DR(i,zLength=zLength))
     return(lstDR)
@@ -168,17 +176,17 @@ def split_XC50(strDR):
         
         # Separate mixture -> 1st val into fval
         if isinstance(sval,str):
-            if CmpdSep in sval:
-                lval = zData.split_lst(sval)
-                fval = float(lval[0])
+            if COMPOUND_SEP in sval:
+                lval = djdata.split_StrList(sval,sep=COMPOUND_SEP)
+                fval = djdata.to_num(lval[0])
             else:
-                fval = float(sval)
+                fval = djdata.to_num(sval)
         else:
             fval = sval
 
     if isinstance(strDR,float) or isinstance(strDR,int) :
             sval = strDR
-            fval = float(strDR)
+            fval = djdata.to_num(strDR)
             prefix = '='
 
     return(prefix,fval,sval)
@@ -187,13 +195,13 @@ def split_XC50(strDR):
 def split_DR(strDR):
     if strDR[0] == '>':
         p = '>'
-        v = zData.num(strDR[1:])
+        v = djdata.to_num(strDR[1:])
     elif strDR[:2] == '<=':
         p = '<='
-        v = zData.num(strDR[2:])
+        v = djdata.to_num(strDR[2:])
     else:
         p = '='
-        v = zData.num(strDR)
+        v = djdata.to_num(strDR)
     return(p,v)
 
 # --------------------------------------------------------------------
