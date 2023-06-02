@@ -126,6 +126,7 @@ def detailOrganism(request, pk):
     import numpy as np
     import pandas as pd
     from django.db.models import Count
+    from apputil.utils.data_visual import highlight_val
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
@@ -152,44 +153,13 @@ def detailOrganism(request, pk):
         df.reset_index(inplace=True)
         new_displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
         df = df[new_displaycols]  
-        pivottable = pd.pivot_table(df, values='BP Profile', index='Drug Name', columns='MIC', aggfunc=np.sum)
-        pivottable_reset = pivottable.reset_index()
-         # Convert the DataFrame's rows to a list of tuples
-        table_data = [row for row in pivottable_reset.itertuples(index=False)]
-
-        # Convert the DataFrame's columns to a list of strings
-        table_header = list(pivottable_reset.columns)
-
-        table_dict = {
-        'rows': table_data,
-        'columns': table_header
-        }
+        pivottable = pd.pivot_table(df, columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['MIC',],  aggfunc={'MIC':np.size})
     
-        # Styling pivottable
-        # def highlight_val(val):
-        #     '''
-        #     highlight the maximum in a Series yellow.
-        #     '''
-        #     val=0 if str(val)=='' else val
-        #     bg_color= 'green' if val >30 else 'grey'
-        #     return 'background-color: %s' % bg_color
-        
-        # style_pivot= pivottable.style.applymap(highlight_val)
-        #          # To add borders, hover effect and a vertical scroller
-        # styles = [
-        # # Add table borders
-        # {'selector': 'table', 'props': [('border', '1px solid black')]},
-        # # Add cell borders
-        # {'selector': 'td, th', 'props': [('border', '1px solid black')]},
-        # # Add hover effect
-        # {'selector': 'tr:hover', 'props': [('background-color', 'white')]},
-        # # Add vertical scroller
-        # {'selector': 'table', 'props': [('overflow', 'auto'), ('height', '300px')]}
-        # ]
-        
-        # style_pivot = style_pivot.set_table_styles(styles)
+        # Styling pivottable       
+        style_pivot = pivottable.style.applymap(highlight_val)     
+        style_pivot = style_pivot.set_table_attributes('class="table table-bordered fixTableHead"')
 
-        context["pivottable"] = table_dict
+        context["pivottable"] =style_pivot.to_html()
         context["table"] = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
         context["df_entries"] = len(df)
         
@@ -198,7 +168,7 @@ def detailOrganism(request, pk):
     return render(request, "dorganism/organism/organism_detail.html", context)
 
 def pivottable(request, pk):
-    print(request.POST.getlist)
+
     querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
         custom_pivottable(request, querydata)

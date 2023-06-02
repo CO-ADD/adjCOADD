@@ -141,20 +141,23 @@
           
               <div class="d-flex align-items-start border m-0 mt-2">
                 <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width:fit-content">
-                  <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-messages-tab" data-bs-toggle="pill"
-                    data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
+                  <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-datatable-tab" type="button" role="tab" aria-controls="v-pills-datatable-tab"
                     aria-selected="false"><i class="bi bi-table"></i></button>
                     {%load static%}
-                  <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings"
-                    type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="bi bi-arrow-repeat"></i>
+                  <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill" data-bs-target="#v-pills-pivot-tab"
+                    type="button" role="tab" aria-controls="v-pills-pivot-tab" aria-selected="false"><i class="bi bi-arrow-repeat"></i>
                   </button>
           
                 </div>
                 <div class="tab-content" id="v-pills-tabContent">
-                  <div class="tab-pane w-100 fade active show" id="v-pills-messages" role="tabpanel"
-                    aria-labelledby="v-pills-messages-tab">{%include './datamap.html'%}</div>
-                  <div class="tab-pane w-100 fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    {%include 'utils/pivottable.html'%}</div>
+                  <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
+                    aria-labelledby="v-pills-datatable-tab">{%include './datamap.html'%}</div>
+                  <div class="tab-pane fade" id="v-pills-pivot-tab" role="tabpanel" aria-labelledby="v-pills-pivot-tab">
+                    <div style="height: 100vh;overflow: auto;">
+                      {{pivottable | safe}}
+                    </div>
+                  </div>
           
                 </div>
           

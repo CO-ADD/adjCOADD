@@ -203,9 +203,11 @@ class DataExportView(DataExportBaseView):
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
 from .utils.validation_log import Validation_Log
+from .utils.data_visual import convert_heatmap
+from .utils.form_wizard_tools import SelectFile_StepForm
 
 class Importhandler_apputils(Importhandler):
-    form_class=FileUploadForm
+    form_class=SelectFile_StepForm
     template_name='apputil/importhandler_excel.html'
     upload_model_type=None
     lObject={}   # store results parsed by all uploaded excel files with key-filename, value-parsed result array
@@ -213,7 +215,7 @@ class Importhandler_apputils(Importhandler):
     
     def post(self, request, process_name):
         process_name=process_name
-        uploadDir=file_location(request) # define file store path during file process
+        uploadDir=file_location(instance=request.user) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
@@ -221,41 +223,43 @@ class Importhandler_apputils(Importhandler):
        
         kwargs={}
         kwargs['user']=request.user
-        
+        myfiles=[]
         self.file_url=[]
         self.data_model=request.POST.get('file_data') or None
-        myfiles=[request.FILES.get('file_field'),]
+        myfiles.extend(request.FILES.getlist('multi_files'),)
         print(myfiles)
       
         try:
-        # Uploading Verifying     
-            if form.is_valid():
-                self.lObject.clear()
+        # # Uploading Verifying     
+        #     if form.is_valid():
+        #         self.lObject.clear()
 
         # Uploading Parsing 
-                for f in myfiles:
-                    fs=OverwriteStorage(location=uploadDir)
-                    xlFile=fs.save(f.name, f)
-                    uploadFile = os.path.join(uploadDir, xlFile)
-                   
-                    try:
-                        if process_name=="Dictioanry":
-                            # update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
-                            context["excel_upload_info"]="Saved in Dictionary Datatable"
-                        elif process_name=="ApplicationUser":
-                            # update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
-                            context["excel_upload_info"]="Saved in AppUser Datatable"
-                        elif process_name=="Drug":
-                            # update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
-                            context["excel_upload_info"]="Saved in Drug Datatable"
+            for f in myfiles:
+                fs=OverwriteStorage(location=uploadDir)
+                xlFile=fs.save(f.name, f)
+                uploadFile = os.path.join(uploadDir, xlFile)
+                print(f'uploadfile: {uploadFile}')
+               
+                # try:
+                if process_name=="Dictioanry":
+                    # update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
+                    context["excel_upload_info"]="Saved in Dictionary Datatable"
+                elif process_name=="ApplicationUser":
+                    # update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
+                    context["excel_upload_info"]="Saved in AppUser Datatable"
+                elif process_name=="Drug":
+                        # update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
+                    context["excel_upload_info"]="Saved in Drug Datatable"
+                        
+                elif process_name=="heatmap":
+                    table= convert_heatmap(uploadFile, XlsSheet="Heatmap", upload=False, uploaduser=request.user, lower=True)
+                    print(table)
+                    context['table']=table
+                    context["excel_upload_info"]="Convert data to heatmap"
                             
-                    except Exception as err:
-                        context["excel_upload_info"]=f"{err} cause failed import"
-                        self.delete_file(file_name=filename)
-                        return render(request, template_name, context)
-                  
-
         except Exception as err:
-            messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
-           
+            context["excel_upload_info"]=f"{err} cause failed import"
+            # self.delete_file(file_name=filename)
         return render(request, self.template_name, context)
+                  

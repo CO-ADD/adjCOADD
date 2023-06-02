@@ -111,6 +111,15 @@
               </a>
             </li>
             <li>
+              <a
+                class="dropdown-item"
+                href="{% url 'excel-import' process_name='heatmap' %}"
+                target="_blank"
+              >
+                <p>otheres to Data-Visual</p>
+              </a>
+            </li>
+            <li>
               <div class="dropdown-divider"></div>
             </li>
             {% if user.permission == 'Admin'%}

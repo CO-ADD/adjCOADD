@@ -27,7 +27,10 @@
       </form>
     </div>
     <div>
-      <div id="output"></div>
+      <div style="height: 100vh;overflow: auto;">
+        {{table | safe}}
+      </div>
+      <div id="output">{{excel_upload_info}}</div>
     </div>
   </section>
   <!-- The belowing section is for pdf uploading and validation process -->
