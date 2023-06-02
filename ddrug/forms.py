@@ -105,6 +105,11 @@ class Vitekast_filter(Filterbase):
         model=VITEK_AST
         fields=['Drug_Name']
 
+class VitekID_filter(Filterbase):
+    
+    class Meta:
+        model=VITEK_ID
+        fields=list(model.HEADER_FIELDS.keys())
 
 class MIC_COADDfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
