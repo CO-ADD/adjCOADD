@@ -655,21 +655,18 @@ class Image(AuditModel):
         'image_objectid':'Object ID',
     }
     
-    image_name =models.CharField(primary_key=True, unique=True, max_length=120, verbose_name = "Name"  )
+    image_name =models.CharField(max_length=120,  unique=True, verbose_name = "Name")
     image_file= models.ImageField(upload_to='images/', verbose_name = "Image")
     image_type = models.CharField(max_length=10, verbose_name = "Type")
     image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
     image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
-    image_object = models.CharField(max_length=30, verbose_name = "Object")
-    image_objectid = models.CharField(max_length=30, verbose_name = "Object ID")
 
     class Meta:
         app_label = 'apputil'
         db_table = 'app_image'
-        ordering=['image_object','image_name',]
+        ordering=['image_name',]
         indexes = [
-            models.Index(name="img_obj_idx",fields=['image_object']),
-            models.Index(name="img_objid_idx",fields=['image_objectid']),
+            models.Index(name="img_name_idx",fields=['image_name']),
             models.Index(name="img_scr_idx",fields=['image_source']),
         ]
 
@@ -735,21 +732,18 @@ class Document(AuditModel):
         'doc_objectid':'Object ID',
     }
     
-    doc_name =models.CharField(primary_key=True, unique=True, max_length=120, verbose_name = "Name"  )
+    doc_name =models.CharField(max_length=120, unique=True, verbose_name = "Name"  )
     doc_file= models.ImageField(upload_to='documents/', verbose_name = "Document")
     doc_type = models.CharField(max_length=10, verbose_name = "Type")
     doc_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
     doc_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
-    doc_object = models.CharField(max_length=30, verbose_name = "Object")
-    doc_objectid = models.CharField(max_length=30, verbose_name = "Object ID")
 
     class Meta:
         app_label = 'apputil'
         db_table = 'app_document'
-        ordering=['doc_object','doc_name',]
+        ordering=['doc_name',]
         indexes = [
-            models.Index(name="doc_obj_idx",fields=['doc_object']),
-            models.Index(name="doc_objid_idx",fields=['doc_objectid']),
+            models.Index(name="doc_name_idx",fields=['doc_name']),
             models.Index(name="doc_scr_idx",fields=['doc_source']),
         ]
 
