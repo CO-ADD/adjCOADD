@@ -1,11 +1,11 @@
-{%if user.permission == 'Admin'%}
+{% if user.permission == 'Admin' %}
 <a class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="{{target}}" data-bs-toggle="tooltip" data-bs-placement="right"
 title="Click to delete">
   <i class="fa-regular fa-trash-can text-danger fs-6"></i>
 </a>
-{%else%}
+{% else %}
 <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
 title="No Permission To Delete">
   <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
 </a>
-{%endif%}
+{% endif %}

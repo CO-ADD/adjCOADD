@@ -37,7 +37,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <p class="d-xl-inline-block nav-title">VIEWS</p>
+            <p class="d-xl-inline-block nav-title">Views</p>
             <i class="fa-solid fa-chevron-down nav-title"></i>
           </a>
           <ul class="dropdown-menu">
@@ -61,21 +61,53 @@
                 <p>Drug</p>
               </a>
             </li>
+
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+           <li>
+              <a class="dropdown-item" href="{%url 'mic_coadd_list'%}">
+                <p>MIC Antibiogram</p>
+              </a>
+            </li>
+
+           <li>
+              <a class="dropdown-item" href="{%url 'mic_pub_list'%}">
+                <p>MIC Public</p>
+              </a>
+            </li>
+
+           <li>
+              <a class="dropdown-item" href="{%url 'breakpoint_list'%}">
+                <p>Breakpoints</p>
+              </a>
+            </li>
+
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+
             <li>
               <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
                 <p>Vitek Card</p>
               </a>
             </li>
+<!--
+            <li>
+              <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
+                <p>Vitek ID</p>
+              </a>
+            </li>
+-->
             <li>
               <a class="dropdown-item" href="{%url 'vitekast_list'%}">
                 <p>Vitek Ast</p>
               </a>
             </li>
-            <li>
-              <a class="dropdown-item" href="{%url 'mic_coadd_list'%}">
-                <p>MIC COADD</p>
-              </a>
+             <li>
+              <div class="dropdown-divider"></div>
             </li>
+
           </ul>
         </div>
         <div class="dropdown d-inline-block">
@@ -100,7 +132,7 @@
                 <p>Vitek</p>
               </a>
             </li>
-
+<!--
             <li>
               <a
                 class="dropdown-item"
@@ -132,11 +164,12 @@
                 <p>Dictionary</p>
               </a>
             </li>
-            {%endif%}
+-->
+            {% endif %}
           </ul>
         </div>
       </div>
-      {%endif%}
+      {% endif %}
       <!-- </li>
       </ul>
     </div> -->
