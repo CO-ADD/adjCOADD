@@ -254,7 +254,7 @@ class Importhandler_apputils(Importhandler):
                         
                 elif process_name=="heatmap":
                     table= convert_heatmap(uploadFile, XlsSheet="Heatmap", upload=False, uploaduser=request.user, lower=True)
-                    print(table)
+                    
                     context['table']=table
                     context["excel_upload_info"]="Convert data to heatmap"
                             

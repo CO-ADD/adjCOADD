@@ -18,6 +18,7 @@ class ClearSessionMiddleware:
             reverse('drug_card'),
             reverse('vitekcard_list'),
             reverse('vitekast_list'),
+            reverse('vitekid_list'),
             reverse('mic_coadd_list'),
             reverse('mic_coadd_card'),
             reverse('mic_pub_list'),

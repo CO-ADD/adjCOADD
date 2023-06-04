@@ -447,15 +447,8 @@ class VITEK_ID(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode":"Barcode",
-        # "drug_id":"Drug",
-        # "mic":"MIC",
+        "card_barcode":"Barcode",      
         "process":"Vitek Process",
-        # "bp_profile":"Break Point",
-        # "bp_comment":"Comment",
-        # "bp_source":"Source",
-        # "selection":"Selection",
-        # "organism":"Organism",
         "filename":"PDF Filename",
         "page_no":"PDF pageNo"
     }
@@ -474,7 +467,7 @@ class VITEK_ID(AuditModel):
     class Meta:
         app_label = 'ddrug'
         db_table = 'vitek_id'
-        #ordering=['card_barcode']
+        ordering=['card_barcode']
         indexes = [
             models.Index(name="vid_barcode_idx",fields=['card_barcode']),
             models.Index(name="vid_idorg_idx",fields=['id_organism']),

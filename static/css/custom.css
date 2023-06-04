@@ -443,7 +443,7 @@ nav.shrink .dropdown-divider {
   position: relative;
   /* Animation */
   animation:borderAnimation 5s linear;
-  border: 3px solid rgb(165, 164, 164);
+  border: 3px solid rgb(201, 198, 198);
 
 }
 

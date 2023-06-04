@@ -26,6 +26,10 @@ from apputil.utils.data import Timer
 # --files upload--
 ## create user folder
 def file_location(instance, filename=None):
+    '''
+    return a file path
+    instance - request or request.user
+    '''
     location=settings.MEDIA_ROOT+'/'+str(instance)
     return location
 
