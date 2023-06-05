@@ -230,11 +230,6 @@ class Importhandler_apputils(Importhandler):
         print(myfiles)
       
         try:
-        # # Uploading Verifying     
-        #     if form.is_valid():
-        #         self.lObject.clear()
-
-        # Uploading Parsing 
             for f in myfiles:
                 fs=OverwriteStorage(location=uploadDir)
                 xlFile=fs.save(f.name, f)

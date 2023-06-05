@@ -143,10 +143,12 @@
                 <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width:fit-content">
                   <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill"
                     data-bs-target="#v-pills-datatable-tab" type="button" role="tab" aria-controls="v-pills-datatable-tab"
-                    aria-selected="false"><i class="bi bi-table"></i></button>
+                    aria-selected="false"><i class="bi bi-table"  data-bs-toggle="tool
+                    " data-bs-placement="left" title="Normal view"></i></button>
                     {%load static%}
                   <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill" data-bs-target="#v-pills-pivot-tab"
-                    type="button" role="tab" aria-controls="v-pills-pivot-tab" aria-selected="false"><i class="bi bi-arrow-repeat"></i>
+                    type="button" role="tab" aria-controls="v-pills-pivot-tab" aria-selected="false"><i class="bi bi-arrow-repeat" data-bs-toggle="tool
+                    " data-bs-placement="left" title="Pivottable view"></i>
                   </button>
           
                 </div>
@@ -171,90 +173,13 @@
     
     <script>
       $(document).ready(function () {
-        let url_batch = `{% url 'batch_create' object.pk %}`;
-        let url_culture = `{% url 'culture_create' object.pk %}`;
-        let url_pivot = `{% url 'pivottable' object.pk %}`;
-        console.log(url_culture);
-        loadModal("#createCultureModal", "#createCulture", url_culture);
-        loadModal("#createBatchModal", "#createBatch", url_batch);
-        initialPivotTable(url_pivot);
-      });
+          let url_batch = `{% url 'batch_create' object.pk %}`;
+          let url_culture = `{% url 'culture_create' object.pk %}`;
+          console.log(url_culture);
+          loadModal("#createCultureModal", "#createCulture", url_culture);
+          loadModal("#createBatchModal", "#createBatch", url_batch);
 
-      function initialPivotTable(url) {
-        var savecsv = null;
-
-        $(document).ready(function () {
-          console.log("loading data vitek");
-
-          $(".submit_data").click(function () {
-            collectAndSendData();
-          });
         });
-
-        const collectAndSendData = () => {
-          var selected_data = [];
-          $("input:checkbox[name=type]:checked").each(function () {
-            selected_data.push($(this).val().toString());
-          });
-          var card_barcode = $("input[name=card_barcode]").val();
-          var value_str = $("[data-name=data_process_value] option:selected")
-            .val()
-            .toString();
-          var data_function_str = $(
-            "[data-name=data_function_type] option:selected"
-          )
-            .val()
-            .toString();
-
-          var index_value = [];
-          $("#sortable3 li").each(function () {
-            index_value.push($(this).data("name"));
-          });
-          var index_values_str = index_value.toString();
-
-          var column_value = [];
-          $("#sortable2 li").each(function () {
-            column_value.push($(this).data("name"));
-          });
-          var column_value_str = column_value.toString();
-
-          var data = {
-            values: value_str,
-            columns: column_value_str,
-            index: index_values_str,
-            functions: data_function_str,
-          };
-          console.log(data);
-          sendToServer(url, data);
-        };
-
-        const csrftoken = getCookie("csrftoken");
-        const sendToServer = (url, data) => {
-          console.log("send to server");
-
-          $.ajax({
-            url: url,
-            type: "POST",
-            headers: { "X-CSRFToken": csrftoken },
-            data: data,
-          })
-            .done((response) => {
-              console.log(response);
-              data = response["table_html"];
-              savecsv = response["table_csv"];
-              $("#pivotable").html("");
-              $("#pivotable").append(data);
-            })
-            .fail((XMLHttpRequest, textStatus, errorThrown) => {
-              console.log(XMLHttpRequest, textStatus, errorThrown);
-            });
-        };
-
-        $("#download_pt_as_csv").click(function () {
-          console.log("clicked!");
-          saveData(savecsv, "pivottable.csv");
-        });
-      }
     </script>
     </div>
     {%endblock%}

@@ -24,7 +24,8 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
                     Organismfilter, Taxonomyfilter, Batchfilter)
 
 from ddrug.models import VITEK_AST, MIC_COADD
-import ddrug.utils.tables as drugtbl
+from .utils.data_visual import data_frame_style, pivottable_style
+
           
 # --TAXONOMY Views--
 ##
@@ -121,19 +122,22 @@ def detailOrganism(request, pk):
     display,update and delete.
     - related table overview display, update, create and delete.
     - related table are: batch, stock, culture.
-    - display pivotable for Antibiogram per OrgID
+    - data visual table: dataframe and pivot- table
     """
-    import numpy as np
-    import pandas as pd
+   
     from django.db.models import Count
-    from apputil.utils.data_visual import highlight_val
+    
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
+    print(f'images:{object_.assoc_images}')
+    try:
+        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,  'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()] }, instance=object_)
+    except Exception as err:
+        print(err)
     context["object"]=object_
-
     context["form"]=form
-    # context for related tables
+
+    # data in related tables
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
     context["batch_fields"]=Organism_Batch.get_fields()
@@ -146,34 +150,14 @@ def detailOrganism(request, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
-    
-    # 
-    try:
-        df = drugtbl.get_Antibiogram_byOrgID(pk)
-        df.reset_index(inplace=True)
-        new_displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        df = df[new_displaycols]  
-        pivottable = pd.pivot_table(df, columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['MIC',],  aggfunc={'MIC':np.size})
-    
-        # Styling pivottable       
-        style_pivot = pivottable.style.applymap(highlight_val)     
-        style_pivot = style_pivot.set_table_attributes('class="table table-bordered fixTableHead"')
 
-        context["pivottable"] =style_pivot.to_html()
-        context["table"] = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
-        context["df_entries"] = len(df)
-        
-    except Exception as err:
-        context["table"] = err
+    # data in pivotted and highlighted Tables
+    displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+    context["table"] = data_frame_style(pk, displaycols)['style_table']
+    context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
+    context["pivottable"] = pivottable_style(pk)
+
     return render(request, "dorganism/organism/organism_detail.html", context)
-
-def pivottable(request, pk):
-
-    querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-        custom_pivottable(request, querydata)
-    return JsonResponse({})
-
 
 ##
 @login_required

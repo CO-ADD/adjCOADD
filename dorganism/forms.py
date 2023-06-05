@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
 
-from apputil.models import Dictionary, ApplicationUser
+from apputil.models import Dictionary, ApplicationUser, Image, Document
 from apputil.utils.filters_base import Filterbase
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from adjcoadd.constants import *
@@ -36,6 +36,7 @@ class CreateOrganism_form(ModelForm):
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False,)
+    
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
@@ -80,11 +81,19 @@ class CreateOrganism_form(ModelForm):
         exclude = ['organism_id']
 
 #=======================================Organism update Form=============================================================
-class UpdateOrganism_form(CreateOrganism_form):       
+class UpdateOrganism_form(CreateOrganism_form):
+    assoc_images = forms.ModelMultipleChoiceField(
+        queryset=Image.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )  
+    assoc_documents =   forms.ModelMultipleChoiceField(
+        queryset=Document.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )     
     
     class Meta:
         model=Organism
-        exclude = ['organism_id']  
+        exclude=['organism_id'] 
    
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):

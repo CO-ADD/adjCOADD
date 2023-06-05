@@ -147,7 +147,7 @@ else:
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': 'orgdb',
         'USER': 'orgdb', #os.environ.get('db_user'),
         'PASSWORD':'orgdb',
