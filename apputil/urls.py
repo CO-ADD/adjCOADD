@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
-    DataExportView, Importhandler_apputils, ImageCreateView)
+    DataExportView, Importhandler_apputils, imgCreate)
 
 # from .utils.data_visual import Data_visualView
 
@@ -24,7 +24,7 @@ urlpatterns = [
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
 
-    path('img/', ImageCreateView.as_view(), name="addimg"),
+    path('img/<str:pk>', imgCreate, name="addimg"),
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
     
    

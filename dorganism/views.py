@@ -126,7 +126,7 @@ def detailOrganism(request, pk):
     """
    
     from django.db.models import Count
-    
+    from apputil.forms import Image_form
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
@@ -135,6 +135,7 @@ def detailOrganism(request, pk):
         print(err)
     context["object"]=object_
     context["form"]=form
+    context["image_form"]=Image_form
 
     # data in related tables
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
@@ -155,6 +156,9 @@ def detailOrganism(request, pk):
     context["table"] = data_frame_style(pk, displaycols)['style_table']
     context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
     context["pivottable"] = pivottable_style(pk)
+
+    # if req.method=='POST' and 'extra_add' in request.POST:
+
 
     return render(request, "dorganism/organism/organism_detail.html", context)
 

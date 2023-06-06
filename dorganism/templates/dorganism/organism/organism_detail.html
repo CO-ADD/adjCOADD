@@ -11,175 +11,179 @@
       <div class="accordion bg-transparent w-100" id="organism-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button
-              class="accordion-button"
-              style="max-height: 20px"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-              aria-expanded="true"
-              aria-controls="collapseOne"
-            >
+            <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <h5 class="fs-6 my-0">
                 {{object.pk}} | {{object.organism_name}}
               </h5>
             </button>
           </h2>
-          <div
-            id="collapseOne"
-            class="accordion-collapse collapse show bg-transparent"
-            aria-labelledby="headingOne"
-            data-bs-parent="#organism-detail"
-          >
+          <div id="collapseOne" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
+            data-bs-parent="#organism-detail">
             <div class="accordion-body bg-transparent">
               <b> {% include 'utils/message.html' %} </b>
 
               {% include 'dorganism/organism/organism_u.html' %}
-              <!-- prettier-ignore -->
-              {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="d-flex m-0 p-0">
-      <div class="d-flex flex-column m-0 p-0">
-        <!-- prettier-ignore -->
-        {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
-      </div>
-      <div class="accordion w-100" id="organism-batch-detail">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button
-              class="accordion-button"
-              type="button"
-              style="max-height: 20px"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="true"
-              aria-controls="collapseTwo"
-            >
-              Batch and Stock
-              <!-- prettier-ignore -->
-              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
-            </button>
-          </h2>
-          <div
-            id="collapseTwo"
-            class="accordion-collapse collapse show"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#organism-batch-detail"
-          >
-            <div class="accordion-body">
-              <div class="table-responsive">
-                <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html'  with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="d-flex m-0 p-0">
-      <!-- prettier-ignore -->
-      {% include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
-      <div class="accordion w-100" id="organism-culture-detail">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingThree">
-            <button
-              class="accordion-button"
-              type="button"
-              style="max-height: 20px"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="true"
-              aria-controls="collapseThree"
-            >
-              Culture
-              <!-- prettier-ignore -->
-              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
-            </button>
-          </h2>
-          <div
-            id="collapseThree"
-            class="accordion-collapse collapse show"
-            aria-labelledby="headingThree"
-            data-bs-parent="#organism-culture-detail"
-          >
-            <div class="accordion-body">
-              <div class="table-responsive">
-                <!-- prettier-ignore -->
-              {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    
-    <!-- MIC_COADD Pivot -->
-    <!-- AST -->
-    <div class="d-flex m-0 p-0">
-      {% include 'utils/lefticons.html' %}
-      <div class="accordion w-100" id="MIC_COADD">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingMIC_COADD">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" style="max-height: 20px"
-              data-bs-target="#collapseMIC_COADD" aria-expanded="true" aria-controls="collapseMIC_COADD">
-              <!-- prettier-ignore -->
-              Antibiogram {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries%}
-            </button>
-          </h2>
-          <div id="collapseMIC_COADD" class="accordion-collapse collapse" aria-labelledby="headingMIC_COADD"
-            data-bs-parent="#MIC_COADD">
-            <div class="accordion-body p-0">
-              <!-- prettier-ignore -->
-          
-          
-              <div class="d-flex align-items-start border m-0 mt-2">
-                <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width:fit-content">
-                  <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill"
-                    data-bs-target="#v-pills-datatable-tab" type="button" role="tab" aria-controls="v-pills-datatable-tab"
-                    aria-selected="false"><i class="bi bi-table"  data-bs-toggle="tool
-                    " data-bs-placement="left" title="Normal view"></i></button>
-                    {%load static%}
-                  <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill" data-bs-target="#v-pills-pivot-tab"
-                    type="button" role="tab" aria-controls="v-pills-pivot-tab" aria-selected="false"><i class="bi bi-arrow-repeat" data-bs-toggle="tool
-                    " data-bs-placement="left" title="Pivottable view"></i>
-                  </button>
-          
-                </div>
-                <div class="tab-content" id="v-pills-tabContent">
-                  <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
-                    aria-labelledby="v-pills-datatable-tab">{%include './datamap.html'%}</div>
-                  <div class="tab-pane fade" id="v-pills-pivot-tab" role="tabpanel" aria-labelledby="v-pills-pivot-tab">
-                    <div style="height: 100vh;overflow: auto;">
-                      {{pivottable | safe}}
+              <div class="accordion bg-transparent w-100" id="accordion_add_extra">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading_add_extra">
+                    <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse_add_extra" aria-expanded="true" aria-controls="collapse_add_extra">
+                      <h5 class="fs-6 my-0">
+                        {{object.pk}} Add Images
+                      </h5>
+                    </button>
+                  </h2>
+                  <div id="collapse_add_extra" class="accordion-collapse collapse bg-transparent"
+                    aria-labelledby="heading_add_extra" data-bs-parent="#accordion_add_extra">
+                    <div class="accordion-body bg-transparent">
+                      <form method="POST" enctype="multipart/form-data" class="post-form" action="{%url 'addimg' pk=object.pk %}">
+                        {% csrf_token %}
+                        <!-- prettier-ignore -->
+                        {{image_form}}
+              
+              
+                        <button class="btn btn-sm" type="submit" name="Model" value="Organism">Add Image</button>
+                      </form>
                     </div>
                   </div>
-          
                 </div>
-          
+              
               </div>
-          
+              <!-- prettier-ignore -->
+              {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
+            <!--  -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    
+ 
+
+  
+
+  <div class="d-flex m-0 p-0">
+    <div class="d-flex flex-column m-0 p-0">
+      <!-- prettier-ignore -->
+      {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+    </div>
+    <div class="accordion w-100" id="organism-batch-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            Batch and Stock
+            <!-- prettier-ignore -->
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+          data-bs-parent="#organism-batch-detail">
+          <div class="accordion-body">
+            <div class="table-responsive">
+              <!-- prettier-ignore -->
+              {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-    <script>
-      $(document).ready(function () {
-          let url_batch = `{% url 'batch_create' object.pk %}`;
-          let url_culture = `{% url 'culture_create' object.pk %}`;
-          console.log(url_culture);
-          loadModal("#createCultureModal", "#createCulture", url_culture);
-          loadModal("#createBatchModal", "#createBatch", url_batch);
+  </div>
 
-        });
-    </script>
+  <div class="d-flex m-0 p-0">
+    <!-- prettier-ignore -->
+    {% include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
+    <div class="accordion w-100" id="organism-culture-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            Culture
+            <!-- prettier-ignore -->
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
+          data-bs-parent="#organism-culture-detail">
+          <div class="accordion-body">
+            <div class="table-responsive">
+              <!-- prettier-ignore -->
+              {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    {%endblock%}
+  </div>
+
+
+  <!-- MIC_COADD Pivot -->
+  <!-- AST -->
+  <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' %}
+    <div class="accordion w-100" id="MIC_COADD">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingMIC_COADD">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" style="max-height: 20px"
+            data-bs-target="#collapseMIC_COADD" aria-expanded="true" aria-controls="collapseMIC_COADD">
+            <!-- prettier-ignore -->
+            Antibiogram {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries%}
+          </button>
+        </h2>
+        <div id="collapseMIC_COADD" class="accordion-collapse collapse" aria-labelledby="headingMIC_COADD"
+          data-bs-parent="#MIC_COADD">
+          <div class="accordion-body p-0">
+            <!-- prettier-ignore -->
+
+
+            <div class="d-flex align-items-start border m-0 mt-2">
+              <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist"
+                aria-orientation="vertical" style="width:fit-content">
+                <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill"
+                  data-bs-target="#v-pills-datatable-tab" type="button" role="tab" aria-controls="v-pills-datatable-tab"
+                  aria-selected="false"><i class="bi bi-table" data-bs-toggle="tool
+                    " data-bs-placement="left" title="Normal view"></i></button>
+                {%load static%}
+                <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill"
+                  data-bs-target="#v-pills-pivot-tab" type="button" role="tab" aria-controls="v-pills-pivot-tab"
+                  aria-selected="false"><i class="bi bi-arrow-repeat" data-bs-toggle="tool
+                    " data-bs-placement="left" title="Pivottable view"></i>
+                </button>
+
+              </div>
+              <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
+                  aria-labelledby="v-pills-datatable-tab">{%include './datamap.html'%}</div>
+                <div class="tab-pane fade" id="v-pills-pivot-tab" role="tabpanel" aria-labelledby="v-pills-pivot-tab">
+                  <div style="height: 100vh;overflow: auto;">
+                    {{pivottable | safe}}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      let url_batch = `{% url 'batch_create' object.pk %}`;
+      let url_culture = `{% url 'culture_create' object.pk %}`;
+      console.log(url_culture);
+      loadModal("#createCultureModal", "#createCulture", url_culture);
+      loadModal("#createBatchModal", "#createBatch", url_batch);
+
+    });
+  </script>
+</div>
+{%endblock%}

@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.forms import formset_factory
+from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
@@ -27,10 +27,40 @@ from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
-image_formset=formset_factory(Image_form,  extra=10)
-class ImageCreateView(SuperUserRequiredMixin, SimplecreateView):
-    form_class = image_formset
-    template_name = 'utils/addimg.html'
+@login_required
+def imgCreate(request, pk):
+    object_=get_object_or_404(Organism, organism_id=pk)
+    kwargs={}
+    kwargs['user']=request.user
+    form=Image_form 
+    if request.method=='POST':
+        try:           
+            form=Image_form(request.POST, request.FILES)                
+            if form.is_valid():    
+                print("form valid")   
+                instance=form.save(commit=False)
+                instance.save(**kwargs)
+                print(instance.pk)
+                object_.assoc_images.add(instance)
+                # object_.save_m2m() 
+                object_.save(**kwargs)
+                return redirect(request.META['HTTP_REFERER'])
+            else:
+                print("not valid")
+                messages.warning(request, f'Update failed due to {form.errors} error')
+                   
+        except Exception as err:
+            print("something wrong with many to many")
+            messages.warning(request, f'Update failed due to {err} error')
+            return redirect(request.META['HTTP_REFERER'])
+  
+    context={
+        "image_form":form,
+        "object":object_,
+    }
+   
+    return render(request, "utils/addimg.html", context)
+
 
 
 # import setup

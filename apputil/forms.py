@@ -58,13 +58,20 @@ class Dictionary_form(forms.ModelForm):
         fields='__all__'
 
 ## Image
-from .utils.form_wizard_tools import MultipleFileField
+from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
 from .utils.files_upload import validate_file
 
 class Image_form(forms.ModelForm):
+    image_file = MultipleFileField(label='Select an image', 
+                                  validators=[validate_file], 
+                                  required=False)
+    
+
     class Meta:
         model=Image
         fields='__all__'
+
+    
 
 # --Filterset Form--
 ## Application User
