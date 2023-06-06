@@ -62,7 +62,7 @@ from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
 from .utils.files_upload import validate_file
 
 class Image_form(forms.ModelForm):
-    image_file = MultipleFileField(label='Select an image', 
+    image_file = forms.ImageField(label='Select an image', 
                                   validators=[validate_file], 
                                   required=False)
     
