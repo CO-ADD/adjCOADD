@@ -130,7 +130,7 @@ def detailOrganism(request, pk):
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
-        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,  'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()] }, instance=object_)
+        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,  'assoc_images': [i.image_name for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()] }, instance=object_)
     except Exception as err:
         print(err)
     context["object"]=object_

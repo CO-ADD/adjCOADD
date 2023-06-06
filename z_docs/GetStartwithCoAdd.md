@@ -60,7 +60,7 @@ Manually install all the following packages in the conda environment.
 10. django-sequences
 11. pip install django-model-utils
 12. pip install django-filter
-13. pip install pdfplumber
+13. pip install pdfplumber == 0.7.6
 14. pip install
 15. pip install djangorestframework
 16. pip install djangorestframework_simplejwt

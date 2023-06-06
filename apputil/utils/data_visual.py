@@ -40,7 +40,7 @@ def convert_heatmap(xls_file, XlsSheet=None, upload=False, uploaduser='org_db', 
     df=pd.read_excel(xls_file)
     df.reset_index(drop=True, inplace=True)  # drop the old index
     df = df.astype(str)
-    table=df.style.applymap(highlight_val).hide_index()
+    table=df.style.applymap(highlight_val).hide()
     # table=df.style.background_gradient(cmap='Blues')
     table=table.set_table_attributes('class="table table-bordered fixTableHead"') 
     table=table.to_html()

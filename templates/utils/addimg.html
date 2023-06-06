@@ -1,0 +1,34 @@
+<!-- Start upload datafiles, scanne virus -->
+<br />
+<div id="fileupload-basic" class="container">
+
+    <p>{{excel_upload_info}}</p>
+    <section class="row" id="Import_step1">
+        <h4 class="title is-2" id="datamodel">
+            <small> Prcoess Name: </small>{{process_name}}
+        </h4>
+        <div class="">
+            <form method="POST" enctype="multipart/form-data" class="post-form">
+                {% csrf_token %}
+                <!--  -->
+                {% for form_single in form %}
+                {{form}}
+                {%endfor%}
+                <div>
+                    <!-- Here is information about images collection -->
+                    {%for field in image_info_fields%}
+                    <input type="text" data-name="{{field}}">
+                    {%endfor%}
+                </div>
+
+
+                <button id="data_upload" type="submit" class="btn btn-outline-success m-2">
+                    Submit
+                </button>
+            </form>
+        </div>
+
+    </section>
+    <!-- The belowing section is for pdf uploading and validation process -->
+    <!-- Run check entries in .csv or excel file -->
+</div>

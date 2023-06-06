@@ -12,19 +12,26 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.forms import formset_factory
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form
 from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
+
+image_formset=formset_factory(Image_form,  extra=10)
+class ImageCreateView(SuperUserRequiredMixin, SimplecreateView):
+    form_class = image_formset
+    template_name = 'utils/addimg.html'
+
 
 # import setup
 @login_required(login_url='/')

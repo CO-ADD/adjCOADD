@@ -22,12 +22,25 @@ from django.utils.datastructures import MultiValueDict
 from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
 # --------------------------------------------------------------------------------------------------
 class SelectFile_StepForm(SuperUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = forms.FileField(label='Select one or multiple files', 
-                                  widget=forms.ClearableFileInput(attrs={'multiple': True,}),
+    multi_files = MultipleFileField(label='Select one or multiple files', 
                                   validators=[validate_file], 
                                   required=False)
 
