@@ -64,7 +64,7 @@ Manually install all the following packages in the conda environment.
 14. pip install
 15. pip install djangorestframework
 16. pip install djangorestframework_simplejwt
-17. pip install request
+17. pip install requests
     (this is just for test purpose)
 18. pip install openpyxl
 19. pip install django-formtools

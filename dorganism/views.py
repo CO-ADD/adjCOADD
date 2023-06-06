@@ -129,7 +129,6 @@ def detailOrganism(request, pk):
     
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
-    print(f'images:{object_.assoc_images}')
     try:
         form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,  'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()] }, instance=object_)
     except Exception as err:
@@ -165,7 +164,7 @@ def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -184,15 +183,17 @@ def updateOrganism(req, pk):
                         raise ValidationError('Not the same Class')
                 else:
                     form=UpdateOrganism_form(object_.organism_name, req.POST, instance=obj) 
-                try:
-                    if form.is_valid():                  
-                        instance=form.save(commit=False)
-                        instance.save(**kwargs)
-                        return redirect(req.META['HTTP_REFERER'])
-                except Exception as err:
-                    print(err)
+                
+                if form.is_valid():       
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs)
+                    form.save_m2m() 
+                    return redirect(req.META['HTTP_REFERER'])
+                else:
+                    messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
+            print("something wrong with many to many")
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
