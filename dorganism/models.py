@@ -2,7 +2,6 @@ from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Image, Document
-from psqlextra.indexes import UniqueIndex
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 

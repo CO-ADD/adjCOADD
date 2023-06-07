@@ -1,4 +1,35 @@
-# Get start with Co_Add Application:
+# Get start with CO-ADD Application:
+
+### Production Conda
+#---------------------------------------------------------------------------
+- Download Conda from https://docs.conda.io/en/main/miniconda.html -> Miniconda3-latest-Linux-x86_64.sh
+- Install conda as django user 
+   django> sh Miniconda3-latest-Linux-x86_64.sh 
+      /opt/django/conda
+
+### Production - Setting Environment - dj42py311
+
+- (base) django> conda update -n base -c defaults conda
+
+- (base) django> conda create -n dj42py311 django django-rdkit
+   creates base enviroment with django 4.2.1, python 3.11.3
+
+- (base) django> conda activate <b>dj42py311</b>
+
+- (dj42py311) django> <b>conda</b> install ..
+   django-filter django-pandas djangorestframework python-ldap psycopg2 request
+   pdfplumber openpyxl python-magic ipython CairoSVG
+   rdkit -c rdkit
+   gunicorn
+
+
+- (dj42py311) django> <b>pip</b> install ..
+   django-model-utils django-sequences django-formtools
+   django-auth-ldap 
+   djangorestframework-simplejwt
+   clamd
+
+
 
 This document includes two parts: Developing and Using the Application
 
