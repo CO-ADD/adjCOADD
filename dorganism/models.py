@@ -117,7 +117,7 @@ class Organism(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification", "assoc_images", "assoc_documents"],
+       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification",],
        'Group2': ['res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_notes','mta_document', 'source', 'source_code'],
        'Group3': ['risk_group','pathogen_group','lab_restriction','biologist','tax_id'],
        'Group4': ['received_date', 'received_as', 'prep_notes', 'collect_date', 'collect_notes', 'collect_city', 'collect_country', 'collect_institution', 'collect_specie', 'collect_body', 'collect_gender', 'collect_age']

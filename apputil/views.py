@@ -37,10 +37,10 @@ def imgCreate(request, pk):
         try:           
             form=Image_form(request.POST, request.FILES)                
             if form.is_valid():    
-                print("form valid")   
+            
                 instance=form.save(commit=False)
                 instance.save(**kwargs)
-                print(instance.pk)
+               
                 object_.assoc_images.add(instance)
                 # object_.save_m2m() 
                 object_.save(**kwargs)

@@ -130,7 +130,7 @@ def detailOrganism(request, pk):
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
-        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,  'assoc_images': [i.image_name for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()] }, instance=object_)
+        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,}, instance=object_)
     except Exception as err:
         print(err)
     context["object"]=object_
@@ -152,11 +152,13 @@ def detailOrganism(request, pk):
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     # data in pivotted and highlighted Tables
-    displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-    context["table"] = data_frame_style(pk, displaycols)['style_table']
-    context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
-    context["pivottable"] = pivottable_style(pk)
+    if request.method == 'POST':
 
+        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+        context["table"] = data_frame_style(pk, displaycols)['style_table']
+        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
+        context["pivottable"] = pivottable_style(pk)
+        return render(request, "dorganism/organism/organism_mic.html", context)
     # if req.method=='POST' and 'extra_add' in request.POST:
 
 
@@ -191,7 +193,7 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    form.save_m2m() 
+                    # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
                     messages.warning(req, f'Update failed due to {form.errors} error')
