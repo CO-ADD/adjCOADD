@@ -40,6 +40,7 @@ Then create a conda environment with: `conda create -n <your-environment-name>` 
 - step3. pip install django-auth-ldap
 - step4. pip install git+https://github.com/rdkit/django-rdkit.git
 - step5. (Linux)sudo apt-get install libmagic1; (windows) download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/tree/master, copy to the project root.
+- step6. pip install jinjia2
 
 ##### Way 2 :
 

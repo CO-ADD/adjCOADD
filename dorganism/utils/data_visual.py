@@ -1,9 +1,10 @@
 import ddrug.utils.tables as drugtbl
-from apputil.utils.data_visual import highlight_val
+from apputil.utils.data_visual import highlight_val, highlight_val2
 
 ## --dOrganism dataframe table, pivottable and styling table--
 # convert to dataframe
 def convert_dataframe(pk):
+    print(pk)
     try:
         df = drugtbl.get_Antibiogram_byOrgID(pk)
     except Exception as err:
@@ -36,7 +37,7 @@ def pivottable_style(pk):
         pivottable = pd.pivot_table(df, columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['MIC',],  aggfunc={'MIC':np.size})
         pivottable = pivottable.astype(str)
         # Styling pivottable       
-        style_pivot = pivottable.style.applymap(highlight_val)     
+        style_pivot = pivottable.style.applymap(highlight_val2)     
         style_pivot = style_pivot.set_table_attributes('class="table table-bordered fixTableHead"').to_html()
     except Exception as err:
         style_pivot=err

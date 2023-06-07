@@ -16,7 +16,6 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
-from apputil.utils.pivottable import custom_pivottable
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
@@ -153,13 +152,12 @@ def detailOrganism(request, pk):
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
-
         displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
         context["table"] = data_frame_style(pk, displaycols)['style_table']
         context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
         context["pivottable"] = pivottable_style(pk)
         return render(request, "dorganism/organism/organism_mic.html", context)
-    # if req.method=='POST' and 'extra_add' in request.POST:
+    
 
 
     return render(request, "dorganism/organism/organism_detail.html", context)

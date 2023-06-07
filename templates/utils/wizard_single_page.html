@@ -145,6 +145,7 @@
             {% include 'utils/uploadtable.html' %}
             {% endif %}
           </div>
+          <div class="preload_validation_result"></div>
         </div>
       </div>
     </div>
@@ -188,7 +189,13 @@
       $("input:checkbox").attr("disabled", true);
     }
   }
-  $('button[name="wizard_goto_step"').click(() => {
-    $("#id_step1-confirm").removeAttr('required')
+  $('.nextstep').click(() => {
+    console.log("loading")
+    if ('{{validation_result}}'===''){
+      $('.preload_validation_result').html('')
+    }else{
+      console.log("loading...")
+      $('.preload_validation_result').html('<div class="spinner-border" role="status" > <span class="visually-hidden">Loading...</span> </div>')
+    }
   })
 </script>

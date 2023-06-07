@@ -26,13 +26,36 @@ def highlight_val(val):
     elif val > 80.00:
         bg_color='#dfba9f' 
     else:
-        bg_color='transparent'
+        bg_color='yellow'
     
     return 'background-color: %s' % bg_color
 
 # 
-def hightlight_val2(val):
-    pass
+def highlight_val2(val):
+    '''
+    Value Colors,
+    R:
+    S:
+    L:
+    '''
+    # formatting value 
+    if pd.isnull(val):
+        val = "empty"
+    else:  # also consider float values
+        val = str(val)
+    # set colors
+    if val == 'empty':
+        bg_color='white'
+    elif val == 'R':
+        bg_color='red' 
+    elif val == 'S':
+        bg_color='green'
+    elif val == 'I':
+        bg_color='blue'
+    else:
+        bg_color='transparent'
+    
+    return 'background-color: %s' % bg_color
     
 
 
@@ -44,7 +67,6 @@ def convert_heatmap(xls_file, XlsSheet=None, upload=False, uploaduser='org_db', 
     # table=df.style.background_gradient(cmap='Blues')
     table=table.set_table_attributes('class="table table-bordered fixTableHead"') 
     table=table.to_html()
-    print(table)
     return table
 
 
