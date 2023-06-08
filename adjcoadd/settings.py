@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'django_filters',
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
-    # "psqlextra",
     'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
@@ -139,10 +138,10 @@ if DEVELOPMENT:
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
-        PG_ENGINE = 'psqlextra.backend'
+        PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 else:
     HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
-    PG_ENGINE = 'psqlextra.backend'
+    PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
 
 DATABASES = {
