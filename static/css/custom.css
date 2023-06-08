@@ -1369,3 +1369,7 @@ table.dataframe tr:hover {
   background-color: #4285f4;
   color: white;
 }
+
+a:hover{
+  color: #fcb317 !important;
+}
