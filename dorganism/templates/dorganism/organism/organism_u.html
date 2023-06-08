@@ -24,6 +24,29 @@
           <!--prettier-ignore-->
           </tr>
           {%endfor%}
+          <tr>
+            <th>
+                 Assoc Files 
+                 <div class="">
+                  {%url 'adddoc' pk=object.pk as addurl_doc %}
+                  {%include 'utils/modal/simpleupload.html' with title='Add_document' form=doc_form addurl=addurl_doc %}
+
+              </div>
+            </th>
+            <td>
+              <ul>
+
+                {%for file in object.assoc_documents.all %}
+                
+                <li>
+
+                  <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle>{{file}}</a>
+                </li>
+                
+                {%endfor%}
+              </ul>
+              </td>
+          </tr>
            </tbody>
       </table>
     </div>
