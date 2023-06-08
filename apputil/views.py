@@ -1,4 +1,5 @@
 import os
+from formtools.wizard.views import SessionWizardView
 from django.contrib import messages
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
@@ -20,48 +21,132 @@ from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_P
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
 from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form
-from apputil.models import ApplicationUser, Dictionary
+from apputil.models import ApplicationUser, Dictionary, Image, Document
 from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
+from django.http import JsonResponse
+from django.core.files.storage import default_storage
+
 @login_required
-def imgCreate(request, pk):
-    object_=get_object_or_404(Organism, organism_id=pk)
+def createImage(request, pk):
+    object_ = get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=request.user
     form=Image_form 
-    if request.method=='POST':
-        try:           
-            form=Image_form(request.POST, request.FILES)                
-            if form.is_valid():    
-            
-                instance=form.save(commit=False)
+
+    # Handle AJAX file upload
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        image_file = request.FILES.get('image_file')
+        if image_file:
+            file_path = default_storage.save(image_file.name, image_file)
+            file_name = os.path.basename(file_path)
+            file_type = image_file.content_type
+            response = {
+                'name': file_name,
+                'type': file_type,
+                'path': file_path,
+            }
+            return JsonResponse(response)
+
+    # Handle form submission
+    elif request.method == 'POST':
+        form=Image_form(request.POST, request.FILES)                
+        if form.is_valid():    
+            instance=form.save(commit=False)
+            if instance.image_file:
                 instance.save(**kwargs)
-               
+                print(f'saved:{instance.image_file}')
                 object_.assoc_images.add(instance)
-                # object_.save_m2m() 
                 object_.save(**kwargs)
-                return redirect(request.META['HTTP_REFERER'])
             else:
-                print("not valid")
-                messages.warning(request, f'Update failed due to {form.errors} error')
-                   
-        except Exception as err:
-            print("something wrong with many to many")
-            messages.warning(request, f'Update failed due to {err} error')
+                messages.warning(request, 'No image file.')
             return redirect(request.META['HTTP_REFERER'])
-  
+        else:
+            messages.warning(request, f'Update failed due to {form.errors} error')
+            return redirect(request.META['HTTP_REFERER'])
+
     context={
         "image_form":form,
         "object":object_,
     }
+
+    return render(request, "apputil/addimg.html", context)
+# from django import forms
+# from django.core.files.storage import DefaultStorage
+# class Image_uploadform(forms.ModelForm):
+#     image_file = forms.ImageField(label='Select an image', 
+#                                 #   validators=[validate_file], 
+#                                   required=True)
+#     class Meta:
+#         model=Image
+#         fields=['image_file']
+
+# class Image_infoform(forms.ModelForm):
    
-    return render(request, "utils/addimg.html", context)
+#     class Meta:
+#         model=Image
+#         exclude=['image_file']
 
 
+# class SimpleUpload_WizardView(SessionWizardView):
+#     form_list=[Image_uploadform, Image_infoform]
+#     template_name='utils/simpleupload.html'
+#     file_storage = DefaultStorage()
+    
+#     def get(self, request, *args, **kwargs):
+#         self.object = get_object_or_404(Organism, organism_id=self.kwargs['pk'])  # get your model instance here
+#         return super().get(request, *args, **kwargs)
+
+#     def get_context_data(self, form, **kwargs):
+#         context = super().get_context_data(form=form, **kwargs)
+#         context.update({'object': self.object})  # add your model instance to the context
+#         return context
+
+#     def get_form_initial(self, step):
+#         initial = super().get_form_initial(step)
+#         if step == '1':  # the step index of Image_infoform
+#             image_data = self.get_cleaned_data_for_step('0')  # get image data from Image_uploadform
+#             if image_data:
+#                 initial.update({
+#                     'image_type': image_data['image_file'].content_type, 
+#                     'image_name': image_data['image_file'].name,
+#                     'image_source': image_data['image_file'].name,
+#                     'image_desc': image_data['image_file'].name,
+                  
+#                 })
+#         return initial
+
+#     def done(self, form_list, **kwargs):
+#         image_upload_form_data = self.get_cleaned_data_for_step('0')  # get data from Image_uploadform
+#         image_info_form = form_list[-1]  # this should be Image_infoform
+#         if image_info_form.is_valid():
+#             image_info_data = image_info_form.cleaned_data
+#             image = Image()  # create new Image instance
+#             image.image_file = image_upload_form_data['image_file']
+#         for field, value in image_info_data.items():
+#             setattr(image, field, value)  # set other fields from Image_infoform data
+#         image.save()  # save the image
+#         related_model=get_object_or_404(Organism, organism_id=self.kwargs['pk'])
+#         related_model.assoc_images.add(image)
+
+#         return HttpResponse("form submitted!")
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+    print('deleting...')
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
 
 # import setup
 @login_required(login_url='/')

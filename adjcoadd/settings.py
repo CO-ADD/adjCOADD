@@ -17,9 +17,10 @@ DEVELOPMENT='Work'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-MEDIA_ROOT=os.path.join(BASE_DIR.parent, 'uploads')
-MEDIA_URL=('uploads/')
+print(BASE_DIR)
+work_path = '/opt/django/var/uploads/'
+MEDIA_ROOT= work_path if os.path.exists(work_path) else os.path.join(BASE_DIR.parent, 'uploads') 
+MEDIA_URL = ('uploads/')
 
 # Define Structure Images folder path
 if DEVELOPMENT=="Local":

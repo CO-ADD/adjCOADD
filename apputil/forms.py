@@ -63,15 +63,13 @@ from .utils.files_upload import validate_file
 
 class Image_form(forms.ModelForm):
     image_file = forms.ImageField(label='Select an image', 
-                                  validators=[validate_file], 
-                                  required=False)
+                                #   validators=[validate_file], 
+                                  required=True)
     
-
     class Meta:
         model=Image
         fields='__all__'
-
-    
+   
 
 # --Filterset Form--
 ## Application User

@@ -1347,7 +1347,7 @@ table.dataframe tr:hover {
 .step {
   padding: 5px;
   border: 1px solid #ccc;
-  background-color: #f5f5f5;
+  background-color: var(--bs-boxed-body-bg);
   margin-bottom: 20px;
   position: relative;
   width: 150px;

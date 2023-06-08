@@ -1,0 +1,164 @@
+<div class="accordion bg-transparent w-100 m-auto" id="accordion_image">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_image">
+            <button class="accordion-button collapsed" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse_image" aria-expanded="true" aria-controls="collapse_image">
+                <h5 class="fs-6 my-0">
+                    {{object.pk}} Show Images
+                </h5>
+            </button>
+        </h2>
+        <div id="collapse_image" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
+            data-bs-parent="#accordion_image">
+            <div class="accordion-body bg-transparent d-flex flex-wrap">
+                {% for image in object.assoc_images.all %}
+                {% if image.astatus >= 0 %}
+                <div class="m-auto border border-secondary">
+                    <!-- Show Image -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ShowImage_lg">
+
+                        <h2>{{ image.image_name }}</h2>
+
+                        <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}"
+                            style="width: 150px; height: auto;">
+                    </button>
+                    <p>Type: {{ image.image_type }}</p>
+                    <p>Source: {{ image.image_source }}</p>
+                    <!-- Large Image Modal -->
+                    <div class="modal fade" id="ShowImage_lg" tabindex="-1" aria-labelledby="ShowImage_lg"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ShowImage_lgLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Image -->
+
+                {% if user.permission == 'Admin' %}
+                <a class="btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#assoc_img_del{{image.pk}}" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Click to delete">
+                    <i class="fa-regular fa-trash-can text-danger fs-6"></i>
+                </a>
+                {% else %}
+                <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="No Permission To Delete">
+                    <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
+                </a>
+                {% endif %}
+
+                <!--Delete Image Modal -->
+                <div class="modal fade" id="assoc_img_del{{image.pk}}" data-bs-backdrop="static"
+                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <!--prettier-ignore-->
+                        {% url 'org_img_delete' pk=image.pk as deleteurl %}
+                        {% include 'utils/modal/delete.html' with title='Delete Image' deleteurl=deleteurl entry=image %}
+                    </div>
+                </div>
+                {%endif%}
+
+                {% endfor %}
+
+                <!-- Add Image -->
+              
+                <button type="button" class="btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-file-earmark-plus" style='color: red'></i>
+                </button>
+
+                <!-- Add Image Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="button" id="ajax-upload">Upload</button>
+                                <form method="POST" enctype="multipart/form-data" class="post-form"
+                                    action="{%url 'addimg' pk=object.pk %}">
+                                    {% csrf_token %}
+                                    <!-- prettier-ignore -->
+                                    <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3 ">
+                                        {%for field in image_form.visible_fields%}
+                                        <div class="col border border-2 django-form-table">
+                                          <label>{{field.label}}</label>
+                                          <p>{{field | safe}}</p>
+                                          <span class="badge bg-info text-light">{{field.help_text}}</span>
+                                          <span class="badge bg-info text-danger">{{field.errors}}</span>
+                                        </div>
+                                        {%endfor%}
+                                      
+                                      </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+
+                                    <button class="btn btn-sm" type="submit" name="Model" value="Organism">Add
+                                        Image</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $("#ajax-upload").click(function() {
+    var formData = new FormData();
+    formData.append('image_file', $('input[type=file]')[0].files[0]);  // assuming you have an input of type 'file'
+    
+    $.ajax({
+        url: "{% url 'addimg' object.pk %}",  // The URL to submit the form to
+        type: 'POST',
+        data: formData,
+        headers: { "X-CSRFToken": '{{ csrf_token }}' },
+        success: function(data) {
+            // The server responded with success
+            // Fill the form fields with the returned data
+            $('#id_image_name').val(data.name);  // assuming you have an input with id 'id_image_name'
+            $('#id_image_type').val(data.type);  // same for 'id_image_type'
+        },
+        error: function() {
+            // Something went wrong
+            alert("An error occurred.");
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+});
+     $('#id_image_file').on('change',function(){
+       // output raw value of file input
+    //    $('#filename').html($(this).val()); 
+
+        // or, manipulate it further with regex etc.
+        var filename =  $(this)[0].files[0].name.split('.');
+        // .. do your magic
+        
+        
+        console.log(filename)
+        
+    });
+</script>

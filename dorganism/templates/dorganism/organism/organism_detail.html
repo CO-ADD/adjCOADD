@@ -24,60 +24,9 @@
               <b> {% include 'utils/message.html' %} </b>
 
               {% include 'dorganism/organism/organism_u.html' %}
+              {% include 'dorganism/organism/organism_image.html' %}
 
 
-              <div class="accordion bg-transparent w-100 m-auto" id="accordion_image">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="heading_image">
-                    <button class="accordion-button collapsed" style="max-height: 20px" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#collapse_image" aria-expanded="true" aria-controls="collapse_image">
-                      <h5 class="fs-6 my-0">
-                        {{object.pk}} Show Images
-                      </h5>
-                    </button>
-                  </h2>
-                  <div id="collapse_image" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
-                    data-bs-parent="#accordion_image">
-                    <div class="accordion-body bg-transparent d-flex flex-wrap">
-                      {% for image in object.assoc_images.all %}
-                      <div class="m-auto border border-secondary">
-                        <h2>{{ image.image_name }}</h2>
-                        <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}" style="width: 150px; height: auto;">
-                        <p>Type: {{ image.image_type }}</p>
-                        <p>Source: {{ image.image_source }}</p>
-                      </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  </div>
-              
-              </div>
-              <div class="accordion bg-transparent w-100" id="accordion_add_extra">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="heading_add_extra">
-                    <button class="accordion-button collapsed" style="max-height: 20px" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#collapse_add_extra" aria-expanded="true" aria-controls="collapse_add_extra">
-                      <h5 class="fs-6 my-0">
-                        {{object.pk}} Add Images
-                      </h5>
-                    </button>
-                  </h2>
-                  <div id="collapse_add_extra" class="accordion-collapse collapse bg-transparent"
-                    aria-labelledby="heading_add_extra" data-bs-parent="#accordion_add_extra">
-                    <div class="accordion-body bg-transparent">
-                      <form method="POST" enctype="multipart/form-data" class="post-form" action="{%url 'addimg' pk=object.pk %}">
-                        {% csrf_token %}
-                        <!-- prettier-ignore -->
-                        {{image_form}}
-              
-              
-                        <button class="btn btn-sm" type="submit" name="Model" value="Organism">Add Image</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              
-              </div>
               <!-- prettier-ignore -->
               {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
             <!--  -->
@@ -89,12 +38,10 @@
     </div>
 
 
-  <div class="d-flex m-0 p-0">
-    <div class="d-flex flex-column m-0 p-0">
+  <div class="d-flex m-0 p-0">  
       <!-- prettier-ignore -->
       {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
-    </div>
-    <div class="accordion w-100" id="organism-batch-detail">
+    <div class="accordion bg-transparent w-100" id="organism-batch-detail">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
           <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
@@ -156,6 +103,7 @@
       console.log(url_culture);
       loadModal("#createCultureModal", "#createCulture", url_culture);
       loadModal("#createBatchModal", "#createBatch", url_batch);
+ 
 
     });
   </script>
