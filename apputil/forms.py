@@ -69,6 +69,15 @@ class Image_form(forms.ModelForm):
     class Meta:
         model=Image
         fields='__all__'
+
+class Document_form(forms.ModelForm):
+    doc_file = forms.ImageField(label='Select a file', 
+                                #   validators=[validate_file], 
+                                  required=True)
+    
+    class Meta:
+        model=Document
+        fields='__all__'
    
 
 # --Filterset Form--

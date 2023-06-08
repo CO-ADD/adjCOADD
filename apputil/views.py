@@ -20,7 +20,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form
 from apputil.models import ApplicationUser, Dictionary, Image, Document
 from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
 from apputil.utils.filters_base import FilteredListView
@@ -30,51 +30,77 @@ from apputil.utils.files_upload import Importhandler
 
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
+from django.views.generic.edit import FormView
 
-@login_required
-def createImage(request, pk):
-    object_ = get_object_or_404(Organism, organism_id=pk)
-    kwargs={}
-    kwargs['user']=request.user
-    form=Image_form 
+class CreateFileView(LoginRequiredMixin,FormView):
+    # template_name = 'apputil/addimg.html'
+    form_class = None
+    model = None
+    file_field = None
+    related_name = None
 
-    # Handle AJAX file upload
-    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        image_file = request.FILES.get('image_file')
-        if image_file:
-            file_path = default_storage.save(image_file.name, image_file)
-            file_name = os.path.basename(file_path)
-            file_type = image_file.content_type
-            response = {
-                'name': file_name,
-                'type': file_type,
-                'path': file_path,
-            }
-            return JsonResponse(response)
+    def dispatch(self, request, *args, **kwargs):
+        self.object_ = get_object_or_404(self.model, organism_id=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
 
-    # Handle form submission
-    elif request.method == 'POST':
-        form=Image_form(request.POST, request.FILES)                
-        if form.is_valid():    
-            instance=form.save(commit=False)
-            if instance.image_file:
-                instance.save(**kwargs)
-                print(f'saved:{instance.image_file}')
-                object_.assoc_images.add(instance)
-                object_.save(**kwargs)
-            else:
-                messages.warning(request, 'No image file.')
-            return redirect(request.META['HTTP_REFERER'])
+    def post(self, request, *args, **kwargs):
+        # Handle AJAX file upload
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            print(self.file_field)
+            file_data = request.FILES.get(self.file_field)
+            print(file_data)
+            if file_data:
+                file_path = default_storage.save(file_data.name, file_data)
+                file_name = os.path.basename(file_path)
+                file_type = file_data.content_type
+                response = {
+                    'name': file_name,
+                    'type': file_type,
+                    'path': file_path,
+                }
+                return JsonResponse(response)
+        # Handle form submission
         else:
-            messages.warning(request, f'Update failed due to {form.errors} error')
-            return redirect(request.META['HTTP_REFERER'])
+            return super().post(request, *args, **kwargs)
 
-    context={
-        "image_form":form,
-        "object":object_,
-    }
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if getattr(instance, self.file_field):
+           
+            kwargs={'user': self.request.user}
+            instance.save(**kwargs)
+            print(f'saved:{getattr(instance, self.file_field)}')
+            getattr(self.object_, self.related_name).add(instance)
+            self.object_.save(**kwargs)
+        else:
+            messages.warning(self.request, 'No file provided.')
+        return redirect(self.request.META['HTTP_REFERER'])
 
-    return render(request, "apputil/addimg.html", context)
+    def form_invalid(self, form):
+        messages.warning(self.request, f'Update failed due to {form.errors} error')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = self.object_
+        return context
+
+class CreateimageView(CreateFileView):
+    # template_name = 'apputil/addimg.html'
+    form_class = Image_form
+    model = Organism
+    file_field = 'image_file'
+    related_name = 'assoc_images'
+
+class CreatedocumentView(CreateFileView):
+    # template_name = 'apputil/addimg.html'
+    form_class = Document_form
+    model = Organism
+    file_field = 'doc_file'
+    related_name = 'assoc_documents'
+
+
+
 # from django import forms
 # from django.core.files.storage import DefaultStorage
 # class Image_uploadform(forms.ModelForm):

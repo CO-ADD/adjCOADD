@@ -125,7 +125,7 @@ def detailOrganism(request, pk):
     """
    
     from django.db.models import Count
-    from apputil.forms import Image_form
+    from apputil.forms import Image_form, Document_form
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
@@ -135,6 +135,7 @@ def detailOrganism(request, pk):
     context["object"]=object_
     context["form"]=form
     context["image_form"]=Image_form
+    context["doc_form"]=Document_form
 
     # data in related tables
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
