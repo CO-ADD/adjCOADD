@@ -23,7 +23,7 @@ class Drug(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "drug_id":"Drug ID",
+        "drug_id":{"Drug ID": "/ddrug/drug/"},
         "drug_name":"Drug Name",
         "drug_othernames":"Other Names",
         "drug_codes":"Drug Codes",

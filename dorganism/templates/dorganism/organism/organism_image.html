@@ -21,17 +21,17 @@
                         <button type="button" class="btn btn-primary border-0 bg-transparent" data-bs-toggle="modal"
                             data-bs-target="#ShowImage_lg{{image.pk}}">
 
-                            <h2>{{ image.image_name }}</h2>
+                            <h5>{{ image.image_name }}</h5>
 
                             <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}"
-                                style="width: 75%; height: auto;">
+                                style="width: 50%; height: auto;">
                         </button>
-                        <p>Type: {{ image.image_type }}</p>
-                        <p>Source: {{ image.image_source }}</p>
+                        <p class="m-auto">Type: {{ image.image_type }}</p>
+                        <p class="m-auto">Source: {{ image.image_source }}</p>
                         <!-- Large Image Modal -->
                         <div class="modal fade" id="ShowImage_lg{{image.pk}}" tabindex="-1"
                             aria-labelledby="ShowImage_lg{{image_pk}}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="ShowImage_lgLabel">{{image.image_name}}</h5>
