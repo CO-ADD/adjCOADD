@@ -71,6 +71,15 @@ class Filterbase(django_filters.FilterSet):
             value_as_text = Value(value, output_field=CharField())
             return queryset.annotate(array_field_as_text=Cast(name, CharField())).filter(array_field_as_text__icontains=value_as_text)
         return queryset
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.filters:
+            # print( 'CharFilter' == self.filters[field].__class__.__name__)
+            if 'CharFilter' == self.filters[field].__class__.__name__:
+                self.filters[field].lookup_expr='icontains'
+    
+     
 
 
 # utils for filteredListView method def ordered_by
