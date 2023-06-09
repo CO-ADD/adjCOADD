@@ -20,146 +20,15 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form 
 from apputil.models import ApplicationUser, Dictionary, Image, Document
-from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
-from django.http import JsonResponse
-from django.core.files.storage import default_storage
-from django.views.generic.edit import FormView
 
-class CreateFileView(LoginRequiredMixin,FormView):
-    # template_name = 'apputil/addimg.html'
-    form_class = None
-    model = None
-    file_field = None
-    related_name = None
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object_ = get_object_or_404(self.model, organism_id=kwargs['pk'])
-        return super().dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        # Handle AJAX file upload
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            print(self.file_field)
-            file_data = request.FILES.get(self.file_field)
-            print(file_data)
-            if file_data:
-                file_path = default_storage.save(file_data.name, file_data)
-                file_name = os.path.basename(file_path)
-                file_type = file_data.content_type
-                response = {
-                    'name': file_name,
-                    'type': file_type,
-                    'path': file_path,
-                }
-                return JsonResponse(response)
-        # Handle form submission
-        else:
-            return super().post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        if getattr(instance, self.file_field):
-           
-            kwargs={'user': self.request.user}
-            instance.save(**kwargs)
-            print(f'saved:{getattr(instance, self.file_field)}')
-            getattr(self.object_, self.related_name).add(instance)
-            self.object_.save(**kwargs)
-        else:
-            messages.warning(self.request, 'No file provided.')
-        return redirect(self.request.META['HTTP_REFERER'])
-
-    def form_invalid(self, form):
-        messages.warning(self.request, f'Update failed due to {form.errors} error')
-        return redirect(self.request.META['HTTP_REFERER'])
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["object"] = self.object_
-        return context
-
-class CreateimageView(CreateFileView):
-    # template_name = 'apputil/addimg.html'
-    form_class = Image_form
-    model = Organism
-    file_field = 'image_file'
-    related_name = 'assoc_images'
-
-class CreatedocumentView(CreateFileView):
-    # template_name = 'apputil/addimg.html'
-    form_class = Document_form
-    model = Organism
-    file_field = 'doc_file'
-    related_name = 'assoc_documents'
-
-
-
-# from django import forms
-# from django.core.files.storage import DefaultStorage
-# class Image_uploadform(forms.ModelForm):
-#     image_file = forms.ImageField(label='Select an image', 
-#                                 #   validators=[validate_file], 
-#                                   required=True)
-#     class Meta:
-#         model=Image
-#         fields=['image_file']
-
-# class Image_infoform(forms.ModelForm):
-   
-#     class Meta:
-#         model=Image
-#         exclude=['image_file']
-
-
-# class SimpleUpload_WizardView(SessionWizardView):
-#     form_list=[Image_uploadform, Image_infoform]
-#     template_name='utils/simpleupload.html'
-#     file_storage = DefaultStorage()
-    
-#     def get(self, request, *args, **kwargs):
-#         self.object = get_object_or_404(Organism, organism_id=self.kwargs['pk'])  # get your model instance here
-#         return super().get(request, *args, **kwargs)
-
-#     def get_context_data(self, form, **kwargs):
-#         context = super().get_context_data(form=form, **kwargs)
-#         context.update({'object': self.object})  # add your model instance to the context
-#         return context
-
-#     def get_form_initial(self, step):
-#         initial = super().get_form_initial(step)
-#         if step == '1':  # the step index of Image_infoform
-#             image_data = self.get_cleaned_data_for_step('0')  # get image data from Image_uploadform
-#             if image_data:
-#                 initial.update({
-#                     'image_type': image_data['image_file'].content_type, 
-#                     'image_name': image_data['image_file'].name,
-#                     'image_source': image_data['image_file'].name,
-#                     'image_desc': image_data['image_file'].name,
-                  
-#                 })
-#         return initial
-
-#     def done(self, form_list, **kwargs):
-#         image_upload_form_data = self.get_cleaned_data_for_step('0')  # get data from Image_uploadform
-#         image_info_form = form_list[-1]  # this should be Image_infoform
-#         if image_info_form.is_valid():
-#             image_info_data = image_info_form.cleaned_data
-#             image = Image()  # create new Image instance
-#             image.image_file = image_upload_form_data['image_file']
-#         for field, value in image_info_data.items():
-#             setattr(image, field, value)  # set other fields from Image_infoform data
-#         image.save()  # save the image
-#         related_model=get_object_or_404(Organism, organism_id=self.kwargs['pk'])
-#         related_model.assoc_images.add(image)
-
-#         return HttpResponse("form submitted!")
 
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteImage(req, pk):
@@ -301,7 +170,7 @@ class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
     form_class=Dictionary_form
     template_name='apputil/dictCreate.html'
 
-## ============================Dictionary View======================================##
+
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
     kwargs={'user': req.user}
@@ -309,14 +178,18 @@ def updateDictionary(req):
         if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
             dict_value=req.POST.get("dict_value") 
             type=req.POST.get("type") or None
+            print(type)
             value=req.POST.get("value").strip() or None
+            print(value)
             object_=get_object_or_404(Dictionary, dict_value=dict_value)
             try:
                 if object_:
-                    if type=='dict_class':
+                    if type == 'dict_class':
                         object_.dict_class=value
-                    if type=='dict_desc':
+                    if type == 'dict_desc':
                         object_.dict_desc=value
+                    if type == 'dict_sort':
+                        object_.dict_sort=int(value)
                     object_.save(**kwargs)
                     return JsonResponse({"result": "Saved"})
             except Exception as err:
@@ -343,6 +216,19 @@ def deleteDictionary(req):
     
     return JsonResponse({})
 
+## ============================File and Image View======================================## 
+class CreateimageView(CreateFileView):
+    form_class = Image_form
+    model = Organism
+    file_field = 'image_file'
+    related_name = 'assoc_images'
+
+class CreatedocumentView(CreateFileView):
+    form_class = Document_form
+    model = Organism
+    file_field = 'doc_file'
+    related_name = 'assoc_documents'
+
 # =========================== Export CSV View =============================
 from .utils.views_base import DataExportBaseView
 class DataExportView(DataExportBaseView):
@@ -358,8 +244,7 @@ class Importhandler_apputils(Importhandler):
     form_class=SelectFile_StepForm
     template_name='apputil/importhandler_excel.html'
     upload_model_type=None
-    lObject={}   # store results parsed by all uploaded excel files with key-filename, value-parsed result array
-    # vLog = Validation_Log("Vitek-pdf")
+    lObject={}   
     
     def post(self, request, process_name):
         process_name=process_name

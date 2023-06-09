@@ -9,10 +9,12 @@ from asgiref.sync import sync_to_async
 
 from django import forms
 from django.apps import apps
+from django.core.files.storage import default_storage
 from django.db import transaction, IntegrityError
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views import View
+from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -195,3 +197,58 @@ class DataExportBaseView(LoginRequiredMixin, View):
             df.to_excel(excel_writer=response, index=False)
 
         return response
+
+
+
+class CreateFileView(LoginRequiredMixin,FormView):
+    # template_name = 'apputil/addimg.html'
+    form_class = None
+    model = None
+    file_field = None
+    related_name = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object_ = get_object_or_404(self.model, organism_id=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # Handle AJAX file upload
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            print(self.file_field)
+            file_data = request.FILES.get(self.file_field)
+            print(file_data)
+            if file_data:
+                file_path = default_storage.save(file_data.name, file_data)
+                file_name = os.path.basename(file_path)
+                file_type = file_data.content_type
+                response = {
+                    'name': file_name,
+                    'type': file_type,
+                    'path': file_path,
+                }
+                return JsonResponse(response)
+        # Handle form submission
+        else:
+            return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if getattr(instance, self.file_field):
+           
+            kwargs={'user': self.request.user}
+            instance.save(**kwargs)
+            print(f'saved:{getattr(instance, self.file_field)}')
+            getattr(self.object_, self.related_name).add(instance)
+            self.object_.save(**kwargs)
+        else:
+            messages.warning(self.request, 'No file provided.')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+    def form_invalid(self, form):
+        messages.warning(self.request, f'Update failed due to {form.errors} error')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = self.object_
+        return context
