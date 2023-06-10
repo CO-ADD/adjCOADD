@@ -68,5 +68,3 @@ def search_organism_id(req):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-#==================================Filters======================================
-

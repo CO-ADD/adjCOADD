@@ -116,7 +116,7 @@ class Organism(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification"],
+       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification",],
        'Group2': ['res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_notes','mta_document', 'source', 'source_code'],
        'Group3': ['risk_group','pathogen_group','lab_restriction','biologist','tax_id'],
        'Group4': ['received_date', 'received_as', 'prep_notes', 'collect_date', 'collect_notes', 'collect_city', 'collect_country', 'collect_institution', 'collect_specie', 'collect_body', 'collect_gender', 'collect_age']
@@ -180,9 +180,9 @@ class Organism(AuditModel):
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
-    assoc_images = models.ManyToManyField(Image,verbose_name = "Images",
+    assoc_images = models.ManyToManyField(Image,verbose_name = "Images", blank=True,
         db_table = "org_img", related_name="%(class)s_image")
-    assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments",
+    assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments", blank=True,
         db_table = "org_doc", related_name="%(class)s_document")
 
     #------------------------------------------------

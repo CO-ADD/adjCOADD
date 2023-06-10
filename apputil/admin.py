@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import  ApplicationUser, Dictionary, ApplicationLog
+from .models import  ApplicationUser, Dictionary, ApplicationLog, Image, Document
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
@@ -18,3 +18,6 @@ admin.site.register(ApplicationUser, UserAdmin)
 admin.site.register(Dictionary, DictAdmin)
 
 admin.site.register(ApplicationLog)
+admin.site.register(Image)
+admin.site.register(Document)
+

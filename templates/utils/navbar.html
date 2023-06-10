@@ -104,6 +104,11 @@
                 <p>Vitek Ast</p>
               </a>
             </li>
+            <li>
+              <a class="dropdown-item" href="{%url 'vitekid_list'%}">
+                <p>Vitek ID</p>
+              </a>
+            </li>
              <li>
               <div class="dropdown-divider"></div>
             </li>
@@ -143,6 +148,15 @@
               </a>
             </li>
             <li>
+              <a
+                class="dropdown-item"
+                href="{% url 'excel-import' process_name='heatmap' %}"
+                target="_blank"
+              >
+                <p>otheres to Data-Visual</p>
+              </a>
+            </li>
+            <li>
               <div class="dropdown-divider"></div>
             </li>
             {% if user.permission == 'Admin'%}
@@ -165,6 +179,15 @@
               </a>
             </li>
 -->
+<li>
+  <a
+    class="dropdown-item"
+    href="{% url 'excel-import' process_name='heatmap' %}"
+    target="_blank"
+  >
+    <p>Others(Heatmap)</p>
+  </a>
+</li>
             {% endif %}
           </ul>
         </div>

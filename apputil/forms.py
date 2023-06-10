@@ -1,6 +1,6 @@
 import django_filters
 from django import forms
-from .models import  ApplicationUser, Dictionary
+from .models import  ApplicationUser, Dictionary, Image, Document
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
@@ -57,6 +57,28 @@ class Dictionary_form(forms.ModelForm):
         model=Dictionary
         fields='__all__'
 
+## Image
+from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
+from .utils.files_upload import validate_file
+
+class Image_form(forms.ModelForm):
+    image_file = forms.ImageField(label='Select an image', 
+                                #   validators=[validate_file], 
+                                  required=True)
+    
+    class Meta:
+        model=Image
+        fields='__all__'
+
+class Document_form(forms.ModelForm):
+    doc_file = forms.ImageField(label='Select a file', 
+                                #   validators=[validate_file], 
+                                  required=True)
+    
+    class Meta:
+        model=Document
+        fields='__all__'
+   
 
 # --Filterset Form--
 ## Application User

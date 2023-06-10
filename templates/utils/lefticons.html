@@ -1,5 +1,5 @@
 <div class="leftbar d-flex flex-column p-0 bg-light">
-  {% if title == "Organism" or title == "Drug" or title == "Gene" %}
+  {% if title == "Organism" or title == "Drug" or title == "Gene" or title == "Taxonomy" %}
     <div class="d-flex flex-column p-0">
     
       <!-- Update Object-->
@@ -12,8 +12,19 @@
       {% endif %}
     </div>
   
-  {%elif titile == 'Antibiogram'%}
-  something
+  {%elif title == 'Antibiogram'%}
+  <div class="d-flex flex-column p-0">
+    <a
+  
+    data-name="general"
+    class="btn-sm"
+    data-bs-toggle="tooltip"
+    data-bs-placement="right"
+    title="Placeholder"
+    ><i class="bi bi-file-earmark-plus text-secondary"></i>
+  </a>
+   
+  </div>
     <!--  -->
   {% else %}
     <div class="d-flex flex-column p-0">

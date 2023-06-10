@@ -2,20 +2,10 @@
   <div class="modal-header">
     <h5 class="modal-title">{{title}}</h5>
     {%if title == 'Create Batch' or title == 'Create Culture' %}
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="modal"
-      aria-label="Close"
-      onclick="window.location.reload(true);"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      onclick="window.location.reload(true);"></button>
     {%else%}
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="modal"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     {%endif%}
   </div>
   <div class="modal-body">
@@ -26,7 +16,6 @@
     {%endif%}
     <!--  -->
     <hr />
-
     <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
       {% csrf_token %}
       <!--  -->
@@ -54,5 +43,7 @@
         {%endif%}
       </div>
     </form>
+
+
   </div>
 </div>

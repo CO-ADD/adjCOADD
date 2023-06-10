@@ -1,4 +1,5 @@
 import os
+from formtools.wizard.views import SessionWizardView
 from django.contrib import messages
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
@@ -12,19 +13,35 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form
-from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form 
+from apputil.models import ApplicationUser, Dictionary, Image, Document
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
+
+
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+    print('deleting...')
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
 
 # import setup
 @login_required(login_url='/')
@@ -153,7 +170,7 @@ class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
     form_class=Dictionary_form
     template_name='apputil/dictCreate.html'
 
-## ============================Dictionary View======================================##
+
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
     kwargs={'user': req.user}
@@ -161,14 +178,18 @@ def updateDictionary(req):
         if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
             dict_value=req.POST.get("dict_value") 
             type=req.POST.get("type") or None
+            print(type)
             value=req.POST.get("value").strip() or None
+            print(value)
             object_=get_object_or_404(Dictionary, dict_value=dict_value)
             try:
                 if object_:
-                    if type=='dict_class':
+                    if type == 'dict_class':
                         object_.dict_class=value
-                    if type=='dict_desc':
+                    if type == 'dict_desc':
                         object_.dict_desc=value
+                    if type == 'dict_sort':
+                        object_.dict_sort=int(value)
                     object_.save(**kwargs)
                     return JsonResponse({"result": "Saved"})
             except Exception as err:
@@ -195,6 +216,19 @@ def deleteDictionary(req):
     
     return JsonResponse({})
 
+## ============================File and Image View======================================## 
+class CreateimageView(CreateFileView):
+    form_class = Image_form
+    model = Organism
+    file_field = 'image_file'
+    related_name = 'assoc_images'
+
+class CreatedocumentView(CreateFileView):
+    form_class = Document_form
+    model = Organism
+    file_field = 'doc_file'
+    related_name = 'assoc_documents'
+
 # =========================== Export CSV View =============================
 from .utils.views_base import DataExportBaseView
 class DataExportView(DataExportBaseView):
@@ -203,17 +237,18 @@ class DataExportView(DataExportBaseView):
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
 from .utils.validation_log import Validation_Log
+from .utils.data_visual import convert_heatmap
+from .utils.form_wizard_tools import SelectFile_StepForm
 
 class Importhandler_apputils(Importhandler):
-    form_class=FileUploadForm
+    form_class=SelectFile_StepForm
     template_name='apputil/importhandler_excel.html'
     upload_model_type=None
-    lObject={}   # store results parsed by all uploaded excel files with key-filename, value-parsed result array
-    # vLog = Validation_Log("Vitek-pdf")
+    lObject={}   
     
     def post(self, request, process_name):
         process_name=process_name
-        uploadDir=file_location(request) # define file store path during file process
+        uploadDir=file_location(instance=request.user) # define file store path during file process
         form = self.form_class(request.POST, request.FILES)
         context = {}
         context['form'] = form
@@ -221,41 +256,38 @@ class Importhandler_apputils(Importhandler):
        
         kwargs={}
         kwargs['user']=request.user
-        
+        myfiles=[]
         self.file_url=[]
         self.data_model=request.POST.get('file_data') or None
-        myfiles=[request.FILES.get('file_field'),]
+        myfiles.extend(request.FILES.getlist('multi_files'),)
         print(myfiles)
       
         try:
-        # Uploading Verifying     
-            if form.is_valid():
-                self.lObject.clear()
-
-        # Uploading Parsing 
-                for f in myfiles:
-                    fs=OverwriteStorage(location=uploadDir)
-                    xlFile=fs.save(f.name, f)
-                    uploadFile = os.path.join(uploadDir, xlFile)
-                   
-                    try:
-                        if process_name=="Dictioanry":
-                            # update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
-                            context["excel_upload_info"]="Saved in Dictionary Datatable"
-                        elif process_name=="ApplicationUser":
-                            # update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
-                            context["excel_upload_info"]="Saved in AppUser Datatable"
-                        elif process_name=="Drug":
-                            # update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
-                            context["excel_upload_info"]="Saved in Drug Datatable"
+            for f in myfiles:
+                fs=OverwriteStorage(location=uploadDir)
+                xlFile=fs.save(f.name, f)
+                uploadFile = os.path.join(uploadDir, xlFile)
+                print(f'uploadfile: {uploadFile}')
+               
+                # try:
+                if process_name=="Dictioanry":
+                    # update_AppUser_xls(uploadFile, XlsSheet="Dictionary", upload=True, uploaduser=request.user, lower=False)
+                    context["excel_upload_info"]="Saved in Dictionary Datatable"
+                elif process_name=="ApplicationUser":
+                    # update_Dictionary_xls(uploadFile,XlsSheet="User",upload=True)
+                    context["excel_upload_info"]="Saved in AppUser Datatable"
+                elif process_name=="Drug":
+                        # update_Drug_xls(uploadFile, XlsSheet="Drug", upload=False, uploaduser=request.user, lower=True)
+                    context["excel_upload_info"]="Saved in Drug Datatable"
+                        
+                elif process_name=="heatmap":
+                    table= convert_heatmap(uploadFile, XlsSheet="Heatmap", upload=False, uploaduser=request.user, lower=True)
+                    
+                    context['table']=table
+                    context["excel_upload_info"]="Convert data to heatmap"
                             
-                    except Exception as err:
-                        context["excel_upload_info"]=f"{err} cause failed import"
-                        self.delete_file(file_name=filename)
-                        return render(request, template_name, context)
-                  
-
         except Exception as err:
-            messages.warning(request, f'There is {err} error, upload again. myfile error-- filepath cannot be null, choose a correct file')
-           
+            context["excel_upload_info"]=f"{err} cause failed import"
+            # self.delete_file(file_name=filename)
         return render(request, self.template_name, context)
+                  

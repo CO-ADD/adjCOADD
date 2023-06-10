@@ -13,13 +13,14 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
+DEVELOPMENT='Local'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-MEDIA_ROOT=os.path.join(BASE_DIR.parent, 'uploads')
-MEDIA_URL=('uploads/')
+print(BASE_DIR)
+work_path = '/opt/django/var/uploads/'
+MEDIA_ROOT= work_path if os.path.exists(work_path) else os.path.join(BASE_DIR.parent, 'uploads') 
+MEDIA_URL = ('uploads/')
 
 # Define Structure Images folder path
 if DEVELOPMENT=="Local":
@@ -55,7 +56,6 @@ INSTALLED_APPS = [
     'django_filters',
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
-    # "psqlextra",
     'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
@@ -138,64 +138,67 @@ if DEVELOPMENT:
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
-        PG_ENGINE = 'psqlextra.backend'
+        PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 else:
     HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
-    PG_ENGINE = 'psqlextra.backend'
+    PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
+database_name = os.environ.get('db_name') or 'orgdb'
+database_user = os.environ.get('db_usr') or 'orgdb'
+database_password = os.environ.get('password') or 'orgdb'
 
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD':'orgdb',
+        'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'ddrug': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dgene': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dgene,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': 'orgdb',
-        'USER': 'orgdb', #os.environ.get('db_user'),
-        'PASSWORD': 'orgdb',
+        'NAME': database_name,
+        'USER': database_user, 
+        'PASSWORD':database_password,
         'HOST': HOST_NAME,
         'PORT': '5432',
     }

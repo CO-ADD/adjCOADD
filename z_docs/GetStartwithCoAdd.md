@@ -71,6 +71,7 @@ Then create a conda environment with: `conda create -n <your-environment-name>` 
 - step3. pip install django-auth-ldap
 - step4. pip install git+https://github.com/rdkit/django-rdkit.git
 - step5. (Linux)sudo apt-get install libmagic1; (windows) download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/tree/master, copy to the project root.
+- step6. pip install jinjia2
 
 ##### Way 2 :
 
@@ -91,11 +92,11 @@ Manually install all the following packages in the conda environment.
 10. django-sequences
 11. pip install django-model-utils
 12. pip install django-filter
-13. pip install pdfplumber
+13. pip install pdfplumber == 0.7.6
 14. pip install
 15. pip install djangorestframework
 16. pip install djangorestframework_simplejwt
-17. pip install request
+17. pip install requests
     (this is just for test purpose)
 18. pip install openpyxl
 19. pip install django-formtools

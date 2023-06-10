@@ -5,7 +5,7 @@ Used and import for all application filter views
 import django_filters
 from django import forms
 from django.views.generic import ListView
-from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value
+from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value, ManyToManyField
 from django.db.models import CharField, Value
 from django.db.models.functions import Cast
 from django.contrib.postgres.fields import ArrayField
@@ -42,6 +42,11 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 pass
         elif isinstance(field, ArrayField):
             q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
+        
+        elif isinstance(field, ManyToManyField):
+            related_model = field.related_model
+            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            q_object |= related_q_object
         # # Add more field types as needed...
 
     return q_object
@@ -71,6 +76,15 @@ class Filterbase(django_filters.FilterSet):
             value_as_text = Value(value, output_field=CharField())
             return queryset.annotate(array_field_as_text=Cast(name, CharField())).filter(array_field_as_text__icontains=value_as_text)
         return queryset
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.filters:
+            # print( 'CharFilter' == self.filters[field].__class__.__name__)
+            if 'CharFilter' == self.filters[field].__class__.__name__:
+                self.filters[field].lookup_expr='icontains'
+    
+     
 
 
 # utils for filteredListView method def ordered_by
@@ -95,6 +109,7 @@ class FilteredListView(ListView):
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
+        print(f"get firsst {self.request.session.get('cached_queryset')}")
         # the following steps are optmized search performance with sessionstorage
         # Check if the reset request is submitted
         if self.request.GET.get('reset')=='True':
@@ -103,17 +118,21 @@ class FilteredListView(ListView):
                 del self.request.session['cached_queryset']
 
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
-        if 'cached_queryset' in self.request.session:
+        if self.request.session.get('cached_queryset'):
+            print(self.request.session.get('cached_queryset'))
+            # if self.request.session['cached_queryset']:
             stored_queryset_pks = self.request.session['cached_queryset']
             stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
             self.filterset = self.filterset_class(self.request.GET, queryset=stored_queryset)
         else:
+            print("None")
             self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
 
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
         self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
-     
+        
+        
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
@@ -128,6 +147,7 @@ class FilteredListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list=context['object_list']
+     
         filter_record_dict={key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset']}
         filter_record="Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.

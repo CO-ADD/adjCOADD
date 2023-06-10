@@ -1,5 +1,7 @@
 {%if obj_count %}
 <span class="badge text-light bg-info m-0 ms-1 p-1"> {{obj_count}} entries</span>
+{%elif title == 'Antibiogram' %}
+<span class="badge text-light bg-info m-0 ms-1 p-1">Click left button retrieve data</span>
 {%else%}
 <span class="badge text-light bg-secondary m-0 ms-2 p-1"> 0 entries</span>
 {%endif%}

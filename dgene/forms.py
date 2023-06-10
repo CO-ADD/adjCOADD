@@ -79,14 +79,6 @@ class ID_Pub_form(ModelForm):
 ## fitler forms
 class ID_Pubfilter(Filterbase):
     id_organisms=django_filters.CharFilter(method='filter_arrayfields')
-   
-    # id_type=django_filters.ChoiceFilter(choices=[])
-    # Gene_name=django_filters.CharFilter(field_name='gene_name', lookup_expr='icontains', label='Gene Name')
-    # Othername=django_filters.CharFilter(field_name='gene_othernames', lookup_expr='icontains', label='Other Name')
-    # Gene_Class=django_filters.CharFilter(field_name='protein_class', lookup_expr='icontains', label='Gene Class')
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.filters["id_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
         
     class Meta:
         model=ID_Pub
@@ -131,24 +123,14 @@ class Sequencefilter(Filterbase):
 
 # WGS_FastQCfilter forms
 class FastQCfilter(Filterbase):
-    Run_Id=django_filters.CharFilter(field_name='run_id', lookup_expr='icontains', label='RUN ID')
-    # OrgBatch_ID=django_filters.ModelChoiceFilter(field_name='orgbatch_id', queryset=Organism_Batch.objects.filter(astatus__gte=0))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     class Meta:
         model=WGS_FastQC
         fields=list(model.HEADER_FIELDS.keys())#[ 'Run_Id']
 
 # WGS_CheckMfilter forms
 class CheckMfilter(Filterbase):
-    Run_Id=django_filters.CharFilter(field_name='run_id', lookup_expr='icontains', label='RUN ID')
+  
     # OrgBatch_ID=django_filters.ModelChoiceFilter(field_name='orgbatch_id', queryset=Organism_Batch.objects.filter(astatus__gte=0))
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.create_field_groups()
-        # self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
     
     def create_field_groups(self):
         self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
@@ -156,4 +138,4 @@ class CheckMfilter(Filterbase):
 
     class Meta:
         model=WGS_CheckM
-        fields=list(model.HEADER_FIELDS.keys()) #[ 'Run_Id']
+        fields=list(model.HEADER_FIELDS.keys())

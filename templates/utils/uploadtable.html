@@ -1,3 +1,4 @@
+{%if validation_result%}
 <table class="table table-bordered fixTableHead bg-light m-0">
     <thead>
         <tr>
@@ -18,6 +19,12 @@
         {% endfor %}
     </tbody>
 </table>
+{%else%}
+
+<div class="spinner-border" role="status" >
+    <span class="visually-hidden">Loading...</span>
+</div>
+{%endif%}
 
 
     

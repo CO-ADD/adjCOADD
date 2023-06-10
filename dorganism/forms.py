@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
 
-from apputil.models import Dictionary, ApplicationUser
+from apputil.models import Dictionary, ApplicationUser, Image, Document
 from apputil.utils.filters_base import Filterbase
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from adjcoadd.constants import *
@@ -36,15 +36,16 @@ class CreateOrganism_form(ModelForm):
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False,)
+    
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['strain_type'].widget = forms.SelectMultiple(choices= Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
+        self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
-        self.fields['strain_panel'].widget = forms.SelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
+        self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
         self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['oxygen_pref'])]
         self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['risk_group'])]
@@ -77,14 +78,14 @@ class CreateOrganism_form(ModelForm):
     
     class Meta:
         model=Organism
-        exclude = ['organism_id']
+        exclude=['organism_id', 'assoc_images', 'assoc_documents'] 
 
 #=======================================Organism update Form=============================================================
-class UpdateOrganism_form(CreateOrganism_form):       
+class UpdateOrganism_form(CreateOrganism_form):   
     
     class Meta:
         model=Organism
-        exclude = ['organism_id']  
+        exclude=['organism_id', 'assoc_images', 'assoc_documents'] 
    
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):
@@ -279,7 +280,7 @@ class Organismfilter(Filterbase):
     Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
     MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
-    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=[] )#Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
+    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -16,7 +16,6 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
-from apputil.utils.pivottable import custom_pivottable
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
@@ -24,7 +23,8 @@ from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form,
                     Organismfilter, Taxonomyfilter, Batchfilter)
 
 from ddrug.models import VITEK_AST, MIC_COADD
-import ddrug.utils.tables as drugtbl
+from .utils.data_visual import data_frame_style, pivottable_style
+
           
 # --TAXONOMY Views--
 ##
@@ -121,18 +121,23 @@ def detailOrganism(request, pk):
     display,update and delete.
     - related table overview display, update, create and delete.
     - related table are: batch, stock, culture.
-    - display pivotable for Antibiogram per OrgID
+    - data visual table: dataframe and pivot- table
     """
-    import numpy as np
-    import pandas as pd
+   
     from django.db.models import Count
+    from apputil.forms import Image_form, Document_form
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
+    try:
+        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,}, instance=object_)
+    except Exception as err:
+        print(err)
     context["object"]=object_
-
     context["form"]=form
-    # context for related tables
+    context["image_form"]=Image_form
+    context["doc_form"]=Document_form
+
+    # data in related tables
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
     context["batch_fields"]=Organism_Batch.get_fields()
@@ -145,65 +150,18 @@ def detailOrganism(request, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+
+    # data in pivotted and highlighted Tables
+    if request.method == 'POST':
+        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+        context["table"] = data_frame_style(pk, displaycols)['style_table']
+        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
+        context["pivottable"] = pivottable_style(pk)
+        return render(request, "dorganism/organism/organism_mic.html", context)
     
-    # 
-    try:
-        df = drugtbl.get_Antibiogram_byOrgID(pk)
-        df.reset_index(inplace=True)
-        new_displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        df = df[new_displaycols]  
-        pivottable = pd.pivot_table(df, values='BP Profile', index='Drug Name', columns='MIC', aggfunc=np.sum)
-        pivottable_reset = pivottable.reset_index()
-         # Convert the DataFrame's rows to a list of tuples
-        table_data = [row for row in pivottable_reset.itertuples(index=False)]
 
-        # Convert the DataFrame's columns to a list of strings
-        table_header = list(pivottable_reset.columns)
 
-        table_dict = {
-        'rows': table_data,
-        'columns': table_header
-        }
-    
-        # Styling pivottable
-        # def highlight_val(val):
-        #     '''
-        #     highlight the maximum in a Series yellow.
-        #     '''
-        #     val=0 if str(val)=='' else val
-        #     bg_color= 'green' if val >30 else 'grey'
-        #     return 'background-color: %s' % bg_color
-        
-        # style_pivot= pivottable.style.applymap(highlight_val)
-        #          # To add borders, hover effect and a vertical scroller
-        # styles = [
-        # # Add table borders
-        # {'selector': 'table', 'props': [('border', '1px solid black')]},
-        # # Add cell borders
-        # {'selector': 'td, th', 'props': [('border', '1px solid black')]},
-        # # Add hover effect
-        # {'selector': 'tr:hover', 'props': [('background-color', 'white')]},
-        # # Add vertical scroller
-        # {'selector': 'table', 'props': [('overflow', 'auto'), ('height', '300px')]}
-        # ]
-        
-        # style_pivot = style_pivot.set_table_styles(styles)
-
-        context["pivottable"] = table_dict
-        context["table"] = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
-        context["df_entries"] = len(df)
-        
-    except Exception as err:
-        context["table"] = err
     return render(request, "dorganism/organism/organism_detail.html", context)
-
-def pivottable(request, pk):
-    print(request.POST.getlist)
-    querydata=MIC_COADD.objects.filter(orgbatch_id__organism_id__organism_id=pk)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
-        custom_pivottable(request, querydata)
-    return JsonResponse({})
-
 
 ##
 @login_required
@@ -211,7 +169,7 @@ def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel}, instance=object_)
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -230,15 +188,17 @@ def updateOrganism(req, pk):
                         raise ValidationError('Not the same Class')
                 else:
                     form=UpdateOrganism_form(object_.organism_name, req.POST, instance=obj) 
-                try:
-                    if form.is_valid():                  
-                        instance=form.save(commit=False)
-                        instance.save(**kwargs)
-                        return redirect(req.META['HTTP_REFERER'])
-                except Exception as err:
-                    print(err)
+                
+                if form.is_valid():       
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs)
+                    # form.save_m2m() 
+                    return redirect(req.META['HTTP_REFERER'])
+                else:
+                    messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
+            print("something wrong with many to many")
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   

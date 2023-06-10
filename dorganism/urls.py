@@ -6,7 +6,7 @@ from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCr
                      createOrganism, detailOrganism, updateOrganism, deleteOrganism, OrganismListView,OrganismCardView, 
                      BatchUpdateView, createBatch, deleteBatch,
                      createStock, updateStock, stockList, deleteStock,
-                     CultureUpdateView, createCulture, deleteCulture, pivottable) #StockListView 
+                     CultureUpdateView, createCulture, deleteCulture) #StockListView 
 from .utils.utils import search_organism, search_organism_id
 
 
@@ -50,6 +50,6 @@ urlpatterns = [
     path('search_organism/', search_organism, name="search_organism"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),
 
-    path('pivottable/<str:pk>', pivottable, name="pivottable"),
+    # path('pivottable/<str:pk>', pivottable, name="pivottable"),
   
 ]

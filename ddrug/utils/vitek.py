@@ -217,6 +217,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
     lstVitek = []
     logging.getLogger().setLevel(logging.WARNING)
     with pdfplumber.open(os.path.join(DirName,PdfName)) as pdf:
+        
         nPage = 0
         df = {}
         for page in pdf.pages:
@@ -228,6 +229,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
 
             # - Header --------------------------------------------------------------------------------
             txt_lst = page.extract_text().splitlines()
+            print(txt_lst)
             for l in txt_lst:
                 mX = re.search('Isolate:(.+?)\((.+?)\)', l)
                 if mX:
@@ -552,6 +554,5 @@ def dict_Vitek_AST(pCard):
         #print(dfAST)
         lAST.append(dfAST)
     return(lAST)
-
 
 

@@ -26,6 +26,10 @@ from apputil.utils.data import Timer
 # --files upload--
 ## create user folder
 def file_location(instance, filename=None):
+    '''
+    return a file path
+    instance - request or request.user
+    '''
     location=settings.MEDIA_ROOT+'/'+str(instance)
     return location
 
@@ -98,7 +102,7 @@ class FileValidator(object):
 
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
-                             content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                             content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/png'))
 
 ## set uploading/import data forms
 class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):

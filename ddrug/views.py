@@ -39,7 +39,7 @@ from dorganism.models import Organism_Batch
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
 from ddrug.utils.vitek import upload_VitekPDF_List
-from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
+from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, VitekID_filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
 from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
 
 # ===================================================================
@@ -254,7 +254,13 @@ class VitekastListView(LoginRequiredMixin, FilteredListView):
         return self.filterset.qs.distinct()
 
       
-
+# --Vitek ID--
+class VitekIDListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model=VITEK_ID 
+    template_name = 'ddrug/vitek_id/vitekid_list.html' 
+    filterset_class=VitekID_filter
+    model_fields=model.HEADER_FIELDS  
 ## -----------
 class MIC_COADDListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
