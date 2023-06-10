@@ -5,7 +5,7 @@ Used and import for all application filter views
 import django_filters
 from django import forms
 from django.views.generic import ListView
-from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value
+from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value, ManyToManyField
 from django.db.models import CharField, Value
 from django.db.models.functions import Cast
 from django.contrib.postgres.fields import ArrayField
@@ -40,8 +40,13 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
                 q_object |= Q(**{lookup_field_name: int_value})
             except ValueError:
                 pass
-        elif isinstance(field, ArrayField):
-            q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
+        # elif isinstance(field, ArrayField):
+        #     q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
+        
+        elif isinstance(field, ManyToManyField):
+            related_model = field.related_model
+            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            q_object |= related_q_object
         # # Add more field types as needed...
 
     return q_object
@@ -104,6 +109,9 @@ class FilteredListView(ListView):
     def get_queryset(self):
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
+        for key, value in self.request.session.items():
+            print('{} => {}'.format(key, value))
+        print(f"get firsst {self.request.session.get('cached_queryset')}")
         # the following steps are optmized search performance with sessionstorage
         # Check if the reset request is submitted
         if self.request.GET.get('reset')=='True':
@@ -112,7 +120,8 @@ class FilteredListView(ListView):
                 del self.request.session['cached_queryset']
 
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
-        if 'cached_queryset' in self.request.session:
+        if self.request.session.get('cached_queryset'):
+            # if self.request.session['cached_queryset']:
             stored_queryset_pks = self.request.session['cached_queryset']
             stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
             self.filterset = self.filterset_class(self.request.GET, queryset=stored_queryset)
@@ -122,6 +131,7 @@ class FilteredListView(ListView):
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
         self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
+        print(f"get {self.request.session['cached_queryset']}")
         
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute

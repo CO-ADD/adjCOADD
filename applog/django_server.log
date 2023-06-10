@@ -1,0 +1,561 @@
+django.utils.autoreload INFO 2023-06-10 19:37:16,405 autoreload 35134 140562183362368 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:37:21,885 basehttp 35134 140561432434240 code 400, message Bad request version ('`\x00')
+django.server ERROR 2023-06-10 19:37:21,885 basehttp 35134 140561432434240 You're accessing the development server over HTTPS, but it only supports HTTP.
+django.server INFO 2023-06-10 19:37:21,887 basehttp 35134 140561424041536 code 400, message Bad request version ("\x11×Ì{`vÄ/;à'\x8bu")
+django.server ERROR 2023-06-10 19:37:21,887 basehttp 35134 140561424041536 You're accessing the development server over HTTPS, but it only supports HTTP.
+django.server INFO 2023-06-10 19:37:28,078 basehttp 35134 140561424041536 "GET / HTTP/1.1" 200 11317
+django.server INFO 2023-06-10 19:37:28,116 basehttp 35134 140561059149376 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,118 basehttp 35134 140561059149376 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,120 basehttp 35134 140561050756672 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,120 basehttp 35134 140561424041536 "GET /static/css/custom.css HTTP/1.1" 200 23595
+django.server INFO 2023-06-10 19:37:28,122 basehttp 35134 140561414600256 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-06-10 19:37:28,122 basehttp 35134 140561406207552 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102512
+django.server INFO 2023-06-10 19:37:28,124 basehttp 35134 140561432434240 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-06-10 19:37:28,127 basehttp 35134 140561406207552 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,127 basehttp 35134 140561050756672 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,127 basehttp 35134 140561414600256 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,128 basehttp 35134 140561432434240 "GET /static/js/loadModal.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:28,845 basehttp 35134 140561050756672 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:34,154 basehttp 35134 140561050756672 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-10 19:37:34,262 basehttp 35134 140561050756672 "GET /index/ HTTP/1.1" 200 22959
+django.server INFO 2023-06-10 19:37:34,347 basehttp 35134 140561050756672 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-06-10 19:37:36,316 basehttp 35134 140561050756672 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.server INFO 2023-06-10 19:37:36,333 basehttp 35134 140561050756672 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:36,335 basehttp 35134 140561432434240 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:37,729 basehttp 35134 140561050756672 "GET /dorganism/organism/FG_0001 HTTP/1.1" 200 87978
+django.server INFO 2023-06-10 19:37:37,750 basehttp 35134 140561050756672 "GET /static/js/search_organism.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:37,766 basehttp 35134 140561432434240 "GET /static/js/create_childtable.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:37,779 basehttp 35134 140561432434240 "GET /static/js/destroy_childtable.js HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:37:37,780 basehttp 35134 140561414600256 "GET /static/js/childtable.js HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-06-10 19:38:46,244 autoreload 35134 140562183362368 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:38:47,361 autoreload 35548 140455521675072 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:39:03,223 basehttp 35548 140454788068928 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.request ERROR 2023-06-10 19:39:09,991 log 35548 140454788068928 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 117, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 58, in qs
+    parent = super().qs
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 68, in filter_all_fields
+    q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 46, in get_all_fields_q_object
+    elif isinstance(field, ManyToManyField):
+NameError: name 'ManyToManyField' is not defined
+django.server ERROR 2023-06-10 19:39:09,993 basehttp 35548 140454788068928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 127046
+django.request WARNING 2023-06-10 19:39:10,086 log 35548 140454788068928 Not Found: /favicon.ico
+django.server WARNING 2023-06-10 19:39:10,087 basehttp 35548 140454788068928 "GET /favicon.ico HTTP/1.1" 404 5399
+django.utils.autoreload INFO 2023-06-10 19:39:26,177 autoreload 35548 140455521675072 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:39:27,424 autoreload 35699 139886048769856 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 19:39:29,125 log 35699 139885315880512 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 117, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 58, in qs
+    parent = super().qs
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 69, in filter_all_fields
+    return queryset.filter(q_object)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1393, in build_filter
+    return self._add_q(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-06-10 19:39:29,142 basehttp 35699 139885315880512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 228265
+django.utils.autoreload INFO 2023-06-10 19:39:49,192 autoreload 35699 139886048769856 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:39:50,510 autoreload 35778 140460304070464 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:39:51,734 basehttp 35778 140459571672640 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.server INFO 2023-06-10 19:39:51,814 basehttp 35778 140459571672640 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-06-10 19:39:55,056 basehttp 35778 140459571672640 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 19:40:29,081 autoreload 35778 140460304070464 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:40:30,323 autoreload 35903 140466058147648 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 19:40:36,601 log 35903 140465325209152 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 119, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 60, in qs
+    parent = super().qs
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django_filters/filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 70, in filter_all_fields
+    q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 35, in get_all_fields_q_object
+    related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 45, in get_all_fields_q_object
+    related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 27, in get_all_fields_q_object
+    for field in model._meta.get_fields():
+AttributeError: 'NoneType' object has no attribute '_meta'
+django.server ERROR 2023-06-10 19:40:36,620 basehttp 35903 140465325209152 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 149390
+django.utils.autoreload INFO 2023-06-10 19:44:50,021 autoreload 35903 140466058147648 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:44:51,264 autoreload 36232 140201529427776 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:45:03,929 basehttp 36232 140200777864768 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.server INFO 2023-06-10 19:45:10,781 basehttp 36232 140200777864768 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:45:12,387 basehttp 36232 140200777864768 "GET /dorganism/organism/FG_0001 HTTP/1.1" 200 87978
+django.server INFO 2023-06-10 19:45:17,693 basehttp 36232 140200777864768 "GET /index/ HTTP/1.1" 200 22959
+django.server INFO 2023-06-10 19:45:19,777 basehttp 36232 140200777864768 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.server INFO 2023-06-10 19:45:33,317 basehttp 36232 140200777864768 "GET /dorganism/organism_card?reset=False&Search_all_fields=dtest&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38808
+django.server INFO 2023-06-10 19:45:45,354 basehttp 36232 140200777864768 "GET /dorganism/organism/FG_0001 HTTP/1.1" 200 87978
+django.server INFO 2023-06-10 19:45:55,209 basehttp 36232 140200777864768 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:46:08,419 basehttp 36232 140200777864768 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2es&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38814
+django.utils.autoreload INFO 2023-06-10 19:48:37,271 autoreload 36232 140201529427776 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:48:38,459 autoreload 36702 139950295820096 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:48:57,306 basehttp 36702 139949562132032 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 19:49:03,851 autoreload 36702 139950295820096 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:49:05,097 autoreload 36795 139718162614080 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:49:06,977 basehttp 36795 139717430474304 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 19:49:07,995 basehttp 36795 139717430474304 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:49:11,865 basehttp 36795 139717430474304 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 19:50:20,580 autoreload 36795 139718162614080 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:50:21,855 autoreload 36992 139969098876736 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:50:26,320 basehttp 36992 139968365196864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 19:50:27,290 basehttp 36992 139968365196864 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:50:30,435 basehttp 36992 139968365196864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 19:50:37,333 basehttp 36992 139968365196864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.utils.autoreload INFO 2023-06-10 19:50:48,542 autoreload 36992 139969098876736 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:50:49,778 autoreload 37116 140632468391744 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:50:54,315 basehttp 37116 140631735268928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.server INFO 2023-06-10 19:50:58,816 basehttp 37116 140631735268928 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:51:11,687 basehttp 37116 140631735268928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2es&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38814
+django.server INFO 2023-06-10 19:51:18,299 basehttp 37116 140631735268928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.server INFO 2023-06-10 19:51:35,751 basehttp 37116 140631735268928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 19:53:56,760 autoreload 37116 140632468391744 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:53:57,809 autoreload 37458 139793520133952 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:54:03,979 basehttp 37458 139792786388544 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:54:13,338 basehttp 37458 139792786388544 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.server INFO 2023-06-10 19:54:26,471 basehttp 37458 139792786388544 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 19:56:23,349 autoreload 37458 139793520133952 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:56:24,597 autoreload 37762 140462860715840 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:56:25,542 basehttp 37762 140462128100928 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:56:37,658 basehttp 37762 140462128100928 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 19:57:29,302 autoreload 37762 140462860715840 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:57:30,598 autoreload 37938 139906779318080 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:57:31,300 basehttp 37938 139906047276608 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:57:43,235 basehttp 37938 139906047276608 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 19:57:55,724 autoreload 37938 139906779318080 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:57:57,014 autoreload 38078 140602041292608 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:57:58,596 basehttp 38078 140601308739136 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:58:09,342 basehttp 38078 140601308739136 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 19:58:26,447 basehttp 38078 140601308739136 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 19:59:26,789 autoreload 38078 140602041292608 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 19:59:27,828 autoreload 38363 139790041921344 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 19:59:36,776 basehttp 38363 139789308261952 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 19:59:40,745 basehttp 38363 139789308261952 "GET /accounts/logout/ HTTP/1.1" 302 0
+django.server INFO 2023-06-10 19:59:40,755 basehttp 38363 139789308261952 "GET / HTTP/1.1" 200 11317
+django.server INFO 2023-06-10 19:59:46,113 basehttp 38363 139789308261952 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-10 19:59:46,160 basehttp 38363 139789308261952 "GET /index/ HTTP/1.1" 200 22959
+django.server INFO 2023-06-10 19:59:51,405 basehttp 38363 139789308261952 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.server INFO 2023-06-10 20:00:03,073 basehttp 38363 139789308261952 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 20:00:59,197 autoreload 38363 139790041921344 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:01:00,502 autoreload 38683 139830747395904 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:01:04,078 basehttp 38683 139830016079424 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 20:01:23,231 basehttp 38683 139830016079424 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.utils.autoreload INFO 2023-06-10 20:02:30,025 autoreload 38683 139830747395904 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:02:31,075 autoreload 38963 139865659676480 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-10 20:08:50,776 autoreload 38963 139865659676480 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:08:51,665 autoreload 39431 140713398605632 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-10 20:09:21,749 autoreload 39431 140713398605632 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:09:23,199 autoreload 39542 139756015458112 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:09:34,530 basehttp 39542 139755273578048 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 20:09:45,227 basehttp 39542 139755273578048 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 20:10:04,820 basehttp 39542 139755273578048 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.server INFO 2023-06-10 20:10:28,486 basehttp 39542 139755273578048 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.request ERROR 2023-06-10 20:10:36,253 log 39542 139755273578048 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:10:36,255 basehttp 39542 139755273578048 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 150589
+django.utils.autoreload INFO 2023-06-10 20:12:43,420 autoreload 39542 139756015458112 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:12:44,470 autoreload 40043 140240918755136 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 20:15:37,178 log 40043 140240186504768 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:15:37,196 basehttp 40043 140240186504768 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 150605
+django.utils.autoreload INFO 2023-06-10 20:17:14,023 autoreload 40043 140240918755136 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:17:15,046 autoreload 40466 139761873200960 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 20:17:23,531 log 40466 139761140364864 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 103, in get_queryset
+    for key, value in request.session.items():
+NameError: name 'request' is not defined
+django.server ERROR 2023-06-10 20:17:23,548 basehttp 40466 139761140364864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 101423
+django.request ERROR 2023-06-10 20:17:27,135 log 40466 139761140364864 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 103, in get_queryset
+    for key, value in request.session.items():
+NameError: name 'request' is not defined
+django.server ERROR 2023-06-10 20:17:27,137 basehttp 40466 139761140364864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 101609
+django.request ERROR 2023-06-10 20:17:28,005 log 40466 139761140364864 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 103, in get_queryset
+    for key, value in request.session.items():
+NameError: name 'request' is not defined
+django.server ERROR 2023-06-10 20:17:28,007 basehttp 40466 139761140364864 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 101587
+django.utils.autoreload INFO 2023-06-10 20:17:44,305 autoreload 40466 139761873200960 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:17:45,362 autoreload 40563 140097776813888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-10 20:18:02,013 autoreload 40563 140097776813888 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:18:03,322 autoreload 40679 140662330640192 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 20:18:04,577 log 40679 140661598713408 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 103, in get_queryset
+    for key, value in request.session.items():
+NameError: name 'request' is not defined
+django.server ERROR 2023-06-10 20:18:04,605 basehttp 40679 140661598713408 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 101119
+django.utils.autoreload INFO 2023-06-10 20:18:36,728 autoreload 40679 140662330640192 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:18:38,005 autoreload 40752 140385816168256 Watching for file changes with StatReloader
+django.request ERROR 2023-06-10 20:18:40,147 log 40752 140385081882176 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:18:40,165 basehttp 40752 140385081882176 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 150378
+django.request ERROR 2023-06-10 20:18:42,886 log 40752 140385081882176 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:18:42,888 basehttp 40752 140385081882176 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 150378
+django.request ERROR 2023-06-10 20:18:47,423 log 40752 140385081882176 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:18:47,424 basehttp 40752 140385081882176 "GET /dorganism/organism_card HTTP/1.1" 500 147470
+django.request ERROR 2023-06-10 20:18:57,734 log 40752 140385081882176 Internal Server Error: /dorganism/taxonomy_card
+Traceback (most recent call last):
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/wz/adjCOADD/apputil/utils/filters_base.py", line 116, in get_queryset
+    stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1307, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 426, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "/home/wz/anaconda3/envs/coadd_env/lib/python3.10/site-packages/django/db/models/lookups.py", line 270, in get_prep_lookup
+    for rhs_value in self.rhs:
+TypeError: 'NoneType' object is not iterable
+django.server ERROR 2023-06-10 20:18:57,736 basehttp 40752 140385081882176 "GET /dorganism/taxonomy_card HTTP/1.1" 500 147503
+django.utils.autoreload INFO 2023-06-10 20:21:14,715 autoreload 40752 140385816168256 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:21:15,841 autoreload 41043 140582017865536 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:21:24,117 basehttp 41043 140581285131840 "GET /index/ HTTP/1.1" 200 22959
+django.server INFO 2023-06-10 20:21:26,977 basehttp 41043 140581285131840 "GET /dorganism/organism_card HTTP/1.1" 200 41178
+django.utils.autoreload INFO 2023-06-10 20:22:10,305 autoreload 41043 140582017865536 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:22:11,378 autoreload 41217 139854714238784 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-10 20:22:16,970 autoreload 41217 139854714238784 /home/wz/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:22:18,160 autoreload 41248 139725879760704 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:22:20,714 basehttp 41248 139725145896512 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41329
+django.server INFO 2023-06-10 20:22:36,363 basehttp 41248 139725145896512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 20:22:51,125 basehttp 41248 139725145896512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 20:22:58,128 autoreload 41248 139725879760704 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:22:59,467 autoreload 41474 140495390279488 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:23:08,801 basehttp 41474 140494657025600 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 20:24:54,046 autoreload 41474 140495390279488 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:24:55,160 autoreload 41676 139819333977920 Watching for file changes with StatReloader
+django.server INFO 2023-06-10 20:25:01,672 basehttp 41676 139818600232512 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41317
+django.server INFO 2023-06-10 20:25:15,117 basehttp 41676 139818600232512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 41498
+django.server INFO 2023-06-10 20:25:27,953 basehttp 41676 139818600232512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.server INFO 2023-06-10 20:25:47,849 basehttp 41676 139818600232512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2ef&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 36117
+django.server INFO 2023-06-10 20:25:59,854 basehttp 41676 139818600232512 "GET /dorganism/organism_card?reset=False&Search_all_fields=test2e&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38811
+django.utils.autoreload INFO 2023-06-10 20:26:28,402 autoreload 41676 139819333977920 /home/wz/adjCOADD/apputil/clear_session_middleware.py changed, reloading.
+django.utils.autoreload INFO 2023-06-10 20:26:29,547 autoreload 42057 140056934864704 Watching for file changes with StatReloader
