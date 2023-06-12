@@ -115,17 +115,6 @@ class Batch_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(Batch_form, self).__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
-        
-      
-              
-    # def clean_organism_id(self):       
-    #     data=self.cleaned_data['organism_id']
-    #     try:
-    #         data=get_object_or_404(Organism, organism_id=self.organism_id_str)#self.organism_name
-    #     except Exception as err:
-    #         print(err)
-    #     return data
-    
     
 
     class Meta:
@@ -261,7 +250,6 @@ class Taxonomyfilter(Filterbase):
         self.filters['division'].label='Division'
         self.filters['org_class'].label='Class'
         self.filters['tax_id'].label='Tax ID'
-        # print(Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
 
     class Meta:
         model=Taxonomy

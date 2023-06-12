@@ -85,15 +85,12 @@ class SimpleupdateView(LoginRequiredMixin, View):
             object_=self.get_object(pk)
         form =self.form_class(request.POST, instance=object_)
         if form.is_valid():
-            print("form is valid")
             with transaction.atomic():
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
-                print("form validaed")
                 object_new.save(**kwargs)
             return redirect(request.META['HTTP_REFERER'])
         else:
-            print("form is not valid")
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
@@ -136,7 +133,6 @@ class HtmxupdateView(LoginRequiredMixin, View):
                 object_new.save(**kwargs)                
             return render(request, self.template_partial, context)
         else:
-            print("form is not valid")
             messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
@@ -156,13 +152,11 @@ class DataExportBaseView(LoginRequiredMixin, View):
 
         try:
             Model = apps.get_model(app_name, model_name)
-            print(Model)
         except LookupError:
             # Handle the case where the model does not exist.
             return HttpResponse("Model not found.")
 
         selected_pks_string = request.POST.get('selected_pks')
-        print('selected_pks_string:', selected_pks_string)
         if selected_pks_string == 'SelectAll':
             items = Model.objects.all()
         elif selected_pks_string:
@@ -184,7 +178,6 @@ class DataExportBaseView(LoginRequiredMixin, View):
         current_date = datetime.now().strftime('%Y-%m-%d')
         filename = f'{model_name}_{current_date}'
         response = HttpResponse("No valid export option was selected.")
-        print(request.POST)
         if "csvdownload" in request.POST:
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
@@ -214,9 +207,7 @@ class CreateFileView(LoginRequiredMixin,FormView):
     def post(self, request, *args, **kwargs):
         # Handle AJAX file upload
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            print(self.file_field)
             file_data = request.FILES.get(self.file_field)
-            print(file_data)
             if file_data:
                 file_path = default_storage.save(file_data.name, file_data)
                 file_name = os.path.basename(file_path)
@@ -237,7 +228,6 @@ class CreateFileView(LoginRequiredMixin,FormView):
            
             kwargs={'user': self.request.user}
             instance.save(**kwargs)
-            print(f'saved:{getattr(instance, self.file_field)}')
             getattr(self.object_, self.related_name).add(instance)
             self.object_.save(**kwargs)
         else:

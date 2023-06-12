@@ -104,11 +104,9 @@ def createOrganism(req):
                     instance.save(**kwargs)
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
-                    print("error")
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 
@@ -198,7 +196,6 @@ def updateOrganism(req, pk):
                     messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
-            print("something wrong with many to many")
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
@@ -251,7 +248,6 @@ def createBatch(req, organism_id):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
@@ -283,7 +279,6 @@ def stockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
-        print(f'bactch id {batch_id}')
         object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
         qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1) # n_left show when bigger or equal to 2
         data=[]
@@ -311,12 +306,10 @@ def stockList(req, pk):
 def createStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
-    print(f'createstock {orgbatch_id}')
     form=Stock_createform() #Stock_createform(initial={"orgbatch_id":orgbatch_id},)
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
-            print(f'orgbatch_id {orgbatch_id}')
             orgbatch_id=orgbatch_id
             stock_type=req.POST.get("stock_type")
             stock_date=req.POST.get("stock_date")
@@ -330,7 +323,6 @@ def createStock(req, orgbatch_id):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    print("stock saved")
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -368,10 +360,8 @@ def updateStock(req, pk):
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
-                        print('formerror')
                         print(f'form erroro is {form.errors} and error {err}')
             except Exception as err:
-                print("error")
                 messages.warning(req, f'Update failed due to {err} error')
                 return redirect(req.META['HTTP_REFERER'])
     context={
@@ -415,7 +405,6 @@ def createCulture(req, organism_id):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'something wrong...{form.errors}')
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
@@ -431,11 +420,9 @@ class CultureUpdateView(HtmxupdateView):
 def deleteCulture(req, pk):
     kwargs={}
     kwargs['user']=req.user
-    print(f'cultureID {pk}')
     object_=get_object_or_404(Organism_Culture, pk=pk)
     try:
         object_.delete(**kwargs)
-        print("delete")
     except Exception as err:
         print(err)
     return redirect(req.META['HTTP_REFERER'])  

@@ -1,0 +1,266 @@
+django.utils.autoreload INFO 2023-06-12 12:04:10,548 autoreload 12671 140233865086784 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-12 12:04:46,587 autoreload 12771 139861340956480 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:04:48,540 basehttp 12771 139860526827072 "GET / HTTP/1.1" 200 11317
+django.server INFO 2023-06-12 12:04:48,581 basehttp 12771 139860526827072 "GET /static/css/overideboot.css HTTP/1.1" 304 0
+django.server INFO 2023-06-12 12:04:48,582 basehttp 12771 139860518434368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-12 12:04:48,586 basehttp 12771 139860442609216 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-06-12 12:04:52,852 basehttp 12771 139860442609216 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-12 12:04:53,020 basehttp 12771 139860442609216 "GET /index/ HTTP/1.1" 200 22986
+django.server INFO 2023-06-12 12:04:54,617 basehttp 12771 139860442609216 "GET /dorganism/organism_card HTTP/1.1" 200 176601
+django.request ERROR 2023-06-12 12:04:57,427 log 12771 139860442609216 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: operator does not exist: character varying % unknown
+LINE 1: ...MB_0002', 'MB_0003') AND ("app_user"."first_name" % 'coli' O...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 135, in get_queryset
+    self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 412, in __bool__
+    self._fetch_all()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 285, in __iter__
+    for row in compiler.results_iter(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1511, in results_iter
+    results = self.execute_sql(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: operator does not exist: character varying % unknown
+LINE 1: ...MB_0002', 'MB_0003') AND ("app_user"."first_name" % 'coli' O...
+                                                             ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+django.server ERROR 2023-06-12 12:04:57,429 basehttp 12771 139860442609216 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 261987
+django.server INFO 2023-06-12 12:05:05,447 basehttp 12771 139860442609216 "GET /index/ HTTP/1.1" 200 22986
+django.utils.autoreload INFO 2023-06-12 12:05:22,939 autoreload 12771 139861340956480 /home/test/projects/adjCOADD/adjcoadd/settings.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:05:23,773 autoreload 12899 139642350589760 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:05:27,814 basehttp 12899 139641535923776 "GET /index/ HTTP/1.1" 200 22986
+django.server INFO 2023-06-12 12:05:29,172 basehttp 12899 139641535923776 "GET /dorganism/organism_card HTTP/1.1" 200 176601
+django.server INFO 2023-06-12 12:05:34,985 basehttp 12899 139641535923776 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38440
+django.server INFO 2023-06-12 12:14:03,866 basehttp 12899 139641535923776 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38440
+django.server INFO 2023-06-12 12:19:07,957 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38440
+django.server INFO 2023-06-12 12:24:11,881 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38440
+django.server INFO 2023-06-12 12:28:40,989 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=+coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38443
+django.server INFO 2023-06-12 12:28:46,923 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:28:50,929 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=coli&Strain=&Notes=&MTA= HTTP/1.1" 200 38427
+django.server INFO 2023-06-12 12:28:54,571 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:28:56,671 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=GN&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 178341
+django.server INFO 2023-06-12 12:31:40,613 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:31:46,424 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=eri&Strain=&Notes=&MTA= HTTP/1.1" 200 38424
+django.server INFO 2023-06-12 12:31:53,649 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:31:57,290 basehttp 12899 139641527531072 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=g&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 38416
+django.utils.autoreload INFO 2023-06-12 12:32:44,578 autoreload 12899 139642350589760 /home/test/projects/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:32:45,481 autoreload 13373 140334338860864 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:32:47,684 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:32:51,563 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=False&Search_all_fields=&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=coli&Strain=&Notes=&MTA= HTTP/1.1" 200 178128
+django.server INFO 2023-06-12 12:33:00,133 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=False&Search_all_fields=coli&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=coli&Strain=&Notes=&MTA= HTTP/1.1" 200 38495
+django.server INFO 2023-06-12 12:35:27,436 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:36:37,060 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:36:49,292 basehttp 13373 140333525829184 "GET /dorganism/organism_card?reset=False&Search_all_fields=Can&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 176467
+django.utils.autoreload INFO 2023-06-12 12:37:33,051 autoreload 13373 140334338860864 /home/test/projects/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:37:33,918 autoreload 14057 139953063307072 Watching for file changes with StatReloader
+django.request ERROR 2023-06-12 12:37:39,507 log 14057 139952247866944 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 134, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+                            ^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 61, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 73, in filter_all_fields
+    return queryset.filter(q_object)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1502, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1533, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1361, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1533, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1448, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1269, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1313, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup ''icontains'' for CharField or join on the field not permitted, perhaps you meant icontains or contains?
+django.server ERROR 2023-06-12 12:37:39,508 basehttp 14057 139952247866944 "GET /dorganism/organism_card?reset=False&Search_all_fields=Can&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 234286
+django.request ERROR 2023-06-12 12:37:42,203 log 14057 139952247866944 Internal Server Error: /dorganism/organism_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 134, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat=True)
+                            ^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 61, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django_filters/filters.py", line 807, in __call__
+    return self.method(qs, self.f.field_name, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/filters_base.py", line 73, in filter_all_fields
+    return queryset.filter(q_object)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1502, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1533, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1361, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1533, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1448, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1269, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1313, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup ''icontains'' for CharField or join on the field not permitted, perhaps you meant icontains or contains?
+django.server ERROR 2023-06-12 12:37:42,204 basehttp 14057 139952247866944 "GET /dorganism/organism_card?reset=True&Search_all_fields=Can&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 500 232349
+django.utils.autoreload INFO 2023-06-12 12:38:12,383 autoreload 14057 139953063307072 /home/test/projects/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:38:13,226 autoreload 14152 140457058056000 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:38:21,388 basehttp 14152 140456167994944 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:38:32,693 basehttp 14152 140456167994944 "GET /dorganism/organism_card?reset=False&Search_all_fields=Can&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 176467
+django.utils.autoreload INFO 2023-06-12 12:38:50,729 autoreload 14152 140457058056000 /home/test/projects/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:38:51,443 autoreload 14262 140300688127808 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:39:00,240 basehttp 14262 140299874928192 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:39:11,761 basehttp 14262 140299874928192 "GET /dorganism/organism_card?reset=False&Search_all_fields=Can&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 176467
+django.utils.autoreload INFO 2023-06-12 12:40:43,775 autoreload 14262 140300688127808 /home/test/projects/adjCOADD/apputil/utils/filters_base.py changed, reloading.
+django.utils.autoreload INFO 2023-06-12 12:40:44,507 autoreload 14397 140512607401792 Watching for file changes with StatReloader
+django.server INFO 2023-06-12 12:40:49,233 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:40:58,670 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=False&Search_all_fields=06&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 176998
+django.server INFO 2023-06-12 12:41:09,750 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:49:06,524 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:54:07,447 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 12:59:08,455 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:04:09,432 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:09:10,485 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:14:11,511 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:19:12,507 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:24:13,521 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:29:14,518 basehttp 14397 140511792137792 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:34:15,550 basehttp 14397 140511783745088 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.server INFO 2023-06-12 13:39:16,549 basehttp 14397 140511783745088 "GET /dorganism/organism_card?reset=True&Search_all_fields=&paginate_by=50&order_by=&substructure=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 177296
+django.utils.autoreload INFO 2023-06-12 13:53:30,021 autoreload 16716 140000579602240 Watching for file changes with StatReloader

@@ -1,5 +1,6 @@
 import django_filters
 from django import forms
+from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -125,7 +126,18 @@ class Sequencefilter(Filterbase):
 class FastQCfilter(Filterbase):
     class Meta:
         model=WGS_FastQC
-        fields=list(model.HEADER_FIELDS.keys())#[ 'Run_Id']
+        fields=list(model.HEADER_FIELDS.keys())
+        # class Meta:
+        # model=None
+        # filter_overrides = {
+        #      models.CharField: {
+        #          'filter_class': django_filters.CharFilter,
+        #          'extra': lambda f: {
+        #              'lookup_expr': 'icontains',
+        #          },
+        #      },}
+        
+        #[ 'Run_Id']
 
 # WGS_CheckMfilter forms
 class CheckMfilter(Filterbase):

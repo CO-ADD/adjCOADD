@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Local'
+DEVELOPMENT='Work'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -159,7 +159,7 @@ DATABASES = {
     },
     'dorganism': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dorganism,apputil', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': database_name,
         'USER': database_user, 
         'PASSWORD':database_password,

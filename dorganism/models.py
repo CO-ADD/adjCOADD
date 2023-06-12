@@ -249,7 +249,6 @@ class Organism(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        #print(f"[save_Organism] ..")
         if not self.organism_id: 
             self.organism_id = self.find_Next_OrganismID(str(self.organism_name.org_class.dict_value))
             if self.organism_id: 
