@@ -159,9 +159,40 @@ class MIC_COADDfilter(Filterbase):
 
 class MIC_Pubfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+    def filter_all_fields(self, queryset, name, value):
+        print("start all...")
+        if value:
+            # print(f"filtr fields is {self._meta.model._meta.fields})")
+            fields=[f.name for f in self._meta.model._meta.fields]
+            print(fields)
+            value=value         
+            similarity = Greatest(
+                TrigramSimilarity('organism_id', value),
+                TrigramSimilarity('drug_id__drug_name', value),
+                TrigramSimilarity('mic', value),
+                TrigramSimilarity('mic_unit', value),
+                TrigramSimilarity('zone_diameter', value),
+                TrigramSimilarity('mic_type__dict_value', value),
+                TrigramSimilarity('source', value),
+                TrigramSimilarity('bp_profile', value),
+                TrigramSimilarity('bp_source', value),
+
+               )
+            queryset=queryset.annotate(similarity=similarity)#(similarity=TrigramSimilarity('drug_id__drug_name', value),)
+
+            return queryset.filter(similarity__gt=0.1)#(q_object)
+        return queryset
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['drug_id__drug_name'].label='Drug Name'
+        self.filters['organism_id__gen_property'].label='Gen Property'
+        self.filters['mic'].label='MIC'
+
     class Meta:
         model=MIC_Pub
-        fields=['mic']
+        fields=["drug_id__drug_name", "organism_id__gen_property", "mic"]
+
 
 class Breakpointfilter(Filterbase):
     # mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
