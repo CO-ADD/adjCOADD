@@ -128,11 +128,23 @@ class MIC_COADDfilter(Filterbase):
                 TrigramSimilarity('drug_id__drug_name', value),
                 TrigramSimilarity('mic', value),
                 TrigramSimilarity('orgbatch_id', value),
+                TrigramSimilarity('mic_unit', value),
+                TrigramSimilarity('mic_type__dict_value', value),
+                TrigramSimilarity('bp_profile', value),
+                TrigramSimilarity('bp_source', value),
+                TrigramSimilarity('run_id', value),
+                TrigramSimilarity('testplate_id', value),
+                TrigramSimilarity('testwell_id', value),
+                TrigramSimilarity('plate_size__dict_value', value),
+                TrigramSimilarity('plate_material__dict_value', value),
+                TrigramSimilarity('media', value),
+                TrigramSimilarity('dye', value),
+
 
                )
             queryset=queryset.annotate(similarity=similarity)#(similarity=TrigramSimilarity('drug_id__drug_name', value),)
 
-            return queryset.filter(similarity__gt=0.3)#(q_object)
+            return queryset.filter(similarity__gt=0.1)#(q_object)
         return queryset
     
     def __init__(self, *args, **kwargs):
