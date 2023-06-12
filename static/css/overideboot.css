@@ -184,7 +184,7 @@ strong,
 
 .text-info,
 .text-info a {
-  color: #6a8bf8 !important;
+  color: teal !important;
 }
 
 .text-info:hover,
@@ -506,4 +506,14 @@ body {
 }
 #v-pills-tab .nav-link:hover{
   background-color:#556eec !important; ;
+}
+
+.accordion-button{
+  background-color: teal !important;
+  color: #bdcaca  !important;
+}
+
+.accordion-button:not(.collapsed){
+  background-color: #bdcaca !important;
+  color: teal !important;
 }
