@@ -126,7 +126,7 @@ def main():
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder}") 
             dVitek.update_VitekCards(VitekFolder=prgArgs.vitekfolder,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
         if prgArgs.vitekfile:
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfile}") 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile}") 
             dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
     elif prgArgs.table == 'MICPub':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 

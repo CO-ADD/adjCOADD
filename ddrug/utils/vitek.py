@@ -221,7 +221,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
         nPage = 0
         df = {}
         for page in pdf.pages:
-            #print(df)
+            #print('DEBUG:',df)
             df['DirName'] = DirName
             df['FileName'] = PdfName
             if_IsolateData = False
@@ -279,9 +279,9 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                     prevRow1 = ""
                     prevRow4 = ""
                     for row in table:
-                        #print(row)
+                        #print('DEBUG:',row)
                         if row[0]:
-                            col1 = row[0].replace("\n", "")
+                            col1 = row[0].replace("\n", " ")
                         else:
                             col1 = prev_col1
                             prev_col1 = ''

@@ -7,21 +7,26 @@
    django> sh Miniconda3-latest-Linux-x86_64.sh 
       /opt/django/conda
 
-### Production - Setting Environment - dj42py311
+### Production [lnx] CentOS 7.- Setting Environment - dj42py311
 
 - (base) django> conda update -n base -c defaults conda
 
 - (base) django> conda create -n dj42py311 django django-rdkit
-   creates base enviroment with django 4.2.1, python 3.11.3
+   creates base enviroment with django 4.2.2, python 3.11.3
 
 - (base) django> conda activate <b>dj42py311</b>
 
 - (dj42py311) django> <b>conda</b> install ..
-   django-filter django-pandas djangorestframework python-ldap psycopg2 request
-   pdfplumber openpyxl python-magic ipython CairoSVG
+   django-filter django-pandas psycopg2 python-ldap requests djangorestframework 
+   pdfplumber python-magic openpyxl  ipython CairoSVG
    rdkit -c rdkit
    gunicorn
 
+   [win] django-filter django-pandas psycopg2 requests djangorestframework 
+   [win] openpyxl ipython CairoSVG
+   [win] rdkit -c rdkit  
+    conda install libpython m2w64-toolchain 
+   [win for import data] cx_oracle mysql-connector-python scipy [for zLib]
 
 - (dj42py311) django> <b>pip</b> install ..
    django-model-utils django-sequences django-formtools
@@ -29,7 +34,54 @@
    djangorestframework-simplejwt
    clamd
 
+   [win] django-model-utils django-sequences django-formtools
+   [win] djangorestframework-simplejwt
+   [win] python-magic pdfplumber
 
+   [win] get python_ldap-3.4.3-cp311-cp311-win_amd64.whl from https://github.com/cgohlke/python-ldap-build/releases
+   [win] pip install ldap-3.4.3-cp311-cp311-win_amd64.whl
+   [win] django-auth-ldap 
+
+
+   [win for import data] synergy [for zLib]
+### Development Local [win] Win10 .- Setting Environment - dj42py311
+
+- (base) > conda update -n base -c defaults conda
+
+- (base) > conda create -n dj42py311 django django-rdkit
+   creates base enviroment with django 4.2.2, python 3.11.3
+
+- (base) > conda activate <b>dj42py311</b>
+
+- (dj42py311) > <b>conda</b> install ..
+   django-filter django-pandas psycopg2 requests djangorestframework 
+   openpyxl ipython CairoSVG
+   rdkit -c rdkit  
+   (libpython m2w64-toolchain) - not sure if needed 
+
+
+- (dj42py311) > <b>pip</b> install ..
+   django-model-utils django-sequences django-formtools
+   djangorestframework-simplejwt
+   python-magic pdfplumber
+
+- (dj42py311) > <b>pip</b> install django-auth-ldap
+   installed VC Build Tools from https://visualstudio.microsoft.com/visual-cpp-build-tools/ 
+      Visual C++ build tools 
+      To avoid: Pip error: Microsoft Visual C++ 14.0 is required
+
+   from https://stackoverflow.com/questions/15070063/installing-python-ldap-in-a-virtualenv-on-windows/58235938#58235938
+   get python_ldap-3.4.3-cp311-cp311-win_amd64.whl from https://github.com/cgohlke/python-ldap-build/releases
+      for py311 on bit (AMD64)
+
+      (dj42py311) > python -c 'import sys; print(sys.version)'
+      3.11.3 | packaged by conda-forge | (main, Apr  6 2023, 08:50:54) [MSC v.1934 64 bit (AMD64)]
+
+   pip install ldap-3.4.3-cp311-cp311-win_amd64.whl
+
+   pip install django-auth-ldap 
+
+   or try https://github.com/etianen/django-python3-ldap
 
 This document includes two parts: Developing and Using the Application
 
