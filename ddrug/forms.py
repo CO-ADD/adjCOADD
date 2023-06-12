@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.postgres.forms import SimpleArrayField
 from django.shortcuts import get_object_or_404
 
+from django.contrib.postgres.search import TrigramSimilarity
+from django.db.models.functions import Greatest
+
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import Filterbase
 from .models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
@@ -113,9 +116,34 @@ class VitekID_filter(Filterbase):
 
 class MIC_COADDfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+
+    def filter_all_fields(self, queryset, name, value):
+        print("start all...")
+        if value:
+            # print(f"filtr fields is {self._meta.model._meta.fields})")
+            fields=[f.name for f in self._meta.model._meta.fields]
+            print(fields)
+            value=value         
+            similarity = Greatest(
+                TrigramSimilarity('drug_id__drug_name', value),
+                TrigramSimilarity('mic', value),
+                TrigramSimilarity('orgbatch_id', value),
+
+               )
+            queryset=queryset.annotate(similarity=similarity)#(similarity=TrigramSimilarity('drug_id__drug_name', value),)
+
+            return queryset.filter(similarity__gt=0.3)#(q_object)
+        return queryset
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['drug_id__drug_name'].label='Drug Name'
+        self.filters['orgbatch_id__organism_id__gen_property'].label='Gen Property'
+        self.filters['mic'].label='MIC'
+
     class Meta:
         model=MIC_COADD
-        fields=['mic']
+        fields=["drug_id__drug_name", "orgbatch_id__organism_id__gen_property", "mic"]
 
 class MIC_Pubfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")

@@ -11,7 +11,8 @@ from django.db.models import CharField, Value
 from django.db.models.functions import Cast
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.expressions import RawSQL
-
+from django.contrib.postgres.search import TrigramSimilarity
+from django.db.models.functions import Greatest
 # -- create a function for search all fields--
 
 class LowerAny(Func):
@@ -26,22 +27,28 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
     exclude_fields = exclude_fields or []
 
     for field in model._meta.get_fields():
+        
         if field.name in exclude_fields:
             continue
         lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name
+        # print(field.name)
+        # print(lookup_field_name)
         
         if isinstance(field, (CharField, TextField)):
             q_object |= Q(**{f"{lookup_field_name}__icontains": search_value})
+        
         elif isinstance(field, ForeignKey):
             related_model = field.related_model
             related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
             q_object |= related_q_object
+
         elif isinstance(field, IntegerField):
             try:
                 int_value = int(search_value)
                 q_object |= Q(**{lookup_field_name: int_value})
             except ValueError:
                 pass
+        
         elif isinstance(field, ArrayField):
             q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})
         
@@ -68,7 +75,6 @@ class Filterbase(django_filters.FilterSet):
     
     def filter_all_fields(self, queryset, name, value):
         if value:
-            print(f"value is {value}")
             exclude_fields = ['password',]
             q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
