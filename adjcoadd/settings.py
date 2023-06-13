@@ -17,7 +17,7 @@ DEVELOPMENT='Work'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
+
 work_path = '/opt/django/var/uploads/'
 MEDIA_ROOT= work_path if os.path.exists(work_path) else os.path.join(BASE_DIR.parent, 'uploads') 
 MEDIA_URL = ('uploads/')
@@ -30,7 +30,6 @@ if DEVELOPMENT=="Local":
 else:
     Base_dir = Path(__file__).resolve().parent.parent.parent
     STRUCTURE_FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
-    # structure_file_path=os.path.join(FILES_DIR, f"{file_name}.svg")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/

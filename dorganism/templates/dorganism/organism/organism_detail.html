@@ -26,11 +26,11 @@
               {% include 'dorganism/organism/organism_u.html' %}
               {% include 'dorganism/organism/organism_image.html' %}
 
-               <br>
-               <hr>
+              <br>
+              <hr>
               <!-- prettier-ignore -->
               {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
-            <!--  -->
+              <!--  -->
             </div>
           </div>
         </div>
@@ -39,63 +39,64 @@
     </div>
 
 
-  <div class="d-flex m-0 p-0">  
+    <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
       {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
-    <div class="accordion bg-transparent w-100" id="organism-batch-detail">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            Batch and Stock
-            <!-- prettier-ignore -->
-            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
-          </button>
-        </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
-          data-bs-parent="#organism-batch-detail">
-          <div class="accordion-body">
-            <div class="table-responsive">
+      <div class="accordion bg-transparent w-100" id="organism-batch-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              Batch and Stock
               <!-- prettier-ignore -->
-              {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+            data-bs-parent="#organism-batch-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="d-flex m-0 p-0">
-    <!-- prettier-ignore -->
-    {% include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
-    <div class="accordion w-100" id="organism-culture-detail">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingThree">
-          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-            data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-            Culture
-            <!-- prettier-ignore -->
-            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
-          </button>
-        </h2>
-        <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
-          data-bs-parent="#organism-culture-detail">
-          <div class="accordion-body">
-            <div class="table-responsive">
+    <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+      {% include 'utils/lefticons.html' with title="createCulture" modal="createCultureModal" %}
+      <div class="accordion w-100" id="organism-culture-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+              Culture
               <!-- prettier-ignore -->
-              {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree"
+            data-bs-parent="#organism-culture-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+    <!-- MIC_COADD Pivot -->
+    {%include './organism_mic.html'%}
+
+    <div style="min-height: 100px;"></div>
   </div>
-
-
-  <!-- MIC_COADD Pivot -->
-  {%include './organism_mic.html'%}
-
-  <div style="min-height: 100px;"></div>
 
   <script>
     $(document).ready(function () {
@@ -104,9 +105,9 @@
       console.log(url_culture);
       loadModal("#createCultureModal", "#createCulture", url_culture);
       loadModal("#createBatchModal", "#createBatch", url_batch);
- 
+
 
     });
   </script>
+  {%endblock%}
 </div>
-{%endblock%}
