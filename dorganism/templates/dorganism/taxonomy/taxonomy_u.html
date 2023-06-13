@@ -1,14 +1,8 @@
-
-
-<form
-  id="TaxonomyUpdateForm"
-  method="POST"
-   action="{%url 'taxonomy_update' object.urlname %}"
->
+<form id="TaxonomyUpdateForm" method="POST" action="{%url 'taxonomy_update' object.urlname %}">
   {% csrf_token %}
 
-  <div class="row">
-    <div class="col-md-4">
+  <div class="d-flex flex-wrap">
+    <div class="col-md-6 px-2 m-auto">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <!--prettier-ignore-->
@@ -18,30 +12,31 @@
               {{object.pk}}
               <div class="not-visible"></div>
             </td>
-       
-              
+
+
           </tr>
-           <!--prettier-ignore-->
-           {% for field in form %}
-           <tr>
-           <!--prettier-ignore-->
-           {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
-           <!--prettier-ignore-->
-     
-           </tr>
-           {%endfor%}
-          </tbody>
+          <!--prettier-ignore-->
+          {% for field in form %}
+          <tr>
+            <!--prettier-ignore-->
+            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            <!--prettier-ignore-->
+
+          </tr>
+          {%endfor%}
+        </tbody>
       </table>
-     
-   
-   
+
+
+
       <div class="col-md-3 updateformshow not-visible">
         <div class="d-flex justify-content-evenly align-baseline ">
           {%include 'utils/miscellaneous/save_btn.html'%}
           <!--  -->
           {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
-          
+
         </div>
+      </div>
     </div>
   </div>
 </form>
