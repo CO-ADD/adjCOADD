@@ -99,9 +99,13 @@
 
     <div style="min-height: 100px;"></div>
   </div>
-  
-  {%load static%}
-  <script src="{%static 'js/ajax_simpleupload.js'%}"></script>
+
+
+  <!-- MIC_COADD Pivot -->
+  {%include './organism_mic.html'%}
+
+  <div style="min-height: 100px;"></div>
+ </div>
   <script>
     $(document).ready(function () {
       let url_batch = `{% url 'batch_create' object.pk %}`;
