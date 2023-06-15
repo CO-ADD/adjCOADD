@@ -1,0 +1,70 @@
+<div class="accordion bg-transparent w-100 m-auto" id="accordion_file">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_file">
+            <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse_file" aria-expanded="true" aria-controls="collapse_file">
+                <h5 class="fs-6 my-0">
+                    {{object.pk}} Files
+                </h5>
+            </button>
+        </h2>
+        <div id="collapse_file" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_file"
+            data-bs-parent="#accordion_file">
+            <div class="accordion-body bg-transparent d-flex flex-wrap">
+                <div class="d-flex flex-wrap">
+
+                    <!-- display file -->
+                    {%for file in object.assoc_documents.all %}
+                    {% if file.astatus >= 0 %}
+                    <div class="m-3 border border-2 border-dark" style="width:18em; height: 18em;">
+                        <!-- File name and download -->
+                            <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle>
+                                {{file}}
+                            </a>
+                      
+                        <p class="m-auto">Type: {{ file.doc_type }}</p>
+                        <p class="m-auto">Source: {{ file.doc_source }}</p>   
+
+                        <!-- Delete File -->
+
+                        {% if user.permission == 'Admin' %}
+                        <a class="btn-sm btn-outline-secondary mb-1" data-bs-toggle="modal"
+                            data-bs-target="#assoc_file_del{{file.pk}}" data-bs-toggle="tooltip"
+                            data-bs-placement="right" title="Click to delete">
+                            <i class="fa-regular fa-trash-can text-danger fs-6"></i>
+                        </a>
+                        {% else %}
+                        <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
+                            title="No Permission To Delete">
+                            <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
+                        </a>
+                        {% endif %}
+
+                        <!--Delete  Modal -->
+                        <div class="modal fade" id="assoc_file_del{{file.pk}}" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <!--prettier-ignore-->
+                                {% url 'org_img_delete' pk=image.pk as deleteurl %}
+                                {% include 'utils/modal/delete.html' with title='Delete Image' deleteurl=deleteurl entry=image %}
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+
+                    {% endfor %}
+                    <div>
+                        <!-- Here create new file -->
+                        {%url 'adddoc' pk=object.pk as addurl_doc %}
+                        {%include 'utils/modal/simpleupload.html' with title='Add_document' form=doc_form addurl=addurl_doc %}
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

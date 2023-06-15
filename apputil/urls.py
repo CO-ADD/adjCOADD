@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView, 
+from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView,  AppUserDetailView,
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
     DataExportView, Importhandler_apputils,  deleteImage, CreateimageView, CreatedocumentView)
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('user_create/', AppUserCreateView.as_view(), name="createAppUser"),
     path('user_update/<str:pk>', ApplicationUserUpdateView.as_view(), name="updateAppUser"),
     path('user_delete/<str:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
+    path('user_profile/<str:pk>', AppUserDetailView.as_view(), name='userprofile' ),
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
     path('dict_create/', DictionaryCreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),

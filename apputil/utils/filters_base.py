@@ -22,25 +22,28 @@ class LowerAny(Func):
     def __init__(self, search_value, array_field, **extra):
         super().__init__(Value(search_value), array_field, **extra)
 
-def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None):
+def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None, submodel=False):
     q_object = Q()
     exclude_fields = exclude_fields or []
-
-    for field in model._meta.get_fields():
+    searchfields=[]
+    if submodel:
+        searchfields.append(model._meta.pk)
+    else:
+        searchfields=[field for field in model._meta.get_fields()]
+    for field in searchfields:
         
         if field.name in exclude_fields:
             continue
         lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name
-        # print(field.name)
-        # print(lookup_field_name)
-        
+    
         if isinstance(field, (CharField, TextField)):
             q_object |= Q(**{f"{lookup_field_name}__icontains": search_value})
         
         elif isinstance(field, ForeignKey):
             related_model = field.related_model
-            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name, submodel=True)
             q_object |= related_q_object
+            # model.lookup_field_name
 
         elif isinstance(field, IntegerField):
             try:
@@ -54,7 +57,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
         
         elif isinstance(field, ManyToManyField):
             related_model = field.related_model
-            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name, submodel=True)
             q_object |= related_q_object
         # # Add more field types as needed...
 

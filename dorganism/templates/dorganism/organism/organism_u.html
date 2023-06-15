@@ -1,56 +1,36 @@
 <form id="OrganismUpdateForm" method="POST" action="{%url 'organism_update' object.pk %}">
   {% csrf_token %}
-  <div class="d-flex flex-wrap">
-    <div class="col-md-3 px-2">
-      <input type="text" id="taxo-name" name="search_organism" style="display: none" />
-      <table class="table table-hover table-sm align-middle table-bordered">
-        <tbody>
-          <tr>
-            <th scope="row" class="">Organism Name</th>
-            <td class="editable" data-id="{{object.pk}}" data-type="organism_name">
-              <div class="detail">
-                <a href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a>
-              </div>
-              <div class="input-group select">
-                {% include 'utils/search_organism.html' %}
-              </div>
-            </td>
-          </tr>
-          <!--prettier-ignore-->
-          {% for field in form.group1 %}
-          <tr>
-          <!--prettier-ignore-->
-          {%include 'utils/row_editabletable.html' with form_label=field.label data_type=field.label form_field=field %}
-          <!--prettier-ignore-->
-          </tr>
-          {%endfor%}
-          <tr>
-            <th>
-                 Assoc Files 
-                 <div class="">
-                  {%url 'adddoc' pk=object.pk as addurl_doc %}
-                  {%include 'utils/modal/simpleupload.html' with title='Add_document' form=doc_form addurl=addurl_doc %}
+  <div class="row gx-2">
+    <div class="col-md-3 ps-2">
 
-              </div>
-            </th>
-            <td>
-              <ul>
-
-                {%for file in object.assoc_documents.all %}
-                
-                <li>
-
-                  <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle>{{file}}</a>
-                </li>
-                
-                {%endfor%}
-              </ul>
+        <input type="text" id="taxo-name" name="search_organism" style="display: none" />
+        <table class="table table-hover table-sm align-middle table-bordered">
+          <tbody>
+            <tr>
+              <th scope="row" class="">Organism Name</th>
+              <td class="editable" data-id="{{object.pk}}" data-type="organism_name">
+                <div class="detail">
+                  <a href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a>
+                </div>
+                <div class="input-group select">
+                  {% include 'utils/search_organism.html' %}
+                </div>
               </td>
-          </tr>
-           </tbody>
+            </tr>
+            <!--prettier-ignore-->
+            {% for field in form.group1 %}
+            <tr>
+              <!--prettier-ignore-->
+              {%include 'utils/row_editabletable.html' with form_label=field.label data_type=field.label form_field=field %}
+              <!--prettier-ignore-->
+            </tr>
+            {%endfor%}
+           
+        </tbody>
       </table>
     </div>
-    <div class="col-md-3 px-2">
+    
+    <div class="col-md-3 ps-2">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
              <!--prettier-ignore-->
@@ -64,7 +44,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-3 px-2">
+    <div class="col-md-3 ps-2">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <!--prettier-ignore-->
@@ -78,7 +58,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-3 px-2">
+    <div class="col-md-3 ps-2">
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           <!--prettier-ignore-->

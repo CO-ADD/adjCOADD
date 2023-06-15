@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Trirong&display=swap');
 :root {
   /* Theme Color */
+  --body-bg: #fff;
   --plain-text:#32394e;
   --brand-text: #fff;
   --info: #ff6e00;
@@ -8,8 +9,9 @@
   --brand-bg: #2c7a84;;
   --info-bg:#625e5d;
   /* 
+  var(--body-bg): body background, input background, 
   var(--plain-text): description, outline, title for the object (bolder)
-  var(--brand-text): Nav, filter type, big title
+  var(--brand-text): Nav, filter type, big title, border
   var(--info): button hover bg, current page bt_bg, button text  
   var(--plain-text-bg):  body background, card, table background, 
   var(--brand-bg): nav background
@@ -98,51 +100,97 @@ body {
 
     min-height: 100vh;
     position: relative;
-    background: var(--plain-text-bg);
+    background: var(--body-bg);
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: var(--plain-text);
     font-family: 'Trirong', sans-serif;
+    font-size: 14px;
+
 
 }
+/* font size and override bootstrap font size */
+h1,
+.h1 {
+  font-size: 1.725rem;
+}
 
+h2,
+.h2 {
+  font-size: 1.35rem;
+}
+
+h3,
+.h3 {
+  font-size: 1.1625rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.0375rem;
+}
+
+h5,
+.h5 {
+  font-size: 0.9125rem;
+}
+
+h6,
+.h6 {
+  font-size: 0.825rem;
+}
+p{
+  line-height: 150%;
+}
+/* override bootstrap .table colors */
+.table,
+table.dataTable{
+  background-color: var(--plain-text-bg) !important;
+  color: var(--plain-text) !important;
+}
 /* section {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
 } */
-
+/* 
 tbody {
   background-color: var(--bs-boxed-body-bg);
-}
+} */
 
-footer {
-  /* border: 2px solid wheat; */
-  background-color: var(--grey);
-  color: var(--bs-light);
-  bottom: 0 !important;
-}
 
-label {
+
+/* label {
   color: var(--bs-body-color);
-}
+} */
 
 input {
-  background-color: var(--bs-form-item-color);
-  color: var(--bs-body-color);
-  border:none !important;
+  background-color:  var(--body-bg) !important;
+  color: var(--plain-text) !important;
+  border:var(--brand-text) !important;
+  
+}
+input:focus,
+select:focus,
+textarea:focus{
+  outline:thick double var(--brand-bg) !important;
 }
 
-td>input {
+.form-control:focus {
+  border-color:var(--brand-bg);
+  box-shadow: inset 0 1px 1px var(--brand-bg), 0 0 8px teal;
+}
+
+/* td>input {
   max-width: 150px !important;
-}
+} */
 
-p {
+/* p {
   color: var(--bs-dark);
   margin: 0;
   padding: 0;
   width: fit-content;
-}
+} */
 
 select {
   white-space: initial;
@@ -532,7 +580,7 @@ i {
   position: relative;
   margin: 0;
   padding: 0;
-  min-width: 10%;
+  min-width: 15%;
   box-shadow: 2px 2px 5px var(--bs-th-bg);
   min-height: 50em;
   height: fit-content;
@@ -603,13 +651,6 @@ i {
   color: var(--bs-light);
 }
 
-.not-visible {
-  display: none;
-}
-
-.visible {
-  display: block;
-}
 
 .scrollbar {
   overflow: scroll;
@@ -741,24 +782,24 @@ i {
 }
 
 /* -------------datatable-------- */
-table.dataTable {
+/* table.dataTable {
   table-layout: auto;
   border-collapse: collapse;
   width: 100% !important;
-}
+} */
 
-table.dataTable thead tr {
+/* table.dataTable thead tr {
   background-color: var(--bs-th-bg);
-}
+} */
 
-.childtable thead tr {
+/* .childtable thead tr {
   background-color: var(--bs-th-child-bg) !important;
-}
+} */
 
-table.dataTable td {
+/* table.dataTable td {
   border-color: var(--bs-light) !important;
   padding: 0.25em 0.25em !important;
-}
+} */
 
 .n_left_column {
   width: fit-content;
@@ -768,9 +809,9 @@ table.dataTable td {
   white-space: nowrap;
 }
 
-table.dataTable th {
+/* table.dataTable th {
   width: fit-content !important;
-}
+} */
 
 /* -----filter class style in Organism view */
 #id_Class {
@@ -1139,7 +1180,7 @@ form p {
 }
 
 .django-form-table {
-  background-color: var(--bs-body-bg);
+  background-color: var();
   color: var(--bs-body-color);
 }
 
@@ -1380,4 +1421,11 @@ a:hover{
 .accordion-button:not(.collapsed){
   background-color: #bdcaca !important;
   color: teal !important;
+}
+.not-visible {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
 }

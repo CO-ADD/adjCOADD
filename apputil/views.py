@@ -7,12 +7,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse, QueryDict
-from django.http import JsonResponse, QueryDict
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic.edit import UpdateView
+from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
@@ -29,19 +29,6 @@ from apputil.utils.files_upload import Importhandler
 ## =================================APP Home========================================
 
 
-
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteImage(req, pk):
-    print('deleting...')
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Image, id=pk)
-    try:
-        object_.delete(**kwargs)
-        print('deleted')
-    except Exception as err:
-        print(err)
-    return redirect(req.META['HTTP_REFERER'])
 
 # import setup
 @login_required(login_url='/')
@@ -93,6 +80,15 @@ def logout_user(req):
     return redirect("/")
 
 ## =========================Application Users View====================================
+
+class AppUserDetailView(DetailView):
+    model = ApplicationUser
+    template_name = 'apputil/appUserProfile.html' 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # add extra context here...
+        return context
 
 @login_required(login_url='/')
 def userprofile(req, id):
@@ -154,6 +150,19 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
         form.instance.is_appuser==False
         return super().form_valid(form)
 
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+    print('deleting...')
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
 
 ## ========================Dictionary View===========================================
 

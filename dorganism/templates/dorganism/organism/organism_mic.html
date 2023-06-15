@@ -16,7 +16,7 @@
         </form>
     </div>
     <div class="accordion w-100" id="MIC_COADD">
-
+        {% include 'utils/data_download_form.html' with model_name='MIC_COADD' application='ddrug' related_pk=object.pk %}
         <div class="accordion-item">
             <h2 class="accordion-header d-flex" id="headingMIC_COADD">
 

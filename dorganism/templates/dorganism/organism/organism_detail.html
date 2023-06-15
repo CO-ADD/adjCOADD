@@ -25,8 +25,10 @@
 
               {% include 'dorganism/organism/organism_u.html' %}
               {% include 'dorganism/organism/organism_image.html' %}
+              {% include 'dorganism/organism/organism_file.html' %}
 
               <br>
+              
               <hr>
               <!-- prettier-ignore -->
               {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
@@ -97,7 +99,9 @@
 
     <div style="min-height: 100px;"></div>
   </div>
-
+  
+  {%load static%}
+  <script src="{%static 'js/ajax_simpleupload.js'%}"></script>
   <script>
     $(document).ready(function () {
       let url_batch = `{% url 'batch_create' object.pk %}`;
@@ -106,8 +110,13 @@
       loadModal("#createCultureModal", "#createCulture", url_culture);
       loadModal("#createBatchModal", "#createBatch", url_batch);
 
+      let url_img = `{% url 'addimg' object.pk %}`;
+      let url_doc= `{% url 'adddoc' object.pk %}`;
+      ajaxSimpleUpload('#id_image_file', 'image_file', url_img, '#id_image_name', '#id_image_type');
+      ajaxSimpleUpload('#id_doc_file','doc_file', url_doc, '#id_doc_name', '#id_doc_type');
 
     });
   </script>
+
   {%endblock%}
 </div>

@@ -1,13 +1,13 @@
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} mysite{% endblock %}
+{% block title%} COADD{% endblock %}
 {% block content %}
 
-<!-- Include -->
-{%include 'utils/topbar.html'%}
 <div class="d-flex flex-row justify-content-between vh-100">
+    {%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
+   <!-- here put High Usage Items -->
+   <h1>High used Items for User - {{object}}: </h1>
     {%include "utils/sidebar.html"%}
-
 
 </div>
 

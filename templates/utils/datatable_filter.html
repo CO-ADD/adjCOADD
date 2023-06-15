@@ -1,4 +1,5 @@
-<form id="django-filter-table" method="get" class="d-block" style="height: 100vh; overflow: auto">
+<div style="height: 100vh;overflow: auto;">
+<form id="django-filter-table" method="get">
   <table class="table table-bordered table-hover sorting_table fixTableHead" style="width: 100%">
     <thead>
       <tr>
@@ -56,7 +57,7 @@
   </table>
 </form>
 
-
+</div>
 <script>
   $("th input").bind("change", function () {
     $("#django-filter-table").submit();

@@ -1,14 +1,14 @@
-<div class="accordion bg-transparent w-100 m-auto" id="accordion_image">
+<div class="accordion bg-transparent w-100 m-auto" id="accordion_image{{image.pk}}">
     <div class="accordion-item">
-        <h2 class="accordion-header" id="heading_image">
+        <h2 class="accordion-header" id="heading_image{{image.pk}}">
             <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse_image" aria-expanded="true" aria-controls="collapse_image">
+                data-bs-target="#collapse_image{{image.pk}}" aria-expanded="true" aria-controls="collapse_image">
                 <h5 class="fs-6 my-0">
                     {{object.pk}} Images
                 </h5>
             </button>
         </h2>
-        <div id="collapse_image" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
+        <div id="collapse_image{{image.pk}}" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
             data-bs-parent="#accordion_image">
             <div class="accordion-body bg-transparent d-flex flex-wrap">
                 <div class="d-flex flex-wrap">
@@ -34,7 +34,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="ShowImage_lgLabel">{{image.image_name}}</h5>
+                                        <h5 class="modal-title" id="ShowImage_lgLabel{{image.pk}}">{{image.image_name}}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -86,12 +86,28 @@
     </div>
 
 </div>
-{%load static%}
-<script src="{%static 'js/ajax_simpleupload.js'%}"></script>
-<script>
-     let url_img = `{% url 'addimg' object.pk %}`;
-     let url_doc= `{% url 'adddoc' object.pk %}`;
-    ajaxSimpleUpload('#id_image_file', 'image_file', url_img, '#id_image_name', '#id_image_type');
-    ajaxSimpleUpload('#id_doc_file','doc_file', url_doc, '#id_doc_name', '#id_doc_type');
 
-</script>
+<div>
+                
+    <p>
+
+      Assoc Files
+    </p>
+    <p>
+      {%url 'adddoc' pk=object.pk as addurl_doc %}
+      {%include 'utils/modal/simpleupload.html' with title='Add_document' form=doc_form addurl=addurl_doc %}
+    </p>
+  
+    <ul class="d-inline">
+
+      {%for file in object.assoc_documents.all %}
+
+      <li>
+
+        <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle>{{file}}</a>
+      </li>
+
+      {%endfor%}
+    </ul>
+  
+</div>
