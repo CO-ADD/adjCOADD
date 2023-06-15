@@ -71,7 +71,7 @@ class Image_form(forms.ModelForm):
         fields='__all__'
 
 class Document_form(forms.ModelForm):
-    doc_file = forms.ImageField(label='Select a file', 
+    doc_file = forms.FileField(label='Select a file', 
                                 #   validators=[validate_file], 
                                   required=True)
     

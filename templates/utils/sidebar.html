@@ -1,7 +1,7 @@
-<div class="sidebar card-text me-2 ps-3">
+<div class="sidebar card-text panel me-2 ps-3">
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
-            <input id="filter-apply" class="form-control-sm btn-outline-secondary my-2" type="submit" value="Apply" />
+            <input id="filter-apply" class="form-control-sm btn my-2" type="submit" value="Apply" />
             
             <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
             <input data-name= "submit-reset" type="text" name="reset" value="False" hidden>
@@ -46,13 +46,13 @@
             {%for field in filter.form%}
             {% if field.name != 'Search_all_fields' %}
             <button id="btn_{{field.name|safe}}"
-                class="collapsed bg-transparent border border-0 border-bottom my-1 text-light text-start fs-6"
+                class="collapsed accordion-button text-light text-start fs-6"
                 type="button" data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
                 aria-controls="{{field.label}}">
                 {{field.label}}
             </button>
-            <div id="{{field.name|safe}}" class="accordion-collapse collapse" aria-labelledby="{{field.label}}">
-                <p class="accordion-body bg-transparent m-2 px-1 py-1">
+            <div id="{{field.name|safe}}" class="accordion-collapse collapse" >
+                <p class="accordion-body m-2 px-1 py-1">
                     {{field}}
                 </p>
             </div>
@@ -100,5 +100,6 @@
         })
 
         $("#Class").addClass('show');
+        $("#btn_Class").removeClass('collapsed');
     })
 </script>

@@ -16,25 +16,26 @@
                     <!-- display file -->
                     {%for file in object.assoc_documents.all %}
                     {% if file.astatus >= 0 %}
-                    <div class="m-3 border border-2 border-dark" style="width:18em; height: 18em;">
+                    <div class="d-flex flex-column justify-content-between border border-2 border-dark m-2" style="width:25em; height: auto">
                         <!-- File name and download -->
-                            <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle>
-                                {{file}}
+                            <a href="{{file.doc_file.url}}" alt="" download data-bs-toggle class="m-auto">
+                                {{file.doc_name}}
                             </a>
                       
                         <p class="m-auto">Type: {{ file.doc_type }}</p>
-                        <p class="m-auto">Source: {{ file.doc_source }}</p>   
+                        <p class="m-auto">Source: {{ file.doc_source }}</p>
+                        <p class="m-auto">Edited by: {{ file.acreated }}</p> 
 
                         <!-- Delete File -->
 
                         {% if user.permission == 'Admin' %}
-                        <a class="btn-sm btn-outline-secondary mb-1" data-bs-toggle="modal"
+                        <a class="d-inlineblock btn-sm btn-outline-secondary me-0 mb-0" data-bs-toggle="modal"
                             data-bs-target="#assoc_file_del{{file.pk}}" data-bs-toggle="tooltip"
                             data-bs-placement="right" title="Click to delete">
                             <i class="fa-regular fa-trash-can text-danger fs-6"></i>
                         </a>
                         {% else %}
-                        <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
+                        <a class="d-block btn-sm btn-outline-secondary me-0 mb-0" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="No Permission To Delete">
                             <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
                         </a>
@@ -46,8 +47,8 @@
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <!--prettier-ignore-->
-                                {% url 'org_img_delete' pk=image.pk as deleteurl %}
-                                {% include 'utils/modal/delete.html' with title='Delete Image' deleteurl=deleteurl entry=image %}
+                                {% url 'org_doc_delete' pk=file.pk as deleteurl %}
+                                {% include 'utils/modal/delete.html' with title='Delete Document' deleteurl=deleteurl entry=file %}
                             </div>
                         </div>
                     </div>

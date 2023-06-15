@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView,  AppUserDetailView,
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
-    DataExportView, Importhandler_apputils,  deleteImage, CreateimageView, CreatedocumentView)
+    DataExportView, Importhandler_apputils, ImageDeleteView, CreateimageView, CreatedocumentView, DocDeleteView)
 
 # from .utils.data_visual import Data_visualView
 
@@ -27,7 +27,8 @@ urlpatterns = [
  
     path('img/<str:pk>', CreateimageView.as_view(), name="addimg"),
     path('doc/<str:pk>', CreatedocumentView.as_view(), name="adddoc"),
-    path('img-delete/<str:pk>', deleteImage, name='org_img_delete')
+    path('img-delete/<str:pk>', ImageDeleteView.as_view(), name='org_img_delete'),
+    path('doc-delete/<str:pk>', DocDeleteView.as_view(), name='org_doc_delete'),
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
     
    

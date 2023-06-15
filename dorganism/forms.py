@@ -114,8 +114,7 @@ class Batch_form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(Batch_form, self).__init__(*args, **kwargs)
-        self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
-    
+        self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
 
     class Meta:
         model =Organism_Batch
@@ -130,8 +129,7 @@ class Batchupdate_form(forms.ModelForm):
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     stock_level = SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
 
-    def __init__(self, *args, **kwargs):
-        
+    def __init__(self, *args, **kwargs):   
         super().__init__(*args, **kwargs)
         instance=kwargs.get('instance')
         if instance and instance.stock_level:

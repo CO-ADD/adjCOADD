@@ -33,7 +33,7 @@
         {% if page_obj.number == num %}
         <li class="page-item">
 
-            <a class="page-link fw-bold text-light" style="background-color: var(--bs-inform-color) !important;"
+            <a class="page-link fw-bold text-light" style="color:white !important; background-color: var(--bs-inform-color) !important;"
                 href="{% my_url num 'page' request.GET.urlencode %}">
                 {{num}}</a>
         </li>

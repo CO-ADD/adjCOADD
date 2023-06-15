@@ -139,12 +139,13 @@ class HtmxupdateView(LoginRequiredMixin, View):
 
 # export view
 import ddrug.utils.tables as drugtbl
+
 class DataExportBaseView(LoginRequiredMixin, View):
     '''
     Export Data in EXCEL or CSV Format
     '''
-    selected_pks_string = ''
-    organism=''    
+    selected_pks_string = None
+    organism = None 
 
     def post(self, request):
         items=None
@@ -161,6 +162,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
             return HttpResponse("Model not found.")
         self.selected_pks_string = request.POST.get('selected_pks')
         self.organism = request.POST.get('organism_pk')
+        
         if self.selected_pks_string == 'SelectAll':
             items = Model.objects.all()
         elif self.selected_pks_string:
@@ -199,7 +201,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
             df.to_excel(excel_writer=response, index=False)
 
         return response
-
+ 
 
 
 class CreateFileView(LoginRequiredMixin,FormView):

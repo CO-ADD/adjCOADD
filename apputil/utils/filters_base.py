@@ -15,13 +15,6 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
 # -- create a function for search all fields--
 
-class LowerAny(Func):
-    template = "LOWER(%(search_value)s) = ANY(%(array_field)s)"
-    arity = 2
-
-    def __init__(self, search_value, array_field, **extra):
-        super().__init__(Value(search_value), array_field, **extra)
-
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None, submodel=False):
     q_object = Q()
     exclude_fields = exclude_fields or []
@@ -83,26 +76,30 @@ class Filterbase(django_filters.FilterSet):
             return queryset.filter(q_object)
         return queryset
     
-    def filter_arrayfields(self, queryset, name, value):
-        if value:
-            print(value)
-            value_as_text = Value(value, output_field=CharField())
-            return queryset.annotate(array_field_as_text=Cast(name, CharField())).filter(array_field_as_text__icontains=value_as_text)
-        return queryset
+    # def filter_arrayfields(self, queryset, name, value):
+    #     print(name)
+    #     if value:
+    #         print(value)
+    #         value_as_text = Value(value, output_field=CharField())
+    #         # TrigramSimilarity('drug_id__drug_name', value),
+    #         similarity=TrigramSimilarity(name, value)
+    #         return queryset.annotate(similarity=similarity).filter(similarity__gt=0.1)
+    #     return queryset
+
     
+    
+    # def similarity_filter(self, queryset, name, value):
+    #     if value:
+    #         similarity = TrigramSimilarity('drug_id__drug_name', value)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.filters:
             # print(dir(self.filters[field].filter.__init__))
             if 'CharFilter' == self.filters[field].__class__.__name__:
-                self.filters[field].lookup_expr='icontains'#'trigram_similar'
-    
-    
-    
-     
+                self.filters[field].lookup_expr='icontains'
 
-
-# utils for filteredListView method def ordered_by
+ # utils for filteredListView method def ordered_by
 def find_item_index(lst, item):
     for i, element in enumerate(lst):
         if isinstance(element, dict):
@@ -135,6 +132,8 @@ class FilteredListView(ListView):
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
         if self.request.session.get('cached_queryset'):
             stored_queryset_pks = self.request.session['cached_queryset']
+            print(self.request.session.session_key)
+            print(self.request.session['cached_queryset'])
             stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
             self.filterset = self.filterset_class(self.request.GET, queryset=stored_queryset)
         else:
