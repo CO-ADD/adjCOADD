@@ -26,7 +26,10 @@
       {% if user.is_authenticated %}
       <div class="navbar-nav">
         <a class="nav-link" href="{%url 'index'%}">
-          <p class="nav-title"><i class="fa-solid fa-house"></i></p>
+          <p class="nav-title">
+           
+            <i class="bi bi-house-fill"></i>
+          </p>
         </a>
 
         <div class="dropdown d-inline-block">
@@ -37,8 +40,8 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <p class="d-xl-inline-block nav-title">Views</p>
-            <i class="fa-solid fa-chevron-down nav-title"></i>
+            <p class="nav-title">Views</p>
+            
           </a>
           <ul class="dropdown-menu">
             <!-- item-->
@@ -123,8 +126,8 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <p class="d-xl-inline-block nav-title">Import</p>
-            <i class="fa-solid fa-chevron-down nav-title"></i>
+            <p class="nav-title">Import</p>
+           
           </a>
           <ul class="dropdown-menu">
             <!-- item-->
@@ -179,7 +182,7 @@
               </a>
             </li>
 -->
-<li>
+<!-- <li>
   <a
     class="dropdown-item"
     href="{% url 'excel-import' process_name='heatmap' %}"
@@ -187,7 +190,7 @@
   >
     <p>Others(Heatmap)</p>
   </a>
-</li>
+</li> -->
             {% endif %}
           </ul>
         </div>
@@ -212,7 +215,7 @@
                 alt="Avatar"
               />
               <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
-              <i class="fa-solid fa-chevron-down nav-title"></i>
+             
             </a>
             <div class="dropdown-menu dropdown-menu-end">
               <a class="dropdown-item" href="#">
@@ -231,6 +234,7 @@
                   {%endif%}
                 </p>
               </a>
+              <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->
               <a class="dropdown-item" href="#" data-bs-toggle>
                 <input
                   class="form-check-input"

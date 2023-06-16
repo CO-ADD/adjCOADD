@@ -1,11 +1,11 @@
 {% if user.permission == 'Admin' %}
-<a class="btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="{{target}}" data-bs-toggle="tooltip" data-bs-placement="right"
-title="Click to delete">
-  <i class="fa-regular fa-trash-can text-danger fs-6"></i>
+<a class="btn-sm btn-outline-secondary fs-6" data-bs-toggle="modal" data-bs-target="{{target}}" data-bs-toggle="tooltip"
+  data-bs-placement="right" title="Click to delete">
+  <i class="bi bi-trash3 text-danger fs-6"></i>
 </a>
 {% else %}
 <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
-title="No Permission To Delete">
-  <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
+  title="No Permission To Delete">
+  <i class="bi bi-trash3"></i>
 </a>
 {% endif %}

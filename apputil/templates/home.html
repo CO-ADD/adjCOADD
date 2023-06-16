@@ -11,16 +11,14 @@
             <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Organisms</span>
         </label>
         <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
-            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
-                data-bs-placement="left" href="{%url 'org_card' %}" title="{{nOrg}} organims">
-                ORGANISM
-            </a>
+          
+            {% url 'org_card' as org_url%}
+            {% include 'utils/miscellaneous/landbtn_primary.html' with title='ORGANISM' url=org_url totalnumber=nOrg %}
+
             <div class="row w-50">
                 <div class="col text-center m-auto">
-                    <a class="badge land-badge bg-secondary fs-6 border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'taxo_card'%}" title="{{nTax}} entries" inactivate>
-                        Taxonomy
-                    </a>
+                    {% url 'taxo_card' as taxonomy_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Taxonomy' url=taxonomy_url totalnumber=nTax %}
                 </div>
             </div>
         </div>
@@ -31,43 +29,31 @@
         </label>
 
         <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
-            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
-                data-bs-placement="left" href="{%url 'drug_card' %}" title="{{objects_drug}} entries">
-                DRUG
-            </a>
+            <!--  -->
+            {% url 'drug_card' as drug_url%}
+            {% include 'utils/miscellaneous/landbtn_primary.html' with title='DRUG' url=drug_url totalnumber=objects_drug %}
             <div class="row w-50">
                 <div class="col text-center m-auto">
                     <h3>
-<!--
-                    <a class="badge land-badge bg-info border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'vitekcard_list'%}" title="{{nVID}} entries" inactivate>
-                        Vitek Id
-                    </a>
--->
-                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'vitekcard_list'%}" title="{{nVAST}} entries">
-                        Vitek AST
-                    </a>
-                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'vitekast_list'%}" title="{{nVCard}} entries">
-                        Vitek Cards
-                    </a>
+                    <!--  -->
+                    {% url 'vitekcard_list' as vitekcard_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Vitek Card' url=vitekcard_url totalnumber=nVCard %}
+                    <!--  -->
+                    {% url 'vitekast_list' as vitekast_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Vitek AST' url=vitekast_url totalnumber=nVAST %}
                     </h3>
                 </div>
                 <div class="col text-center m-auto">
                     <h3>
-                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'mic_coadd_list'%}" title="{{nMICC}} entries" inactivate>
-                        Antibiograms
-                    </a>
-                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'mic_pub_list'%}" title="{{nMICP}} entries" inactivate>
-                        MIC Public
-                    </a>
-                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'breakpoint_list'%}" title="{{nBP}} entries" inactivate>
-                        Breakpoint
-                    </a>
+                    {% url 'mic_coadd_list' as micc_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Antibiograms' url=micc_url totalnumber=nMICC %}
+                    <!--  -->
+                    {% url 'mic_pub_list' as micp_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='MIC Public' url=micp_url totalnumber=nMICP %}
+                    <!--  -->
+                    {% url 'breakpoint_list' as bp_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Breakpoint' url=bp_url totalnumber=nBP %}
+
                     </h3>
                 </div>
             </div>
@@ -80,33 +66,26 @@
         </label>
 
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
-            <a class="landp-img-01 d-flex align-items-center justify-content-center h4 lead" data-bs-toggle="tooltip"
-                data-bs-placement="left" href="{%url 'gene_list'%}" title=" {{nGene}} entries">
-                GENE
-            </a>
-
+            {% url 'gene_list' as gene_url%}
+            {% include 'utils/miscellaneous/landbtn_primary.html' with title='GENE' url=gene_url totalnumber=nGene %}
             <div class="row w-50">
                 <div class="col text-center m-auto">
                     <h3>
-                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'sequence_list'%}" title="{{nIDS}} entries" inactivate>
-                        ID by Sequence
-                    </a>
-                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'id_pub_list'%}" title="{{nIDP}} entries" inactivate>
-                        ID from Public</a>
+                    {% url 'sequence_list' as sp_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID by Sequence' url=sp_url totalnumber=nBP %}
+                    <!--  -->
+                    {% url 'id_pub_list' as id_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID from Public' url=id_url totalnumber=nIDP %}
                     </h3>
                 </div>
                 <div class="col text-center m-auto">
                     <h3>
-                    <a class="badge land-badge bg-secondary border mb-3" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'wgs-fastqc_list'%}" title="{{nFastQC}} entries" inactivate>
-                        FastQC - WGS
-                    </a>
-                    <a class="badge land-badge bg-secondary border" data-bs-toggle="tooltip" data-bs-placement="left"
-                        href="{%url 'wgs-checkm_list'%}" title="{{nCheckM}} entries" inactivate>
-                        CheckM - WGS
-                    </a>
+                    {% url 'wgs-fastqc_list' as wgsfq_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='FastQC - WGS' url=wgsfq_url totalnumber=nFastQC %}
+                    <!--  -->
+                    {% url 'wgs-checkm_list' as wgsch_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='CheckM - WGS' url=wgsch_url totalnumber=nCheckM %}
+                    
                     </h3>
                 </div>
             </div>

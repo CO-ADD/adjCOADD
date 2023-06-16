@@ -1,14 +1,14 @@
-<div class="accordion bg-transparent w-100 m-auto" id="accordion_image">
+<div class="accordion bg-transparent w-100 m-auto" id="accordion_image{{image.pk}}">
     <div class="accordion-item">
-        <h2 class="accordion-header" id="heading_image">
+        <h2 class="accordion-header" id="heading_image{{image.pk}}">
             <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse_image" aria-expanded="true" aria-controls="collapse_image">
+                data-bs-target="#collapse_image{{image.pk}}" aria-expanded="true" aria-controls="collapse_image">
                 <h5 class="fs-6 my-0">
                     {{object.pk}} Images
                 </h5>
             </button>
         </h2>
-        <div id="collapse_image" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
+        <div id="collapse_image{{image.pk}}" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_image"
             data-bs-parent="#accordion_image">
             <div class="accordion-body bg-transparent d-flex flex-wrap">
                 <div class="d-flex flex-wrap">
@@ -16,7 +16,7 @@
 
                     {% for image in object.assoc_images.all %}
                     {% if image.astatus >= 0 %}
-                    <div class="m-3 border border-2 border-dark" style="width:18em; height: 18em;">
+                    <div class="d-flex flex-column justify-content-between border border-2 border-dark m-2" style="width:25em; height:auto">
                         <!-- Show Image -->
                         <button type="button" class="btn btn-primary border-0 bg-transparent" data-bs-toggle="modal"
                             data-bs-target="#ShowImage_lg{{image.pk}}">
@@ -28,13 +28,14 @@
                         </button>
                         <p class="m-auto">Type: {{ image.image_type }}</p>
                         <p class="m-auto">Source: {{ image.image_source }}</p>
+                        <p class="m-auto">Uploaded by: {{ image.acreated }}</p>
                         <!-- Large Image Modal -->
                         <div class="modal fade" id="ShowImage_lg{{image.pk}}" tabindex="-1"
                             aria-labelledby="ShowImage_lg{{image_pk}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="ShowImage_lgLabel">{{image.image_name}}</h5>
+                                        <h5 class="modal-title" id="ShowImage_lgLabel{{image.pk}}">{{image.image_name}}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -46,20 +47,21 @@
                         </div>
 
                         <!-- Delete Image -->
-
-                        {% if user.permission == 'Admin' %}
-                        <a class="btn-sm btn-outline-secondary mb-1" data-bs-toggle="modal"
-                            data-bs-target="#assoc_img_del{{image.pk}}" data-bs-toggle="tooltip"
-                            data-bs-placement="right" title="Click to delete">
-                            <i class="fa-regular fa-trash-can text-danger fs-6"></i>
-                        </a>
-                        {% else %}
-                        <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="No Permission To Delete">
-                            <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
-                        </a>
-                        {% endif %}
-
+                        <div>
+                        
+                            {% if user.permission == 'Admin' %}
+                            <a class="btn-sm btn-outline-secondary mb-1" data-bs-toggle="modal" data-bs-target="#assoc_img_del{{image.pk}}"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="Click to delete">
+                                <i class="fa-regular fa-trash-can text-danger fs-6"></i>
+                            </a>
+                            {% else %}
+                            <a class="btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
+                                title="No Permission To Delete">
+                                <i class="fa-regular fa-trash-can text-secondary fs-6"></i>
+                            </a>
+                            {% endif %}
+                        
+                        </div>
                         <!--Delete Image Modal -->
                         <div class="modal fade" id="assoc_img_del{{image.pk}}" data-bs-backdrop="static"
                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
@@ -86,12 +88,5 @@
     </div>
 
 </div>
-{%load static%}
-<script src="{%static 'js/ajax_simpleupload.js'%}"></script>
-<script>
-     let url_img = `{% url 'addimg' object.pk %}`;
-     let url_doc= `{% url 'adddoc' object.pk %}`;
-    ajaxSimpleUpload('#id_image_file', 'image_file', url_img, '#id_image_name', '#id_image_type');
-    ajaxSimpleUpload('#id_doc_file','doc_file', url_doc, '#id_doc_name', '#id_doc_type');
 
-</script>
+

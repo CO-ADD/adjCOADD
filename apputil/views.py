@@ -7,12 +7,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.http import JsonResponse, QueryDict
-from django.http import JsonResponse, QueryDict
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic.edit import UpdateView
+from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
@@ -22,26 +22,13 @@ from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
 from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form 
 from apputil.models import ApplicationUser, Dictionary, Image, Document
-from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, HtmxupdateView, CreateFileView
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
 
-
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteImage(req, pk):
-    print('deleting...')
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Image, id=pk)
-    try:
-        object_.delete(**kwargs)
-        print('deleted')
-    except Exception as err:
-        print(err)
-    return redirect(req.META['HTTP_REFERER'])
 
 # import setup
 @login_required(login_url='/')
@@ -93,6 +80,15 @@ def logout_user(req):
     return redirect("/")
 
 ## =========================Application Users View====================================
+
+class AppUserDetailView(DetailView):
+    model = ApplicationUser
+    template_name = 'apputil/appUserProfile.html' 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # add extra context here...
+        return context
 
 @login_required(login_url='/')
 def userprofile(req, id):
@@ -153,6 +149,8 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.is_appuser==False
         return super().form_valid(form)
+
+
 
 
 ## ========================Dictionary View===========================================
@@ -217,11 +215,6 @@ def deleteDictionary(req):
     return JsonResponse({})
 
 ## ============================File and Image View======================================## 
-class CreateimageView(CreateFileView):
-    form_class = Image_form
-    model = Organism
-    file_field = 'image_file'
-    related_name = 'assoc_images'
 
 class CreatedocumentView(CreateFileView):
     form_class = Document_form
@@ -229,6 +222,28 @@ class CreatedocumentView(CreateFileView):
     file_field = 'doc_file'
     related_name = 'assoc_documents'
 
+class CreateimageView(CreateFileView):
+    form_class = Image_form
+    model = Organism
+    file_field = 'image_file'
+    related_name = 'assoc_images'
+    
+class DocDeleteView(SuperUserRequiredMixin,SimpleupdateView):
+    model=Document
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        object_=self.get_object(pk)
+        with transaction.atomic():
+            kwargs={'user': request.user}
+            try:
+                object_.delete(**kwargs)
+            except Exception as err:
+                messages.error(request, err)       
+        return redirect(request.META['HTTP_REFERER'])
+
+class ImageDeleteView(DocDeleteView):
+    model= Image
 # =========================== Export CSV View =============================
 from .utils.views_base import DataExportBaseView
 class DataExportView(DataExportBaseView):

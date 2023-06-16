@@ -138,35 +138,47 @@ class HtmxupdateView(LoginRequiredMixin, View):
 
 
 # export view
+import ddrug.utils.tables as drugtbl
+
 class DataExportBaseView(LoginRequiredMixin, View):
     '''
     Export Data in EXCEL or CSV Format
     '''
+    selected_pks_string = None
+    organism = None 
+
     def post(self, request):
+        items=None
         app_name = request.POST.get('app_name')
         model_name = request.POST.get('model_name')
 
         if not app_name or not model_name:
             messages.error(request, "No application or model name were provided for export.")
             return redirect(request.path)
-
         try:
             Model = apps.get_model(app_name, model_name)
         except LookupError:
             # Handle the case where the model does not exist.
             return HttpResponse("Model not found.")
-
-        selected_pks_string = request.POST.get('selected_pks')
-        if selected_pks_string == 'SelectAll':
+        self.selected_pks_string = request.POST.get('selected_pks')
+        self.organism = request.POST.get('organism_pk')
+        
+        if self.selected_pks_string == 'SelectAll':
             items = Model.objects.all()
-        elif selected_pks_string:
-            selected_pks = json.loads(selected_pks_string)
+        elif self.selected_pks_string:
+            selected_pks = json.loads(self.selected_pks_string)
             items = Model.objects.filter(pk__in=selected_pks)
         else:
-            messages.error(request, "No items were selected for export.")
-            return redirect(request.META['HTTP_REFERER'])
-
-        df = pd.DataFrame.from_records(items.values())
+            if self.organism and model_name == 'MIC_COADD':
+                displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+                df = drugtbl.get_Antibiogram_byOrgID(self.organism)
+                df.reset_index(inplace=True)
+                df = df[displaycols]
+            else:
+                messages.error(request, "No items were selected for export.")
+                return redirect(request.META['HTTP_REFERER'])
+        if items:
+            df = pd.DataFrame.from_records(items.values())
 
         if 'acreated_at' in df.columns:
             df['acreated_at'] = pd.to_datetime(df['acreated_at']).dt.tz_localize(None).apply(lambda a: a.date())
@@ -183,14 +195,13 @@ class DataExportBaseView(LoginRequiredMixin, View):
             response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
             df.to_csv(path_or_buf=response, index=False)
 
-
         elif "xlsxdownload" in request.POST:
             response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
             df.to_excel(excel_writer=response, index=False)
 
         return response
-
+ 
 
 
 class CreateFileView(LoginRequiredMixin,FormView):

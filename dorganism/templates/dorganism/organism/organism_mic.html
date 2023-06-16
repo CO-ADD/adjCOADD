@@ -3,12 +3,12 @@
     <div class="leftbar d-flex flex-column p-0 bg-light">
         <form hx-post="{%url 'org_detail' object.pk %}" hx-target="#add-container" hx-swap="outerHTML">
 
-            <button type="submit" class="border-0 text-secondary bg-transparent" value="Get_data" data-bs-toggle
+            <button type="submit" class="text-secondary border-0" value="Get_data" data-bs-toggle
                 style="max-height: 20px">
                 {%if pivottable%}
                 <i class="bi bi-arrow-clockwise text-success bg-light fs-5"></i>
                 {%else%}
-                <div class="spinner-border" role="status"  style="max-height: 18px; max-width: 18px;">
+                <div class="spinner-border" role="status" style="max-height: 18px; max-width: 18px;">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 {%endif%}
@@ -16,14 +16,17 @@
         </form>
     </div>
     <div class="accordion w-100" id="MIC_COADD">
-
         <div class="accordion-item">
             <h2 class="accordion-header d-flex" id="headingMIC_COADD">
 
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" style="max-height: 20px"
-                    data-bs-target="#collapseMIC_COADD" aria-expanded="true" aria-controls="collapseMIC_COADD">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    style="max-height: 20px" data-bs-target="#collapseMIC_COADD" aria-expanded="true"
+                    aria-controls="collapseMIC_COADD">
                     <!-- prettier-ignore -->
-                    Antibiogram {%include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries title='Antibiogram'%}
+                    <h5 class="fs-6 my-0">
+                        Antibiogram
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=df_entries title='Antibiogram' %}
                 </button>
             </h2>
             <div id="collapseMIC_COADD" class="accordion-collapse collapse" aria-labelledby="headingMIC_COADD"
@@ -32,26 +35,31 @@
                     <!-- prettier-ignore -->
 
 
-                    <div class="d-flex align-items-start border m-0 mt-2">
+                    <div class="d-flex align-items-start m-0 mt-2">
                         <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist"
                             aria-orientation="vertical" style="width:fit-content">
                             <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn"
                                 data-bs-toggle="pill" data-bs-target="#v-pills-datatable-tab" type="button" role="tab"
                                 aria-controls="v-pills-datatable-tab" aria-selected="false"><i class="bi bi-table"
                                     data-bs-toggle="tool
-                    " data-bs-placement="left" title="Normal view"></i></button>
+                        " data-bs-placement="left" title="Normal view"></i></button>
                             {%load static%}
                             <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-pivot-tab" type="button" role="tab"
                                 aria-controls="v-pills-pivot-tab" aria-selected="false"><i class="bi bi-arrow-repeat"
                                     data-bs-toggle="tool
-                    " data-bs-placement="left" title="Pivottable view"></i>
+                        " data-bs-placement="left" title="Pivottable view"></i>
                             </button>
 
                         </div>
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
-                                aria-labelledby="v-pills-datatable-tab">{%include './datamap.html'%}</div>
+                                aria-labelledby="v-pills-datatable-tab">
+                                {% include 'utils/data_download_form.html' with model_name='MIC_COADD' application='ddrug' related_pk=object.pk %}
+
+                                {%include './datamap.html'%}
+
+                            </div>
                             <div class="tab-pane fade" id="v-pills-pivot-tab" role="tabpanel"
                                 aria-labelledby="v-pills-pivot-tab">
                                 <div style="height: 100vh;overflow: auto;">

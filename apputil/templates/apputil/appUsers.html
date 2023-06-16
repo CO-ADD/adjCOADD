@@ -4,16 +4,16 @@
 {% block content %}
 
 <!-- Include -->
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
   <!-- prettier-ignore -->
   {%url 'excel-import' process_name='ApplicationUser' as urlname%}
   {%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column">
+  <div class="d-flex flex-column w-100">
     <!-- prettier-ignore -->
-    {% include 'utils/main_horizalbar.html' with model_name='ApplicationUser' application='apputil' %}
+    {% include 'utils/main_horizalbar.html' with model_name='ApplicationUser' application='apputil' title='Application Users' %}
     {%include 'utils/datatable_general.html' with table_id='ApplicationUser' %}
   </div>
 </div>

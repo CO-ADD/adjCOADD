@@ -1,0 +1,178 @@
+/*!
+To override bootstrap class about size, space...
+-*/
+*:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+/*   Typography    */
+body,
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+p,
+.navbar,
+.brand,
+.btn-simple,
+.alert,
+a,
+.td-name,
+td,
+button.close {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  /* font-family: "Lato", sans-serif; */
+}
+
+
+h1,
+.h1 {
+  font-size: 1.725rem;
+}
+
+h2,
+.h2 {
+  font-size: 1.35rem;
+}
+
+h3,
+.h3 {
+  font-size: 1.1625rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.0375rem;
+}
+
+h5,
+.h5 {
+  font-size: 0.9125rem;
+}
+
+h6,
+.h6 {
+  font-size: 0.825rem;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  line-height: 1.4;
+}
+
+small,
+.small {
+  font-size: 13px;
+}
+
+b,
+.b,
+strong,
+.strong {
+  font-weight: 600;
+}
+
+.page-pretitle {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+}
+
+.page-title {
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 30px;
+  margin-bottom: 20px;
+}
+
+.page-category {
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+/* Font-size */
+.fs-6 {
+  font-size: 12px !important;
+}
+.fs-5 {
+  font-size: 14px !important;
+}
+/*   Font-weight    */
+.fw-light {
+  font-weight: 300;
+}
+
+.fw-normal {
+  font-weight: 400;
+}
+
+.fw-mediumbold {
+  font-weight: 400;
+}
+
+.fw-bold {
+  font-weight: 600;
+}
+
+.fw-extrabold {
+  font-weight: 700;
+}
+
+/* 		Opacity  	*/
+.op-9 {
+  opacity: 0.9;
+}
+
+.op-8 {
+  opacity: 0.8;
+}
+
+.op-7 {
+  opacity: 0.7;
+}
+
+.op-6 {
+  opacity: 0.6;
+}
+
+.op-5 {
+  opacity: 0.5;
+}
+
+.op-4 {
+  opacity: 0.4;
+}
+
+.op-3 {
+  opacity: 0.3;
+}
+
+button, input, optgroup, select, textarea, select option, .form-control{
+  font-size: 12px !important;
+}

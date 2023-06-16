@@ -4,13 +4,13 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row justify-content-between vh-100">
-  {%url 'excel-import' process_name='' as urlname%}
+  {%url 'excel-import' process_name='Breakpoint' as urlname%}
   <!--prettier-ignore-->
   {%include 'utils/leftbar.html' with list_url='breakpoint_list' card_url='breakpoint_list'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column">
+  <div class="d-flex flex-column">
     {% include 'utils/main_horizalbar.html' with title='Breakpoint' model_name='Breakpoint' application='ddrug' %}
     <!-- list View Content -->
     <div class="fixTableHead">

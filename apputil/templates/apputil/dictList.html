@@ -4,20 +4,20 @@
 {% block content %}
 
 <!-- Include -->
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
   <!-- prettier-ignore -->
   {%url 'excel-import' process_name='Dictionary' as urlname%}
   {%include 'utils/leftbar.html' with import_module=urlname list_url='dict_view' card_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column">
+  <div class="d-flex flex-column w-100">
     <!-- prettier-ignore -->
     {%include 'utils/main_horizalbar.html' with model_name='Dictionary' application='apputil' title='Dictionary' %}
     <!-- prettier-ignore -->
 
     <div class="fixTableHead">
-      <table class="table table-small table-bordered sorting_table table-hover bg-light" id="id_dictionary_table">
+      <table class="table table-small sorting_table" id="id_dictionary_table">
         <thead>
           <tr>
             <th class="text-danger" style="width: 5px"></th>
