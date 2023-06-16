@@ -1,6 +1,8 @@
 {% extends 'base.html'%}
 <!--  -->
-{% block title%} COADD{% endblock %} {% block content%}
+{% block title%} COADD{% endblock %} 
+
+{% block content%}
 <!--  -->
 <div class="d-flex flex-row justify-content-between vh-100">
   {%url 'excel-import' process_name='Drug' as urlname%}
@@ -9,7 +11,7 @@
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="main d-flex flex-column">
+  <div class="d-flex flex-column">
     {% include 'utils/main_horizalbar.html' with title='Drug' model_name='Drug' application='ddrug' %}
     <!-- Card View Content -->
     <div class="contain-fluid data-contain">

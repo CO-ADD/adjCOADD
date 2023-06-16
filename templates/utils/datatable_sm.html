@@ -1,12 +1,12 @@
-<table id="{{table_id}}" class="table-hover " style="width: 100%">
+<table id="{{table_id}}" class="table-bg" style="width: 100%">
   <thead>
     <tr>
-      <th class="border" style="width: 10em"></th>
+      <th style="width: 10em"></th>
      {%if hiddenfield%}
       <th class="not-visible">{{hiddenfield}}</th>
      {%endif%}
       {%for th in data_fields %}
-      <th class="border">{{th}}</th>
+      <th>{{th}}</th>
       {%endfor%}
     </tr>
   </thead>
@@ -17,9 +17,9 @@
     {%include html_name%}
     {%else%}
     <tr>
-      <td class="border">{{object.organism}}</td>
+      <td >{{object.organism}}</td>
     {%for value in object.get_values%}
-    <td class="border">{{value}}</td>
+    <td>{{value}}</td>
     {%endfor%}
     </tr>
     {%endif%}

@@ -5,7 +5,7 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
-  <div class="border border-2 w-100">
+  <div class="w-100">
     <div class="d-flex m-0 p-0">
       {% include 'utils/lefticons.html' with title="Organism" %}
       <div class="accordion bg-transparent w-100" id="organism-detail">
@@ -49,9 +49,11 @@
           <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
               data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-              Batch and Stock
-              <!-- prettier-ignore -->
+              <h5 class="fs-6 my-0">
+                Batch and Stock
+              </h5>
               {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+              <!-- prettier-ignore -->
             </button>
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
@@ -75,7 +77,9 @@
           <h2 class="accordion-header" id="headingThree">
             <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
               data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-              Culture
+              <h5 class="fs-6 my-0">
+                Culture
+              </h5>
               <!-- prettier-ignore -->
               {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=cultr_obj_count %}
             </button>
@@ -101,11 +105,8 @@
   </div>
 
 
-  <!-- MIC_COADD Pivot -->
-  {%include './organism_mic.html'%}
-
-  <div style="min-height: 100px;"></div>
- </div>
+  {% load static %}
+  <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
   <script>
     $(document).ready(function () {
       let url_batch = `{% url 'batch_create' object.pk %}`;

@@ -1,9 +1,9 @@
 <div class="sidebar card-text panel me-2 ps-3">
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         <div class="d-flex justify-content-evenly">
-            <input id="filter-apply" class="form-control-sm btn my-2" type="submit" value="Apply" />
+            <input id="filter-apply" class="btn my-2" type="submit" value="Apply" />
             
-            <button class="form-control-sm btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
+            <button class="btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
             <input data-name= "submit-reset" type="text" name="reset" value="False" hidden>
         </div>
         <div class="input-group input-group-sm my-2 p-1 w-100">
@@ -15,7 +15,7 @@
 
             <span>
 
-                <select class="border" style="width: fit-content;" name="paginate_by" id="pages_set">
+                <select class="border text-info" style="width: fit-content;" name="paginate_by" id="pages_set">
                     <option value=50> {{paginate_by}}</option>
                     <option value=2>2 </option>
                     <option value=50>50 </option>
@@ -24,7 +24,7 @@
                     <option value=500>500 </option>
                 </select>
             </span>
-            <span>
+            <span class="text-info">
 
                 &nbsp; entries per page
             </span>
@@ -46,12 +46,12 @@
             {%for field in filter.form%}
             {% if field.name != 'Search_all_fields' %}
             <button id="btn_{{field.name|safe}}"
-                class="collapsed accordion-button text-light text-start fs-6"
+                class="collapsed accordion-button text-start fs-6 bg-transparent border-bottom"
                 type="button" data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
                 aria-controls="{{field.label}}">
                 {{field.label}}
             </button>
-            <div id="{{field.name|safe}}" class="accordion-collapse collapse" >
+            <div id="{{field.name|safe}}" class="accordion-collapse collapse card-bg" >
                 <p class="accordion-body m-2 px-1 py-1">
                     {{field}}
                 </p>

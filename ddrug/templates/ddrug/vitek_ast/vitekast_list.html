@@ -5,12 +5,12 @@
 <!--prettier-ignore-->
 {% block content%}
 
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
     {%url 'import-VITEK' as urlname%}
     {%include 'utils/leftbar.html' with import_module=urlname  list_url='vitekast_list' card_url='vitekast_list' %}
     {%include "utils/sidebar.html"%}
 
-    <div class="main d-flex flex-column">
+    <div class="d-flex flex-column w-100">
       <div>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">

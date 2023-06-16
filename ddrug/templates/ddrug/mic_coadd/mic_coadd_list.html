@@ -5,13 +5,13 @@
 <!--prettier-ignore-->
 {% block content%}
 
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
   <!-- {%url 'import-VITEK' process_name='Vitek' as urlname%} -->
   <!--prettier-ignore-->
   {%include 'utils/leftbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
   {%include "utils/sidebar.html"%}
 
-  <div class="main d-flex flex-column">
+  <div class="d-flex flex-column w-100">
     <div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
