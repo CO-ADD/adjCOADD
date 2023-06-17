@@ -133,6 +133,7 @@ class AuditModel(models.Model):
     OWNER           = "orgdb"
     VALID_STATUS    = False
     HEADER_FIELDS   = {}
+    CARDS_FIELDS   = {}
 
     ID_SEQUENCE = ""
     ID_PREFIX = ""
@@ -357,6 +358,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     # objects values according to fields return from the above class methods, based on header_fields order
     def get_values(self, fields=None):
+
         from django.db.models import Model
         if fields is None:
             fields = self.HEADER_FIELDS
@@ -396,16 +398,22 @@ class AuditModel(models.Model):
         return value_list
         
     # used to get fieds and values as a paire
-    def get_fieldsandvalues(self):
-        fields=self.__class__.get_fields()
-        values=self.get_values()
-        return [(fields[i], values[i]) for i in range(len(fields))]
+    def get_fieldsandvalues(self, card_fields=None):
+        if card_fields is None:
+            card_fields = self.CARDS_FIELDS
+      
+        fields=self.__class__.get_fields(fields=card_fields)
+        values=self.get_values(fields=card_fields)
+
+        try:
+            return [(fields[i], values[i]) for i in range(len(fields))]
+        except Exception as err:
+            return [("error: ", err)]
     
     #-------------------------------------------------------------------------------------------------
     # data-visulization 
     # Should be moved into Utils - not a class method
     @classmethod
-    # @sync_to_async
     def get_pivottable(cls, querydata, columns_str, index_str,aggfunc, values):
         np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
         data=list(querydata.values())

@@ -20,7 +20,8 @@
         <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
           style="background-color: transparent !important" />
       </a>
-    <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog" style="width:1500px"></div>
+    <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"
+      style="width:1500px"></div>
     <!-- call drug structure editor modal -->
     <script>
 
@@ -44,8 +45,8 @@
 
 
     </script>
-        
-      {%endif%}
+
+    {%endif%}
     </p>
     <p class="card-text m-0 fst-normal"> <strong>{{object_var2_label}}</strong> {{object_var2}}</p>
     <p class="card-text m-0 fst-normal"> <strong>{{object_var2b_label}}</strong> {{object_var2b}}</p>
@@ -66,16 +67,7 @@
       {{object_var5 | join:","}}
       <!--  -->
     </p>
-       <!-- if fields provided  -->
-       {%if card_fields%}
-       {% for name, value in object.get_fieldsandvalues %}
-       <div class='d-flex' >
-         <p class='fw-bold' >{{name}}: </p>
-         <p style="font-size:small">{{value}}</p>
-       </div>
-       {%endfor%}
- 
-     {%endif%}
+
     <br />
     <div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#_{{object_id_slug}}"
       aria-expanded="false" aria-controls="{{object_id_slug}}">
@@ -83,8 +75,18 @@
     </div>
 
     <div class="collapse" id="_{{object_id_slug}}">
-   
+      <!-- if fields provided  -->
       <br />
+      {%if model_fields%}
+      {% for name, value in object.get_fieldsandvalues %}
+      <div class='d-flex'>
+        <!-- <p class='fw-bold'>{{name}}: </p> -->
+        <p style="font-size:small">{{value}}</p>
+      </div>
+      {%endfor%}
+
+      {%else%}
+
       <p class="card-text m-0 fst-normal" style="font-size: small">
         <strong>{{object_var6_label}}</strong><br />
         {{object_var6}}
@@ -104,6 +106,7 @@
         <strong>{{object_var9_label}}</strong> <br />
         {{object_var9}}
       </p>
+      {%endif%}
     </div>
   </div>
 </div>

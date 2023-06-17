@@ -115,6 +115,13 @@ class Organism(AuditModel):
         'strain_origin':'Origin',
     }
 
+    CARDS_FIELDS= {
+        "source" : "Source",
+        "strain_type": "Type",
+        "res_property": "Phenotype",
+        "gen_property": "Genotype",
+    }
+
     FORM_GROUPS={
        'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification",],
        'Group2': ['res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_notes','mta_document', 'source', 'source_code'],

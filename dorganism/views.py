@@ -62,10 +62,10 @@ class TaxonomyUpdateView(SimpleupdateView):
 ##
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted')
 def deleteTaxonomy(req, slug=None):
-    kwargs={'user': req.user}
-    object_=get_object_or_404(Taxonomy, urlname=slug)
+    kwargs = {'user': req.user}
+    object_ = get_object_or_404(Taxonomy, urlname=slug)
     try:
-        if req.method=='POST':
+        if req.method == 'POST':
             object_.delete(**kwargs)
     except Exception as err:
         print(err) 
@@ -75,14 +75,17 @@ def deleteTaxonomy(req, slug=None):
 ##
 class OrganismListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
-    model=Organism  
+    model = Organism  
     template_name = 'dorganism/organism/organism_list.html'
-    filterset_class=Organismfilter
-    model_fields=model.HEADER_FIELDS
+    filterset_class = Organismfilter
+    model_fields = model.HEADER_FIELDS
     
 ##  
 class OrganismCardView(OrganismListView):
     template_name = 'dorganism/organism/organism_card.html'
+    model = Organism  
+    model_fields = model.CARDS_FIELDS
+    
 
 ##
     # =============================step 2. Create new record by form===================#

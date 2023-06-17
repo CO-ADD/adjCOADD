@@ -3,42 +3,26 @@ import os
 from rdkit import Chem
 from django_rdkit.models import *
 from django_rdkit.config import config
-from django_filters.views import FilterView
 import pandas as pd
 import numpy as np
 from django.core.serializers.json import DjangoJSONEncoder
-from time import localtime, strftime
-import psycopg2
-from rest_framework import generics
-
 import logging
 logger = logging.getLogger("django")
-from django.utils.decorators import classonlymethod
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import transaction, IntegrityError
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
-from django.views.generic import ListView, TemplateView
-from django.utils.functional import SimpleLazyObject
 
 
-from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.files_upload import Importhandler, file_location, OverwriteStorage
 from apputil.utils.api_filterclass import API_FilteredListView
-from apputil.utils.validation_log import Validation_Log
-from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
+from apputil.utils.views_base import SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
-from dorganism.models import Organism_Batch
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
-from ddrug.utils.molecules import molecule_to_svg, clearIMGfolder, get_mfp2_neighbors
-from ddrug.utils.vitek import upload_VitekPDF_List
+from ddrug.utils.molecules import molecule_to_svg, get_mfp2_neighbors
 from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, VitekID_filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
 from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
 
@@ -90,7 +74,6 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
-
     def get_queryset(self):
         queryset = super().get_queryset()  
         smiles_str=self.request.GET.get("substructure") or None
@@ -109,10 +92,10 @@ class DrugCardView(DrugListView):
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
+            
         # clearIMGfolder()
             for object_ in context["object_list"]:
                 filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
-                # print(filepath)
                 if os.path.exists(filepath):
                     continue
                 else:
@@ -196,7 +179,7 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
                 querydata=queryset.filter(pk__in=selected_data)
             else:
                 querydata=queryset.filter(card_barcode__contains=card_barcode)
-                query_send=json.dumps(list(querydata.values()), cls=DjangoJSONEncoder)   
+                
             values=values_str or None # pivottable values
             if values:
                 try:
@@ -320,5 +303,4 @@ class API_VITEK_ASTList(API_FilteredListView):
 #     queryset = VITEK_AST.objects.all()
 #     serializer_class = VITEK_ASTSerializer
 #
-
 

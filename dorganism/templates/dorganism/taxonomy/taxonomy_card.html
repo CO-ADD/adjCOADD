@@ -3,12 +3,12 @@
 {% block title%} COADD{% endblock %}
 {% block content%}
 <!--  -->
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
   {%include 'utils/leftbar.html' with list_url='taxo_list' card_url='taxo_card' create_object='createTaxo' create_objectModal='createTaxoModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column w-100">
     {% include 'utils/main_horizalbar.html' with title='Taxonomy' model_name='Taxonomy' application='dorganism' %}
     <!-- Card View Content -->
     <div class="contain-fluid data-contain">

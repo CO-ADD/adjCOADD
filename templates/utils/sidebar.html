@@ -17,7 +17,7 @@
 
                 <select class="border text-info" style="width: fit-content;" name="paginate_by" id="pages_set">
                     <option value=50> {{paginate_by}}</option>
-                    <option value=2>2 </option>
+                    <option value=10>10</option>
                     <option value=50>50 </option>
                     <option value=100>100 </option>
                     <option value=200>200 </option>
@@ -31,7 +31,7 @@
         </div>
         <hr>
         {%if filterset%}
-        <div style="height:fit-content; width: 200px;">
+        <div class="card-bg" style="height:fit-content; width: 200px;">
             {{filterset | default_if_none:"&nbsp;"}}
         </div>
         {%endif%}
