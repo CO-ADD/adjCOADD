@@ -4,12 +4,12 @@
 {% block content %}
 <div style="margin-top: 20px; height: 50px"></div>
 <div class="container d-flex flex-wrap justify-content-around">
-
+<!-- 
     <div class="Land_banner mt-5 me-3 bg-transparent Land_frame_show flex-grow-1">
 
         <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
             <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Organisms</span>
-        </label>
+        </label> -->
         <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">
           
             {% url 'org_card' as org_url%}
@@ -22,11 +22,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div>
     <div class="Land_banner mt-5 bg-transparent Land_frame_show">
         <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
             <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Properties</span>
-        </label>
+        </label> -->
 
         <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
             <!--  -->
@@ -59,17 +59,17 @@
             </div>
         </div>
 
-    </div>
-    <div class="Land_banner mt-5 ms-5 bg-transparent Land_frame_show">
+    <!-- </div> -->
+    <!-- <div class="Land_banner mt-5 ms-5 bg-transparent Land_frame_show">
         <label for="" class="ms-2 position-absolute" style="margin-top: -1rem !important">
             <span class="fs-4 text-muted px-1 rounded-3 border broder-2">Genetics</span>
-        </label>
+        </label> -->
 
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
             {% url 'gene_list' as gene_url%}
             {% include 'utils/miscellaneous/landbtn_primary.html' with title='GENE' url=gene_url totalnumber=nGene %}
-            <div class="row w-50">
-                <div class="col text-center m-auto">
+            <div class="d-flex flex-column w-50">
+                <!-- <div class="col text-center m-auto"> -->
                     <h3>
                     {% url 'sequence_list' as sp_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID by Sequence' url=sp_url totalnumber=nBP %}
@@ -77,8 +77,8 @@
                     {% url 'id_pub_list' as id_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID from Public' url=id_url totalnumber=nIDP %}
                     </h3>
-                </div>
-                <div class="col text-center m-auto">
+                <!-- </div>
+                <div class="col text-center m-auto"> -->
                     <h3>
                     {% url 'wgs-fastqc_list' as wgsfq_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='FastQC - WGS' url=wgsfq_url totalnumber=nFastQC %}
@@ -87,10 +87,10 @@
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='CheckM - WGS' url=wgsch_url totalnumber=nCheckM %}
                     
                     </h3>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 
 </div>
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
