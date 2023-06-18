@@ -512,6 +512,8 @@ class MIC_COADD(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         # example fields for test view
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': '/dorganism/organism/'}, 
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "drug_id.drug_name":"Drug Name",
         "mic_type":"Type",
         "mic":"MIC",

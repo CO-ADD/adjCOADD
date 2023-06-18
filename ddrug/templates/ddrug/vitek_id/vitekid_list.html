@@ -16,12 +16,12 @@
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active border border-2" id="nav-home-tab" data-bs-toggle="tab"
               data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
-              <strong class="tab-text">VITEK_ID</strong>
+              <strong class="text-info">VITEK_ID</strong>
             </button>
             <button class="nav-link border border-2" id="nav-chart-table-tab" data-bs-toggle="tab"
               data-bs-target="#nav-chart-table" type="button" role="tab" aria-controls="nav-profile"
               aria-selected="false">
-              <strong class="tab-text">Chart/Table</strong>
+              <strong class="text-info">Chart/Table</strong>
             </button>
           </div>
         </nav>
@@ -32,6 +32,7 @@
               {% include 'utils/pagination.html'%}
               <!--  -->
               {% include 'utils/miscellaneous/selectAllExp.html' %}
+              {%include 'utils/data_download_form.html' with title='VITEK_ID' model_name='VITEK_ID' application='ddrug' %}
             </div>
             <div class="fixTableHead">
               <!--prettier-ignore-->

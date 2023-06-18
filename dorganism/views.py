@@ -20,7 +20,7 @@ from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
-                    Organismfilter, Taxonomyfilter, Batchfilter)
+                    Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
 
 from ddrug.models import VITEK_AST, MIC_COADD
 from .utils.data_visual import data_frame_style, pivottable_style
@@ -261,6 +261,7 @@ class BatchDeleteView(SimpledeleteView):
     transaction_use = 'dorganism'
 
 # --Stock Views--
+# view in organism detail views
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
@@ -289,6 +290,16 @@ def stockList(req, pk):
         res=data        
         return JsonResponse({'data':res})
     return JsonResponse({})
+#
+# Overview Stocks
+##
+class StockListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model = OrgBatch_Stock  
+    template_name = 'dorganism/organism/batch_stock/stock_list.html'
+    filterset_class = Stockfilter
+    model_fields = model.HEADER_FIELDS 
+
 
 @login_required
 def createStock(req, orgbatch_id):

@@ -6,7 +6,7 @@ from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCr
                      createOrganism, detailOrganism, updateOrganism, OrganismDeleteView, OrganismListView,OrganismCardView, 
                      BatchUpdateView, createBatch, BatchDeleteView,
                      createStock, updateStock, stockList, StockDeleteView,
-                     CultureUpdateView, createCulture, CultureDeleteView) #StockListView 
+                     CultureUpdateView, createCulture, CultureDeleteView,StockListView) 
 from .utils.utils import search_organism, search_organism_id
 
 
@@ -37,6 +37,7 @@ urlpatterns = [
 
     # OrgBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
+    path('stocklist', StockListView.as_view(), name="stock_list_overview"),
     path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
     path('updateStock/<str:pk>/', updateStock, name="stock_update"),
     path('deleteStock/<str:pk>/', StockDeleteView.as_view(), name="stock_delete"),

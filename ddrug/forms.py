@@ -76,6 +76,7 @@ class Drug_filter(Filterbase):
     Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
     Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
     Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
+    Other_Name = django_filters.CharFilter(field_name='drug_othernames', lookup_expr='icontains')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -88,7 +89,8 @@ class Drug_filter(Filterbase):
     
     class Meta:
         model=Drug
-        fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro']
+        fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro', 'Other_Name']
+        # fields=list(model.HEADER_FIELDS.keys())
 
 
 
@@ -155,7 +157,7 @@ class MIC_COADDfilter(Filterbase):
 
     class Meta:
         model=MIC_COADD
-        fields=["drug_id__drug_name", "orgbatch_id__organism_id__gen_property", "mic"]
+        fields=["drug_id__drug_name", "orgbatch_id__organism_id__gen_property","mic"]
 
 class MIC_Pubfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")

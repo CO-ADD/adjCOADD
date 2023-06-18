@@ -497,6 +497,7 @@ nav.shrink .dropdown-divider {
 
 .Land_frame_show label span {
   animation: fadeIn 5s;
+  background-color: var(--body-bg);
 }
 
 .landp-img-01 {

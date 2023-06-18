@@ -373,6 +373,7 @@ class AuditModel(models.Model):
                     if isinstance(fields[name], dict):
                         
                         if isinstance(obj, Model):
+                            print(obj)
                             value_list.append({obj.pk: list(fields[name].values())[0]})
                         else:
                             if isinstance(list(fields[name].values())[0], dict):

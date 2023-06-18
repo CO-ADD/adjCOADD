@@ -25,7 +25,7 @@
             aria-controls="nav-home"
             aria-selected="true"
           >
-            <strong class="tab-text">MIC_COADD</strong>
+            <span class="text-info">MIC_COADD</span> 
           </button>
           <button
             class="nav-link border border-2"
@@ -37,7 +37,7 @@
             aria-controls="nav-profile"
             aria-selected="false"
           >
-            <strong class="tab-text">Chart/Table</strong>
+            <strong class="text-info">Chart/Table</strong>
           </button>
         </div>
       </nav>
@@ -55,6 +55,7 @@
             {% include 'utils/pagination.html'%}
             <!--  -->
             {%include 'utils/miscellaneous/selectAllExp.html'%}
+            {%include 'utils/data_download_form.html' with title='MIC_COADD' model_name='MIC_COADD' application='ddrug' %}
           </div>
           <div class="fixTableHead">
             <!--prettier-ignore-->

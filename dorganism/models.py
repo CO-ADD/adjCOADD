@@ -383,7 +383,7 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-        "orgbatch_id":"OrgBatch ID",
+        # "orgbatch_id.organism_id":"OrgBatch ID",
         "stock_type":"Stock Type",
         "n_created":"#C",
         "n_left":"#L",
@@ -401,7 +401,7 @@ class OrgBatch_Stock(AuditModel):
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_organism_id") 
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
     n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
@@ -472,7 +472,18 @@ class OrgBatch_Stock(AuditModel):
         if n_created:
             self.n_created=n_created
         super().save(*args, **kwargs)
-       
+    
+    # override to get field contains foreignkey fields
+    @classmethod
+    def get_fields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
+        if fields:
+            fieldsname=[field.name for field in cls._meta.fields]
+            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
+        else:
+            select_fields=None   
+        return select_fields
             
   
 #=================================================================================================

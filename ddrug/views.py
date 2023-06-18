@@ -73,21 +73,6 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()  
-        smiles_str=self.request.GET.get("substructure") or None
-        similarity_threshold_str=self.request.GET.get("similarity_threshold") or None
-        if similarity_threshold_str!=str(100) and smiles_str:
-            config.tanimoto_threshold = int(similarity_threshold_str)/100
-            queryset=get_mfp2_neighbors(smiles_str)
-        elif smiles_str:
-            queryset=Drug.objects.filter(smol__hassubstruct=QMOL(Value(smiles_str)))
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        order=self.get_order_by()
-        if order:
-            return self.filterset.qs.distinct().order_by(order)
-        return self.filterset.qs.distinct()
-
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
