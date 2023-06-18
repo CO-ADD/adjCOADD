@@ -43,8 +43,8 @@ urlpatterns = [
 
     # Organism Culture 
     path('createCulture/<str:organism_id>/', createCulture, name="culture_create"),
-    path('updateCulture/<str:pk>', CultureUpdateView.as_view(), name="cultr_update"),
-    path('deleteCulture/<str:pk>', CultureDeleteView.as_view(), name="cultr_delete"),
+    path('updateCulture/<str:pk>', CultureUpdateView.as_view(), name="culture_update"),
+    path('deleteCulture/<str:pk>', CultureDeleteView.as_view(), name="culture_delete"),
   
     #Json search organism
     path('search_organism/', search_organism, name="search_organism"),

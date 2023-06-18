@@ -101,6 +101,7 @@ class SimpleupdateView(LoginRequiredMixin, View):
 class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
     model=None
     transaction_use = 'default'
+    
 
     def post(self, request, *args, **kwargs):
         if 'slug' in kwargs:
@@ -114,7 +115,7 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
             print("try deletess")
             try:
                 object_.delete(**kwargs)
-                ApplicationLog.add('Delete',str(object_.pk),'Warning',request.user,object_.__str__(),'switch entry_astatus -9','Completed')            
+                ApplicationLog.add('Delete','log_proc','Warning',request.user, object_.pk, 'switch entry_astatus -9','Completed')            
             except Exception as err:
                 messages.error(request, err)
 
@@ -160,7 +161,7 @@ class HtmxupdateView(LoginRequiredMixin, View):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
-                ApplicationLog.add('Update',str(object_new.pk),'Info',request.user,object_new.__str__(),'Update an entry','Completed')              
+                ApplicationLog.add('Update',"model",'Info', request.user, 'object','Update an entry','Completed')              
             return render(request, self.template_partial, context)
         else:
             messages.error(request, form.errors)

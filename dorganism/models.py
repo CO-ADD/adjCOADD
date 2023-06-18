@@ -456,22 +456,22 @@ class OrgBatch_Stock(AuditModel):
         return cls.objects.filter(pk=StockID).exists()
 
 
-    #------------------------------------------------
-    # def save(self, *args, **kwargs):
+    # Function called for editable false field------
+    def save(self, *args, **kwargs):
         
-    #     orgbatch_id =kwargs.pop("orgbatch_id", None)
-    #     stock_type=kwargs.pop("stock_type", None)
-    #     stock_date=kwargs.pop("stock_date", None)
-    #     n_created=kwargs.pop("n_created", None)
-    #     if orgbatch_id:
-    #         self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
-    #     if stock_type:
-    #         self.stock_type=Dictionary.objects.get(dict_value=stock_type)
-    #     if stock_date:
-    #         self.stock_date=stock_date
-    #     if n_created:
-    #         self.n_created=n_created
-    #     super().save(*args, **kwargs)
+        orgbatch_id =kwargs.pop("orgbatch_id", None)
+        stock_type=kwargs.pop("stock_type", None)
+        stock_date=kwargs.pop("stock_date", None)
+        n_created=kwargs.pop("n_created", None)
+        if orgbatch_id:
+            self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
+        if stock_type:
+            self.stock_type=Dictionary.objects.get(dict_value=stock_type)
+        if stock_date:
+            self.stock_date=stock_date
+        if n_created:
+            self.n_created=n_created
+        super().save(*args, **kwargs)
        
             
   

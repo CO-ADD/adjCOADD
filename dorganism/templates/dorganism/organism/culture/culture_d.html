@@ -18,7 +18,7 @@
   aria-labelledby="modalCultr{{object_cultr}}Label" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
-    {% url 'cultr_delete' pk=object_cultr as deleteurl %}
+    {% url 'culture_delete' pk=object_cultr as deleteurl %}
 
     {%include 'utils/modal/delete.html' with title='Delete Culture' deleteurl=deleteurl entry=object_cultr%}
   </div>

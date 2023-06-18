@@ -48,7 +48,7 @@ data-bs-placement="left" title="search in all tables"/>
             {%for field in filter.form%}
             {% if field.name != 'Search_all_fields' %}
             <button id="btn_{{field.name|safe}}"
-                class="collapsed accordion-button text-start fs-6 bg-transparent border-bottom"
+                class="collapsed accordion-button text-start bg-transparent border-bottom"
                 type="button" data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
                 aria-controls="{{field.label}}">
                 {{field.label}}

@@ -195,7 +195,8 @@ class Culture_form(forms.ModelForm):
     # 
     def __init__(self, *args, **kwargs):
 
-        super(Culture_form, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        print("culture form")
         self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_type'])]
         self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_source'])]
      
@@ -208,6 +209,7 @@ class Culture_form(forms.ModelForm):
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
+        # fields+=[""]
         # exclude=['culture_type', 'culture_source'] 
 
 # =============================== Culture Update Form-------------------------------

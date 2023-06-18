@@ -35,6 +35,14 @@
   --bs-table-hover-bg: #ebebeb !important;
 }
 
+/* font-size */
+/* 
+description ( icon, p, ): 14px;
+button, info :16px;
+h1-h6: overrideboot_size.css
+
+*/
+
 
 body {
 
@@ -44,7 +52,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  font-family: 'Sans', sans-serif;
+  font-family:'Roboto', 'Sans', sans-serif;
   font-size: 14px;
 }
 
@@ -94,6 +102,9 @@ a:hover {
   text-decoration-thickness: 2px;
 }
 
+i{
+  color: var(--info) !important;
+}
 
 /* --- customize classes --- */
 
@@ -170,12 +181,13 @@ th {
   background-color: var(--plain-text-bg) !important;
   max-width: fit-content !important;
   padding: 2px !important;
+  font-weight: 500 !important;
 }
+
 td {
   padding: 2px !important;
   white-space: wrap;
-  word-wrap: break-word;
-  
+  word-wrap: break-word;  
   max-width: fit-content !important;
 }
 
@@ -187,15 +199,13 @@ table.dataframe tr:nth-child(even) {
   background-color: var(--plain-text-bg);
 }
 
-
-
-
 .btn {
   background-color: var(--brand-bg) !important;
   border: 2px solid var(--brand-bg) !important;
   color: var(--brand-text) !important;
   opacity: 0.8;
   padding: 3px !important;
+  font-weight: bold !important;
 }
 
 .btn-danger{
@@ -215,7 +225,8 @@ table.dataframe tr:nth-child(even) {
 .accordion-button {
   background-color: var(--plain-text-bg) !important;
   color: var(--brand-bg) !important;
-  font-weight: bold;
+  font-weight:700;
+  font-size: 16px !important;
   padding: 3px;
   margin: 2px 0 2px 0;
 }
@@ -225,7 +236,6 @@ table.dataframe tr:nth-child(even) {
   color: var(--brand-bg) !important;
   font-weight: normal;
 }
-
 
 .accordion-item {
   background-color: transparent !important;

@@ -1,8 +1,8 @@
 <tr>
   <td style="width: 10%">
-    {% url 'cultr_update' object.pk as cultr_url %}
+    {% url 'culture_update' object.pk as culture_url %}
     <!--  -->
-    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=cultr_url %}
+    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=culture_url %}
     <!--  -->
     {%include './culture_d.html' with object_cultr=object.pk %}
     

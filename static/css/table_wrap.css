@@ -1,51 +1,51 @@
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-    min-width: 1em;
-    padding: none;
-  }
-  
-  .fixed-pagination {
-    position: fixed;
-    top: 20px;
-    /* Adjust the distance from the top as needed */
-    right: 20px;
-    /* Adjust the distance from the right as needed */
-    z-index: 100;
-    /* Ensure the control stays above other elements */
-  }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    cursor: pointer !important;
-    background-color: var(--info) !important;
-    color: white !important;
-    border: none !important;
-    padding: 0.1rem 0.5rem;
-  }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button {
-    cursor: pointer !important;
-    background-color: transparent !important;
-    color: var(--brand-bg) !important;
-    border: none !important;
-    padding: 0.1rem 0.5rem;
-  }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    transition: 1s;
-    text-decoration: var(--info) solid underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
-  }
-  
-  .dataTables_length select {
-    width: fit-content !important;
-  }
-  
-  .dataTables_paginate span {
-    background-color: transparent !important;
-  }
-  
+  min-width: 1em;
+  padding: none;
+}
 
-  /* fixed table header */
+.fixed-pagination {
+  position: fixed;
+  top: 20px;
+  /* Adjust the distance from the top as needed */
+  right: 20px;
+  /* Adjust the distance from the right as needed */
+  z-index: 100;
+  /* Ensure the control stays above other elements */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  cursor: pointer !important;
+  background-color: var(--info) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.1rem 0.5rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  cursor: pointer !important;
+  background-color: transparent !important;
+  color: var(--brand-bg) !important;
+  border: none !important;
+  padding: 0.1rem 0.5rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  transition: 1s;
+  text-decoration: var(--info) solid underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+.dataTables_length select {
+  width: fit-content !important;
+}
+
+.dataTables_paginate span {
+  background-color: transparent !important;
+}
+
+
+/* fixed table header */
 .fixTableHead {
   overflow-y: auto;
   /* height: 100vh; */
@@ -76,7 +76,6 @@
 .dataframe td {
   padding: 0;
   margin: 0;
-  /* font-size: xx-small; */
   width: fit-content !important;
   height: fit-content !important;
 }

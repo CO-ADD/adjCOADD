@@ -8,13 +8,13 @@
     class="border border-0 bg-transparent"
     type="submit"
     value="update"
-    hx-put="{%url 'cultr_update' pk=object.pk%}"
+    hx-put="{%url 'culture_update' pk=object.pk%}"
     hx-include="closest tr"
     hx-trigger="click"
   >
   <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
   </button>
-  {% url 'cultr_update' pk=object.pk as my_url %}
+  {% url 'culture_update' pk=object.pk as my_url %}
   {% with urlname=my_url|add:'?_value=cancel' %}
   {%include 'utils/miscellaneous/cancel_btn_htmx.html'%}
   {% endwith %}

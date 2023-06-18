@@ -97,7 +97,6 @@ def createOrganism(req):
         Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_organism/) find Foreignkey orgname
         form=CreateOrganism_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
-            print("vlid")
             try:
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
@@ -368,25 +367,31 @@ class StockDeleteView(SimpledeleteView):
 ## 
 @login_required
 def createCulture(req, organism_id):
-    kwargs={}
-    kwargs['user']=req.user 
+    print(f"id is {organism_id}")
+    kwargs={'user' : req.user}
     form=Culture_form()
+    print('form')
     if req.method=='POST':
-        Organism_Id=req.POST.get('search_organism')
+        print("save") 
         form=Culture_form(req.POST)
         if form.is_valid():
+            print("save") 
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False)
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)
-                    message=instance.save(**kwargs)                    
-                    if type(message)==Exception:
-                        messages.error(req, f'{message} happes')
+                    print(instance.organism_id) 
+                    instance.save(**kwargs)                  
+                    # message=instance.save(**kwargs)
+                    # if type(message)==Exception:
+                    #     messages.error(req, f'{message} happes')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
+            print(form.errors)
+            messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
