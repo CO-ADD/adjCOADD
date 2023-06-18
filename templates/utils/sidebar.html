@@ -1,20 +1,23 @@
 <div class="sidebar card-text panel me-2 ps-3">
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
+        {% csrf_token %}
         <div class="d-flex justify-content-evenly">
-            <input id="filter-apply" class="btn my-2" type="submit" value="Apply" />
+            <input id="filter-apply" class="btn my-2" type="submit" name="applysingle" value="quickApply" data-bs-toggle="tooltip"
+data-bs-placement="left" title="search in current table"/>
+            <input id="filter-apply" class="btn my-2" type="submit" name="applymulti" value="Apply" data-bs-toggle="tooltip"
+data-bs-placement="left" title="search in all tables"/>
             
-            <button class="btn-outline-danger my-2" type="reset" onclick="myfun()">Reset</button>
+            
             <input data-name= "submit-reset" type="text" name="reset" value="False" hidden>
         </div>
+        <!-- Here put search all fields input -->
         <div class="input-group input-group-sm my-2 p-1 w-100">
             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>   
            {{ filter.form.Search_all_fields }}
         </div>
         <hr>
         <div class="d-flex justify-content-center">
-
             <span>
-
                 <select class="border text-info" style="width: fit-content;" name="paginate_by" id="pages_set">
                     <option value=50> {{paginate_by}}</option>
                     <option value=10>10</option>
@@ -25,14 +28,15 @@
                 </select>
             </span>
             <span class="text-info">
-
                 &nbsp; entries per page
             </span>
         </div>
         <hr>
+        <!-- Here show combined search conditions -->
         {%if filterset%}
-        <div class="card-bg" style="height:fit-content; width: 200px;">
+        <div class="d-flex flex-column card-bg" style="height:fit-content; max-width: 18em;">
             {{filterset | default_if_none:"&nbsp;"}}
+            <button class="btn btn-danger my-2" type="reset" onclick="myfun()">Clear Condidtions</button>
         </div>
         {%endif%}
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
@@ -41,8 +45,6 @@
             <label for="smiles_query" class="not-visible">Substructure Query</label>
             <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
             <hr>
-
-
             {%for field in filter.form%}
             {% if field.name != 'Search_all_fields' %}
             <button id="btn_{{field.name|safe}}"
@@ -62,11 +64,7 @@
 
     </form>
 
-
 </div>
-<!-- <div class="resizer">-</div> -->
-
-
 
 </script>
 {%load static%}
@@ -86,8 +84,8 @@
         form.submit();
     }
 </script>
-
 <script>
+
     $(document).ready(function () {
 
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
@@ -101,5 +99,6 @@
 
         $("#Class").addClass('show');
         $("#btn_Class").removeClass('collapsed');
+        
     })
 </script>

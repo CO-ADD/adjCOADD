@@ -273,13 +273,11 @@ class Organismfilter(Filterbase):
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
-    
-    
+   
     class Meta:
         model=Organism
         fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
        
-
 
 ## Batch
 class Batchfilter(Filterbase):

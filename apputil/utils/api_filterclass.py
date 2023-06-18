@@ -7,9 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import permissions
-# from .models import MyModel
-# from .serializers import MyModelSerializer
-# from .filtersets import MyModelFilterSet
+
 
 class CustomPagination(PageNumberPagination):
     page_size = 20
@@ -38,7 +36,6 @@ class API_FilteredListView(generics.ListAPIView):
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        print(self.filterset)
         # Return the filtered queryset
         order=self.get_order_by()
         self.filter_Count=self.filterset.qs.distinct().count()

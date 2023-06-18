@@ -22,7 +22,7 @@ from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
 from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form 
 from apputil.models import ApplicationUser, Dictionary, Image, Document
-from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView, HtmxupdateView, CreateFileView
+from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
@@ -63,7 +63,6 @@ def login_user(req):
             username_ldap=req.POST.get('username')
         # print(user)
             if form.is_valid():
-                print("form is valid")
                 user=form.get_user()
                 login(req, user, backend="django_auth_ldap.backend.LDAPBackend",)
                 return redirect("index")
@@ -97,7 +96,7 @@ def userprofile(req, id):
 
 class AppUserListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
-    model=ApplicationUser
+    model = ApplicationUser
     template_name = 'apputil/appUsers.html'  
     filterset_class = AppUserfilter
     model_fields=model.HEADER_FIELDS
@@ -107,7 +106,7 @@ class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
     template_name = 'apputil/appUsersCreate.html'
 
     def post(self, request, *args, **kwargs):
-        form =self.form_class(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             instance=form.save()
             return redirect(request.META['HTTP_REFERER'])
@@ -119,30 +118,30 @@ class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
 ## here used HTMX
 from apputil.utils.views_base import HtmxupdateView
 class ApplicationUserUpdateView(HtmxupdateView):
-    form_class=ApplicationUser_form
-    template_name="apputil/appUsersUpdate.html"
-    template_partial="apputil/appuser_tr.html"
-    model=ApplicationUser
+    form_class = ApplicationUser_form
+    template_name = "apputil/appUsersUpdate.html"
+    template_partial = "apputil/appuser_tr.html"
+    model = ApplicationUser
 
     def put(self, request, *args, **kwargs):
-        pk=kwargs.get("pk")
-        object_=self.get_object(pk)
-        qd=QueryDict(request.body).dict()
-        form =self.form_class(data=qd, instance=object_)
-        context={
+        pk = kwargs.get("pk")
+        object_= self.get_object(pk)
+        qd = QueryDict(request.body).dict()
+        form = self.form_class(data=qd, instance=object_)
+        context = {
         "form":form,
         "object":object_,
     }
         if form.is_valid():           
-            object_new=form.save()                
+            # object_new=form.save()                
             return render(request, self.template_partial, context)
         else:
             messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
-    model=ApplicationUser
-    template_name='apputil/appUsersDel.html'
+    model = ApplicationUser
+    template_name = 'apputil/appUsersDel.html'
     success_url = reverse_lazy('userslist')
     fields=['is_appuser']
 
@@ -157,29 +156,27 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 class DictionaryView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
-    model=Dictionary
-    template_name='apputil/dictList.html'
+    model = Dictionary
+    template_name = 'apputil/dictList.html'
     filterset_class = Dictionaryfilter
-    model_fields=model.HEADER_FIELDS
+    model_fields = model.HEADER_FIELDS
 
     
 # 
 class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
-    form_class=Dictionary_form
-    template_name='apputil/dictCreate.html'
+    form_class = Dictionary_form
+    template_name = 'apputil/dictCreate.html'
 
 
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
-    kwargs={'user': req.user}
+    kwargs = {'user': req.user}
     if req.user.has_permission('Admin'):
         if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
-            dict_value=req.POST.get("dict_value") 
-            type=req.POST.get("type") or None
-            print(type)
-            value=req.POST.get("value").strip() or None
-            print(value)
-            object_=get_object_or_404(Dictionary, dict_value=dict_value)
+            dict_value = req.POST.get("dict_value") 
+            type = req.POST.get("type") or None
+            value = req.POST.get("value").strip() or None
+            object_= get_object_or_404(Dictionary, dict_value=dict_value)
             try:
                 if object_:
                     if type == 'dict_class':
@@ -199,12 +196,11 @@ def updateDictionary(req):
 
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def deleteDictionary(req):
-    kwargs={}
-    kwargs['user']=req.user
+    kwargs = {}
+    kwargs['user'] = req.user
     if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
-        dict_value=req.POST.get("dict_value") 
-        object_=get_object_or_404(Dictionary, dict_value=dict_value)
-        print(object_)
+        dict_value = req.POST.get("dict_value") 
+        object_ = get_object_or_404(Dictionary, dict_value=dict_value)
         try:
             if object_:
                 object_.delete(**kwargs)
@@ -221,29 +217,20 @@ class CreatedocumentView(CreateFileView):
     model = Organism
     file_field = 'doc_file'
     related_name = 'assoc_documents'
+    transaction_use_manytomany = 'dorganism'
 
 class CreateimageView(CreateFileView):
     form_class = Image_form
     model = Organism
     file_field = 'image_file'
     related_name = 'assoc_images'
+    transaction_use_manytomany = 'dorganism'
     
-class DocDeleteView(SuperUserRequiredMixin,SimpleupdateView):
-    model=Document
+class DocDeleteView(SimpledeleteView):
+    model = Document
 
-    def post(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        object_=self.get_object(pk)
-        with transaction.atomic():
-            kwargs={'user': request.user}
-            try:
-                object_.delete(**kwargs)
-            except Exception as err:
-                messages.error(request, err)       
-        return redirect(request.META['HTTP_REFERER'])
-
-class ImageDeleteView(DocDeleteView):
-    model= Image
+class ImageDeleteView(SimpledeleteView):
+    model = Image
 # =========================== Export CSV View =============================
 from .utils.views_base import DataExportBaseView
 class DataExportView(DataExportBaseView):

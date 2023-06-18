@@ -16,7 +16,6 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
 
-
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.api_filterclass import API_FilteredListView
 from apputil.utils.views_base import SimplecreateView, SimpleupdateView
@@ -184,10 +183,10 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
             if values:
                 try:
                     table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
-                    response = HttpResponse(content_type='text/csv')
-                    response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
+                    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')#(content_type='text/csv')
+                    response['Content-Disposition'] = 'attachment; filename=pivottable.xlsx'
                     table_html=table.head().to_html(classes=["table-bordered",])
-                    table_csv=table.to_csv()
+                    table_csv=table.to_excel()
                     return JsonResponse({"table_html":table_html, "table_csv":table_csv})
                 except Exception as err:
                     error_message=str(err)

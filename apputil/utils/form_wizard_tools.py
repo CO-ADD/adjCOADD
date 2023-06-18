@@ -124,6 +124,7 @@ class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
         request = self.request
 
         if current_step == 'select_file':
+            context={}
             self.storage.extra_data['validation_result']="-"
             self.dirname = file_location(instance=request.user)  # define file store path during file process
             files = []
@@ -151,7 +152,7 @@ class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
                 self.storage.extra_data['dirname'] = self.dirname          
             else:
                 self.storage.extra_data['validation_result']="No files selected"
-                return render(request, template_name, context)
+                return render(request, self.template_name, context)
 
         elif current_step == 'upload': # recheck and save to DB
             form =self.form_list['upload'](request.POST)

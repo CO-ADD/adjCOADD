@@ -665,8 +665,8 @@ class Image(AuditModel):
     image_name =models.CharField(max_length=120,  unique=True, verbose_name = "Name")
     image_file= models.ImageField(upload_to='images/', verbose_name = "Image")
     image_type = models.CharField(max_length=25, verbose_name = "Type")
-    image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
-    image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
+    image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description", default = "Description")
+    image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source", default = "source")
 
     class Meta:
         app_label = 'apputil'
@@ -742,8 +742,8 @@ class Document(AuditModel):
     doc_name =models.CharField(max_length=120, unique=True, verbose_name = "Name"  )
     doc_file= models.FileField(upload_to='documents/', verbose_name = "Document")
     doc_type = models.CharField(max_length=25, verbose_name = "Type")
-    doc_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
-    doc_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
+    doc_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description", default = "description")
+    doc_source = models.CharField(max_length=50, blank=True, verbose_name = "Source", default = "source")
 
     class Meta:
         app_label = 'apputil'

@@ -70,7 +70,7 @@ const sendToServer = (data) => {
 
 $("#download_pt_as_csv").click(function () {
   console.log("clicked!");
-  saveData(savecsv, "pivottable.csv");
+  saveData(savecsv);
 });
 // function create_pivottable(data) {
 //   var index_value = [];

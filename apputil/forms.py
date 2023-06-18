@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 
-from .utils.filters_base import Filterbase
+from .utils.filters_base import Filterbase, Filterbase_base
 
 
 # --Login Form--
@@ -83,7 +83,7 @@ class Document_form(forms.ModelForm):
 # --Filterset Form--
 ## Application User
 
-class AppUserfilter(django_filters.FilterSet):
+class AppUserfilter(Filterbase_base):
     Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
 
     username = django_filters.CharFilter(lookup_expr='icontains')
@@ -98,14 +98,15 @@ class AppUserfilter(django_filters.FilterSet):
     @property
     def qs(self):
         parent = super().qs
+        print(parent)
         return parent.filter(is_appuser=True)
     
-    def filter_all_fields(self, queryset, name, value):
-        if value:
-            exclude_fields = ['password',]
-            q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
-            return queryset.filter(q_object)
-        return queryset
+    # def filter_all_fields(self, queryset, name, value):
+    #     if value:
+    #         exclude_fields = ['password',]
+    #         q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
+    #         return queryset.filter(q_object)
+    #     return queryset
 
 ## Dictionary
 class Dictionaryfilter(Filterbase):

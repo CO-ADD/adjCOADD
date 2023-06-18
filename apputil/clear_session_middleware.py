@@ -15,7 +15,7 @@ class ClearSessionMiddleware:
             current_view = None
         last_view = request.session.get('last_view')
             # If the current view is different from the last visited view, and both are in clear_session_views, clear the session data
-        if last_view and last_view != current_view:
+        if last_view and last_view != current_view and current_view!='dataexport':
             if 'cached_queryset' in request.session:
                 del request.session['cached_queryset']
             # Update the last visited view

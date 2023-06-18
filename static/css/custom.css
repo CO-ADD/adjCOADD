@@ -195,15 +195,19 @@ table.dataframe tr:nth-child(even) {
   border: 2px solid var(--brand-bg) !important;
   color: var(--brand-text) !important;
   opacity: 0.8;
-  padding: 2px !important;
+  padding: 3px !important;
 }
 
+.btn-danger{
+ border: 2px solid var(--info) !important;
+  background-color: var(--info) !important;
+ 
+}
 .btn:hover {
   background-color: var(--body-bg) !important;
   color: var(--info) !important;
   font-weight: bold;
 }
-
 .form-select {
   width: fit-content !important;
 }

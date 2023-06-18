@@ -72,10 +72,8 @@ class FileValidator(object):
 
         # Type validation
         if self.content_types:
-            print(data)
             content_type =magic.from_buffer(data.read(), mime=True)
             data.seek(0)
-
             if content_type not in self.content_types:
                 params = { 'content_type': content_type }
                 raise ValidationError(self.error_messages['content_type'],
@@ -133,10 +131,8 @@ class Importhandler(SuperUserRequiredMixin, View):
     def delete_file(self, file_name):
         location=file_location(self.request)
         file_full_path=os.path.join(location, file_name)
-        print(file_full_path)
         try:
             os.unlink(file_full_path)
-            print("removed!")
         except Exception as err:
             raise Exception
         

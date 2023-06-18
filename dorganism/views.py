@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
+from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
@@ -52,24 +52,20 @@ def detailTaxonomy(req, slug=None):
 class TaxonomyCreateView(SimplecreateView):
     form_class=Taxonomy_form
     template_name='dorganism/taxonomy/taxonomy_c.html'
+    transaction_use = 'dorganism'
         
 ##
 class TaxonomyUpdateView(SimpleupdateView):
     form_class=Taxonomy_form
     template_name='dorganism/taxonomy/taxonomy_u.html'
     model=Taxonomy
+    transaction_use = 'dorganism'
 
 ##
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted')
-def deleteTaxonomy(req, slug=None):
-    kwargs = {'user': req.user}
-    object_ = get_object_or_404(Taxonomy, urlname=slug)
-    try:
-        if req.method == 'POST':
-            object_.delete(**kwargs)
-    except Exception as err:
-        print(err) 
-    return redirect("taxo_card")
+class TaxonomyDeleteView(SimpledeleteView):
+    model = Taxonomy
+    transaction_use = 'dorganism'
+
 
 #--ORGANISM Views--
 ##
@@ -101,6 +97,7 @@ def createOrganism(req):
         Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_organism/) find Foreignkey orgname
         form=CreateOrganism_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
+            print("vlid")
             try:
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
@@ -110,6 +107,7 @@ def createOrganism(req):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
+            messages.warning(req, f'create failed due to {form.errors} error')
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 
@@ -210,16 +208,11 @@ def updateOrganism(req, pk):
     return render(req, "dorganism/organism/organism_u.html", context)
 
 ##
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteOrganism(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Organism, organism_id=pk)
-    try:
-        object_.delete(**kwargs)
-    except Exception as err:
-        print(err)
-    return redirect('/')
+
+class OrganismDeleteView(SimpledeleteView):
+    model = Organism
+    transaction_use = 'dorganism'
+
 
    
 #--Batch Views--
@@ -261,18 +254,12 @@ class BatchUpdateView(HtmxupdateView):
     template_name="dorganism/organism/batch/batch_u.html"
     template_partial="dorganism/organism/batch/batch_tr.html"
     model=Organism_Batch
+    transaction_use = 'dorganism'
 
 ##
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteBatch(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Organism_Batch, orgbatch_id=pk)
-    try:
-        object_.delete(**kwargs)
-    except Exception as err:
-        print(err)
-    return redirect(req.META['HTTP_REFERER'])  
+class BatchDeleteView(SimpledeleteView):
+    model = Organism_Batch
+    transaction_use = 'dorganism'
 
 # --Stock Views--
 ## here is response to an Ajax call
@@ -304,7 +291,6 @@ def stockList(req, pk):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
-##
 @login_required
 def createStock(req, orgbatch_id):
     kwargs={}
@@ -374,16 +360,9 @@ def updateStock(req, pk):
     return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
 
 ##
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteStock(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(OrgBatch_Stock, pk=pk)
-    context={'object':object_}
-    if req.method=='POST':
-        object_.delete(**kwargs)
-        return redirect(req.META['HTTP_REFERER'])
-    return render(req, "dorganism/organism/batch_stock/stock_d.html", context)
+class StockDeleteView(SimpledeleteView):
+    model = OrgBatch_Stock
+    transaction_use = 'dorganism'
 
 # --Culture Views--
 ## 
@@ -417,16 +396,10 @@ class CultureUpdateView(HtmxupdateView):
     template_name="dorganism/organism/culture/culture_u.html"
     template_partial="dorganism/organism/culture/culture_tr.html"
     model=Organism_Culture
+    transaction_use = 'dorganism'
 
 ##
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteCulture(req, pk):
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Organism_Culture, pk=pk)
-    try:
-        object_.delete(**kwargs)
-    except Exception as err:
-        print(err)
-    return redirect(req.META['HTTP_REFERER'])  
+class CultureDeleteView(SimpledeleteView):
+    model = Organism_Culture
+    transaction_use = 'dorganism'
 

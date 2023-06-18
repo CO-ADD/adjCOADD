@@ -5,9 +5,7 @@ import os
 import pandas as pd
 import json
 from datetime import datetime
-from asgiref.sync import sync_to_async
 
-from django import forms
 from django.apps import apps
 from django.core.files.storage import default_storage
 from django.db import transaction, IntegrityError
@@ -17,7 +15,7 @@ from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from apputil.models import ApplicationLog
 
 # --utilized in Decoration has_permissions, an Alert on Permissions--
 def permission_not_granted(req):
@@ -32,8 +30,9 @@ class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 # --create view class--
 class SimplecreateView(LoginRequiredMixin, View):
-    form_class=None
-    template_name=None
+    form_class = None
+    template_name = None
+    transaction_use = 'default'
 
     def get(self, request, *args, **kwargs):
         form=self.form_class()
@@ -41,10 +40,13 @@ class SimplecreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         form =self.form_class(request.POST)
         if form.is_valid():
-            with transaction.atomic():
+            with transaction.atomic(using=self.transaction_use):
                 instance=form.save(commit=False)
                 kwargs={'user': request.user}
                 instance.save(**kwargs)
+                ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+                 #LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus
+                ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
             return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, form.errors)
@@ -56,9 +58,10 @@ class SimplecreateView(LoginRequiredMixin, View):
 
 # --update view class--
 class SimpleupdateView(LoginRequiredMixin, View):
-    form_class=None
-    template_name=None
-    model=None
+    form_class = None
+    template_name = None
+    model = None
+    transaction_use = 'default'
 
     def get_object_byurlname(self, slug):
         return get_object_or_404(self.model, urlname=slug)
@@ -85,22 +88,48 @@ class SimpleupdateView(LoginRequiredMixin, View):
             object_=self.get_object(pk)
         form =self.form_class(request.POST, instance=object_)
         if form.is_valid():
-            with transaction.atomic():
+            with transaction.atomic(using=self.transaction_use):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
+                ApplicationLog.add('Update',str(object_new.pk),'Info',request.user,object_new.__str__(),'Update an entry','Completed')
             return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
+class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
+    model=None
+    transaction_use = 'default'
+
+    def post(self, request, *args, **kwargs):
+        if 'slug' in kwargs:
+            slug=kwargs.get("slug")
+            object_=self.get_object_byurlname(slug)
+        else: 
+            pk=kwargs.get("pk")
+            object_=self.get_object(pk)
+        with transaction.atomic(using=self.transaction_use):
+            kwargs={'user': request.user}
+            print("try deletess")
+            try:
+                object_.delete(**kwargs)
+                ApplicationLog.add('Delete',str(object_.pk),'Warning',request.user,object_.__str__(),'switch entry_astatus -9','Completed')            
+            except Exception as err:
+                messages.error(request, err)
+
+        return redirect(request.META['HTTP_REFERER'])
+    
+
+
 # --update view class with htmx put request--
 from django.http import QueryDict
 class HtmxupdateView(LoginRequiredMixin, View):
-    form_class=None
-    template_name=None
-    template_partial=None
-    model=None
+    form_class = None
+    template_name = None
+    template_partial = None
+    model = None
+    transaction_use = 'default'
     
     def get_object(self, pk):
         return get_object_or_404(self.model, pk=pk)
@@ -127,17 +156,70 @@ class HtmxupdateView(LoginRequiredMixin, View):
         if request.GET.get('_value') == 'cancel':
             return render(request, self.template_partial, context)
         elif form.is_valid():
-            with transaction.atomic():
+            with transaction.atomic(using=self.transaction_use):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
-                object_new.save(**kwargs)                
+                object_new.save(**kwargs)
+                ApplicationLog.add('Update',str(object_new.pk),'Info',request.user,object_new.__str__(),'Update an entry','Completed')              
             return render(request, self.template_partial, context)
         else:
             messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
+# --View for simple update files and images to database--
+class CreateFileView(LoginRequiredMixin,FormView):
+    form_class = None
+    model = None
+    file_field = None
+    related_name = None
+    transaction_use = 'default'
+    transaction_use_manytomany = 'default'
 
-# export view
+    def dispatch(self, request, *args, **kwargs):
+        self.object_ = get_object_or_404(self.model, organism_id=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # Handle AJAX file upload
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            file_data = request.FILES.get(self.file_field)
+            if file_data:
+                file_path = default_storage.save(file_data.name, file_data)
+                file_name = os.path.basename(file_path)
+                file_type = file_data.content_type
+                response = {
+                    'name': file_name,
+                    'type': file_type,
+                    'path': file_path,
+                }
+                return JsonResponse(response)
+        # Handle form submission
+        else:
+            return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if getattr(instance, self.file_field):
+            with transaction.atomic(using=self.transaction_use):
+                kwargs={'user': self.request.user}
+                instance.save(**kwargs)
+            with transaction.atomic(using=self.transaction_use_manytomany):
+                getattr(self.object_, self.related_name).add(instance)
+                self.object_.save(**kwargs)
+        else:
+            messages.warning(self.request, 'No file provided.')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+    def form_invalid(self, form):
+        messages.warning(self.request, f'Update failed due to {form.errors} error')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = self.object_
+        return context
+    
+# --export view--
 import ddrug.utils.tables as drugtbl
 
 class DataExportBaseView(LoginRequiredMixin, View):
@@ -151,7 +233,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
         items=None
         app_name = request.POST.get('app_name')
         model_name = request.POST.get('model_name')
-
+        
         if not app_name or not model_name:
             messages.error(request, "No application or model name were provided for export.")
             return redirect(request.path)
@@ -162,9 +244,9 @@ class DataExportBaseView(LoginRequiredMixin, View):
             return HttpResponse("Model not found.")
         self.selected_pks_string = request.POST.get('selected_pks')
         self.organism = request.POST.get('organism_pk')
-        
+
         if self.selected_pks_string == 'SelectAll':
-            items = Model.objects.all()
+            items = Model.objects.filter(pk__in=request.session.get("cached_queryset") or Model.objects.all())
         elif self.selected_pks_string:
             selected_pks = json.loads(self.selected_pks_string)
             items = Model.objects.filter(pk__in=selected_pks)
@@ -203,53 +285,3 @@ class DataExportBaseView(LoginRequiredMixin, View):
         return response
  
 
-
-class CreateFileView(LoginRequiredMixin,FormView):
-    # template_name = 'apputil/addimg.html'
-    form_class = None
-    model = None
-    file_field = None
-    related_name = None
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object_ = get_object_or_404(self.model, organism_id=kwargs['pk'])
-        return super().dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        # Handle AJAX file upload
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            file_data = request.FILES.get(self.file_field)
-            if file_data:
-                file_path = default_storage.save(file_data.name, file_data)
-                file_name = os.path.basename(file_path)
-                file_type = file_data.content_type
-                response = {
-                    'name': file_name,
-                    'type': file_type,
-                    'path': file_path,
-                }
-                return JsonResponse(response)
-        # Handle form submission
-        else:
-            return super().post(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        if getattr(instance, self.file_field):
-           
-            kwargs={'user': self.request.user}
-            instance.save(**kwargs)
-            getattr(self.object_, self.related_name).add(instance)
-            self.object_.save(**kwargs)
-        else:
-            messages.warning(self.request, 'No file provided.')
-        return redirect(self.request.META['HTTP_REFERER'])
-
-    def form_invalid(self, form):
-        messages.warning(self.request, f'Update failed due to {form.errors} error')
-        return redirect(self.request.META['HTTP_REFERER'])
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["object"] = self.object_
-        return context
