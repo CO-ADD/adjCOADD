@@ -1,15 +1,16 @@
 <tr class="editing">
-  <td class="d-flex m-0" style="width: 10%">
+  <td width="5%" class="p-0">
     {%if user.permission == 'Admin' %}
-    <button
-      class="border border-0"
-      hx-get="{% url 'updateAppUser' object.name %}"
-      hx-trigger="click"
-      
-    >
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </button>    
-    {%include 'apputil/appUsersDel.html' %}
+     
+   
+    {% url 'updateAppUser' object.name as appuser_url %}
+    <!--  -->
+    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=appuser_url %}
+   
+   <span>
+
+     {%include 'apputil/appUsersDel.html' %}
+   </span>
     {%endif%}
   </td>
   <td>{{object.first_name}}</td>

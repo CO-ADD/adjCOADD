@@ -45,7 +45,6 @@ h1-h6: overrideboot_size.css
 
 
 body {
-
   min-height: 100vh;
   position: relative;
   background: var(--body-bg);
@@ -54,6 +53,20 @@ body {
   background-repeat: no-repeat;
   font-family:'Roboto', 'Sans', sans-serif;
   font-size: 14px;
+}
+/* 
+class color and background color
+*/
+.btn-color{
+  color:var(--brand-text) !important;
+  background-color: var(--brand-bg) !important;
+  border: 2px solid var(--brand-bg) !important;
+}
+
+.btn-color.disabled{
+  color: var(--plain-text)!important;
+  background-color: transparent!important;
+  border: transparent !important;
 }
 
 /* Change Border style here */
@@ -85,7 +98,7 @@ a {
 }
 
 p {
-color:var(--plain-text);
+  color:var(--plain-text);
 }
 
 /* Frequently used html element style */
@@ -102,7 +115,7 @@ a:hover {
   text-decoration-thickness: 2px;
 }
 
-i{
+i {
   color: var(--info) !important;
 }
 
@@ -128,6 +141,7 @@ i{
   transition: 0.5s;
 }
 
+/* wizard form steps style */
 .step-line {
   display: flex;
   flex-direction: row;
@@ -199,14 +213,6 @@ table.dataframe tr:nth-child(even) {
   background-color: var(--plain-text-bg);
 }
 
-.btn {
-  background-color: var(--brand-bg) !important;
-  border: 2px solid var(--brand-bg) !important;
-  color: var(--brand-text) !important;
-  opacity: 0.8;
-  padding: 3px !important;
-  font-weight: bold !important;
-}
 
 .btn-danger{
  border: 2px solid var(--info) !important;
@@ -261,14 +267,12 @@ textarea:focus {
 
 select {
   white-space: initial;
-  /* font-size: 12px !important; */
   width: 12rem;
   border: none;
   margin: 0;
 }
 
 select option {
-  /* font-size: 12px !important; */
   width: 100%;
   height: 100%;
   border: none;
@@ -328,10 +332,6 @@ span {
   border-top-color: #1a1a1a;
   margin-top: 1px;
 }
-
-
-
-
 
 /* pagination */
 .page-item {
@@ -516,7 +516,6 @@ nav.shrink .dropdown-divider {
   height: 9.8rem;
   width: 8rem;
   font-size: medium;
-  /* border: 1px solid black; */
 }
 
 a .tooltiptext {

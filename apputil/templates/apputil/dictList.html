@@ -7,7 +7,7 @@
 <div class="d-flex flex-row vh-100">
   <!-- prettier-ignore -->
   {%url 'excel-import' process_name='Dictionary' as urlname%}
-  {%include 'utils/leftbar.html' with import_module=urlname list_url='dict_view' card_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
+  {%include 'utils/leftbar.html' with import_module=urlname list_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->

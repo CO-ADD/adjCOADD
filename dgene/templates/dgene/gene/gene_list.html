@@ -6,7 +6,7 @@
 <div class="d-flex flex-row vh-100">
   {%url 'excel-import' process_name='Gene' as urlname%}
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with list_url='gene_list' card_url='gene_list' create_object='createGene' create_objectModal='createGeneModal'%}
+  {%include 'utils/leftbar.html' with list_url='gene_list' create_object='createGene' create_objectModal='createGeneModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->

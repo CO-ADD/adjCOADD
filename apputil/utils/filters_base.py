@@ -103,7 +103,7 @@ class Filterbase_base(django_filters.FilterSet):
     
     def filter_all_fields_deep(self, queryset, name, value):
         if value:
-            exclude_fields = ['password',]
+            exclude_fields = ['password','astatus', 'acreated_at', 'aupdated_at', 'adeleted_at', 'acreated', 'aupdated', 'adeleted']
             q_object = get_all_fields_q_object_deep(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
@@ -116,6 +116,7 @@ class Filterbase_base(django_filters.FilterSet):
         for field in self.filters:
             if 'CharFilter' == self.filters[field].__class__.__name__:
                 self.filters[field].lookup_expr='icontains'
+        print(self.filters['Search_all_fields'].method)
            
 class Filterbase(Filterbase_base):
 

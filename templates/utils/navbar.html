@@ -47,17 +47,17 @@
             <!-- item-->
             <li>
               <a class="dropdown-item" href="{%url 'org_card'%}">
-                <p>Organism</p>
+                <p class="nav-title">Organism</p>
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="{%url 'taxo_card'%}">
-                <p>Taxonomy</p>
+                <p class="nav-title">Taxonomy</p>
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="{%url 'stock_list_overview'%}">
-                <p>Stock</p>
+                <p class="nav-title">Stock</p>
               </a>
             </li>
             <li>
@@ -65,7 +65,7 @@
             </li>
             <li>
               <a class="dropdown-item" href="{%url 'drug_card'%}">
-                <p>Drug</p>
+                <p class="nav-title">Drug</p>
               </a>
             </li>
 
@@ -74,19 +74,19 @@
             </li>
            <li>
               <a class="dropdown-item" href="{%url 'mic_coadd_list'%}">
-                <p>MIC Antibiogram</p>
+                <p class="nav-title">MIC Antibiogram</p>
               </a>
             </li>
 
            <li>
               <a class="dropdown-item" href="{%url 'mic_pub_list'%}">
-                <p>MIC Public</p>
+                <p class="nav-title">MIC Public</p>
               </a>
             </li>
 
            <li>
               <a class="dropdown-item" href="{%url 'breakpoint_list'%}">
-                <p>Breakpoints</p>
+                <p class="nav-title">Breakpoints</p>
               </a>
             </li>
 
@@ -96,24 +96,17 @@
 
             <li>
               <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
-                <p>Vitek Card</p>
+                <p class="nav-title">Vitek Card</p>
               </a>
             </li>
-<!--
-            <li>
-              <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
-                <p>Vitek ID</p>
-              </a>
-            </li>
--->
             <li>
               <a class="dropdown-item" href="{%url 'vitekast_list'%}">
-                <p>Vitek Ast</p>
+                <p class="nav-title">Vitek Ast</p>
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="{%url 'vitekid_list'%}">
-                <p>Vitek ID</p>
+                <p class="nav-title">Vitek ID</p>
               </a>
             </li>
              <li>
@@ -141,71 +134,17 @@
                 href="{%url 'import-vitek' %}"
                 target="_blank"
               >
-                <p>Vitek</p>
+                <p class="nav-title">Vitek</p>
               </a>
             </li>
-<!--
-            <li>
-              <a
-                class="dropdown-item"
-                href="{%url 'import-drug'%}"
-                target="_blank"
-              >
-                <p>Drug</p>
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="{% url 'excel-import' process_name='heatmap' %}"
-                target="_blank"
-              >
-                <p>otheres to Data-Visual</p>
-              </a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            {% if user.permission == 'Admin'%}
-            <li>
-              <a
-                class="dropdown-item"
-                href="{% url 'excel-import' process_name='ApplicationUser' %}"
-                target="_blank"
-              >
-                <p>ApplicationUser</p>
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="{% url 'excel-import' process_name='Dictionary' %}"
-                target="_blank"
-              >
-                <p>Dictionary</p>
-              </a>
-            </li>
--->
-<!-- <li>
-  <a
-    class="dropdown-item"
-    href="{% url 'excel-import' process_name='heatmap' %}"
-    target="_blank"
-  >
-    <p>Others(Heatmap)</p>
-  </a>
-</li> -->
-            {% endif %}
           </ul>
         </div>
       </div>
       {% endif %}
-      <!-- </li>
-      </ul>
-    </div> -->
+
       <ul class="navbar-nav ms-auto fs-5">
         <li class="nav-item d-flex">
-          {% if user.is_authenticated %}
+        
           <div class="dropdown d-inline-block">
             <a
               class="d-flex align-items-center p-0 nav-link active"
@@ -252,6 +191,7 @@
 
               <div class="dropdown-divider"></div>
               {% if user.is_superuser %}
+              {{user.is_superuser}}
 
                 <a class="dropdown-item" href="{%url 'userslist' %}">
                   <p>Users</p>
@@ -283,7 +223,6 @@
             </div>
           </div>
 
-          {% endif %}
         </li>
       </ul>
     </div>

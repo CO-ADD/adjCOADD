@@ -1,10 +1,17 @@
-<div class="accordion bg-transparent w-100 m-auto" id="accordion_image{{image.pk}}">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="heading_image{{image.pk}}">
+
+   
+    <div class="accordion bg-transparent w-100 m-auto" id="accordion_image{{image.pk}}">
+        <div class="accordion-item">
+    </div>
+        <h2 class="accordion-header d-flex align-items-baseline" id="heading_image{{image.pk}}">
+            <div>
+                {%url 'addimg' pk=object.pk as addurl%}
+                {%include 'utils/modal/simpleupload.html' with title='Add_Image' form=image_form addurl=addurl %}
+            </div>
             <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapse_image{{image.pk}}" aria-expanded="true" aria-controls="collapse_image">
                 <h5 class="fs-6 my-0">
-                    {{object.pk}} Images
+                   Images
                 </h5>
             </button>
         </h2>
@@ -76,10 +83,7 @@
                     {%endif%}
 
                     {% endfor %}
-                    <div>
-                        {%url 'addimg' pk=object.pk as addurl%}
-                        {%include 'utils/modal/simpleupload.html' with title='Add_Image' form=image_form addurl=addurl %}
-                    </div>
+                    
                     
 
                 </div>
@@ -87,6 +91,5 @@
         </div>
     </div>
 
-</div>
 
 

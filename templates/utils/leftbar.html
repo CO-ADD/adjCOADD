@@ -1,29 +1,27 @@
 <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
   <div class="d-flex flex-column p-0">
     <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
-      <i class="bi bi-funnel fs-6" style='color: yellow'></i>
+      <i class="bi bi-funnel fs-5"></i>
     </a>
   </div>
-  <div class="d-flex flex-column p-0" style="background-color: var(--bs-th-bg)">
+  <div class="d-flex flex-column p-0">
 
-    <a href="{%url list_url %}" class="btn-sm btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Table View"><i class="fa-solid fa-table-list fs-6" style='color: white'></i></a>
-
-    <a href="{%url card_url %}" class="btn-sm btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Card View"><i class="fa-solid fa-grip fs-6 " style='color: white'></i></a>
-
+    <a href="{% if list_url%} {% url list_url %} {%else%} # {% endif %}" class="{%if list_url %}btn btn-sm {%else%} btn btn-sm disabled {%endif%}" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Table View"><i class="{%if list_url %} fa-solid fa-table-list fs-5 {%else%} fa-solid fa-table-list fs-5 text-muted{%endif%}"></i></a>
+    
+ 
+    <a href="{% if card_url%} {% url card_url %} {%else%} # {% endif %}" class=" {%if card_url %}btn btn-sm {%else%} btn btn-sm disabled {%endif%}" data-bs-toggle="tooltip" data-bs-placement="right"
+    title="Card View"><i class="{%if card_url %} fa-solid fa-grip fs-5  {%else%} fa-solid fa-grip fs-5 text-muted{%endif%}"></i></a>
+ 
+    <a class="btn-sm btn-outline-success" href="#" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Pivot Table View"><i class="bi bi-file-ppt fs-5"></i>
+    </a>
   </div>
+  
   <!-- Create New Entry Modal-->
-  <div class="d-flex flex-column p-0" style="background-color: var(--bs-th-bg)">
+  <div class="d-flex flex-column p-0">
     <!-- prettier-ignore -->
     {% include 'utils/miscellaneous/create_a.html' with create_object=create_object create_objectModal=create_objectModal model_name=model_name %}
-  </div>
-  <div class="d-flex flex-column" style="background-color: var(--bs-th-bg)">
-    <div class="pt-2">
-      <a class="btn-sm btn-outline-success" href="{{import_module}}" data-bs-toggle="tooltip" data-bs-placement="right"
-        title="Import Data via Files"><i class="fa fa-file-import fs-6" style='color: red'></i>
-      </a>
-    </div>   
   </div>
 </div>
 

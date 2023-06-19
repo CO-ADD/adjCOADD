@@ -133,7 +133,7 @@ class ApplicationUserUpdateView(HtmxupdateView):
         "object":object_,
     }
         if form.is_valid():           
-            # object_new=form.save()                
+            form.save()                
             return render(request, self.template_partial, context)
         else:
             messages.error(request, form.errors)

@@ -3,11 +3,11 @@
   {% if user.permission != 'Admin' %}
     <a
       id="#"
-      class="btn-sm"
+      class="btn btn-sm disabled"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       title="Admin Access"
-      ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+      ><i class="bi bi-file-earmark-plus text-muted" style='color: red'></i>
     </a>
     <!--  -->
   {% else %}
@@ -17,7 +17,7 @@
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       title="Add New Entry {{create_object}}"
-      ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+      ><i class="bi bi-file-earmark-plus"></i>
     </a>
   <!--  -->
   {% endif %}
@@ -26,11 +26,11 @@
   <a
     id="{{create_object}}"
     data-name="general"
-    class="btn-sm"
+    class="{% if create_object %}btn btn-sm {%else%} btn btn-sm disabled {% endif %}"
     data-bs-toggle="tooltip"
     data-bs-placement="right"
     title="Add New Entry {{create_object}}"
-    ><i class="bi bi-file-earmark-plus" style='color: red'></i>
+    ><i class="{% if create_object %}bi bi-file-earmark-plus {%else%} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
   </a>
   {% endif %}
   <div
