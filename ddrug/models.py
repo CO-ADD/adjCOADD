@@ -23,14 +23,14 @@ class Drug(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "drug_id":{"Drug ID": "/ddrug/drug/"},
+        "drug_id":{"Drug ID": {"drug_id": LinkList["drug_id"] } },
         "drug_name":"Drug Name",
         "drug_othernames":"Other Names",
         "drug_codes":"Drug Codes",
         "drug_type":"Drug Type",
         "drug_note":"Drug Note"
     }
-
+    
     Choice_Dictionary = {
         'drug_type':'Drug_Type',
         'max_phase':'Max_Phase',
@@ -196,7 +196,8 @@ class Breakpoint(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-       'drug_id':'drug_id', 
+       'drug_id.drug_id':{'Drug ID': {'drug_id.drug_id':'/ddrug/drug/'}},
+       'drug_id.drug_name':'Drug Name',
        'org_name':'org_name', 
        'org_rank':'org_rank', 
        'notorg_name':'notorg_name', 
@@ -368,14 +369,11 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode":"Barcode",
-        "process":"Process",
-        "id_organism":"ID organism",
-        "id_probability":"ID Probability",
-        "id_confidence":"ID Confidence",
-        "id_source":"Source",
+        "drug_id.drug_name":"Drug Name",
+        "drug_id.drug_codes":"Codes",
+        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "filename":"PDF Name",
-        "page_no":"PDF PageNo"
+        "page_no":"PDF PageNo",
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
@@ -437,6 +435,8 @@ class VITEK_AST(AuditModel):
     def exists(cls,CardBarcode,DrugID,Source,OrgName,verbose=0):
     # Returns an instance if found by (CardBarcode,DrugID,Source)
         return cls.objects.filter(card_barcode=CardBarcode,drug_id=DrugID,bp_source=Source,organism=OrgName).exists()
+    
+   
 
 
     
@@ -512,9 +512,10 @@ class MIC_COADD(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         # example fields for test view
-        "orgbatch_id.organism_id.organism_id":{'Organism ID': '/dorganism/organism/'}, 
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
         "orgbatch_id.organism_id.organism_name":"Organism",
-        "drug_id.drug_name":"Drug Name",
+        # "drug_id.drug_id":{'Drug ID': {'drug_id.drug_id':LinkList['drug_id']}},
+        "drug_id.drug_name":'Drug Name',
         "mic_type":"Type",
         "mic":"MIC",
         "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
@@ -603,56 +604,6 @@ class MIC_COADD(AuditModel):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
 
-    
-    # overide get value and get value from parent model
-    def get_values(self, fields=None):
-        from django.db.models import Model
-        if fields is None:
-            fields = self.HEADER_FIELDS
-
-        value_list=[]
-        fieldsname=[field.name for field in self._meta.fields]
-        for name in fields.keys():
-            n=len(name.split("."))
-            nameArray=name.split(".")
-            if n>1 and nameArray[0] in fieldsname:
-                obj_parent=getattr(self, nameArray[0])
-                obj = obj_parent
-                i=1
-                while i < n:
-                    obj = getattr(obj, name.split(".")[i])
-                    i += 1
-                    if i>=5:
-                        
-                        break
-                value_list.append(obj)
-                
-            elif name in fieldsname:
-                obj=getattr(self, name)
-                if obj:
-                    if isinstance(obj, Model):
-                        value_list.append(obj.pk)
-                    elif isinstance(obj, list):
-                        array_to_string=','.join(str(e) for e in obj)
-                        value_list.append(array_to_string) 
-                    else:   
-                        value_list.append(obj)
-                else:
-                    value_list.append(" ")
-                    
-        return value_list
-
-    # override to get field contains foreignkey fields
-    @classmethod
-    def get_fields(cls, fields=None):
-        if fields is None:
-            fields = cls.HEADER_FIELDS
-        if fields:
-            fieldsname=[field.name for field in cls._meta.fields]
-            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
-        else:
-            select_fields=None   
-        return select_fields
 
 #=================================================================================================
 class MIC_Pub(AuditModel):
@@ -731,53 +682,4 @@ class MIC_Pub(AuditModel):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(organism_id=OrgID,drug_id=DrugID,source=Source).exists()
 
-         # overide get value and get value from parent model
-    def get_values(self, fields=None):
-        from django.db.models import Model
-        if fields is None:
-            fields = self.HEADER_FIELDS
-
-        value_list=[]
-        fieldsname=[field.name for field in self._meta.fields]
-        for name in fields.keys():
-            n=len(name.split("."))
-            nameArray=name.split(".")
-            if n>1 and nameArray[0] in fieldsname:
-                obj_parent=getattr(self, nameArray[0])
-                obj = obj_parent
-                i=1
-                while i < n:
-                    obj = getattr(obj, name.split(".")[i])
-                    i += 1
-                    if i>=5:
-                        
-                        break
-                value_list.append(obj)
-                
-            elif name in fieldsname:
-                obj=getattr(self, name)
-                if obj:
-                    if isinstance(obj, Model):
-                        value_list.append(obj.pk)
-                    elif isinstance(obj, list):
-                        array_to_string=','.join(str(e) for e in obj)
-                        value_list.append(array_to_string) 
-                    else:   
-                        value_list.append(obj)
-                else:
-                    value_list.append(" ")
-                    
-        return value_list
-
-
-    # override to get field contains foreignkey fields
-    @classmethod
-    def get_fields(cls, fields=None):
-        if fields is None:
-            fields = cls.HEADER_FIELDS
-        if fields:
-            fieldsname=[field.name for field in cls._meta.fields]
-            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
-        else:
-            select_fields=None   
-        return select_fields
+   

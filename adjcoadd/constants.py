@@ -11,16 +11,14 @@ COMPOUND_SEP = '|'
 # column name can be edited here 
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
 
-APPUSER_FIELDs = {
-    'name':'Name',
-    'username':'Username', 
-    'first_name':'First Name',  
-    'last_name':'Last Name',
-    'initials':'Initial',
-    'email':'Email',
-    'permission':'Permissions',
-    'is_appuser':'AppUser',
-    'is_active':'Active', 
-    }
+# Links:
+LinkList={
+"urlname": '/dorganism/taxonomy/',
+'organism_id': '/dorganism/organism/',
+'tax_id': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
+'drug_id': "/ddrug/drug/",
+'chembl':'https://www.ebi.ac.uk/chembl/compound_report_card/',
+'drugbank':'https://go.drugbank.com/drugs/',
 
+}
 

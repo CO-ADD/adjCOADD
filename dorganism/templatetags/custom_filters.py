@@ -1,6 +1,7 @@
 from django import template
 import re
 from dorganism.models import OrgBatch_Stock
+from adjcoadd.constants import LinkList
 
 register = template.Library()
 
@@ -26,4 +27,11 @@ def to_int(value):
         return int(value)
     else:
         return 0
+
+@register.filter
+def get_linkname(value):
+    if value in LinkList.keys():
+        return LinkList[value]
+    else:
+        return None
 

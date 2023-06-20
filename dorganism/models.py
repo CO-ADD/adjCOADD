@@ -32,13 +32,13 @@ class Taxonomy(AuditModel):
     }
 
     HEADER_FIELDS = {
-        'organism_name':{'Organism Name': {'urlname': '/dorganism/taxonomy/'}},  
+        'organism_name':{'Organism Name': {'urlname': LinkList['urlname']}},  
         'code':'Code', 
         'lineage':'Lineage', 
         'tax_rank':'Rank',
         'division':'Division', 
         'org_class':'Class',
-        'tax_id':{'Tax-ID': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='}
+        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
     }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
@@ -99,7 +99,7 @@ class Organism(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
-        'organism_id':{'Organism ID': '/dorganism/organism/'}, 
+        'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
         'strain_type':'Strain Type',
@@ -383,7 +383,8 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-        # "orgbatch_id.organism_id":"OrgBatch ID",
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':'/dorganism/organism/'}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "stock_type":"Stock Type",
         "n_created":"#C",
         "n_left":"#L",
@@ -393,7 +394,7 @@ class OrgBatch_Stock(AuditModel):
         "location_slot": "Slot",
         "stock_date":"Stock Date",
         "stock_note":"Stock Note",
-        "biologist":"Biologist"
+        "biologist":"Biologist",
     }
 
     Choice_Dictionary = {
@@ -473,18 +474,7 @@ class OrgBatch_Stock(AuditModel):
             self.n_created=n_created
         super().save(*args, **kwargs)
     
-    # override to get field contains foreignkey fields
-    @classmethod
-    def get_fields(cls, fields=None):
-        if fields is None:
-            fields = cls.HEADER_FIELDS
-        if fields:
-            fieldsname=[field.name for field in cls._meta.fields]
-            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
-        else:
-            select_fields=None   
-        return select_fields
-            
+              
   
 #=================================================================================================
 class Organism_Culture(AuditModel):

@@ -27,10 +27,9 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
     else:
         searchfields=[field for field in model._meta.get_fields()]
     for field in searchfields:
-        
         if field.name in exclude_fields:
             continue
-        lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name    
+        lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name   
         if isinstance(field, (CharField, TextField)):
             q_object |= Q(**{f"{lookup_field_name}__icontains": search_value})        
         elif isinstance(field, ForeignKey):
@@ -56,18 +55,18 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
 def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefix=None):
 
     q_object = Q()
-    exclude_fields = exclude_fields or []   
-    for field in model._meta.get_fields():       
+    exclude_fields = exclude_fields or []
+
+    for field in model._meta.get_fields():
         if field.name in exclude_fields:
             continue
         lookup_field_name = f"{prefix}__{field.name}" if prefix else field.name
-    
         if isinstance(field, (CharField, TextField)):
             q_object |= Q(**{f"{lookup_field_name}__icontains": search_value})
         
         elif isinstance(field, ForeignKey):
             related_model = field.related_model
-            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            related_q_object = get_all_fields_q_object_deep(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
             q_object |= related_q_object
         elif isinstance(field, IntegerField):
             try:
@@ -79,7 +78,7 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
             q_object |= Q(**{f'{lookup_field_name}__icontains': search_value})        
         elif isinstance(field, ManyToManyField):
             related_model = field.related_model
-            related_q_object = get_all_fields_q_object(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
+            related_q_object = get_all_fields_q_object_deep(related_model, search_value, exclude_fields=exclude_fields, prefix=lookup_field_name)
             q_object |= related_q_object
         # # Add more field types as needed...
 
@@ -116,7 +115,7 @@ class Filterbase_base(django_filters.FilterSet):
         for field in self.filters:
             if 'CharFilter' == self.filters[field].__class__.__name__:
                 self.filters[field].lookup_expr='icontains'
-        print(self.filters['Search_all_fields'].method)
+        
            
 class Filterbase(Filterbase_base):
 

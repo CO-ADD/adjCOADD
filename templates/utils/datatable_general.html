@@ -33,7 +33,7 @@
               {% for item in object.get_values %}
                 <td>
                 {% if item|is_dict %} <!-- custom filter -->   
-                  {{item}}
+                  
                   {% for key, value in item.items %}      
                     <a href="{{value}}" target="_blank">{{ key }}</a>
                   {% endfor %}

@@ -68,7 +68,7 @@
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
             {% url 'gene_list' as gene_url%}
             {% include 'utils/miscellaneous/landbtn_primary.html' with title='GENE' url=gene_url totalnumber=nGene %}
-            <div class="d-flex flex-column w-50">
+            <div class="d-flex flex-column mt-5 w-50">
                 <!-- <div class="col text-center m-auto"> -->
                     <h3>
                     {% url 'sequence_list' as sp_url %}

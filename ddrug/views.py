@@ -16,6 +16,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
 
+from adjcoadd.constants import *
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.api_filterclass import API_FilteredListView
 from apputil.utils.views_base import SimplecreateView, SimpleupdateView
@@ -72,11 +73,9 @@ class DrugListView(LoginRequiredMixin, FilteredListView):
 #--  DrugCard --------------------------------------------------------------
 class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
-
     def get_context_data(self, **kwargs):
         try:
-            context = super().get_context_data(**kwargs)
-            
+            context = super().get_context_data(**kwargs)          
         # clearIMGfolder()
             for object_ in context["object_list"]:
                 filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
@@ -101,6 +100,7 @@ def detailDrug(req, pk):
     form=Drug_form(instance=object_)
     context["object"]=object_
     context["form"]=form
+    context["Links"]=LinkList
  
     return render(req, "ddrug/drug/drug_detail.html", context)
 
@@ -203,22 +203,6 @@ class VitekastListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Vitekast_filter
     model_fields=model.HEADER_FIELDS
     context_list=''
-
-    def get_queryset(self):
-        # Get the queryset however you usually would.  For example:
-        queryset = super().get_queryset()
-
-        # queryset=Vitek_CARD.objects.all().values('drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
-        queryset=queryset.values('pk', 'drug_id__drug_name','drug_id__drug_codes', 'card_barcode__orgbatch_id__organism_id__organism_name',)
-        # Then use the query parameters and the queryset to
-        # instantiate a filterset and save it as an attribute
-        # on the view instance for later.
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        # Return the filtered queryset
-        order=self.get_order_by()
-        if order:
-            return self.filterset.qs.distinct().order_by(order)
-        return self.filterset.qs.distinct()
 
       
 # --Vitek ID--

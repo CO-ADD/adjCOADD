@@ -169,7 +169,7 @@ class Stock_createform(forms.ModelForm):
     class Meta:
         model =OrgBatch_Stock
         fields=list(model.HEADER_FIELDS.keys())
-        exclude=['orgbatch_id', 'stock_type', 'stock_date','n_created']
+        exclude=['orgbatch_id.organism_id.organism_id','orgbatch_id.organism_id.organism_name', 'stock_type', 'stock_date','n_created']
 
 #======================================== Stock Form================================================================
 class Stock_form(Stock_createform):
@@ -184,6 +184,7 @@ class Stock_form(Stock_createform):
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
+    
 
 # =============================== Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
@@ -196,7 +197,6 @@ class Culture_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
-        print("culture form")
         self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_type'])]
         self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_source'])]
      

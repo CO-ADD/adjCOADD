@@ -196,13 +196,14 @@ th {
   max-width: fit-content !important;
   padding: 2px !important;
   font-weight: 500 !important;
+  word-wrap: break-word !important;
 }
 
 td {
   padding: 2px !important;
   white-space: wrap;
-  word-wrap: break-word;  
-  max-width: fit-content !important;
+  word-wrap: break-word !important;
+  max-width: 10em !important;
 }
 
 .dataTable th {

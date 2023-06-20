@@ -1,80 +1,23 @@
-<!--prettier-ignore-->
 {% extends 'base.html'%}
 <!--prettier-ignore-->
 {% block title%} COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
-
 <div class="d-flex flex-row vh-100">
-  <!-- {%url 'import-VITEK' process_name='Vitek' as urlname%} -->
+
   <!--prettier-ignore-->
   {%include 'utils/leftbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
+  <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
-
+  <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    <div>
-      <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button
-            class="nav-link active border border-2"
-            id="nav-home-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-home"
-            type="button"
-            role="tab"
-            aria-controls="nav-home"
-            aria-selected="true"
-          >
-            <span class="text-info">MIC_COADD</span> 
-          </button>
-          <button
-            class="nav-link border border-2"
-            id="nav-chart-table-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-chart-table"
-            type="button"
-            role="tab"
-            aria-controls="nav-profile"
-            aria-selected="false"
-          >
-            <strong class="text-info">Chart/Table</strong>
-          </button>
-        </div>
-      </nav>
-      <div class="tab-content" id="nav-tabContent">
-        <div
-          class="tab-pane fade show active"
-          id="nav-home"
-          role="tabpanel"
-          aria-labelledby="nav-home-tab"
-        >
-          <div
-            class="d-flex flex-wrap justify-content-between m-2 align-items-baseline"
-          >
-            <!--  -->
-            {% include 'utils/pagination.html'%}
-            <!--  -->
-            {%include 'utils/miscellaneous/selectAllExp.html'%}
-            {%include 'utils/data_download_form.html' with title='MIC_COADD' model_name='MIC_COADD' application='ddrug' %}
-          </div>
-          <div class="fixTableHead">
-            <!--prettier-ignore-->
-            {%include 'utils/datatable_general.html' with modelname='MIC_COADD' %}
-          </div>
-        </div>
-        <div
-          class="tab-pane fade"
-          id="nav-chart-table"
-          role="tabpanel"
-          aria-labelledby="nav-chart-table-tab"
-        >
-          <!-- <div>include './mic_coadd_datamap.html'</div> -->
-        </div>
-      </div>
+    {% include 'utils/main_horizalbar.html' with title='MIC_COADD' model_name='MIC_COADD' application='ddrug' %}
+    <!-- list View Content -->
+    <div class="fixTableHead">
+      <!--prettier-ignore-->
+      {%include 'utils/datatable_general.html' with modelname='MIC_COADD' %}
+      
     </div>
   </div>
 </div>
-
-<!--prettier-ignore-->
-
 {% endblock%}

@@ -103,9 +103,9 @@ class Vitekcard_filter(Filterbase):
 
 class Vitekast_filter(Filterbase):
     Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains')
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.filters['Drug_Name'].label='Drug Name'
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.filters['Drug_Name'].label='Drug Name'
     class Meta:
         model=VITEK_AST
         fields=['Drug_Name']
@@ -197,7 +197,11 @@ class MIC_Pubfilter(Filterbase):
 
 
 class Breakpointfilter(Filterbase):
-    # mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+    drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    drug_id = django_filters.CharFilter(field_name='drug_id.drug_id', lookup_expr='icontains', label="Drug ID")
     class Meta:
         model=Breakpoint
-        fields=list(model.HEADER_FIELDS.keys())
+        fields = ['drug_name', 'drug_id']
+        fields += list(model.HEADER_FIELDS.keys()) #[field.split(".")[0] for field in list(model.HEADER_FIELDS.keys())] #
+        exclude=['drug_id.drug_name', 'drug_id.drug_id']
+ 

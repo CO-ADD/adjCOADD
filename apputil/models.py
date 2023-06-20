@@ -334,11 +334,13 @@ class AuditModel(models.Model):
             fields = cls.HEADER_FIELDS
         if fields:
             fieldsname=[field.name for field in cls._meta.fields]
-            select_fields=[fields[f] for f in fields.keys() if f in fieldsname]
-            # select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
+            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
+            
         else:
             select_fields=None   
         return select_fields
+
+
     #------------------------------------------------
     # get class field names in the list/order provided by HEADER_FIELDS
     @classmethod
@@ -356,9 +358,19 @@ class AuditModel(models.Model):
         return model_fields
  
     #------------------------------------------------
-    # objects values according to fields return from the above class methods, based on header_fields order
+    # recurse func to get foreign key related table col value
+    def iter_foreignkey(self, nameArray=None, n=None):
+        obj_parent=getattr(self, nameArray[0])
+        obj = obj_parent
+        i=1
+        while i < n:
+            obj = getattr(obj, nameArray[i])
+            i += 1
+            if i>=5: # break it !! if it leads to the 5th related table!!
+                break
+        return obj
     def get_values(self, fields=None):
-
+        
         from django.db.models import Model
         if fields is None:
             fields = self.HEADER_FIELDS
@@ -366,36 +378,43 @@ class AuditModel(models.Model):
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
         for name in fields.keys():
-            if name in fieldsname:       
+            n=len(name.split("."))
+            nameArray=name.split(".")
+            if n>1 and nameArray[0] in fieldsname:
+                obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
+                if isinstance(fields[name], dict):
+                    # for slug-name
+                    url_name = list(list(fields[name].values())[0].keys())[0]
+                    if url_name != name:
+                        n=len(url_name.split("."))
+                        urlArray=url_name.split(".")
+                        obj= self.iter_foreignkey(nameArray=urlArray, n=n)
+                    value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj)})
+                elif isinstance(obj, Model):
+                    value_list.append(obj.pk)   
+                else:
+                    value_list.append(obj)
+                
+            elif name in fieldsname:
                 obj=getattr(self, name)
                 if obj:
                     # check field value is a dict with link value
                     if isinstance(fields[name], dict):
-                        
-                        if isinstance(obj, Model):
-                            print(obj)
-                            value_list.append({obj.pk: list(fields[name].values())[0]})
-                        else:
-                            if isinstance(list(fields[name].values())[0], dict):
-                                # check a external link exists or not in HEADER_FIELDS Value
-                                if 'urlname' in list(fields[name].values())[0].keys():
-                               
-                                    url=getattr(self, 'urlname')
-                                    # Append link to the value list, get value in dict type 
-                                    value_list.append({obj: list(list(fields[name].values())[0].values())[0]+url})
-                            else:
-                                # Append internal link(Fkey link) to the value list, get value in dict type
-                                value_list.append({obj:list(fields[name].values())[0]+str(obj)})
-                    else:
-                        if isinstance(obj, Model):
-                            value_list.append(obj.pk)
-                        elif isinstance(obj, list):
-                            array_to_string=','.join(str(e) for e in obj)
-                            value_list.append(array_to_string) 
-                        else:   
-                            value_list.append(obj)
+                        # for slug-name
+                        url_name = list(list(fields[name].values())[0].keys())[0]
+                        url=getattr(self, url_name)
+                        # Append link to the value list
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(url)})
+                    elif isinstance(obj, Model):
+                        value_list.append(obj.pk)
+                    elif isinstance(obj, list):
+                        array_to_string=','.join(str(e) for e in obj)
+                        value_list.append(array_to_string) 
+                    else:   
+                        value_list.append(obj)
                 else:
-                    value_list.append(" ")                    
+                    value_list.append(" ")
+                    
         return value_list
         
     # used to get fieds and values as a paire
@@ -424,7 +443,6 @@ class AuditModel(models.Model):
         table=pd.pivot_table(df, values=values, index=index,
                         columns=columns, aggfunc=np_aggfunc[aggfunc])
         return table
-
 
 
 #-------------------------------------------------------------------------------------------------
