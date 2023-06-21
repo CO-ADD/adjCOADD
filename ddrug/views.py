@@ -132,52 +132,52 @@ class VitekcardListView(LoginRequiredMixin, FilteredListView):
     def get_context_data(self,  **kwargs):
 
         context =super().get_context_data( **kwargs)
-        context['defaultcolumns1']='expiry_date'
-        context['defaultcolumns2']='card_barcode'
-        context['defaultindex1']='analysis_time'
-        context['defaultindex2']='proc_date'
-        context['defaultvalues']='instrument'
+        # context['defaultcolumns1']='expiry_date'
+        # context['defaultcolumns2']='card_barcode'
+        # context['defaultindex1']='analysis_time'
+        # context['defaultindex2']='proc_date'
+        # context['defaultvalues']='instrument'
       
       
-        data=list(context["object_list"].values())
-        df=pd.DataFrame(data)
-        try:
-            table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
-                        columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
-            context['table']=table
-        except Exception as err:
-            context['table']= 'table error : '+ str(err) 
+        # data=list(context["object_list"].values())
+        # df=pd.DataFrame(data)
+        # try:
+        #     table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
+        #                 columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
+        #     context['table']=table
+        # except Exception as err:
+        #     context['table']= 'table error : '+ str(err) 
         return context
     
    
-    def post(self, request, *args, **kwargs ):
-        queryset=self.get_queryset()#
-        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
-            selected_data=request.POST.getlist("selected_data[]") or None
-            values_str=request.POST.get("values") or None
-            columns_str=request.POST.get("columns") or None
-            index_str=request.POST.get("index") or None
-            card_barcode=request.POST.get("card_barcode")
-            aggfunc_name=request.POST.get("functions")
-            if selected_data:
-                querydata=queryset.filter(pk__in=selected_data)
-            else:
-                querydata=queryset.filter(card_barcode__contains=card_barcode)
+    # def post(self, request, *args, **kwargs ):
+    #     queryset=self.get_queryset()#
+    #     if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
+    #         selected_data=request.POST.getlist("selected_data[]") or None
+    #         values_str=request.POST.get("values") or None
+    #         columns_str=request.POST.get("columns") or None
+    #         index_str=request.POST.get("index") or None
+    #         card_barcode=request.POST.get("card_barcode")
+    #         aggfunc_name=request.POST.get("functions")
+    #         if selected_data:
+    #             querydata=queryset.filter(pk__in=selected_data)
+    #         else:
+    #             querydata=queryset.filter(card_barcode__contains=card_barcode)
                 
-            values=values_str or None # pivottable values
-            if values:
-                try:
-                    table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
-                    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')#(content_type='text/csv')
-                    response['Content-Disposition'] = 'attachment; filename=pivottable.xlsx'
-                    table_html=table.head().to_html(classes=["table-bordered",])
-                    table_csv=table.to_excel()
-                    return JsonResponse({"table_html":table_html, "table_csv":table_csv})
-                except Exception as err:
-                    error_message=str(err)
-                    print(err)
-                    return JsonResponse({"table_html":error_message,})
-        return JsonResponse({})
+    #         values=values_str or None # pivottable values
+    #         if values:
+    #             try:
+    #                 table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
+    #                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')#(content_type='text/csv')
+    #                 response['Content-Disposition'] = 'attachment; filename=pivottable.xlsx'
+    #                 table_html=table.head().to_html(classes=["table-bordered",])
+    #                 table_csv=table.to_excel()
+    #                 return JsonResponse({"table_html":table_html, "table_csv":table_csv})
+    #             except Exception as err:
+    #                 error_message=str(err)
+    #                 print(err)
+    #                 return JsonResponse({"table_html":error_message,})
+    #     return JsonResponse({})
 
 ##
 @login_required

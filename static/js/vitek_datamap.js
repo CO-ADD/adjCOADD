@@ -1,7 +1,10 @@
 var savecsv = null;
 $(document).ready(function () {
   console.log("loading data vitek");
-
+  var url='{{app_model}}'
+  // var url='/pivotedtableview/'+ 
+  console.log('url')
+  console.log(url)
   $(".submit_data").click(function () {
     var selected_data = [];
     $("input:checkbox[name=type]:checked").each(function () {
@@ -32,7 +35,7 @@ $(document).ready(function () {
     var column_value_str = column_value.toString();
     // all data
     var data = {
-      selected_data: selected_data,
+      // selected_data: selected_data,
       values: value_str,
       columns: column_value_str,
       index: index_values_str,
@@ -48,17 +51,17 @@ const csrftoken = getCookie("csrftoken");
 const sendToServer = (data) => {
   console.log("send to server");
   // console.log(data);
-
+ 
   $.ajax({
-    url: "/ddrug/vitekcard_list", //url,
+    url: `/pivotedtableview/dorganism-OrgBatch_Stock`, //url,
     type: "POST",
     headers: { "X-CSRFToken": csrftoken },
     data: data,
   })
     .done((response) => {
       console.log(response)
-      data = response["table_html"];
-      savecsv = response["table_csv"];
+      data = response["table"];
+      // savecsv = response["table_csv"];
       // console.log(savecsv)
       $("#pivotable").html("");
       $("#pivotable").append(data);

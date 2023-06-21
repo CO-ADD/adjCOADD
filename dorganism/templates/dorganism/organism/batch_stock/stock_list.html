@@ -6,7 +6,8 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with list_url='stock_list_overview' %}
+  {% url 'pivoted-table' app_model='dorganism-OrgBatch_Stock' as url_pivotedtable%}
+  {%include 'utils/leftbar.html' with list_url='stock_list_overview' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
@@ -17,6 +18,9 @@
       <!--prettier-ignore-->
       {%include 'utils/datatable_general.html' with modelname='OrgBatch_Stock' %}
     </div>
+    
   </div>
 </div>
+
+
 {% endblock%}

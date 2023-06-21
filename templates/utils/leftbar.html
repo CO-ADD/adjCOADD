@@ -12,10 +12,11 @@
  
     <a href="{% if card_url%} {% url card_url %} {%else%} # {% endif %}" class=" {%if card_url %}btn btn-sm {%else%} btn btn-sm disabled {%endif%}" data-bs-toggle="tooltip" data-bs-placement="right"
     title="Card View"><i class="{%if card_url %} fa-solid fa-grip fs-5  {%else%} fa-solid fa-grip fs-5 text-muted{%endif%}"></i></a>
- 
-    <a class="btn-sm btn-outline-success" href="#" data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Pivot Table View"><i class="bi bi-file-ppt fs-5"></i>
-    </a>
+    
+   
+    <a class="{% if url_pivotedtable%} btn-sm btn-outline-success {%else%} btn btn-sm disabled {%endif%}" data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Pivot Table View" href="{{url_pivotedtable}}" target="_blank"><i class="bi bi-file-ppt fs-5"></i>
+  </a>
   </div>
   
   <!-- Create New Entry Modal-->
@@ -29,10 +30,23 @@
 {% load static %}
 <script src="{%static 'js/js_utils/saveData.js'%}"></script>
 
+<!-- <script>
 
+  function pivot_create() {
+    if($("#show_datatable").hasClass("not-visible")){
+      $("#show_datatable").removeClass("not-visible")
+    }else{
+      $("#show_datatable").addClass("not-visible")
+    }
+    $('input[data-name="pivot"]').val('True')
+    $('#django-filter-siderbar').submit()
+
+  }
+</script> -->
 <script>
   $(document).ready(function () {
     const csrftoken = getCookie("csrftoken");
+    
 
     $(".data_export").on("click", function () {
       // select wanted data to export

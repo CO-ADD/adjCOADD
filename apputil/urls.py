@@ -6,7 +6,7 @@ from apputil.views import (index, userprofile, AppUserListView, AppUserCreateVie
     AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
     DataExportView, Importhandler_apputils, ImageDeleteView, CreateimageView, CreatedocumentView, DocDeleteView)
 
-# from .utils.data_visual import Data_visualView
+from .utils.flex_pivottable import flex_pivottable
 
 
 
@@ -22,8 +22,6 @@ urlpatterns = [
     path('dict_create/', DictionaryCreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
     path('dict_delete/', deleteDictionary, name='dict_delete' ),
-    path('exportData/', DataExportView.as_view(), name="dataexport"),
-    path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
  
     path('img/<str:pk>', CreateimageView.as_view(), name="addimg"),
     path('doc/<str:pk>', CreatedocumentView.as_view(), name="adddoc"),
@@ -31,5 +29,7 @@ urlpatterns = [
     path('doc-delete/<str:pk>', DocDeleteView.as_view(), name='org_doc_delete'),
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
     
-   
+    path('exportData/', DataExportView.as_view(), name="dataexport"),
+    path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
+    path('pivotedtableview/<str:app_model>',flex_pivottable, name="pivoted-table"),
 ]

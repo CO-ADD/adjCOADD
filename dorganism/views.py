@@ -293,12 +293,30 @@ def stockList(req, pk):
 #
 # Overview Stocks
 ##
+# from apputil.utils.flex_pivottable import flex_pivottable 
 class StockListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = OrgBatch_Stock  
     template_name = 'dorganism/organism/batch_stock/stock_list.html'
     filterset_class = Stockfilter
     model_fields = model.HEADER_FIELDS 
+
+    def get_context_data(self,  **kwargs):
+
+        context =super().get_context_data( **kwargs)
+        print(self.request.GET)
+
+        # context['defaultcolumns1']='expiry_date'
+        # context['defaultcolumns2']='card_barcode'
+        # context['defaultindex1']='analysis_time'
+        # context['defaultindex2']='proc_date'
+        # context['defaultvalues']='instrument'
+        
+        # context['pivottable_stock'] = flex_pivottable(self.request, model=self.model)
+        # print(context['pivottable_stock'])
+        return context
+
+      
 
 
 @login_required
