@@ -196,8 +196,7 @@ class Breakpoint(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-       'drug_id.drug_id':{'Drug ID': {'drug_id.drug_id':'/ddrug/drug/'}},
-       'drug_id.drug_name':'Drug Name',
+       'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':'/ddrug/drug/'}},
        'org_name':'org_name', 
        'org_rank':'org_rank', 
        'notorg_name':'notorg_name', 
@@ -511,11 +510,8 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        # example fields for test view
-        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
-        "orgbatch_id.organism_id.organism_name":"Organism",
-        # "drug_id.drug_id":{'Drug ID': {'drug_id.drug_id':LinkList['drug_id']}},
-        "drug_id.drug_name":'Drug Name',
+        "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",
         "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",

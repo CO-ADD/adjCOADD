@@ -162,11 +162,9 @@ class MIC_COADDfilter(Filterbase):
 class MIC_Pubfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
     def filter_all_fields(self, queryset, name, value):
-        print("start all...")
         if value:
             # print(f"filtr fields is {self._meta.model._meta.fields})")
             fields=[f.name for f in self._meta.model._meta.fields]
-            print(fields)
             value=value         
             similarity = Greatest(
                 TrigramSimilarity('organism_id', value),
@@ -198,10 +196,9 @@ class MIC_Pubfilter(Filterbase):
 
 class Breakpointfilter(Filterbase):
     drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
-    drug_id = django_filters.CharFilter(field_name='drug_id.drug_id', lookup_expr='icontains', label="Drug ID")
     class Meta:
         model=Breakpoint
-        fields = ['drug_name', 'drug_id']
-        fields += list(model.HEADER_FIELDS.keys()) #[field.split(".")[0] for field in list(model.HEADER_FIELDS.keys())] #
-        exclude=['drug_id.drug_name', 'drug_id.drug_id']
+        fields = ['drug_name',]
+        fields += list(model.HEADER_FIELDS.keys()) 
+        exclude=['drug_id.drug_name']
  

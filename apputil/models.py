@@ -383,13 +383,16 @@ class AuditModel(models.Model):
             if n>1 and nameArray[0] in fieldsname:
                 obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
                 if isinstance(fields[name], dict):
-                    # for slug-name
+                    # for foreignkey link not equal field values
                     url_name = list(list(fields[name].values())[0].keys())[0]
                     if url_name != name:
                         n=len(url_name.split("."))
                         urlArray=url_name.split(".")
-                        obj= self.iter_foreignkey(nameArray=urlArray, n=n)
-                    value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj)})
+                        obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj_link)})
+                    else:
+                        # foreignkey link name equal field values 
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj)})
                 elif isinstance(obj, Model):
                     value_list.append(obj.pk)   
                 else:
