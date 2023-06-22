@@ -21,7 +21,6 @@ from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organis
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
                     Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
-
 from ddrug.models import VITEK_AST, MIC_COADD
 from .utils.data_visual import data_frame_style, pivottable_style
 

@@ -6,6 +6,28 @@ from django.apps import apps
 from django.shortcuts import HttpResponse, render, redirect
 from ddrug.models import VITEK_AST, MIC_COADD
 
+
+
+
+#    #-------------------------------------------------------------------------------------------------
+# data-visulization 
+def get_pivottable(querydata, columns_str, index_str, values):
+    # np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
+    data=querydata #list(querydata.values())
+    df=pd.DataFrame(data)
+    df.reset_index
+    df.fillna(0)
+    
+    columns=columns_str.split(",") 
+    index=index_str.split(",")
+    
+    try:
+        table=pd.pivot_table(df, values=values, index=index,
+                       columns=columns, aggfunc=np.size, fill_value=0)#np_aggfunc[aggfunc], fill_value='0')
+    except Exception as err:
+        print(f'err is {err}')
+        table=err
+    return table
 # Return styled pivoted table
 def flex_pivottable(request,app_model):
     table_html = None
@@ -13,39 +35,49 @@ def flex_pivottable(request,app_model):
     model_name = app_model.split("-")[1]
     app_name = app_model.split("-")[0]
     pk_list=request.session.get('cached_queryset')
+    print(f"pklist is {pk_list}")
     try:
         Model = apps.get_model(app_name, model_name)
     except LookupError:
         # Handle the case where the model does not exist.
         return HttpResponse("Model not found.")
-    model_fields=Model.get_modelfields
+    model_fields=[f.replace(".", "__") for f in list(Model.HEADER_FIELDS.keys())] #list(Model.HEADER_FIELDS.keys())
+    
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == "POST":
+    if request.method == "POST": # 
         
-        values_str = request.POST.get("values") or "n_left"
-        columns_str = request.POST.get("columns") or "orgbatch_id"
-        index_str = request.POST.get("index") or "n_created"
-        aggfunc_name = request.POST.get("functions") or np.size
-        querydata = Model.objects.filter(pk__in=pk_list) if pk_list else Model.objects.all()
-        
-        values = "n_left" # values_str or None  # pivottable values
+        values_str = request.POST.get("values") or None  # or "n_left"
+        columns_str =request.POST.get("column") or None # or "orgbatch_id"
+        index_str = request.POST.get("index") or None
+        aggfunc_name = np.size #request.POST.get("data_function_type") or
+        # get queryset
+        queryset = Model.objects.filter(pk__in=pk_list) if pk_list else Model.objects.all()
+        # flatten the queryset to put it in dataframe
+        querylist=queryset.values_list(*model_fields)
+        data={}
+        for num_fields in range(len(model_fields)):
+            arrary=[querylist[i][num_fields] for i in range(len(querylist))]
+            data[model_fields[num_fields]]=arrary
+ 
+        values = values_str or None  # pivottable values
         
         if values:
             try:
-                # d = {'col1': "n_left", 'col2': pd.Series([2, 3], index=[2, 3])}
-                table =  Model.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str, aggfunc=aggfunc_name, values=values)
-                #  pd.DataFrame(list(querydata.values())).reset_index()
-                # cols = ['n_created','n_left']
-                # grbyCol = ['orgbatch_id']
-                # df.reindex(columns=['orgbatch_id','n_created','n_left'])
-                # table = df[cols].reset_index(False)
-                response = HttpResponse(content_type='text/csv')
-                response['Content-Disposition'] = 'attachment; filename=pivottable.csv'
-                table_html = table.to_html(classes=["table-bordered",])
-                table_csv = table.to_csv()
+                table =get_pivottable(querydata=data, columns_str=columns_str, index_str=index_str, values=values) 
+
+                # response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                # response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
+                try:
+                    # table_excel = table.to_excel(excel_writer=response, index=False)
+                    # request.cache.set(f"{request.user}_pivoteddata": )
+                    table_html = table.head(n=50).to_html(classes=["table", "table-bordered", "fixTableHead"])
+                except Exception as err:
+                    table_html = f"<span class='text-danger'>something wrong with {table}</span>"
+ 
 
             except Exception as err:
                 error_message = f"error is {err}"
                 table_html= f"error is {err}"
-            return JsonResponse({"table":table_html}) 
+       
+
     return render(request, 'utils/pivotedtable.html', {"table":table_html, "app_model":app_model, "model_fields":model_fields})

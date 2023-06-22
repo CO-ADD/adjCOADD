@@ -239,7 +239,7 @@ class DataExportView(DataExportBaseView):
 # =============Import Dictionary and appUsers via Excel==================
 from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
 from .utils.validation_log import Validation_Log
-from .utils.data_visual import convert_heatmap
+from .utils.data_style import convert_heatmap
 from .utils.form_wizard_tools import SelectFile_StepForm
 
 class Importhandler_apputils(Importhandler):

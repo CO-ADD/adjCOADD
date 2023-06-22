@@ -430,19 +430,7 @@ class AuditModel(models.Model):
         except Exception as err:
             return [("error: ", err)]
     
-    #-------------------------------------------------------------------------------------------------
-    # data-visulization 
-    # Should be moved into Utils - not a class method
-    @classmethod
-    def get_pivottable(cls, querydata, columns_str, index_str,aggfunc, values):
-        np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
-        data=list(querydata.values())
-        df=pd.DataFrame(data)
-        columns=columns_str.split(",") 
-        index=index_str.split(",")
-        table=pd.pivot_table(df, values=values, index=index,
-                        columns=columns, aggfunc=np_aggfunc[aggfunc])
-        return table
+
 
 
 #-------------------------------------------------------------------------------------------------

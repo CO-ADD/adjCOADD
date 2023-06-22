@@ -1,183 +1,124 @@
-{% extends "base2_nonav.html" %}
+{% extends "base.html" %}
 <!--  -->
 {% block title%} COADD{% endblock %}
 <!--  -->
 {% block content %}
-<div class="container m-2">
-  {{app_model}}
-    <!-- <div class="row border"> -->
-    <div class="d-flex align-items-baseline">
-      <!-- <form action="#" class=""> -->
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Data visualization type--</span>
-        <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
-          style="width: fit-content">
-          <option value="1" selected>Pivot table</option>
-          <option value="2">Pie Chart</option>
-          <option value="3">Plot</option>
-        </select>
-      </div>
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Select Table Values--</span>
-        <select data-name="data_process_value" class="form-select form-select-sm" aria-label=".form-select-sm example"
-          style="width: fit-content">
-          <option value="{{defaultvalues}}" selected>{{defaultvalues}}</option>
-          {%for field in model_fields %}
-          <option value="{{field}}">{{field}}</option>
-          {%endfor%}
-        </select>
-      </div>
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Aggregate Functions--</span>
-        <select data-name="data_function_type" class="form-select form-select-sm" aria-label=".form-select-sm example"
-          style="width: fit-content">
-          <option value="Sum" selected>Sum</option>
-          <option value="Mean">Mean</option>
-          <option value="Std">Std</option>
-        </select>
-      </div>
-      <!-- </form> -->
+<form action="{% url 'pivoted-table' app_model %}" class="container-fluid w-100 m-5 border" method="POST"
+  id="id_pivottable_form">
+  {% csrf_token %}
+  <input id="id_column" type="text" name="column" hidden>
+  <input id="id_index" type="text" name="index" hidden>
+
+  <h1 m-auto>
+    {{app_model}}
+
+  </h1>
+
+  <div class="d-flex align-items-baseline">
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Data visualization type--</span>
+      <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
+        style="width: fit-content">
+        <option value="1" selected>Pivot table</option>
+        <option value="2">Pie Chart</option>
+        <option value="3">Plot</option>
+      </select>
     </div>
-  
-    <hr />
-    <div class="d-flex align-items-center my-0">
-      <button class="submit_data btn btn-sm mx-5">Start...</button>
-      <div class="mx-2">{%include 'utils/drag_n_drop/selectivedrag_hr.html'%}</div>
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Select Table Values--</span>
+      <select name="values" data-name="data_process_value" class="form-select form-select-sm"
+        aria-label=".form-select-sm example" style="width: fit-content">
+
+        {%for field in model_fields %}
+        <option value="{{field}}">{{field}}</option>
+        {%endfor%}
+      </select>
     </div>
-    <!-- </div> -->
-    <hr />
-    <div class="row border">
-      <div class="d-flex flex-row justify-content-center align-items-start vh-100">
-        <div class="d-flex border-2">
-          {%include 'utils/drag_n_drop/selectivedrag_vt.html'%}
-        </div>
-        <div class="d-flex flex-column">
-          <div id="pivotable" style="
-              width: 1500px;
-              overflow: scroll;
-              font-size: medium;
-              margin-left: 0;
-            ">
-            <span style="color: Blue">
-              Make sure using <strong>Filter and Select Data </strong>Large table
-              (rows > 1000) will be downloaded as
-              <strong>Downloads/pivottable.csv</strong>
-              automatically. Click
-              <strong>"Start..."</strong> Button create pivotable with default
-              column, index and value by default aggfunc np.sum. Change default
-              setting via drag n drop <strong>"Dark-BLUE"</strong> squares and
-              selective options.
-            </span>
-            <br />
-            Example Table(data source: the current page of "vitek_card" table view
-            (left tab))
-            <!--  -->
-            Here is table{{table}}
-            {{table | safe}}
-          </div>
-          <button id="download_pt_as_csv">...Download as CSV</button>
-          <div id="demo"></div>
-          <div id="output" style="
-              width: 1500px;
-              overflow: scroll;
-              font-size: medium;
-              margin-left: 0;
-            "></div>
-           
-        </div>
-      </div>
+    <div class="d-flex flex-column mx-2">
+      <span style="font-size: small">--Aggregate Functions--</span>
+      <select name="data_function_type" data-name="data_function_type" class="form-select form-select-sm"
+        aria-label=".form-select-sm example" style="width: fit-content">
+        <option value="Sum" selected>Sum</option>
+        <option value="Mean">Mean</option>
+        <option value="Std">Std</option>
+      </select>
     </div>
   </div>
-  
-  
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
-    integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
-  <script>
-    $(function () {
-      $("#sortable1, #sortable2, #sortable3")
-        .sortable({
-          connectWith: ".connectedSortable",
-        })
-        .disableSelection();
-    });
-  </script>
 
-  <script >
-    var savecsv = null;
-$(document).ready(function () {
-  console.log("loading data vitek");
+  <hr />
+  <div style="height: 100vh;overflow: auto;">
 
-  var url_name='/pivotedtableview/'+'{{app_model}}' 
-  $(".submit_data").click(function () {
-    var selected_data = [];
-    $("input:checkbox[name=type]:checked").each(function () {
-      selected_data.push($(this).val().toString());
-    });
-    var card_barcode = $("input[name=card_barcode]").val();
-    // plot value
-    var value_str = $("[data-name=data_process_value] option:selected")
-      .val()
-      .toString();
-    console.log(value_str);
-    // plot functijon
-    var data_function_str = $("[data-name=data_function_type] option:selected")
-      .val()
-      .toString();
+    <!-- <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%"> -->
+      <div class>
 
-    // index value
-    var index_value = [];
-    $("#sortable3 li").each(function () {
-      index_value.push($(this).data('name'));
-    });
-    var index_values_str = index_value.toString();
-    // column value
-    var column_value = [];
-    $("#sortable2 li").each(function () {
-      column_value.push($(this).data('name'));
-    });
-    var column_value_str = column_value.toString();
-    // all data
-    var data = {
-      // selected_data: selected_data,
-      values: value_str,
-      columns: column_value_str,
-      index: index_values_str,
-      card_barcode: card_barcode,
-      functions: data_function_str,
-    };
+        <div class="row">
+          <div class="col-md-3"><button class="submit_data btn mx-5 border">Start...</button></div>
+          
+            <div class="col-md-9 m-0 p-0">{%include 'utils/drag_n_drop/selectivedrag_hr.html'%}</div>
+          
+        </div>
+        <div class="row">
+          
+            <div  class="col-md-3">
+              {%include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
+            </div>
+          
+            <div id="pivotable" class="col-md-9">
+              <div style="overflow: auto;" class="m-auto w-100">
+              {%if table%}
+              {{table | safe}}
+              {%endif%}
+              </div>
+            </div>
+            <button id="download_pt_as_csv" type="submit" name="download" disabled>...Download as CSV</button>
+        </div>
+    
+      </div>
+  </div>
+</form>
 
-    sendToServer(data, url_name);
+
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<script>
+  $(function () {
+    $("#sortable1, #sortable2, #sortable3")
+      .sortable({
+        connectWith: ".connectedSortable",
+      })
+      .disableSelection();
   });
-});
+</script>
 
-const csrftoken = getCookie("csrftoken");
-const sendToServer = (data, url_name) => {
-  console.log("send to server");
-  // console.log(data);
- 
-  $.ajax({
-    url: url_name, //url,
-    type: "POST",
-    headers: { "X-CSRFToken": csrftoken },
-    data: data,
-  })
-    .done((response) => {
-      console.log(response)
-      data = response["table"];
-      // savecsv = response["table_csv"];
-      // console.log(savecsv)
-      $("#pivotable").html("");
-      $("#pivotable").append(data);
+<script>
+
+  $(document).ready(function () {
+    // index value
+    $(".submit_data").click(function (e) {
+      e.preventDefault();
+      var index_value = [];
+      $("#sortable3 li").each(function () {
+        index_value.push($(this).data('name'));
+      });
+      var index_values_str = index_value.toString();
+      // column value
+      $("#id_index").val(index_values_str)
+      console.log($("#id_index").val())
+      var column_value = [];
+      $("#sortable2 li").each(function () {
+        column_value.push($(this).data('name'));
+      });
+      var column_value_str = column_value.toString();
+      $("#id_column").val(column_value_str)
+
+      console.log($("#id_column").val())
+      $('#id_pivottable_form').submit()
+
     })
-    .fail((XMLHttpRequest, textStatus, errorThrown) => {
-      console.log(XMLHttpRequest, textStatus, errorThrown);
-    });
-};
 
-$("#download_pt_as_csv").click(function () {
-  console.log("clicked!");
-  saveData(savecsv);
-});
-  </script>
+    // saveData(savecsv);
+  });
+</script>
 
-  {% endblock %}
+{% endblock %}

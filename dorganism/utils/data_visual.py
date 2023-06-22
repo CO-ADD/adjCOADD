@@ -1,5 +1,5 @@
 import ddrug.utils.tables as drugtbl
-from apputil.utils.data_visual import highlight_val, highlight_val2
+from apputil.utils.data_style import highlight_val, highlight_val2
 
 ## --dOrganism dataframe table, pivottable and styling table--
 # convert to dataframe

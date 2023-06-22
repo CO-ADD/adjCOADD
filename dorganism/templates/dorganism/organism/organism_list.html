@@ -5,8 +5,8 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row vh-100">
-
-  {% include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' %}
+  {% url 'pivoted-table' app_model='dorganism-Organism' as url_pivotedtable%}
+  {% include 'utils/leftbar.html'  with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   
