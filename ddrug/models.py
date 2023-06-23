@@ -609,7 +609,8 @@ class MIC_Pub(AuditModel):
 #=================================================================================================
     HEADER_FIELDS   = {
            # example fields for test view
-        "drug_id.drug_name":"Drug Name",
+        "organism_id.organism_name":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",
         "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",

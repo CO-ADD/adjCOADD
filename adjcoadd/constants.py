@@ -22,3 +22,6 @@ LinkList={
 
 }
 
+# App and Model
+# app_model_list=['apputil_ApplicationUser_', ]
+

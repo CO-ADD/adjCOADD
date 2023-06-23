@@ -1,25 +1,26 @@
 <div class="sidebar card-text panel me-2 ps-3">
     <form id="django-filter-siderbar" method="get" class="form-group mx-2">
         {% csrf_token %}
-        <div class="d-flex align-items-baseline mt-2">
-
-            <input id="filter-apply" class="btn m-auto" type="submit" name="applysingle" value="Apply"/>
-            <input data-name= "submit-reset" type="text" name="reset" value="False" hidden>
-            <input data-name="pivot" type="text" name="pivot" value="False" hidden>
-            <div class="d-flex mt-3">
-                <input class="btn mx-2" type="checkbox" name="applymulti" value="search including related tables"/>
-                <label for="" class="text-info">
-                    <!-- <span> -->
-                        
-                        including related tables
-                        <!-- </span>  -->
-                </label>
-            </div>
-        </div>
         <!-- Here put search all fields input -->
         <div class="input-group input-group-sm my-2 p-1 w-100">
-            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>   
-           {{ filter.form.Search_all_fields }}
+            <button class="input-group-text btn m-auto border" type="submit" name="applysingle" value="Apply">
+                <i class="fa-solid fa-magnifying-glass fs-4"></i>
+            </button>
+            {{ filter.form.Search_all_fields }}
+        </div>
+
+        <div class="d-flex align-items-baseline mt-2">
+            <!-- <input id="filter-apply" class="btn m-auto" type="submit" name="applysingle" value="Apply" /> -->
+            <input data-name="submit-reset" type="text" name="reset" value="False" hidden>
+            <input data-name="pivot" type="text" name="pivot" value="False" hidden>
+            <div class="d-flex mt-3">
+                <input class="btn mx-2" type="checkbox" name="applymulti" value="search including related tables" />
+                <label for="" class="text-info">
+                    <!-- <span> -->
+                    including related tables
+                    <!-- </span>  -->
+                </label>
+            </div>
         </div>
         <hr>
         <div class="d-flex justify-content-center">
@@ -37,6 +38,8 @@
                 &nbsp; entries per page
             </span>
         </div>
+
+     
         <hr>
         <!-- Here show combined search conditions -->
         {%if filterset%}
@@ -44,9 +47,15 @@
             {{filterset | default_if_none:"&nbsp;"}}
             <button class="btn btn-danger my-2" type="reset" onclick="myfun()">Clear Condidtions</button>
         </div>
+        {%else%}
+        <div class="spinner-border text-secondary not-visible" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
         {%endif%}
+
+
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
-        <div class="d-flex flex-column" id="Django-form-filter-items">
+        <div class="d-flex flex-column mb-3" id="Django-form-filter-items">
 
             <label for="smiles_query" class="not-visible">Substructure Query</label>
             <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
@@ -54,12 +63,12 @@
             {%for field in filter.form%}
             {% if field.name != 'Search_all_fields' %}
             <button id="btn_{{field.name|safe}}"
-                class="collapsed accordion-button text-start bg-transparent border-bottom"
-                type="button" data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
+                class="collapsed accordion-button text-start bg-transparent border-bottom" type="button"
+                data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
                 aria-controls="{{field.label}}">
                 {{field.label}}
             </button>
-            <div id="{{field.name|safe}}" class="accordion-collapse collapse card-bg" >
+            <div id="{{field.name|safe}}" class="accordion-collapse collapse card-bg">
                 <p class="accordion-body m-2 px-1 py-1">
                     {{field}}
                 </p>
@@ -95,16 +104,9 @@
     $(document).ready(function () {
         $('input[data-name="pivot"]').val('False')
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
-        $("#filter-apply").on("click", function () {
-            console.log("working...")
-            var value = $("form").cleaned_data;
-            console.log(value)
-            document.cookie = "filter=" + value;
-
-        })
 
         $("#Class").addClass('show');
         $("#btn_Class").removeClass('collapsed');
-        
+
     })
 </script>

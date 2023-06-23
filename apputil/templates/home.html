@@ -17,8 +17,11 @@
 
             <div class="row w-50">
                 <div class="col text-center m-auto">
+                
                     {% url 'taxo_card' as taxonomy_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Taxonomy' url=taxonomy_url totalnumber=nTax %}
+                    {% url 'stock_list_overview' as stock_url %}
+                    {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Stock' url=stock_url %}
                 </div>
             </div>
         </div>

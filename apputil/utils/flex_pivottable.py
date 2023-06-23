@@ -34,16 +34,15 @@ def flex_pivottable(request,app_model):
 
     model_name = app_model.split("-")[1]
     app_name = app_model.split("-")[0]
-    pk_list=request.session.get('cached_queryset')
-    print(f"pklist is {pk_list}")
+
     try:
         Model = apps.get_model(app_name, model_name)
     except LookupError:
         # Handle the case where the model does not exist.
         return HttpResponse("Model not found.")
     model_fields=[f.replace(".", "__") for f in list(Model.HEADER_FIELDS.keys())] #list(Model.HEADER_FIELDS.keys())
+    pk_list = request.session.get(f'{Model}_cached_queryset')
     
-
     if request.method == "POST": # 
         
         values_str = request.POST.get("values") or None  # or "n_left"
@@ -80,4 +79,4 @@ def flex_pivottable(request,app_model):
                 table_html= f"error is {err}"
        
 
-    return render(request, 'utils/pivotedtable.html', {"table":table_html, "app_model":app_model, "model_fields":model_fields})
+    return render(request, 'utils/pivotedtable.html', {"table":table_html, "app_model":app_model, "model_fields":model_fields, "query_list": pk_list})

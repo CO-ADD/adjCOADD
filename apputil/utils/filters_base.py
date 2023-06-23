@@ -13,7 +13,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db.models.expressions import RawSQL
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
-
+from django.core.validators import MinLengthValidator
 
 
 # -- create a function for search all fields--
@@ -85,8 +85,10 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
     return q_object
 
 # -- Filterset base Class--
+
+from django.contrib import messages
 class Filterbase_base(django_filters.FilterSet):
-    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
+    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', }), validators=[MinLengthValidator(10)])
 
    
     def multichoices_filter(self, queryset, name, value):
@@ -95,6 +97,7 @@ class Filterbase_base(django_filters.FilterSet):
     
     def filter_all_fields(self, queryset, name, value):
         if value:
+            
             exclude_fields = ['password',]
             q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
@@ -115,8 +118,7 @@ class Filterbase_base(django_filters.FilterSet):
         for field in self.filters:
             if 'CharFilter' == self.filters[field].__class__.__name__:
                 self.filters[field].lookup_expr='icontains'
-        
-           
+          
 class Filterbase(Filterbase_base):
 
     @property
@@ -145,6 +147,8 @@ class FilteredListView(ListView):
     order_by = None
     filter_request = None
     filter_Count = None
+    app_name = None
+    model_name = None
   
     def get_queryset(self):
 
@@ -155,7 +159,8 @@ class FilteredListView(ListView):
         # Remove the stored queryset from the session
         if self.request.GET.get('reset')=='True':
             if 'cached_queryset' in self.request.session:
-                del self.request.session['cached_queryset']
+                del self.request.session[f'{self.model}_cached_queryset'] 
+                # self.request.session[f'{self.app_name}_{self.model_name}_cached_queryset'] 
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
         # ---- Switch off cache queryset
         # if self.request.session.get('cached_queryset'):
@@ -169,7 +174,7 @@ class FilteredListView(ListView):
             self.filterset = self.filterset_class(self.request.GET, queryset = queryset, **kwargs)
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
-        self.request.session['cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None  
+        self.request.session[f'{self.model}_cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None  
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
@@ -186,7 +191,7 @@ class FilteredListView(ListView):
 
         context = super().get_context_data(**kwargs)
         self.context_list = context['object_list']
-        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset']}
+        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
         filter_record = "Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
         # Pass the filterset to the template - it provides the form.
         context['filter'] = self.filterset

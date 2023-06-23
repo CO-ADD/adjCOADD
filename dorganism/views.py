@@ -33,6 +33,8 @@ class TaxonomyListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomyfilter
     model_fields=model.HEADER_FIELDS
+    model_name = 'Taxonomy'
+    app_name = 'dorganism'
 
 ##
 class TaxonomyCardView(TaxonomyListView):
@@ -74,6 +76,8 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class = Organismfilter
     model_fields = model.HEADER_FIELDS
+    model_name = 'Organism'
+    app_name = 'dorganism'
     
 ##  
 class OrganismCardView(OrganismListView):
@@ -298,22 +302,10 @@ class StockListView(LoginRequiredMixin, FilteredListView):
     model = OrgBatch_Stock  
     template_name = 'dorganism/organism/batch_stock/stock_list.html'
     filterset_class = Stockfilter
-    model_fields = model.HEADER_FIELDS 
+    model_fields = model.HEADER_FIELDS
+    model_name = 'OrgBatch_Stock'
+    app_name = 'dorganism'
 
-    def get_context_data(self,  **kwargs):
-
-        context =super().get_context_data( **kwargs)
-        print(self.request.GET)
-
-        # context['defaultcolumns1']='expiry_date'
-        # context['defaultcolumns2']='card_barcode'
-        # context['defaultindex1']='analysis_time'
-        # context['defaultindex2']='proc_date'
-        # context['defaultvalues']='instrument'
-        
-        # context['pivottable_stock'] = flex_pivottable(self.request, model=self.model)
-        # print(context['pivottable_stock'])
-        return context
 
       
 

@@ -9,7 +9,8 @@ class ClearSessionMiddleware:
     def __call__(self, request):
         # Get the current and last visited views
        # If resolver_match exists, get the current_view
-        print(f"middelware request:{request}")
+     
+        sessionkeyslist=list(request.session.keys())
         try:
             current_view = resolve(request.path_info).url_name
         except Resolver404:
@@ -17,8 +18,10 @@ class ClearSessionMiddleware:
         last_view = request.session.get('last_view')
             # If the current view is different from the last visited view, and both are in clear_session_views, clear the session data
         if last_view and last_view != current_view and current_view!='dataexport' and current_view!='pivoted-table':
-            if 'cached_queryset' in request.session:
-                del request.session['cached_queryset']
+            for i in list(sessionkeyslist):
+                if 'cached_queryset' in i:              
+                    del request.session[i]
+ 
             # Update the last visited view
         request.session['last_view'] = current_view
         # Process the request
