@@ -23,6 +23,7 @@ class DatabaseRouter(object):
         'ddrug': {'ddrug'},
         'dgene': {'dgene'},
         'dcollab': {'dcollab'},
+        'dscreen': {'dscreen'},
         }
 
     def db_for_read(self, model, **hints):

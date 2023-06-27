@@ -24,15 +24,15 @@
 }
 
 :root .darkMode {
-  --body-bg: #ebebeb;
-  --plain-text: black;
-  --brand-text: #fff;
-  --info: #ff6e00;
-  --plain-text-bg: #bdcaca;
-  --brand-bg: #2c7a84;
-  --info-bg: #bdcaca;
-  --border-color: #a6b6b6;
-  --bs-table-hover-bg: #ebebeb !important;
+  --body-bg: #2e2e2e;
+  --plain-text: #a3a3a3;
+  --brand-text: rgb(126, 126, 126, 0.5);
+  --info: #ad4b00;
+  --plain-text-bg: #484e4e;
+  --brand-bg: #324547;
+  --info-bg: #7d8585;
+  --border-color: #3f4444;
+  --bs-table-hover-bg: #8b8b8b !important;
 }
 
 /* font-size */
@@ -54,9 +54,7 @@ body {
   font-family:'Roboto', 'Sans', sans-serif;
   font-size: 14px;
 }
-/* 
-class color and background color
-*/
+/*------------------ class color and background color--------------------*/
 .btn-color{
   color:var(--brand-text) !important;
   background-color: var(--brand-bg) !important;
@@ -69,7 +67,7 @@ class color and background color
   border: transparent !important;
 }
 
-/* Change Border style here */
+/*-------------- Change Border style here ---------------*/
 .border,
 table,
 th {
@@ -80,10 +78,10 @@ td {
   border: 1px solid var(--border-color) !important;
 }
 
-/* Change Bg and text color here */
+/* -------------------- Change Bg and text color here -------------*/
 .table-bg,
 .card-bg {
-  background-color: white !important;
+  background-color: var(--brand-text) !important;
 }
 
 .bg-info {
@@ -141,42 +139,6 @@ i {
   transition: 0.5s;
 }
 
-/* wizard form steps style */
-.step-line {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 500px;
-  margin: auto;
-  margin-top: 2em;
-}
-
-.step {
-  padding: 5px;
-  border: 1px solid var(--brand-bg);
-  border-radius: 5px;
-  margin-bottom: 20px;
-  position: relative;
-  width: 150px;
-  margin: 10px;
-}
-
-.step:not(:last-child)::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: calc(50%);
-  left: calc(100%);
-  width: 20px;
-  height: 2px;
-  border: 1px solid var(--brand-bg);
-}
-
-.step.active {
-  background-color: var(--brand-bg);
-  color: var(--brand-text);
-}
 
 .card {
   color: var(--plain-text);
@@ -284,69 +246,6 @@ span {
   font-size: 16px;
 }
 
-.sorting_table th {
-  padding-right: 18px;
-}
-
-.sorting_table .asc:before,
-.sorting_table .asc:after,
-.sorting_table .desc:before,
-.sorting_table .desc:after,
-.sorting_table th:before,
-.sorting_table th:after {
-  border: 4px solid transparent;
-  content: "";
-  display: block;
-  height: 0;
-  right: 5px;
-  top: 50%;
-  position: absolute;
-  width: 0;
-}
-
-.sorting_table th:before {
-  border-bottom-color: #666;
-  margin-top: -9px;
-}
-
-.sorting_table th:after {
-  border-top-color: #666;
-  margin-top: 1px;
-}
-
-.sorting_table .asc:before {
-  border-bottom-color: #1a1a1a;
-  margin-top: -9px;
-}
-
-.sorting_table .asc:after {
-  border-top-color: #666;
-  margin-top: 1px;
-}
-
-.sorting_table .desc:before {
-  border-bottom-color: #666;
-  margin-top: -9px;
-}
-
-.sorting_table .desc:after {
-  border-top-color: #1a1a1a;
-  margin-top: 1px;
-}
-
-/* pagination */
-.page-item {
-  border: none !important;
-}
-
-.page-link,
-.card-link {
-  cursor: pointer !important;
-  background-color: transparent !important;
-  border: none !important;
-}
-
-
 /* bootstrap override */
 
 .dropdown-menu {
@@ -360,8 +259,96 @@ span {
   box-shadow: 10px 5px 5px var(--info-bg);
 }
 
-/* ------------------- */
-/* ----Navbar custom style */
+
+/* =================Functional CSS  Classes========================================= */
+/* ---------------------------1 Login Form --------------------------*/
+.logintext {
+  position: relative;
+}
+
+.logintext:hover :after {
+  width: 100%;
+  height: 5px;
+  position: absolute;
+  top: 100%;
+  left: -2px;
+  content: "";
+  background-color: var(--info);
+  border-radius: 10px;
+  animation: fadeIn 0.5s linear;
+
+}
+
+.Login-form {
+  width: 50%;
+  margin: auto;
+}
+
+.Login-form label {
+  position: absolute;
+  padding: 2px;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 14px;
+  color: var(--plain-text);
+  opacity: 0.5;
+}
+
+.Login-form label.active {
+  top: -5px;
+  font-size: 14px;
+  background-color: var(--body-bg);
+  opacity: 1;
+}
+
+.Login-form input {
+  
+  background-color: var(--body-bg) !important;
+  border: 1px solid var(--brand-bg) !important;
+  font-size: 14px !important;
+}
+
+.Login-form input:focus+.Login-form label,
+.Login-form input:not(:placeholder-shown)+.Login-form label {
+  top: 5px;
+  /* font-size: 12px; */
+  color: var(--brand-bg) !important;
+  border: 2px solid var(--brand-bg) !important;
+  background-color: var(--body-bg) !important;
+  /* outline: var(--teal) !important */
+}
+
+/* Change the white to any color */
+.Login-form input:-webkit-autofill,
+.Login-form input:-webkit-autofill:hover,
+.Login-form input:-webkit-autofill:focus,
+.Login-form input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--info-bg) inset !important;
+}
+
+.Login-form .form-control:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.login {
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+  margin-top: 25px;
+  border: 1px solid var(--brand-bg);
+  border-radius: 10%;
+  font-size: 16px;
+  padding: 3px 8px 3px 8px;
+}
+
+.login:hover {
+  opacity: 0.5;
+}
+
+/* ---------------------------2 Navbar --------------------------*/
 .navbar {
   height: 120px;
   width: 100%;
@@ -460,8 +447,17 @@ nav.shrink .dropdown-divider {
   margin: 0 !important;
 }
 
-/* ------------------- */
-/* ----Landing page badges custom style */
+/* 1 */
+a .tooltiptext {
+  visibility: hidden;
+}
+
+a:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* ---------------------------3 Landing page --------------------------*/
+
 .Land-frame-hidden,
 .Land-frame-hidden label span {
   color: transparent !important;
@@ -502,6 +498,7 @@ nav.shrink .dropdown-divider {
 }
 
 .landp-img-01 {
+  position:relative;
   height: 8rem;
   width: 8rem;
   background-color: var(--info, orange);
@@ -519,20 +516,19 @@ nav.shrink .dropdown-divider {
   font-size: medium;
 }
 
-a .tooltiptext {
-  visibility: hidden;
-}
-
-a:hover .tooltiptext {
-  visibility: visible;
-}
 
 .landp-img-01:hover {
   transform: scale(1.1);
   transition: 0.3s ease-in;
   opacity: 80%;
 }
-
+.landp-img-01:first-of-type:hover:after{
+  position:absolute;
+  top: 105%;
+  left: 0px;
+  content: "create, update new organism; track organism batch, stock through individual organism view; browser data in pivote table ";
+  color: var(--plain-text);
+}
 .landp-img-01 {
   animation: fadeIn 0.6s;
 }
@@ -545,9 +541,57 @@ a:hover .tooltiptext {
   animation: fadeIn 1.5s;
 }
 
-/* =================Css style in JS Func========================================= */
-/* ===== 1 Drag to resize sidebar start ======== */
-/* Js children table */
+/* ----------------------------------pagination -------------------------------*/
+.page-item {
+  border: none !important;
+}
+
+.page-link,
+.card-link {
+  cursor: pointer !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* -----------------------------------------wizard form steps style--------------------- */
+.step-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 500px;
+  margin: auto;
+  margin-top: 2em;
+}
+
+.step {
+  padding: 5px;
+  border: 1px solid var(--brand-bg);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  position: relative;
+  width: 150px;
+  margin: 10px;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50%);
+  left: calc(100%);
+  width: 20px;
+  height: 2px;
+  border: 1px solid var(--brand-bg);
+}
+
+.step.active {
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+}
+
+
+/* --------------------------- Childtable Stock special cell style ------------------*/
 .n_left_column {
   width: fit-content;
 }
@@ -559,7 +603,8 @@ a:hover .tooltiptext {
   background-color: var(--info-bg);
 }
 
-/* ============== 2 edit table/form =========== */
+/* --------------------------- Search organism --------------------------*/
+
 .results-card {
   display: flex;
   flex-wrap: wrap;
@@ -623,7 +668,59 @@ a:hover .tooltiptext {
   width: 50%;
 }
 
-/* ==============toggle up down arrow============ */
+/* --------------------------- Special Effects --------------------------*/
+/* ---sorting table duble arrows effect */
+.sorting_table th {
+  padding-right: 18px;
+}
+
+.sorting_table .asc:before,
+.sorting_table .asc:after,
+.sorting_table .desc:before,
+.sorting_table .desc:after,
+.sorting_table th:before,
+.sorting_table th:after {
+  border: 4px solid transparent;
+  content: "";
+  display: block;
+  height: 0;
+  right: 5px;
+  top: 50%;
+  position: absolute;
+  width: 0;
+}
+
+.sorting_table th:before {
+  border-bottom-color: #666;
+  margin-top: -9px;
+}
+
+.sorting_table th:after {
+  border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .asc:before {
+  border-bottom-color: #1a1a1a;
+  margin-top: -9px;
+}
+
+.sorting_table .asc:after {
+  border-top-color: #666;
+  margin-top: 1px;
+}
+
+.sorting_table .desc:before {
+  border-bottom-color: #666;
+  margin-top: -9px;
+}
+
+.sorting_table .desc:after {
+  border-top-color: #1a1a1a;
+  margin-top: 1px;
+}
+
+/* toggle up down arrow*/
 
 .fa-chevron-down {
   transform: rotate(0deg);
@@ -635,10 +732,8 @@ a:hover .tooltiptext {
   transition: transform 0.5s linear;
 }
 
-/* =========================================================================== */
 
-
-/* -----filter class style in Organism view */
+/* filter class style in Organism view */
 #id_Class {
   display: flex;
   flex-wrap: wrap;
@@ -654,6 +749,47 @@ form p {
   display: flex;
   flex-direction: column;
 }
+
+
+#alert {
+  animation: disapear 2s forwards;
+  width: 6rem;
+}
+
+/* modal form style */
+.django-form-table:hover {
+  background-color: var(--plain-text-bg);
+}
+
+.fa-floppy-disk {
+  transition: 0.8s;
+  font-size: 18px;
+}
+
+
+/*  */
+
+.data-contain {
+  position: relative;
+  border-top: 1px solid var(--bs-custom-white);
+  padding-top: 10px;
+}
+
+.view-title {
+  position: absolute;
+  left: 45%;
+  top: -10px;
+  background-color: var(--bs-body-bg);
+}
+
+.not-visible {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
 
 
 /* Animation */
@@ -840,128 +976,4 @@ form p {
     opacity: 0;
     /* transform: rotateX(90deg); */
   }
-}
-
-#alert {
-  animation: disapear 2s forwards;
-  width: 6rem;
-}
-
-.django-form-table:hover {
-  background-color: var(--plain-text-bg);
-}
-
-.fa-floppy-disk {
-  transition: 0.8s;
-  font-size: 18px;
-}
-
-/* Login Form */
-.logintext {
-  position: relative;
-}
-
-.logintext:hover :after {
-  width: 100%;
-  height: 5px;
-  position: absolute;
-  top: 100%;
-  left: -2px;
-  content: "";
-  background-color: var(--info);
-  border-radius: 10px;
-  animation: fadeIn 0.5s linear;
-
-}
-
-.Login-form {
-  width: 50%;
-  margin: auto;
-}
-
-.Login-form label {
-  position: absolute;
-  padding: 2px;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  transition: all 0.2s ease;
-  pointer-events: none;
-  font-size: 14px;
-  color: var(--plain-text);
-  opacity: 0.5;
-}
-
-.Login-form label.active {
-  top: -5px;
-  font-size: 14px;
-  background-color: var(--body-bg);
-  opacity: 1;
-}
-
-.Login-form input {
-  
-  background-color: var(--body-bg) !important;
-  border: 1px solid var(--brand-bg) !important;
-  font-size: 14px !important;
-}
-
-.Login-form input:focus+.Login-form label,
-.Login-form input:not(:placeholder-shown)+.Login-form label {
-  top: 5px;
-  /* font-size: 12px; */
-  color: var(--brand-bg) !important;
-  border: 2px solid var(--brand-bg) !important;
-  background-color: var(--body-bg) !important;
-  /* outline: var(--teal) !important */
-}
-
-/* Change the white to any color */
-.Login-form input:-webkit-autofill,
-.Login-form input:-webkit-autofill:hover,
-.Login-form input:-webkit-autofill:focus,
-.Login-form input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--info-bg) inset !important;
-}
-
-.Login-form .form-control:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.login {
-  background-color: var(--brand-bg);
-  color: var(--brand-text);
-  margin-top: 25px;
-  border: 1px solid var(--brand-bg);
-  border-radius: 10%;
-  font-size: 16px;
-  padding: 3px 8px 3px 8px;
-}
-
-.login:hover {
-  opacity: 0.5;
-}
-
-/*  */
-
-.data-contain {
-  position: relative;
-  border-top: 1px solid var(--bs-custom-white);
-  padding-top: 10px;
-}
-
-.view-title {
-  position: absolute;
-  left: 45%;
-  top: -10px;
-  background-color: var(--bs-body-bg);
-}
-
-.not-visible {
-  display: none !important;
-}
-
-.visible {
-  display: block !important;
 }

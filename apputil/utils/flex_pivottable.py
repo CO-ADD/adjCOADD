@@ -23,7 +23,7 @@ def get_pivottable(querydata, columns_str, index_str, values):
     
     try:
         table=pd.pivot_table(df, values=values, index=index,
-                       columns=columns, aggfunc=np.size, fill_value=0)#np_aggfunc[aggfunc], fill_value='0')
+                       columns=columns, aggfunc= lambda x:  " ".join([str(y) for y in x]), fill_value=0)#np_aggfunc[aggfunc], fill_value='0')
     except Exception as err:
         print(f'err is {err}')
         table=err
@@ -57,7 +57,6 @@ def flex_pivottable(request,app_model):
         for num_fields in range(len(model_fields)):
             arrary=[querylist[i][num_fields] for i in range(len(querylist))]
             data[model_fields[num_fields]]=arrary
- 
         values = values_str or None  # pivottable values
         
         if values:

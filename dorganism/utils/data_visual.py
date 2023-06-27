@@ -34,7 +34,7 @@ def pivottable_style(pk):
     import pandas as pd
     try:
         df = convert_dataframe(pk)
-        pivottable = pd.pivot_table(df, columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['MIC',],  aggfunc={'MIC':np.size})
+        pivottable = pd.pivot_table(df, columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  aggfunc= lambda x:  " ".join([str(y) for y in x]))
         pivottable = pivottable.astype(str)
         # Styling pivottable       
         style_pivot = pivottable.style.applymap(highlight_val2)     

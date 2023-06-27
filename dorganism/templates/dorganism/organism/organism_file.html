@@ -10,7 +10,7 @@
             <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapse_file" aria-expanded="true" aria-controls="collapse_file">
                 <h5 class="fs-6 my-0">
-                    Files
+                    Files {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=object.assoc_documents.all.count title='Documents' %}
                 </h5>
             </button>
         </h2>

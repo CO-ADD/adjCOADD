@@ -124,13 +124,15 @@ class AuditModel(models.Model):
     An abstract base class model that provides audit informations 
     """
 #-------------------------------------------------------------------------------------------------
+    # object status -> indicated by number in database:
     DELETED   = -9
     INVALID   = -1
     UNDEFINED =  0
     VALID     =  1
     CONFIRMED =  2
 
-    OWNER           = "orgdb"
+    OWNER           = "orgdb" # Defaut username
+    
     VALID_STATUS    = False
     HEADER_FIELDS   = {}
     CARDS_FIELDS   = {}
@@ -312,21 +314,6 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(*args, **kwargs)
 
     #------------------------------------------------
-    # Methods for getting Fields and Values List
-
-    # get field names in postgres in the order provided by constants.py
-    @classmethod
-    def get_databasefields(cls, fields=None):
-        if fields is None:
-            fields = cls.HEADER_FIELDS
-
-        if fields:
-            databasefields=fields.keys()
-        else:
-            databasefields=None
-        return databasefields
-    
-    #------------------------------------------------
     # get field verbose or customized name in the order provided by headerfields
     @classmethod
     def get_fields(cls, fields=None):
@@ -339,23 +326,6 @@ class AuditModel(models.Model):
         else:
             select_fields=None   
         return select_fields
-
-
-    #------------------------------------------------
-    # get class field names in the list/order provided by HEADER_FIELDS
-    @classmethod
-    def get_modelfields(cls, fields=None):
-        if fields is None:
-            fields = cls.HEADER_FIELDS
-
-        if fields:
-            # Ordered by _meta.fields (model)
-            model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
-            # Ordered by HEADER_FIELDS
-            # model_fields=[f.name for f in fields.keys() if f.name in cls._meta.fields]
-        else:
-            model_fields=None
-        return model_fields
  
     #------------------------------------------------
     # recurse func to get foreign key related table col value

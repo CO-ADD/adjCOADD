@@ -149,7 +149,7 @@
   border-radius: 2%;
   max-width: fit-content;
   min-width: 20px;
-  min-height: 200px;
+  min-height: 250px;
   list-style-type: none;
   margin: auto;
   padding: 5px;
@@ -162,9 +162,11 @@
   background-color: var(--bs-body-bg);
   /* border: 2px solide var(--bs-border-color); */
 }
-
+#sortable2{
+  height: 500px;
+}
 #sortable3 {
-  min-height: fit-content;
+  min-height: 50px;
 }
 
 #sortable1 li,
@@ -173,8 +175,9 @@
   margin: 2px;
   padding: 2px;
   margin-left: 2px;
-  /* font-size: 1.2em; */
-  width: fit-content;
+  width: 160px;
+  height: fit-content;
+  word-wrap: break-word !important;
 }
 
 .ui-state-default {

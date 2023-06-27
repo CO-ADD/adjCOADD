@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <ul id="sortable1" class="connectedSortable" style="border: 2px solid black">
+  <ul id="sortable1" class="connectedSortable m-0" style="border: 2px solid black; width: 200px;">
     {%for field in model_fields %}
     <li data-name="{{field}}" class="draggable ui-state-default">{{field}}</li>
     {%endfor%}
