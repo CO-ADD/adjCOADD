@@ -160,7 +160,7 @@ class FilteredListView(ListView):
         if self.request.GET.get('reset')=='True':
             if 'cached_queryset' in self.request.session:
                 del self.request.session[f'{self.model}_cached_queryset'] 
-                # self.request.session[f'{self.app_name}_{self.model_name}_cached_queryset'] 
+                
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
         # ---- Switch off cache queryset
         # if self.request.session.get('cached_queryset'):

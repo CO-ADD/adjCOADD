@@ -251,13 +251,13 @@ class BreakpointListView(LoginRequiredMixin, FilteredListView):
 class API_Drug_List(API_FilteredListView):
     queryset = Drug.objects.all()
     serializer_class = Drug_Serializer
-    filterset_class= Drug_filter
+
 
 ## VITEK AST
 class API_VITEK_ASTList(API_FilteredListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
-    filterset_class= Vitekast_filter
+ 
  
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()

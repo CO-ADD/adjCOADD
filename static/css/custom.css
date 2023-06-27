@@ -522,13 +522,7 @@ a:hover .tooltiptext {
   transition: 0.3s ease-in;
   opacity: 80%;
 }
-.landp-img-01:first-of-type:hover:after{
-  position:absolute;
-  top: 105%;
-  left: 0px;
-  content: "create, update new organism; track organism batch, stock through individual organism view; browser data in pivote table ";
-  color: var(--plain-text);
-}
+
 .landp-img-01 {
   animation: fadeIn 0.6s;
 }
@@ -539,6 +533,34 @@ a:hover .tooltiptext {
 
 .land-badge {
   animation: fadeIn 1.5s;
+}
+
+[data-value='ORGANISM']:hover:after{
+  position:absolute;
+  top: 105%;
+  left: 0px;
+  content: "create, update new organism;  Antibiogram table, tracking organism batch, stock through individual organism view";
+  color: var(--plain-text);
+}
+
+[data-value='DRUG']:hover:after{
+  position:absolute;
+  top: -50%;
+  left: -5px;
+  content: "Drug informations";
+  color: var(--plain-text);
+  /* width: 2px;
+  background-color: var(--info);
+  height: 300px;
+  transform:rotate(90deg) */
+}
+
+[data-value='GENE']:hover:after{
+  position:absolute;
+  top: 105%;
+  left: 0px;
+  content: "Gene informations";
+  color: var(--plain-text);
 }
 
 /* ----------------------------------pagination -------------------------------*/
