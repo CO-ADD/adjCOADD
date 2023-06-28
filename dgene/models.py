@@ -26,7 +26,7 @@ class Gene(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "gene_name":"Gene Name",
+        "gene_name":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
         "gene_type":"Gene Type",
         "protein_class":"Gene Class",
         "gene_note":"Gene Note",

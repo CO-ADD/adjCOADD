@@ -1,0 +1,103 @@
+django.utils.autoreload INFO 2023-06-28 19:37:56,541 autoreload 2267 140295330023232 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:38:02,190 basehttp 2267 140294516704832 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:38:02,235 basehttp 2267 140294516704832 "GET /static/css/custom.css HTTP/1.1" 200 17666
+django.server INFO 2023-06-28 19:38:02,235 basehttp 2267 140294435632704 "GET /static/css/table_wrap.css HTTP/1.1" 200 3433
+django.server INFO 2023-06-28 19:38:02,237 basehttp 2267 140294402061888 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-06-28 19:38:02,239 basehttp 2267 140294427240000 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1749
+django.server INFO 2023-06-28 19:38:02,239 basehttp 2267 140294410454592 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-06-28 19:38:02,242 basehttp 2267 140294435632704 "GET /static/js/editableTable.js HTTP/1.1" 200 638
+django.server INFO 2023-06-28 19:38:02,243 basehttp 2267 140294418847296 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-06-28 19:38:02,249 basehttp 2267 140294427240000 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-06-28 19:38:02,250 basehttp 2267 140294418847296 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-06-28 19:38:02,250 basehttp 2267 140294410454592 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-06-28 19:38:02,251 basehttp 2267 140294402061888 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102512
+django.server INFO 2023-06-28 19:38:02,274 basehttp 2267 140294516704832 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-06-28 19:38:02,325 basehttp 2267 140294516704832 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-06-28 19:38:02,377 basehttp 2267 140294516704832 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-06-28 19:38:02,865 basehttp 2267 140294516704832 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-06-28 19:38:09,085 basehttp 2267 140294435632704 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:38:09,095 basehttp 2267 140294435632704 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1749
+django.server INFO 2023-06-28 19:38:09,096 basehttp 2267 140294427240000 "GET /static/css/custom.css HTTP/1.1" 200 17666
+django.server INFO 2023-06-28 19:38:09,105 basehttp 2267 140294427240000 "GET /static/css/table_wrap.css HTTP/1.1" 200 3433
+django.server INFO 2023-06-28 19:42:05,361 basehttp 2267 140294410454592 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:42:05,387 basehttp 2267 140294410454592 "GET /static/css/custom.css HTTP/1.1" 200 17666
+django.server INFO 2023-06-28 19:42:05,389 basehttp 2267 140294418847296 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1749
+django.server INFO 2023-06-28 19:42:05,390 basehttp 2267 140294402061888 "GET /static/css/main.6a646761.css HTTP/1.1" 200 163150
+django.server INFO 2023-06-28 19:42:05,400 basehttp 2267 140294418847296 "GET /static/css/table_wrap.css HTTP/1.1" 200 3433
+django.server INFO 2023-06-28 19:42:05,405 basehttp 2267 140294402061888 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89664
+django.server INFO 2023-06-28 19:42:05,435 basehttp 2267 140294410454592 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-06-28 19:42:05,444 basehttp 2267 140294418847296 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 500
+django.server INFO 2023-06-28 19:42:05,454 basehttp 2267 140294402061888 "GET /static/js/editableTable.js HTTP/1.1" 200 638
+django.server INFO 2023-06-28 19:42:05,485 basehttp 2267 140294410454592 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102512
+django.server INFO 2023-06-28 19:42:05,488 basehttp 2267 140294410454592 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-06-28 19:42:05,493 basehttp 2267 140294418847296 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-06-28 19:42:05,504 basehttp 2267 140294402061888 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-06-28 19:42:05,555 basehttp 2267 140294402061888 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-06-28 19:42:05,606 basehttp 2267 140294402061888 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-06-28 19:42:05,988 basehttp 2267 140294402061888 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-06-28 19:42:13,333 basehttp 2267 140294385276480 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-28 19:42:14,349 basehttp 2267 140294385276480 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-28 19:42:20,374 basehttp 2267 140294385276480 "GET /dorganism/organism_card HTTP/1.1" 200 178055
+django.server INFO 2023-06-28 19:42:20,393 basehttp 2267 140294385276480 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-06-28 19:42:20,394 basehttp 2267 140294393669184 "GET /static/js/filter_toggle.js HTTP/1.1" 200 167
+django.server INFO 2023-06-28 19:42:23,310 basehttp 2267 140294385276480 "GET /dorganism/organism_card?page=2 HTTP/1.1" 200 177744
+django.server INFO 2023-06-28 19:43:10,078 basehttp 2267 140294516704832 "GET / HTTP/1.1" 200 13089
+django.utils.autoreload INFO 2023-06-28 19:43:55,202 autoreload 2267 140295330023232 /home/test/projects/adjCOADD/apputil/views.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:43:55,895 autoreload 2442 139886704105280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-28 19:43:58,931 autoreload 2442 139886704105280 /home/test/projects/adjCOADD/adjcoadd/urls.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:43:59,679 autoreload 2492 139707024774976 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:44:09,074 basehttp 2492 139706211042880 "GET /dorganism/organism_card?page=2 HTTP/1.1" 200 177744
+django.server INFO 2023-06-28 19:44:14,998 basehttp 2492 139706211042880 "GET /dorganism/organism/FG_0054 HTTP/1.1" 200 87823
+django.server INFO 2023-06-28 19:44:15,019 basehttp 2492 139706211042880 "GET /static/js/search_organism.js HTTP/1.1" 200 2426
+django.server INFO 2023-06-28 19:44:15,022 basehttp 2492 139706202650176 "GET /static/js/create_childtable.js HTTP/1.1" 200 6936
+django.server INFO 2023-06-28 19:44:15,031 basehttp 2492 139706202650176 "GET /static/js/destroy_childtable.js HTTP/1.1" 200 201
+django.server INFO 2023-06-28 19:44:15,032 basehttp 2492 139706194257472 "GET /static/js/childtable.js HTTP/1.1" 200 779
+django.server INFO 2023-06-28 19:44:15,034 basehttp 2492 139706194257472 "GET /static/js/ajax_simpleupload.js HTTP/1.1" 200 787
+django.request WARNING 2023-06-28 19:44:20,903 log 2492 139706194257472 Not Found: /dorganism/organism/FG_1000
+django.server WARNING 2023-06-28 19:44:20,904 basehttp 2492 139706194257472 "GET /dorganism/organism/FG_1000 HTTP/1.1" 404 7764
+django.request WARNING 2023-06-28 19:44:21,114 log 2492 139706194257472 Not Found: /favicon.ico
+django.server WARNING 2023-06-28 19:44:21,114 basehttp 2492 139706194257472 "GET /favicon.ico HTTP/1.1" 404 6370
+django.utils.autoreload INFO 2023-06-28 19:44:57,574 autoreload 2492 139707024774976 /home/test/projects/adjCOADD/adjcoadd/settings.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:44:58,411 autoreload 2555 140365024798528 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:45:03,838 basehttp 2555 140364211357248 "GET /dorganism/organism/FG_1000 HTTP/1.1" 200 15023
+django.server INFO 2023-06-28 19:45:20,554 basehttp 2555 140364211357248 "GET /dorganism/organism_card HTTP/1.1" 200 178055
+django.server INFO 2023-06-28 19:45:27,428 basehttp 2555 140364211357248 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-06-28 19:45:28,342 basehttp 2555 140364211357248 "GET /index/ HTTP/1.1" 200 20328
+django.utils.autoreload INFO 2023-06-28 19:45:35,811 autoreload 2671 140127707748160 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:45:44,051 basehttp 2671 140126893442624 "GET / HTTP/1.1" 200 13089
+django.utils.autoreload INFO 2023-06-28 19:45:54,067 autoreload 2671 140127707748160 /home/test/projects/adjCOADD/adjcoadd/settings.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:45:54,742 autoreload 2745 140516855093056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-28 19:47:02,640 autoreload 2745 140516855093056 /home/test/projects/adjCOADD/adjcoadd/constants.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:47:03,288 autoreload 2818 140131507480384 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-28 19:47:20,518 autoreload 2818 140131507480384 /home/test/projects/adjCOADD/adjcoadd/constants.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:47:21,108 autoreload 2869 139740351698752 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:47:38,484 basehttp 2869 139739537933888 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:47:40,762 basehttp 2869 139739537933888 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-28 19:47:41,768 basehttp 2869 139739537933888 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-28 19:47:44,023 basehttp 2869 139739537933888 "GET /dgene/gene_list HTTP/1.1" 200 32786
+django.server INFO 2023-06-28 19:47:44,047 basehttp 2869 139739537933888 "GET /static/js/js_utils/saveData.js HTTP/1.1" 200 433
+django.server INFO 2023-06-28 19:47:44,048 basehttp 2869 139739529541184 "GET /static/js/filter_toggle.js HTTP/1.1" 200 167
+django.utils.autoreload INFO 2023-06-28 19:48:04,806 autoreload 2869 139740351698752 /home/test/projects/adjCOADD/dgene/models.py changed, reloading.
+django.utils.autoreload INFO 2023-06-28 19:48:05,457 autoreload 2949 139888940259136 Watching for file changes with StatReloader
+django.server INFO 2023-06-28 19:48:10,759 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 19:48:11,093 basehttp 2949 139888108561984 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:48:12,819 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28328
+django.server INFO 2023-06-28 19:48:30,206 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28328
+django.server INFO 2023-06-28 19:53:12,162 basehttp 2949 139888108561984 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:53:13,074 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 19:53:35,002 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 19:58:13,134 basehttp 2949 139888108561984 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-28 19:58:14,055 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 19:58:35,997 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:03:15,096 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:03:37,009 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:08:16,127 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:08:38,268 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:13:17,131 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:13:39,047 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:18:18,110 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:18:40,035 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:23:19,155 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:23:41,069 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326
+django.server INFO 2023-06-28 20:28:20,152 basehttp 2949 139888126395968 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-28 20:28:42,074 basehttp 2949 139888126395968 "GET /dgene/gene/00002 HTTP/1.1" 200 28326

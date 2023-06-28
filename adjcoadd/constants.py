@@ -15,6 +15,7 @@ COMPOUND_SEP = '|'
 LinkList={
 "urlname": '/dorganism/taxonomy/',
 'organism_id': '/dorganism/organism/',
+'gene_id':'/dgene/gene/',
 'tax_id': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
 'drug_id': "/ddrug/drug/",
 'chembl':'https://www.ebi.ac.uk/chembl/compound_report_card/',

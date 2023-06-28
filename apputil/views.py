@@ -52,7 +52,11 @@ def index(req):
     }
     return render(req, 'home.html', nDict)
 
-
+# 
+# Handler 404
+def custom_page_not_found_view(request, exception):
+   
+    return render(request, 'registration/error404.html')
 ## =================================APP Log in/out =================================
 def login_user(req):
     if req.user.is_authenticated:

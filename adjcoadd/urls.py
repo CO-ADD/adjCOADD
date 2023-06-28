@@ -7,11 +7,16 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-
+from django.conf.urls import (
+handler400, handler403, handler404, handler500
+)
 import dorganism.urls
 import apputil.urls
 
 from apputil.views import login_user, logout_user, permission_not_granted
+
+
+handler404 = "apputil.views.custom_page_not_found_view"
 
 urlpatterns = [
     path('admin/', admin.site.urls), 
