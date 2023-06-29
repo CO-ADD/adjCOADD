@@ -44,6 +44,7 @@ class Import_VitekView(ImportHandler_View):
             form_data=kwargs.get('form_data', None)
         except Exception as err:
             print(err)
+            return (err)
         if 'upload-orgbatch_id' in form_data.keys():
             self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
             print(self.organism_batch)   

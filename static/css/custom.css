@@ -1,4 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto&display=swap');
+/* functional classes */
+/* 
+1 Login Form
+2 Navbar
+3 Landing page
+4 Sidebar
+5 pagination
+wizard form steps style
+Childtable Stock special cell style
+key up search input
+*/
+/*  Special Effects */
+/* 
+(sorting table duble arrows effect 
+toggle up down arrow
+filter class style in Organism view
+modal form style
+Animation)
+*/
+
 /* Theme Color */
 /* 
   How to use theme colors:
@@ -54,6 +74,8 @@ body {
   font-family:'Roboto', 'Sans', sans-serif;
   font-size: 14px;
 }
+
+
 /*------------------ class color and background color--------------------*/
 .btn-color{
   color:var(--brand-text) !important;
@@ -126,56 +148,11 @@ i {
   border-radius: 5px;
 }
 
-.sidebar {
-  background-color: var(--info-bg);
-  color: var(--plain-text);
-  position: relative;
-  margin: 0;
-  padding: 0;
-  min-width: 15%;
-  box-shadow: 2px 2px 5px var(--info-bg);
-  min-height: 30em;
-  height: fit-content;
-  transition: 0.5s;
-}
 
 
 .card {
   color: var(--plain-text);
 }
-
-table,
-.table,
-table.dataTable,
-.dataframe {
-  color: var(--plain-text) !important;
-  border-collapse: collapse !important;
-  width: 100%;
-}
-
-th {
-  background-color: var(--plain-text-bg) !important;
-  max-width: fit-content !important;
-  padding: 2px !important;
-  font-weight: 500 !important;
-  word-wrap: break-word !important;
-}
-
-td {
-  padding: 2px !important;
-  white-space: wrap;
-  word-wrap: break-word !important;
-  max-width: 10em !important;
-}
-
-.dataTable th {
-  max-width: 5em !important;
-}
-
-table.dataframe tr:nth-child(even) {
-  background-color: var(--plain-text-bg);
-}
-
 
 .btn-danger{
  border: 2px solid var(--info) !important;
@@ -563,7 +540,21 @@ a:hover .tooltiptext {
   color: var(--plain-text);
 }
 
-/* ----------------------------------pagination -------------------------------*/
+/* ---------------------------4 Sidebar --------------------------*/
+.sidebar {
+  background-color: var(--info-bg);
+  color: var(--plain-text);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-width: 15%;
+  box-shadow: 2px 2px 5px var(--info-bg);
+  min-height: 30em;
+  height: fit-content;
+  transition: 0.5s;
+}
+
+/* ---------------------------------5 pagination -------------------------------*/
 .page-item {
   border: none !important;
 }
@@ -625,7 +616,7 @@ a:hover .tooltiptext {
   background-color: var(--info-bg);
 }
 
-/* --------------------------- Search organism --------------------------*/
+/* --------------------------- key up search input --------------------------*/
 
 .results-card {
   display: flex;

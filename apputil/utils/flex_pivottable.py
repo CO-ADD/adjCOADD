@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
-from django.http import JsonResponse, HttpResponse
-from django import forms
 from django.apps import apps
-from django.shortcuts import HttpResponse, render, redirect
-from ddrug.models import VITEK_AST, MIC_COADD
+from django.shortcuts import HttpResponse, render
+
 
 
 
@@ -12,7 +10,7 @@ from ddrug.models import VITEK_AST, MIC_COADD
 #    #-------------------------------------------------------------------------------------------------
 # data-visulization 
 def get_pivottable(querydata, columns_str, index_str, values):
-    # np_aggfunc={"Sum": np.sum, "Mean":np.mean, "Std":np.std}
+   
     data=querydata #list(querydata.values())
     df=pd.DataFrame(data)
     df.reset_index

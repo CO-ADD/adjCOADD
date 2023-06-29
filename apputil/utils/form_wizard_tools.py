@@ -142,9 +142,18 @@ class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
                 if self.valLog.nLogs['Error'] >0 :
                     dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
                     self.storage.extra_data['confirm_to_upload'] = False
+                elif self.valLog.nLogs['Error'] <=0:
+                    print(f"error is : {self.valLog.nLogs}")
+                    try:
+                        dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+                    
+                        self.storage.extra_data['confirm_to_upload'] = True
+                    except Exception as err:
+                        dfLog=f"{err}"
+                        print(dfLog)
+                        self.storage.extra_data['confirm_to_upload'] = False
                 else:
-                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
-                    self.storage.extra_data['confirm_to_upload'] = True
+                    dfLog = self.valLog.nLogs.get('Error') or 'No object exists, Is this a correct data file?'
 
                 self.storage.extra_data['validation_result'] = dfLog
                 self.storage.extra_data['validation_message']= f" {len(self.filelist)} file(s) checked for errors." 
@@ -194,5 +203,6 @@ class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
             context['validation_result']="Select VITEK PDF files"
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
+            print(f"result: {context['validation_result']}")
             context['confirm_to_upload']=self.storage.extra_data.get('confirm_to_upload', None)
         return context

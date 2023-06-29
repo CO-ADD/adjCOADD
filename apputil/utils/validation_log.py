@@ -101,7 +101,10 @@ class Validation_Log():
     #     return(html)
         log_data=self.get_asdf(logTypes=logTypes)
         if columns:
-            log_data=log_data[columns]
+            try:
+                log_data=log_data[columns]
+            except Exception as err:
+                raise err
         # Convert the DataFrame's rows to a list of tuples
         table_data = [row for row in log_data.itertuples(index=index)]
         # Convert the DataFrame's columns to a list of strings

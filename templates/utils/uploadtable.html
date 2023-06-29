@@ -1,8 +1,8 @@
-{%if validation_result%}
+{%if validation_result.columns%}
 <table class="table table-bordered fixTableHead bg-light m-0">
     <thead>
         <tr>
-            {% for col in validation_result.columns %}
+            {% for col in validation_result.columns %}          
             <th>{{ col|safe }}</th>
             {% endfor %}
         </tr>
@@ -20,7 +20,7 @@
     </tbody>
 </table>
 {%else%}
-
+{{validation_result}}
 <div class="spinner-border" role="status" >
     <span class="visually-hidden">Loading...</span>
 </div>

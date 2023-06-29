@@ -1,0 +1,1420 @@
+django.server INFO 2023-06-29 09:01:41,810 basehttp 796 140374654121536 "GET /dorganism/organism_card HTTP/1.1" 200 178055
+django.server INFO 2023-06-29 09:01:49,292 basehttp 796 140374654121536 "GET /dorganism/organism_card?csrfmiddlewaretoken=c5ofuJZTkrn0Gcufc6rX20EFGl93M4ROTliOSpCyNiJDToHJ8SZiEEDejWmW2x2Z&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Class=FG&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 178416
+django.server INFO 2023-06-29 09:01:49,972 basehttp 796 140374654121536 "GET /pivotedtableview/dorganism-Organism HTTP/1.1" 200 21213
+django.server INFO 2023-06-29 09:01:56,945 basehttp 796 140374654121536 "POST /pivotedtableview/dorganism-Organism HTTP/1.1" 200 26687
+django.server INFO 2023-06-29 09:02:14,439 basehttp 796 140374654121536 "GET /pivotedtableview/dorganism-Organism HTTP/1.1" 200 21213
+django.server INFO 2023-06-29 09:03:51,235 basehttp 796 140374654121536 "GET /dorganism/organism_card?page=2&csrfmiddlewaretoken=c5ofuJZTkrn0Gcufc6rX20EFGl93M4ROTliOSpCyNiJDToHJ8SZiEEDejWmW2x2Z&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Class=FG&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 149327
+django.server INFO 2023-06-29 09:07:14,647 basehttp 796 140374654121536 "GET /pivotedtableview/dorganism-Organism HTTP/1.1" 200 21213
+django.server INFO 2023-06-29 09:08:54,192 basehttp 796 140374654121536 "GET /dorganism/organism_card?page=2&csrfmiddlewaretoken=c5ofuJZTkrn0Gcufc6rX20EFGl93M4ROTliOSpCyNiJDToHJ8SZiEEDejWmW2x2Z&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Class=FG&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 149327
+django.server INFO 2023-06-29 09:10:53,017 basehttp 796 140374654121536 "GET /dorganism/organism/FG_0054 HTTP/1.1" 200 87823
+django.server INFO 2023-06-29 09:10:53,061 basehttp 796 140374654121536 "GET /static/js/ajax_simpleupload.js HTTP/1.1" 304 0
+django.server INFO 2023-06-29 09:11:04,928 basehttp 796 140374654121536 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 09:11:22,107 basehttp 796 140374654121536 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 09:11:24,561 basehttp 796 140374654121536 "GET /dgene/gene_list HTTP/1.1" 200 32982
+django.server INFO 2023-06-29 09:11:26,967 basehttp 796 140374654121536 "GET /dgene/gene/00002 HTTP/1.1" 200 28177
+django.server INFO 2023-06-29 09:11:43,578 basehttp 796 140374654121536 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 09:12:02,181 basehttp 796 140374654121536 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.utils.autoreload INFO 2023-06-29 09:14:22,899 autoreload 796 140375476246336 /home/test/projects/adjCOADD/apputil/utils/flex_pivottable.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 09:14:23,781 autoreload 1049 139966049466176 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 09:18:45,419 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:23:49,217 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:29:12,199 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:34:16,333 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:39:20,221 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:44:23,378 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:49:28,669 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.server INFO 2023-06-29 09:54:32,379 basehttp 1049 139965236741696 "GET /dorganism/taxonomy_card HTTP/1.1" 200 244525
+django.request ERROR 2023-06-29 10:15:06,898 log 1049 139965236741696 Internal Server Error: /dorganism/taxonomy_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/clear_session_middleware.py", line 13, in __call__
+    sessionkeyslist=list(request.session.keys())
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 123, in keys
+    return self._session.keys()
+           ^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1558, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+django.request ERROR 2023-06-29 10:15:32,465 log 1049 139965091542592 Internal Server Error: /dorganism/taxonomy_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/clear_session_middleware.py", line 13, in __call__
+    sessionkeyslist=list(request.session.keys())
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 123, in keys
+    return self._session.keys()
+           ^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1558, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+django.request ERROR 2023-06-29 11:25:38,700 log 1049 139965236741696 Internal Server Error: /dorganism/taxonomy_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 48, in process_response
+    if request.session.get_expire_at_browser_close():
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 285, in get_expire_at_browser_close
+    if (expiry := self.get("_session_expiry")) is None:
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 68, in get
+    return self._session.get(key, default)
+           ^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1558, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+django.request ERROR 2023-06-29 11:26:03,443 log 1049 139965091542592 Internal Server Error: /dorganism/taxonomy_card
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 48, in process_response
+    if request.session.get_expire_at_browser_close():
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 285, in get_expire_at_browser_close
+    if (expiry := self.get("_session_expiry")) is None:
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 68, in get
+    return self._session.get(key, default)
+           ^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1558, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 289, in ensure_connection
+    self.connect()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/base/base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/postgresql/base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "imb-coadd-work.imb.uq.edu.au" (130.102.116.122), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+django.utils.autoreload INFO 2023-06-29 14:59:34,289 autoreload 48360 139690099160896 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 14:59:37,570 basehttp 48360 139689285092928 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-29 14:59:37,617 basehttp 48360 139689276700224 "GET /static/css/table_wrap.css HTTP/1.1" 200 4022
+django.server INFO 2023-06-29 14:59:37,618 basehttp 48360 139689285092928 "GET /static/css/custom.css HTTP/1.1" 200 17192
+django.server INFO 2023-06-29 14:59:39,483 basehttp 48360 139689285092928 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-29 14:59:39,668 basehttp 48360 139689285092928 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 15:00:13,766 basehttp 48360 139689266210368 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-29 15:00:13,784 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 200 17192
+django.server INFO 2023-06-29 15:00:13,785 basehttp 48360 139689257817664 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:00:13,790 basehttp 48360 139689257817664 "GET /static/css/table_wrap.css HTTP/1.1" 200 4022
+django.server INFO 2023-06-29 15:00:17,525 basehttp 48360 139689257817664 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-29 15:00:17,674 basehttp 48360 139689257817664 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 15:03:04,136 basehttp 48360 139689257817664 "GET /dorganism/organism_card HTTP/1.1" 200 178055
+django.server INFO 2023-06-29 15:03:04,145 basehttp 48360 139689257817664 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:03:04,146 basehttp 48360 139689266210368 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:03:04,155 basehttp 48360 139689266210368 "GET /static/js/js_utils/saveData.js HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:03:04,199 basehttp 48360 139689257817664 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:03:07,132 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:03:07,172 basehttp 48360 139689257817664 "GET /static/js/ajax_simpleupload.js HTTP/1.1" 200 787
+django.server INFO 2023-06-29 15:03:07,210 basehttp 48360 139689266210368 "GET /uploads/images/CO-ADD500-logo.png HTTP/1.1" 200 57888
+django.request WARNING 2023-06-29 15:03:07,262 log 48360 139689257817664 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/CO-ADD_Logo_Baseline_DYMIVol.jpg
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:03:07,265 basehttp 48360 139689257817664 "GET /uploads/images/CO-ADD_Logo_Baseline_DYMIVol.jpg HTTP/1.1" 400 167886
+django.request WARNING 2023-06-29 15:03:07,268 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:03:07,268 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:03:07,353 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16.png HTTP/1.1" 200 489
+django.request WARNING 2023-06-29 15:03:07,434 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:03:07,435 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:03:07,523 log 48360 139689046570560 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:03:07,524 basehttp 48360 139689046570560 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.server INFO 2023-06-29 15:03:07,529 basehttp 48360 139689257817664 "GET /uploads/images/GN_519.bmp HTTP/1.1" 200 3145782
+django.server INFO 2023-06-29 15:03:24,841 basehttp 48360 139689257817664 "GET /dorganism/stocklist/FG_0004_02?Batch_id=FG_0004_02&_=1688014987149 HTTP/1.1" 200 12
+django.server INFO 2023-06-29 15:03:27,871 basehttp 48360 139689257817664 "GET /dorganism/createStock/FG_0004_02/ HTTP/1.1" 200 11545
+django.server INFO 2023-06-29 15:03:36,930 basehttp 48360 139689257817664 "GET /dorganism/createBatch/FG_0004/ HTTP/1.1" 200 9978
+django.server INFO 2023-06-29 15:03:41,483 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:03:41,538 basehttp 48360 139689257817664 "GET /uploads/images/CO-ADD_Logo_Baseline_DYMIVol.jpg HTTP/1.1" 200 773639
+django.request WARNING 2023-06-29 15:03:41,540 log 48360 139689046570560 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:03:41,540 basehttp 48360 139689046570560 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:03:41,572 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:03:41,573 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:03:41,607 log 48360 139689037129280 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/GN_533.bmp
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:03:41,609 basehttp 48360 139689037129280 "GET /uploads/images/GN_533.bmp HTTP/1.1" 400 167720
+django.server INFO 2023-06-29 15:04:03,947 basehttp 48360 139689257817664 "GET /dorganism/createBatch/FG_0004/ HTTP/1.1" 200 9888
+django.server INFO 2023-06-29 15:04:06,194 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.request WARNING 2023-06-29 15:04:06,251 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:04:06,251 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:04:06,256 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:04:06,256 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:04:06,293 log 48360 139689046570560 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/GN_533.bmp
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:04:06,294 basehttp 48360 139689046570560 "GET /uploads/images/GN_533.bmp HTTP/1.1" 400 167710
+django.server INFO 2023-06-29 15:04:08,117 basehttp 48360 139689257817664 "GET /dorganism/createBatch/FG_0004/ HTTP/1.1" 200 9888
+django.server INFO 2023-06-29 15:04:09,832 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.request WARNING 2023-06-29 15:04:09,877 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:04:09,878 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:04:09,881 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:04:09,881 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:04:09,915 log 48360 139689266210368 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:04:09,916 basehttp 48360 139689266210368 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.server INFO 2023-06-29 15:04:13,154 basehttp 48360 139689266210368 "GET /dorganism/createCulture/FG_0004/ HTTP/1.1" 200 10948
+django.server INFO 2023-06-29 15:04:24,727 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:04:24,739 basehttp 48360 139689266210368 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:04:24,775 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:04:24,775 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:04:24,810 log 48360 139689257817664 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:04:24,811 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:04:24,818 log 48360 139689266210368 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:04:24,818 basehttp 48360 139689266210368 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:04:24,847 log 48360 139689028736576 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:04:24,848 basehttp 48360 139689028736576 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:04:32,073 basehttp 48360 139689266210368 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 15:04:32,080 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:04:35,799 basehttp 48360 139689266210368 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 15:04:40,827 basehttp 48360 139689266210368 "GET /dorganism/organism_card HTTP/1.1" 200 178055
+django.server INFO 2023-06-29 15:04:42,027 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.request WARNING 2023-06-29 15:04:42,115 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:04:42,116 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:04:42,120 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:04:42,121 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:04:42,150 log 48360 139689257817664 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/git-add-commit.png
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:04:42,151 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 400 167808
+django.server INFO 2023-06-29 15:04:46,189 basehttp 48360 139689266210368 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 15:04:53,053 basehttp 48360 139689266210368 "POST /dorganism/organism/FG_0004 HTTP/1.1" 200 11856
+django.server INFO 2023-06-29 15:10:48,828 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:10:48,838 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:10:48,839 basehttp 48360 139689028736576 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:10:48,872 log 48360 139689028736576 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:10:48,872 basehttp 48360 139689028736576 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:10:48,918 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:10:48,918 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:10:49,036 log 48360 139689266210368 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:10:49,036 basehttp 48360 139689266210368 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:10:49,049 log 48360 139689257817664 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:10:49,049 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:10:49,053 log 48360 139689028736576 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:10:49,054 basehttp 48360 139689028736576 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:15:49,863 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:15:49,897 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:15:49,899 basehttp 48360 139689257817664 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:15:49,935 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:15:49,935 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:15:49,978 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:15:49,979 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:15:50,019 log 48360 139689257817664 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:15:50,019 basehttp 48360 139689257817664 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:15:50,045 log 48360 139689028736576 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:15:50,046 basehttp 48360 139689028736576 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:20:50,839 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:20:50,877 basehttp 48360 139689257817664 "GET /static/css/custom.css HTTP/1.1" 200 17480
+django.server INFO 2023-06-29 15:20:50,879 basehttp 48360 139689266210368 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:20:50,917 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:20:50,918 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:20:50,954 log 48360 139689257817664 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/git-add-commit.png
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:20:50,955 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 400 167818
+django.request WARNING 2023-06-29 15:20:50,960 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:20:50,960 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.server INFO 2023-06-29 15:25:51,856 basehttp 48360 139689028736576 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:25:51,892 basehttp 48360 139689028736576 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:25:51,895 basehttp 48360 139689266210368 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:25:51,929 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:25:51,929 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:25:51,978 log 48360 139689028736576 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:25:51,979 basehttp 48360 139689028736576 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:25:52,008 log 48360 139689266210368 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:25:52,008 basehttp 48360 139689266210368 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:25:52,055 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:25:52,055 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:30:52,866 basehttp 48360 139689257817664 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:30:52,901 basehttp 48360 139689257817664 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:30:52,903 basehttp 48360 139689266210368 "GET /static/css/table_wrap.css HTTP/1.1" 200 4196
+django.request WARNING 2023-06-29 15:30:52,936 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:30:52,936 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:30:52,977 log 48360 139689257817664 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:30:52,978 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:30:53,005 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:30:53,006 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:30:53,027 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:30:53,027 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:35:53,854 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:35:53,890 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:35:53,893 basehttp 48360 139689028736576 "GET /static/css/table_wrap.css HTTP/1.1" 200 4359
+django.request WARNING 2023-06-29 15:35:53,921 log 48360 139689028736576 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:35:53,921 basehttp 48360 139689028736576 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:35:53,964 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:35:53,965 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:35:53,996 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:35:53,997 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:35:54,025 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:35:54,026 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:40:54,860 basehttp 48360 139689266210368 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:40:54,906 basehttp 48360 139689266210368 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:40:54,906 basehttp 48360 139689257817664 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:40:54,941 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:40:54,941 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:40:54,970 log 48360 139689257817664 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/git-add-commit.png
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:40:54,972 basehttp 48360 139689257817664 "GET /uploads/images/git-add-commit.png HTTP/1.1" 400 167818
+django.request WARNING 2023-06-29 15:40:54,990 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:40:54,990 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.server INFO 2023-06-29 15:45:55,870 basehttp 48360 139689028736576 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:45:55,912 basehttp 48360 139689028736576 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:45:55,915 basehttp 48360 139689028736576 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:45:55,947 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:45:55,948 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:45:55,987 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:45:55,987 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:45:55,992 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:45:55,992 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:45:56,033 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:45:56,033 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.server INFO 2023-06-29 15:50:56,900 basehttp 48360 139689028736576 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:50:56,935 basehttp 48360 139689028736576 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:50:56,937 basehttp 48360 139689028736576 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:50:56,970 log 48360 139689266210368 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:50:56,970 basehttp 48360 139689266210368 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:50:57,009 log 48360 139689266210368 Not Found: /uploads/images/git-add-commit.png
+django.server WARNING 2023-06-29 15:50:57,009 basehttp 48360 139689266210368 "GET /uploads/images/git-add-commit.png HTTP/1.1" 404 6639
+django.request WARNING 2023-06-29 15:50:57,013 log 48360 139689028736576 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:50:57,013 basehttp 48360 139689028736576 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.request WARNING 2023-06-29 15:50:57,055 log 48360 139689257817664 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:50:57,055 basehttp 48360 139689257817664 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.utils.autoreload INFO 2023-06-29 15:54:29,308 autoreload 58751 140365291870016 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 15:55:57,962 basehttp 58751 140364476720704 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 140181
+django.server INFO 2023-06-29 15:55:57,999 basehttp 58751 140364476720704 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 15:55:58,000 basehttp 58751 140364468328000 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-06-29 15:55:58,040 log 58751 140364468328000 Not Found: /uploads/images/favicon-16x16_-_Copy.png
+django.server WARNING 2023-06-29 15:55:58,041 basehttp 58751 140364468328000 "GET /uploads/images/favicon-16x16_-_Copy.png HTTP/1.1" 404 6663
+django.request WARNING 2023-06-29 15:55:58,073 log 58751 140364476720704 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/git-add-commit.png
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 86, in save
+    obj.save(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 814, in save
+    self.save_base(
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1982, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 59, in process_response
+    request.session.save()
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/backends/db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/sessions/middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-06-29 15:55:58,075 basehttp 58751 140364476720704 "GET /uploads/images/git-add-commit.png HTTP/1.1" 400 167808
+django.request WARNING 2023-06-29 15:55:58,076 log 58751 140364458886720 Not Found: /uploads/images/GN_533.bmp
+django.server WARNING 2023-06-29 15:55:58,076 basehttp 58751 140364458886720 "GET /uploads/images/GN_533.bmp HTTP/1.1" 404 6607
+django.server INFO 2023-06-29 15:56:36,179 basehttp 58751 140364468328000 "GET / HTTP/1.1" 200 13089
+django.server INFO 2023-06-29 15:56:41,186 basehttp 58751 140364468328000 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-06-29 15:56:41,360 basehttp 58751 140364468328000 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 16:04:40,870 basehttp 58751 140364468328000 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 16:04:40,962 basehttp 58751 140364468328000 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:04:40,963 basehttp 58751 140364476720704 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:09:41,844 basehttp 58751 140364476720704 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 16:09:41,880 basehttp 58751 140364476720704 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:09:41,883 basehttp 58751 140364468328000 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:14:42,845 basehttp 58751 140364458886720 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 16:14:42,883 basehttp 58751 140364458886720 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:19:43,873 basehttp 58751 140364458886720 "GET /index/ HTTP/1.1" 200 20328
+django.server INFO 2023-06-29 16:19:43,904 basehttp 58751 140364458886720 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:19:43,906 basehttp 58751 140364476720704 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:24:10,436 basehttp 58751 140364458886720 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.request ERROR 2023-06-29 16:24:40,453 log 58751 140364458886720 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py", line 146, in process_step
+    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/validation_log.py", line 104, in get_ashtml
+    log_data=log_data[columns]
+             ~~~~~~~~^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['Type', 'Note', 'Item', 'Filename', 'Help'], dtype='object')] are in the [columns]"
+django.server ERROR 2023-06-29 16:24:40,459 basehttp 58751 140364458886720 "POST /ddrug/import-vitek/ HTTP/1.1" 500 129451
+django.request WARNING 2023-06-29 16:24:40,581 log 58751 140364458886720 Not Found: /favicon.ico
+django.server WARNING 2023-06-29 16:24:40,582 basehttp 58751 140364458886720 "GET /favicon.ico HTTP/1.1" 404 6370
+django.utils.autoreload INFO 2023-06-29 16:25:35,238 autoreload 58751 140365291870016 /home/test/projects/adjCOADD/adjcoadd/settings.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:25:36,244 autoreload 64581 139707786430272 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:25:40,157 basehttp 64581 139706972309056 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:25:40,218 basehttp 64581 139706972309056 "GET /static/css/table_wrap.css HTTP/1.1" 200 14855
+django.request ERROR 2023-06-29 16:25:50,724 log 64581 139706972309056 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py", line 146, in process_step
+    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/validation_log.py", line 104, in get_ashtml
+    log_data=log_data[columns]
+             ~~~~~~~~^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['Type', 'Note', 'Item', 'Filename', 'Help'], dtype='object')] are in the [columns]"
+django.server ERROR 2023-06-29 16:25:50,734 basehttp 64581 139706972309056 "POST /ddrug/import-vitek/ HTTP/1.1" 500 145
+django.utils.autoreload INFO 2023-06-29 16:26:04,951 autoreload 64581 139707786430272 /home/test/projects/adjCOADD/adjcoadd/settings.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:26:05,881 autoreload 64783 140174619662144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-29 16:28:33,681 autoreload 64783 140174619662144 /home/test/projects/adjCOADD/ddrug/upload_views.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:28:34,330 autoreload 65295 140004568819520 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:30:00,408 basehttp 65295 140003754968640 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:30:00,433 basehttp 65295 140003754968640 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:30:00,441 basehttp 65295 140003746575936 "GET /static/css/table_wrap.css HTTP/1.1" 200 4359
+django.request ERROR 2023-06-29 16:30:12,022 log 65295 140003754968640 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py", line 146, in process_step
+    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/validation_log.py", line 104, in get_ashtml
+    log_data=log_data[columns]
+             ~~~~~~~~^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['Type', 'Note', 'Item', 'Filename', 'Help'], dtype='object')] are in the [columns]"
+django.server ERROR 2023-06-29 16:30:12,029 basehttp 65295 140003754968640 "POST /ddrug/import-vitek/ HTTP/1.1" 500 129451
+django.server INFO 2023-06-29 16:35:00,632 basehttp 65295 140003754968640 "GET /index/ HTTP/1.1" 200 20160
+django.utils.autoreload INFO 2023-06-29 16:39:00,268 autoreload 65295 140004568819520 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:39:01,128 autoreload 67290 139768324032320 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:39:04,493 basehttp 67290 139767510795840 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:39:04,579 basehttp 67290 139767510795840 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:39:04,584 basehttp 67290 139767510795840 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request ERROR 2023-06-29 16:39:15,024 log 67290 139767510795840 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py", line 147, in process_step
+    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/validation_log.py", line 104, in get_ashtml
+    log_data=log_data[columns]
+             ~~~~~~~~^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['Type', 'Note', 'Item', 'Filename', 'Help'], dtype='object')] are in the [columns]"
+django.server ERROR 2023-06-29 16:39:15,028 basehttp 67290 139767510795840 "POST /ddrug/import-vitek/ HTTP/1.1" 500 129504
+django.utils.autoreload INFO 2023-06-29 16:40:04,772 autoreload 67290 139768324032320 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:40:05,793 autoreload 67585 140193348269888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-29 16:41:07,350 autoreload 67585 140193348269888 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:41:08,093 autoreload 67839 139831745881920 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:41:10,165 basehttp 67839 139830932624960 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.request ERROR 2023-06-29 16:41:20,861 log 67839 139830932624960 Internal Server Error: /ddrug/import-vitek/
+Traceback (most recent call last):
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 250, in dispatch
+    response = super().dispatch(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/formtools/wizard/views.py", line 302, in post
+    self.storage.set_step_data(self.steps.current, self.process_step(form))
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py", line 147, in process_step
+    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/projects/adjCOADD/apputil/utils/validation_log.py", line 104, in get_ashtml
+    log_data=log_data[columns]
+             ~~~~~~~~^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/test/anaconda3/envs/orgdb_env/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['Type', 'Note', 'Item', 'Filename', 'Help'], dtype='object')] are in the [columns]"
+django.server ERROR 2023-06-29 16:41:20,865 basehttp 67839 139830932624960 "POST /ddrug/import-vitek/ HTTP/1.1" 500 129573
+django.server INFO 2023-06-29 16:45:14,657 basehttp 67839 139830932624960 "GET /index/ HTTP/1.1" 200 20160
+django.utils.autoreload INFO 2023-06-29 16:48:37,902 autoreload 67839 139831745881920 /home/test/projects/adjCOADD/apputil/utils/validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:48:38,793 autoreload 69301 139747825952576 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:48:44,178 basehttp 69301 139747012183616 "GET /ddrug/import-vitek/ HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:48:44,201 basehttp 69301 139747012183616 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:48:44,246 basehttp 69301 139747012183616 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:48:53,932 basehttp 69301 139747012183616 "POST /ddrug/import-vitek/ HTTP/1.1" 200 114000
+django.utils.autoreload INFO 2023-06-29 16:52:18,525 autoreload 69301 139747825952576 /home/test/projects/adjCOADD/apputil/utils/validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:52:19,435 autoreload 70070 140564040357696 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-29 16:52:51,630 autoreload 70070 140564040357696 /home/test/projects/adjCOADD/apputil/utils/validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:52:52,273 autoreload 70232 140589388588864 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-06-29 16:53:43,799 autoreload 70232 140589388588864 /home/test/projects/adjCOADD/apputil/utils/validation_log.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:53:44,546 autoreload 70451 140145437443904 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:53:45,954 basehttp 70451 140144616633920 "GET /index/ HTTP/1.1" 200 20160
+django.utils.autoreload INFO 2023-06-29 16:54:48,334 autoreload 70451 140145437443904 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:54:49,052 autoreload 70711 140100949092160 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:54:52,561 basehttp 70711 140100134905408 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:55:02,725 basehttp 70711 140100134905408 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 114127
+django.utils.autoreload INFO 2023-06-29 16:55:32,979 autoreload 70711 140100949092160 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:55:33,896 autoreload 70956 140628903216960 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:55:36,739 basehttp 70956 140628088653376 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:55:45,021 basehttp 70956 140628088653376 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 114127
+django.utils.autoreload INFO 2023-06-29 16:58:02,710 autoreload 70956 140628903216960 /home/test/projects/adjCOADD/apputil/utils/form_wizard_tools.py changed, reloading.
+django.utils.autoreload INFO 2023-06-29 16:58:03,723 autoreload 71526 139707090077504 Watching for file changes with StatReloader
+django.server INFO 2023-06-29 16:58:06,032 basehttp 71526 139706276054592 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:58:06,045 basehttp 71526 139706276054592 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:58:06,096 basehttp 71526 139706276054592 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-06-29 16:58:22,362 basehttp 71526 139706276054592 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 114308
+django.server INFO 2023-06-29 16:58:46,071 basehttp 71526 139706276054592 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 16:58:46,625 basehttp 71526 139706276054592 "GET /index/ HTTP/1.1" 200 20160
+django.server INFO 2023-06-29 16:59:11,596 basehttp 71526 139706276054592 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 116451
+django.server INFO 2023-06-29 17:01:06,346 basehttp 71526 139706276054592 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 17:01:14,626 basehttp 71526 139706276054592 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 116029
+django.server INFO 2023-06-29 17:01:16,115 basehttp 71526 139706276054592 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 17:01:27,369 basehttp 71526 139706276054592 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 114137
+django.server INFO 2023-06-29 17:02:52,203 basehttp 71526 139706276054592 "GET /ddrug/import-vitek/?reset HTTP/1.1" 200 19481
+django.server INFO 2023-06-29 17:03:00,846 basehttp 71526 139706276054592 "POST /ddrug/import-vitek/?reset HTTP/1.1" 200 114240

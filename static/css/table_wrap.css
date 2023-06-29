@@ -1,3 +1,45 @@
+/* This css only for all kinds of tables */
+/* 
+1. general table style 
+2. partial render datatable in detail view 
+3. fixed table header
+4. pivottable style
+5. Draggable and Dropable and sortable
+*/
+/* ----- 1. general table style -----*/
+table,
+.table,
+table.dataTable,
+.dataframe {
+  color: var(--plain-text) !important;
+  border-collapse: collapse !important;
+  width: 100%;
+}
+
+th {
+  background-color: var(--plain-text-bg) !important;
+  max-width: fit-content !important;
+  padding: 2px !important;
+  font-weight: 500 !important;
+  word-wrap: break-word !important;
+}
+
+td {
+  padding: 2px !important;
+  white-space: wrap;
+  word-wrap: break-word !important;
+  max-width: 10em !important;
+}
+
+.dataTable th {
+  max-width: 5em !important;
+}
+
+table.dataframe tr:nth-child(even) {
+  background-color: var(--plain-text-bg);
+}
+
+/* 2. partial render datatable in detail view */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   min-width: 1em;
   padding: none;
@@ -45,7 +87,7 @@
 }
 
 
-/* fixed table header */
+/* ----------fixed table header-------------- */
 .fixTableHead {
   overflow-y: auto;
   /* height: 100vh; */
@@ -66,7 +108,7 @@
   max-height: fit-content;
 }
 
-/* pivottable */
+/*----------- pivottable ---------------*/
 
 .dataframe {
   width: 100%;
@@ -119,7 +161,7 @@
   border: 1px solid;
 }
 
-/* draggable */
+/* ------------ Draggable and Dropable and sortable ------------ */
 #draggable,
 #draggable2 {
   width: 100px;
@@ -137,9 +179,6 @@
   margin: 10px;
   border: 1px solid black;
 }
-
-/* Functional CSS */
-/* Draggable and Dropable */
 
 #sortable1,
 #sortable2,
