@@ -36,6 +36,9 @@
                     <!--  -->
                     {% url 'vitekast_list' as vitekast_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Vitek AST' url=vitekast_url totalnumber=nVAST %}
+                     <!--  -->
+                     {% url 'vitekid_list' as vitekid_url %}
+                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='Vitek ID' url=vitekid_url totalnumber=nID %}
                     </h3>
                 </div>
                 <div class="col text-center m-auto">
@@ -55,7 +58,7 @@
         </div>
 
   
-
+<!-- 
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">
             {% url 'gene_list' as gene_url%}
             {% include 'utils/miscellaneous/landbtn_primary.html' with title='GENE' url=gene_url totalnumber=nGene %}
@@ -63,21 +66,21 @@
                     <h3>
                     {% url 'sequence_list' as sp_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID by Sequence' url=sp_url totalnumber=nBP %}
-                    <!--  -->
+                
                     {% url 'id_pub_list' as id_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='ID from Public' url=id_url totalnumber=nIDP %}
                     </h3>
                     <h3>
                     {% url 'wgs-fastqc_list' as wgsfq_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='FastQC - WGS' url=wgsfq_url totalnumber=nFastQC %}
-                    <!--  -->
+                  
                     {% url 'wgs-checkm_list' as wgsch_url %}
                     {% include 'utils/miscellaneous/landbtn_secondary.html' with title='CheckM - WGS' url=wgsch_url totalnumber=nCheckM %}
                     
                     </h3>
    
             </div>
-        </div>
+        </div> -->
 
 
 </div>
