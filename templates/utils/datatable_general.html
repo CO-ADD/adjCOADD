@@ -46,10 +46,28 @@
           {% endif %}
         {% endfor %}
         <!--  -->
-      {% else %}
+      {% else%}
+       {% for object in objects%}
         <tr>
-          No Data
+          <td>
+            <!--prettier-ignore  -->
+            {% include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk %}
+            <!--  -->
+          </td>
+          {% for item in object.get_values %}
+            <td>
+            {% if item|is_dict %} <!-- custom filter -->   
+              
+              {% for key, value in item.items %}      
+                <a href="{{value}}" target="_blank">{{ key }}</a>
+              {% endfor %}
+            {% else %}
+              {{item}}
+            {% endif %}
+            </td>
+          {% endfor %}      
         </tr>
+        {%endfor%}
       {% endif %}
     </tbody>
   </table>

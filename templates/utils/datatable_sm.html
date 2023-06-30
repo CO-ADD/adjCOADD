@@ -17,8 +17,8 @@
     {%include html_name%}
     {%else%}
     <tr>
-      <td >{{object.organism}}</td>
-    {%for value in object.get_values%}
+    <td></td>
+    {%for value in object.get_values|slice:"1:" %}
     <td>{{value}}</td>
     {%endfor%}
     </tr>

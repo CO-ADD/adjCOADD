@@ -8,7 +8,7 @@
                 {%url 'addimg' pk=object.pk as addurl%}
                 {%include 'utils/modal/simpleupload.html' with title='Add_Image' form=image_form addurl=addurl %}
             </div>
-            <button class="accordion-button collapsed w-25" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+            <button class="accordion-button collapsed" style="max-height: 20px" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapse_image{{image.pk}}" aria-expanded="true" aria-controls="collapse_image">
                 <h5 class="fs-6 my-0">
                    Images {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=object.assoc_images.all.count title='Images' %}

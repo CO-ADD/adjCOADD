@@ -9,7 +9,7 @@ from django.contrib.postgres.forms import SimpleArrayField
 
 from apputil.models import Dictionary, ApplicationUser, Image, Document
 from apputil.utils.filters_base import Filterbase
-from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
+from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from adjcoadd.constants import *
 
 # ----------------------------------------
@@ -20,7 +20,16 @@ class HiddenSimpleArrayField(forms.Field):
     def clean(self, value):
         return value or []
 
+class Orgbatchimg_form(forms.ModelForm):
+    image_file_orgbatch = forms.ImageField(label='Select an image', 
+                                #   validators=[validate_file], 
+                                  required=True)
+   
 
+    class Meta:
+        model =OrgBatch_Image
+        # exclude=['urlname']
+        fields="__all__"
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(ModelForm):
 

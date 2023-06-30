@@ -2,16 +2,13 @@ import pandas as pd
 import numpy as np
 from django.apps import apps
 from django.shortcuts import HttpResponse, render
-
-
-
-
+from ddrug.utils.bio_data import agg_Lst, agg_DR, agg_Inhib
 
 #    #-------------------------------------------------------------------------------------------------
 # data-visulization 
-def get_pivottable(querydata, columns_str, index_str, values):
-   
-    data=querydata #list(querydata.values())
+def get_pivottable(querydata=None, aggfunc_name=None, columns_str=None, index_str=None, values=None):
+    aggfunc={'String_concat':lambda x:  " ".join([str(y) for y in x]), 'Lst': agg_Lst, 'DR': agg_DR, 'Inhib':agg_Inhib}
+    data=querydata #
     df=pd.DataFrame(data)
     df.reset_index
     df.fillna(0)
@@ -21,7 +18,7 @@ def get_pivottable(querydata, columns_str, index_str, values):
     
     try:
         table=pd.pivot_table(df, values=values, index=index,
-                       columns=columns, aggfunc= lambda x:  " ".join([str(y) for y in x]), fill_value=0)#np_aggfunc[aggfunc], fill_value='0')
+                       columns=columns, aggfunc=aggfunc[aggfunc_name], fill_value=0)#np_aggfunc[aggfunc], fill_value='0')
     except Exception as err:
         print(f'err is {err}')
         table=err
@@ -46,7 +43,7 @@ def flex_pivottable(request,app_model):
         values_str = request.POST.get("values") or None  # or "n_left"
         columns_str =request.POST.get("column") or None # or "orgbatch_id"
         index_str = request.POST.get("index") or None
-        aggfunc_name = np.size #request.POST.get("data_function_type") or
+        aggfunc_name = request.POST.get("data_function_type") or None
         # get queryset
         queryset = Model.objects.filter(pk__in=pk_list) if pk_list else Model.objects.all()
         # flatten the queryset to put it in dataframe
@@ -59,7 +56,7 @@ def flex_pivottable(request,app_model):
         
         if values:
             try:
-                table =get_pivottable(querydata=data, columns_str=columns_str, index_str=index_str, values=values) 
+                table =get_pivottable(querydata=data, aggfunc_name=aggfunc_name, columns_str=columns_str, index_str=index_str, values=values) 
 
                 # response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 # response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'

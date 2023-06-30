@@ -15,16 +15,35 @@ from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView
+from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
 from adjcoadd.constants import *
-from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture
-from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, 
+from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
+from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
                     Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
 from ddrug.models import VITEK_AST, MIC_COADD
 from .utils.data_visual import data_frame_style, pivottable_style
 
-          
+
+class OrgbatchimgCreateView(CreateFileView):
+    form_class=Orgbatchimg_form
+    model = Organism
+    file_field = 'image_file_orgbatch'
+    transaction_use = 'dorganism'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if getattr(instance, self.file_field):
+            with transaction.atomic(using=self.transaction_use):
+                kwargs={'user': self.request.user}
+                instance.save(**kwargs)
+        else:
+            messages.warning(self.request, 'No file provided.')
+        return redirect(self.request.META['HTTP_REFERER'])
+
+
+class OrgbatchimgDeleteView(SimpledeleteView):
+    model = OrgBatch_Image
 # --TAXONOMY Views--
 ##
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
@@ -137,11 +156,22 @@ def detailOrganism(request, pk):
     context["form"]=form
     context["image_form"]=Image_form
     context["doc_form"]=Document_form
+    context["orgbatchimg_form"]=Orgbatchimg_form
 
     # data in related tables
+
+    context["batchimg_obj"]=OrgBatch_Image.objects.filter(img_orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
+    context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
+   
+
     context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
     context["batch_fields"]=Organism_Batch.get_fields()
+
+    context["stock_obj"]=OrgBatch_Stock.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
+    context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
+    context["stock_fields"]=OrgBatch_Stock.get_fields()
+
     context["stock_count"]=Organism_Batch.objects.annotate(number_of_stocks=Count('orgbatch_id')) 
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
@@ -219,12 +249,14 @@ class OrganismDeleteView(SimpledeleteView):
    
 #--Batch Views--
 ##
-class BatchCardView(LoginRequiredMixin, FilteredListView):
+class BatchListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
-    template_name = 'dorganism/organism/batch/batch_card.html' 
+    template_name = 'dorganism/organism/batch/batch_list.html' 
     filterset_class=Batchfilter
     model_fields=model.HEADER_FIELDS
+    model_name = 'Organism_Batch'
+    app_name = 'dorganism'
 
 ## 
 @login_required
@@ -296,7 +328,6 @@ def stockList(req, pk):
 #
 # Overview Stocks
 ##
-# from apputil.utils.flex_pivottable import flex_pivottable 
 class StockListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = OrgBatch_Stock  
@@ -387,10 +418,10 @@ class StockDeleteView(SimpledeleteView):
 ## 
 @login_required
 def createCulture(req, organism_id):
-    print(f"id is {organism_id}")
+    
     kwargs={'user' : req.user}
     form=Culture_form()
-    print('form')
+    
     if req.method=='POST':
         print("save") 
         form=Culture_form(req.POST)

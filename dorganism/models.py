@@ -375,6 +375,88 @@ class Organism_Batch(AuditModel):
             self.batch_id = str(self.orgbatch_id).replace(str(self.organism_id.organism_id),"").split(ORGBATCH_SEP)[1]
             super(Organism_Batch,self).save(*args, **kwargs)
         
+# ================================================================================================
+
+#-------------------------------------------------------------------------------------------------
+class OrgBatch_Image(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'image_name_orgbatch':'Name', 
+        'image_file_orgbatch':'Image',  
+        'image_type_orgbatch':'Type',  
+        'image_desc_orgbatch':'Description',
+        'image_source_orgbatch':'Source',
+        'image_object':'Object',
+        'image_objectid':'Object ID',
+    }
+
+    img_orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "Img OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="img_orgbatch_id", related_name="%(class)s_img_orgbatch_id")
+    image_name_orgbatch =models.CharField(max_length=120,  unique=True, verbose_name = "Name_imgbatch")
+    image_file_orgbatch= models.ImageField(upload_to='images/orgbatch', verbose_name = "Image_batch")
+    image_type_orgbatch = models.CharField(max_length=25, verbose_name = "Type")
+    image_desc_orgbatch = models.CharField(max_length=140, blank=True, verbose_name = "Description_imgbatch", default = "Description")
+    image_source_orgbatch = models.CharField(max_length=50, blank=True, verbose_name = "Source_imgbatch", default = "source")
+
+    class Meta:
+        app_label = 'dorganism'
+        db_table = 'orgbatch_image'
+        ordering=['image_name_orgbatch',]
+        indexes = [
+            models.Index(name="orgbatch_img_name_idx",fields=['image_name_orgbatch']),
+            models.Index(name="orgbatch_img_scr_idx",fields=['image_source_orgbatch']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return str(self.image_name_orgbatch)
+
+    def __repr__(self) -> str:
+        return f"[{self.image_name_orgbatch}] {self.image_object} ({self.image_objectid})"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+    #
+    # Returns a Image instance if found 
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if ImgName:
+            try:
+                retDict = cls.objects.get(image_name_orgbatch=ImgName)
+            except:
+                if verbose:
+                    print(f"[Image Not Found] {ImgName}")
+                retDict = None
+        elif ImgObj:
+            try:
+                retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
+            except:
+                if verbose:
+                    print(f"[Image Not Found] {ImgObj} {ImgObjID}")
+                retDict = None
+        else:
+            retDict = None
+        return(retDict)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+    #
+    # Returns if Image instance exists
+    #    by ImgName
+    #    by ImgObj & ImgObjID
+    #
+        if ImgName:
+            retValue = cls.objects.filter(image_name_orgbatch=ImgName).exists()
+        elif ImgObj:
+            retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):
     """
