@@ -4,9 +4,6 @@ from rdkit import Chem
 from django_rdkit import models
 from django_rdkit.models import *
 
-from django.contrib.postgres.fields import ArrayField
-from django.contrib.postgres.indexes import GistIndex
-from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
@@ -72,3 +69,9 @@ class Screen_Run(AuditModel):
                 print(f"[DataSource Not Found] {RunID} ")
             retInstance = None
         return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,RunID,verbose=0):
+        return cls.objects.filter(run_id=RunID.strip()).exists()
+

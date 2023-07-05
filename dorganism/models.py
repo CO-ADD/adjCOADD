@@ -33,12 +33,13 @@ class Taxonomy(AuditModel):
 
     HEADER_FIELDS = {
         'organism_name':{'Organism Name': {'urlname': LinkList['urlname']}},  
+        'tax_rank':'Rank',
+        'org_class':'Class',
+        'division':'Division', 
+        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
+        'tax_id':{'Tax-ID Parent': {'parent_tax_id':LinkList['parent_tax_id']}},
         'code':'Code', 
         'lineage':'Lineage', 
-        'tax_rank':'Rank',
-        'division':'Division', 
-        'org_class':'Class',
-        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
     }
 
     organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
@@ -63,6 +64,7 @@ class Taxonomy(AuditModel):
             models.Index(name="tax_orgclass_idx", fields=['org_class']),
             models.Index(name="tax_taxid_idx", fields=['tax_id']),
             models.Index(name="tax_div_idx", fields=['division']),
+            models.Index(name="tax_rnk_idx", fields=['tax_rank']),
         ]
 
     #------------------------------------------------
