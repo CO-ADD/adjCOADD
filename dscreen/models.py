@@ -20,27 +20,26 @@ class Screen_Run(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
         "run_id":"RunID",
-        "screen_type":"Type",
         "run_type":"RunType",
         "run_status":"Status",
+        "run_owner":"Owner",
+        "run_name":"Name",
         "run_conditions":"Conditions",
         "run_issues":"Issues",
     }
 
     Choice_Dictionary = {
         'run_type':'Run_Type',
-        'screen_type':'Screen_Type',
         'run_status':'Run_Status',
     }
 
     run_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Run ID")
     run_name = models.CharField(max_length=500, unique=True, verbose_name = "Run Name")
-    screen_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Screen Type", on_delete=models.DO_NOTHING,
-        db_column="screen_type", related_name="%(class)s_ScreenType+")
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
+    run_owner = models.CharField(max_length=500, unique=True, verbose_name = "Run Owner")
     run_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Status", on_delete=models.DO_NOTHING,
         db_column="run_status", related_name="%(class)s_RunStatus+")
 
@@ -49,15 +48,17 @@ class Screen_Run(AuditModel):
         app_label = 'dscreen'
         db_table = 'screen_run'
         ordering=['screen_type','run_id']
-        # indexes = [
-        #     models.Index(name="tax_orgclass_idx", fields=['org_class']),
-        #     models.Index(name="tax_taxid_idx", fields=['tax_id']),
-        #     models.Index(name="tax_div_idx", fields=['division']),
-        # ]
+        indexes = [
+            models.Index(name="run_type_idx", fields=['run_type']),
+        ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.run_id} {self.run_type}"
+        return f"{self.run_id}"
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.run_id} [{self.run_type}]"
 
     #------------------------------------------------
     @classmethod

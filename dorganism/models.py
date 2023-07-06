@@ -37,13 +37,12 @@ class Taxonomy(AuditModel):
         'org_class':'Class',
         'division':'Division', 
         'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
-        'tax_id':{'Tax-ID Parent': {'parent_tax_id':LinkList['parent_tax_id']}},
         'code':'Code', 
         'lineage':'Lineage', 
     }
 
-    organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Specie")
-    urlname = models.SlugField(max_length=100, verbose_name = "URLSpecie")
+    organism_name = models.CharField(primary_key=True, unique=True, max_length=100, verbose_name = "Name")
+    urlname = models.SlugField(max_length=100, verbose_name = "URLName")
     other_names = models.CharField(max_length=100, blank=True, verbose_name = "Other Names")
     code = models.CharField(max_length=15, blank=True, verbose_name = "Code")
     org_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
@@ -53,7 +52,7 @@ class Taxonomy(AuditModel):
     tax_rank = models.CharField(max_length=50,  blank=True, verbose_name = "Taxonomy Rank")
     division = models.ForeignKey(Dictionary, null=True, verbose_name = "Division", on_delete=models.DO_NOTHING, 
         db_column="division", related_name='%(class)s_division')
-    lineage = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True)
+    lineage = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True, verbose_name = "Lineage")
     
     #------------------------------------------------
     class Meta:
@@ -104,17 +103,17 @@ class Organism(AuditModel):
         'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
+        'sero_clone': 'Clone',
         'strain_type':'Strain Type',
+        'strain_panel':'Panel',
         'strain_notes':'Notes',
+        'res_property':'Phenotype',  
+        'gen_property':'Genotype', 
+        'strain_origin':'Origin',
         'source':"Source",
         'source_code':"Source Code",
         'reference': "Reference",
-        'strain_panel':'Panel',
-        'res_property':'Phenotype',  
-        'gen_property':'Genotype', 
-        'growth_preference':'Growth Preference', 
-        'biologist':'Biologist',
-        'strain_origin':'Origin',
+        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
     }
 
     CARDS_FIELDS= {
@@ -125,10 +124,10 @@ class Organism(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["strain_ids", "strain_code", "strain_notes", "strain_type", "strain_panel", "strain_origin", "strain_identification",],
-       'Group2': ['res_property','gen_property','sequence_link','oxygen_pref','mta_status','mta_notes','mta_document', 'source', 'source_code'],
-       'Group3': ['risk_group','pathogen_group','lab_restriction','biologist','tax_id'],
-       'Group4': ['received_date', 'received_as', 'prep_notes', 'collect_date', 'collect_notes', 'collect_city', 'collect_country', 'collect_institution', 'collect_specie', 'collect_body', 'collect_gender', 'collect_age']
+       'Group1': ["strain_ids", "sero_clone", "strain_code", "strain_type", "strain_panel", "strain_origin", "strain_notes"],
+       'Group2': ["strain_identification", 'res_property','gen_property','oxygen_pref', 'source', 'source_code','reference','tax_id'],
+       'Group3': ['mta_status','mta_notes','mta_document','risk_group','pathogen_group','lab_restriction','biologist'],
+       'Group4': ['collect_date', 'collect_region', 'collect_country', 'collect_site', 'collect_specie', 'collect_tissue', 'patient_diagnosis', 'patient']
     }
 
     Choice_Dictionary = {
@@ -149,48 +148,54 @@ class Organism(AuditModel):
     strain_code= models.CharField(max_length=30, blank=True, verbose_name = "Strain Code")
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
-    res_property= models.CharField(max_length=1024, blank=True, verbose_name = "Susceptibility")
-    gen_property= models.CharField(max_length=1024, blank=True, verbose_name = "Genetic Property")
-    strain_origin = models.CharField(max_length=350, blank=True, verbose_name = "Origin of Strain")
-    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
-    growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
     strain_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Strain Notes")
-    tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
-    sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
+    res_property= models.CharField(max_length=1024, blank=True, verbose_name = "Phenotype")
+    gen_property= models.CharField(max_length=1024, blank=True, verbose_name = "Genotype")
+    sero_clone= models.CharField(max_length=50, blank=True, verbose_name = "MLST/Serotype")
     strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
+    strain_origin = models.CharField(max_length=350, blank=True, verbose_name = "Origin of Strain")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
-
-    received_date = models.DateField(null=True, blank=True, verbose_name = "Recieved")
-    received_as = models.CharField(max_length=120, blank=True, verbose_name = "Recieved as")
-    prep_notes= models.CharField(max_length=250, blank=True, verbose_name = "Preparation Notes")
-    collect_date = models.DateField(null=True, blank=True, verbose_name = "Collection")
-    collect_notes = models.CharField(max_length=120, blank=True, verbose_name = "Notes")
-    collect_city = models.CharField(max_length=25, blank=True, verbose_name = "City")
-    collect_country = models.CharField(max_length=25, blank=True, verbose_name = "Country")
-    collect_institution = models.CharField(max_length=25, blank=True, verbose_name = "Institution")
-    collect_specie = models.CharField(max_length=20, blank=True, verbose_name = "From")
-    collect_body = models.CharField(max_length=20, blank=True, verbose_name = "Body")
-    collect_gender = models.CharField(max_length=5, blank=True, verbose_name = "Gender")
-    collect_age = models.CharField(max_length=10, blank=True, verbose_name = "Age")
+    tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+#    growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
+#    sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
 
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
-    mta_notes = models.CharField(max_length=150, blank=True, verbose_name = "MTA Notes")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
-    lab_restriction = models.ForeignKey(Dictionary,null=True, blank=True, verbose_name = "Lab", on_delete=models.DO_NOTHING,
-        db_column="lab_restriction", related_name="%(class)s_lab")
+    mta_notes = models.CharField(max_length=150, blank=True, verbose_name = "MTA Notes")
+
+    # received_date = models.DateField(null=True, blank=True, verbose_name = "Recieved")
+    # received_as = models.CharField(max_length=120, blank=True, verbose_name = "Recieved as")
+    # prep_notes= models.CharField(max_length=250, blank=True, verbose_name = "Preparation Notes")
+    collect_date = models.DateField(null=True, blank=True, verbose_name = "Collection Date")
+    # collect_notes = models.CharField(max_length=120, blank=True, verbose_name = "Notes")
+    collect_region = models.CharField(max_length=25, blank=True, verbose_name = "Region/City")
+    collect_country = models.CharField(max_length=25, blank=True, verbose_name = "Country")
+    collect_site = models.CharField(max_length=25, blank=True, verbose_name = "Site/Org")
+
+    collect_specie = models.CharField(max_length=20, blank=True, verbose_name = "From Specie/Location")
+    collect_tissue = models.CharField(max_length=20, blank=True, verbose_name = "From Tissue/Organ")
+    patient_diagnosis = models.CharField(max_length=20, blank=True, verbose_name = "Patient Diagnosis")
+    patient = models.CharField(max_length=20, blank=True, verbose_name = "Patient Info")
+
+    # collect_gender = models.CharField(max_length=5, blank=True, verbose_name = "Gender")
+    # collect_age = models.CharField(max_length=10, blank=True, verbose_name = "Age")
+
     risk_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Risk Group", on_delete=models.DO_NOTHING,
         db_column="risk_group", related_name="%(class)s_risk")
     pathogen_group = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pathogen", on_delete=models.DO_NOTHING,
         db_column="pathogen_group", related_name="%(class)s_pathogen")
+    lab_restriction = models.ForeignKey(Dictionary,null=True, blank=True, verbose_name = "Lab", on_delete=models.DO_NOTHING,
+        db_column="lab_restriction", related_name="%(class)s_lab")
     oxygen_pref = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Oxygen", on_delete=models.DO_NOTHING,
         db_column="oxygen_pref", related_name="%(class)s_oxygen")
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
-    assoc_images = models.ManyToManyField(Image,verbose_name = "Images", blank=True,
-        db_table = "org_img", related_name="%(class)s_image")
+    # assoc_images = models.ManyToManyField(Image,verbose_name = "Images", blank=True,
+    #     db_table = "org_img", related_name="%(class)s_image")
     assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments", blank=True,
         db_table = "org_doc", related_name="%(class)s_document")
 
@@ -273,11 +278,11 @@ class Organism_Batch(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
-        "stock_date":"Stock Date",
-        "stock_level":"Stock Levels",
+        "batch_notes":"Batch Notes",
         "qc_status":"QC_Status",
         "qc_record": "QC Record",
-        "batch_notes":"Batch Notes",
+        "stock_date":"Stock Date",
+        "stock_level":"Stock Levels",
         "biologist":"Biologist"
     }
 
@@ -287,16 +292,16 @@ class Organism_Batch(AuditModel):
 
     #SEP = '_'
 
-    orgbatch_id  = models.CharField(primary_key=True, max_length=10, verbose_name = "OrgBatch ID")
+    orgbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
-    batch_id  = models.CharField(max_length=5, null=False, blank=True, verbose_name = "Batch ID")
+    batch_id  = models.CharField(max_length=12, null=False, blank=True, verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
-    stock_level = ArrayField(models.IntegerField(default=0), size=3, verbose_name = "Stock Levels", editable=False, default=list) 
+    stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels", editable=False) 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
     
@@ -383,80 +388,95 @@ class Organism_Batch(AuditModel):
 class OrgBatch_Image(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
-        'image_name_orgbatch':'Name', 
-        'image_file_orgbatch':'Image',  
-        'image_type_orgbatch':'Type',  
-        'image_desc_orgbatch':'Description',
-        'image_source_orgbatch':'Source',
-        'image_object':'Object',
-        'image_objectid':'Object ID',
+        'orgbatch_id': 'OrgBatch ID',
+        'image_name':'Name', 
+        'image_file':'Image',  
+        'image_type':'Type',  
+        'image_desc':'Description',
+        'image_source':'Source',
     }
 
-    img_orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "Img OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="img_orgbatch_id", related_name="%(class)s_img_orgbatch_id")
-    image_name_orgbatch =models.CharField(max_length=120,  unique=True, verbose_name = "Name_imgbatch")
-    image_file_orgbatch= models.ImageField(upload_to='images/orgbatch', verbose_name = "Image_batch")
-    image_type_orgbatch = models.CharField(max_length=25, verbose_name = "Type")
-    image_desc_orgbatch = models.CharField(max_length=140, blank=True, verbose_name = "Description_imgbatch", default = "Description")
-    image_source_orgbatch = models.CharField(max_length=50, blank=True, verbose_name = "Source_imgbatch", default = "source")
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    image_name =models.CharField(max_length=120, unique=True, verbose_name = "Name")
+    image_file= models.ImageField(upload_to='images/orgbatch', verbose_name = "Image")
+    image_type = models.CharField(max_length=25, verbose_name = "Image Type")
+    image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
+    image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
 
     class Meta:
         app_label = 'dorganism'
         db_table = 'orgbatch_image'
-        ordering=['image_name_orgbatch',]
+        ordering=['orgbatch_id','image_name']
         indexes = [
-            models.Index(name="orgbatch_img_name_idx",fields=['image_name_orgbatch']),
-            models.Index(name="orgbatch_img_scr_idx",fields=['image_source_orgbatch']),
+            models.Index(name="obimg_name_idx",fields=['image_name']),
+            models.Index(name="obimg_scr_idx",fields=['image_source']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return str(self.image_name_orgbatch)
+        return str(self.pk)
 
     def __repr__(self) -> str:
-        return f"[{self.image_name_orgbatch}] {self.image_object} ({self.image_objectid})"
+        return f"[{self.image_name}] {str(self.orgbatch_id)} ({self.image_type})"
 
     #------------------------------------------------
     @classmethod
-    def get(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
-    #
-    # Returns a Image instance if found 
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if ImgName:
-            try:
-                retDict = cls.objects.get(image_name_orgbatch=ImgName)
-            except:
-                if verbose:
-                    print(f"[Image Not Found] {ImgName}")
-                retDict = None
-        elif ImgObj:
-            try:
-                retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
-            except:
-                if verbose:
-                    print(f"[Image Not Found] {ImgObj} {ImgObjID}")
-                retDict = None
-        else:
-            retDict = None
-        return(retDict)
+    def get(cls,ImgName,verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.get(image_name=ImgName)
+        except:
+            if verbose:
+                print(f"[OrgBatch Image Not Found] {ImgName} ")
+            retInstance = None
+        return(retInstance)
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
-    #
-    # Returns if Image instance exists
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if ImgName:
-            retValue = cls.objects.filter(image_name_orgbatch=ImgName).exists()
-        elif ImgObj:
-            retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
-        else:
-            retValue = False
-        return(retValue)
+    def exists(cls,ImgName,verbose=0):
+    # Returns if instance exists
+        return cls.objects.filter(image_name=ImgName).exists()
+
+    # #------------------------------------------------
+    # @classmethod
+    # def get(cls,ImgName,verbose=1):
+    # #
+    # # Returns a Image instance by ImgName
+    # #
+    #     if ImgName:
+    #         try:
+    #             retDict = cls.objects.get(image_name=ImgName)
+    #         except:
+    #             if verbose:
+    #                 print(f"[Image Not Found] {ImgName}")
+    #             retDict = None
+    #     elif ImgObj:
+    #         try:
+    #             retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
+    #         except:
+    #             if verbose:
+    #                 print(f"[Image Not Found] {ImgObj} {ImgObjID}")
+    #             retDict = None
+    #     else:
+    #         retDict = None
+    #     return(retDict)
+
+    # #------------------------------------------------
+    # @classmethod
+    # def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+    # #
+    # # Returns if Image instance exists
+    # #    by ImgName
+    # #    by ImgObj & ImgObjID
+    # #
+    #     if ImgName:
+    #         retValue = cls.objects.filter(image_name_orgbatch=ImgName).exists()
+    #     elif ImgObj:
+    #         retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
+    #     else:
+    #         retValue = False
+    #     return(retValue)
 
 
 #=================================================================================================
@@ -493,7 +513,7 @@ class OrgBatch_Stock(AuditModel):
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
     stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
-    passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
+    # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
@@ -572,9 +592,9 @@ class Organism_Culture(AuditModel):
         "culture_type":"Type",
         "culture_source":"Source",
         "media":"Media",
+        "addition":"Addition",
         "atmosphere":"Atmosphere",
         "temperature":"Temperature",
-        "labware":"Labware",
         "culture_notes":"Notes",
         "biologist":"Biologist"
     }
@@ -591,10 +611,11 @@ class Organism_Culture(AuditModel):
     culture_source = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="culture_source", related_name="%(class)s_culture_source")
     media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    addition = models.CharField(max_length=25, blank=True, verbose_name = "Addition") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
-    labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
-    culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Culture Notes") 
+    # labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
+    culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Notes") 
     biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 

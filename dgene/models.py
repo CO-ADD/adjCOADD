@@ -204,7 +204,8 @@ class ID_Sequence(AuditModel):
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
          db_column="id_type", related_name="%(class)s_idtype")
-    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)run_id") 
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
     id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
@@ -226,12 +227,12 @@ class ID_Sequence(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {self.id_type} {str(self.run_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {self.id_method} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {self.id_type} {self.id_method} {str(self.run_id)}"
         return(retStr)
 
 
@@ -281,7 +282,8 @@ class WGS_FastQC(AuditModel):
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq = models.CharField(max_length=5, blank=True, verbose_name = "Seq")
-    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID") 
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)run_id") 
     base_stat = models.CharField(max_length=10, blank=True, verbose_name = "Basic Statistics")
     base_sequal = models.CharField(max_length=10, blank=True, verbose_name = "Per base sequence quality")
     tile_sequal = models.CharField(max_length=10, blank=True, verbose_name = "Per tile sequence quality")
@@ -307,12 +309,12 @@ class WGS_FastQC(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {self.seq} {str(self.run_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {self.seq} {str(self.run_id)}"
         return(retStr)
 
 
@@ -366,7 +368,8 @@ class WGS_CheckM(AuditModel):
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
-    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)run_id") 
     marker_lineage = models.CharField(max_length=25, blank=True, verbose_name = "Linage")
     n_genomes = models.IntegerField(default=0, blank=True, verbose_name ="n_genomes")
     n_predit_genes = models.IntegerField(default=0, blank=True, verbose_name ="n_predit_genes")
@@ -397,12 +400,12 @@ class WGS_CheckM(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {str(self.run_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.run_id}"
+        retStr = f"{self.orgbatch_id} {str(str(self.run_id))}"
         return(retStr)
 
 

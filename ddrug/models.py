@@ -539,10 +539,9 @@ class MIC_COADD(AuditModel):
     bp_profile = models.CharField(max_length=5, blank=True, verbose_name = "Break Point")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
-    # Future update to ForeignKey (JZG) ... same for Testplate_ID
-    #run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-    #    db_column="run_id", related_name="%(class)s_runid")
-    run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)run_id") 
+    # run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
     testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
 
@@ -579,7 +578,7 @@ class MIC_COADD(AuditModel):
         return(retStr)
 
     def __repr__(self) -> str:
-        retStr = f"{self.drug_id.drug_name} {self.orgbatch_id} {self.mic} {self.run_id}"
+        retStr = f"{self.drug_id.drug_name} {self.orgbatch_id} {self.mic} {str(self.run_id)}"
         return(retStr)
 
    #------------------------------------------------
@@ -587,7 +586,7 @@ class MIC_COADD(AuditModel):
     def get(cls,OrgBatchID,DrugID,TestPlateID,TestWellID,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,drug_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID)
         except:
             if verbose:
                 print(f"[MIC Not Found] {OrgBatchID} {DrugID} {TestPlateID} {TestWellID}")
@@ -598,7 +597,7 @@ class MIC_COADD(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,DrugID,TestPlateID,TestWellID,verbose=0):
     # Returns an instance if found by OrgBatchID and DrugID
-        return cls.objects.filter(orgbatch_id=OrgBatchID,run_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
+        return cls.objects.filter(orgbatch_id=OrgBatchID,drug_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
 
 
 #=================================================================================================

@@ -339,6 +339,7 @@ class AuditModel(models.Model):
             if i>=5: # break it !! if it leads to the 5th related table!!
                 break
         return obj
+    
     def get_values(self, fields=None):
         
         from django.db.models import Model
@@ -414,10 +415,12 @@ class Dictionary(AuditModel):
         'dict_class':'Class',  
         'dict_desc':'Description',
         'dict_sort':'Order',
+        'dict_app' :'Application',  
     }
     
     dict_value =models.CharField(primary_key=True, unique=True, max_length=50, verbose_name = "Value"  )
     dict_class= models.CharField(max_length=30, verbose_name = "Class")
+    dict_app= models.CharField(max_length=30, verbose_name = "Application")
     dict_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description")
     dict_sort = models.IntegerField(default=0, verbose_name = "Order")
    
@@ -588,6 +591,17 @@ class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class ApplicationLog(models.Model):
 #-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'log_code':'Code', 
+        'log_proc':'Procedure',  
+        'log_type':'Type',
+        'log_time':'Time',
+        'log_status':'Status',
+        'log_user':'User',
+        'log_object' :'Object',  
+        'log_desc' :'Description',  
+    }
+
     OWNER     = "orgdb"
 
     log_code = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Code")
@@ -608,6 +622,7 @@ class ApplicationLog(models.Model):
             models.Index(name="log_code_idx",fields=['log_code']),
             models.Index(name="log_proc_idx",fields=['log_proc']),
             models.Index(name="log_type_idx",fields=['log_type']),
+            models.Index(name="log_status_idx",fields=['log_status']),
             models.Index(name="log_object_idx",fields=['log_object']),
         ]
 
@@ -629,82 +644,82 @@ class ApplicationLog(models.Model):
         log_inst.log_status = LogStatus
         log_inst.save()
 
-#-------------------------------------------------------------------------------------------------
-class Image(AuditModel):
-#-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
-        'image_name':'Name', 
-        'image_file':'Image',  
-        'image_type':'Type',  
-        'image_desc':'Description',
-        'image_source':'Source',
-        'image_object':'Object',
-        'image_objectid':'Object ID',
-    }
+# #-------------------------------------------------------------------------------------------------
+# class Image(AuditModel):
+# #-------------------------------------------------------------------------------------------------
+#     HEADER_FIELDS = {
+#         'image_name':'Name', 
+#         'image_file':'Image',  
+#         'image_type':'Type',  
+#         'image_desc':'Description',
+#         'image_source':'Source',
+#         'image_object':'Object',
+#         'image_objectid':'Object ID',
+#     }
     
-    image_name =models.CharField(max_length=120,  unique=True, verbose_name = "Name")
-    image_file= models.ImageField(upload_to='images/', verbose_name = "Image")
-    image_type = models.CharField(max_length=25, verbose_name = "Type")
-    image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description", default = "Description")
-    image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source", default = "source")
+#     image_name =models.CharField(max_length=120,  unique=True, verbose_name = "Name")
+#     image_file= models.ImageField(upload_to='images/', verbose_name = "Image")
+#     image_type = models.CharField(max_length=25, verbose_name = "Type")
+#     image_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description", default = "Description")
+#     image_source = models.CharField(max_length=50, blank=True, verbose_name = "Source", default = "source")
 
-    class Meta:
-        app_label = 'apputil'
-        db_table = 'app_image'
-        ordering=['image_name',]
-        indexes = [
-            models.Index(name="img_name_idx",fields=['image_name']),
-            models.Index(name="img_scr_idx",fields=['image_source']),
-        ]
+#     class Meta:
+#         app_label = 'apputil'
+#         db_table = 'app_image'
+#         ordering=['image_name',]
+#         indexes = [
+#             models.Index(name="img_name_idx",fields=['image_name']),
+#             models.Index(name="img_scr_idx",fields=['image_source']),
+#         ]
 
-    #------------------------------------------------
-    def __str__(self) -> str:
-        return str(self.image_name)
+#     #------------------------------------------------
+#     def __str__(self) -> str:
+#         return str(self.image_name)
 
-    def __repr__(self) -> str:
-        return f"[{self.image_name}] {self.image_object} ({self.image_objectid})"
+#     def __repr__(self) -> str:
+#         return f"[{self.image_name}] {self.image_object} ({self.image_objectid})"
 
-    #------------------------------------------------
-    @classmethod
-    def get(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
-    #
-    # Returns a Image instance if found 
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if ImgName:
-            try:
-                retDict = cls.objects.get(image_name=ImgName)
-            except:
-                if verbose:
-                    print(f"[Image Not Found] {ImgName}")
-                retDict = None
-        elif ImgObj:
-            try:
-                retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
-            except:
-                if verbose:
-                    print(f"[Image Not Found] {ImgObj} {ImgObjID}")
-                retDict = None
-        else:
-            retDict = None
-        return(retDict)
+#     #------------------------------------------------
+#     @classmethod
+#     def get(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+#     #
+#     # Returns a Image instance if found 
+#     #    by ImgName
+#     #    by ImgObj & ImgObjID
+#     #
+#         if ImgName:
+#             try:
+#                 retDict = cls.objects.get(image_name=ImgName)
+#             except:
+#                 if verbose:
+#                     print(f"[Image Not Found] {ImgName}")
+#                 retDict = None
+#         elif ImgObj:
+#             try:
+#                 retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
+#             except:
+#                 if verbose:
+#                     print(f"[Image Not Found] {ImgObj} {ImgObjID}")
+#                 retDict = None
+#         else:
+#             retDict = None
+#         return(retDict)
 
-    #------------------------------------------------
-    @classmethod
-    def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
-    #
-    # Returns if Image instance exists
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if ImgName:
-            retValue = cls.objects.filter(image_name=ImgName).exists()
-        elif ImgObj:
-            retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
-        else:
-            retValue = False
-        return(retValue)
+#     #------------------------------------------------
+#     @classmethod
+#     def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
+#     #
+#     # Returns if Image instance exists
+#     #    by ImgName
+#     #    by ImgObj & ImgObjID
+#     #
+#         if ImgName:
+#             retValue = cls.objects.filter(image_name=ImgName).exists()
+#         elif ImgObj:
+#             retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
+#         else:
+#             retValue = False
+#         return(retValue)
 
 #-------------------------------------------------------------------------------------------------
 class Document(AuditModel):
@@ -715,8 +730,8 @@ class Document(AuditModel):
         'doc_type':'Type',  
         'doc_desc':'Description',
         'doc_source':'Source',
-        'doc_object':'Object',
-        'doc_objectid':'Object ID',
+        # 'doc_object':'Object',
+        # 'doc_objectid':'Object ID',
     }
     
     doc_name =models.CharField(max_length=120, unique=True, verbose_name = "Name"  )
