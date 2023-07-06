@@ -14,6 +14,7 @@ COMPOUND_SEP = '|'
 # Links:
 LinkList={
     'taxonomny':    '/dorganism/taxonomy/{VALUE}',
+    "urlname":      '/dorganism/taxonomy/',
     'tax_id':       'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={VALUE}',
     'organism_id':  '/dorganism/organism/{VALUE}',
     'drug_id':      '/ddrug/drug/{VALUE}',
@@ -34,6 +35,7 @@ LinkList={
     'ncbi_project': 'https://www.ncbi.nlm.nih.gov/bioproject/?term={VALUE}',
     'ncbi_assembly':'https://www.ncbi.nlm.nih.gov/assembly/{VALUE}',
     'ncbi_nuccore': 'https://www.ncbi.nlm.nih.gov/nuccore/{VALUE}',
+    'seq_id':       '',
 }
 
 # App and Model

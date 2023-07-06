@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
 
-from apputil.models import Dictionary, ApplicationUser, Image, Document
+from apputil.models import Dictionary, ApplicationUser, Document
 from apputil.utils.filters_base import Filterbase
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from adjcoadd.constants import *
@@ -87,14 +87,14 @@ class CreateOrganism_form(ModelForm):
     
     class Meta:
         model=Organism
-        exclude=['organism_id', 'assoc_images', 'assoc_documents'] 
+        exclude=['organism_id',  'assoc_documents'] 
 
 #=======================================Organism update Form=============================================================
 class UpdateOrganism_form(CreateOrganism_form):   
     
     class Meta:
         model=Organism
-        exclude=['organism_id', 'assoc_images', 'assoc_documents'] 
+        exclude=['organism_id', 'assoc_documents'] 
    
 #========================================Taxonomy Form================================================================
 class Taxonomy_form(forms.ModelForm):

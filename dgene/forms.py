@@ -114,30 +114,19 @@ class Sequence_form(ModelForm):
 
 ## fitler forms
 class Sequencefilter(Filterbase):
-    run_id=django_filters.CharFilter(lookup_expr='icontains', label='RUN ID')
     id_organisms=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=[] )
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     class Meta:
-        model=ID_Sequence
-        fields=list(model.HEADER_FIELDS.keys())
+        model = ID_Sequence
+        fields = list(model.HEADER_FIELDS.keys())
 
 # WGS_FastQCfilter forms
 class FastQCfilter(Filterbase):
     class Meta:
-        model=WGS_FastQC
-        fields=list(model.HEADER_FIELDS.keys())
-        # class Meta:
-        # model=None
-        # filter_overrides = {
-        #      models.CharField: {
-        #          'filter_class': django_filters.CharFilter,
-        #          'extra': lambda f: {
-        #              'lookup_expr': 'icontains',
-        #          },
-        #      },}
-        
-        #[ 'Run_Id']
+        model = WGS_FastQC
+        fields = list(model.HEADER_FIELDS.keys())
+  
 
 # WGS_CheckMfilter forms
 class CheckMfilter(Filterbase):
@@ -149,5 +138,5 @@ class CheckMfilter(Filterbase):
         print(self.group1[0].label)
 
     class Meta:
-        model=WGS_CheckM
-        fields=list(model.HEADER_FIELDS.keys())
+        model = WGS_CheckM
+        fields = list(model.HEADER_FIELDS.keys())
