@@ -111,17 +111,19 @@ class Data_Source(AuditModel):
     List of Data sources
     """
 #=================================================================================================
-    HEADER_FIELDS = {}
+    HEADER_FIELDS = {
+
+    }
     Choice_Dictionary = {
-        'source_type':'DataSource_Type',
+        'data_type':'Data_Type',
     }
 
-    source_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Source ID")
-    source_name = models.CharField(max_length=50, blank=True, verbose_name = "Source Name")
-    source_code = models.CharField(max_length=10, blank=True, verbose_name = "Source Code")
+    data_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Data ID")
+    data_name = models.CharField(max_length=50, blank=True, verbose_name = "Data Name")
+    data_code = models.CharField(max_length=10, blank=True, verbose_name = "Data Code")
     description = models.CharField(max_length=1000, blank=True, verbose_name = "Description")
-    source_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source Type", on_delete=models.DO_NOTHING,
-        db_column="source_type", related_name="%(class)s_SourceType+")
+    data_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Type", on_delete=models.DO_NOTHING,
+        db_column="data_type", related_name="%(class)s_data_type")
     journal = models.CharField(max_length=50, blank=True, verbose_name = "Journal")
     year = models.IntegerField(blank=True, verbose_name = "Year")
     volume = models.CharField(max_length=50, blank=True, verbose_name = "Volume")
@@ -140,7 +142,7 @@ class Data_Source(AuditModel):
     class Meta:
         app_label = 'dcollab'
         db_table = 'data_source'
-        ordering=['source_name','source_type']
+        ordering=['data_name','data_type']
         # indexes = [
         #     models.Index(name="tax_orgclass_idx", fields=['org_class']),
         #     models.Index(name="tax_taxid_idx", fields=['tax_id']),
@@ -149,15 +151,19 @@ class Data_Source(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.source_id} {self.source_type} {self.source_name}"
+        return f"{self.data_id} "
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.data_id} {self.data_code} {self.data_type}"
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,SourceID,verbose=0):
+    def exists(cls,DataID,verbose=0):
         try:
-            retInstance = cls.objects.get(source_id=SourceID)
+            retInstance = cls.objects.get(data_id=DataID)
         except:
             if verbose:
-                print(f"[DataSource Not Found] {SourceID} ")
+                print(f"[Data Not Found] {DataID} ")
             retInstance = None
         return(retInstance)

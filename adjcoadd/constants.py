@@ -13,13 +13,21 @@ COMPOUND_SEP = '|'
 
 # Links:
 LinkList={
-"urlname": '/dorganism/taxonomy/',
-'organism_id': '/dorganism/organism/',
-'gene_id':'/dgene/gene/',
-'tax_id': 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
-'drug_id': "/ddrug/drug/",
-'chembl':'https://www.ebi.ac.uk/chembl/compound_report_card/',
-'drugbank':'https://go.drugbank.com/drugs/',
+    'taxonomny':    '/dorganism/taxonomy/',
+    'tax_id':       'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
+    'organism_id':  '/dorganism/organism/',
+    'drug_id':      '/ddrug/drug/',
+    'cas':          'https://commonchemistry.cas.org/detail?cas_rn=',
+    'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/',
+    'drugbank' :    'https://www.drugbank.ca/drugs/',
+    'chemspider':   'https://www.chemspider.com/Chemical-Structure.{VALUE}.html',
+    'unii':         'https://precision.fda.gov/uniisearch/srs/unii/',
+    'kegg':         'https://www.kegg.jp/entry/',
+    'chebi':        'https://www.ebi.ac.uk/chebi/searchId.do?chebiId=',
+    'chembl':       'https://www.ebi.ac.uk/chembldb/index.php/compound/inspect/',
+    'comptox':      'https://comptox.epa.gov/dashboard/chemical/details/',
+    'echa':         'https://echa.europa.eu/substance-information/-/substanceinfo/',
+    'gene_id':      '/dgene/gene/',
 
 }
 
