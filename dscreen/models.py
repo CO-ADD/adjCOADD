@@ -34,12 +34,12 @@ class Screen_Run(AuditModel):
     }
 
     run_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Run ID")
-    run_name = models.CharField(max_length=500, unique=True, verbose_name = "Run Name")
+    run_name = models.CharField(max_length=500, verbose_name = "Run Name")
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
-    run_owner = models.CharField(max_length=500, unique=True, verbose_name = "Run Owner")
+    run_owner = models.CharField(max_length=500, verbose_name = "Run Owner")
     run_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Status", on_delete=models.DO_NOTHING,
         db_column="run_status", related_name="%(class)s_RunStatus+")
 
