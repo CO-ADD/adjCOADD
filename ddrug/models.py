@@ -36,6 +36,10 @@ class Drug(AuditModel):
         'max_phase':'Max_Phase',
     }
 
+    ID_SEQUENCE = 'Drug'
+    ID_PREFIX = 'AMD'
+    ID_PAD = 5
+
     drug_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
     drug_name = models.CharField(max_length=50, unique=True, verbose_name = "Drug Name")
     drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True,verbose_name = "Other Names")
@@ -102,21 +106,21 @@ class Drug(AuditModel):
     def __repr__(self) -> str:
         return f"{self.drug_name} ({self.drug_id})"
 
-   #------------------------------------------------
-    @classmethod
-    def str_DrugID(cls,DrugNo) -> str:
-        return(f"AMD{DrugNo:05d}")
+#    #------------------------------------------------
+#     @classmethod
+#     def str_DrugID(cls,DrugNo) -> str:
+#         return(f"{cls.ID_PREFIX}{DrugNo:05d}")
 
-    #------------------------------------------------
-    @classmethod
-    def find_Next_DrugID(cls) -> str:
-        Drug_IDSq=Sequence('Drug')
-        Drug_nextID = next(Drug_IDSq)
-        Drug_strID = cls.str_DrugID(Drug_nextID)
-        while cls.exists(None,Drug_strID):
-            Drug_nextID = next(Drug_IDSq)
-            Drug_strID = cls.str_DrugID(Drug_nextID)
-        return(Drug_strID)    
+#     #------------------------------------------------
+#     @classmethod
+#     def find_Next_DrugID(cls) -> str:
+#         Drug_IDSq=Sequence(cls.ID_SEQUENCE)
+#         Drug_nextID = next(Drug_IDSq)
+#         Drug_strID = cls.str_DrugID(Drug_nextID)
+#         while cls.exists(None,Drug_strID):
+#             Drug_nextID = next(Drug_IDSq)
+#             Drug_strID = cls.str_DrugID(Drug_nextID)
+#         return(Drug_strID)    
 
     #------------------------------------------------
     @classmethod
@@ -172,7 +176,7 @@ class Drug(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.drug_id:
-            self.drug_id = self.find_Next_DrugID()
+            self.drug_id = self.next_id()
             if self.drug_id: 
                 super(Drug, self).save(*args, **kwargs)
                 # self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
@@ -337,7 +341,7 @@ class VITEK_Card(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.card_code} ({self.card_barcode}) {self.orgbatch_id}  "
+        return f"{self.card_barcode}"
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.orgbatch_id} {self.card_code} {self.card_barcode}"
@@ -510,7 +514,7 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
+        "orgbatch_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",
@@ -607,15 +611,14 @@ class MIC_Pub(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-           # example fields for test view
-        "organism_id.organism_name":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
+        "organism_id":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",
-        "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
-    
+        "zone_diameter": "Zone",
+#        "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
         "source":"Source",
-        "bp_profile":"Break Point",
+        "bp_profile":"BP",
     }
     Choice_Dictionary = {
         'mic_type':'MIC_Type',

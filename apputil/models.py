@@ -137,9 +137,9 @@ class AuditModel(models.Model):
     HEADER_FIELDS   = {}
     CARDS_FIELDS   = {}
 
-    ID_SEQUENCE = ""
-    ID_PREFIX = ""
-    ID_PAD = 0
+    ID_SEQUENCE = "General"
+    ID_PREFIX = "AAA"
+    ID_PAD = 6
 
     astatus = models.IntegerField(verbose_name = "Status", default = 0, db_index = True, editable=False)
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
@@ -730,11 +730,13 @@ class Document(AuditModel):
         'doc_type':'Type',  
         'doc_desc':'Description',
         'doc_source':'Source',
-        # 'doc_object':'Object',
-        # 'doc_objectid':'Object ID',
     }
+    ID_SEQUENCE = 'Document'
+    ID_PREFIC = 'DOC'
+    ID_PAD = 5
     
-    doc_name =models.CharField(max_length=120, unique=True, verbose_name = "Name"  )
+    doc_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Doc ID")
+    doc_name =models.CharField(max_length=120, blank=False, verbose_name = "Name"  )
     doc_file= models.FileField(upload_to='documents/', verbose_name = "Document")
     doc_type = models.CharField(max_length=25, verbose_name = "Type")
     doc_desc = models.CharField(max_length=140, blank=True, verbose_name = "Description", default = "description")
@@ -750,50 +752,14 @@ class Document(AuditModel):
         ]
 
     #------------------------------------------------
-    def __str__(self) -> str:
-        return str(self.doc_name)
-
     def __repr__(self) -> str:
-        return f"[{self.doc_name}] {self.doc_object} ({self.doc_objectid})"
+        return f"[{self.doc_id}] {self.doc_name} ({self.doc_file})"
 
     #------------------------------------------------
-    @classmethod
-    def get(cls,DocName,DocObj=None,DocObjID=None,verbose=1):
-    #
-    # Returns a Document instance if found 
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if DocName:
-            try:
-                retDict = cls.objects.get(doc_name=DocName)
-            except:
-                if verbose:
-                    print(f"[Document Not Found] {DocName}")
-                retDict = None
-        elif DocObj:
-            try:
-                retDict = cls.objects.get(image_object=DocObj, image_objectid=DocObjID)
-            except:
-                if verbose:
-                    print(f"[Document Not Found] {DocObj} {DocObjID}")
-                retDict = None
+    def save(self, *args, **kwargs):
+        if not self.doc_id:
+            self.doc_id = self.next_id()
+            if self.doc_id: 
+                super(Document, self).save(*args, **kwargs)
         else:
-            retDict = None
-        return(retDict)
-
-    #------------------------------------------------
-    @classmethod
-    def exists(cls,DocName,DocObj=None,DocObjID=None,verbose=1):
-    #
-    # Returns if Document instance exists
-    #    by ImgName
-    #    by ImgObj & ImgObjID
-    #
-        if DocName:
-            retValue = cls.objects.filter(doc_name=DocName).exists()
-        elif DocObj:
-            retValue = cls.objects.filter(image_object=DocObj, image_objectid=DocObjID).exists()
-        else:
-            retValue = False
-        return(retValue)
+            super(Document, self).save(*args, **kwargs) 

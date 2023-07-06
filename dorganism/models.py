@@ -144,7 +144,7 @@ class Organism(AuditModel):
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
         db_column="organism_name", related_name="%(class)s_organism_name")
-    strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs")
+    strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs") 
     strain_code= models.CharField(max_length=30, blank=True, verbose_name = "Strain Code")
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     strain_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
@@ -198,6 +198,18 @@ class Organism(AuditModel):
     #     db_table = "org_img", related_name="%(class)s_image")
     assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments", blank=True,
         db_table = "org_doc", related_name="%(class)s_document")
+
+    #
+    # List of Charfields with ';' list of URL like entries
+    #  '<ExtSite>;<Text>;<Value1>;<Value2>' like ['nctc;NCTC 13368;13368','atcc;ATCC 90112;90112','chembl;; 
+    # external_links = ArrayField(models.CharField(max_length=1200, blank=True),size=30, null=True, verbose_name = "Cross Reference") 
+    #
+    # or individual fields
+    #
+    # atcc	= models.URLField(blank=True, verbose_name = "atcc")	
+    # nctc	= models.CharField(blank=True, verbose_name = "NCTC")	
+    # cdc     = models.CharField(blank=True, verbose_name = "CDC ARBank")	
+
 
     #------------------------------------------------
     class Meta:

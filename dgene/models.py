@@ -12,7 +12,7 @@ from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
-from dorganism.models import Organism, Organism_Batch
+from dorganism.models import Taxonomy, Organism, Organism_Batch
 from dscreen.models import Screen_Run
 
 #-------------------------------------------------------------------------------------------------
@@ -112,6 +112,59 @@ class Gene(AuditModel):
         else:
             super(Gene, self).save(*args, **kwargs) 
 
+#-------------------------------------------------------------------------------------------------
+class Genome_Sequence(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
+        'seq_type':'Type',  
+        'organism_id':'Org ID',
+        'orgbatch_id':'OrgBatch ID',
+        'source':'Source',
+        'source_code':'Source Code',
+        'source':'Source',
+    }
+    ID_SEQUENCE = 'Sequence'
+    ID_PREFIC = 'SEQ'
+    ID_PAD = 5
+    
+    seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
+    seq_type =models.CharField(max_length=120, blank=False, verbose_name = "Type")
+    organism_name= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
+        db_column="organism_name", related_name="%(class)s_organism_name")
+    strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs")
+    organism_id = models.ForeignKey(Organism, null=True, blank=True, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id")
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)run_id") 
+
+    class Meta:
+        app_label = 'dgene'
+        db_table = 'genome_seq'
+        ordering=['doc_name',]
+        indexes = [
+            models.Index(name="doc_name_idx",fields=['doc_name']),
+            models.Index(name="doc_scr_idx",fields=['doc_source']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"[{self.seq_id}] {self.seq_type} ({self.doc_file})"
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.seq_id:
+            self.seq_id = self.next_id()
+            if self.seq_id: 
+                super(Genome_Sequence, self).save(*args, **kwargs)
+        else:
+            super(Genome_Sequence, self).save(*args, **kwargs) 
 
 #=================================================================================================
 class ID_Pub(AuditModel):
@@ -204,8 +257,8 @@ class ID_Sequence(AuditModel):
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
          db_column="id_type", related_name="%(class)s_idtype")
-    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)run_id") 
+    seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
+        db_column="seq_id", related_name="%(class)seq_id") 
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
     id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
@@ -282,8 +335,8 @@ class WGS_FastQC(AuditModel):
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq = models.CharField(max_length=5, blank=True, verbose_name = "Seq")
-    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)run_id") 
+    seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
+        db_column="seq_id", related_name="%(class)seq_id") 
     base_stat = models.CharField(max_length=10, blank=True, verbose_name = "Basic Statistics")
     base_sequal = models.CharField(max_length=10, blank=True, verbose_name = "Per base sequence quality")
     tile_sequal = models.CharField(max_length=10, blank=True, verbose_name = "Per tile sequence quality")
@@ -368,8 +421,8 @@ class WGS_CheckM(AuditModel):
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
-    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)run_id") 
+    seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
+        db_column="seq_id", related_name="%(class)seq_id") 
     marker_lineage = models.CharField(max_length=25, blank=True, verbose_name = "Linage")
     n_genomes = models.IntegerField(default=0, blank=True, verbose_name ="n_genomes")
     n_predit_genes = models.IntegerField(default=0, blank=True, verbose_name ="n_predit_genes")
@@ -392,10 +445,10 @@ class WGS_CheckM(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'wgs_checkm'
-        ordering=['orgbatch_id','run_id']
+        ordering=['orgbatch_id','seq_id']
         indexes = [
              models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
-             models.Index(name="checkqc_runid_idx",fields=['run_id']),
+             models.Index(name="checkqc_runid_idx",fields=['seq_id']),
         ]
 
     #------------------------------------------------

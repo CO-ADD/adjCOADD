@@ -22,7 +22,12 @@ class Organisation(AuditModel):
         'org_type':'Organisation_Type',
     }
 
-    organisation = models.CharField(max_length=250, blank=True, verbose_name = "Organisation")
+    ID_SEQUENCE = 'Organisation'
+    ID_PREFIC = 'ORG'
+    ID_PAD = 5
+
+    org_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Organisation ID")
+    org_name = models.CharField(max_length=250, blank=True, verbose_name = "Organisation")
     org_code = models.CharField(max_length=10, blank=True, verbose_name = "Organisation Code")
     org_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
         db_column="org_type", related_name="%(class)s_OrgType+")
@@ -32,8 +37,17 @@ class Organisation(AuditModel):
         db_table = 'organisation'
 
     #------------------------------------------------
-    def __str__(self) -> str:
-        return f"{self.organisation}"
+    def __repr__(self) -> str:
+        return f"{self.org_id} {self.org_name}"
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.org_id:
+            self.org_id = self.next_id()
+            if self.org_id: 
+                super(Organisation, self).save(*args, **kwargs)
+        else:
+            super(Organisation, self).save(*args, **kwargs) 
 
 #=================================================================================================
 class Collab_User(AuditModel):
@@ -44,7 +58,11 @@ class Collab_User(AuditModel):
     HEADER_FIELDS = {}
     Choice_Dictionary = {}
 
-    user_id = models.CharField(max_length=10, primary_key=True, verbose_name = "User ID")
+    ID_SEQUENCE = 'Collab_User'
+    ID_PREFIC = 'CUSR'
+    ID_PAD = 5
+
+    user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "User ID")
     title = models.CharField(max_length=15, blank=True, verbose_name = "Title")
     first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Code")
     last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Code")
@@ -69,8 +87,17 @@ class Collab_User(AuditModel):
         db_table = 'collab_user'
 
     #------------------------------------------------
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"{self.first_name} {self.last_name} {self.organisation.org_code}"
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = self.next_id()
+            if self.user_id: 
+                super(Collab_User, self).save(*args, **kwargs)
+        else:
+            super(Collab_User, self).save(*args, **kwargs) 
 
 #=================================================================================================
 class Collab_Group(AuditModel):
@@ -83,7 +110,11 @@ class Collab_Group(AuditModel):
         'mta_status':'License_Status',
     }
 
-    group_id = models.CharField(max_length=10, primary_key=True, verbose_name = "Group ID")
+    ID_SEQUENCE = 'Collab_Group'
+    ID_PREFIC = 'CGRP'
+    ID_PAD = 5
+
+    group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
     group_code = models.CharField(max_length=10, unique=True, verbose_name = "Group Code")
     organisation = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation", on_delete=models.DO_NOTHING,
         db_column="organisation", related_name="%(class)s_Organisation+")
@@ -102,8 +133,17 @@ class Collab_Group(AuditModel):
         db_table = 'collab_group'
 
     #------------------------------------------------
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"{self.group_code}"
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.group_id:
+            self.group_id = self.next_id()
+            if self.group_id: 
+                super(Collab_Group, self).save(*args, **kwargs)
+        else:
+            super(Collab_Group, self).save(*args, **kwargs) 
 
 #=================================================================================================
 class Data_Source(AuditModel):
@@ -117,6 +157,10 @@ class Data_Source(AuditModel):
     Choice_Dictionary = {
         'data_type':'Data_Type',
     }
+
+    ID_SEQUENCE = 'Data_Source'
+    ID_PREFIC = 'DSR'
+    ID_PAD = 5
 
     data_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Data ID")
     data_name = models.CharField(max_length=50, blank=True, verbose_name = "Data Name")
@@ -167,3 +211,12 @@ class Data_Source(AuditModel):
                 print(f"[Data Not Found] {DataID} ")
             retInstance = None
         return(retInstance)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.data_id:
+            self.data_id = self.next_id()
+            if self.data_id: 
+                super(Data_Source, self).save(*args, **kwargs)
+        else:
+            super(Data_Source, self).save(*args, **kwargs) 
