@@ -218,6 +218,110 @@ def update_OrgBatch_ora(upload=False,uploaduser=None,OutputN=1000):
             nProc['notClass'] = nProc['notClass'] + 1
     logger.info(f"[OrgBatch] [{nTotal-(nProc['Saved']+nProc['notClass']+nProc['notFound'])}] {nTotal} {nProc}")
 
+#-----------------------------------------------------------------------------------
+def update_Organism_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=False, OutputN=20):
+#-----------------------------------------------------------------------------------
+
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notClass'] = 0
+    nProc['notFound'] = 0
+
+
+    rmColumns = ['chk']
+    if os.path.exists(XlsFile):
+        logger.info(f"[adjCOADD] Read {XlsFile}[{XlsSheet}] ")
+        dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
+
+        if lower:
+            #change column name to lowercase 
+            mvColumns = {}
+            for c in dfSheet.columns:
+                mvColumns[c] = c.lower()
+            logger.info(mvColumns)
+            dfSheet = dfSheet.rename(mvColumns,axis='columns') 
+
+        #orgLst = [{k:v for k,v in m.items()} for m in dfSheet.to_dict(orient='records')]
+        # df -> lstDict and remove null items 
+        orgLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
+        nTotal = len(orgLst)
+
+        # check user
+        appuser = ApplicationUser.get(uploaduser)
+
+        for entry in orgLst:
+            # remove additional (non-model) columns as per rmColumns
+            for rmCol in rmColumns:
+                if rmCol in entry:
+                    del entry[rmCol]
+
+        for org in orgLst:
+            orgID = org['organism_id']
+            orgClass = orgID.split("_")[0]
+
+            if orgClass in ['GN','GP','FG','MB']:
+            # check if instance exists in DB
+                djOrg = Organism.get(orgID)
+                if djOrg is None:
+                    djOrg = Organism()
+                    djOrg.organism_id = orgID
+
+                djOrg.organism_name = Taxonomy.get(org['organism_name'],verbose=1)
+                org.pop('organism_name')
+
+# strain_code	strain_ids	strain_panel	strain_notes	res_property	gen_property	sero_clone	strain_identification	
+# strain_origin	source	source_code	tax_id	reference	mta_document	mta_notes	
+# collect_date	collect_region	collect_country	collect_site	collect_specie	collect_tissue	patient_diagnosis	patient	
+# 			
+
+                if 'lab_restriction' in org:
+                    djOrg.lab_restriction = Dictionary.get(djOrg.Choice_Dictionary["lab_restriction"],org['lab_restriction'],None)
+                    org.pop('lab_restriction')
+                if 'risk_group' in org:
+                    djOrg.risk_group = Dictionary.get(djOrg.Choice_Dictionary["risk_group"],org['risk_group'],None)
+                    org.pop('risk_group')
+                if 'pathogen_group' in org:
+                    djOrg.pathogen_group = Dictionary.get(djOrg.Choice_Dictionary["pathogen_group"],None,org['pathogen_group'])
+                    org.pop('pathogen_group')
+                if 'oxygen_pref' in org:
+                    djOrg.oxygen_pref = Dictionary.get(djOrg.Choice_Dictionary["oxygen_pref"],org['oxygen_pref'],None)
+                    org.pop('oxygen_pref')
+                if 'biologist' in org:
+                    djOrg.biologist = ApplicationUser.get(org['biologist'])
+                    org.pop('biologist')
+                if 'mta_status' in org:
+                    djOrg.mta_status = Dictionary.get(djOrg.Choice_Dictionary['mta_status'],org['mta_status'],None)
+                    org.pop('mta_status')
+                if 'strain_type' in org:
+                    djOrg.strain_type = Dictionary.get_DictValues_fromStrList(djOrg.Choice_Dictionary["strain_type"],org['strain_type'],None)
+                    org.pop('strain_type')
+                if 'strain_panel' in org:
+                    djOrg.strain_panel = Dictionary.get_DictValues_fromStrList(djOrg.Choice_Dictionary["strain_panel"],org['strain_panel'],None)
+                    org.pop('strain_panel')
+
+                # set values in instance
+                for e in org:
+                    setattr(djOrg,e,org[e])
+
+
+                djOrg.clean_Fields()
+                validDict = djOrg.validate()
+                if validDict:
+                    logger.info(f" XX {djOrg} {validDict} ")
+                else:
+                    # --- Upload ---------------------------------------------------------
+                    if upload:
+                        logger.info(f" -> {djOrg} ")
+                        djOrg.save(user=appuser)
+                        nProc['Saved'] = nProc['Saved'] + 1
+                    else:
+                        logger.info(f" >r {djOrg} ")
+            else:
+                logger.info(f"[Organism] not Found '{org['ORGANISM_NAME']}' ")
+                nProc['notFound'] = nProc['notFound'] + 1
+        else:
+            nProc['notClass'] = nProc['notClass'] + 1
+    logger.info(f"[Organism] [{nTotal-(nProc['Saved']+nProc['notClass']+nProc['notFound'])}] {nTotal} {nProc}")
 
 #-----------------------------------------------------------------------------------
 def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):

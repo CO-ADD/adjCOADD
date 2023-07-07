@@ -1,7 +1,7 @@
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
-from apputil.models import AuditModel, Dictionary, ApplicationUser, Image, Document
+from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
@@ -32,7 +32,7 @@ class Taxonomy(AuditModel):
     }
 
     HEADER_FIELDS = {
-        'organism_name':{'Organism Name': {'urlname': LinkList['urlname']}},  
+        'organism_name':{'Organism Name': {'urlname': LinkList['taxonomny']}},  
         'tax_rank':'Rank',
         'org_class':'Class',
         'division':'Division', 
@@ -151,9 +151,9 @@ class Organism(AuditModel):
     strain_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Strain Notes")
     res_property= models.CharField(max_length=1024, blank=True, verbose_name = "Phenotype")
     gen_property= models.CharField(max_length=1024, blank=True, verbose_name = "Genotype")
-    sero_clone= models.CharField(max_length=50, blank=True, verbose_name = "MLST/Serotype")
-    strain_identification = models.CharField(max_length=150, blank=True, verbose_name = "Strain Identification")
-    strain_origin = models.CharField(max_length=350, blank=True, verbose_name = "Origin of Strain")
+    sero_clone= models.CharField(max_length=126, blank=True, verbose_name = "MLST/Serotype")
+    strain_identification = models.CharField(max_length=512, blank=True, verbose_name = "Strain Identification")
+    strain_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Strain")
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
@@ -164,7 +164,7 @@ class Organism(AuditModel):
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
-    mta_notes = models.CharField(max_length=150, blank=True, verbose_name = "MTA Notes")
+    mta_notes = models.CharField(max_length=512, blank=True, verbose_name = "MTA Notes")
 
     # received_date = models.DateField(null=True, blank=True, verbose_name = "Recieved")
     # received_as = models.CharField(max_length=120, blank=True, verbose_name = "Recieved as")
@@ -173,11 +173,11 @@ class Organism(AuditModel):
     # collect_notes = models.CharField(max_length=120, blank=True, verbose_name = "Notes")
     collect_region = models.CharField(max_length=25, blank=True, verbose_name = "Region/City")
     collect_country = models.CharField(max_length=25, blank=True, verbose_name = "Country")
-    collect_site = models.CharField(max_length=25, blank=True, verbose_name = "Site/Org")
+    collect_site = models.CharField(max_length=50, blank=True, verbose_name = "Site/Org")
 
     collect_specie = models.CharField(max_length=20, blank=True, verbose_name = "From Specie/Location")
-    collect_tissue = models.CharField(max_length=20, blank=True, verbose_name = "From Tissue/Organ")
-    patient_diagnosis = models.CharField(max_length=20, blank=True, verbose_name = "Patient Diagnosis")
+    collect_tissue = models.CharField(max_length=120, blank=True, verbose_name = "From Tissue/Organ")
+    patient_diagnosis = models.CharField(max_length=120, blank=True, verbose_name = "Patient Diagnosis")
     patient = models.CharField(max_length=20, blank=True, verbose_name = "Patient Info")
 
     # collect_gender = models.CharField(max_length=5, blank=True, verbose_name = "Gender")

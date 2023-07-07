@@ -19,11 +19,12 @@ class Screen_Run(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
-        "run_id":"RunID",
-        "run_type":"RunType",
+        "run_id":"Run ID",
+        "run_type":"Run Type",
         "run_status":"Status",
         "run_owner":"Owner",
         "run_name":"Name",
+        "run_date":"Run Date",
         "run_conditions":"Conditions",
         "run_issues":"Issues",
     }
@@ -39,6 +40,7 @@ class Screen_Run(AuditModel):
         db_column="run_type", related_name="%(class)s_RunType+")
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
+    run_date = models.DateField(null=True, blank=True, verbose_name = "Run Date")
     run_owner = models.CharField(max_length=500, verbose_name = "Run Owner")
     run_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Status", on_delete=models.DO_NOTHING,
         db_column="run_status", related_name="%(class)s_RunStatus+")

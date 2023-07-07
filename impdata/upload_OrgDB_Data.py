@@ -39,6 +39,7 @@ def main():
     # Django -------------------------------------------------------------
     djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
+    orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
         uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
@@ -47,9 +48,10 @@ def main():
         uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
 
     xlFiles = {
-        'Application': "ApplicationData_v04.xlsx",
+        'Application': "ApplicationData_v05.xlsx",
         'Drug': "DrugData_v03.xlsx",
         'MIC': "LMIC_Data_v06.xlsx",
+        'OrgDB': "OrgDB_v20_30Jun2023.xlsx",
     }
 
     sys.path.append(djDir)
@@ -99,6 +101,7 @@ def main():
         uploadFile = os.path.join(uploadDir,xlFiles['Application'])
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from [User] in {uploadFile}") 
         appUtil.update_AppUser_xls(uploadFile,XlsSheet="User", upload=prgArgs.upload)
+
     elif prgArgs.table == 'Dictionary':
         uploadFile = os.path.join(uploadDir,xlFiles['Application'])
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Dictionary] in {uploadFile}")
@@ -107,9 +110,13 @@ def main():
     elif prgArgs.table == 'Taxonomy':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
     elif prgArgs.table == 'Organism':
+        uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        #dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        dOrg.update_Organism_xls(uploadFile,XlsSheet="Organism",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
     elif prgArgs.table == 'OrgBatch':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
@@ -121,6 +128,7 @@ def main():
         uploadFile = os.path.join(uploadDir,xlFiles['Drug'])
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Drug] in {uploadFile}") 
         dDrug.update_Drug_xls(uploadFile,XlsSheet="Drug", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True)
+
     elif prgArgs.table == 'Vitek':
         if prgArgs.vitekfolder:
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder}") 
@@ -128,17 +136,21 @@ def main():
         if prgArgs.vitekfile:
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile}") 
             dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
+
     elif prgArgs.table == 'MICPub':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
         dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
     elif prgArgs.table == 'MICCollab':
         uploadFile = os.path.join(uploadDir,xlFiles['MIC']) 
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile}")
         dMIC.update_MICPub_xls(uploadFile,XlsSheet="MIC",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
     elif prgArgs.table == 'MICCOADD':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
         if  prgArgs.runid:
             dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
     elif prgArgs.table == 'BP':
         logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB")
         dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)

@@ -28,6 +28,7 @@ LinkList={
     'comptox':      'https://comptox.epa.gov/dashboard/chemical/details/{VALUE}',
     'echa':         'https://echa.europa.eu/substance-information/-/substanceinfo/{VALUE}',
     'gene_id':      '/dgene/gene/',
+    'seq_id':       '/dgene/seq/',
     'nctc':         'https://www.culturecollections.org.uk/products/bacteria/detail.jsp?refId=NCTC+{NUMVALUE}&collection=nctc',
     'atcc':         'https://www.atcc.org/products/{NUMVALUE}',
     'cdc':          'https://wwwn.cdc.gov/ARIsolateBank/Panel/IsolateDetail?IsolateID={VALUE1}&PanelID={VALUE2}}',
