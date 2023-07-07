@@ -14,7 +14,7 @@ COMPOUND_SEP = '|'
 # Links:
 LinkList={
     'taxonomny':    '/dorganism/taxonomy/{VALUE1}',
-    "urlname":      '/dorganism/taxonomy/',
+    "urlname":      '/dorganism/taxonomy/{VALUE1}',
     'tax_id':       'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={VALUE1}',
     'organism_id':  '/dorganism/organism/{VALUE1}',
     'drug_id':      '/ddrug/drug/{VALUE1}',
