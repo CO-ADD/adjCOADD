@@ -6,8 +6,10 @@
             <button class="input-group-text btn m-auto border" type="submit" name="applysingle" value="Apply">
                 <i class="fa-solid fa-magnifying-glass fs-4"></i>
             </button>
-            {{ filter.form.Search_all_fields }}
+            {{ filter.form.Search_all_fields }} 
+            <br>
         </div>
+        {{filter.form.Search_all_fields.errors}} 
 
         <div class="d-flex align-items-baseline mt-2">
             <!-- <input id="filter-apply" class="btn m-auto" type="submit" name="applysingle" value="Apply" /> -->

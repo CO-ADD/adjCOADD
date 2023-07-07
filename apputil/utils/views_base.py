@@ -184,9 +184,7 @@ class CreateFileView(LoginRequiredMixin,FormView):
     def post(self, request, *args, **kwargs):
         # Handle AJAX file upload
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            print("ajax called")
             file_data = request.FILES.get(self.file_field)
-            print(file_data)
             if file_data:
                 file_path = default_storage.save(file_data.name, file_data)
                 file_name = os.path.basename(file_path)

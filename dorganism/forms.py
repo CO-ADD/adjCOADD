@@ -21,7 +21,7 @@ class HiddenSimpleArrayField(forms.Field):
         return value or []
 
 class Orgbatchimg_form(forms.ModelForm):
-    image_file_orgbatch = forms.ImageField(label='Select an image', 
+    image_file = forms.ImageField(label='Select an image', 
                                 #   validators=[validate_file], 
                                   required=True)
    
@@ -34,7 +34,7 @@ class Orgbatchimg_form(forms.ModelForm):
 class CreateOrganism_form(ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     oxygen_pref=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
     risk_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
     pathogen_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False,queryset=Dictionary.objects.all())
@@ -136,7 +136,7 @@ class Batchupdate_form(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    stock_level = SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
+    stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
 
     def __init__(self, *args, **kwargs):   
         super().__init__(*args, **kwargs)
@@ -147,7 +147,7 @@ class Batchupdate_form(forms.ModelForm):
         self.create_field_groups()
 
     def create_field_groups(self):
-        self.group_updatebatch = [self[name] for name in ("batch_id", "stock_date", "stock_level", "qc_status", "qc_record", "batch_notes", "biologist" )]
+        self.group_updatebatch = [self[name] for name in Organism_Batch.FORM_GROUPS['Group1']]
         
     class Meta:
         model =Organism_Batch
@@ -159,26 +159,23 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Create Form-------------------------------
 class Stock_createform(forms.ModelForm):
 
-    field_order = ['stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'passage_notes', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
+    field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'passage_notes', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
-    # orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0),widget=forms.HiddenInput())
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0))#widget=forms.HiddenInput()
     stock_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'readonly':False}),queryset=Dictionary.objects.all(),)
     passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     stock_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
-    
     def __init__(self, *args, **kwargs):
-        # self.orgbatch_id = kwargs.pop('initial', None).get('orgbatch_id') if kwargs.get('initial') else None
         super().__init__(*args, **kwargs)
         self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(OrgBatch_Stock.Choice_Dictionary['stock_type'])]
-        # self.fields['orgbatch_id'].choices=[(self.orgbatch_id, self.orgbatch_id)]
 
     class Meta:
         model =OrgBatch_Stock
-        fields=list(model.HEADER_FIELDS.keys())
-        exclude=['orgbatch_id.organism_id.organism_id','orgbatch_id.organism_id.organism_name', 'stock_type', 'stock_date','n_created']
+        fields='__all__'
+
 
 #======================================== Stock Form================================================================
 class Stock_form(Stock_createform):
@@ -197,7 +194,6 @@ class Stock_form(Stock_createform):
 
 # =============================== Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
-    # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
     culture_source= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
@@ -208,18 +204,10 @@ class Culture_form(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_type'])]
         self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_source'])]
-     
-              
-    # def clean_organism_id(self):       
-    #     data=self.cleaned_data['organism_id']
-    #     data=get_object_or_404(Organism, organism_id=self.organism_id)#self.organism_name
-    #     return data
 
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
-        # fields+=[""]
-        # exclude=['culture_type', 'culture_source'] 
 
 # =============================== Culture Update Form-------------------------------
 class Cultureupdate_form(forms.ModelForm):
@@ -234,7 +222,7 @@ class Cultureupdate_form(forms.ModelForm):
         self.create_field_groups()
 
     def create_field_groups(self):
-        self.group_updatebatch = [self[name] for name in ("culture_type", "culture_source", "media", "atmosphere", "temperature", "labware","culture_notes", "biologist" )]
+        self.group_updatebatch = [self[name] for name in Organism_Culture.FORM_GROUPS['Group1']]
 
         
     class Meta:
@@ -267,17 +255,17 @@ class Taxonomyfilter(Filterbase):
 ## Organism
 class Organismfilter(Filterbase):
     
-    ID=django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
+    ID = django_filters.CharFilter(field_name='organism_id', lookup_expr='icontains')
     Name = django_filters.CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
-    Class=django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  
+    Class = django_filters.ChoiceFilter(field_name='organism_name__org_class__dict_value',  
                                       widget=forms.RadioSelect, 
                                       choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB")))
-    Strain=django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
-    Notes=django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
-    Type=django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
+    Strain = django_filters.CharFilter(field_name='strain_ids', lookup_expr='icontains')
+    Notes = django_filters.CharFilter(field_name='strain_notes', lookup_expr='icontains')
+    Type = django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    MTA=django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
-    Panel=django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
+    MTA = django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
+    Panel = django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -292,15 +280,15 @@ class Organismfilter(Filterbase):
 
 ## Batch
 class Batchfilter(Filterbase):
-    Stock_Date=django_filters.IsoDateTimeFilter(field_name='stock_date')
+    Stock_Date = django_filters.IsoDateTimeFilter(field_name='stock_date')
     class Meta:
-        model=Organism_Batch
-        fields= ["stock_date",  "biologist"]
+        model = Organism_Batch
+        fields = ["stock_date",  "biologist"]
 
 
 ## Batch
 class Stockfilter(Filterbase):
-    Stock_Date=django_filters.IsoDateTimeFilter(field_name='stock_date')
+    Stock_Date = django_filters.IsoDateTimeFilter(field_name='stock_date')
     class Meta:
         model = OrgBatch_Stock
         fields = ["orgbatch_id", "Stock_Date"]

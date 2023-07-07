@@ -1,8 +1,8 @@
 {% load custom_filters %}
 <th scope="row" class="movable">{{form_label}}</th>
 <td class="editable" data-id="{{object.pk}}" data-type="">
-  {% if field.name|get_linkname %}
-  <a class="d-inline" href="{{field.name|get_linkname}}{{field.initial}}" target="_blank">
+  {% if field.name|get_linkname:field.initial %}
+  <a class="d-inline" href="{{field.name|get_linkname:field.initial}}" target="_blank">
     <div class="detail object_value" data-type="{{field.label | safe}}">
       {%if field.initial %}
       {{field.initial}}
