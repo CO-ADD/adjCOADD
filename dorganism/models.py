@@ -313,7 +313,7 @@ class Organism_Batch(AuditModel):
         db_column="qc_status", related_name="%(class)s_qc")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
-    stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels", editable=False) 
+    stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels") 
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
     
@@ -408,7 +408,7 @@ class OrgBatch_Image(AuditModel):
         'image_source':'Source',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     image_name =models.CharField(max_length=120, unique=True, verbose_name = "Name")
     image_file= models.ImageField(upload_to='images/orgbatch', verbose_name = "Image")
@@ -517,9 +517,9 @@ class OrgBatch_Stock(AuditModel):
         'stock_type':'Stock_Type',
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
-    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
+    stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
     n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
