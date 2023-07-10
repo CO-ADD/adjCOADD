@@ -35,6 +35,204 @@ def split_StrList(strList,sep=";"):
     return(retLst)
 
 #-----------------------------------------------------------------------------------
+def delete_OrgCulture(upload=False):
+#-----------------------------------------------------------------------------------
+    if upload:
+        logger.info(f"[adjCOADD] Remove all Org_Culture entries ")
+        Organism_Culture.objects.all().delete()
+
+#-----------------------------------------------------------------------------------
+def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=False, OutputN=50):
+#-----------------------------------------------------------------------------------
+
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+    nProc['notFound'] = 0
+
+
+    rmColumns = ['organism_id','Org ID','Batch ID','X1Date','X2Date','Passages']
+    rmColumns = []
+    if os.path.exists(XlsFile):
+        logger.info(f"[adjCOADD] Read {XlsFile}[{XlsSheet}] ")
+        dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
+
+        if lower:
+            #change column name to lowercase 
+            mvColumns = {}
+            for c in dfSheet.columns:
+                mvColumns[c] = c.lower()
+            logger.info(mvColumns)
+            dfSheet = dfSheet.rename(mvColumns,axis='columns') 
+
+        #orgLst = [{k:v for k,v in m.items()} for m in dfSheet.to_dict(orient='records')]
+        # df -> lstDict and remove null items 
+        cultLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
+        nTotal = len(cultLst)
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
+
+
+        # check user
+        appuser = ApplicationUser.get(uploaduser)
+
+        for entry in cultLst:
+            # remove additional (non-model) columns as per rmColumns
+            for rmCol in rmColumns:
+                if rmCol in entry:
+                    del entry[rmCol]
+
+
+        for cult in cultLst:
+            nProcessed = nProcessed + 1
+            #print(stock)
+            djCult = Organism_Culture()
+            OrganismID = cult['organism_id']
+            orgID = Organism.get(OrganismID)
+
+            if orgID is not None:
+                djCult.organism_id = orgID
+                cult.pop('organism_id')
+
+                if 'biologist' in cult:
+                    djCult.biologist = ApplicationUser.get(cult['biologist'])
+                    cult.pop('biologist')
+                if 'culture_type' in cult:
+                    djCult.culture_type = Dictionary.get(djCult.Choice_Dictionary["culture_type"],cult['culture_type'])
+                    cult.pop('culture_type')
+                if 'culture_source' in cult:
+                    djCult.culture_source = Dictionary.get(djCult.Choice_Dictionary["culture_source"],cult['culture_source'])
+                    cult.pop('culture_source')
+
+                # set values in instance
+                for e in cult:
+                    setattr(djCult,e,cult[e])
+
+
+                djCult.clean_Fields()
+                validDict = djCult.validate()
+
+                if validDict:
+                    logger.info(f" XX {djCult} {validDict} ")
+                    nProc['notValid'] = nProc['notValid'] + 1
+                else:
+                    # --- Upload ---------------------------------------------------------
+                    if upload:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} ----> {repr(djCult)}") 
+
+                        djCult.save(user=appuser)
+                        nProc['Saved'] = nProc['Saved'] + 1
+                    else:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >chk> {repr(djCult)}")
+            else:
+                logger.info(f"[OrgCulture] Organism not Found '{OrganismID}' ")
+                nProc['notFound'] = nProc['notFound'] + 1
+    eTime,sTime = nTime.remains(nProcessed)
+    logger.info(f"[OrgCulture] [{nTotal-(nProc['Saved']+nProc['notValid']+nProc['notFound'])}] {nTotal} {sTime} {nProc}")
+
+
+#-----------------------------------------------------------------------------------
+def delete_OrgBatchStock(upload=False):
+#-----------------------------------------------------------------------------------
+    if upload:
+        logger.info(f"[adjCOADD] Remove all OrgBatch_Stock entries ")
+        OrgBatch_Stock.objects.all().delete()
+    
+#-----------------------------------------------------------------------------------
+def update_OrgBatchStock_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=False, OutputN=50):
+#-----------------------------------------------------------------------------------
+
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+    nProc['notFound'] = 0
+
+
+    rmColumns = ['organism_id','Org ID','Batch ID','X1Date','X2Date','Passages']
+    if os.path.exists(XlsFile):
+        logger.info(f"[adjCOADD] Read {XlsFile}[{XlsSheet}] ")
+        dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
+
+        if lower:
+            #change column name to lowercase 
+            mvColumns = {}
+            for c in dfSheet.columns:
+                mvColumns[c] = c.lower()
+            logger.info(mvColumns)
+            dfSheet = dfSheet.rename(mvColumns,axis='columns') 
+
+        #orgLst = [{k:v for k,v in m.items()} for m in dfSheet.to_dict(orient='records')]
+        # df -> lstDict and remove null items 
+        stockLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
+        nTotal = len(stockLst)
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
+
+
+        # check user
+        appuser = ApplicationUser.get(uploaduser)
+
+        for entry in stockLst:
+            # remove additional (non-model) columns as per rmColumns
+            for rmCol in rmColumns:
+                if rmCol in entry:
+                    del entry[rmCol]
+
+
+        for stock in stockLst:
+            nProcessed = nProcessed + 1
+            #print(stock)
+            djStock = OrgBatch_Stock()
+            OrgbatchID = stock['orgbatch_id']
+            orgBatch = Organism_Batch.get(OrgbatchID)
+
+            if orgBatch is not None:
+                djStock.orgbatch_id = orgBatch
+                stock.pop('orgbatch_id')
+
+                if 'biologist' in stock:
+                    djStock.biologist = ApplicationUser.get(stock['biologist'])
+                    stock.pop('biologist')
+                if 'stock_type' in stock:
+                    djStock.stock_type = Dictionary.get(djStock.Choice_Dictionary["stock_type"],stock['stock_type'])
+                    stock.pop('stock_type')
+
+                # set values in instance
+                for e in stock:
+                    setattr(djStock,e,stock[e])
+
+
+                djStock.clean_Fields()
+                validDict = djStock.validate()
+
+                if validDict:
+                    logger.info(f" XX {djStock} {validDict} ")
+                    nProc['notValid'] = nProc['notValid'] + 1
+                else:
+                    # --- Upload ---------------------------------------------------------
+                    if upload:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} ----> {repr(djStock)}") 
+
+                        djStock.save(user=appuser)
+                        nProc['Saved'] = nProc['Saved'] + 1
+                    else:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >chk> {repr(djStock)}")
+            else:
+                logger.info(f"[OrgBatchStock] Organism Batch not Found '{OrgbatchID}' ")
+                nProc['notFound'] = nProc['notFound'] + 1
+    eTime,sTime = nTime.remains(nProcessed)
+    logger.info(f"[OrgBatchStock] [{nTotal-(nProc['Saved']+nProc['notValid']+nProc['notFound'])}] {nTotal} {sTime} {nProc}")
+
+
+#-----------------------------------------------------------------------------------
 def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
 #-----------------------------------------------------------------------------------
     fix_StockType = {
@@ -141,6 +339,101 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
             logger.info(f" XX Organism NOT found {batch['STOCK_ID']} {batch['ORGANISM_ID']} ")
             nProc['notFound'] = nProc['notFound'] + 1
     logger.info(f"[OrgBatchStock] [{nTotal-(nProc['Saved']+nProc['notClass']+nProc['notFound'])}] {nTotal} {nProc}")
+
+#-----------------------------------------------------------------------------------
+def update_OrgBatch_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=False, OutputN=20):
+#-----------------------------------------------------------------------------------
+
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+    nProc['notFound'] = 0
+
+
+    rmColumns = ['chk']
+    if os.path.exists(XlsFile):
+        logger.info(f"[adjCOADD] Read {XlsFile}[{XlsSheet}] ")
+        dfSheet = pd.read_excel(XlsFile, sheet_name=XlsSheet)
+
+        if lower:
+            #change column name to lowercase 
+            mvColumns = {}
+            for c in dfSheet.columns:
+                mvColumns[c] = c.lower()
+            logger.info(mvColumns)
+            dfSheet = dfSheet.rename(mvColumns,axis='columns') 
+
+        #orgLst = [{k:v for k,v in m.items()} for m in dfSheet.to_dict(orient='records')]
+        # df -> lstDict and remove null items 
+        batchLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
+        nTotal = len(batchLst)
+        nTime  = zData.Timer(nTotal)
+        nProcessed = 0
+
+        # check user
+        appuser = ApplicationUser.get(uploaduser)
+
+        for entry in batchLst:
+            # remove additional (non-model) columns as per rmColumns
+            for rmCol in rmColumns:
+                if rmCol in entry:
+                    del entry[rmCol]
+
+
+        for batch in batchLst:
+            nProcessed = nProcessed + 1
+            OrgbatchID = batch['orgbatch_id']
+            BatchID = batch['batch_id']
+            OrgID = batch['organism_id']
+
+            djOrg = Organism.get(OrgID)
+            if djOrg:
+                djBatch = Organism_Batch.get(OrgbatchID)
+                if djBatch is None:
+                    djBatch = Organism_Batch()
+                    djBatch.orgbatch_id = OrgbatchID
+                    djBatch.batch_id = BatchID
+                    djBatch.organism_id = djOrg
+                batch.pop('orgbatch_id')
+                batch.pop('batch_id')
+                batch.pop('organism_id')
+
+                if 'biologist' in batch:
+                    djBatch.biologist = ApplicationUser.get(batch['biologist'])
+                    batch.pop('biologist')
+                if 'qc_status' in batch:
+                    djBatch.qc_status = Dictionary.get(djBatch.Choice_Dictionary["qc_status"],batch['qc_status'],None)
+                    batch.pop('qc_status')
+
+                # set values in instance
+                for e in batch:
+                    setattr(djBatch,e,batch[e])
+
+
+                djBatch.clean_Fields()
+                validDict = djBatch.validate()
+                if validDict:
+                    logger.info(f" XX {djBatch} {validDict} ")
+                    nProc['notValid'] = nProc['notValid'] + 1
+                else:
+                    # --- Upload ---------------------------------------------------------
+                    if upload:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} ----> {repr(djBatch)}") 
+
+                        djBatch.save(user=appuser)
+                        nProc['Saved'] = nProc['Saved'] + 1
+                    else:
+                        if nProcessed%OutputN == 0:
+                            eTime,sTime = nTime.remains(nProcessed)
+                            logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >chk> {repr(djBatch)}")
+            else:
+                logger.info(f"[OrgBatch] Organism not Found '{OrgID}' ")
+                nProc['notFound'] = nProc['notFound'] + 1
+            
+    eTime,sTime = nTime.remains(nProcessed)
+    logger.info(f"[OrgBatch] [{nTotal-(nProc['Saved']+nProc['notValid']+nProc['notFound'])}] {nTotal} {sTime} {nProc}")
 
 
 #-----------------------------------------------------------------------------------

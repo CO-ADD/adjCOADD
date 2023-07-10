@@ -314,7 +314,7 @@ class Organism_Batch(AuditModel):
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
     stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels", editable=False) 
-    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
     
     #------------------------------------------------
@@ -521,9 +521,9 @@ class OrgBatch_Stock(AuditModel):
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, editable=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
-    n_created = models.IntegerField(default=0, editable=False, verbose_name = "#Vials created")
+    n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
     n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
-    stock_date = models.DateField(editable=False, verbose_name = "Stock Date")
+    stock_date = models.DateField(null=True, blank = True, verbose_name = "Stock Date")
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
@@ -531,7 +531,7 @@ class OrgBatch_Stock(AuditModel):
     location_column = models.CharField(max_length=10, blank=True, verbose_name = "Column")
     location_slot = models.CharField(max_length=10, blank=True, verbose_name = "Slot")
     #stock_id = models.CharField(max_length=15, blank=True, verbose_name = "Stock ID")
-    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
     #------------------------------------------------
@@ -623,12 +623,12 @@ class Organism_Culture(AuditModel):
     culture_source = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="culture_source", related_name="%(class)s_culture_source")
     media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
-    addition = models.CharField(max_length=25, blank=True, verbose_name = "Addition") 
+    addition = models.CharField(max_length=55, blank=True, verbose_name = "Addition") 
     atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
     temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
     # labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
     culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Notes") 
-    biologist = models.ForeignKey(ApplicationUser, null=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
     #------------------------------------------------

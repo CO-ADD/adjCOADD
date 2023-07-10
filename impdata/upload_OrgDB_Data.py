@@ -93,72 +93,93 @@ def main():
     #uploadFile = os.path.join(uploadDir,"ApplicationData_2022_11_21_JZuegg_v01.xlsx")
 
     # Table -------------------------------------------------------------
-    logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
-    print(prgArgs.table)
-    logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
-    if prgArgs.table == 'User':
-        uploadFile = os.path.join(uploadDir,xlFiles['Application'])
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from [User] in {uploadFile}") 
-        appUtil.update_AppUser_xls(uploadFile,XlsSheet="User", upload=prgArgs.upload)
+    choiceTables = ['User','Dictionary','Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture']
+    if prgArgs.table in choiceTables:
 
-    elif prgArgs.table == 'Dictionary':
-        uploadFile = os.path.join(uploadDir,xlFiles['Application'])
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Dictionary] in {uploadFile}")
-        appUtil.update_Dictionary_xls(uploadFile,XlsSheet="Dictionary", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True) 
+        logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
+        logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
-    elif prgArgs.table == 'Taxonomy':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        if prgArgs.table == 'User':
+            uploadFile = os.path.join(uploadDir,xlFiles['Application'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [User] in {uploadFile}") 
+            appUtil.update_AppUser_xls(uploadFile,XlsSheet="User", upload=prgArgs.upload)
 
-    elif prgArgs.table == 'Organism':
-        uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        #dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-        dOrg.update_Organism_xls(uploadFile,XlsSheet="Organism",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        elif prgArgs.table == 'Dictionary':
+            uploadFile = os.path.join(uploadDir,xlFiles['Application'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Dictionary] in {uploadFile}")
+            appUtil.update_Dictionary_xls(uploadFile,XlsSheet="Dictionary", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True) 
 
-    elif prgArgs.table == 'OrgBatch':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-    #elif prgArgs.table == 'OrgBatchStock':
-    #    logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-    #    dOrg.update_OrgBatchStock_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        elif prgArgs.table == 'Taxonomy':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'Drug':
-        uploadFile = os.path.join(uploadDir,xlFiles['Drug'])
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Drug] in {uploadFile}") 
-        dDrug.update_Drug_xls(uploadFile,XlsSheet="Drug", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True)
+        elif prgArgs.table == 'Organism':
+            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organism] in {uploadFile}") 
+            dOrg.update_Organism_xls(uploadFile,XlsSheet="Organism",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'Vitek':
-        if prgArgs.vitekfolder:
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder}") 
-            dVitek.update_VitekCards(VitekFolder=prgArgs.vitekfolder,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-        if prgArgs.vitekfile:
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile}") 
-            dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
+            #logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            #dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'MICPub':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-        dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        elif prgArgs.table == 'OrgBatch':
+            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch] in {uploadFile}") 
+            dOrg.update_OrgBatch_xls(uploadFile,XlsSheet="OrgBatch",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'MICCollab':
-        uploadFile = os.path.join(uploadDir,xlFiles['MIC']) 
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile}")
-        dMIC.update_MICPub_xls(uploadFile,XlsSheet="MIC",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            #logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            #dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'MICCOADD':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
-        if  prgArgs.runid:
-            dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        elif prgArgs.table == 'OrgBatchStock':
+            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch Stock] in {uploadFile}")
+            dOrg.delete_OrgBatchStock(upload=prgArgs.upload)
+            dOrg.update_OrgBatchStock_xls(uploadFile,XlsSheet="Stock",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'BP':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB")
-        dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-    elif prgArgs.table == 'WGSCOADD':
-        logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} ")
-        dGene.update_WGSCOADD_zAssembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-        
+        elif prgArgs.table == 'OrgCulture':
+            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organims Culture] in {uploadFile}")
+            dOrg.delete_OrgCulture(upload=prgArgs.upload)
+            dOrg.update_OrgCulture_xls(uploadFile,XlsSheet="Culture",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'Drug':
+            uploadFile = os.path.join(uploadDir,xlFiles['Drug'])
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Drug] in {uploadFile}") 
+            dDrug.update_Drug_xls(uploadFile,XlsSheet="Drug", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True)
+
+        elif prgArgs.table == 'Vitek':
+            if prgArgs.vitekfolder:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder}") 
+                dVitek.update_VitekCards(VitekFolder=prgArgs.vitekfolder,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            if prgArgs.vitekfile:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile}") 
+                dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
+
+        elif prgArgs.table == 'MICPub':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'MICCollab':
+            uploadFile = os.path.join(uploadDir,xlFiles['MIC']) 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile}")
+            dMIC.update_MICPub_xls(uploadFile,XlsSheet="MIC",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'MICCOADD':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
+            if  prgArgs.runid:
+                dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'BP':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB")
+            dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'WGSCOADD':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} ")
+            dGene.update_WGSCOADD_zAssembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    else:
+        logger.error(f"[Upd_djCOADD] {prgArgs.table} not in {choiceTables}")
+                     
     logger.info(f"-------------------------------------------------------------------")
     logger.info(f"LogFile        : {logFileName}")
 
