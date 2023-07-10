@@ -9,7 +9,6 @@ from django.contrib.postgres.forms import SimpleArrayField
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from apputil.utils.filters_base import Filterbase
-from apputil.utils.views_base import CustomModelForm
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from adjcoadd.constants import *
 
@@ -20,6 +19,10 @@ class HiddenSimpleArrayField(forms.Field):
 
     def clean(self, value):
         return value or []
+class DateField(forms.Field):
+    widget = forms.DateInput(attrs={'type': 'date'})
+    def clean(self, value):
+        return value
 
 class Orgbatchimg_form(forms.ModelForm):
     image_file = forms.ImageField(label='Select an image', 
@@ -32,7 +35,7 @@ class Orgbatchimg_form(forms.ModelForm):
         # exclude=['urlname']
         fields="__all__"
 #=======================================Organism Create Form=============================================================
-class CreateOrganism_form(CustomModelForm):
+class CreateOrganism_form(forms.ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -45,7 +48,7 @@ class CreateOrganism_form(CustomModelForm):
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
-    
+    collect_date = DateField()
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name

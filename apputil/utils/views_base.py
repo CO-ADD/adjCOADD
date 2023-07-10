@@ -292,9 +292,3 @@ class DataExportBaseView(LoginRequiredMixin, View):
  
 from django import forms
 
-class CustomModelForm(forms.ModelForm):
-    def __init__(self):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values(): 
-            if isinstance(field.widget, forms.DateInput):
-                field.wiget=forms.DateInput(attrs={'type': 'date'})
