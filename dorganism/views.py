@@ -28,7 +28,7 @@ from .utils.data_visual import data_frame_style, pivottable_style
 class OrgbatchimgCreateView(CreateFileView):
     form_class=Orgbatchimg_form
     model = Organism
-    file_field = 'image_file_orgbatch'
+    file_field = 'image_file'
     transaction_use = 'dorganism'
 
     def form_valid(self, form):
@@ -128,7 +128,7 @@ def createOrganism(req):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            messages.warning(req, f'create failed due to {form.errors} error')
+            messages.warning(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 
@@ -145,7 +145,7 @@ def detailOrganism(request, pk):
     """
    
     from django.db.models import Count
-    from apputil.forms import Image_form, Document_form
+    from apputil.forms import Document_form
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
@@ -154,13 +154,12 @@ def detailOrganism(request, pk):
         print(err)
     context["object"]=object_
     context["form"]=form
-    context["image_form"]=Image_form
     context["doc_form"]=Document_form
     context["orgbatchimg_form"]=Orgbatchimg_form
 
     # data in related tables
 
-    context["batchimg_obj"]=OrgBatch_Image.objects.filter(img_orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
+    context["batchimg_obj"]=OrgBatch_Image.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
     context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
    
 
@@ -168,9 +167,9 @@ def detailOrganism(request, pk):
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
     context["batch_fields"]=Organism_Batch.get_fields()
 
-    context["stock_obj"]=OrgBatch_Stock.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
-    context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
-    context["stock_fields"]=OrgBatch_Stock.get_fields()
+    # context["stock_obj"]=OrgBatch_Stock.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
+    # context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
+    # context["stock_fields"]=OrgBatch_Stock.get_fields()
 
     context["stock_count"]=Organism_Batch.objects.annotate(number_of_stocks=Count('orgbatch_id')) 
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
@@ -200,7 +199,7 @@ def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_images': [i.image_file for i in object_.assoc_images.all()], 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
+    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -316,7 +315,7 @@ def stockList(req, pk):
                 "location_col": str(i.location_column),
                 "location_slot": str(i.location_slot),
                 "stock_date": str(i.stock_date.strftime("%d-%m-%Y")),
-                "n_left": str(i.n_left) if i.n_left >=1 else " ",
+                "n_left": str(i.n_left) if i.n_left >= 1 else " ",
                 "n_created": str(i.n_created),
                 "stock_notes":str(i.stock_note),
                 "biologist": str(i.biologist),
@@ -345,18 +344,18 @@ class StockListView(LoginRequiredMixin, FilteredListView):
 def createStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
-    form=Stock_createform() #Stock_createform(initial={"orgbatch_id":orgbatch_id},)
+    form = Stock_createform(initial={"orgbatch_id":orgbatch_id},)
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
-            orgbatch_id=orgbatch_id
-            stock_type=req.POST.get("stock_type")
-            stock_date=req.POST.get("stock_date")
-            n_created=req.POST.get("n_created")
-            kwargs['orgbatch_id']=orgbatch_id
-            kwargs['stock_type']=stock_type
-            kwargs['stock_date']=stock_date
-            kwargs['n_created']=n_created
+            # orgbatch_id=orgbatch_id
+            # stock_type=req.POST.get("stock_type")
+            # stock_date=req.POST.get("stock_date")
+            # n_created=req.POST.get("n_created")
+            # kwargs['orgbatch_id']=orgbatch_id
+            # kwargs['stock_type']=stock_type
+            # kwargs['stock_date']=stock_date
+            # kwargs['n_created']=n_created
 
             try:
                 with transaction.atomic(using='dorganism'):

@@ -11,19 +11,20 @@ from .files_upload import file_location
 
 ## Different stylings for dataframe table, pivottable, etc...
 # Highlighted Table styles
-def highlight_val(val):
+def highlight_val(val, threhold_number=80.00):
     '''
     highlight the values background
     '''
-    if pd.isnull(val):
+    if pd.isnull(val): # handle the null values
         val = "empty"
     elif val.replace('.', '', 1).isdigit():  # also consider float values
         val = float(val)
     else:
         val = "empty"
+    # background-color settings 
     if val == 'empty':
         bg_color='white'
-    elif val > 80.00:
+    elif val > threhold_number:
         bg_color='#dfba9f' 
     else:
         bg_color='yellow'

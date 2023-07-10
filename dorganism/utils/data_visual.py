@@ -7,8 +7,11 @@ def convert_dataframe(pk):
     print(pk)
     try:
         df = drugtbl.get_Antibiogram_byOrgID(pk)
+        print(f'dataframe: {df}')
     except Exception as err:
         df = err
+        print(f'error {df}')
+   
     return df
 
 # styling table

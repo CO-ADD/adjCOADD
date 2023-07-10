@@ -49,7 +49,7 @@ class Screen_Run(AuditModel):
     class Meta:
         app_label = 'dscreen'
         db_table = 'screen_run'
-        ordering=['screen_type','run_id']
+        ordering=['run_type','run_id']
         indexes = [
             models.Index(name="run_type_idx", fields=['run_type']),
         ]

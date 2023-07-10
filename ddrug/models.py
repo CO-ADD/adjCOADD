@@ -544,7 +544,7 @@ class MIC_COADD(AuditModel):
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)run_id") 
+        db_column="run_id", related_name="%(class)s_run_id") 
     # run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
     testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")

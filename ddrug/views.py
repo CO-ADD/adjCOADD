@@ -18,7 +18,7 @@ from django.conf import settings
 
 from adjcoadd.constants import *
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.api_filterclass import API_FilteredListView
+from apputil.utils.api_class import API_ListView
 from apputil.utils.views_base import SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
@@ -248,13 +248,13 @@ class BreakpointListView(LoginRequiredMixin, FilteredListView):
 
 # --API Views--
 ## Drug
-class API_Drug_List(API_FilteredListView):
+class API_Drug_List(API_ListView):
     queryset = Drug.objects.all()
     serializer_class = Drug_Serializer
 
 
 ## VITEK AST
-class API_VITEK_ASTList(API_FilteredListView):
+class API_VITEK_ASTList(API_ListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
  

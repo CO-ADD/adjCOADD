@@ -29,9 +29,11 @@ def to_int(value):
         return 0
 
 @register.filter
-def get_linkname(value):
-    if value in LinkList.keys():
-        return LinkList[value]
+def get_linkname(value, arg1=None, arg2=None):
+    if value in LinkList.keys():        
+        arg1_str = str(arg1) if arg1 else ''
+        arg2_str = str(arg1) if arg2 else ''
+        return LinkList[value].replace('{VALUE1}', arg1_str).replace('{VALUE2}', arg2_str)
     else:
         return None
 

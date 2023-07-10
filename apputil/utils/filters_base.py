@@ -88,7 +88,7 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
 
 from django.contrib import messages
 class Filterbase_base(django_filters.FilterSet):
-    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', }), validators=[MinLengthValidator(10)])
+    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', 'minlength':'3' }), validators=[MinLengthValidator(3)])
 
    
     def multichoices_filter(self, queryset, name, value):
@@ -97,15 +97,14 @@ class Filterbase_base(django_filters.FilterSet):
     
     def filter_all_fields(self, queryset, name, value):
         if value:
-            
-            exclude_fields = ['password',]
+            exclude_fields = ['password','astatus',]
             q_object = get_all_fields_q_object(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
     
     def filter_all_fields_deep(self, queryset, name, value):
         if value:
-            exclude_fields = ['password','astatus', 'acreated_at', 'aupdated_at', 'adeleted_at', 'acreated', 'aupdated', 'adeleted']
+            exclude_fields = ['password','astatus',]
             q_object = get_all_fields_q_object_deep(self._meta.model, value, exclude_fields=exclude_fields)
             return queryset.filter(q_object)
         return queryset
@@ -141,17 +140,14 @@ def find_item_index(lst, item):
 # --Filter view base class--
 class FilteredListView(ListView):
     filterset_class = None #each filterset class based on class Filterbase
-    filterset_class_all = None #search in related tables thorough
     paginate_by = 50
     model_fields = None
     order_by = None
-    filter_request = None
     filter_Count = None
     app_name = None
     model_name = None
   
     def get_queryset(self):
-
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
         kwargs={'deep': False}      
@@ -184,7 +180,7 @@ class FilteredListView(ListView):
         if order:           
             order = order.replace(".", "__")
             return self.filterset.qs.distinct().order_by(order)
-        
+    
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):

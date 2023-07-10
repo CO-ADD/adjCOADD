@@ -360,10 +360,10 @@ class AuditModel(models.Model):
                         n=len(url_name.split("."))
                         urlArray=url_name.split(".")
                         obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
-                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj_link)})
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj_link))})
                     else:
                         # foreignkey link name equal field values 
-                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(obj)})
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj))})
                 elif isinstance(obj, Model):
                     value_list.append(obj.pk)   
                 else:
@@ -378,7 +378,7 @@ class AuditModel(models.Model):
                         url_name = list(list(fields[name].values())[0].keys())[0]
                         url=getattr(self, url_name)
                         # Append link to the value list
-                        value_list.append({obj: list(list(fields[name].values())[0].values())[0]+str(url)})
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(url))})
                     elif isinstance(obj, Model):
                         value_list.append(obj.pk)
                     elif isinstance(obj, list):
@@ -395,7 +395,6 @@ class AuditModel(models.Model):
     def get_fieldsandvalues(self, card_fields=None):
         if card_fields is None:
             card_fields = self.CARDS_FIELDS
-      
         fields=self.__class__.get_fields(fields=card_fields)
         values=self.get_values(fields=card_fields)
 

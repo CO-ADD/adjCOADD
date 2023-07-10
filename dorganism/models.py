@@ -301,7 +301,10 @@ class Organism_Batch(AuditModel):
     Choice_Dictionary = {
         'qc_status':'QC_Status',
     }
-
+    
+    FORM_GROUPS = {
+       'Group1': ["batch_id", "batch_notes", "qc_status", "qc_record", "stock_date", "stock_level", "biologist" ]
+       }
     #SEP = '_'
 
     orgbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "OrgBatch ID")
@@ -309,7 +312,7 @@ class Organism_Batch(AuditModel):
         db_column="organism_id", related_name="%(class)s_organism_id")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
-    qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC Notes", on_delete=models.DO_NOTHING,
+    qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
@@ -450,46 +453,7 @@ class OrgBatch_Image(AuditModel):
     # Returns if instance exists
         return cls.objects.filter(image_name=ImgName).exists()
 
-    # #------------------------------------------------
-    # @classmethod
-    # def get(cls,ImgName,verbose=1):
-    # #
-    # # Returns a Image instance by ImgName
-    # #
-    #     if ImgName:
-    #         try:
-    #             retDict = cls.objects.get(image_name=ImgName)
-    #         except:
-    #             if verbose:
-    #                 print(f"[Image Not Found] {ImgName}")
-    #             retDict = None
-    #     elif ImgObj:
-    #         try:
-    #             retDict = cls.objects.get(image_object=ImgObj, image_objectid=ImgObjID)
-    #         except:
-    #             if verbose:
-    #                 print(f"[Image Not Found] {ImgObj} {ImgObjID}")
-    #             retDict = None
-    #     else:
-    #         retDict = None
-    #     return(retDict)
-
-    # #------------------------------------------------
-    # @classmethod
-    # def exists(cls,ImgName,ImgObj=None,ImgObjID=None,verbose=1):
-    # #
-    # # Returns if Image instance exists
-    # #    by ImgName
-    # #    by ImgObj & ImgObjID
-    # #
-    #     if ImgName:
-    #         retValue = cls.objects.filter(image_name_orgbatch=ImgName).exists()
-    #     elif ImgObj:
-    #         retValue = cls.objects.filter(image_object=ImgObj, image_objectid=ImgObjID).exists()
-    #     else:
-    #         retValue = False
-    #     return(retValue)
-
+  
 
 #=================================================================================================
 class OrgBatch_Stock(AuditModel):
@@ -499,8 +463,8 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':'/dorganism/organism/'}},
-        "orgbatch_id.organism_id.organism_name":"Organism",
+    #    "orgbatch_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':'/dorganism/orgbatch/'}},
+        "orgbatch_id":"OrgBatch ID",
         "stock_type":"Stock Type",
         "n_created":"#C",
         "n_left":"#L",
@@ -544,7 +508,7 @@ class OrgBatch_Stock(AuditModel):
             models.Index(name="orgbstock_freezer_idx",fields=['location_freezer']),
             models.Index(name="orgbstock_stdate_idx",fields=['stock_date']),
             models.Index(name="orgbstock_nleft_idx",fields=['n_left']),
-            #models.Index(name="orgbstock_stid_idx",fields=['stock_id']),
+
         ]
 
     #------------------------------------------------
@@ -573,23 +537,6 @@ class OrgBatch_Stock(AuditModel):
 #         return cls.objects.filter(pk=pkID).exists()
 
 
-    # # Function called for editable false field------
-    # def save(self, *args, **kwargs):
-        
-    #     orgbatch_id =kwargs.pop("orgbatch_id", None)
-    #     stock_type=kwargs.pop("stock_type", None)
-    #     stock_date=kwargs.pop("stock_date", None)
-    #     n_created=kwargs.pop("n_created", None)
-    #     if orgbatch_id:
-    #         self.orgbatch_id=Organism_Batch.objects.get(pk=orgbatch_id)
-    #     if stock_type:
-    #         self.stock_type=Dictionary.objects.get(dict_value=stock_type)
-    #     if stock_date:
-    #         self.stock_date=stock_date
-    #     if n_created:
-    #         self.n_created=n_created
-    #     super().save(*args, **kwargs)
-    
               
   
 #=================================================================================================
@@ -614,6 +561,10 @@ class Organism_Culture(AuditModel):
     Choice_Dictionary = {
         'culture_type':'Culture_Type',
         'culture_source':'Culture_Source',
+    }
+    
+    FORM_GROUPS = {
+        'Group1': ["culture_type", "culture_source", "media", "addition", "atmosphere", "temperature", "culture_notes", "biologist"]
     }
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,

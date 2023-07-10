@@ -204,6 +204,9 @@ textarea:focus {
   box-shadow: inset 0 1px 1px var(--info-bg), 0 0 8px teal;
 }
 
+p{
+  white-space: nowrap;
+}
 
 select {
   white-space: initial;
@@ -552,6 +555,20 @@ a:hover .tooltiptext {
   min-height: 30em;
   height: fit-content;
   transition: 0.5s;
+}
+.sidebar ul{
+  color: var(--info);
+  list-style: none;
+  text-align: right;
+  /* background-color: var(--brand-bg); */
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color:var(--info);
+  text-decoration-thickness: 2px;
+  padding:2px;
+  margin:auto;
+  width:150px;
+  font-style: normal;
 }
 
 /* ---------------------------------5 pagination -------------------------------*/

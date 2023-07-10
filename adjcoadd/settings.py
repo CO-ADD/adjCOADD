@@ -158,7 +158,7 @@ DATABASES = {
     },
     'dorganism': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=dorganism,apputil,ddrug,dgene,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': database_name,
         'USER': database_user, 
         'PASSWORD':database_password,

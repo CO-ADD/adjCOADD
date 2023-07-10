@@ -20,15 +20,13 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Image_form, Document_form 
-from apputil.models import ApplicationUser, Dictionary, Image, Document
+from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Document_form 
+from apputil.models import ApplicationUser, Dictionary, Document
 from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
-
-
 
 # import setup
 @login_required(login_url='/')
@@ -223,18 +221,18 @@ class CreatedocumentView(CreateFileView):
     related_name = 'assoc_documents'
     transaction_use_manytomany = 'dorganism'
 
-class CreateimageView(CreateFileView):
-    form_class = Image_form
-    model = Organism
-    file_field = 'image_file'
-    related_name = 'assoc_images'
-    transaction_use_manytomany = 'dorganism'
+# class CreateimageView(CreateFileView):
+#     form_class = Image_form
+#     model = Organism
+#     file_field = 'image_file'
+#     related_name = 'assoc_images'
+#     transaction_use_manytomany = 'dorganism'
     
 class DocDeleteView(SimpledeleteView):
     model = Document
 
-class ImageDeleteView(SimpledeleteView):
-    model = Image
+# class ImageDeleteView(SimpledeleteView):
+#     model = Image
 # =========================== Export CSV View =============================
 from .utils.views_base import DataExportBaseView
 class DataExportView(DataExportBaseView):

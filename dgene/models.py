@@ -142,20 +142,20 @@ class Genome_Sequence(AuditModel):
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)run_id") 
+        db_column="run_id", related_name="%(class)s_run_id") 
 
     class Meta:
         app_label = 'dgene'
         db_table = 'genome_seq'
-        ordering=['doc_name',]
+        ordering=['seq_id',]
         indexes = [
-            models.Index(name="doc_name_idx",fields=['doc_name']),
-            models.Index(name="doc_scr_idx",fields=['doc_source']),
+            models.Index(name="genoseq_seqid_idx",fields=['seq_id']),
+            # models.Index(name="doc_scr_idx",fields=['doc_source']),
         ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"[{self.seq_id}] {self.seq_type} ({self.doc_file})"
+        return f"[{self.seq_id}] {self.seq_type} ({self.reference})"
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -258,7 +258,7 @@ class ID_Sequence(AuditModel):
     id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
          db_column="id_type", related_name="%(class)s_idtype")
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
-        db_column="seq_id", related_name="%(class)seq_id") 
+        db_column="seq_id", related_name="%(class)s_seq_id") 
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
     id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
@@ -274,27 +274,27 @@ class ID_Sequence(AuditModel):
              models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
              models.Index(name="idseq_idtype_idx",fields=['id_type']),
              models.Index(name="idseq_idmed_idx",fields=['id_method']),
-             models.Index(name="idseq_runid_idx",fields=['run_id']),
+             models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {str(self.run_id)}"
+        retStr = f"{self.orgbatch_id} {self.id_type} {str(self.seq_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {self.id_method} {str(self.run_id)}"
+        retStr = f"{self.orgbatch_id} {self.id_type} {self.id_method} {str(self.seq_id)}"
         return(retStr)
 
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,IDType,RunID,verbose=0):
+    def get(cls,OrgBatchID,IDType,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,id_type=IDType,run_id=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,id_type=IDType,seq_id=SeqID)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {OrgBatchID} {IDType} {RunID}")
@@ -303,9 +303,9 @@ class ID_Sequence(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,IDType,RunID,verbose=0):
+    def exists(cls,OrgBatchID,IDType,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,id_type=IDType,run_id=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,id_type=IDType,seq_id=SeqID).exists()
 
 #=================================================================================================
 class WGS_FastQC(AuditModel):
@@ -316,7 +316,7 @@ class WGS_FastQC(AuditModel):
     HEADER_FIELDS   = {
         "orgbatch_id":"OrgBatch ID",
         "seq":"Seq",
-        "run_id":"RunID",
+        "seq_id":"SeqID",
         "base_stat" :"Statistics",
         "base_sequal" :"Per base sequence quality",
         "tile_sequal" :"Per tile sequence quality",
@@ -353,41 +353,41 @@ class WGS_FastQC(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'wgs_fastqc'
-        ordering=['orgbatch_id','seq','run_id']
+        ordering=['orgbatch_id','seq','seq_id']
         indexes = [
              models.Index(name="fastqc_orgbid_idx",fields=['orgbatch_id']),
              models.Index(name="fastqc_seq_idx",fields=['seq']),
-             models.Index(name="fastqc_runid_idx",fields=['run_id']),
+             models.Index(name="fastqc_seqid_idx",fields=['seq_id']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {str(self.run_id)}"
+        retStr = f"{self.orgbatch_id} {self.seq} {str(self.seq_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {str(self.run_id)}"
+        retStr = f"{self.orgbatch_id} {self.seq} {str(self.seq_id)}"
         return(retStr)
 
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,Seq,RunID,verbose=0):
+    def get(cls,OrgBatchID,Seq,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq=Seq,run_id=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {Seq} {RunID}")
+                print(f"[ID-WGS Not Found] {OrgBatchID} {Seq} {SeqID}")
             retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,Seq,RunID,verbose=0):
+    def exists(cls,OrgBatchID,Seq,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,seq=Seq,run_id=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID).exists()
     
 #=================================================================================================
 class WGS_CheckM(AuditModel):
@@ -397,7 +397,7 @@ class WGS_CheckM(AuditModel):
 #=================================================================================================
     HEADER_FIELDS   = {
         "orgbatch_id":"OrgBatch ID",
-        "run_id":"RunID",
+        "seq_id":"SeqID",
         "marker_lineage" :"Marker lineage",
         "n_genomes" :"n_genomes",
         "n_predit_genes" :"n_predit_genes",
@@ -448,34 +448,34 @@ class WGS_CheckM(AuditModel):
         ordering=['orgbatch_id','seq_id']
         indexes = [
              models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
-             models.Index(name="checkqc_runid_idx",fields=['seq_id']),
+             models.Index(name="checkqc_seqid_idx",fields=['seq_id']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(self.run_id)}"
+        retStr = f"{self.orgbatch_id} {str(self.seq_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(str(self.run_id))}"
+        retStr = f"{self.orgbatch_id} {str(str(self.seq_id))}"
         return(retStr)
 
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,RunID,verbose=0):
+    def get(cls,OrgBatchID,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,run_id=RunID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_id=SeqID)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {RunID}")
+                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqID}")
             retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,RunID,verbose=0):
+    def exists(cls,OrgBatchID,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,run_id=RunID).exists()
+        return cls.objects.filter(rgbatch_id=OrgBatchID,seq_id=SeqID).exists()
