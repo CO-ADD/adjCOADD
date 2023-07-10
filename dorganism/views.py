@@ -128,7 +128,7 @@ def createOrganism(req):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            messages.warning(req, f'create failed due to {form.errors} error')
+            messages.warning(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 

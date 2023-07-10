@@ -4,7 +4,6 @@
     <a class="dt-control toggle-btn" data-value="{{object.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip"
         data-bs-placement="right" title="Click to Open StockTable"></i>
     </a>
-
     <!-- Other template code -->
     {% with stocknumber=object|count_filtered_stock %}
     {%if stocknumber > 0%}

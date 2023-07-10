@@ -33,8 +33,12 @@ function createChild(row, Batch_id_a, stock_create_id, stock_create_modal, permi
       headers: { "X-CSRFToken": csrftoken },
       data: { Batch_id },
     },
-
+    "initComplete": function( settings, json ) {
+      console.log(json);
+    },
+    
     columns: [
+    
       // { title: "Stock ID", data: "stock_id" },
       {
 

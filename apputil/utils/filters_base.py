@@ -143,7 +143,6 @@ class FilteredListView(ListView):
     paginate_by = 50
     model_fields = None
     order_by = None
-    filter_request = None
     filter_Count = None
     app_name = None
     model_name = None

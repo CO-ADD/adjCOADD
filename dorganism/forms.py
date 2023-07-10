@@ -9,6 +9,7 @@ from django.contrib.postgres.forms import SimpleArrayField
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from apputil.utils.filters_base import Filterbase
+from apputil.utils.views_base import CustomModelForm
 from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from adjcoadd.constants import *
 
@@ -31,7 +32,7 @@ class Orgbatchimg_form(forms.ModelForm):
         # exclude=['urlname']
         fields="__all__"
 #=======================================Organism Create Form=============================================================
-class CreateOrganism_form(ModelForm):
+class CreateOrganism_form(CustomModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -40,11 +41,10 @@ class CreateOrganism_form(ModelForm):
     pathogen_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False,queryset=Dictionary.objects.all())
     mta_status = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False, queryset=Dictionary.objects.all())
     lab_restriction = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False, queryset=Dictionary.objects.all())
-    
     res_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
-    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False,)
+    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     
    
     def __init__(self, organism_name=None, *args, **kwargs): 
@@ -74,10 +74,16 @@ class CreateOrganism_form(ModelForm):
         data=self.cleaned_data['organism_name']
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         if data:
-            return data
+            if data.org_class in ORGANISM_CLASSES:
+                return data
+            else:
+                self.add_error('organism_name', 'Create failed with invalid organism class')
+                
         else:
             self.add_error('organism_name', "Found No Organism")
-            raise ValidationError
+
+        return data            
+
 
     def create_field_groups(self):
         self.group1 = [self[name] for name in Organism.FORM_GROUPS['Group1']]
@@ -90,7 +96,8 @@ class CreateOrganism_form(ModelForm):
         exclude=['organism_id',  'assoc_documents'] 
 
 #=======================================Organism update Form=============================================================
-class UpdateOrganism_form(CreateOrganism_form):   
+class UpdateOrganism_form(CreateOrganism_form): 
+
     
     class Meta:
         model=Organism
@@ -120,7 +127,7 @@ class Batch_form(forms.ModelForm):
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input'}), help_text='**Optional with up to 5 characters', required=False)
-
+    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     def __init__(self, *args, **kwargs):
         super(Batch_form, self).__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
@@ -136,8 +143,8 @@ class Batchupdate_form(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
-
+    stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False,)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
+    biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     def __init__(self, *args, **kwargs):   
         super().__init__(*args, **kwargs)
         instance=kwargs.get('instance')
@@ -147,7 +154,7 @@ class Batchupdate_form(forms.ModelForm):
         self.create_field_groups()
 
     def create_field_groups(self):
-        self.group_updatebatch = [self[name] for name in Organism_Batch.FORM_GROUPS['Group1']]
+        self.group1 = [self[name] for name in Organism_Batch.FORM_GROUPS['Group1']]
         
     class Meta:
         model =Organism_Batch
@@ -222,7 +229,7 @@ class Cultureupdate_form(forms.ModelForm):
         self.create_field_groups()
 
     def create_field_groups(self):
-        self.group_updatebatch = [self[name] for name in Organism_Culture.FORM_GROUPS['Group1']]
+        self.group1 = [self[name] for name in Organism_Culture.FORM_GROUPS['Group1']]
 
         
     class Meta:

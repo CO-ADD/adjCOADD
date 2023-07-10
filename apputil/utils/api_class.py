@@ -15,7 +15,7 @@ class CustomPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class API_FilteredListView(generics.ListAPIView):
+class API_ListView(generics.ListAPIView):
     queryset = None
     serializer_class = None
     model_fields = None

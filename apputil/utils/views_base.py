@@ -8,6 +8,7 @@ from datetime import datetime
 
 from django.apps import apps
 from django.core.files.storage import default_storage
+from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.http import JsonResponse
@@ -154,7 +155,7 @@ class HtmxupdateView(LoginRequiredMixin, View):
         context={
         "form":form,
         "object":object_,
-    }
+    }   
         if request.GET.get('_value') == 'cancel':
             return render(request, self.template_partial, context)
         elif form.is_valid():
@@ -165,7 +166,9 @@ class HtmxupdateView(LoginRequiredMixin, View):
                 ApplicationLog.add('Update',"model",'Info', request.user, 'object','Update an entry','Completed')              
             return render(request, self.template_partial, context)
         else:
-            messages.error(request, form.errors)
+            # raise ValidationError
+            context["form_errors"] = form.errors
+            # messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
 # --View for simple update files and images to database--
@@ -287,4 +290,11 @@ class DataExportBaseView(LoginRequiredMixin, View):
 
         return response
  
+from django import forms
 
+class CustomModelForm(forms.ModelForm):
+    def __init__(self):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values(): 
+            if isinstance(field.widget, forms.DateInput):
+                field.wiget=forms.DateInput(attrs={'type': 'date'})
