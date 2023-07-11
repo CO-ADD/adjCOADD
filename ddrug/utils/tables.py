@@ -10,6 +10,7 @@ from django.conf import settings
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub
 from ddrug.utils.molecules import *
+from ddrug.utils.bio_data import agg_DR
 
 from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.data import *
@@ -43,11 +44,8 @@ def get_Antibiogram_byOrgID(OrgID):
         else:
             aDict['MIC'] = m.mic
         aDict['BP Profile'] =m.bp_profile
-        #aDict['BP Source'] = m.bp_source
         aDict['BP Source'] = m.card_barcode.card_code
         aDict['Source'] = "Vitek"
-        #aDict['Sel Organism'] = m.organism
-        #aDict['Card'] = m.card_barcode.card_code
         orgMIC.append(aDict)
 
     pMIC = MIC_Pub.objects.filter(organism_id=OrgObj)
@@ -62,8 +60,6 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Profile'] = m.bp_profile
         aDict['BP Source'] = '-'
         aDict['Source'] = m.source
-        #aDict['Sel Organism'] = '-'
-        #aDict['Card'] = '-'
         orgMIC.append(aDict)
 
     cMIC = MIC_COADD.objects.filter(orgbatch_id__organism_id=OrgObj)
@@ -84,17 +80,20 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Profile'] =m.bp_profile
         aDict['BP Source'] = m.run_id
         aDict['Source'] = "CO-ADD"
-        #aDict['Sel Organism'] = '-'
-        #aDict['Card'] = '-'
         orgMIC.append(aDict)
    
     df = pd.DataFrame(orgMIC)
     #df.to_excel(f"{OrgID}_Antibio.xlsx")
     df = df.fillna("-").astype(str)
 
-    agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: ", ".join(list(np.unique(x))))
+    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
+    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
-    return(agg_df)
+
+    print(df[showCol])
+    agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: agg_DR(x))
+    print(agg_df)
+    #return(agg_df)
 
 
 # -----------------------------------------------------------------------------------------

@@ -53,7 +53,7 @@ class Drug(AuditModel):
     drug_subtarget = models.CharField (max_length=50, blank=True,  verbose_name = "SubTarget")
     moa = models.CharField(blank=True, max_length=50, verbose_name = "MoA")
     drug_class = models.CharField(max_length=50, blank=True,  verbose_name = "Class")
-    drug_subclass = models.CharField(max_length=50, blank=True, verbose_name = "SubClass")
+    drug_subclass = models.CharField(max_length=100, blank=True, verbose_name = "SubClass")
 
     antimicro = models.CharField(max_length=25, blank=True, verbose_name = "Antimicro")
     antimicro_class = models.CharField(max_length=80, blank=True, verbose_name = "Antimicro Type")
@@ -625,7 +625,7 @@ class MIC_Pub(AuditModel):
     }
 
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
-        db_column="oragnism_id", related_name="%(class)s_organism_id") 
+        db_column="organism_id", related_name="%(class)s_organism_id") 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
         db_column="drug_id", related_name="%(class)s_drug_id")
     

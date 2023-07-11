@@ -49,7 +49,7 @@ def main():
 
     xlFiles = {
         'Application': "ApplicationData_v05.xlsx",
-        'Drug': "DrugData_v03.xlsx",
+        'Drug': "DrugData_v04.xlsx",
         'MIC': "LMIC_Data_v06.xlsx",
         'OrgDB': "OrgDB_v20_30Jun2023.xlsx",
     }
@@ -94,7 +94,9 @@ def main():
 
     # Table -------------------------------------------------------------
 
-    choiceTables = ['User','Dictionary','Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture']
+    choiceTables = ['User','Dictionary',
+                    'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture',
+                    'Drug']
     if prgArgs.table in choiceTables:
 
         logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
