@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
+DEVELOPMENT='Local'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,7 +143,7 @@ else:
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
 database_name = os.environ.get('db_name') or 'orgdb'
-database_user = os.environ.get('db_usr') or 'orgdb'
+database_user = os.environ.get('db_usr') or 'orgdb_user'
 database_password = os.environ.get('password') or 'orgdb'
 
 DATABASES = {
