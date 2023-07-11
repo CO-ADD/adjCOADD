@@ -4,89 +4,90 @@
 <!--  -->
 {% block content %}
 <div>
-{%if query_list %}
+  {%if query_list %}
+  {{app_model}}
   <form action="{% url 'pivoted-table' app_model %}" class="container-fluid w-100 m-5 border" method="POST"
-  id="id_pivottable_form">
-  {% csrf_token %}
-  <input id="id_column" type="text" name="column" hidden>
-  <input id="id_index" type="text" name="index" hidden>
-  
-  <h1 m-auto>
-    {{app_model}}
-    
-  </h1>
-  
-  <div class="d-flex align-items-baseline">
-    <div class="d-flex flex-column mx-2">
-      <span style="font-size: small">--Data visualization type--</span>
-      <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
-      style="width: fit-content">
-      <option value="1" selected>Pivot table</option>
-      <option value="2">Pie Chart</option>
-      <option value="3">Plot</option>
-    </select>
-  </div>
-  <div class="d-flex flex-column mx-2">
-    <span style="font-size: small">--Select Table Values--</span>
-    <select name="values" data-name="data_process_value" class="form-select form-select-sm"
-    aria-label=".form-select-sm example" style="width: fit-content">
-    
-    {%for field in model_fields %}
-    <option value="{{field}}">{{field}}</option>
-    {%endfor%}
-  </select>
-    </div>
-    <div class="d-flex flex-column mx-2">
-      <span style="font-size: small">--Aggregate Functions--</span>
-      <select name="data_function_type" data-name="data_function_type" class="form-select form-select-sm"
-      aria-label=".form-select-sm example" style="width: fit-content">
-      <option value="String_concat" selected>String_concat</option>
-      <option value="Lst">Lst</option>
-      <option value="DR">DR</option>
-      <option value="Inhib">Inhib</option>
-    </select>
-  </div>
-</div>
+    id="id_pivottable_form">
+    {% csrf_token %}
+    <input id="id_column" type="text" name="column" hidden>
+    <input id="id_index" type="text" name="index" hidden>
 
-<hr />
-<div style="height: 100vh;overflow: auto;">
-  
-  <!-- <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%"> -->
-    <div class>
-      
-      <div class="row">
-        <div class="col-md-3"><button class="submit_data btn mx-5 border">Start...</button></div>
-        
-        <div class="col-md-9 m-0 p-0">{%include 'utils/drag_n_drop/selectivedrag_hr.html'%}</div>
-        
+    <h1 m-auto>
+      {{app_model}}
+
+    </h1>
+
+    <div class="d-flex align-items-baseline">
+      <div class="d-flex flex-column mx-2">
+        <span style="font-size: small">--Data visualization type--</span>
+        <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
+          style="width: fit-content">
+          <option value="1" selected>Pivot table</option>
+          <option value="2">Pie Chart</option>
+          <option value="3">Plot</option>
+        </select>
       </div>
-      <div class="row">
-        
-        <div  class="col-md-3">
-          {%include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
-        </div>
-        
-        <div id="pivotable" class="col-md-9">
-          <div style="overflow: auto;" class="m-auto w-100">
-            {%if table%}
-            {{table | safe}}
-            {%endif%}
-          </div>
-        </div>
-        <button id="download_pt_as_csv" type="submit" name="download" disabled>...Download as CSV</button>
+      <div class="d-flex flex-column mx-2">
+        <span style="font-size: small">--Select Table Values--</span>
+        <select name="values" data-name="data_process_value" class="form-select form-select-sm"
+          aria-label=".form-select-sm example" style="width: fit-content">
+
+          {%for field in model_fields %}
+          <option value="{{field}}">{{field}}</option>
+          {%endfor%}
+        </select>
       </div>
-      
+      <div class="d-flex flex-column mx-2">
+        <span style="font-size: small">--Aggregate Functions--</span>
+        <select name="data_function_type" data-name="data_function_type" class="form-select form-select-sm"
+          aria-label=".form-select-sm example" style="width: fit-content">
+          <option value="String_concat" selected>String_concat</option>
+          <option value="Lst">Lst</option>
+          <option value="DR">DR</option>
+          <option value="Inhib">Inhib</option>
+        </select>
+      </div>
     </div>
-  </div>
-</form>
-{%else%}
-<h1>Please go to listview create a search. </h1>
-{%endif%}
+
+    <hr />
+    <div style="height: 100vh;overflow: auto;">
+
+      <!-- <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%"> -->
+      <div class>
+
+        <div class="row">
+          <div class="col-md-2"><button class="submit_data btn mx-5 border">Start...</button></div>
+
+          <div class="col-md-9 m-0 p-0">{%include 'utils/drag_n_drop/selectivedrag_hr.html'%}</div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-md-2">
+            {%include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
+          </div>
+
+          <div id="pivotable" class="col-md-8">
+            <div style="height:100vh; overflow: auto;">
+              {%if table%}
+              {{table | safe}}
+              {%endif%}
+            </div>
+          </div>
+          <button id="download_pt_as_csv" type="submit" name="download">...Download as CSV</button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+  {%else%}
+  <h1>Please go to listview create a search. </h1>
+  {%endif%}
 </div>
 
 
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
-integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 <script>
   $(function () {
     $("#sortable1, #sortable2, #sortable3")
@@ -94,8 +95,8 @@ integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="ano
         connectWith: ".connectedSortable",
       })
       .disableSelection();
-    });
-  </script>
+  });
+</script>
 
 <script>
 

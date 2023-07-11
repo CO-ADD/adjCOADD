@@ -611,7 +611,7 @@ class MIC_Pub(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "oragnism_id.organism_name":{'Organism Name': {'oragnism_id.organism_id':LinkList['organism_id']}}, 
+        "organism_id.organism_name":{'Organism Name': {'organism_id.organism_id':LinkList['organism_id']}}, 
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",

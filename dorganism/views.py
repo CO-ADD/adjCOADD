@@ -16,6 +16,7 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+from apputil.models import ApplicationLog
 from adjcoadd.constants import *
 from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
@@ -123,6 +124,7 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -222,6 +224,7 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
+                    ApplicationLog.add('Update',str(instance.pk),'Info',request.user,instance.__str__(),'Updated an entry','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
@@ -271,6 +274,7 @@ def createBatch(req, organism_id):
                     instance=form.save(commit=False) 
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
                     instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -361,6 +365,7 @@ def createStock(req, orgbatch_id):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -381,6 +386,7 @@ def updateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
+        ApplicationLog.add('Updated',str(instance.pk),'Info',request.user,instance.__str__(),'Updated Stock_n_left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -395,6 +401,7 @@ def updateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
+                            ApplicationLog.add('Update',str(instance.pk),'Info',request.user,instance.__str__(),'Updated an entry','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
@@ -422,19 +429,14 @@ def createCulture(req, organism_id):
     form=Culture_form()
     
     if req.method=='POST':
-        print("save") 
         form=Culture_form(req.POST)
         if form.is_valid():
-            print("save") 
             try:
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False)
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)
-                    print(instance.organism_id) 
-                    instance.save(**kwargs)                  
-                    # message=instance.save(**kwargs)
-                    # if type(message)==Exception:
-                    #     messages.error(req, f'{message} happes')
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')                  
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')

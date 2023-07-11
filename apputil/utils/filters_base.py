@@ -193,6 +193,7 @@ class FilteredListView(ListView):
         context['filter'] = self.filterset
         context['paginate_by'] = self.get_paginate_by(self, **kwargs)
         context['fields'] = self.model.get_fields(fields = self.model_fields)
+        print(context['fields'])
         context['filterset'] = filter_record
         context['Count'] = self.model.objects.count()
         context['querycount'] = self.filter_Count
