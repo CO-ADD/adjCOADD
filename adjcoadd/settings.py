@@ -148,6 +148,9 @@ else:
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
+database_name = os.environ.get('db_name') or 'orgdb'
+database_user = os.environ.get('db_usr') or 'orgdb'
+database_password = os.environ.get('password') or 'orgdb'
 
 DATABASES = {
     'default': {

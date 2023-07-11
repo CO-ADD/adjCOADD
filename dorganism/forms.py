@@ -186,7 +186,6 @@ class Stock_createform(forms.ModelForm):
         model =OrgBatch_Stock
         fields='__all__'
 
-
 #======================================== Stock Form================================================================
 class Stock_form(Stock_createform):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -281,7 +280,7 @@ class Organismfilter(Filterbase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strainstrain_panel_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    

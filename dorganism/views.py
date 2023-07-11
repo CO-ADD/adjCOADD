@@ -231,6 +231,7 @@ def updateOrganism(req, pk):
                     messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
+            print("something wrong with many to many")
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
