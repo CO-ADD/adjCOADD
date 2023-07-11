@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Development : Local/Work/<none>
 DEVELOPMENT='Work'
+DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,6 @@ MEDIA_URL = ('uploads/')
 if DEVELOPMENT=="Local":
     # structure_file_path = f"static/images/{file_name}.svg"
     STRUCTURE_FILES_DIR=os.path.join(BASE_DIR, 'static/images')
-   
 else:
     Base_dir = Path(__file__).resolve().parent.parent.parent
     STRUCTURE_FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
@@ -132,6 +132,9 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 import psycopg2.extensions
 
 if DEVELOPMENT:
+    DB_NAME = os.environ.get('db_name') or 'orgdb'
+    DB_USER = os.environ.get('db_usr') or 'orgdb'
+    DB_PASSWD = os.environ.get('password') or 'orgdb'
     if DEVELOPMENT == 'Local':
         HOST_NAME = 'Localhost'
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
@@ -139,65 +142,65 @@ if DEVELOPMENT:
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 else:
-    HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+    DB_NAME = os.environ.get('db_name') or 'coadd'
+    DB_USER = os.environ.get('db_usr') or 'coadd'
+    DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
+    HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
-database_name = os.environ.get('db_name') or 'orgdb'
-database_user = os.environ.get('db_usr') or 'orgdb'
-database_password = os.environ.get('password') or 'orgdb'
 
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dorganism': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dorganism,apputil,ddrug,dgene,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'ddrug': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dgene': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dgene,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'OPTIONS':{'options': '-c search_path=dgene,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': database_name,
-        'USER': database_user, 
-        'PASSWORD':database_password,
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     }

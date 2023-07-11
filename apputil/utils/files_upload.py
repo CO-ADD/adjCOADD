@@ -3,6 +3,8 @@ File-upload...
 """
 import os
 import magic
+#from winmagic import magic
+
 import logging
 logger = logging.getLogger(__name__)
 #import clamd
