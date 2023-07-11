@@ -514,7 +514,7 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
+        "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",
@@ -611,7 +611,7 @@ class MIC_Pub(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "organism_id":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
+        "oragnism_id.organism_name":{'Organism Name': {'oragnism_id.organism_id':LinkList['organism_id']}}, 
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "mic_type":"Type",
         "mic":"MIC",

@@ -22,6 +22,11 @@
   <!--  -->
   {% endif %}
   <!--  -->
+{%elif model_name == 'OrgBatch_Image' or model_name == 'Document' %}
+<a type="button" class="btn-sm border-0 bg-transparent" data-bs-toggle="modal" data-bs-placement="right"
+title="Add New Image/File" data-bs-target="#{{title}}Modal">
+    <i class="bi bi-file-earmark-plus" style='color: red'></i>
+</a>
 {% else %}
   <a
     id="{{create_object}}"

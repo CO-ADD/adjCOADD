@@ -5,8 +5,8 @@
 {% block content%}
 <div class="d-flex flex-row vh-100">
   <!--prettier-ignore-->
-
-  {%include 'utils/leftbar.html' with list_url='vitekcard_list' %}
+  {% url 'pivoted-table' app_model='ddrug-VITEK_Card' as url_pivotedtable%}
+  {%include 'utils/leftbar.html' with list_url='vitekcard_list' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->

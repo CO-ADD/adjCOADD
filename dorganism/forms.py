@@ -74,10 +74,10 @@ class CreateOrganism_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def clean_organism_name(self):       
-        data=self.cleaned_data['organism_name']
+        data=self.cleaned_data['organism_name'] or self.instance.organism_name
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
         if data:
-            if data.org_class in ORGANISM_CLASSES:
+            if str(data.org_class) in ORGANISM_CLASSES:
                 return data
             else:
                 self.add_error('organism_name', 'Create failed with invalid organism class')

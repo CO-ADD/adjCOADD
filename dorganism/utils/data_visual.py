@@ -4,13 +4,11 @@ from apputil.utils.data_style import highlight_val, highlight_val2
 ## --dOrganism dataframe table, pivottable and styling table--
 # convert to dataframe
 def convert_dataframe(pk):
-    print(pk)
     try:
-        df = drugtbl.get_Antibiogram_byOrgID(pk)
-        print(f'dataframe: {df}')
+        df = drugtbl.get_Antibiogram_byOrgID(str(pk))
     except Exception as err:
         df = err
-        print(f'error {df}')
+        print(f'durgtbl_error {df}')
    
     return df
 

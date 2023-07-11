@@ -86,7 +86,8 @@ class DrugCardView(DrugListView):
                     try:
                         molecule_to_svg(m, object_.pk)
                     except Exception as err:
-                        messages.error(self.request, f'**{object_.pk} mol may not exists**')
+                        pass
+                        # messages.error(self.request, f'**{object_.pk} mol may not exists**')
         except Exception as err:
             context={}
             messages.error(self.request, err)

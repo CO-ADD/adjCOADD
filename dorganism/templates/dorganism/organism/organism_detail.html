@@ -101,10 +101,16 @@
     </div>
     
     <!-- Image OrgBatches -->
+    <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
     {% include 'dorganism/organism/orgbatch_image.html' %}
-    
+    </div>
     <!-- Files -->
+    <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+     <!--  -->
     {% include 'dorganism/organism/organism_file.html' %}
+    </div>
 
     <!-- MIC_COADD Pivot -->
     {%include './organism_mic.html'%}

@@ -33,6 +33,7 @@ td {
 
 .dataTable th {
   max-width: 5em !important;
+  width: fit-content !important;
 }
 
 table.dataframe tr:nth-child(even) {

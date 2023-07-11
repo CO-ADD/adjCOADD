@@ -6,6 +6,7 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
+  {% url 'pivoted-table' app_model='ddrug-MIC_COADD' as url_pivotedtable%}
   {%include 'utils/leftbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}

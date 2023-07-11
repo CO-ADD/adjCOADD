@@ -1,6 +1,6 @@
 {% load custom_filters %}
 <tr>
-  <td width="10%" class="p-0">
+  <td width="6%" class="p-0">
     <a class="dt-control toggle-btn" data-value="{{object.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip"
         data-bs-placement="right" title="Click to Open StockTable"></i>
     </a>
@@ -20,8 +20,8 @@
       <span class=""> {%include 'dorganism/organism/batch/batch_d.html' with object_batch=object.pk %} </span>
     </div>
   </td>
-  <td class="not-visible">{{object.pk}}</td>
   {%for value in object.get_values%}
   <td>{{value}}</td>
   {%endfor%}
+  <td class="not-visible">{{object.pk}}</td>
 </tr>

@@ -463,8 +463,7 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-    #    "orgbatch_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':'/dorganism/orgbatch/'}},
-        "orgbatch_id":"OrgBatch ID",
+       "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
         "stock_type":"Stock Type",
         "n_created":"#C",
         "n_left":"#L",
@@ -475,6 +474,7 @@ class OrgBatch_Stock(AuditModel):
         "stock_date":"Stock Date",
         "stock_note":"Stock Note",
         "biologist":"Biologist",
+        "orgbatch_id":"OrgBatch ID",
     }
 
     Choice_Dictionary = {

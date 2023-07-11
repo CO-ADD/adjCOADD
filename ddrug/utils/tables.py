@@ -87,10 +87,10 @@ def get_Antibiogram_byOrgID(OrgID):
         #aDict['Sel Organism'] = '-'
         #aDict['Card'] = '-'
         orgMIC.append(aDict)
-
+   
     df = pd.DataFrame(orgMIC)
     #df.to_excel(f"{OrgID}_Antibio.xlsx")
-    df = df.fillna("-")
+    df = df.fillna("-").astype(str)
 
     agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: ", ".join(list(np.unique(x))))
 

@@ -43,7 +43,8 @@
     var table = $('#'+'{{table_id}}').DataTable({
       searching: false,
       paging: "{{table_id}}" === 'datatable_vitekast' ? true : false,
-      info:false
+      info:false,
+      order: [[1, 'asc']],
     });
     
     if ("{{table_id}}"==="datatable_batch"){

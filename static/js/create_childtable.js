@@ -36,6 +36,7 @@ function createChild(row, Batch_id_a, stock_create_id, stock_create_modal, permi
     "initComplete": function( settings, json ) {
       console.log(json);
     },
+    order: [[1, 'asc']],
     
     columns: [
     
