@@ -30,8 +30,12 @@
             ~ 45min for 207665 entries
         python upload_OrgDB_Data.py -t Organism --upload
             ~ 
-        python upload_OrgDB_Data.py -t OrganismBatch --upload
+        python upload_OrgDB_Data.py -t OrgBatch --upload
             ~
+        python upload_OrgDB_Data.py -t OrgBatchStock --upload
+
+        python upload_OrgDB_Data.py -t OrgCulture --upload
+
 
 6. Upload Drug data
     Check data in impdata/Data/DrugData_vnn.xlsx [Drug]
