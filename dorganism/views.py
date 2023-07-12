@@ -18,12 +18,12 @@ from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
 from apputil.models import ApplicationLog
 from adjcoadd.constants import *
-from .models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
-from .forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
+from dorganism.models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
+from dorganism.forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
                     Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
 from ddrug.models import VITEK_AST, MIC_COADD
-from .utils.data_visual import data_frame_style, pivottable_style
+from dorganism.utils.data_visual import data_frame_style, pivottable_style
 
 
 class OrgbatchimgCreateView(CreateFileView):
@@ -231,6 +231,7 @@ def updateOrganism(req, pk):
                     messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
+            print("something wrong with many to many")
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   

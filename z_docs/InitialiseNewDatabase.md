@@ -9,7 +9,7 @@
     manage.py makemigrations apputil
     manage.py migrate apputil
     ...
-    for <app> in [dorganism,ddrug,dgene,..]:
+    for <app> in [dorganism, dscreen, ddrug, dgene, dcollab ..]:
         manage.py makemigrations <app>
         manage.py migrate <app> --database <app>
     ...

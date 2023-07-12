@@ -28,6 +28,21 @@ from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
+
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+    print('deleting...')
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
+
 # import setup
 @login_required(login_url='/')
 def index(req):

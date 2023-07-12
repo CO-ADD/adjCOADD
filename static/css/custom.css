@@ -907,14 +907,12 @@ form p {
     bottom: 100%;
     left: -5px;
   }
-
   25% {
     height: 5px;
     width: 5px;
     bottom: -5px;
     left: -5px;
   }
-
   25.01% {
     height: 5px;
     /* width: calc(100% + 10px); */
@@ -937,21 +935,18 @@ form p {
     left: 100%;
     bottom: -5px;
   }
-
   75% {
     height: 0;
     width: 5px;
     left: 100%;
     bottom: 100%;
   }
-
   75.01% {
     height: 5px;
     /* width: 75%; */
     left: 50%;
     bottom: 100%;
   }
-
   99.01% {
     height: 5px;
     width: 0;

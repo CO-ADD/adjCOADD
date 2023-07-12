@@ -186,7 +186,6 @@ class Stock_createform(forms.ModelForm):
         model =OrgBatch_Stock
         fields='__all__'
 
-
 #======================================== Stock Form================================================================
 class Stock_form(Stock_createform):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -275,11 +274,13 @@ class Organismfilter(Filterbase):
     Type = django_filters.MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
     MTA = django_filters.ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
-    Panel = django_filters.MultipleChoiceFilter(field_name='strain_panel',method='multichoices_filter', choices=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False))
+    Panel = django_filters.MultipleChoiceFilter(field_name='strain_panel', method='multichoices_filter', 
+                                             widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    

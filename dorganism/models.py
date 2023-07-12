@@ -163,6 +163,7 @@ class Organism(AuditModel):
 
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
+    mta_notes = models.CharField(max_length=150, blank=True, verbose_name = "MTA Notes")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
     mta_notes = models.CharField(max_length=512, blank=True, verbose_name = "MTA Notes")
 

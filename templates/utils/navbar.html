@@ -3,23 +3,13 @@
     <div class="brand d-flex flex-column align-items-center">
       <a class="navbar-brand" href="{%url 'index'%}">
         {% load static %}
-        <img
-          class="d-inline-block align-text-top"
-          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}"
-          alt="CoADD Logo"
-        />
+        <img class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
       </a>
     </div>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -27,21 +17,15 @@
       <div class="navbar-nav">
         <a class="nav-link" href="{%url 'index'%}">
           <p class="nav-title">
-           
+
             <i class="bi bi-house-fill text-light"></i>
           </p>
         </a>
 
         <div class="dropdown d-inline-block">
-          <a
-            type="button"
-            class="nav-link active"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <p class="nav-title">Views</p>
-            
+
           </a>
           <ul class="dropdown-menu">
             <!-- item-->
@@ -72,19 +56,19 @@
             <li>
               <div class="dropdown-divider"></div>
             </li>
-           <li>
+            <li>
               <a class="dropdown-item" href="{%url 'mic_coadd_list'%}">
                 <p class="nav-title">MIC Antibiogram</p>
               </a>
             </li>
 
-           <li>
+            <li>
               <a class="dropdown-item" href="{%url 'mic_pub_list'%}">
                 <p class="nav-title">MIC Public</p>
               </a>
             </li>
 
-           <li>
+            <li>
               <a class="dropdown-item" href="{%url 'breakpoint_list'%}">
                 <p class="nav-title">Breakpoints</p>
               </a>
@@ -109,35 +93,25 @@
                 <p class="nav-title">Vitek ID</p>
               </a>
             </li>
-             <li>
+            <li>
               <div class="dropdown-divider"></div>
             </li>
 
           </ul>
         </div>
         <div class="dropdown d-inline-block">
-          <a
-            type="button"
-            class="nav-link active"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <p class="nav-title">Import</p>
-           
+
           </a>
           <ul class="dropdown-menu">
             <!-- item-->
             <li>
-              <a
-                class="dropdown-item"
-                href="{%url 'import-vitek' %}"
-                target="_blank"
-              >
+              <a class="dropdown-item" href="{%url 'import-vitek' %}" target="_blank">
                 <p class="nav-title">Vitek</p>
               </a>
             </li>
-           
+
           </ul>
         </div>
       </div>
@@ -145,21 +119,13 @@
 
       <ul class="navbar-nav ms-auto fs-5">
         <li class="nav-item d-flex">
-        
+
           <div class="dropdown d-inline-block">
-            <a
-              class="d-flex align-items-center p-0 nav-link active"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <img
-                class="rounded-circle header-profile-user"
-                src="{%static 'images/app/avatar.png'%}"
-                alt="Avatar"
-              />
+            <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
               <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
-             
+
             </a>
             <div class="dropdown-menu dropdown-menu-end">
               <a class="dropdown-item" href="#">
@@ -180,11 +146,7 @@
               </a>
               <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->
               <a class="dropdown-item" href="#" data-bs-toggle>
-                <input
-                  
-                  type="checkbox"
-                  id="dark-mode"
-                />
+                <input type="checkbox" id="dark-mode" />
                 <label class="form-check-label" for="flexSwitchCheckChecked">
                   <p>Switch to Dark</p>
                 </label>
@@ -194,13 +156,13 @@
               {% if user.is_superuser %}
               {{user.is_superuser}}
 
-                <a class="dropdown-item" href="{%url 'userslist' %}">
-                  <p>Users</p>
-                </a>
+              <a class="dropdown-item" href="{%url 'userslist' %}">
+                <p>Users</p>
+              </a>
 
-                <a class="dropdown-item" href="{%url 'dict_view'%}">
-                  <p>Dictionary</p>
-                </a>
+              <a class="dropdown-item" href="{%url 'dict_view'%}">
+                <p>Dictionary</p>
+              </a>
               {% endif %}
 
               <div class="dropdown-divider"></div>
@@ -208,16 +170,10 @@
                 <p key="t-logout">Logout</p>
               </a>
 
-              <a
-                class="dropdown-item version"
-                style="font-size: x-small"
-                href="https://co-add.github.io/README/html/index.html"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                title="info README
-              "
-                target="_blank"
-              >
+              <a class="dropdown-item version" style="font-size: x-small"
+                href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
+                data-bs-placement="bottom" title="info README
+              " target="_blank">
                 VERSION 1.0
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
               </a>
