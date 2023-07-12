@@ -13,8 +13,8 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
-# DEVELOPMENT=None
+# DEVELOPMENT='Work'
+DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,9 +39,9 @@ else:
 SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -268,7 +268,7 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.imb-coadd-work.imb.uq.edu.au:8008"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://www.imb-coadd-db.imb.uq.edu.au"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')

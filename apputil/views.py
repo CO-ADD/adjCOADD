@@ -70,6 +70,14 @@ def index(req):
 def custom_page_not_found_view(request, exception):
    
     return render(request, 'registration/error404.html')
+# Handler 400
+def badrequest_view(request, exception):
+   
+    return render(request, 'registration/error400.html')
+# Handler 500
+def servererror_view(request):
+   
+    return render(request, 'registration/error500.html')
 ## =================================APP Log in/out =================================
 def login_user(req):
     if req.user.is_authenticated:
@@ -119,17 +127,18 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     model_fields=model.HEADER_FIELDS
 
 class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
+    
     form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            instance=form.save()
-            return redirect(request.META['HTTP_REFERER'])
-        else:
-            messages.error(request, form.errors)
-            return redirect(request.META['HTTP_REFERER'])
+    # def post(self, request, *args, **kwargs):
+    #     form = self.form_class(request.POST)
+    #     if form.is_valid():
+    #         instance=form.save()
+    #         return redirect(request.META['HTTP_REFERER'])
+    #     else:
+    #         messages.error(request, form.errors)
+    #         return redirect(request.META['HTTP_REFERER'])
 
 ##
 ## here used HTMX
