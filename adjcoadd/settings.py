@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
+# DEVELOPMENT='Work'
 DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -148,9 +148,7 @@ else:
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
-database_name = os.environ.get('db_name') or 'orgdb'
-database_user = os.environ.get('db_usr') or 'orgdb_user'
-database_password = os.environ.get('password') or 'orgdb'
+
 
 DATABASES = {
     'default': {
@@ -212,11 +210,17 @@ DATABASES = {
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
 # Configure the test database
-import sys
-if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-    DATABASES['ddrug']['OPTIONS'] = {
-        'options': '-c search_path=ddrug,apputil'
-    }
+# import sys
+# if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
+#     DATABASES['default']['OPTIONS'] = {
+#         'options': '-c search_path=apputil,dorganism,public'
+#     }
+#     DATABASES['dorganism']['OPTIONS'] = {
+#         'options': '-c search_path=dorganism,apputil,public'
+#     }
+#     DATABASES['ddrug']['OPTIONS'] = {
+#         'options': '-c search_path=ddrug,apputil,public'
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

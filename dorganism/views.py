@@ -45,6 +45,7 @@ class OrgbatchimgCreateView(CreateFileView):
 
 class OrgbatchimgDeleteView(SimpledeleteView):
     model = OrgBatch_Image
+
 # --TAXONOMY Views--
 ##
 class TaxonomyListView(LoginRequiredMixin, FilteredListView):
@@ -124,7 +125,7 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -199,6 +200,7 @@ def detailOrganism(request, pk):
 @login_required
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
+    print(object_.pk)
     kwargs={}
     kwargs['user']=req.user
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
@@ -224,14 +226,15 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Update',str(instance.pk),'Info',request.user,instance.__str__(),'Updated an entry','Completed')
+                    print(instance.__str__())
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updatedentry','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
                     messages.warning(req, f'Update failed due to {form.errors} error')
                    
         except Exception as err:
-            print("something wrong with many to many")
+            print(err)
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
@@ -275,7 +278,7 @@ def createBatch(req, organism_id):
                     instance=form.save(commit=False) 
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -366,7 +369,7 @@ def createStock(req, orgbatch_id):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -387,7 +390,7 @@ def updateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(instance.pk),'Info',request.user,instance.__str__(),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Stock_n_left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -402,7 +405,7 @@ def updateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
-                            ApplicationLog.add('Update',str(instance.pk),'Info',request.user,instance.__str__(),'Updated an entry','Completed')
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
@@ -437,13 +440,12 @@ def createCulture(req, organism_id):
                     instance=form.save(commit=False)
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')                  
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')                  
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(form.errors)
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
