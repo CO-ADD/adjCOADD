@@ -111,7 +111,7 @@ def update_MICPub_xls(XlsFile, XlsSheet=0, upload=False,uploaduser=None,OutputN=
         dfSheet = dfSheet.rename(mvColumns,axis='columns') 
 
         # df -> lstDict and remove null items 
-        micLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='rows')]
+        micLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
         nTotal = len(micLst)
 
         vLog = validation_log.Validation_Log('MIC-Collab')

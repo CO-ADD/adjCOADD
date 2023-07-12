@@ -6,6 +6,7 @@ from django.conf import settings
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub, Breakpoint
+from dscreen.models import Screen_Run
 from ddrug.utils.molecules import *
 
 from apputil.models import ApplicationUser, Dictionary
@@ -338,6 +339,11 @@ def imp_MICCOADD_fromDict(iDict,valLog):
         validStatus = False
         valLog.add_log('Error','',f"{iDict['orgbatch_id']} ",'OrgBatchID does not Exists','-')
 
+    RunID = Screen_Run.get(iDict['run_id'])
+    if RunID is None:
+        validStatus = False
+        valLog.add_log('Error','',f"{iDict['run_id']} ",'RunID does not Exists','-')
+
     if validStatus:
         djMIC = MIC_COADD.get(OrgBatchID,DrugID,iDict['testplate_id'],iDict['testwell_id'])
     else:
@@ -347,7 +353,7 @@ def imp_MICCOADD_fromDict(iDict,valLog):
         djMIC = MIC_COADD()
         djMIC.orgbatch_id = OrgBatchID
         djMIC.drug_id = DrugID
-        djMIC.run_id = iDict['run_id']
+        djMIC.run_id = RunID
         djMIC.testplate_id = iDict['testplate_id']
         djMIC.testwell_id = iDict['testwell_id']
         valLog.add_log('Info','',f"{OrgBatchID} {DrugID} {iDict['testplate_id']}:{iDict['testwell_id']}",'New MIC ','-')

@@ -96,7 +96,7 @@ def main():
 
     choiceTables = ['User','Dictionary',
                     'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture',
-                    'Drug']
+                    'Drug','MICPub','MICCollab','MICCOADD','BP']
     if prgArgs.table in choiceTables:
 
         logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 

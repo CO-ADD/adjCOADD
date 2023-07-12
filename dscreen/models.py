@@ -66,12 +66,12 @@ class Screen_Run(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,RunID,verbose=0):
+    def get(cls,RunID,verbose=0):
         try:
             retInstance = cls.objects.get(run_id=RunID)
         except:
             if verbose:
-                print(f"[DataSource Not Found] {RunID} ")
+                print(f"[Run_ID Not Found] {RunID} ")
             retInstance = None
         return(retInstance)
 
