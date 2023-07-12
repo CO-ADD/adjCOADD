@@ -312,7 +312,8 @@ def stockList(req, pk):
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
         object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
-        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=1) # n_left show when bigger or equal to 2
+        print(object_)
+        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
             item={
@@ -322,8 +323,8 @@ def stockList(req, pk):
                 "location_rack": str(i.location_rack),
                 "location_col": str(i.location_column),
                 "location_slot": str(i.location_slot),
-                "stock_date": str(i.stock_date.strftime("%d-%m-%Y")),
-                "n_left": str(i.n_left) if i.n_left >= 1 else " ",
+                "stock_date": str(i.stock_date.strftime("%d-%m-%Y")) if i.stock_date else '-',
+                "n_left": str(i.n_left),
                 "n_created": str(i.n_created),
                 "stock_notes":str(i.stock_note),
                 "biologist": str(i.biologist),
@@ -390,7 +391,7 @@ def updateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
