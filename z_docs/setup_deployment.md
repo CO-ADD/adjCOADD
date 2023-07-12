@@ -89,8 +89,9 @@ root> more /etc/nginx/nginx.conf
             include /etc/nginx/conf.d/*.conf;
 
             server {
-->              listen       8080;
-->              listen       [::]:8080;
+                # as 8080 already taken 
+->              listen       8090;
+->              listen       [::]:8090;
                 server_name  _;
                 root         /usr/share/nginx/html;
 
@@ -134,6 +135,11 @@ root> more /etc/nginx/nginx.conf
         #    }
 
         }
+
+#-------------------------------------------------------------------------------------
+# Allow port access for services
+#-------------------------------------------------------------------------------------
+semanage port -a -t http_port_t -p tcp 8090
 
 #-------------------------------------------------------------------------------------
 # /etc/nginx/conf.d/django.conf
