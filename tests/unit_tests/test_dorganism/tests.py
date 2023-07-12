@@ -74,10 +74,10 @@ from apputil.models import ApplicationUser, Dictionary
 
 #
 # Test Create View
-
+TransactionTestCase.databases = {"default", "survey"}
 class CreateTaxonomyTestCase(TransactionTestCase):
     # multi_db = True
-    databases={'dorganism', 'default'}
+    # databases={'dorganism', 'default'}
 
     def setUp(self):
         self.factory=RequestFactory()

@@ -251,7 +251,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
         self.organism = request.POST.get('organism_pk')
 
         if self.selected_pks_string == 'SelectAll':
-            items = Model.objects.filter(pk__in=request.session.get("cached_queryset") or Model.objects.all())
+            items = Model.objects.filter(pk__in=request.session.get(f"{Model}_cached_queryset") or Model.objects.all())
             # table = Model.get_pivottable(querydata=items, columns_str=columns_str, index_str=index_str, aggfunc=aggfunc_name, values=values)
         elif self.selected_pks_string:
             selected_pks = json.loads(self.selected_pks_string)

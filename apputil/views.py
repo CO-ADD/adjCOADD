@@ -131,14 +131,14 @@ class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
     form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
 
-    # def post(self, request, *args, **kwargs):
-    #     form = self.form_class(request.POST)
-    #     if form.is_valid():
-    #         instance=form.save()
-    #         return redirect(request.META['HTTP_REFERER'])
-    #     else:
-    #         messages.error(request, form.errors)
-    #         return redirect(request.META['HTTP_REFERER'])
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            instance=form.save()
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            messages.error(request, form.errors)
+            return redirect(request.META['HTTP_REFERER'])
 
 ##
 ## here used HTMX
