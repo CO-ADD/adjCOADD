@@ -170,13 +170,13 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Create Form-------------------------------
 class Stock_createform(forms.ModelForm):
 
-    field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'passage_notes', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
+    field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
     orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0))#widget=forms.HiddenInput()
     stock_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'readonly':False}),queryset=Dictionary.objects.all(),)
-    passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    # passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     stock_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
     def __init__(self, *args, **kwargs):
