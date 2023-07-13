@@ -211,6 +211,8 @@ def updateDictionary(req):
                         object_.dict_desc=value
                     if type == 'dict_sort':
                         object_.dict_sort=int(value)
+                    if type == 'dict_app':
+                        object_.dict_app=value
                     object_.save(**kwargs)
                     return JsonResponse({"result": "Saved"})
             except Exception as err:

@@ -226,8 +226,7 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    print(instance.__str__())
-                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updatedentry','Completed')
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Organism','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
@@ -357,14 +356,6 @@ def createStock(req, orgbatch_id):
     if req.method=='POST':
         form=Stock_createform(req.POST)
         if form.is_valid():
-            # orgbatch_id=orgbatch_id
-            # stock_type=req.POST.get("stock_type")
-            # stock_date=req.POST.get("stock_date")
-            # n_created=req.POST.get("n_created")
-            # kwargs['orgbatch_id']=orgbatch_id
-            # kwargs['stock_type']=stock_type
-            # kwargs['stock_date']=stock_date
-            # kwargs['n_created']=n_created
 
             try:
                 with transaction.atomic(using='dorganism'):

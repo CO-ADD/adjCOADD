@@ -48,7 +48,7 @@ class SimplecreateView(LoginRequiredMixin, View):
                 instance.save(**kwargs)
                 ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
                  #LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus
-                ApplicationLog.add('Create',str(instance.pk),'Info',request.user,instance.__str__(),'Create a new entry','Completed')
+                ApplicationLog.add('Create',str(instance.pk),'Info',request.user,str(instance.pk),'Create a new entry','Completed')
             return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, form.errors)
@@ -94,7 +94,7 @@ class SimpleupdateView(LoginRequiredMixin, View):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
-                ApplicationLog.add('Update',str(object_new.pk),'Info',request.user,object_new.__str__(),'Update an entry','Completed')
+                ApplicationLog.add('Update',str(object_new.pk),'Info',request.user,str(object_new.pk),'Update an entry','Completed')
             return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, form.errors)
@@ -117,7 +117,7 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
             print("try deletess")
             try:
                 object_.delete(**kwargs)
-                ApplicationLog.add('Delete','log_proc','Warning',request.user, object_.pk, 'switch entry_astatus -9','Completed')            
+                ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_new.pk), 'switch entry_astatus -9','Completed')            
             except Exception as err:
                 messages.error(request, err)
 
@@ -163,7 +163,7 @@ class HtmxupdateView(LoginRequiredMixin, View):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
-                ApplicationLog.add('Update',"model",'Info', request.user, 'object','Update an entry','Completed')              
+                ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),'Update an entry','Completed')              
             return render(request, self.template_partial, context)
         else:
             # raise ValidationError

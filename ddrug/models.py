@@ -200,7 +200,7 @@ class Breakpoint(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-       'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':'/ddrug/drug/'}},
+       'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':LinkList["drug_id"]}},
        'org_name':'org_name', 
        'org_rank':'org_rank', 
        'notorg_name':'notorg_name', 
