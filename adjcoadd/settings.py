@@ -39,7 +39,7 @@ else:
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #if DEVELOPMENT else False
+DEBUG = True if DEVELOPMENT else False
 
 ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
