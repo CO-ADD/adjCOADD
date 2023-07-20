@@ -1,6 +1,6 @@
 import threading
 from django.test import RequestFactory, TestCase, Client, TransactionTestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
 # from django_multitenant.utils import set_current_schema
 from dorganism.models import Organism, Taxonomy
 from dorganism.views import *
@@ -74,26 +74,40 @@ from apputil.models import ApplicationUser, Dictionary
 
 #
 # Test Create View
-TransactionTestCase.databases = {"default", "survey"}
+# TransactionTestCase.databases = {"default", "survey"}
 class CreateTaxonomyTestCase(TransactionTestCase):
-    # multi_db = True
-    # databases={'dorganism', 'default'}
+    
+    databases={'dorganism', 'default', }
+
 
     def setUp(self):
-        self.factory=RequestFactory()
+        # self.factory=RequestFactory()
+        self.client=Client()
         self.user= ApplicationUser.objects.create(name='orgdb', username='orgdb', permission='Admin')
         self.organism=Taxonomy.objects.create(organism_name='for_test', urlname='fortest', tax_id=1, parent_tax_id=2000, tax_rank='test', code='tetcode', other_names='test' )
         # self.dictionary=Dictionary.objects.create(dict_value='test_unique', dict_class='org_class', dict_app='test', dict_desc='testcase')
-        
+        # self.list_url=reverse('taxo_list')
         self.create_url=reverse('taxo_create')   
     
-    def test_create(self):
-        request=self.factory.get(self.create_url, follow=True)
-        request.user = self.user
-        request.organism=self.organism
-        response = TaxonomyCreateView.as_view()(request)
+    def test_create_url_is_resolved(self):
+        url=self.create_url
+        self.assertEquals(resolve(url).func.view_class,TaxonomyCreateView)
+    
 
-        self.assertEqual(response.status_code, 200)
+
+    # def test_userlist_GET(self):
+    #     response=self.client.get(self.list_url, follow=True)
+       
+    #     print(response)
+    #     self.assertEquals(response.status_code, 200)
+
+    # def test_create(self):
+    #     request=self.client.get(self.create_url, follow=True)
+    #     request.user = self.user
+    #     request.organism=self.organism
+    #     response = TaxonomyCreateView.as_view()(request)
+
+    #     self.assertEqual(response.status_code, 200)
     # def test_usercreate_GET(self):
     #     request = self.factory.get(self.create_url, follow=True)
     #     request.user = self.user

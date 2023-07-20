@@ -187,12 +187,7 @@ class Data_Source(AuditModel):
         app_label = 'dcollab'
         db_table = 'data_source'
         ordering=['data_name','data_type']
-        # indexes = [
-        #     models.Index(name="tax_orgclass_idx", fields=['org_class']),
-        #     models.Index(name="tax_taxid_idx", fields=['tax_id']),
-        #     models.Index(name="tax_div_idx", fields=['division']),
-        # ]
-
+      
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.data_id} "

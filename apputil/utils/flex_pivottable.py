@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from django.apps import apps
 from django.shortcuts import HttpResponse, render
+from apputil.utils.data_style import highlight_val, highlight_val2
 from ddrug.utils.bio_data import agg_Lst, agg_DR, agg_Inhib
 
 #    #-------------------------------------------------------------------------------------------------
@@ -74,6 +75,11 @@ def flex_pivottable(request, app_model):
             try:    
                 table = get_pivottable(querydata=data, aggfunc_table=aggfunc_name, columns_table=columns_str, index_table=index_str, values=values_str) 
                 try:
+                    # table_html = table.astype(str)
+                    # print("html")
+                    # table_html = table.style.applymap(hightlight_val2)
+                    # print("set attr")
+                    # table_html= table_html.set_table_attributes('class="table table-bordered fixTableHead"').to_html()
                     table_html = table.head(n=10).to_html(classes=["table", "table-bordered", "fixTableHead", "overflow-auto", "table-hover"])
                 except Exception as err:
                     table_html = f"<span class='text-danger'>something wrong with {table}</span>"

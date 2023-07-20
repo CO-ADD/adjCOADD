@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-# DEVELOPMENT='Work'
+# DEVELOPMENT='Local'
 DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,10 +36,10 @@ else:
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ["SECRET_KEY"]
-SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True #if DEVELOPMENT else False
 
 ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -68,8 +68,6 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
@@ -168,6 +166,12 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        # 'TEST_MIRROR': 'default',
+        "TEST": {
+            "NAME": "dorganism",
+            # "OPTIONS":{'options': '-c search_path=dorganism,apputil,public'}
+           
+        },
     },
     'ddrug': {
         "ENGINE": PG_ENGINE,
@@ -177,6 +181,10 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "ddrug",
+           
+        },
     },
     'dscreen': {
         "ENGINE": PG_ENGINE,
@@ -186,6 +194,9 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dscreen",
+        },
     },
     'dgene': {
         "ENGINE": PG_ENGINE,
@@ -195,6 +206,9 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dgene",
+        },
     },
     'dcollab': {
         "ENGINE": PG_ENGINE,
@@ -204,6 +218,9 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dcollab",
+        },
     }
 }
 
