@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Development : Local/Work/<none>
-DEVELOPMENT='Local'
+DEVELOPMENT='Work'
 # DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

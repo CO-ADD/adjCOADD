@@ -59,12 +59,12 @@ class Drug_form(forms.ModelForm):
 
     def clean_smol(self):
         data=self.cleaned_data['smol']
-        print(f"smol is {data}")
+        
         if data:
             data=Chem.MolFromSmiles(data)
         else:
             self.add_error('smol', 'Provide smol value, currently is None')
-        print(data)
+        
         return data
 
     # def clean_mfp2(self):
