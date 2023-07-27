@@ -25,6 +25,7 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
+    smol=forms.CharField(widget=forms.TextInput(),)
    
 
 
@@ -45,7 +46,7 @@ class Drug_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def create_field_groups(self):
-        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", 'n_compounds',"drug_panel",'mw','mf',"drug_note",)]
+        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", 'n_compounds',"drug_panel",'mw','mf',"drug_note", )]
         self.group2 = [self[name] for name in ("drug_class", "drug_subclass", "drug_target", "drug_subtarget", 'moa', 'antimicro', 'antimicro_class','max_phase','approval_note','admin_routes','application',)]
         self.group3 = [self[name] for name in ('chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
 
@@ -56,14 +57,15 @@ class Drug_form(forms.ModelForm):
        
     
 
-    # def clean_smol(self):
-    #     data=self.cleaned_data['smol']
-    #     if data:
-    #         data=Chem.MolFromSmiles(data)
-    #     else:
-    #         self.add_error('smol', 'Provide smol value, currently is None')
-    #     print(data)
-    #     return data
+    def clean_smol(self):
+        data=self.cleaned_data['smol']
+        print(f"smol is {data}")
+        if data:
+            data=Chem.MolFromSmiles(data)
+        else:
+            self.add_error('smol', 'Provide smol value, currently is None')
+        print(data)
+        return data
 
     # def clean_mfp2(self):
     #     data=self.cleaned_data['mfp2']

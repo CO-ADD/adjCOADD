@@ -49,8 +49,9 @@
     $(document).ready(function () {
 
       $('#updateMol').click(function () {
-        $(".edit_detailtable").click();
-        $('#update_drug_mol').removeClass('not-visible')
+        // console.log($('#id_smol').val())
+        // $(".edit_detailtable").click();
+        // $('#update_drug_mol').removeClass('not-visible')
         var smol_drug = localStorage.getItem('smiles_query')
         // console.log(smol_drug)
         $('#id_smol').val(smol_drug)

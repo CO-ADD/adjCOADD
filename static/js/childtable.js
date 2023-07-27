@@ -1,7 +1,5 @@
 function childtable(permission, table) {
 
-  console.log(permission)
-
   $("#datatable_batch tbody").on("click", "a.dt-control", function (e) {
 
     var tr = $(this).closest("tr");

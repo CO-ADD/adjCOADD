@@ -33,6 +33,23 @@
 
           </tr>
           {%endfor%}
+          <tr>
+            <th scope="row" class="movable">Mol</th>
+            <td class="editable" data-id="{{object.pk}}" data-type="">
+          
+          
+          
+              <div class="detail object_value">
+                Update click edit button
+              </div>
+          
+              <div class="select input_form">
+                {{form.smol}} <br />
+                {{form.smol.errors}}
+              </div>
+            </td>
+          
+          </tr>
         </tbody>
       </table>
 
@@ -90,11 +107,11 @@
         aria-labelledby="headingOne" data-bs-parent="#drugStructureEditor">
         <div class="accordion-body bg-transparent w-100">
           <input type="text" id="mol" value="{{object_mol}}" hidden />
-          <div id="update_drug_mol" class="not-visible">
+          <!-- <div id="update_drug_mol" class="not-visible">
 
             {{form.smol.name}}{{form.smol}}
        
-          </div>
+          </div> -->
           {%include 'utils/ketcher.html'%}
         </div>
       </div>
@@ -102,3 +119,12 @@
   </div>
 
 </form>
+
+<!-- <script>
+  $(document).ready(()=>{
+
+    console.log($('#id_smol').val())
+    var smol= $('#id_smol').val()
+    $('#id_smol').val(smol.toString())
+  })
+</script> -->

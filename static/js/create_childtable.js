@@ -10,11 +10,7 @@ function createChild(row, Batch_id_a, stock_create_id, stock_create_modal, permi
         `<button id="delete_stock" class="border-0"> <i class="fa-regular fa-trash-can"></i></button>` +
         '<div id="deleteStockModal" class="modal " role="dialog"></div>')
       :
-      (`<button class="text-secondary border-0" disabled> <i class="fa-regular fa-pen-to-square"></i></button>` +
-        '<div id="updateStockModal" class="modal fade" role="dialog"></div>' +
-        "&nbsp; " +
-        `<button class="border-0" disabled> <i class="fa-regular fa-trash-can text-secondary"></i></button>` +
-        '<div id="deleteStockModal" class="modal" role="dialog"></div>')
+      (`update with " <i class="fa-regular fa-square-minus"></i> "`)
 
   }
   // This is the table we'll convert into a DataTable
