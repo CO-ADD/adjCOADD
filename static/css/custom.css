@@ -518,21 +518,22 @@ a:hover .tooltiptext {
 [data-value='ORGANISM']:hover:after{
   position:absolute;
   top: 105%;
-  left: 0px;
-  content: "create, update new organism;  Antibiogram table, tracking organism batch, stock through individual organism view";
-  color: var(--plain-text);
+  left: -110%;
+  width: fit-content;
+  content: "overview, create, update, tracking organism batch, stock through individual organism view.";
+  color: var(--brand-bg);
 }
 
 [data-value='DRUG']:hover:after{
   position:absolute;
-  top: -50%;
-  left: -5px;
-  content: "Drug informations";
-  color: var(--plain-text);
+  top: 105%;
+  left: -110%;
+  content: "Browse Drugs, Structure edit in individual view";
+  color: var(--brand-bg);
   /* width: 2px;
   background-color: var(--info);
-  height: 300px;
-  transform:rotate(90deg) */
+  height: 300px; */
+  /* transform:rotate(90deg) */
 }
 
 [data-value='GENE']:hover:after{

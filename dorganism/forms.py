@@ -28,7 +28,6 @@ class Orgbatchimg_form(forms.ModelForm):
     image_file = forms.ImageField(label='Select an image', 
                                 #   validators=[validate_file], 
                                   required=True)
-   
 
     class Meta:
         model =OrgBatch_Image

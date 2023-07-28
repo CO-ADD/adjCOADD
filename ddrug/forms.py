@@ -209,6 +209,16 @@ class MIC_Pubfilter(Filterbase):
 
 class Breakpointfilter(Filterbase):
     drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
+    notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
+    org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['bp_type'])]
+        self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['notorg_rank'])]
+        self.filters["org_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['org_rank'])]
+
     class Meta:
         model=Breakpoint
         fields = ['drug_name',]

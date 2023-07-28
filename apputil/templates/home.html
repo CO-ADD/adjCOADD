@@ -26,7 +26,7 @@
         <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
             <!--  -->
             {% url 'drug_card' as drug_url%}
-            {% include 'utils/miscellaneous/landbtn_primary.html' with title='DRUG' url=drug_url totalnumber=objects_drug %}
+            {% include 'utils/miscellaneous/landbtn_primary.html' with title='DRUG' url=drug_url totalnumber=nDrug %}
             <div class="row w-50">
                 <div class="col text-center m-auto">
                     <h3>

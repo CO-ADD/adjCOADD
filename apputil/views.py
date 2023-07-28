@@ -48,9 +48,9 @@ def deleteImage(req, pk):
 def index(req):
 
     nDict = {    
-        'nOrg':    Organism.objects.count(),
+        'nOrg':    str(Organism.objects.count()) + ' Organisms',
         'nTax':    Taxonomy.objects.count(),
-        'nDrug':   Drug.objects.count(),
+        'nDrug':   str(Drug.objects.count()) + ' Drugs',
         'nVCard':  VITEK_Card.objects.count(),
         'nVID':    VITEK_ID.objects.count(),
         'nVAST':   VITEK_AST.objects.count(),

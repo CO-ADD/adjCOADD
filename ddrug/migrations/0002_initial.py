@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-        # migrations.AlterField(
             model_name='mic_coadd',
             name='run_id',
             field=models.ForeignKey(db_column='run_id', on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_run_id', to='dscreen.screen_run', verbose_name='Run ID'),
