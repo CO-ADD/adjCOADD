@@ -48,7 +48,7 @@ class SimplecreateView(LoginRequiredMixin, View):
                 instance.save(**kwargs)
                 ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
                  #LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus
-                ApplicationLog.add('Create',str(instance.pk),'Info',request.user,str(instance.pk),'Create a new entry','Completed')
+                ApplicationLog.add('Create',str(instance.pk),'Info',request.user,str(instance.pk)[:10],'Create a new entry','Completed')
             return redirect(request.META['HTTP_REFERER'])
         else:
             messages.error(request, form.errors)

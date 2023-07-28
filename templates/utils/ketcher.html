@@ -1,21 +1,22 @@
-<div id="root"></div>
+<div id="root" class="w-100"></div>
 
 {%load static%}
 <script src="{% static 'js/ketcher/index-bundle.min.js' %}"></script>
 <script>
 
   $(document).ready(function () {
-    $("#root button").click(() => {
+    $("#root button").click((e) => {
+      e.preventDefault();
       console.log("clickt");
-      data = $("#getSmilesFromKetcher").val();
-      console.log(typeof $("#getSmilesFromKetcher").val());
-      sessionStorage.setItem("smiles_query", data);
-      console.log(sessionStorage.getItem("smiles_query"));
-      if (sessionStorage.getItem("smiles_query") !== null) {
-        $("#smiles_input").val(sessionStorage.getItem("smiles_query"));
-        console.log($("#smiles_input").val());
-        sessionStorage.removeItem("smiles_query");
-      }
+      // data = $("#getSmilesFromKetcher").val();
+      // console.log($("#getSmilesFromKetcher"));
+      // localStorage.setItem("smiles_query", data);
+      // console.log(localStorage.getItem("smiles_query"));
+      // if (localStorage.getItem("smiles_query") !== null) {
+        // $("#smiles_input").val(sessionStorage.getItem("smiles_query"));
+        // console.log($("#smiles_input").val());
+        // sessionStorage.removeItem("smiles_query");
+      // }
     });
   });
 </script>

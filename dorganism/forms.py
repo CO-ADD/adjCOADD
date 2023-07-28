@@ -28,7 +28,6 @@ class Orgbatchimg_form(forms.ModelForm):
     image_file = forms.ImageField(label='Select an image', 
                                 #   validators=[validate_file], 
                                   required=True)
-   
 
     class Meta:
         model =OrgBatch_Image
@@ -48,7 +47,7 @@ class CreateOrganism_form(forms.ModelForm):
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
-    collect_date = DateField()
+    collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name

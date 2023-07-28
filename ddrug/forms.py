@@ -25,6 +25,8 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
+    smol=forms.CharField(widget=forms.TextInput(),)
+   
 
 
     def __init__(self, *args, **kwargs):
@@ -44,22 +46,26 @@ class Drug_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def create_field_groups(self):
-        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", 'n_compounds',"drug_panel",'mw','mf',"drug_note",)]
+        self.group1 = [self[name] for name in ("drug_othernames", "drug_codes", "drug_type", 'n_compounds',"drug_panel",'mw','mf',"drug_note", )]
         self.group2 = [self[name] for name in ("drug_class", "drug_subclass", "drug_target", "drug_subtarget", 'moa', 'antimicro', 'antimicro_class','max_phase','approval_note','admin_routes','application',)]
         self.group3 = [self[name] for name in ('chembl', 'drugbank', 'cas', 'pubchem', 'chemspider','unii', 'kegg', 'comptox', 'echa', 'chebi', 'uq_imb', 'vendor', 'vendor_catno')]
 
     class Meta:
         model =Drug
         fields='__all__'
-        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol']
+        exclude=['ffp2', 'torsionbv', 'mfp2', ]
        
     
 
-    # def clean_smol(self):
-    #     data=self.cleaned_data['smol']
-    #     data=Chem.MolFromSmiles(data)
-    #     print(data)
-    #     return data
+    def clean_smol(self):
+        data=self.cleaned_data['smol']
+        
+        if data:
+            data=Chem.MolFromSmiles(data)
+        else:
+            self.add_error('smol', 'Provide smol value, currently is None')
+        
+        return data
 
     # def clean_mfp2(self):
     #     data=self.cleaned_data['mfp2']
@@ -203,6 +209,16 @@ class MIC_Pubfilter(Filterbase):
 
 class Breakpointfilter(Filterbase):
     drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
+    notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
+    org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['bp_type'])]
+        self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['notorg_rank'])]
+        self.filters["org_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['org_rank'])]
+
     class Meta:
         model=Breakpoint
         fields = ['drug_name',]
