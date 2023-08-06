@@ -28,7 +28,6 @@ class Orgbatchimg_form(forms.ModelForm):
     image_file = forms.ImageField(label='Select an image', 
                                 #   validators=[validate_file], 
                                   required=True)
-   
 
     class Meta:
         model =OrgBatch_Image
@@ -48,7 +47,7 @@ class CreateOrganism_form(forms.ModelForm):
     gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
-    collect_date = DateField()
+    collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
@@ -74,8 +73,9 @@ class CreateOrganism_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def clean_organism_name(self):       
-        data=self.cleaned_data['organism_name'] or self.instance.organism_name
+       
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
+    
         if data:
             if str(data.org_class) in ORGANISM_CLASSES:
                 return data
@@ -169,13 +169,13 @@ class Batchupdate_form(forms.ModelForm):
 # ===============================Stock Create Form-------------------------------
 class Stock_createform(forms.ModelForm):
 
-    field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'passage_notes', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
+    field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
     orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0))#widget=forms.HiddenInput()
     stock_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'readonly':False}),queryset=Dictionary.objects.all(),)
-    passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    # passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     stock_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
 
     def __init__(self, *args, **kwargs):
@@ -185,7 +185,6 @@ class Stock_createform(forms.ModelForm):
     class Meta:
         model =OrgBatch_Stock
         fields='__all__'
-
 
 #======================================== Stock Form================================================================
 class Stock_form(Stock_createform):
@@ -281,7 +280,7 @@ class Organismfilter(Filterbase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strainstrain_panel_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    

@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Development : Local/Work/<none>
 DEVELOPMENT='Work'
-DEVELOPMENT=None
+# DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,12 +36,12 @@ else:
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ["SECRET_KEY"]
-SECRET_KEY = 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if DEVELOPMENT else False
 
-ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -68,8 +68,6 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
@@ -149,6 +147,7 @@ else:
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
 
+
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
@@ -167,6 +166,12 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        # 'TEST_MIRROR': 'default',
+        "TEST": {
+            "NAME": "dorganism",
+            # "OPTIONS":{'options': '-c search_path=dorganism,apputil,public'}
+           
+        },
     },
     'ddrug': {
         "ENGINE": PG_ENGINE,
@@ -176,6 +181,10 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "ddrug",
+           
+        },
     },
     'dscreen': {
         "ENGINE": PG_ENGINE,
@@ -185,6 +194,9 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dscreen",
+        },
     },
     'dgene': {
         "ENGINE": PG_ENGINE,
@@ -194,6 +206,9 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dgene",
+        },
     },
     'dcollab': {
         "ENGINE": PG_ENGINE,
@@ -203,17 +218,26 @@ DATABASES = {
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
+        "TEST": {
+            "NAME": "dcollab",
+        },
     }
 }
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
 # Configure the test database
-import sys
-if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-    DATABASES['ddrug']['OPTIONS'] = {
-        'options': '-c search_path=ddrug,apputil'
-    }
+# import sys
+# if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
+#     DATABASES['default']['OPTIONS'] = {
+#         'options': '-c search_path=apputil,dorganism,public'
+#     }
+#     DATABASES['dorganism']['OPTIONS'] = {
+#         'options': '-c search_path=dorganism,apputil,public'
+#     }
+#     DATABASES['ddrug']['OPTIONS'] = {
+#         'options': '-c search_path=ddrug,apputil,public'
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -261,7 +285,7 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd-work.imb.uq.edu.au:8008", "http://www.imb-coadd-work.imb.uq.edu.au:8008"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://www.imb-coadd-db.imb.uq.edu.au", "http://www.imb-coadd-work.imb.uq.edu.au"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')

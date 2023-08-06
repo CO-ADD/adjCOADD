@@ -129,24 +129,33 @@ def Sort2DR(strSort,zLength=4):
 def DR2Sort_lst(lstDR,zLength=4):
     lstSort = []
     for i in lstDR:
-        if COMPOUND_SEP in i:
-            v = djdata.split_lst(i,sep=COMPOUND_SEP)
-            v[0] = DR2Sort(str(v[0]),zLength=zLength)
-            lstSort.append(COMPOUND_SEP.join(v))
-        else:
-            lstSort.append(DR2Sort(str(i),zLength=zLength))
+        try:
+            if COMPOUND_SEP in i:
+                v = djdata.split_StrList(i,sep=COMPOUND_SEP) #split_lst
+                v[0] = DR2Sort(str(v[0]),zLength=zLength)
+                lstSort.append(COMPOUND_SEP.join(v))
+                # print("okDR2Sort_lst")
+            else:
+                lstSort.append(DR2Sort(str(i),zLength=zLength))
+        except Exception as err:
+            print(f"drerror: {err} with {i}")
+
     return(lstSort)
 
 # --------------------------------------------------------------------
 def Sort2DR_lst(lstSort,zLength=4):
     lstDR = []
     for i in lstSort:
-        if COMPOUND_SEP in i:
-            v = djdata.split_lst(i,sep=COMPOUND_SEP)
-            v[0] = Sort2DR(v[0],zLength=zLength)
-            lstDR.append(COMPOUND_SEP.join(v))
-        else:
-            lstDR.append(Sort2DR(i,zLength=zLength))
+        try:
+            if COMPOUND_SEP in i:
+                v = djdata.split_StrList(i,sep=COMPOUND_SEP) #split_lst
+                v[0] = Sort2DR(v[0],zLength=zLength)
+                lstDR.append(COMPOUND_SEP.join(v))
+                # print("okSort2DR_lst")
+            else:
+                lstDR.append(Sort2DR(i,zLength=zLength))
+        except Exception as err:
+            print(f"sortrerror: {err} with {i}")
     return(lstDR)
 
 #-----------------------------------------------------------------------------

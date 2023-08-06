@@ -17,6 +17,8 @@ from apputil.views import login_user, logout_user, permission_not_granted
 
 
 handler404 = "apputil.views.custom_page_not_found_view"
+handler400 = "apputil.views.badrequest_view"
+handler500 = "apputil.views.servererror_view" 
 
 urlpatterns = [
     path('admin/', admin.site.urls), 

@@ -98,11 +98,16 @@ class DrugCardView(DrugListView):
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, pk=pk)
-    form=Drug_form(instance=object_)
+    form=Drug_form(instance=object_, initial={"smol":str(Chem.MolToSmiles(object_.smol))},)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
- 
+    try:
+        context["object_mol"]=Chem.MolToMolBlock(object_.smol)
+        m="\\n".join(context["object_mol"].split("\n"))
+        context["object_mol"]=m
+    except Exception as err:
+        context["object_mol"]=""
     return render(req, "ddrug/drug/drug_detail.html", context)
 
 ##

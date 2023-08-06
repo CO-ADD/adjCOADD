@@ -28,14 +28,29 @@ from apputil.utils.files_upload import Importhandler
 
 ## =================================APP Home========================================
 
+
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+    print('deleting...')
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
+
 # import setup
 @login_required(login_url='/')
 def index(req):
 
     nDict = {    
-        'nOrg':    Organism.objects.count(),
+        'nOrg':    str(Organism.objects.count()) + ' Organisms',
         'nTax':    Taxonomy.objects.count(),
-        'nDrug':   Drug.objects.count(),
+        'nDrug':   str(Drug.objects.count()) + ' Drugs',
         'nVCard':  VITEK_Card.objects.count(),
         'nVID':    VITEK_ID.objects.count(),
         'nVAST':   VITEK_AST.objects.count(),
@@ -55,6 +70,14 @@ def index(req):
 def custom_page_not_found_view(request, exception):
    
     return render(request, 'registration/error404.html')
+# Handler 400
+def badrequest_view(request, exception):
+   
+    return render(request, 'registration/error400.html')
+# Handler 500
+def servererror_view(request):
+   
+    return render(request, 'registration/error500.html')
 ## =================================APP Log in/out =================================
 def login_user(req):
     if req.user.is_authenticated:
@@ -104,6 +127,7 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     model_fields=model.HEADER_FIELDS
 
 class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
+    
     form_class = ApplicationUser_form
     template_name = 'apputil/appUsersCreate.html'
 
@@ -187,6 +211,8 @@ def updateDictionary(req):
                         object_.dict_desc=value
                     if type == 'dict_sort':
                         object_.dict_sort=int(value)
+                    if type == 'dict_app':
+                        object_.dict_app=value
                     object_.save(**kwargs)
                     return JsonResponse({"result": "Saved"})
             except Exception as err:

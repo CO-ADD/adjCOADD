@@ -4,14 +4,14 @@
 
 {% block content%}
 <!--  -->
-<div class="d-flex flex-row justify-content-between vh-100">
+<div class="d-flex flex-row vh-100">
   {%url 'excel-import' process_name='Drug' as urlname%}
   <!--prettier-ignore-->
   {%include 'utils/leftbar.html' with import_module=urlname list_url='drug_list' card_url='drug_card' create_object='createDrug' create_objectModal='createDrugModal'%}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column w-100">
     {% include 'utils/main_horizalbar.html' with title='Drug' model_name='Drug' application='ddrug' %}
     <!-- Card View Content -->
     <div class="contain-fluid data-contain">

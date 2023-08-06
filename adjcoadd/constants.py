@@ -39,6 +39,6 @@ LinkList={
     'seq_id':       '',
 }
 
-# App and Model
-# app_model_list=['apputil_ApplicationUser_', ]
+# Cache Name
+# f"{Model}_cached_queryset"
 

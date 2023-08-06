@@ -1,10 +1,10 @@
 <style>
-      .modal-dialog {
-    max-width: none;
+.modal-dialog {
+    max-width: fit-content;
+    max-height: fit-content;
+
 }
-.modal-40w {
-  max-width: 40%;
-}
+
 
 </style>
 <div class="modal-dialog" >
@@ -15,8 +15,8 @@
                         data-name="close_{{object.pk}}"></button>
             </div>
             <div class="modal-body m-0">
-                  {%include 'utils/message.html'%}
                   <!--  -->
+                  <input type="text" id="mol" value="{{object_mol}}" hidden />
                   {%include 'utils/ketcher.html'%}
                   <hr />
 

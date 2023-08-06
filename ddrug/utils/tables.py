@@ -91,9 +91,12 @@ def get_Antibiogram_byOrgID(OrgID):
 
 
     print(df[showCol])
-    agg_df = df[showCol].groupby(grbyCol).aggregate(lambda x: agg_DR(x))
+    agg_df = df[showCol].groupby(grbyCol) \
+                        .aggregate(lambda x: ", ".join(list(np.unique(x))))
+                        # .aggregate(lambda x: agg_DR(x)) 
+             
     print(agg_df)
-    #return(agg_df)
+    return(agg_df)
 
 
 # -----------------------------------------------------------------------------------------

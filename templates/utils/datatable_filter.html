@@ -1,12 +1,13 @@
 {% load custom_filters %}
 <div style="height: 100vh;overflow: auto;">
+  <!-- Filter form in datatable filter -->
   <form id="django-filter-table" method="get">
     <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%">
       <thead>
         <tr>
-          <!-- detail view link name if exists -->
+          <!-- column for select checkbox -->
           <th style="width: 1rem"></th>
-          <!-- customized/verbose model fields name -->
+          <!-- columns of customized/verbose model fields name, equal filterfields -->
           <!--prettier-ignore  -->
           {%for field in filter.form %}
           {%if field.name != 'Search_all_fields'%}
@@ -14,52 +15,52 @@
             {{field.label}}<br />{{field}}
           </th>
           {%endif%}
-
           {%endfor%}
-
         </tr>
       </thead>
 
       <tbody hx-target="closest tr" hx-swap="outerHTML">
-        {%if page_obj%}
+      {%if page_obj%}
         <!--prettier-ignore  -->
         {% for object in page_obj%}
-        {% if table_id == 'ApplicationUser' %}
-        {%include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
-        {%else%}
+          {% if table_id == 'ApplicationUser' %}
+          {%include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
+          {%else%}
         <tr>
           <td>
             <!--prettier-ignore  -->
             {%include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk%}
             <!--  -->
           </td>
-          {% for item in object.get_values %}
+            {% for item in object.get_values %}
           <td>
-            {% if item|is_dict %} <!-- custom filter -->
+              {% if item|is_dict %} <!-- custom filter -->
 
-            {% for key, value in item.items %}
+              {% for key, value in item.items %}
             <a href="{{value}}" target="_blank">{{ key }}</a>
-            {% endfor %}
-            {% else %}
-            {{item}}
-            {% endif %}
+              {% endfor %}
+              {% else %}
+              {{item}}
+              {% endif %}
           </td>
-          {% endfor %}
+            {% endfor %}
 
         </tr>
         {%endif%}
-        {%endfor%}
+        {% endfor %}
         <!--  -->
-        {%else%}
+      {%else%}
         <tr>
           No Data
         </tr>
-        {%endif%}
+      {%endif%}
+       
       </tbody>
     </table>
   </form>
 
 </div>
+<!-- Script submit filter form -->
 <script>
   $("th input").bind("change", function () {
     $("#django-filter-table").submit();
