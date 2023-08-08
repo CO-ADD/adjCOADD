@@ -113,8 +113,8 @@ class Taxonomy_form(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['org_class'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['org_class'])]
-        self.fields['division'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['division'])]
+        self.fields['org_class'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['org_class'])]
+        self.fields['division'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['division'])]
 
     class Meta:
         model =Taxonomy
@@ -133,7 +133,7 @@ class Batch_form(forms.ModelForm):
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     def __init__(self, *args, **kwargs):
         super(Batch_form, self).__init__(*args, **kwargs)
-        self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
+        self.fields['qc_status'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
 
     class Meta:
         model =Organism_Batch
@@ -153,7 +153,7 @@ class Batchupdate_form(forms.ModelForm):
         instance=kwargs.get('instance')
         if instance and instance.stock_level:
             self.fields['stock_level'].initial=instance.stock_level
-        self.fields['qc_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
+        self.fields['qc_status'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
         self.create_field_groups()
 
     def create_field_groups(self):
@@ -180,7 +180,7 @@ class Stock_createform(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['stock_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(OrgBatch_Stock.Choice_Dictionary['stock_type'])]
+        self.fields['stock_type'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(OrgBatch_Stock.Choice_Dictionary['stock_type'])]
 
     class Meta:
         model =OrgBatch_Stock

@@ -86,7 +86,7 @@ class Drug_filter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.__repr__()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
+        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
         self.filters['Drug_Name'].label='Drug Name'
         self.filters['Drug_Type'].label='Drug Type'
         self.filters['Target'].label='Drug Target'
