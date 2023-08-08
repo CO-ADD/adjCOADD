@@ -12,15 +12,22 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import psycopg2.extensions
+
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
+
+from datetime import timedelta
+
+
 # Development : Local/Work/<none>
-DEVELOPMENT='Work'
-# DEVELOPMENT=None
+DEVELOPMENT=None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-work_path = '/opt/django/var/uploads/'
-MEDIA_ROOT= work_path if os.path.exists(work_path) else os.path.join(BASE_DIR.parent, 'uploads') 
+UPLOAD_DIR = '/opt/django/var/uploads/'
+MEDIA_ROOT= UPLOAD_DIR if os.path.exists(UPLOAD_DIR) else os.path.join(BASE_DIR.parent, 'uploads') 
 MEDIA_URL = ('uploads/')
 
 # Define Structure Images folder path
@@ -41,7 +48,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if DEVELOPMENT else False
 
-ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+if DEVELOPMENT:
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+else:
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -72,8 +82,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
-
-from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -125,10 +133,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-import psycopg2.extensions
-
 if DEVELOPMENT:
     DB_NAME = os.environ.get('db_name') or 'orgdb'
     DB_USER = os.environ.get('db_usr') or 'orgdb'
@@ -145,8 +152,6 @@ else:
     DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
-
-
 
 DATABASES = {
     'default': {
@@ -226,22 +231,8 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
-# Configure the test database
-# import sys
-# if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-#     DATABASES['default']['OPTIONS'] = {
-#         'options': '-c search_path=apputil,dorganism,public'
-#     }
-#     DATABASES['dorganism']['OPTIONS'] = {
-#         'options': '-c search_path=dorganism,apputil,public'
-#     }
-#     DATABASES['ddrug']['OPTIONS'] = {
-#         'options': '-c search_path=ddrug,apputil,public'
-#     }
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -257,6 +248,7 @@ USE_I18N = True
 USE_TZ = True
 DATE_FORMAT = "d-m-Y"
 USE_L10N = False
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'
@@ -265,15 +257,12 @@ STATIC_ROOT = BASE_DIR.parent / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 AUTH_USER_MODEL = 'apputil.ApplicationUser'
 LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
-
-#LDAP AUthen
+#LDAP Autherntications
+#----------------------
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
@@ -310,6 +299,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
+#----------------------
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
 
 

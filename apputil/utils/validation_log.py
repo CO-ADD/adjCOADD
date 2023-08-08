@@ -83,7 +83,7 @@ class Validation_Log():
     def show(self,logTypes= ['Error','Warning', 'Info']):
         for t in logTypes:
             for l in self.Logs[t]:
-                logger.info(f"{t:7s} - {l['Process']} : {l['Filename']} {l['Item']} {l['Note']} () {l['Help']} ")
+                logger.info(f"[{t:7s}] {l['Process']} : {l['Filename']} {l['Item']} {l['Note']} () {l['Help']} ")
 
     def get_aslist(self,logTypes= ['Error','Warning', 'Info']):
         retLst = []

@@ -24,7 +24,8 @@ def update_VitekPDF(PdfFile=None,VitekFolder=None,ProcessedFolder=None,OrgBatchI
 #-----------------------------------------------------------------------------------
     lCards,lID,lAST = Vitek.process_VitekPDF(VitekFolder,PdfFile,OrgBatchID=OrgBatchID)
 
-    vLog = validation_log.Validation_Log(PdfFile)
+    #vLog = validation_log.Validation_Log(PdfFile)
+    vLog = validation_log.Validation_Log('update_VitekPDF')
 
     for c in lCards:
         djCard = imp_VitekCard_fromDict(c,vLog)

@@ -149,7 +149,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
         validStatus = False
         for k in validDict:
             valLog.add_log('Warning','',k,validDict[k],'-')
-            print(f"Warning : {k} {validDict[k]}")
+            #print(f"Warning : {k} {validDict[k]}")
     djBP.VALID_STATUS = validStatus
 
     return(djBP)
@@ -177,17 +177,17 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
         djVitekCard = VITEK_Card()
         djVitekCard.card_barcode = iDict['card_barcode']
         if upload:
-            print(f"New [{upload}] -> Info")
+            #print(f"New [{upload}] -> Info")
             valLog.add_log('Info',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
         else:
-            print(f"New [{upload}] -> Warning")
+            #print(f"New [{upload}] -> Warning")
             valLog.add_log('Warning',iDict['filename'],infoCard, f"New {iDict['card_type']} VITEK card",'-')
     else:
         if upload:
-            print(f"Update [{upload}] -> Info")
+            #print(f"Update [{upload}] -> Info")
             valLog.add_log('Info',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
         else:
-            print(f"Update [{upload}] -> Warning")
+            #print(f"Update [{upload}] -> Warning")
             valLog.add_log('Warning',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
 
     djVitekCard.orgbatch_id = OrgBatch
@@ -294,7 +294,7 @@ def imp_VitekAST_fromDict(iDict,valLog,upload=False):
         djVitekAST.card_barcode = Barcode
         djVitekAST.drug_id = DrugID
         djVitekAST.bp_source = iDict['bp_source']
-        valLog.add_log('Info',iDict['filename'],f"{DrugID.drug_name} ({iDict['bp_source']})",'New [AST] VITEK','-')
+        valLog.add_log('Info',iDict['filename'],f"{iDict['drug_name']} ({iDict['bp_source']})",'New [AST] VITEK','-')
     
     djVitekAST.mic = iDict['mic']
     djVitekAST.process = iDict['vitek_process']

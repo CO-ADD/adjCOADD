@@ -229,7 +229,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
 
             # - Header --------------------------------------------------------------------------------
             txt_lst = page.extract_text().splitlines()
-            print(txt_lst)
+            #print(txt_lst)
             for l in txt_lst:
                 mX = re.search('Isolate:(.+?)\((.+?)\)', l)
                 if mX:

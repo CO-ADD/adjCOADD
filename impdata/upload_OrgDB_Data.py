@@ -96,88 +96,100 @@ def main():
 
     choiceTables = ['User','Dictionary',
                     'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture',
-                    'Drug','MICPub','MICCollab','MICCOADD','BP']
+                    'Drug','MICPub','MICCollab','MICCOADD','BP',
+                    'Vitek',
+                    ]
     if prgArgs.table in choiceTables:
 
         logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
         logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
         if prgArgs.table == 'User':
+            prgArgs.upload = False
             uploadFile = os.path.join(uploadDir,xlFiles['Application'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [User] in {uploadFile}") 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [User] in {uploadFile} [Upload: {prgArgs.upload}]") 
             appUtil.update_AppUser_xls(uploadFile,XlsSheet="User", upload=prgArgs.upload)
 
         elif prgArgs.table == 'Dictionary':
+            prgArgs.upload = False
             uploadFile = os.path.join(uploadDir,xlFiles['Application'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Dictionary] in {uploadFile}")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Dictionary] in {uploadFile} [Upload: {prgArgs.upload}]")
             appUtil.update_Dictionary_xls(uploadFile,XlsSheet="Dictionary", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True) 
 
         elif prgArgs.table == 'Taxonomy':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            prgArgs.upload = False
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB [Upload: {prgArgs.upload}]") 
             dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'Organism':
+            prgArgs.upload = False
             uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organism] in {uploadFile}") 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organism] in {uploadFile} [Upload: {prgArgs.upload}]") 
             dOrg.update_Organism_xls(uploadFile,XlsSheet="Organism",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
             #logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
-            #dOrg.update_Organism_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            #dOrg.update_Organism_ora(uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'OrgBatch':
+            prgArgs.upload = False
             uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch] in {uploadFile}") 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch] in {uploadFile} [Upload: {prgArgs.upload}]") 
             dOrg.update_OrgBatch_xls(uploadFile,XlsSheet="OrgBatch",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
             #logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
             #dOrg.update_OrgBatch_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'OrgBatchStock':
+            prgArgs.upload = False
             uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch Stock] in {uploadFile}")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch Stock] in {uploadFile} - Upload: {prgArgs.upload}")
             dOrg.delete_OrgBatchStock(upload=prgArgs.upload)
             dOrg.update_OrgBatchStock_xls(uploadFile,XlsSheet="Stock",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
 
         elif prgArgs.table == 'OrgCulture':
+            prgArgs.upload = False
             uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organims Culture] in {uploadFile}")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organims Culture] in {uploadFile} [Upload: {prgArgs.upload}]")
             dOrg.delete_OrgCulture(upload=prgArgs.upload)
             dOrg.update_OrgCulture_xls(uploadFile,XlsSheet="Culture",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'Drug':
+            prgArgs.upload = False
             uploadFile = os.path.join(uploadDir,xlFiles['Drug'])
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Drug] in {uploadFile}") 
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Drug] in {uploadFile} [Upload: {prgArgs.upload}]") 
             dDrug.update_Drug_xls(uploadFile,XlsSheet="Drug", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True)
 
         elif prgArgs.table == 'Vitek':
             if prgArgs.vitekfolder:
-                logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder}") 
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder} [Upload: {prgArgs.upload}]") 
                 dVitek.update_VitekCards(VitekFolder=prgArgs.vitekfolder,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
             if prgArgs.vitekfile:
-                logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile}") 
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile} [Upload: {prgArgs.upload}]") 
                 dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
 
         elif prgArgs.table == 'MICPub':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB") 
+            prgArgs.upload = False
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB [Upload: {prgArgs.upload}]") 
             dMIC.update_MICPub_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'MICCollab':
+            prgArgs.upload = False
             uploadFile = os.path.join(uploadDir,xlFiles['MIC']) 
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile}")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from [MIC] in {uploadFile} [Upload: {prgArgs.upload}]")
             dMIC.update_MICPub_xls(uploadFile,XlsSheet="MIC",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'MICCOADD':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} ")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraCastDB {prgArgs.runid} [Upload: {prgArgs.upload}]")
             if  prgArgs.runid:
                 dMIC.update_MICCOADD_ora(prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'BP':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB [Upload: {prgArgs.upload}]")
             dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'WGSCOADD':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} ")
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
             dGene.update_WGSCOADD_zAssembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     else:
         logger.error(f"[Upd_djCOADD] {prgArgs.table} not in {choiceTables}")
