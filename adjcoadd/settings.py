@@ -19,7 +19,7 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 
 from datetime import timedelta
 
-
+VERSION = '1.01 (Development)'
 # Development : Local/Work/<none>
 DEVELOPMENT=None
 #DEVELOPMENT='Work'
