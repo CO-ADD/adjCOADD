@@ -1,0 +1,911 @@
+django.utils.autoreload INFO 2023-08-14 11:39:51,935 autoreload 7364 7160 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:43:21,811 autoreload 7868 13348 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:44:08,000 autoreload 4684 25072 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:45:31,928 autoreload 4684 25072 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:45:34,403 autoreload 3216 25396 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:45:57,010 autoreload 27020 26100 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:48:04,819 autoreload 27020 26100 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:48:06,858 autoreload 11240 22312 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:48:12,637 basehttp 11240 17760 "GET / HTTP/1.1" 200 12547
+django.server INFO 2023-08-14 11:48:13,521 basehttp 11240 19464 "GET /static/css/custom.css HTTP/1.1" 200 18869
+django.server INFO 2023-08-14 11:48:13,532 basehttp 11240 19464 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 515
+django.server INFO 2023-08-14 11:48:13,554 basehttp 11240 19464 "GET /static/js/editableTable.js HTTP/1.1" 200 659
+django.server INFO 2023-08-14 11:48:13,565 basehttp 11240 19464 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102515
+django.server INFO 2023-08-14 11:48:13,570 basehttp 11240 19464 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-08-14 11:48:13,583 basehttp 11240 19464 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-08-14 11:48:13,587 basehttp 11240 19464 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-08-14 11:48:13,595 basehttp 11240 23232 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89666
+django.server INFO 2023-08-14 11:48:13,695 basehttp 11240 18544 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-08-14 11:48:13,881 basehttp 11240 17760 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1693
+django.server INFO 2023-08-14 11:48:13,886 basehttp 11240 10460 "GET /static/css/table_wrap.css HTTP/1.1" 200 4624
+django.server INFO 2023-08-14 11:48:13,904 basehttp 11240 21692 "GET /static/css/main.6a646761.css HTTP/1.1" 200 169393
+django.server INFO 2023-08-14 11:48:15,202 basehttp 11240 21692 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-08-14 11:48:15,204 basehttp 11240 19464 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-08-14 11:48:15,346 basehttp 11240 21692 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-08-14 11:48:19,955 basehttp 11240 21692 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-08-14 11:48:20,487 basehttp 11240 21692 "GET /index/ HTTP/1.1" 200 19755
+django.server INFO 2023-08-14 11:48:22,995 basehttp 11240 21692 "GET /ddrug/vitekid_list HTTP/1.1" 200 73994
+django.server INFO 2023-08-14 11:48:23,079 basehttp 11240 21692 "GET /static/js/filter_toggle.js HTTP/1.1" 200 172
+django.utils.autoreload INFO 2023-08-14 11:49:20,941 autoreload 11240 22312 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:49:22,977 autoreload 22684 14840 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:50:04,163 autoreload 22684 14840 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:50:06,279 autoreload 25552 13448 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:50:08,615 basehttp 25552 27292 "GET /index/ HTTP/1.1" 200 19755
+django.request ERROR 2023-08-14 11:50:13,235 log 25552 27292 Internal Server Error: /ddrug/vitekast_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 355, in get_values
+    obj = self.iter_foreignkey(nameArray=nameArray, n=n)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Organism' object has no attribute ''
+django.server ERROR 2023-08-14 11:50:13,240 basehttp 25552 27292 "GET /ddrug/vitekast_list HTTP/1.1" 500 293402
+django.request WARNING 2023-08-14 11:50:13,364 log 25552 21408 Not Found: /favicon.ico
+django.server WARNING 2023-08-14 11:50:13,364 basehttp 25552 21408 "GET /favicon.ico HTTP/1.1" 404 5995
+django.utils.autoreload INFO 2023-08-14 11:50:26,058 autoreload 25552 13448 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:50:27,805 autoreload 19472 10056 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:50:34,701 basehttp 19472 21436 "GET /ddrug/vitekast_list HTTP/1.1" 200 106424
+django.utils.autoreload INFO 2023-08-14 11:50:40,956 autoreload 19472 10056 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:50:43,766 autoreload 16744 11660 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:50:49,445 basehttp 16744 15696 "GET /ddrug/vitekast_list HTTP/1.1" 200 113072
+django.utils.autoreload INFO 2023-08-14 11:51:00,635 autoreload 16744 11660 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:51:03,217 autoreload 14500 22400 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:51:10,275 basehttp 14500 10076 "GET /ddrug/vitekast_list HTTP/1.1" 200 119097
+django.server INFO 2023-08-14 11:51:10,328 basehttp 14500 10076 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-14 11:53:07,237 autoreload 14500 22400 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:53:09,202 autoreload 12044 18524 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:53:39,513 autoreload 12044 18524 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:53:41,319 autoreload 25304 3192 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:53:44,716 autoreload 25304 3192 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:53:46,659 autoreload 20660 23928 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:53:51,471 basehttp 20660 21484 "GET /ddrug/vitekast_list HTTP/1.1" 200 119063
+django.utils.autoreload INFO 2023-08-14 11:54:25,136 autoreload 20660 23928 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:54:27,308 autoreload 12900 11604 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:54:36,964 autoreload 12900 11604 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:54:38,913 autoreload 28464 24900 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:54:49,095 autoreload 28464 24900 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:54:51,104 autoreload 20876 20840 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:54:58,756 autoreload 20876 20840 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:00,374 autoreload 11640 11328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:11,141 autoreload 11640 11328 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:13,133 autoreload 11364 19968 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:21,199 autoreload 11364 19968 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:22,790 autoreload 16260 20620 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:32,505 autoreload 16260 20620 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:34,582 autoreload 19476 13848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:45,502 autoreload 19476 13848 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:47,720 autoreload 27704 27876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:52,668 autoreload 27704 27876 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:54,361 autoreload 2740 13820 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:55:58,410 autoreload 2740 13820 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:55:59,989 autoreload 26976 19676 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:56:14,242 autoreload 26976 19676 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:56:16,780 autoreload 27044 20332 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:56:32,757 autoreload 27044 20332 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:56:34,340 autoreload 11328 11640 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:56:43,357 autoreload 11328 11640 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:56:44,963 autoreload 22244 13436 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:56:50,248 autoreload 22244 13436 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:56:52,731 autoreload 27352 9504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:56:56,547 autoreload 27352 9504 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:56:58,244 autoreload 19672 26936 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:57:03,089 autoreload 19672 26936 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:57:04,811 autoreload 22296 20412 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:57:11,279 autoreload 22296 20412 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:57:12,818 autoreload 20032 16616 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:57:21,891 basehttp 20032 24188 "GET /ddrug/vitekast_list HTTP/1.1" 200 119063
+django.server INFO 2023-08-14 11:57:22,161 basehttp 20032 21204 "GET /static/css/custom.css HTTP/1.1" 200 18869
+django.server INFO 2023-08-14 11:57:30,595 basehttp 20032 24188 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.utils.autoreload INFO 2023-08-14 11:58:08,893 autoreload 20032 16616 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:58:10,754 autoreload 15084 25220 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:58:14,730 autoreload 15084 25220 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:58:16,662 autoreload 16800 19656 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:58:20,838 basehttp 16800 21124 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.utils.autoreload INFO 2023-08-14 11:58:44,892 autoreload 16800 19656 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:58:46,480 autoreload 19488 25220 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:58:52,914 autoreload 19488 25220 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:58:55,665 autoreload 23844 20660 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 11:59:39,048 autoreload 23844 20660 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 11:59:40,672 autoreload 10196 18272 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 11:59:46,252 basehttp 10196 24924 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.utils.autoreload INFO 2023-08-14 12:00:24,245 autoreload 10196 18272 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:00:26,094 autoreload 6392 27340 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:00:34,163 basehttp 6392 20216 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.utils.autoreload INFO 2023-08-14 12:00:47,169 autoreload 6392 27340 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:00:48,917 autoreload 9040 9504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:00:53,197 autoreload 9040 9504 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:00:55,543 autoreload 15024 20512 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:00:57,591 basehttp 15024 17612 "GET /ddrug/vitekid_list HTTP/1.1" 200 70506
+django.utils.autoreload INFO 2023-08-14 12:01:39,642 autoreload 15024 20512 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:01:41,642 autoreload 18520 11640 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:01:46,252 autoreload 18520 11640 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:01:48,017 autoreload 13880 26996 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:02:52,367 autoreload 13880 26996 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:02:54,066 autoreload 19488 20128 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:03:41,006 autoreload 19488 20128 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:03:42,702 autoreload 23280 10344 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:03:46,475 autoreload 23280 10344 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:03:48,174 autoreload 10716 26844 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:04:00,902 basehttp 10716 6148 "GET /ddrug/vitekid_list HTTP/1.1" 200 76124
+django.server INFO 2023-08-14 12:04:00,956 basehttp 10716 6148 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-14 12:04:26,520 autoreload 10716 26844 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:04:28,839 autoreload 12788 4584 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:04:35,987 basehttp 12788 22492 "GET /ddrug/vitekid_list HTTP/1.1" 200 75171
+django.utils.autoreload INFO 2023-08-14 12:05:10,830 autoreload 12788 4584 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:05:12,598 autoreload 13280 16244 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:05:21,878 autoreload 13280 16244 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:05:23,763 autoreload 15636 11032 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:05:27,203 autoreload 15636 11032 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:05:29,042 autoreload 3192 18860 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:05:33,607 basehttp 3192 25440 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.server INFO 2023-08-14 12:05:43,549 basehttp 3192 25440 "GET /ddrug/vitekid_list HTTP/1.1" 200 74947
+django.utils.autoreload INFO 2023-08-14 12:05:49,656 autoreload 3192 18860 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:05:51,567 autoreload 7720 27044 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:05:53,436 basehttp 7720 19568 "GET /ddrug/vitekid_list HTTP/1.1" 200 76124
+django.utils.autoreload INFO 2023-08-14 12:06:06,691 autoreload 7720 27044 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:06:08,695 autoreload 12064 15272 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:06:19,730 basehttp 12064 3204 "GET /ddrug/vitekid_list HTTP/1.1" 200 76124
+django.utils.autoreload INFO 2023-08-14 12:07:16,650 autoreload 12064 15272 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:07:18,997 autoreload 22492 4584 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:08:10,840 autoreload 4048 10220 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:08:26,038 basehttp 4048 18380 "GET /ddrug/vitekid_list HTTP/1.1" 200 79897
+django.server INFO 2023-08-14 12:08:26,126 basehttp 4048 18380 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-08-14 12:08:35,883 basehttp 4048 18380 "GET /ddrug/vitekid_list?Org_ID=GN_0001&id_organism=&id_probability=&id_confidence=&id_source=&process= HTTP/1.1" 200 31167
+django.server INFO 2023-08-14 12:08:41,445 basehttp 4048 18380 - Broken pipe from ('127.0.0.1', 39242)
+django.server INFO 2023-08-14 12:08:41,519 basehttp 4048 20304 "GET /ddrug/vitekid_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&id_organism=&id_probability=&id_confidence=&id_source=&process= HTTP/1.1" 200 81027
+django.utils.autoreload INFO 2023-08-14 12:08:52,445 autoreload 4048 10220 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:08:54,675 autoreload 27436 15304 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:09:01,516 autoreload 27436 15304 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:09:04,011 autoreload 4660 24800 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:09:08,800 autoreload 4660 24800 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:09:11,478 autoreload 12024 14772 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:09:16,636 basehttp 12024 12128 "GET /ddrug/vitekid_list HTTP/1.1" 200 79761
+django.utils.autoreload INFO 2023-08-14 12:11:04,451 autoreload 12024 14772 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:06,764 autoreload 19012 9628 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:11:13,147 autoreload 19012 9628 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:15,777 autoreload 10256 25976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:11:23,135 autoreload 10256 25976 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:25,062 autoreload 26828 18724 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:11:29,806 autoreload 26828 18724 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:31,802 autoreload 24516 14024 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:11:37,409 basehttp 24516 2356 "GET /ddrug/vitekid_list HTTP/1.1" 200 79741
+django.utils.autoreload INFO 2023-08-14 12:11:43,379 autoreload 24516 14024 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:45,748 autoreload 7964 11752 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:11:50,819 autoreload 7964 11752 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:11:53,506 autoreload 8320 28176 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:11:59,625 autoreload 8320 28176 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:02,080 autoreload 2000 12136 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:08,226 autoreload 2000 12136 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:10,298 autoreload 16540 12388 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:19,105 autoreload 16540 12388 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:21,291 autoreload 15112 12132 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:30,992 autoreload 15112 12132 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:32,972 autoreload 21108 16148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:40,296 autoreload 21108 16148 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:42,166 autoreload 17668 10788 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:48,065 autoreload 17668 10788 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:12:50,505 autoreload 2192 17040 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:12:59,113 autoreload 2192 17040 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:13:01,140 autoreload 18848 1796 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:13:07,065 autoreload 18848 1796 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:13:09,533 autoreload 25356 13960 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:13:16,659 basehttp 25356 27316 "GET /ddrug/vitekid_list HTTP/1.1" 200 80580
+django.utils.autoreload INFO 2023-08-14 12:13:41,743 autoreload 8692 14924 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:14:31,775 autoreload 8692 14924 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:14:33,683 autoreload 2520 22448 Watching for file changes with StatReloader
+django.request ERROR 2023-08-14 12:14:38,890 log 2520 17760 Internal Server Error: /ddrug/vitekid_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 355, in get_values
+    obj = self.iter_foreignkey(nameArray=nameArray, n=n)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Organism_Batch' object has no attribute 'organism_name'
+django.server ERROR 2023-08-14 12:14:38,898 basehttp 2520 17760 "GET /ddrug/vitekid_list HTTP/1.1" 500 290702
+django.utils.autoreload INFO 2023-08-14 12:15:14,753 autoreload 2520 22448 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:15:16,735 autoreload 23236 8392 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:16:00,922 autoreload 17612 28620 Watching for file changes with StatReloader
+django.request ERROR 2023-08-14 12:16:06,981 log 17612 16536 Internal Server Error: /ddrug/vitekid_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 355, in get_values
+    obj = self.iter_foreignkey(nameArray=nameArray, n=n)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Organism_Batch' object has no attribute 'organism_name'
+django.server ERROR 2023-08-14 12:16:06,992 basehttp 17612 16536 "GET /ddrug/vitekid_list HTTP/1.1" 500 290784
+django.request ERROR 2023-08-14 12:16:13,193 log 17612 16536 Internal Server Error: /ddrug/vitekid_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 355, in get_values
+    obj = self.iter_foreignkey(nameArray=nameArray, n=n)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Organism_Batch' object has no attribute 'organism_name'
+django.server ERROR 2023-08-14 12:16:13,194 basehttp 17612 16536 "GET /ddrug/vitekid_list HTTP/1.1" 500 290784
+django.utils.autoreload INFO 2023-08-14 12:17:41,524 autoreload 17612 28620 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:17:43,830 autoreload 22908 26140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:18:01,356 autoreload 18704 21668 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:18:06,339 basehttp 18704 11664 "GET /ddrug/vitekid_list HTTP/1.1" 200 85987
+django.server INFO 2023-08-14 12:18:06,631 basehttp 18704 11664 "GET /static/css/custom.css HTTP/1.1" 200 18869
+django.utils.autoreload INFO 2023-08-14 12:19:36,136 autoreload 18704 21668 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:19:38,678 autoreload 12672 17012 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:19:41,615 autoreload 12672 17012 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:19:43,527 autoreload 14572 24408 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:19:50,846 autoreload 14572 24408 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:19:52,514 autoreload 17076 28232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:19:58,564 autoreload 17076 28232 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:20:00,523 autoreload 16060 19804 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:20:03,276 autoreload 16060 19804 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:20:06,050 autoreload 24052 24912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:20:26,643 autoreload 24052 24912 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:20:28,973 autoreload 18024 24800 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:20:30,746 autoreload 18024 24800 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:20:32,664 autoreload 16100 8308 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:21:36,201 autoreload 16100 8308 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:21:38,798 autoreload 18892 26032 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:21:45,000 autoreload 18892 26032 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:21:47,331 autoreload 15628 10044 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:21:49,559 basehttp 15628 23392 "GET /ddrug/vitekid_list HTTP/1.1" 200 85987
+django.request ERROR 2023-08-14 12:22:07,200 log 15628 23392 Internal Server Error: /ddrug/vitekast_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 362, in get_values
+    obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 333, in iter_foreignkey
+    obj_parent=getattr(self, nameArray[0])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'VITEK_AST' object has no attribute 'orgbatch_id'
+django.server ERROR 2023-08-14 12:22:07,206 basehttp 15628 23392 "GET /ddrug/vitekast_list HTTP/1.1" 500 296861
+django.utils.autoreload INFO 2023-08-14 12:22:22,545 autoreload 15628 10044 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:22:25,256 autoreload 1536 27320 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:22:30,328 autoreload 1536 27320 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:22:32,849 autoreload 13816 18928 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:22:40,760 basehttp 13816 23524 "GET /ddrug/vitekast_list HTTP/1.1" 200 119063
+django.utils.autoreload INFO 2023-08-14 12:23:07,730 autoreload 13816 18928 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:23:11,040 autoreload 26448 12148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:23:19,166 autoreload 26448 12148 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:23:21,533 autoreload 7376 26636 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:23:28,734 basehttp 7376 19924 "GET /ddrug/vitekast_list HTTP/1.1" 200 126761
+django.request WARNING 2023-08-14 12:24:07,573 log 7376 19924 Not Found: /dorganism/organism/GN_0845 (Kp BRi 1061410)
+django.server WARNING 2023-08-14 12:24:07,573 basehttp 7376 19924 "GET /dorganism/organism/GN_0845%20(Kp%20BRi%201061410) HTTP/1.1" 404 7446
+django.utils.autoreload INFO 2023-08-14 12:24:24,439 autoreload 7376 26636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:24:26,452 autoreload 720 17852 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:24:35,520 basehttp 720 1940 "GET /ddrug/vitekast_list HTTP/1.1" 200 126026
+django.server INFO 2023-08-14 12:24:35,573 basehttp 720 1940 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-08-14 12:24:50,666 basehttp 720 1940 "GET /dorganism/organism/GN_0845 HTTP/1.1" 200 190517
+django.server INFO 2023-08-14 12:24:51,324 basehttp 720 8320 "GET /static/js/destroy_childtable.js HTTP/1.1" 200 201
+django.server INFO 2023-08-14 12:24:51,392 basehttp 720 23824 "GET /static/js/create_childtable.js HTTP/1.1" 200 6724
+django.server INFO 2023-08-14 12:24:51,395 basehttp 720 1940 "GET /static/js/search_organism.js HTTP/1.1" 200 2506
+django.server INFO 2023-08-14 12:24:51,404 basehttp 720 9820 "GET /static/js/childtable.js HTTP/1.1" 200 750
+django.server INFO 2023-08-14 12:24:51,416 basehttp 720 22296 "GET /static/js/ajax_simpleupload.js HTTP/1.1" 200 1244
+django.utils.autoreload INFO 2023-08-14 12:25:26,618 autoreload 720 17852 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:25:28,748 autoreload 14324 17260 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:25:35,406 basehttp 14324 7964 "GET /ddrug/vitekast_list HTTP/1.1" 200 125291
+django.utils.autoreload INFO 2023-08-14 12:28:00,124 autoreload 14324 17260 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:28:02,444 autoreload 3636 708 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:29:06,713 autoreload 18836 18728 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:29:57,917 autoreload 9644 24604 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:30:00,320 basehttp 9644 9236 "GET /dorganism/organism/GN_0845 HTTP/1.1" 200 190517
+django.server INFO 2023-08-14 12:30:05,226 basehttp 9644 9236 "GET /ddrug/vitekast_list HTTP/1.1" 200 128411
+django.utils.autoreload INFO 2023-08-14 12:31:22,907 autoreload 9644 24604 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:31:24,941 autoreload 23172 2128 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:31:31,551 basehttp 23172 12872 "GET /ddrug/vitekast_list HTTP/1.1" 200 128429
+django.server INFO 2023-08-14 12:31:31,616 basehttp 23172 12872 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-08-14 12:34:42,794 basehttp 23172 19788 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=top3CInhQBh4KQxC897dQDrISIpKQpfwt5VAg6Yxt8KbiRUSdWmB0qtsYZMytUYj&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Drug_Name=Gent&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 115077
+django.server INFO 2023-08-14 12:35:04,198 basehttp 23172 9912 "GET /dorganism/organism/GN_0845 HTTP/1.1" 200 190517
+django.server INFO 2023-08-14 12:35:04,236 basehttp 23172 9912 "GET /static/js/create_childtable.js HTTP/1.1" 304 0
+django.server INFO 2023-08-14 12:35:04,244 basehttp 23172 19776 "GET /static/js/childtable.js HTTP/1.1" 304 0
+django.server INFO 2023-08-14 12:35:06,164 basehttp 23172 19788 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Drug_Name=&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 129504
+django.utils.autoreload INFO 2023-08-14 12:36:07,555 autoreload 23172 2128 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:36:09,668 autoreload 1732 3004 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:36:33,881 autoreload 1732 3004 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:36:36,624 autoreload 21588 17072 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:37:01,063 autoreload 21588 17072 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:37:03,170 autoreload 16100 2792 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:37:11,076 autoreload 16100 2792 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:37:13,214 autoreload 7356 19972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:37:18,146 autoreload 7356 19972 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:37:20,345 autoreload 14904 23068 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:37:29,152 autoreload 14904 23068 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:37:31,324 autoreload 23388 26280 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 12:37:39,783 basehttp 23388 10600 "GET /ddrug/vitekast_list HTTP/1.1" 200 127729
+django.server INFO 2023-08-14 12:40:07,667 basehttp 23388 20228 "GET /dorganism/organism/GN_0845 HTTP/1.1" 200 190517
+django.server INFO 2023-08-14 12:40:07,706 basehttp 23388 20228 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-14 12:40:13,827 autoreload 23388 26280 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:40:16,699 autoreload 14820 22208 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:40:21,716 autoreload 14820 22208 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:40:23,723 autoreload 22768 12676 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:40:31,994 autoreload 22768 12676 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:40:34,806 autoreload 24900 12900 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-14 12:40:57,316 autoreload 24900 12900 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-14 12:40:59,913 autoreload 24516 8460 Watching for file changes with StatReloader
