@@ -6,14 +6,14 @@
 <!-- Include -->
 <div class="d-flex flex-row vh-100">
   <!-- prettier-ignore -->
-  {%url 'excel-import' process_name='Dictionary' as urlname%}
-  {%include 'utils/leftbar.html' with import_module=urlname list_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
+  {% url 'excel-import' process_name='Dictionary' as urlname %}
+  {% include 'utils/leftbar.html' with import_module=urlname list_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
     <!-- prettier-ignore -->
-    {%include 'utils/main_horizalbar.html' with model_name='Dictionary' application='apputil' title='Dictionary' %}
+    {% include 'utils/main_horizalbar.html' with model_name='Dictionary' application='apputil' title='Dictionary' %}
     <!-- prettier-ignore -->
 
     <div class="fixTableHead">
@@ -29,9 +29,9 @@
         <tbody>
           {% for object in page_obj %}
           <!--  -->
-          {%include './dictionary_tr.html'%}
+            {% include './dictionary_tr.html' %}
           <!--  -->
-          {%endfor%}
+          {% endfor %}
         </tbody>
       </table>
     </div>

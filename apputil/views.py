@@ -20,8 +20,8 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Document_form 
-from apputil.models import ApplicationUser, Dictionary, Document
+from apputil.forms import AppUserfilter, Logfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Document_form 
+from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
 from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler
@@ -174,6 +174,15 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.is_appuser==False
         return super().form_valid(form)
+
+## ========================Dictionary View===========================================
+
+class AppLogView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model = ApplicationLog
+    template_name = 'apputil/logList.html'
+    filterset_class = Logfilter
+    model_fields = model.HEADER_FIELDS
 
 
 

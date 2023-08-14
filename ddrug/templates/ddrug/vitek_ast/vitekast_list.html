@@ -1,22 +1,22 @@
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title%}COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
   <!--prettier-ignore-->
-  {%url 'import-VITEK' as urlname%}
-  {%include 'utils/leftbar.html' with import_module=urlname  list_url='vitekast_list' %}
+  {% url 'import-VITEK' as urlname %}
+  {% include 'utils/leftbar.html' with import_module=urlname  list_url='vitekast_list' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='VITEK_AST' model_name='VITEK_AST' application='ddrug' %}
+    {% include 'utils/main_horizalbar.html' with title='VITEK - Antibiotic Susceptibility Testing (AST)' model_name='VITEK_AST' application='ddrug' %}
     <div class="contain-fluid data-contain">
     <!-- list View Content -->
     <div class="row d-flex flex-wrap mx-2 fixTableHead ">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with  modelname='VITEK_AST' %}
+      {% include 'utils/datatable_general.html' with  modelname='VITEK_AST' %}
     </div>
   </div>
   </div>

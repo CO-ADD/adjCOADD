@@ -128,20 +128,20 @@
 
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="{%url 'userprofile' user.pk %}">
                 <p key="t-profile">
-                  Profile {% if user.permission == 'Admin'%}
-                  <span class="text-info"> Admin </span>
-
-                  {%endif%}
+                  Profile 
+                  {% if user.permission == 'Admin'%}
+                    <span class="text-info"> Admin </span>
+                  {% endif %}
                   <!--  -->
                   {% if user.permission == 'Read'%}
-                  <span class="text-info"> Guest</span>
-                  {%endif%}
+                    <span class="text-info"> Guest</span>
+                  {% endif %}
                   <!--  -->
                   {% if user.permission == 'Write'%}
-                  <span class="text-info"> User</span>
-                  {%endif%}
+                    <span class="text-info"> User</span>
+                  {% endif %}
                 </p>
               </a>
               <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->
@@ -154,15 +154,17 @@
 
               <div class="dropdown-divider"></div>
               {% if user.is_superuser %}
-              {{user.is_superuser}}
+                <a class="dropdown-item" href="{%url 'userslist' %}">
+                  <p>Users</p>
+                </a>
 
-              <a class="dropdown-item" href="{%url 'userslist' %}">
-                <p>Users</p>
-              </a>
+                <a class="dropdown-item" href="{%url 'dict_view'%}">
+                  <p>Dictionary</p>
+                </a>
 
-              <a class="dropdown-item" href="{%url 'dict_view'%}">
-                <p>Dictionary</p>
-              </a>
+                <a class="dropdown-item" href="{%url 'loglist' %}">
+                  <p>Logs</p>
+                </a>
               {% endif %}
 
               <div class="dropdown-divider"></div>

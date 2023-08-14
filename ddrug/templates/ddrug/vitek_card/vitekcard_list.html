@@ -6,17 +6,17 @@
 <div class="d-flex flex-row vh-100">
   <!--prettier-ignore-->
   {% url 'pivoted-table' app_model='ddrug-VITEK_Card' as url_pivotedtable%}
-  {%include 'utils/leftbar.html' with list_url='vitekcard_list' url_pivotedtable=url_pivotedtable %}
+  {% include 'utils/leftbar.html' with list_url='vitekcard_list' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='VITEK_Card' model_name='VITEK_Card' application='ddrug' %}
+    {% include 'utils/main_horizalbar.html' with title='VITEK - List of cards' model_name='VITEK_Card' application='ddrug' %}
     <div class="contain-fluid data-contain">
     <!-- list View Content -->
     <div class="row d-flex flex-wrap mx-2 fixTableHead ">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with  modelname='VITEK_Card' %}
+      {% include 'utils/datatable_general.html' with  modelname='VITEK_Card' %}
     </div>
   </div>
   </div>
