@@ -372,11 +372,15 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
+        "card_barcode.orgbatch_id.organism_id.":"Org ID",
+        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "drug_id.drug_name":"Drug Name",
         "drug_id.drug_codes":"Codes",
-        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
-        "filename":"PDF Name",
-        "page_no":"PDF PageNo",
+        "mic":"MIC",
+        "bp_profile":"BP",
+        "bp_comment":"Comment",
+        "bp_source":"Source",
+        "organism":"Selected Organism",
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
@@ -450,10 +454,13 @@ class VITEK_ID(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode":"Barcode",      
+        "card_barcode.orgbatch_id.organism_id.":"Org ID",
+        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
+        "id_organism":"Identification",
+        "id_probability":"Probability",
+        "id_confidence":"Confidence",
+        "id_source":"Source",
         "process":"Vitek Process",
-        "filename":"PDF Filename",
-        "page_no":"PDF pageNo"
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,

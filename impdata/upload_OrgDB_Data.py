@@ -69,18 +69,14 @@ def main():
     logTime= datetime.datetime.now()
     logName = "UploadOrgDB"
     logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
-
+    logLevel = logging.INFO 
 
     logger = logging.getLogger(__name__)
     logging.basicConfig(
-#    format="%(asctime)s [%(levelname)-8s] [%(name)s] %(message)s ",
-    format="[%(name)-20s] %(message)s ",
-    handlers=[logging.FileHandler(logFileName,mode='w'),
-              logging.StreamHandler()],
-#    handlers=[logging.StreamHandler()],
-    level=logging.INFO)
-#    level=logging.DEBUG)
-
+        format="[%(name)-20s] %(message)s ",
+        handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+        level=logLevel)
+    
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
     logger.info(f"LogFile        : {logFileName}")
