@@ -1,6 +1,6 @@
 import django_filters
 from django import forms
-from .models import  ApplicationUser, Dictionary, Document
+from .models import  ApplicationUser, ApplicationLog, Dictionary, Document
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
@@ -8,8 +8,10 @@ from django.shortcuts import get_object_or_404
 from .utils.filters_base import Filterbase, Filterbase_base
 
 
+#------------------------------------------------------------------------
 # --Login Form--
 class Login_form(AuthenticationForm):
+#------------------------------------------------------------------------
     username=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',  'id': 'user-input', 'autocomplete':'off'}), label='user-input')
     password= forms.CharField(widget=forms.PasswordInput(
     attrs={'class':'form-control', 'id': 'password-input','type':'password', 'name': 'password', 'autocomplete':'new-password'}),
@@ -42,8 +44,8 @@ class Login_form(AuthenticationForm):
 # --Model Form--
 ## Application User
 
+#------------------------------------------------------------------------
 Permission_Choices=[ ("Read","Read"),("Write","Write"),("Delete","Delete"), ("Admin","Admin"), ("No","No")]
-
 class ApplicationUser_form(forms.ModelForm):
     permission=forms.ChoiceField(choices=Permission_Choices)
     class Meta:
@@ -51,25 +53,15 @@ class ApplicationUser_form(forms.ModelForm):
         fields=['first_name','last_name','email', 'is_active', 'username', 'name', 'initials','permission','is_appuser']
 
 
+#------------------------------------------------------------------------
 ## Dictionary
 class Dictionary_form(forms.ModelForm):
     class Meta:
         model=Dictionary
         fields='__all__'
 
+#------------------------------------------------------------------------
 ## Document
-from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
-from .utils.files_upload import validate_file
-
-# class Image_form(forms.ModelForm):
-#     image_file = forms.ImageField(label='Select an image', 
-#                                 #   validators=[validate_file], 
-#                                   required=True)
-    
-#     class Meta:
-#         model=Image
-#         fields='__all__'
-
 class Document_form(forms.ModelForm):
     doc_file = forms.FileField(label='Select a file', 
                                 #   validators=[validate_file], 
@@ -80,26 +72,52 @@ class Document_form(forms.ModelForm):
         fields='__all__'
    
 
-# --Filterset Form--
-## Application User
+#------------------------------------------------------------------------
+## Image
+#from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
+#from .utils.files_upload import validate_file
 
+# class Image_form(forms.ModelForm):
+#     image_file = forms.ImageField(label='Select an image', 
+#                                 #   validators=[validate_file], 
+#                                   required=True)
+    
+#     class Meta:
+#         model=Image
+#         fields='__all__'
+
+
+#===================================================================
+# --Filterset Form--
+#===================================================================
+
+#------------------------------------------------------------------------
+## Application User
 class AppUserfilter(Filterbase_base):
     Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
 
-    username = django_filters.CharFilter(lookup_expr='icontains')
+    username = django_filters.CharFilter(lookup_expr='icontains',label='UQ Username')
     first_name = django_filters.CharFilter(lookup_expr='icontains')
     last_name = django_filters.CharFilter(lookup_expr='icontains')
+    initials = django_filters.CharFilter(lookup_expr='icontains')
+    is_active = django_filters.BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is Active')
+    is_appuser = django_filters.BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is AppUser')
     permission=django_filters.ChoiceFilter(choices=Permission_Choices)
-         
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.form.initial['is_active'] = (True,'Yes')
+        self.form.initial['is_appuser'] = (True,'Yes')
+
     class Meta:
         model=ApplicationUser
-        fields=['username','first_name', 'last_name', 'permission']
+        fields=['username','first_name', 'last_name', 'initials','is_active','is_appuser','permission']
 
-    @property
-    def qs(self):
-        parent = super().qs
-        print(parent)
-        return parent.filter(is_appuser=True)
+    # @property
+    # def qs(self):
+    #     parent = super().qs
+    #     print(parent)
+    #     return parent.filter(is_appuser=True,is_active=True)
     
     # def filter_all_fields(self, queryset, name, value):
     #     if value:
@@ -108,6 +126,7 @@ class AppUserfilter(Filterbase_base):
     #         return queryset.filter(q_object)
     #     return queryset
 
+#------------------------------------------------------------------------
 ## Dictionary
 class Dictionaryfilter(Filterbase):
     dict_class = django_filters.ChoiceFilter(choices=[])
@@ -116,7 +135,7 @@ class Dictionaryfilter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).order_by().values('dict_class').distinct()]
+        a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).distinct().order_by('dict_class').values('dict_class')]
         choice_class=[(x[0], x[0]) for x in a]
         self.filters['dict_class'].extra["choices"] = choice_class
         self.filters['dict_class'].label='Class'
@@ -124,5 +143,24 @@ class Dictionaryfilter(Filterbase):
     class Meta:
         model=Dictionary
         fields=['dict_class']
+
+#------------------------------------------------------------------------
+## Dictionary
+class Logfilter(Filterbase_base):
+    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
+    #dict_class = django_filters.ChoiceFilter(choices=[])
+    #dict_value = django_filters.CharFilter(lookup_expr='icontains')
+    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).distinct().order_by('dict_class').values('dict_class')]
+        # choice_class=[(x[0], x[0]) for x in a]
+        # self.filters['dict_class'].extra["choices"] = choice_class
+        # self.filters['dict_class'].label='Class'
+      
+    class Meta:
+        model=ApplicationLog
+        fields=list(model.HEADER_FIELDS.keys())
 
 

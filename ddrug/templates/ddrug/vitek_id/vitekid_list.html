@@ -5,16 +5,16 @@
 {% block content%}
 <div class="d-flex flex-row vh-100">
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with list_url='vitekid_list' %}
+  {% include 'utils/leftbar.html' with list_url='vitekid_list' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='VITEK_ID' model_name='VITEK_ID' application='ddrug' %}
+    {% include 'utils/main_horizalbar.html' with title='VITEK - Identification (ID)' model_name='VITEK_ID' application='ddrug' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_filter.html' with modelname='VITEK_ID' %}
+      {% include 'utils/datatable_filter.html' with modelname='VITEK_ID' %}
       
     </div>
   </div>

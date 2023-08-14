@@ -649,6 +649,88 @@ class ApplicationLog(models.Model):
         log_inst.log_status = LogStatus
         log_inst.save()
 
+    #------------------------------------------------
+    # get field verbose or customized name in the order provided by headerfields
+    @classmethod
+    def get_fields(cls, fields=None):
+        if fields is None:
+            fields = cls.HEADER_FIELDS
+        if fields:
+            fieldsname=[field.name for field in cls._meta.fields]
+            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
+            
+        else:
+            select_fields=None   
+        return select_fields
+
+    #------------------------------------------------
+    # recurse func to get foreign key related table col value
+    def iter_foreignkey(self, nameArray=None, n=None):
+        obj_parent=getattr(self, nameArray[0])
+        obj = obj_parent
+        i=1
+        while i < n:
+            obj = getattr(obj, nameArray[i])
+            i += 1
+            if i>=5: # break it !! if it leads to the 5th related table!!
+                break
+        return obj
+    
+    #------------------------------------------------
+    def get_values(self, fields=None):
+        
+        from django.db.models import Model
+        if fields is None:
+            fields = self.HEADER_FIELDS
+
+        value_list=[]
+        fieldsname=[field.name for field in self._meta.fields]
+        for name in fields.keys():
+            n=len(name.split("."))
+            nameArray=name.split(".")
+            if n>1 and nameArray[0] in fieldsname:
+                obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
+                if isinstance(fields[name], dict):
+                    #if HEADER_FIELDS contains a dictionary for link/url information
+                    # for foreignkey link not equal field values
+                    url_name = list(list(fields[name].values())[0].keys())[0]
+                    if url_name != name:
+                        n=len(url_name.split("."))
+                        urlArray=url_name.split(".")
+                        obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj_link))})
+                    else:
+                        # foreignkey link name equal field values 
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj))})
+                elif isinstance(obj, Model):
+                    value_list.append(obj.pk)   
+                elif isinstance(obj, list):
+                    varray_to_string=','.join(str(e) for e in obj)
+                    value_list.append(varray_to_string)   
+                else:
+                    value_list.append(obj)
+                
+            elif name in fieldsname:
+                obj=getattr(self, name)
+                if obj:
+                    # check field value is a dict with link value
+                    if isinstance(fields[name], dict):
+                        # for slug-name
+                        url_name = list(list(fields[name].values())[0].keys())[0]
+                        url=getattr(self, url_name)
+                        # Append link to the value list
+                        value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(url))})
+                    elif isinstance(obj, Model):
+                        value_list.append(obj.pk)
+                    elif isinstance(obj, list):
+                        array_to_string=','.join(str(e) for e in obj)
+                        value_list.append(array_to_string) 
+                    else:   
+                        value_list.append(obj)
+                else:
+                    value_list.append(" ")
+                    
+        return value_list
 # #-------------------------------------------------------------------------------------------------
 # class Image(AuditModel):
 # #-------------------------------------------------------------------------------------------------
