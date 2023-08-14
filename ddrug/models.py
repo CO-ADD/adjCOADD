@@ -372,7 +372,8 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode.orgbatch_id.organism_id.":"Org ID",
+#        "card_barcode.orgbatch_id.organism_id":'Org ID',
+        "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "drug_id.drug_name":"Drug Name",
         "drug_id.drug_codes":"Codes",
@@ -393,7 +394,7 @@ class VITEK_AST(AuditModel):
     bp_comment = models.CharField(max_length=120, blank=True, verbose_name = "Comment")
     bp_source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
     selection = models.CharField(max_length=20, blank=True, verbose_name = "Selection")
-    organism = models.CharField(max_length=120, blank=True, verbose_name = "Organism")
+    organism = models.CharField(max_length=120, blank=True, verbose_name = "Selected Organism")
     filename = models.CharField(max_length=120, blank=True, verbose_name = "PDF Filename")
     page_no = models.IntegerField(default=0, blank=True, verbose_name = "PDF PageNo")
 
@@ -454,7 +455,7 @@ class VITEK_ID(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode.orgbatch_id.organism_id.":"Org ID",
+        "card_barcode.orgbatch_id.orgbatch_id":"Org ID",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "id_organism":"Identification",
         "id_probability":"Probability",

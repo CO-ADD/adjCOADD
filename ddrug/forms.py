@@ -107,20 +107,36 @@ class Vitekcard_filter(Filterbase):
         fields=['card_barcode']
 
 
+# -----------------------------------------------------------------
 class Vitekast_filter(Filterbase):
-    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains')
+# -----------------------------------------------------------------
+    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
+
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.filters['Drug_Name'].label='Drug Name'
+
     class Meta:
         model=VITEK_AST
         fields=['Drug_Name']
+        fields +=list(model.HEADER_FIELDS.keys())
+        exclude = ['card_barcode.orgbatch_id.organism_id.organism_id','card_barcode.orgbatch_id.organism_id.organism_name','drug_id.drug_name','drug_id.drug_codes']
 
+# -----------------------------------------------------------------
 class VitekID_filter(Filterbase):
-    
+# -----------------------------------------------------------------
+    Org_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    Org_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.filters['Org_ID'].label='OrgBatch ID'
+
     class Meta:
         model=VITEK_ID
-        fields=list(model.HEADER_FIELDS.keys())
+        fields = ['Org_ID','Org_Name']
+        fields +=list(model.HEADER_FIELDS.keys())
+        exclude = ['card_barcode.orgbatch_id.orgbatch_id','card_barcode.orgbatch_id.organism_id.organism_name']
 
 class MIC_COADDfilter(Filterbase):
     mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")

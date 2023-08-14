@@ -340,6 +340,7 @@ class AuditModel(models.Model):
                 break
         return obj
     
+    #------------------------------------------------
     def get_values(self, fields=None):
         
         from django.db.models import Model
@@ -354,6 +355,7 @@ class AuditModel(models.Model):
             if n>1 and nameArray[0] in fieldsname:
                 obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
                 if isinstance(fields[name], dict):
+                    #if HEADER_FIELDS contains a dictionary for link/url information
                     # for foreignkey link not equal field values
                     url_name = list(list(fields[name].values())[0].keys())[0]
                     if url_name != name:
@@ -366,6 +368,9 @@ class AuditModel(models.Model):
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj))})
                 elif isinstance(obj, Model):
                     value_list.append(obj.pk)   
+                elif isinstance(obj, list):
+                    varray_to_string=','.join(str(e) for e in obj)
+                    value_list.append(varray_to_string)   
                 else:
                     value_list.append(obj)
                 
