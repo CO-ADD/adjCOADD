@@ -25,7 +25,7 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
-    smol=forms.CharField(widget=forms.TextInput(),)
+    smol=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '12'}),)
    
 
 
@@ -59,10 +59,13 @@ class Drug_form(forms.ModelForm):
 
     def clean_smol(self):
         data=self.cleaned_data['smol']
-        
+
+        print("0",data)
         if data:
-            data=Chem.MolFromSmiles(data)
+            data=Chem.MolFromMolBlock(data)
+            print("1",data)
         else:
+            print("1e")
             self.add_error('smol', 'Provide smol value, currently is None')
         
         return data
@@ -86,7 +89,7 @@ class Drug_filter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
+        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
         self.filters['Drug_Name'].label='Drug Name'
         self.filters['Drug_Type'].label='Drug Type'
         self.filters['Target'].label='Drug Target'
@@ -100,11 +103,15 @@ class Drug_filter(Filterbase):
 
 
 
+# -----------------------------------------------------------------
 class Vitekcard_filter(Filterbase):
-    card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    #card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    #card_type = django_filters.CharFilter()
+    card_type=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=VITEK_Card.Choice_Dictionary['card_type']))
     class Meta:
         model=VITEK_Card
-        fields=['card_barcode']
+        #fields=['card_barcode']
+        fields =list(model.HEADER_FIELDS.keys())
 
 
 # -----------------------------------------------------------------

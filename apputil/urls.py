@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from apputil.views import (index, userprofile, AppUserListView, AppUserCreateView, ApplicationUserUpdateView,  AppUserDetailView,
-    AppUserDeleteView, AppUserListView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
+    AppUserDeleteView, AppUserListView, AppLogView, DictionaryView, DictionaryCreateView,updateDictionary, deleteDictionary,
     DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView)
 
 from .utils.flex_pivottable import flex_pivottable
@@ -18,6 +18,7 @@ urlpatterns = [
     path('user_update/<str:pk>', ApplicationUserUpdateView.as_view(), name="updateAppUser"),
     path('user_delete/<str:pk>', AppUserDeleteView.as_view(), name="deleteAppUser"),
     path('user_profile/<str:pk>', AppUserDetailView.as_view(), name='userprofile' ),
+    path('log_list/', AppLogView.as_view(), name='loglist' ),
     path('dict/', DictionaryView.as_view(), name='dict_view' ),
     path('dict_create/', DictionaryCreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),

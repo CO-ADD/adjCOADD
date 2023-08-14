@@ -22,28 +22,31 @@
   <!--  -->
   {% endif %}
   <!--  -->
-{%elif model_name == 'OrgBatch_Image' or model_name == 'Document' %}
-<a type="button" class="btn-sm border-0 bg-transparent" data-bs-toggle="modal" data-bs-placement="right"
-title="Add New Image/File" data-bs-target="#{{title}}Modal">
-    <i class="bi bi-file-earmark-plus" style='color: red'></i>
-</a>
+{% elif model_name == 'OrgBatch_Image' or model_name == 'Document' %}
+  <a type="button" 
+  class="btn-sm border-0 bg-transparent" 
+  data-bs-toggle="modal" 
+  data-bs-placement="right"
+  title="Add New Image/File" data-bs-target="#{{title}}Modal">
+  <i class="bi bi-file-earmark-plus" style='color: red'></i>
+  </a>
 {% else %}
   <a
     id="{{create_object}}"
     data-name="general"
-    class="{% if create_object %}btn btn-sm {%else%} btn btn-sm disabled {% endif %}"
+    class="{% if create_object %}btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
     data-bs-toggle="tooltip"
     data-bs-placement="right"
     title="Add New Entry {{create_object}}"
-    ><i class="{% if create_object %}bi bi-file-earmark-plus {%else%} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
+    ><i class="{% if create_object %}bi bi-file-earmark-plus {% else %} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
   </a>
-  {% endif %}
-  <div
-    id="{{create_objectModal}}"
-    class="modal fade"
-    role="dialog"
-    data-bs-backdrop="static"
-  ></div>
+{% endif %}
+<div
+  id="{{create_objectModal}}"
+  class="modal fade"
+  role="dialog"
+  data-bs-backdrop="static"
+></div>
 
 <script>
   $(document).ready(function () {
@@ -52,8 +55,6 @@ title="Add New Image/File" data-bs-target="#{{title}}Modal">
       "#createOrganismModal",
       "#createOrganism",
       "{% url 'org_create'%}",
-      csrftoken,
-      "#Create_Organism",
     );
     loadModal("#createTaxoModal", "#createTaxo", "{% url 'taxo_create'%}");
     loadModal("#createDrugModal", "#createDrug", "{% url 'drug_create'%}");

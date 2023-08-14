@@ -125,7 +125,7 @@
     $(document).ready(function () {
       let url_batch = `{% url 'batch_create' object.pk %}`;
       let url_culture = `{% url 'culture_create' object.pk %}`;
-      console.log(url_culture);
+      console.log(url_batch);
       loadModal("#createCultureModal", "#createCulture", url_culture);
       loadModal("#createBatchModal", "#createBatch", url_batch);
 
