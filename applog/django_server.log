@@ -3304,3 +3304,27 @@ django.utils.autoreload INFO 2023-08-14 16:54:02,148 autoreload 29304 8288 C:\Da
 django.utils.autoreload INFO 2023-08-14 16:54:04,157 autoreload 18268 12320 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-08-14 16:54:08,154 autoreload 18268 12320 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
 django.utils.autoreload INFO 2023-08-14 16:54:10,375 autoreload 6008 7752 Watching for file changes with StatReloader
+django.server INFO 2023-08-14 16:54:21,307 basehttp 6008 14100 "GET /ddrug/drug/AMD00007 HTTP/1.1" 200 58696
+django.server WARNING 2023-08-14 16:54:21,650 basehttp 6008 14100 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.request WARNING 2023-08-14 16:54:24,027 log 6008 14392 Not Found: /templates/library.svg
+django.server WARNING 2023-08-14 16:54:24,028 basehttp 6008 14392 "GET /templates/library.svg HTTP/1.1" 404 6197
+django.server INFO 2023-08-14 16:54:43,603 basehttp 6008 14392 "POST /ddrug/updateDrug/AMD00007 HTTP/1.1" 302 0
+django.request ERROR 2023-08-14 16:54:43,815 log 6008 14392 Internal Server Error: /ddrug/drug/AMD00007
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\views.py", line 101, in detailDrug
+    form=Drug_form(instance=object_, initial={"smol":Chem.MolToMolBlock(object_.smol)},)
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Boost.Python.ArgumentError: Python argument types in
+    rdkit.Chem.rdmolfiles.MolToMolBlock(NoneType)
+did not match C++ signature:
+    MolToMolBlock(class RDKit::ROMol mol, bool includeStereo=True, int confId=-1, bool kekulize=True, bool forceV3000=False)
+django.server ERROR 2023-08-14 16:54:43,818 basehttp 6008 14392 "GET /ddrug/drug/AMD00007 HTTP/1.1" 500 86484
