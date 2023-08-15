@@ -1,10 +1,21 @@
 <div class="d-flex">
-  <ul id="sortable1" class="connectedSortable m-0" style="border: 2px solid black; width: 200px;">
-    {%for field in model_fields %}
-    <li data-name="{{field}}" class="draggable ui-state-default">{{field}}</li>
-    {%endfor%}
+  
+  {% if select_fields %}
+  
+  <ul id="sortable2" class="connectedSortable border text-info" style="min-width: 100px;">
+    Index
+    {% for field in select_vtfields %}   
+    <li data-name="{{field}}" class="draggable ui-state-default text-info" style="max-width: 80%">{{field}}</li>
+    {% endfor %}
   </ul>
-  <ul id="sortable2" class="connectedSortable border" style="min-width: 100px;">
-    Column   
+
+  {% else %}
+
+  
+  <ul id="sortable2" class="connectedSortable border text-info" style="min-width: 100px;">
+    Index  
   </ul>
+
+  {% endif %}
+
 </div>

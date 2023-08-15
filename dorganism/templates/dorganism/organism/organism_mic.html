@@ -55,7 +55,7 @@
                         <div class="tab-content flex-grow-1" id="v-pills-tabContent">
                             <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
                                 aria-labelledby="v-pills-datatable-tab">
-                                {% include 'utils/data_download_form.html' with model_name='MIC_COADD' application='ddrug' related_pk=object.pk %}
+                                {% include 'utils/data_download_form.html' with model_name='Drug' application='ddrug' related_pk=object.pk %}
 
                                 {%include './datamap.html'%}
 
