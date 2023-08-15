@@ -41,10 +41,24 @@ class OrgbatchimgCreateView(CreateFileView):
         else:
             messages.warning(self.request, 'No file provided.')
         return redirect(self.request.META['HTTP_REFERER'])
+    
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     print("1",self.request)
+    #     kwargs["pk"] = self.request
+    #     return kwargs
+
+    # def get_form(self, form_class=None):
+    #     print("wil called")
+    #     form = super().get_form(form_class)
+    #     organism = get_object_or_404(self.model, organism_id=kwargs['pk'])
+    #     form.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
+    #     return form     
 
 
 class OrgbatchimgDeleteView(SimpledeleteView):
     model = OrgBatch_Image
+    transaction_use = 'dorganism'
 
 # --TAXONOMY Views--
 ##
@@ -158,7 +172,9 @@ def detailOrganism(request, pk):
     context["object"]=object_
     context["form"]=form
     context["doc_form"]=Document_form
-    context["orgbatchimg_form"]=Orgbatchimg_form
+    # kwargs={'org': pk}
+
+    context["orgbatchimg_form"]=Orgbatchimg_form(org=pk)
 
     # data in related tables
 

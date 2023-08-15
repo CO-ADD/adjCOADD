@@ -3,8 +3,8 @@ File-upload...
 """
 import os
 #import pylibmagic
-#import magic
-from winmagic import magic
+import magic
+# from winmagic import magic
 
 import logging
 logger = logging.getLogger(__name__)

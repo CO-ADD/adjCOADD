@@ -198,9 +198,11 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
 
     djVitekCard.card_code = iDict['card_code']
     djVitekCard.instrument = iDict['instrument']
-    djVitekCard.expiry_date = iDict['expiry_date']
-    djVitekCard.proc_date = iDict['processing_date']
-    djVitekCard.analysis_time = iDict['analysis_time']
+
+    # in case cannot no date parsed from .pdf
+    djVitekCard.expiry_date = iDict['expiry_date'] if 'expiry_date' in iDict.keys() else None
+    djVitekCard.proc_date = iDict['processing_date'] if 'processing_date' in iDict.keys() else None
+    djVitekCard.analysis_time = iDict['analysis_time'] if 'analysis_time' in iDict.keys() else None
 
     djVitekCard.clean_Fields()
     validDict = djVitekCard.validate()

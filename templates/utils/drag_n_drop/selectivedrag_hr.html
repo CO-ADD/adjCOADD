@@ -1,8 +1,26 @@
-<!-- <div class="d-flex ms-0"> -->
-  <ul id="sortable3" class="connectedSortable d-flex border ms-0" style="min-width: 500px;">
-    Index
-    
-    <!-- <li data-name="" class="draggable ui-state-default"></li>
-    <li data-name="" class="draggable ui-state-default"></li> -->
-  </ul>
-<!-- </div> -->
+{% if select_fields %}
+<ul id="sortable1" class="connectedSortable m-0" style="display:flex; border: 2px solid black; width: fit-content;">
+  {% for field in model_fields %}
+  {% if field not in select_fields %}
+  <li data-name="{{field}}" class="draggable ui-state-default" style="max-width: 80%">{{field}}</li>
+  {% endif %}
+  {%endfor%}
+</ul>
+<ul id="sortable3" class="connectedSortable d-flex border ms-0 text-info" style="max-width: 100%;">
+  Column
+  {% for field in select_hrfields%}
+  <li data-name="{{field}}" class="draggable ui-state-default text-info">{{field}}</li>
+  {% endfor %}
+</ul>
+
+{% else %}
+<ul id="sortable1" class="connectedSortable m-0" style="border: 2px solid black;  width: fit-content;">
+  {% for field in model_fields %}
+  <li data-name="{{field}}" class="draggable ui-state-default text-info" style="max-width: 80%">{{field}}</li>
+  {% endfor %}
+</ul>
+<ul id="sortable3" class="connectedSortable d-flex border ms-0 text-info" style="max-width: 100%;">
+  Column
+
+</ul>
+{% endif %}
