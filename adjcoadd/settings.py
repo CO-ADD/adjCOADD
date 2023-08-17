@@ -37,11 +37,12 @@ MEDIA_URL = ('uploads/')
 # Define Version 
 if DEVELOPMENT:
     # Devlopment/Local
-    from github import Github
-    g=Github()
-    repo = g.get_organization(CO-ADD').get_repo('adjCOADD')
-    pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
-    VERSION ='1.0.'+ str(pull_requests[0].number) +' (Development) - JZG'
+    # from github import Github
+    # g=Github()
+    # repo = g.get_organization('CO-ADD').get_repo('adjCOADD')
+    # pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
+    # VERSION ='1.0.'+ str(pull_requests[0].number) +' (Development) - JZG'
+    VERSION = '1.0 Development'
 else:
     # Production
     VERSION = '1.1'

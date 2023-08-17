@@ -34,13 +34,18 @@ logging.basicConfig(
 def reformat_OrganismID(OrgID):
 #-----------------------------------------------------------------------------------
     xStr = OrgID.split("_")
-    return(f"{xStr[0]}_{int(xStr[1]):04d}")
+    xorgid = f"{xStr[0]}_{int(xStr[1]):04d}"
+    if len(xStr)>2:
+        xorgid += f"_{int(xStr[2].replace('B','')):02d}"
+    else:
+        xorgid += "_01"    
+    return(xorgid)
 
 #-----------------------------------------------------------------------------------
 def conv_BMP_JPEG(BmpFolder=None,upload=False,uploaduser=None):
 #-----------------------------------------------------------------------------------
 
-    # Get PDF Files
+    # Get BMP Files
     nBMP = 0
     if BmpFolder:
         DirFiles = os.listdir(BmpFolder)
@@ -60,10 +65,11 @@ def conv_BMP_JPEG(BmpFolder=None,upload=False,uploaduser=None):
             inBmp = os.path.join(BmpFolder,BmpFiles[i])
             outJpeg = os.path.join(JpegFolder,f"{xOrg}.jpeg")
 
-            logger.info(f"[Image    ] {i+1:3d}/{nBMP:3d} - {xOrg} {BmpFiles[i]} {inBmp}")
+#            logger.info(f"[Image    ] {i+1:3d}/{nBMP:3d} - {xOrg} {BmpFiles[i]}")
             im = Image.open(inBmp)
             rgb_im = im.convert("RGB")
             rgb_im.save(outJpeg)
+            logger.info(f"[Image    ] {i+1:3d}/{nBMP:3d} - {xOrg} {BmpFiles[i]} ")
             # update_VitekPDF(PdfFile=PdfFiles[i],VitekFolder=VitekFolder,ProcessedFolder=ProcessedFolder,OrgBatchID=None,
             #                 upload=upload,appuser=appuser)
     else:
