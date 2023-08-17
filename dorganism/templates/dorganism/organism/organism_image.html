@@ -22,6 +22,7 @@
 
 
                     {% for image in object.assoc_images.all %}
+                    image path: {{ image.image_file.url }}
                     {% if image.astatus >= 0 %}
                     <div class="d-flex flex-column justify-content-between border border-2 border-dark m-2" style="width:25em; height:auto">
                         <!-- Show Image -->
@@ -29,13 +30,14 @@
                             data-bs-target="#ShowImage_lg{{image.pk}}">
 
                             <h5>{{ image.image_name }}</h5>
-
+                           
                             <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}"
                                 style="width: 50%; height: auto;">
                         </button>
                         <p class="m-auto">Type: {{ image.image_type }}</p>
                         <p class="m-auto">Source: {{ image.image_source }}</p>
                         <p class="m-auto">Uploaded by: {{ image.acreated }}</p>
+                        image path: {{ image.image_file.url }}
                         <!-- Large Image Modal -->
                         <div class="modal fade" id="ShowImage_lg{{image.pk}}" tabindex="-1"
                             aria-labelledby="ShowImage_lg{{image_pk}}" aria-hidden="true">

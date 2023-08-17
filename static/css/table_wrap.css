@@ -162,6 +162,9 @@ table.dataframe tr:nth-child(even) {
   border: 1px solid;
 }
 
+.dataframe th {
+  font-weight: bold !important;
+}
 /* ------------ Draggable and Dropable and sortable ------------ */
 #draggable,
 #draggable2 {
@@ -198,15 +201,17 @@ table.dataframe tr:nth-child(even) {
 }
 
 #sortable1 {
+  display: flex !important;
   color: teal;
   background-color: var(--bs-body-bg);
+  min-height:fit-content;
   /* border: 2px solide var(--bs-border-color); */
 }
 #sortable2{
   height: 500px;
 }
 #sortable3 {
-  min-height: 50px;
+  min-height: 60px;
 }
 
 #sortable1 li,
@@ -215,7 +220,7 @@ table.dataframe tr:nth-child(even) {
   margin: 2px;
   padding: 2px;
   margin-left: 2px;
-  width: 160px;
+  width: 120px;
   height: fit-content;
   word-wrap: break-word !important;
 }

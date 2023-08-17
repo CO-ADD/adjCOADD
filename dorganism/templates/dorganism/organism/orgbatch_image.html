@@ -28,12 +28,12 @@
                         data-bs-target="#ShowImage_lg{{image.pk}}">
 
                         <h5>{{ image.image_name_orgbatch }}</h5>
-
-                        <img src="{{ image.image_file_orgbatch.url }}" alt="{{ image.image_desc }}"
+                    
+                        <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}"
                             style="width: 50%; height: auto;">
                     </button>
-                    <p class="m-auto">Type: {{ image.image_type_orgbatch }}</p>
-                    <p class="m-auto">Source: {{ image.image_source_orgbatch }}</p>
+                    <p class="m-auto">Type: {{ image.image_type }}</p>
+                    <p class="m-auto">Source: {{ image.image_source }}</p>
                     <p class="m-auto">Uploaded by: {{ image.acreated }}</p>
                     <!-- Large Image Modal -->
                     <div class="modal fade" id="ShowImage_lg{{image.pk}}" tabindex="-1"
@@ -41,12 +41,12 @@
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="ShowImage_lgLabel{{image.pk}}">{{image.image_name_orgbatch}}</h5>
+                                    <h5 class="modal-title" id="ShowImage_lgLabel{{image.pk}}">{{image.image_name}}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <img src="{{ image.image_file_orgbatch.url }}" alt="{{ image.image_desc_orgbatch }}">
+                                    <img src="{{ image.image_file.url }}" alt="{{ image.image_desc }}">
                                 </div>
                             </div>
                         </div>

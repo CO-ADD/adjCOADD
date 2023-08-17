@@ -29,9 +29,16 @@ class Orgbatchimg_form(forms.ModelForm):
                                 #   validators=[validate_file], 
                                   required=True)
 
+    def __init__(self, *args, org=None, **kwargs):
+        
+        super().__init__(*args, **kwargs)
+        if org:
+            pk = org
+            organism = get_object_or_404(Organism, pk=pk)
+            self.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
+        
     class Meta:
         model =OrgBatch_Image
-        # exclude=['urlname']
         fields="__all__"
 #=======================================Organism Create Form=============================================================
 class CreateOrganism_form(forms.ModelForm):
@@ -113,8 +120,8 @@ class Taxonomy_form(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['org_class'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['org_class'])]
-        self.fields['division'].choices=[(obj.dict_value, obj.repr()) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['division'])]
+        self.fields['org_class'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['org_class'])]
+        self.fields['division'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['division'])]
 
     class Meta:
         model =Taxonomy

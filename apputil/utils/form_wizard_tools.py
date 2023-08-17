@@ -182,9 +182,11 @@ class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
         import shutil
         # Redirect to the desired page after finishing
         dirname=self.storage.extra_data['dirname']
+        print(dirname)
         if dirname:
             try:
                 shutil.rmtree(dirname)
+                
             except FileNotFoundError as err:
                 print(err)
             except Exception as err:

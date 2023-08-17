@@ -117,7 +117,8 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
             print("try deletess")
             try:
                 object_.delete(**kwargs)
-                ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_new.pk), 'switch entry_astatus -9','Completed')            
+                ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_.pk), 'switch entry_astatus -9','Completed')            
+                print("deleted")
             except Exception as err:
                 messages.error(request, err)
 
@@ -188,14 +189,13 @@ class CreateFileView(LoginRequiredMixin,FormView):
         # Handle AJAX file upload
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             file_data = request.FILES.get(self.file_field)
-            if file_data:
-                file_path = default_storage.save(file_data.name, file_data)
-                file_name = os.path.basename(file_path)
+            if file_data:           
+                file_name =file_data.name
                 file_type = file_data.content_type
+                
                 response = {
                     'name': file_name,
                     'type': file_type,
-                    'path': file_path,
                 }
                 return JsonResponse(response)
         # Handle form submission
@@ -210,7 +210,7 @@ class CreateFileView(LoginRequiredMixin,FormView):
                 instance.save(**kwargs)
             with transaction.atomic(using=self.transaction_use_manytomany):
                 getattr(self.object_, self.related_name).add(instance)
-                self.object_.save(**kwargs)
+                self.object_.save(**kwargs)            
         else:
             messages.warning(self.request, 'No file provided.')
         return redirect(self.request.META['HTTP_REFERER'])
@@ -223,6 +223,9 @@ class CreateFileView(LoginRequiredMixin,FormView):
         context = super().get_context_data(**kwargs)
         context["object"] = self.object_
         return context
+    
+
+    
     
 # --export view--
 import ddrug.utils.tables as drugtbl
@@ -257,7 +260,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
             selected_pks = json.loads(self.selected_pks_string)
             items = Model.objects.filter(pk__in=selected_pks)
         else:
-            if self.organism and model_name == 'MIC_COADD':
+            if self.organism and model_name == 'Drug':
                 displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
                 df = drugtbl.get_Antibiogram_byOrgID(self.organism)
                 df.reset_index(inplace=True)
