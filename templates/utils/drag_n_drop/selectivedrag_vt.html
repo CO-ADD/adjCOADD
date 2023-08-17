@@ -1,21 +1,23 @@
-<div class="d-flex">
-  
+{% load custom_filters %}
+<div class="d-flex"> 
   {% if select_fields %}
-  
   <ul id="sortable2" class="connectedSortable border text-info" style="min-width: 100px;">
     Index
-    {% for field in select_vtfields %}   
-    <li data-name="{{field}}" class="draggable ui-state-default text-info" style="max-width: 80%">{{field}}</li>
+    {% for key, value in select_vtfields.items %}   
+    <li data-name="{{key}}" class="ui-state-default text-info" style="max-width: 80%"> 
+      {% if value|is_dict %}
+      {% for key in value.keys %}
+      {{key }}
+      {% endfor %}
+    {% else %}
+      {{value}}
+    {% endif %}
+    </li>
     {% endfor %}
   </ul>
-
   {% else %}
-
-  
   <ul id="sortable2" class="connectedSortable border text-info" style="min-width: 100px;">
     Index  
   </ul>
-
   {% endif %}
-
 </div>

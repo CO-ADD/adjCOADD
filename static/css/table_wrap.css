@@ -166,24 +166,6 @@ table.dataframe tr:nth-child(even) {
   font-weight: bold !important;
 }
 /* ------------ Draggable and Dropable and sortable ------------ */
-#draggable,
-#draggable2 {
-  width: 100px;
-  height: 100px;
-  padding: 0.5em;
-  float: left;
-  margin: 10px 10px 10px 0;
-}
-
-#droppable {
-  width: 150px;
-  height: 150px;
-  padding: 0.5em;
-  float: left;
-  margin: 10px;
-  border: 1px solid black;
-}
-
 #sortable1,
 #sortable2,
 #sortable3 {
@@ -218,18 +200,21 @@ table.dataframe tr:nth-child(even) {
 #sortable2 li,
 #sortable3 li {
   margin: 2px;
-  padding: 2px;
-  margin-left: 2px;
-  width: 120px;
-  height: fit-content;
-  word-wrap: break-word !important;
+  /* padding: 2px; */
+  /* margin-left: 2px; */
+  /* width: 2em; */
+  /* height: fit-content; */
+  /* word-wrap: break-word !important; */
 }
 
 .ui-state-default {
   padding: 0;
-  border: 2px solid darkblue;
+  border: 2px solid var(--info);
 }
-
+.ui-sortable-placeholder {
+  border: 1px solid rgb(12,194,170);
+  visibility:visible !important;
+}
 /* Error Display */
 .errorlist {
   font-weight: bold;

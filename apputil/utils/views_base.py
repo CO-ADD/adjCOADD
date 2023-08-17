@@ -114,11 +114,9 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
             object_=self.get_object(pk)
         with transaction.atomic(using=self.transaction_use):
             kwargs={'user': request.user}
-            print("try deletess")
             try:
                 object_.delete(**kwargs)
                 ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_.pk), 'switch entry_astatus -9','Completed')            
-                print("deleted")
             except Exception as err:
                 messages.error(request, err)
 
@@ -235,12 +233,14 @@ class DataExportBaseView(LoginRequiredMixin, View):
     Export Data in EXCEL or CSV Format
     '''
     selected_pks_string = None
-    organism = None 
+    organism = None    # organism PK value - data from a table in organism detail view
 
     def post(self, request):
         items=None
         app_name = request.POST.get('app_name')
         model_name = request.POST.get('model_name')
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        filename = f'{model_name}_{current_date}'
         
         if not app_name or not model_name:
             messages.error(request, "No application or model name were provided for export.")
@@ -260,11 +260,12 @@ class DataExportBaseView(LoginRequiredMixin, View):
             selected_pks = json.loads(self.selected_pks_string)
             items = Model.objects.filter(pk__in=selected_pks)
         else:
-            if self.organism and model_name == 'Drug':
+            if self.organism:
                 displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
                 df = drugtbl.get_Antibiogram_byOrgID(self.organism)
                 df.reset_index(inplace=True)
                 df = df[displaycols]
+                filename = f'Antibiogram_{current_date}'
             else:
                 messages.error(request, "No items were selected for export.")
                 return redirect(request.META['HTTP_REFERER'])
@@ -278,8 +279,6 @@ class DataExportBaseView(LoginRequiredMixin, View):
         if 'adeleted_at' in df.columns:
             df['adeleted_at'] = pd.to_datetime(df['adeleted_at']).dt.tz_localize(None).apply(lambda a: a.date())
 
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        filename = f'{model_name}_{current_date}'
         response = HttpResponse("No valid export option was selected.")
         if "csvdownload" in request.POST:
             response = HttpResponse(content_type='text/csv')

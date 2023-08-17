@@ -1,85 +1,140 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 <!--  -->
 {% block title%} COADD {% endblock %}
 <!--  -->
 {% block content %}
 <div>
+  <!-- Title -->
+  <h2 class="accordion-header" id="headingOne">
+    <button class="collapsed accordion-button mt-0" style="max-height: fit-content" type="button"
+      data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <h2 class="fs-5">
+        <b>
+          {{app_model}}
+        </b>
+      </h2>
+    </button>
+  </h2>
   {%if query_list %}
-  <form action="{% url 'pivoted-table' app_model %}" class="container-fluid w-100 m-5 border" method="POST"
+  <form action="{% url 'pivoted-table' app_model %}" class="container-fluid w-100 border" method="POST"
     id="id_pivottable_form">
     {% csrf_token %}
     <input id="id_column" type="text" name="column" hidden>
     <input id="id_index" type="text" name="index" hidden>
+    <div class="d-flex justify-content-around p-0">
 
-    <h1 m-auto>
-      {{app_model}}
-
-    </h1>
-
-    <div class="d-flex align-items-baseline">
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Data visualization type--</span>
-        <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
-          style="width: fit-content">
-          <option value="1" selected>Pivot table</option>
-          <option value="2">Pie Chart</option>
-          <option value="3">Plot</option>
-        </select>
+      <div class="d-flex align-items-center">
+        <div class="d-flex flex-column mx-2">
+          <span style="font-size: small">--Data visualization type--</span>
+          <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
+            style="width: fit-content">
+            <option value="1" selected>Pivot table</option>
+            <option value="2">Pie Chart</option>
+            <option value="3">Plot</option>
+          </select>
+        </div>
+        <div class="d-flex flex-column mx-2">
+          <span style="font-size: small">--Select Table Values--</span>
+          <select name="values" data-name="data_process_value" class="form-select form-select-sm"
+            aria-label=".form-select-sm example" style="width: fit-content">
+            {%for key, value in model_fields.items %}
+            <option value="{{key}}">
+              {% if value|is_dict %}
+              {% for key in value.keys %}
+              {{key}}
+              {% endfor %}
+              {% else %}
+              {{value}}
+              {% endif %}
+            </option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="d-flex flex-column mx-2">
+          <span style="font-size: small">--Aggregate Functions--</span>
+          <select name="data_function_type" data-name="data_function_type" class="form-select form-select-sm"
+            aria-label=".form-select-sm example" style="width: fit-content">
+            <option value="String_concat" selected>String_concat</option>
+            <option value="Lst">Lst</option>
+            <option value="DR">DR</option>
+            <option value="Inhib">Inhib</option>
+          </select>
+        </div>
+        <button class="submit_data btn ms-3 "><i class="bi bi-arrow-right-circle-fill fs-4"></i></button>
       </div>
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Select Table Values--</span>
-        <select name="values" data-name="data_process_value" class="form-select form-select-sm"
-          aria-label=".form-select-sm example" style="width: fit-content">
+      <button id="download_pt_as_csv" class="btn m-2 float-end border p-1" type="submit" name="download"><i
+          class="fa-solid fa-download text-success"></i> .XLSX</button>
 
-          {%for field in model_fields %}
-          {% if field == select_value %}
-          <option value="{{field}}" selected class="bg-info"> {{field}} </option>
-          {%else%}
-          <option value="{{field}}">{{field}}</option>
-          {%endif%}
-          {%endfor%}
-        </select>
-      </div>
-      <div class="d-flex flex-column mx-2">
-        <span style="font-size: small">--Aggregate Functions--</span>
-        <select name="data_function_type" data-name="data_function_type" class="form-select form-select-sm"
-          aria-label=".form-select-sm example" style="width: fit-content">
-          <option value="String_concat" selected>String_concat</option>
-          <option value="Lst">Lst</option>
-          <option value="DR">DR</option>
-          <option value="Inhib">Inhib</option>
-        </select>
-      </div>
+    </div>
+    <div>
+
+      <h5 class="m-auto">--Model Fields--</h5>
+      {% if select_fields %}
+      <ul id="sortable1" class="connectedSortable mb-0" style="display:flex; width: fit-content;">
+        {% for key, value in model_fields.items %}
+        {% if key not in select_fields %}
+        <li data-name="{{key}}" class="draggable ui-state-default" style="max-width: 80%">
+          {% if value|is_dict %}
+          {% for key in value.keys %}
+          {{key }}
+          {% endfor %}
+          {% else %}
+          {{value}}
+          {% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+
+
+      {% else %}
+      <ul id="sortable1" class="connectedSortable ms-0 mb-0" style=" width: fit-content;">
+        {% for key, value in model_fields.items %}
+        <li data-name="{{key}}" class="draggable ui-state-default text-info">
+          {% if value|is_dict %}
+          {% for key in value.keys %}
+          {{key }}
+          {% endfor %}
+          {% else %}
+          {{value}}
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
+      {% endif %}
+
     </div>
 
     <hr />
-    <div style="height: 100vh;overflow: auto;">
+    <div style="height: 100vh; overflow: auto;">
 
-      <div class>
-        <div class="row">
-          <div class="col-md-2"><button class="submit_data btn me-5 border">Start...</button></div>
-          <div class="col-md-9 mb-2 ">{%include 'utils/drag_n_drop/selectivedrag_hr.html'%}</div>
+      <div>
+        <div class="d-flex">
+
+          <div class="col-md-9 mb-2 ">{% include 'utils/drag_n_drop/selectivedrag_hr.html' %}</div>
         </div>
         <div class="d-flex">
 
+
           <div class="">
-            {%include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
+            {% include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
           </div>
 
           <div id="pivotable" class="flex-fill">
             <div style="height:100vh; overflow: auto;">
-              {%if table%}
+              {% if table %}
               {{table | safe}}
-              {%endif%}
+              {% endif %}
             </div>
           </div>
         </div>
-        <button id="download_pt_as_csv" type="submit" name="download">...Download as CSV</button>
 
       </div>
     </div>
   </form>
-  {%else%}
+  {% else %}
   <h1>Please go to listview create a search. </h1>
   {%endif%}
 </div>
@@ -92,6 +147,14 @@
     $("#sortable1, #sortable2, #sortable3")
       .sortable({
         connectWith: ".connectedSortable",
+        cursorAt: {
+          top: 5,
+          left: 5
+        },
+
+        placeholder: 'bg-info',
+        cursor: 'pointer',
+
       })
       .disableSelection();
   });
