@@ -19,19 +19,13 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 
 from datetime import timedelta
 
-# development version
-from github import Github
-REPO_Org = 'CO-ADD'
-REPO_NAME = 'adjCOADD'
-g=Github()
-repo = g.get_organization(REPO_Org).get_repo(REPO_NAME)
-pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
-VERSION ='1.0'+ str(pull_requests[0].number) +' (Development) - JZG'
-# VERSION = '1.01'
-
-# Development : Local/Work/<none>
+#======================================================================
+# Development : None - Production
+#               Work - Devlopment using imb-co-add-work PostgrSQL database
+#               Local - Devlopment using local PostgrSQL database  
 #DEVELOPMENT=None
 DEVELOPMENT='Work'
+#======================================================================
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +33,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 UPLOAD_DIR = '/opt/django/var/uploads/'
 MEDIA_ROOT= UPLOAD_DIR if os.path.exists(UPLOAD_DIR) else os.path.join(BASE_DIR.parent, 'uploads') 
 MEDIA_URL = ('uploads/')
+
+# Define Version 
+if DEVELOPMENT:
+    # Devlopment/Local
+    from github import Github
+    g=Github()
+    repo = g.get_organization(CO-ADD').get_repo('adjCOADD')
+    pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
+    VERSION ='1.0.'+ str(pull_requests[0].number) +' (Development) - JZG'
+else:
+    # Production
+    VERSION = '1.1'
 
 # Define Structure Images folder path
 if DEVELOPMENT=="Local":
@@ -59,8 +65,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$n
 DEBUG = True if DEVELOPMENT else False
 
 if DEVELOPMENT:
+    # Devlopment/Local
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 else:
+    # Production
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
