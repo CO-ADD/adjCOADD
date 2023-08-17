@@ -25,10 +25,11 @@ class DateField(forms.Field):
         return value
 
 class Orgbatchimg_form(forms.ModelForm):
-    image_file = forms.ImageField(label='Select an image', 
-                                #   validators=[validate_file], 
-                                  required=True)
-
+    field_order = ['image_file','orgbatch_id','image_desc','image_source']
+    image_file = forms.ImageField(label='Select an image file',required=True)
+    image_type = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    image_name = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+ 
     def __init__(self, *args, org=None, **kwargs):
         
         super().__init__(*args, **kwargs)

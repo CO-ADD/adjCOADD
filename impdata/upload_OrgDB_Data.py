@@ -29,8 +29,8 @@ def main():
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
-    prgParser.add_argument("-f","--vitekfolder",default=None,required=False, dest="vitekfolder", action='store', help="Vitek Folder to parse")
-    prgParser.add_argument("-p","--vitekfile",default=None,required=False, dest="vitekfile", action='store', help="Vitek File to parse")
+    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
     prgParser.add_argument("--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
     prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
@@ -91,7 +91,7 @@ def main():
     # Table -------------------------------------------------------------
 
     choiceTables = ['User','Dictionary',
-                    'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgCulture',
+                    'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgBatchImages','OrgCulture',
                     'Drug','MICPub','MICCollab','MICCOADD','BP',
                     'Vitek',
                     ]
@@ -142,6 +142,10 @@ def main():
             dOrg.delete_OrgBatchStock(upload=prgArgs.upload)
             dOrg.update_OrgBatchStock_xls(uploadFile,XlsSheet="Stock",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
+        elif prgArgs.table == 'OrgBatchImages':
+            #prgArgs.upload = False
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.directory} [Upload: {prgArgs.upload}]") 
+            dOrg.update_OrgBatchImg(prgArgs.directory,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'OrgCulture':
             prgArgs.upload = False
@@ -157,12 +161,12 @@ def main():
             dDrug.update_Drug_xls(uploadFile,XlsSheet="Drug", upload=prgArgs.upload,uploaduser=prgArgs.appuser,lower=True)
 
         elif prgArgs.table == 'Vitek':
-            if prgArgs.vitekfolder:
-                logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.vitekfolder} [Upload: {prgArgs.upload}]") 
-                dVitek.update_VitekCards(VitekFolder=prgArgs.vitekfolder,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-            if prgArgs.vitekfile:
-                logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.vitekfile} [Upload: {prgArgs.upload}]") 
-                dVitek.update_VitekCard_single(VitekFile=prgArgs.vitekfile,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
+            if prgArgs.directory:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from folder {prgArgs.directory} [Upload: {prgArgs.upload}]") 
+                dVitek.update_VitekCards(VitekFolder=prgArgs.directory,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            if prgArgs.file:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from file {prgArgs.file} [Upload: {prgArgs.upload}]") 
+                dVitek.update_VitekCard_single(VitekFile=prgArgs.file,upload=prgArgs.upload,uploaduser=prgArgs.appuser,OrgBatchID=prgArgs.orgbatch)
 
         elif prgArgs.table == 'MICPub':
             prgArgs.upload = False

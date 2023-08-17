@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-expand-lg">
   <div class="container-fluid">
     <div class="brand d-flex flex-column align-items-center">
-      <a class="navbar-brand" href="{%url 'index'%}">
+      <a class="navbar-brand" href="{% url 'index' %}">
         {% load static %}
         <img class="d-inline-block align-text-top"
           src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       {% if user.is_authenticated %}
       <div class="navbar-nav">
-        <a class="nav-link" href="{%url 'index'%}">
+        <a class="nav-link" href="{% url 'index' %}">
           <p class="nav-title">
 
             <i class="bi bi-house-fill text-light"></i>
@@ -30,17 +30,17 @@
           <ul class="dropdown-menu">
             <!-- item-->
             <li>
-              <a class="dropdown-item" href="{%url 'org_card'%}">
+              <a class="dropdown-item" href="{% url 'org_card' %}">
                 <p class="nav-title">Organism</p>
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'taxo_card'%}">
+              <a class="dropdown-item" href="{% url 'taxo_card' %}">
                 <p class="nav-title">Taxonomy</p>
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'stock_list_overview'%}">
+              <a class="dropdown-item" href="{% url 'stock_list_overview' %}">
                 <p class="nav-title">Stock</p>
               </a>
             </li>
@@ -48,7 +48,7 @@
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'drug_card'%}">
+              <a class="dropdown-item" href="{% url 'drug_card' %}">
                 <p class="nav-title">Drug</p>
               </a>
             </li>
@@ -57,19 +57,19 @@
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'mic_coadd_list'%}">
+              <a class="dropdown-item" href="{% url 'mic_coadd_list' %}">
                 <p class="nav-title">MIC Antibiogram</p>
               </a>
             </li>
 
             <li>
-              <a class="dropdown-item" href="{%url 'mic_pub_list'%}">
+              <a class="dropdown-item" href="{% url 'mic_pub_list' %}">
                 <p class="nav-title">MIC Public</p>
               </a>
             </li>
 
             <li>
-              <a class="dropdown-item" href="{%url 'breakpoint_list'%}">
+              <a class="dropdown-item" href="{% url 'breakpoint_list' %}">
                 <p class="nav-title">Breakpoints</p>
               </a>
             </li>
@@ -79,17 +79,17 @@
             </li>
 
             <li>
-              <a class="dropdown-item" href="{%url 'vitekcard_list'%}">
+              <a class="dropdown-item" href="{% url 'vitekcard_list' %}">
                 <p class="nav-title">Vitek Card</p>
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'vitekast_list'%}">
+              <a class="dropdown-item" href="{% url 'vitekast_list' %}">
                 <p class="nav-title">Vitek Ast</p>
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{%url 'vitekid_list'%}">
+              <a class="dropdown-item" href="{% url 'vitekid_list' %}">
                 <p class="nav-title">Vitek ID</p>
               </a>
             </li>
@@ -107,7 +107,7 @@
           <ul class="dropdown-menu">
             <!-- item-->
             <li>
-              <a class="dropdown-item" href="{%url 'import-vitek' %}" target="_blank">
+              <a class="dropdown-item" href="{% url 'import-vitek' %}" target="_blank">
                 <p class="nav-title">Vitek</p>
               </a>
             </li>
@@ -123,12 +123,12 @@
           <div class="dropdown d-inline-block">
             <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
-              <img class="rounded-circle header-profile-user" src="{%static 'images/app/avatar.png'%}" alt="Avatar" />
+              <img class="rounded-circle header-profile-user" src="{% static 'images/app/avatar.png' %}" alt="Avatar" />
               <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
 
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="{%url 'userprofile' user.pk %}">
+              <a class="dropdown-item" href="{% url 'userprofile' user.pk %}">
                 <p key="t-profile">
                   Profile 
                   {% if user.permission == 'Admin'%}
@@ -175,7 +175,7 @@
               <a class="dropdown-item version" style="font-size: x-small"
                 href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
                 data-bs-placement="bottom" title="info README
-              " target="_blank">
+                "target="_blank">
                 VERSION 1.0
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
               </a>

@@ -15,7 +15,7 @@ from oraCastDB import oraCastDB
 from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
-from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
+from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock, OrgBatch_Image
 from django.utils.text import slugify
 
 #-----------------------------------------------------------------------------------
@@ -34,12 +34,68 @@ def split_StrList(strList,sep=";"):
         retLst = None
     return(retLst)
 
+#--------------------------------------------------------------------------------------
+def get_subdir(OrgBatchID,binsize=100):
+    """
+     Gets the SubFolder name based on the XX_NNNN with splits into 200
+      GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
+    """
+    _org = OrgBatchID.split('_')
+    return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
+
 #-----------------------------------------------------------------------------------
 def delete_OrgCulture(upload=False):
 #-----------------------------------------------------------------------------------
     if upload:
         logger.info(f"[adjCOADD] Remove all Org_Culture entries ")
         Organism_Culture.objects.all().delete()
+
+
+def update_OrgBatchImg(JpegFolder,upload=False,uploaduser=None):
+    nJpeg = 0
+    if JpegFolder:
+        DirFiles = os.listdir(JpegFolder)
+        JpegFiles = [f for f in DirFiles if f.endswith(".jpeg")]
+        nJpeg = len(JpegFiles)
+
+    if nJpeg>0:
+        vImages = []
+
+        # check user
+        appuser = ApplicationUser.get(uploaduser)
+
+        for i in range(nJpeg):
+            djImg = OrgBatch_Image.get(JpegFiles[i])
+            if djImg is None:
+                djImg = OrgBatch_Image()
+                djImg.image_name = JpegFiles[i]
+                djImg.image_type = 'image/jpeg'
+                djImg.image_source = 'IMB' 
+                djImg.image_desc = 'Initial agarplate'
+                djImg.orgbatch_id = Organism_Batch.get(JpegFiles[i].replace(".jpeg",""))
+                djImg.image_file = f"images/orgbatch/{get_subdir(JpegFiles[i])}/{JpegFiles[i]}"
+            else:
+                djImg.image_type = 'image/jpeg'
+                djImg.image_source = 'IMB' 
+                djImg.image_desc = 'Initial agarplate'
+                djImg.orgbatch_id = Organism_Batch.get(JpegFiles[i].replace(".jpeg",""))
+                djImg.image_file = f"images/orgbatch/{get_subdir(JpegFiles[i])}/{JpegFiles[i]}"
+
+            djImg.clean_Fields()
+            validDict = djImg.validate()
+
+            if validDict:
+                logger.info(f" XX {djImg} {validDict} ")
+                #nProc['notValid'] = nProc['notValid'] + 1
+            else:
+                # --- Upload ---------------------------------------------------------
+                if upload:
+                    # if nProcessed%OutputN == 0:
+                    #     eTime,sTime = nTime.remains(nProcessed)
+                    #     logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} ----> {repr(djCult)}") 
+
+                    djImg.save(user=appuser)
+                    #nProc['Saved'] = nProc['Saved'] + 1 
 
 #-----------------------------------------------------------------------------------
 def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=False, OutputN=50):

@@ -28,7 +28,8 @@ class Drug(AuditModel):
         "drug_othernames":"Other Names",
         "drug_codes":"Drug Codes",
         "drug_type":"Drug Type",
-        "drug_note":"Drug Note"
+        "drug_class":"Drug Class",
+        "drug_subclass":"Sub Class",
     }
     
     Choice_Dictionary = {
@@ -372,8 +373,8 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-#        "card_barcode.orgbatch_id.organism_id":'Org ID',
         "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "drug_id.drug_name":"Drug Name",
         "drug_id.drug_codes":"Codes",
@@ -455,7 +456,8 @@ class VITEK_ID(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode.orgbatch_id.orgbatch_id":"Org ID",
+        "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "id_organism":"Identification",
         "id_probability":"Probability",
@@ -522,14 +524,15 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}}, 
+        "orgbatch_id.organism_id.organism_id":{'Org ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.batch_id":"Batch",
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
-        "mic_type":"Type",
-        "mic":"MIC",
-        "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
-        "run_id":"Run ID",
         "bp_profile":"Break Point",
-        "media":"Media",
+        #"mic_type":"Type",
+        "mic":"MIC",
+        "run_id":"Run ID",
+        #"media":"Media",
     }
     
     Choice_Dictionary = {
@@ -618,15 +621,15 @@ class MIC_Pub(AuditModel):
      Antibiogram from Public sources    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
-        "organism_id.organism_name":{'Organism Name': {'organism_id.organism_id':LinkList['organism_id']}}, 
+    HEADER_FIELDS   = {   
+        "organism_id.organism_id":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
+        "organism_id.organism_name":"Organism",
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
-        "mic_type":"Type",
+        "bp_profile":"BP",
         "mic":"MIC",
         "zone_diameter": "Zone",
-#        "orgbatch_id.organism_id.gen_property":"Organism Resistance Property",
+        "mic_type":"Type",
         "source":"Source",
-        "bp_profile":"BP",
     }
     Choice_Dictionary = {
         'mic_type':'MIC_Type',

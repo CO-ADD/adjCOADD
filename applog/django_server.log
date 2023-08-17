@@ -1,0 +1,1412 @@
+django.utils.autoreload INFO 2023-08-17 13:01:22,114 autoreload 31232 7696 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:03:08,850 autoreload 1180 10424 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 13:03:38,630 basehttp 1180 14968 "GET / HTTP/1.1" 200 12583
+django.server INFO 2023-08-17 13:03:39,189 basehttp 1180 14968 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1693
+django.server INFO 2023-08-17 13:03:39,191 basehttp 1180 14968 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 515
+django.server INFO 2023-08-17 13:03:39,195 basehttp 1180 14968 "GET /static/js/editableTable.js HTTP/1.1" 200 659
+django.server INFO 2023-08-17 13:03:39,201 basehttp 1180 26016 "GET /static/css/table_wrap.css HTTP/1.1" 200 4733
+django.server INFO 2023-08-17 13:03:39,204 basehttp 1180 5648 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89666
+django.server INFO 2023-08-17 13:03:39,211 basehttp 1180 5648 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-08-17 13:03:39,212 basehttp 1180 30504 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-08-17 13:03:39,212 basehttp 1180 14968 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102515
+django.server INFO 2023-08-17 13:03:39,214 basehttp 1180 26016 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-08-17 13:03:39,221 basehttp 1180 5648 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-08-17 13:03:39,223 basehttp 1180 26112 "GET /static/css/custom.css HTTP/1.1" 200 18869
+django.server INFO 2023-08-17 13:03:39,225 basehttp 1180 29884 "GET /static/css/main.6a646761.css HTTP/1.1" 200 169393
+django.server INFO 2023-08-17 13:03:39,724 basehttp 1180 29884 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-08-17 13:03:39,724 basehttp 1180 5648 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-08-17 13:03:39,938 basehttp 1180 29884 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-08-17 13:03:47,135 basehttp 1180 29884 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-08-17 13:03:47,557 basehttp 1180 29884 "GET /index/ HTTP/1.1" 200 19899
+django.server INFO 2023-08-17 13:03:57,893 basehttp 1180 29884 "GET /user_profile/J.Zuegg HTTP/1.1" 200 20540
+django.server INFO 2023-08-17 13:03:57,945 basehttp 1180 29884 "GET /static/js/filter_toggle.js HTTP/1.1" 200 172
+django.server INFO 2023-08-17 13:04:09,739 basehttp 1180 29884 "GET /log_list/ HTTP/1.1" 200 108982
+django.server INFO 2023-08-17 13:06:13,449 basehttp 1180 6996 "GET /log_list/?log_code=&log_proc=&log_type=&log_time=%3E2023&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 109760
+django.server INFO 2023-08-17 13:06:13,507 basehttp 1180 6996 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:06:16,818 basehttp 1180 6996 "GET /log_list/?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 110230
+django.server INFO 2023-08-17 13:06:20,619 basehttp 1180 6996 "GET /log_list/?log_code=&log_proc=&log_type=&log_time=%3C2023&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 109760
+django.server INFO 2023-08-17 13:06:27,457 basehttp 1180 6996 "GET /log_list/?log_code=&log_proc=&log_type=&log_time=March&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 109741
+django.server INFO 2023-08-17 13:06:33,564 basehttp 1180 6996 "GET /log_list/?log_code=&log_proc=&log_type=&log_time=May&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 109725
+django.server INFO 2023-08-17 13:06:44,115 basehttp 1180 6996 "GET /log_list/?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 110230
+django.server INFO 2023-08-17 13:06:44,291 basehttp 1180 6996 - Broken pipe from ('127.0.0.1', 4193)
+django.server INFO 2023-08-17 13:06:48,828 basehttp 1180 16788 "GET /log_list/?log_code=&log_proc=&log_type=&log_time=&log_status=Completed&log_user=&log_object=&log_desc= HTTP/1.1" 200 109793
+django.server INFO 2023-08-17 13:06:53,201 basehttp 1180 16788 "GET /log_list/?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 110230
+django.server INFO 2023-08-17 13:07:17,168 basehttp 1180 16788 "GET /log_list/?csrfmiddlewaretoken=ZxiwkXT8Bem83eJ7YEqGclBb5ZrV1fMVD5PeAztKvHW8q8yPC4mCMqoY7R84UEzD&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=-Log+Time&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 106079
+django.server INFO 2023-08-17 13:08:00,407 basehttp 1180 16788 "GET /log_list/?log_code=&log_proc=FG_0004&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 48269
+django.server INFO 2023-08-17 13:08:04,209 basehttp 1180 16788 "GET /log_list/?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 110230
+django.server INFO 2023-08-17 13:08:10,155 basehttp 1180 16788 "GET /log_list/?log_code=&log_proc=Vitek&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 109693
+django.server INFO 2023-08-17 13:08:17,333 basehttp 1180 16788 "GET /log_list/?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&log_code=&log_proc=&log_type=&log_time=&log_status=&log_user=&log_object=&log_desc= HTTP/1.1" 200 110230
+django.utils.autoreload INFO 2023-08-17 13:14:15,249 autoreload 28164 2608 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:23:43,369 autoreload 24580 22212 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 13:23:49,413 basehttp 24580 14112 "GET / HTTP/1.1" 200 12584
+django.server INFO 2023-08-17 13:23:49,729 basehttp 24580 27652 "GET /static/css/custom.css HTTP/1.1" 200 18869
+django.server INFO 2023-08-17 13:23:49,732 basehttp 24580 14112 "GET /static/css/overideboot_size.css HTTP/1.1" 200 1693
+django.server INFO 2023-08-17 13:23:49,736 basehttp 24580 27652 "GET /static/css/table_wrap.css HTTP/1.1" 200 4733
+django.server INFO 2023-08-17 13:23:49,740 basehttp 24580 14112 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 200 89666
+django.server INFO 2023-08-17 13:23:49,741 basehttp 24580 27652 "GET /static/js/sorting_table.js HTTP/1.1" 200 890
+django.server INFO 2023-08-17 13:23:49,743 basehttp 24580 14112 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 200 515
+django.server INFO 2023-08-17 13:23:49,749 basehttp 24580 27652 "GET /static/js/editableTable.js HTTP/1.1" 200 659
+django.server INFO 2023-08-17 13:23:49,750 basehttp 24580 14112 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 200 260
+django.server INFO 2023-08-17 13:23:49,750 basehttp 24580 23348 "GET /static/js/loadModal.js HTTP/1.1" 200 348
+django.server INFO 2023-08-17 13:23:49,753 basehttp 24580 4856 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 200 102515
+django.server INFO 2023-08-17 13:23:49,756 basehttp 24580 27652 "GET /static/js/resizable.js HTTP/1.1" 200 1691
+django.server INFO 2023-08-17 13:23:49,757 basehttp 24580 23348 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 200 2856
+django.server INFO 2023-08-17 13:23:49,758 basehttp 24580 14112 "GET /static/images/app/avatar.png HTTP/1.1" 200 40220
+django.server INFO 2023-08-17 13:23:49,769 basehttp 24580 5028 "GET /static/css/main.6a646761.css HTTP/1.1" 200 169393
+django.server INFO 2023-08-17 13:23:50,493 basehttp 24580 5028 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 200 3544
+django.server INFO 2023-08-17 13:23:57,366 basehttp 24580 5028 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-08-17 13:23:57,821 basehttp 24580 5028 "GET /index/ HTTP/1.1" 200 19900
+django.server INFO 2023-08-17 13:24:03,836 basehttp 24580 5028 "GET /dorganism/organism_card HTTP/1.1" 200 179919
+django.server INFO 2023-08-17 13:24:03,859 basehttp 24580 5028 "GET /static/js/filter_toggle.js HTTP/1.1" 200 172
+django.server INFO 2023-08-17 13:24:10,294 basehttp 24580 5028 "GET /dorganism/organism_card?csrfmiddlewaretoken=dWSMrxPt88ZDGCYdHXGF3AZgwX8QYM47vpJ250UdqXeDPtt39IGP9QZCisUtQHbk&applysingle=Apply&Search_all_fields=0517&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Class=&ID=&Name=&Strain=&Notes=&MTA= HTTP/1.1" 200 42340
+django.server INFO 2023-08-17 13:24:12,076 basehttp 24580 5028 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 95549
+django.server INFO 2023-08-17 13:24:12,107 basehttp 24580 5028 "GET /static/js/search_organism.js HTTP/1.1" 200 2506
+django.server INFO 2023-08-17 13:24:12,108 basehttp 24580 14112 "GET /static/js/create_childtable.js HTTP/1.1" 200 6724
+django.server INFO 2023-08-17 13:24:12,123 basehttp 24580 5028 "GET /static/js/destroy_childtable.js HTTP/1.1" 200 201
+django.server INFO 2023-08-17 13:24:12,124 basehttp 24580 14112 "GET /static/js/childtable.js HTTP/1.1" 200 750
+django.server INFO 2023-08-17 13:24:12,141 basehttp 24580 14112 "GET /static/js/ajax_simpleupload.js HTTP/1.1" 200 1244
+django.server INFO 2023-08-17 13:24:41,702 basehttp 24580 14112 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 200 46
+django.server INFO 2023-08-17 13:24:44,134 basehttp 24580 14112 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 302 0
+django.server INFO 2023-08-17 13:24:44,552 basehttp 24580 14112 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99349
+django.server INFO 2023-08-17 13:24:44,651 basehttp 24580 14112 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 200 103757
+django.server INFO 2023-08-17 13:28:21,253 basehttp 24580 14112 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99352
+django.server INFO 2023-08-17 13:28:21,275 basehttp 24580 14112 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:28:21,353 basehttp 24580 5028 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-17 13:28:57,007 autoreload 31692 23600 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 13:29:02,548 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99352
+django.server INFO 2023-08-17 13:29:02,651 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:31:13,770 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99337
+django.server INFO 2023-08-17 13:31:13,899 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:32:03,586 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99355
+django.server INFO 2023-08-17 13:32:03,775 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:33:03,026 basehttp 31692 14068 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 200 46
+django.server INFO 2023-08-17 13:33:28,538 basehttp 31692 14068 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 302 0
+django.server INFO 2023-08-17 13:33:29,041 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103166
+django.server INFO 2023-08-17 13:33:29,078 basehttp 31692 21988 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:33:29,223 basehttp 31692 21988 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:33:29,648 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 200 89022
+django.server INFO 2023-08-17 13:34:38,256 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103080
+django.server INFO 2023-08-17 13:34:38,342 basehttp 31692 21988 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:34:38,406 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:36:08,410 basehttp 31692 14068 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 200 46
+django.server INFO 2023-08-17 13:36:36,243 basehttp 31692 14068 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103072
+django.server INFO 2023-08-17 13:36:36,360 basehttp 31692 21988 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 13:36:36,476 log 31692 14068 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/orgbatch/GN_0518.jpeg
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1984, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\utils\deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-08-17 13:36:36,486 basehttp 31692 14068 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 400 169131
+django.server INFO 2023-08-17 13:41:37,264 basehttp 31692 8460 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103072
+django.server INFO 2023-08-17 13:41:37,295 basehttp 31692 8460 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:41:37,378 basehttp 31692 14940 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:41:37,380 basehttp 31692 11072 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 200 89022
+django.server INFO 2023-08-17 13:46:38,167 basehttp 31692 15968 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103072
+django.server INFO 2023-08-17 13:46:38,260 basehttp 31692 23420 "GET /uploads/images/orgbatch/GN_0517.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:46:38,273 basehttp 31692 15968 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:47:51,179 basehttp 31692 15968 "POST /dorganism/deleteBatimg/22 HTTP/1.1" 302 0
+django.server INFO 2023-08-17 13:47:51,607 basehttp 31692 15968 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99308
+django.server INFO 2023-08-17 13:49:25,048 basehttp 31692 15968 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 200 46
+django.utils.autoreload INFO 2023-08-17 13:50:32,534 autoreload 31692 23600 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:50:37,082 autoreload 26240 17068 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:51:16,571 autoreload 26240 17068 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:51:21,273 autoreload 13496 24624 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:51:26,358 autoreload 13496 24624 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:51:30,409 autoreload 16568 27328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:51:37,149 autoreload 16568 27328 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:51:40,711 autoreload 22852 22896 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:51:52,518 autoreload 22852 22896 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:51:56,126 autoreload 4528 24328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:52:03,682 autoreload 4528 24328 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:52:08,930 autoreload 18460 10280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:52:15,489 autoreload 18460 10280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:52:19,854 autoreload 26292 9868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:52:26,871 autoreload 26292 9868 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:52:30,986 autoreload 30128 18864 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:52:42,784 autoreload 30128 18864 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:52:47,034 autoreload 27824 25064 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:52:56,101 autoreload 27824 25064 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:53:00,671 autoreload 28796 11472 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:53:11,775 autoreload 28796 11472 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:54:38,814 autoreload 2464 6776 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 13:54:44,910 basehttp 2464 16468 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99313
+django.server INFO 2023-08-17 13:54:44,981 basehttp 2464 16468 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:54:45,301 basehttp 2464 16468 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-17 13:55:19,964 autoreload 2464 6776 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:55:24,496 autoreload 10588 4256 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:55:29,476 autoreload 10588 4256 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:55:32,003 autoreload 13212 18984 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:56:18,192 autoreload 13212 18984 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:56:22,579 autoreload 29796 24736 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:56:28,406 autoreload 29796 24736 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:56:32,378 autoreload 5376 23316 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:56:40,025 autoreload 5376 23316 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:56:43,206 autoreload 7132 4632 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:56:51,458 autoreload 7132 4632 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:56:54,960 autoreload 25736 10124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:56:59,806 autoreload 25736 10124 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:57:03,282 autoreload 22304 12540 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:57:12,926 autoreload 22304 12540 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:57:16,019 autoreload 8172 27232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:57:21,885 autoreload 8172 27232 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:57:24,658 autoreload 26972 22212 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:57:29,379 autoreload 26972 22212 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:57:32,411 autoreload 20488 13160 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:57:36,792 autoreload 20488 13160 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 13:57:39,552 autoreload 30660 21484 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 13:58:33,041 autoreload 21508 30100 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 13:58:45,028 basehttp 21508 17488 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99318
+django.server INFO 2023-08-17 13:58:45,230 basehttp 21508 17488 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 13:58:46,973 basehttp 21508 17488 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99318
+django.server INFO 2023-08-17 13:59:01,936 basehttp 21508 17488 "POST /dorganism/createbatchimg/GN_0517 HTTP/1.1" 200 46
+django.server INFO 2023-08-17 13:59:08,955 basehttp 21508 17488 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 99318
+django.utils.autoreload INFO 2023-08-17 14:33:23,424 autoreload 26728 29860 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 14:33:29,439 basehttp 26728 10280 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103102
+django.server INFO 2023-08-17 14:33:29,482 basehttp 26728 10280 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 14:33:29,721 basehttp 26728 12644 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 14:33:29,749 log 26728 10280 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:33:29,750 basehttp 26728 10280 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.utils.autoreload INFO 2023-08-17 14:35:51,115 autoreload 26728 29860 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 14:35:53,452 autoreload 21120 22008 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 14:36:23,047 basehttp 21120 18460 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:36:23,228 log 21120 18460 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:36:23,229 basehttp 21120 18460 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:36:24,333 basehttp 21120 18460 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:36:24,474 log 21120 18460 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:36:24,475 basehttp 21120 18460 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:36:38,331 basehttp 21120 18460 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:36:38,468 log 21120 18460 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:36:38,470 basehttp 21120 18460 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.utils.autoreload INFO 2023-08-17 14:36:53,061 autoreload 21120 22008 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 14:36:55,685 autoreload 22052 8568 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 14:36:57,986 basehttp 22052 28732 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:36:58,123 log 22052 28732 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:36:58,123 basehttp 22052 28732 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:37:10,260 basehttp 22052 28732 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:37:10,379 log 22052 28732 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:37:10,380 basehttp 22052 28732 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:43:34,036 basehttp 22052 3364 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 14:43:34,163 basehttp 22052 3364 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 14:43:34,170 log 22052 19248 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:43:34,170 basehttp 22052 19248 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 14:43:34,359 log 22052 19248 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:43:34,359 basehttp 22052 19248 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:48:38,153 basehttp 22052 20752 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 14:48:39,789 basehttp 22052 20752 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 14:48:39,937 log 22052 19708 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:48:39,948 basehttp 22052 19708 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 14:48:41,996 log 22052 19708 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:48:41,996 basehttp 22052 19708 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:53:43,037 basehttp 22052 22664 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 14:53:43,160 basehttp 22052 22664 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 14:53:43,183 log 22052 31488 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:53:43,183 basehttp 22052 31488 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 14:58:43,971 basehttp 22052 21204 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 14:58:44,076 log 22052 21204 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 14:58:44,076 basehttp 22052 21204 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:03:45,067 basehttp 22052 21624 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 15:03:45,105 basehttp 22052 21624 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:03:45,177 log 22052 23364 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:03:45,178 basehttp 22052 23364 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:03:45,183 basehttp 22052 23996 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.server INFO 2023-08-17 15:08:45,972 basehttp 22052 31040 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 15:08:46,082 log 22052 31040 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:08:46,082 basehttp 22052 31040 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:13:46,996 basehttp 22052 26672 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 15:13:47,129 basehttp 22052 26672 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:13:47,133 log 22052 9660 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:13:47,134 basehttp 22052 9660 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:18:47,977 basehttp 22052 9308 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 15:18:48,014 basehttp 22052 9308 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:18:48,083 log 22052 28784 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:18:48,083 basehttp 22052 28784 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:23:48,956 basehttp 22052 23316 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.server INFO 2023-08-17 15:23:49,086 basehttp 22052 23316 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:23:49,112 log 22052 8136 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:23:49,113 basehttp 22052 8136 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:28:50,025 basehttp 22052 26468 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 103112
+django.request WARNING 2023-08-17 15:28:50,149 log 22052 26468 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:28:50,151 basehttp 22052 26468 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.server INFO 2023-08-17 15:30:08,031 basehttp 22052 26468 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 106920
+django.request WARNING 2023-08-17 15:30:08,143 log 22052 26468 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:30:08,144 basehttp 22052 26468 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:30:08,176 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:30:08,177 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:30:28,799 basehttp 22052 30612 "GET /dorganism/organism/GN_0518 HTTP/1.1" 200 94850
+django.request WARNING 2023-08-17 15:30:28,905 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:30:28,906 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:33:42,773 basehttp 22052 30612 "GET /dorganism/organism/GN_0518 HTTP/1.1" 200 94852
+django.request WARNING 2023-08-17 15:33:42,900 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:33:42,901 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:37:17,391 basehttp 22052 30612 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 15:39:45,279 basehttp 22052 30612 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 106946
+django.server INFO 2023-08-17 15:39:45,440 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:39:45,455 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:39:45,456 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:39:45,873 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:39:45,874 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:39:46,167 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:39:46,169 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:39:46,170 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:39:46,171 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:41:49,424 basehttp 22052 30612 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 107040
+django.request WARNING 2023-08-17 15:41:49,555 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:41:49,556 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:41:49,626 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:41:49,626 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:41:50,049 log 22052 30612 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:41:50,050 basehttp 22052 30612 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:41:50,064 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:41:50,064 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:43:21,113 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:43:21,114 basehttp 22052 17932 "GET //uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:43:21,320 log 22052 17932 Not Found: /favicon.ico
+django.server WARNING 2023-08-17 15:43:21,321 basehttp 22052 17932 "GET /favicon.ico HTTP/1.1" 404 6167
+django.request WARNING 2023-08-17 15:43:39,800 log 22052 17932 Not Found: /uploads/images/orgbatch/
+django.server WARNING 2023-08-17 15:43:39,802 basehttp 22052 17932 "GET //uploads/images/orgbatch/ HTTP/1.1" 404 6374
+django.request WARNING 2023-08-17 15:45:35,258 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:45:35,258 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:46:22,289 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:46:22,290 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:47:43,338 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:47:43,339 basehttp 22052 17932 "GET //uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:51:41,735 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:51:41,736 basehttp 22052 17932 "GET //uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:51:45,695 basehttp 22052 17932 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 107112
+django.request WARNING 2023-08-17 15:51:45,849 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:51:45,850 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:51:45,894 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:51:45,895 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:51:46,311 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:51:46,311 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:51:46,312 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:51:46,313 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:51:47,834 basehttp 22052 17932 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 107112
+django.request WARNING 2023-08-17 15:51:48,010 log 22052 17932 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:51:48,011 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:51:48,014 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:51:48,014 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:51:48,400 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:51:48,401 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:51:48,495 log 22052 17932 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1984, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\utils\deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-08-17 15:51:48,500 basehttp 22052 17932 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 400 169184
+django.request WARNING 2023-08-17 15:52:14,613 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:52:14,614 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:54:29,125 log 22052 12604 Not Found: /uploads/orgbatch/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:54:29,126 basehttp 22052 12604 "GET /uploads/orgbatch/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6473
+django.request WARNING 2023-08-17 15:54:33,137 log 22052 12604 Not Found: /uploads/GN_0500/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:54:33,137 basehttp 22052 12604 "GET /uploads/GN_0500/GN_0518_01.jpeg HTTP/1.1" 404 6437
+django.request WARNING 2023-08-17 15:54:45,560 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0518_01.jpeg
+django.server WARNING 2023-08-17 15:54:45,561 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0518_01.jpeg HTTP/1.1" 404 6469
+django.server INFO 2023-08-17 15:55:05,921 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:55:38,852 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:55:38,853 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:55:43,525 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:55:43,525 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.server INFO 2023-08-17 15:56:59,672 basehttp 22052 12604 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 107112
+django.server INFO 2023-08-17 15:56:59,734 basehttp 22052 12604 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 15:56:59,799 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0518.jpeg HTTP/1.1" 304 0
+django.request WARNING 2023-08-17 15:56:59,809 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:56:59,810 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:57:00,049 log 22052 12604 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:57:00,050 basehttp 22052 12604 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 15:57:00,090 log 22052 5576 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 15:57:00,090 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 15:58:12,115 log 22052 5576 Not Found: /uploads/images/orgbatch/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 15:58:12,116 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0517_01.jpeg HTTP/1.1" 404 6469
+django.server INFO 2023-08-17 16:02:00,710 basehttp 22052 5576 "GET /dorganism/organism/GN_0517 HTTP/1.1" 200 107112
+django.request WARNING 2023-08-17 16:02:00,878 log 22052 5576 Not Found: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+django.server WARNING 2023-08-17 16:02:00,879 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 404 6489
+django.request WARNING 2023-08-17 16:02:00,885 log 22052 31484 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 16:02:00,886 basehttp 22052 31484 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 16:02:01,371 log 22052 5576 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 16:02:01,385 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.request WARNING 2023-08-17 16:02:01,448 log 22052 31484 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /uploads/images/orgbatch/GN_0500/GN_0518.jpeg
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.SerializationFailure: could not serialize access due to concurrent update
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 990, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\base.py", line 1054, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1231, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1984, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: could not serialize access due to concurrent update
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\utils\deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+django.server WARNING 2023-08-17 16:02:01,451 basehttp 22052 31484 "GET /uploads/images/orgbatch/GN_0500/GN_0518.jpeg HTTP/1.1" 400 169131
+django.request WARNING 2023-08-17 16:03:01,953 log 22052 5576 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 16:03:01,953 basehttp 22052 5576 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.utils.autoreload INFO 2023-08-17 16:04:54,010 autoreload 11288 28948 Watching for file changes with StatReloader
+django.request WARNING 2023-08-17 16:04:58,065 log 11288 28524 Not Found: /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg
+django.server WARNING 2023-08-17 16:04:58,068 basehttp 11288 28524 "GET /uploads/images/orgbatch/GN_0500/GN_0517_01.jpeg HTTP/1.1" 404 6501
+django.utils.autoreload INFO 2023-08-17 16:24:18,174 autoreload 16804 26784 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:24:39,294 basehttp 16804 29988 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-08-17 16:24:39,789 basehttp 16804 29988 "GET /index/ HTTP/1.1" 200 19900
+django.server INFO 2023-08-17 16:24:39,824 basehttp 16804 29988 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 16:24:44,566 basehttp 16804 29988 "GET /ddrug/vitekcard_list HTTP/1.1" 200 195817
+django.server INFO 2023-08-17 16:25:01,103 basehttp 16804 29988 "GET /ddrug/vitekast_list HTTP/1.1" 200 128047
+django.utils.autoreload INFO 2023-08-17 16:26:22,885 autoreload 16804 26784 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:26:25,098 autoreload 31300 21368 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:26:34,288 autoreload 31300 21368 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:26:36,321 autoreload 30976 29228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:27:00,063 autoreload 30976 29228 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:27:01,918 autoreload 27388 28140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:27:07,343 autoreload 27388 28140 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:27:09,055 autoreload 24588 25232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:27:29,272 autoreload 24588 25232 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:27:31,549 autoreload 17764 23460 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:27:35,648 autoreload 17764 23460 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:27:37,481 autoreload 25064 8088 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:27:40,261 autoreload 25064 8088 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:27:42,221 autoreload 23852 25280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:28:05,750 autoreload 23852 25280 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:28:07,634 autoreload 29360 25796 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:28:15,280 basehttp 29360 29740 "GET /ddrug/vitekast_list HTTP/1.1" 200 128047
+django.utils.autoreload INFO 2023-08-17 16:28:28,836 autoreload 29360 25796 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:28:30,819 autoreload 23564 18264 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:28:38,470 autoreload 23564 18264 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:28:40,366 autoreload 31196 20664 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:28:43,453 autoreload 31196 20664 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:28:45,390 autoreload 19104 31504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:29:46,464 autoreload 20072 25612 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:30:10,625 autoreload 28856 25800 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:30:18,782 basehttp 28856 25840 "GET /ddrug/vitekast_list HTTP/1.1" 200 133820
+django.utils.autoreload INFO 2023-08-17 16:31:32,127 autoreload 28856 25800 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:31:33,976 autoreload 20416 24768 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:31:44,107 autoreload 20416 24768 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:31:46,013 autoreload 31184 27968 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:31:53,278 basehttp 31184 24892 "GET /ddrug/vitekast_list HTTP/1.1" 200 135032
+django.server INFO 2023-08-17 16:32:00,146 basehttp 31184 24892 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=wNb80ZFZOoAjLGkssuO12NLf2HwM6cndOg2oEsKJ6dPjUxPiUfOb83LBOcipY7uq&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=GN_0001&Org_Name=&Drug_Name=&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 32007
+django.server INFO 2023-08-17 16:32:05,487 basehttp 31184 24892 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Org_Name=&Drug_Name=&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 136237
+django.server INFO 2023-08-17 16:32:12,967 basehttp 31184 24892 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=oeAef1wrOxwGDsTOjXPRhZdqkNWOKrCzGHruTuBb6mLGMjoELIP1nfdM6iIrCmJM&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=844&Org_Name=&Drug_Name=&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 120933
+django.server INFO 2023-08-17 16:32:22,989 basehttp 31184 24892 "GET /ddrug/vitekast_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Org_Name=&Drug_Name=&mic=&bp_profile=&bp_comment=&bp_source=&organism= HTTP/1.1" 200 136237
+django.utils.autoreload INFO 2023-08-17 16:32:40,345 autoreload 31184 27968 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:32:42,413 autoreload 30792 25112 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:32:58,600 autoreload 30792 25112 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:33:00,498 autoreload 26352 31548 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:33:04,729 autoreload 26352 31548 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:33:06,678 autoreload 26440 25936 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:33:24,966 basehttp 26440 3564 "GET /ddrug/vitekid_list HTTP/1.1" 200 86155
+django.utils.autoreload INFO 2023-08-17 16:33:40,414 autoreload 26440 25936 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:33:42,396 autoreload 27076 13212 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:33:50,064 autoreload 27076 13212 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:33:52,110 autoreload 27764 24340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:34:01,745 autoreload 23960 21712 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:34:50,264 autoreload 4880 15048 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:36:11,615 autoreload 14688 23636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:37:08,328 autoreload 14688 23636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:37:10,361 autoreload 30488 23112 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:37:18,102 autoreload 27964 29144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:38:14,370 autoreload 5776 2348 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:38:40,725 autoreload 5776 2348 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:38:42,652 autoreload 27636 30428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:39:14,340 autoreload 24024 6532 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:39:47,619 autoreload 24024 6532 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:39:49,680 autoreload 26064 31224 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:39:53,981 autoreload 10760 24680 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:39:59,878 basehttp 10760 26488 "GET /ddrug/vitekid_list HTTP/1.1" 200 75798
+django.server INFO 2023-08-17 16:40:07,272 basehttp 10760 26488 "GET /ddrug/vitekast_list HTTP/1.1" 200 135032
+django.utils.autoreload INFO 2023-08-17 16:40:22,681 autoreload 10760 24680 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:40:24,834 autoreload 30900 30156 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:41:00,132 autoreload 13192 31120 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:41:08,228 autoreload 13192 31120 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:41:10,359 autoreload 26948 30636 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:41:19,986 basehttp 26948 11564 "GET /ddrug/vitekid_list HTTP/1.1" 200 96055
+django.utils.autoreload INFO 2023-08-17 16:41:50,072 autoreload 26948 30636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:41:52,084 autoreload 29876 19840 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:42:00,973 autoreload 29876 19840 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:42:03,122 autoreload 27276 11972 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:42:10,212 autoreload 27276 11972 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:42:12,309 autoreload 9740 21816 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:42:16,410 autoreload 9740 21816 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:42:18,429 autoreload 19588 14968 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:42:23,631 autoreload 19588 14968 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:42:25,451 autoreload 24300 27920 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:42:34,202 autoreload 24300 27920 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:42:36,485 autoreload 10500 6484 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:42:39,724 basehttp 10500 29716 "GET /ddrug/vitekid_list HTTP/1.1" 200 96874
+django.server INFO 2023-08-17 16:42:52,323 basehttp 10500 29716 "GET /ddrug/breakpoint HTTP/1.1" 200 124635
+django.server INFO 2023-08-17 16:43:18,840 basehttp 10500 29716 "GET /ddrug/vitekcard_list HTTP/1.1" 200 195817
+django.server INFO 2023-08-17 16:43:26,322 basehttp 10500 29716 "GET /ddrug/mic-pub_list HTTP/1.1" 200 107145
+django.server INFO 2023-08-17 16:43:58,208 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131005
+django.server INFO 2023-08-17 16:44:03,830 basehttp 10500 29716 "GET /ddrug/mic-pub_list HTTP/1.1" 200 107145
+django.server INFO 2023-08-17 16:44:09,829 basehttp 10500 29716 "GET /ddrug/vitekid_list HTTP/1.1" 200 96874
+django.server INFO 2023-08-17 16:44:20,191 basehttp 10500 29716 "GET /ddrug/vitekast_list HTTP/1.1" 200 135032
+django.server INFO 2023-08-17 16:44:33,989 basehttp 10500 29716 "GET /ddrug/vitekcard_list HTTP/1.1" 200 195817
+django.server INFO 2023-08-17 16:44:38,386 basehttp 10500 29716 "GET /ddrug/vitekid_list HTTP/1.1" 200 96874
+django.server INFO 2023-08-17 16:44:51,482 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131005
+django.server INFO 2023-08-17 16:46:19,210 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131019
+django.server INFO 2023-08-17 16:46:24,686 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131019
+django.server INFO 2023-08-17 16:46:26,177 basehttp 10500 29716 "GET /ddrug/mic-coadd_card HTTP/1.1" 200 160534
+django.server INFO 2023-08-17 16:46:30,826 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131019
+django.server INFO 2023-08-17 16:46:41,732 basehttp 10500 29716 "GET /ddrug/breakpoint HTTP/1.1" 200 124635
+django.server INFO 2023-08-17 16:47:32,521 basehttp 10500 29716 "GET /ddrug/mic-pub_list HTTP/1.1" 200 107161
+django.server INFO 2023-08-17 16:47:32,547 basehttp 10500 29716 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 16:47:50,104 basehttp 10500 29716 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 131019
+django.utils.autoreload INFO 2023-08-17 16:57:17,325 autoreload 10500 6484 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:57:19,120 autoreload 27980 28856 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:58:00,610 autoreload 27980 28856 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:58:02,460 autoreload 9696 4788 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:58:34,825 autoreload 9696 4788 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:58:36,716 autoreload 9920 19780 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:58:40,734 autoreload 9920 19780 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:58:42,483 autoreload 30088 30372 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:58:48,886 basehttp 30088 26332 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 117668
+django.utils.autoreload INFO 2023-08-17 16:59:22,411 autoreload 30088 30372 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:59:24,683 autoreload 27504 6084 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 16:59:28,642 autoreload 27504 6084 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:59:30,427 autoreload 25676 10636 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 16:59:36,411 basehttp 25676 29788 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 130616
+django.utils.autoreload INFO 2023-08-17 16:59:44,573 autoreload 25676 10636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 16:59:46,712 autoreload 24740 6056 Watching for file changes with StatReloader
+django.request ERROR 2023-08-17 16:59:51,998 log 24740 19548 Internal Server Error: /ddrug/mic-coadd_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 364, in get_values
+    obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 333, in iter_foreignkey
+    obj_parent=getattr(self, nameArray[0])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MIC_COADD' object has no attribute 'card_barcode'
+django.server ERROR 2023-08-17 16:59:52,005 basehttp 24740 19548 "GET /ddrug/mic-coadd_list HTTP/1.1" 500 341567
+django.utils.autoreload INFO 2023-08-17 16:59:59,203 autoreload 24740 6056 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:00:01,151 autoreload 25800 14552 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:00:05,252 autoreload 25800 14552 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:00:07,197 autoreload 27080 10536 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:00:11,467 basehttp 27080 25160 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 136296
+django.utils.autoreload INFO 2023-08-17 17:00:35,546 autoreload 27080 10536 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:00:37,475 autoreload 23028 29672 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:00:41,455 autoreload 23028 29672 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:00:43,345 autoreload 5292 22096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:00:58,215 autoreload 5292 22096 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:01:00,153 autoreload 28820 24660 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:01:06,977 basehttp 28820 11396 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 136296
+django.utils.autoreload INFO 2023-08-17 17:02:14,182 autoreload 28820 24660 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:02:16,128 autoreload 30356 15112 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:02:20,193 autoreload 30356 15112 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:02:22,214 autoreload 16816 25212 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:02:26,222 autoreload 16816 25212 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:02:28,020 autoreload 24164 19544 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:02:40,736 autoreload 24164 19544 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:02:42,896 autoreload 27760 31504 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:02:47,382 basehttp 27760 29084 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 138689
+django.utils.autoreload INFO 2023-08-17 17:03:14,609 autoreload 27760 31504 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:03:16,546 autoreload 25580 16568 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:03:23,331 basehttp 25580 27864 "GET /ddrug/vitekid_list HTTP/1.1" 200 96874
+django.utils.autoreload INFO 2023-08-17 17:03:33,219 autoreload 25580 16568 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:03:35,780 autoreload 30652 5776 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:03:41,943 basehttp 30652 14400 "GET /ddrug/vitekid_list HTTP/1.1" 200 96055
+django.server INFO 2023-08-17 17:04:00,099 basehttp 30652 14400 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 138081
+django.utils.autoreload INFO 2023-08-17 17:04:46,940 autoreload 30652 5776 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:04:49,019 autoreload 22448 14372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:04:57,836 autoreload 22448 14372 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:04:59,933 autoreload 26440 12148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:05:14,354 autoreload 13608 10068 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:05:22,151 basehttp 13608 21492 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 137899
+django.server INFO 2023-08-17 17:05:29,322 basehttp 13608 21492 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 137899
+django.utils.autoreload INFO 2023-08-17 17:05:40,457 autoreload 13608 10068 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:05:42,710 autoreload 7284 31324 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:05:54,050 autoreload 7284 31324 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:05:55,917 autoreload 20172 29400 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:06:04,222 basehttp 20172 30560 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 138465
+django.utils.autoreload INFO 2023-08-17 17:06:29,876 autoreload 20172 29400 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:06:32,057 autoreload 17740 2544 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:06:46,175 autoreload 17740 2544 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:06:48,075 autoreload 28444 19616 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:07:01,683 basehttp 28444 30652 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 137892
+django.request ERROR 2023-08-17 17:07:07,951 log 28444 30652 Internal Server Error: /ddrug/mic-coadd_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 172, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 125, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1225, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'BP' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, astatus, aupdated, aupdated_at, aupdated_id, bp_profile, bp_source, drug_id, drug_id_id, dye, id, media, mic, mic_type, mic_type_id, mic_unit, orgbatch_id, orgbatch_id_id, plate_material, plate_material_id, plate_size, plate_size_id, run_id, run_id_id, testplate_id, testwell_id
+django.server ERROR 2023-08-17 17:07:07,958 basehttp 28444 30652 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=9QnabPabx5Up1DNxDumvskQ1J8R6xx6brjeqPifVPU9pauin5fmFyAQnvDDJpsdo&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&drug_id__drug_name=&MIC=&bp_profile=&Org_ID=&Org_Name=&BP=R HTTP/1.1" 500 166087
+django.request ERROR 2023-08-17 17:07:16,925 log 28444 30652 Internal Server Error: /ddrug/mic-coadd_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 172, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 125, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-08-17 17:07:16,929 basehttp 28444 30652 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=9QnabPabx5Up1DNxDumvskQ1J8R6xx6brjeqPifVPU9pauin5fmFyAQnvDDJpsdo&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&drug_id__drug_name=&MIC=&bp_profile=&Org_ID=&Org_Name=coli&BP=R HTTP/1.1" 500 167265
+django.server INFO 2023-08-17 17:07:22,851 basehttp 28444 30652 "GET /dorganism/organism/GN_0001 HTTP/1.1" 200 101604
+django.server INFO 2023-08-17 17:07:28,973 basehttp 28444 30652 "GET /dorganism/organism/GN_0001 HTTP/1.1" 200 101604
+django.server INFO 2023-08-17 17:12:26,758 basehttp 28444 30652 "GET /ddrug/vitekast_list HTTP/1.1" 200 135032
+django.server INFO 2023-08-17 17:12:26,796 basehttp 28444 30652 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 17:12:31,107 basehttp 28444 30652 "GET /ddrug/vitekid_list HTTP/1.1" 200 96055
+django.server INFO 2023-08-17 17:14:12,838 basehttp 28444 30652 "GET /dorganism/organism_card HTTP/1.1" 200 179919
+django.server INFO 2023-08-17 17:14:14,997 basehttp 28444 30652 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 129762
+django.request WARNING 2023-08-17 17:14:15,206 log 28444 30652 Not Found: /uploads/images/orgbatch/git-add-commit.png
+django.server WARNING 2023-08-17 17:14:15,206 basehttp 28444 30652 "GET /uploads/images/orgbatch/git-add-commit.png HTTP/1.1" 404 6481
+django.request WARNING 2023-08-17 17:14:15,221 log 28444 6108 Not Found: /uploads/images/orgbatch/GN_519.bmp
+django.server WARNING 2023-08-17 17:14:15,222 basehttp 28444 6108 "GET /uploads/images/orgbatch/GN_519.bmp HTTP/1.1" 404 6449
+django.request WARNING 2023-08-17 17:14:15,310 log 28444 30652 Not Found: /uploads/images/orgbatch/Screenshot_2022-10-17_153425.png
+django.server WARNING 2023-08-17 17:14:15,310 basehttp 28444 30652 "GET /uploads/images/orgbatch/Screenshot_2022-10-17_153425.png HTTP/1.1" 404 6537
+django.request WARNING 2023-08-17 17:14:15,341 log 28444 6108 Not Found: /uploads/images/orgbatch/CO-ADD_Logo_Baseline_8NiRVRf.jpg
+django.server WARNING 2023-08-17 17:14:15,342 basehttp 28444 6108 "GET /uploads/images/orgbatch/CO-ADD_Logo_Baseline_8NiRVRf.jpg HTTP/1.1" 404 6537
+django.request WARNING 2023-08-17 17:14:15,396 log 28444 30652 Not Found: /uploads/images/orgbatch/favicon-16x16.png
+django.server WARNING 2023-08-17 17:14:15,396 basehttp 28444 30652 "GET /uploads/images/orgbatch/favicon-16x16.png HTTP/1.1" 404 6477
+django.request WARNING 2023-08-17 17:14:15,436 log 28444 6108 Not Found: /uploads/images/orgbatch/Screenshot_2022-10-17_153425_ulpf3GX.png
+django.server WARNING 2023-08-17 17:14:15,437 basehttp 28444 6108 "GET /uploads/images/orgbatch/Screenshot_2022-10-17_153425_ulpf3GX.png HTTP/1.1" 404 6569
+django.server INFO 2023-08-17 17:14:20,102 basehttp 28444 6108 "POST /dorganism/organism/FG_0004 HTTP/1.1" 200 8819
+django.server INFO 2023-08-17 17:14:28,573 basehttp 28444 6108 "GET /index/ HTTP/1.1" 200 19900
+django.server INFO 2023-08-17 17:14:31,344 basehttp 28444 6108 "GET /dorganism/organism_card HTTP/1.1" 200 179919
+django.server INFO 2023-08-17 17:14:34,197 basehttp 28444 6108 "GET /dorganism/organism/FG_0004 HTTP/1.1" 200 129762
+django.request WARNING 2023-08-17 17:14:34,402 log 28444 6108 Not Found: /uploads/images/orgbatch/git-add-commit.png
+django.server WARNING 2023-08-17 17:14:34,408 basehttp 28444 6108 "GET /uploads/images/orgbatch/git-add-commit.png HTTP/1.1" 404 6481
+django.request WARNING 2023-08-17 17:14:34,414 log 28444 30652 Not Found: /uploads/images/orgbatch/GN_519.bmp
+django.server WARNING 2023-08-17 17:14:34,421 basehttp 28444 30652 "GET /uploads/images/orgbatch/GN_519.bmp HTTP/1.1" 404 6449
+django.request WARNING 2023-08-17 17:14:34,448 log 28444 24164 Not Found: /uploads/images/orgbatch/CO-ADD_Logo_Baseline_8NiRVRf.jpg
+django.server WARNING 2023-08-17 17:14:34,453 basehttp 28444 24164 "GET /uploads/images/orgbatch/CO-ADD_Logo_Baseline_8NiRVRf.jpg HTTP/1.1" 404 6537
+django.request WARNING 2023-08-17 17:14:34,460 log 28444 27760 Not Found: /uploads/images/orgbatch/favicon-16x16.png
+django.request WARNING 2023-08-17 17:14:34,463 log 28444 17716 Not Found: /uploads/images/orgbatch/Screenshot_2022-10-17_153425.png
+django.server WARNING 2023-08-17 17:14:34,463 basehttp 28444 27760 "GET /uploads/images/orgbatch/favicon-16x16.png HTTP/1.1" 404 6477
+django.server WARNING 2023-08-17 17:14:34,464 basehttp 28444 17716 "GET /uploads/images/orgbatch/Screenshot_2022-10-17_153425.png HTTP/1.1" 404 6537
+django.request WARNING 2023-08-17 17:14:34,467 log 28444 27008 Not Found: /uploads/images/orgbatch/Screenshot_2022-10-17_153425_ulpf3GX.png
+django.server WARNING 2023-08-17 17:14:34,468 basehttp 28444 27008 "GET /uploads/images/orgbatch/Screenshot_2022-10-17_153425_ulpf3GX.png HTTP/1.1" 404 6569
+django.server INFO 2023-08-17 17:14:41,505 basehttp 28444 27008 "GET /dorganism/organism/GN_0001 HTTP/1.1" 200 101604
+django.server INFO 2023-08-17 17:15:19,596 basehttp 28444 27008 "POST /dorganism/organism/GN_0001 HTTP/1.1" 200 30116
+django.server INFO 2023-08-17 17:19:52,837 basehttp 28444 27008 "GET /ddrug/vitekid_list HTTP/1.1" 200 96055
+django.utils.autoreload INFO 2023-08-17 17:20:20,671 autoreload 28444 19616 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:20:23,892 autoreload 12540 6372 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:20:32,069 autoreload 12540 6372 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:20:36,665 autoreload 24024 13076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:20:46,057 autoreload 24024 13076 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:20:51,702 autoreload 23636 17992 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:20:56,925 basehttp 23636 26240 "GET /ddrug/vitekid_list HTTP/1.1" 200 96862
+django.server INFO 2023-08-17 17:21:09,800 basehttp 23636 26240 "GET /ddrug/mic-pub_list HTTP/1.1" 200 107161
+django.server INFO 2023-08-17 17:21:15,759 basehttp 23636 26240 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 137926
+django.utils.autoreload INFO 2023-08-17 17:21:42,972 autoreload 23636 17992 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:21:45,882 autoreload 4880 25908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:21:54,504 autoreload 4880 25908 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:21:58,219 autoreload 15244 11700 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:22:06,943 autoreload 15244 11700 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:22:09,683 autoreload 29404 23868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:22:15,765 autoreload 29404 23868 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:22:18,325 autoreload 27516 31140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:22:39,816 autoreload 27516 31140 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:22:42,844 autoreload 2416 29740 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:23:36,313 autoreload 22268 5592 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:30:59,937 autoreload 30320 27564 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:31:08,945 basehttp 30320 31316 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 150690
+django.server INFO 2023-08-17 17:31:18,857 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=wOG6tNFhctPi41BBEnfB2mNpdPNKi3xOOhxm7gK1ui4idS6r68fL8CNLZkznaYE1&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=GN_0001&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 131626
+django.server INFO 2023-08-17 17:31:24,226 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 151925
+django.request ERROR 2023-08-17 17:31:32,852 log 30320 31316 Internal Server Error: /ddrug/mic-coadd_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 172, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 125, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-08-17 17:31:32,861 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=8oh7DiS68NxySZ6R2Yv2Ex9ASOwNXkpRqR8nhLXQqCMy1QBHuJvcKN9WEjiqPfw4&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=coli&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 500 168180
+django.server INFO 2023-08-17 17:32:02,285 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=8oh7DiS68NxySZ6R2Yv2Ex9ASOwNXkpRqR8nhLXQqCMy1QBHuJvcKN9WEjiqPfw4&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=Amik&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 131569
+django.server INFO 2023-08-17 17:32:14,690 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 151925
+django.request ERROR 2023-08-17 17:32:39,127 log 30320 31316 Internal Server Error: /ddrug/mic-coadd_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 172, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 125, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-08-17 17:32:39,132 basehttp 30320 31316 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=Mcd4QgeR7DYAiL3jNCUegsDZUPGkRaYR4F4kuJjBpsdArCy9fnUomIDlGksXJ554&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=coli&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 500 168180
+django.server INFO 2023-08-17 17:35:18,291 basehttp 30320 31316 "GET /pivotedtableview/ddrug-MIC_COADD HTTP/1.1" 200 20426
+django.server INFO 2023-08-17 17:44:39,365 basehttp 30320 6108 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 151925
+django.server INFO 2023-08-17 17:44:39,417 basehttp 30320 6108 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-08-17 17:49:42,856 basehttp 30320 31992 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 151925
+django.server INFO 2023-08-17 17:51:45,484 basehttp 30320 31992 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=m2wBPEAxCEZWLpA0XbJNkHNykLAbf2jWEvnRt7FhUteWUg5QpWJXqXNU6gmO7Xq9&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=AGRF_R001&media= HTTP/1.1" 200 43326
+django.server INFO 2023-08-17 17:51:57,332 basehttp 30320 31992 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=zhgaMohPI0VuZm6lsKnTcXYG8h22MKCjRK7qqRmz0Pau8dBbUvn3idY2UMOFEFJw&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=AntiBio_R001&media= HTTP/1.1" 200 133722
+django.server INFO 2023-08-17 17:52:41,466 basehttp 30320 31992 - Broken pipe from ('127.0.0.1', 20876)
+django.server INFO 2023-08-17 17:52:43,237 basehttp 30320 32628 - Broken pipe from ('127.0.0.1', 20941)
+django.server INFO 2023-08-17 17:52:44,876 basehttp 30320 20608 "GET /ddrug/mic-coadd_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=&paginate_by=50&order_by=&substructure=&Org_ID=&Batch_ID=&Org_Name=&Drug_Name=&mic_type=&mic=&bp_profile=&run_id=&media= HTTP/1.1" 200 151900
+django.server INFO 2023-08-17 17:54:24,742 basehttp 30320 20608 "GET /ddrug/mic-pub_list HTTP/1.1" 200 107161
+django.utils.autoreload INFO 2023-08-17 17:54:39,627 autoreload 30320 27564 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:54:44,025 autoreload 33784 33624 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:54:56,707 autoreload 33784 33624 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:54:59,456 autoreload 24580 27104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:55:05,106 autoreload 24580 27104 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:55:07,981 autoreload 27564 9756 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:55:19,094 autoreload 27564 9756 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:55:22,593 autoreload 30540 1504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:55:41,841 autoreload 30540 1504 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:55:45,227 autoreload 33648 22828 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:55:53,563 autoreload 33648 22828 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:55:56,750 autoreload 27052 32492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:56:03,871 autoreload 27052 32492 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:56:06,740 autoreload 22832 31104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:56:19,486 autoreload 22832 31104 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:56:21,783 autoreload 8032 16852 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:56:33,811 autoreload 8032 16852 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:56:36,859 autoreload 11040 32896 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:56:55,125 autoreload 11040 32896 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:56:58,438 autoreload 21632 32844 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:57:18,023 autoreload 21632 32844 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:57:21,214 autoreload 30644 25368 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:57:31,162 autoreload 30644 25368 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:57:35,286 autoreload 15788 23512 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:57:41,936 basehttp 15788 32660 "GET /ddrug/mic-pub_list HTTP/1.1" 200 113186
+django.utils.autoreload INFO 2023-08-17 17:58:04,744 autoreload 15788 23512 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:58:08,349 autoreload 16420 6484 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:58:19,684 autoreload 16420 6484 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:58:22,483 autoreload 6232 11228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 17:58:29,464 autoreload 6232 11228 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:58:32,385 autoreload 31820 28780 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:58:44,652 basehttp 31820 3028 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 134258
+django.utils.autoreload INFO 2023-08-17 17:59:00,586 autoreload 31820 28780 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 17:59:03,978 autoreload 2812 21380 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 17:59:09,399 basehttp 2812 4688 "GET /ddrug/mic-coadd_list HTTP/1.1" 200 127930
+django.server INFO 2023-08-17 17:59:43,297 basehttp 2812 4688 "GET /ddrug/mic-pub_list HTTP/1.1" 200 113186
+django.utils.autoreload INFO 2023-08-17 18:01:13,000 autoreload 2812 21380 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:01:21,739 autoreload 29716 30476 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:01:37,927 autoreload 29716 30476 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:01:41,051 autoreload 23776 31772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:01:51,914 autoreload 23776 31772 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:01:54,742 autoreload 32664 23940 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:02:12,282 autoreload 32664 23940 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:02:15,624 autoreload 30952 276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:02:29,004 autoreload 30952 276 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:02:31,973 autoreload 31792 26728 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:02:38,475 autoreload 31792 26728 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:02:41,291 autoreload 33272 33528 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:02:57,551 autoreload 33272 33528 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:03:00,814 autoreload 19472 18636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:03:07,463 autoreload 19472 18636 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:03:11,212 autoreload 21712 23312 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:03:19,830 basehttp 21712 25072 "GET /ddrug/mic-pub_list HTTP/1.1" 200 113652
+django.utils.autoreload INFO 2023-08-17 18:03:26,773 autoreload 21712 23312 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:03:30,975 autoreload 33128 22016 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:03:39,170 autoreload 33128 22016 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:03:41,897 autoreload 32240 32336 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:04:13,221 autoreload 24024 9248 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:04:32,405 autoreload 24024 9248 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:04:35,497 autoreload 23136 16916 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:05:05,273 autoreload 23136 16916 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:05:08,752 autoreload 33692 26504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:05:30,188 autoreload 33592 33316 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:05:49,589 basehttp 33592 32104 "GET /ddrug/mic-pub_list HTTP/1.1" 200 126168
+django.utils.autoreload INFO 2023-08-17 18:06:34,385 autoreload 33592 33316 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:06:37,642 autoreload 24752 356 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:06:43,760 autoreload 24752 356 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:06:46,542 autoreload 26156 6056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:06:52,864 autoreload 26156 6056 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:06:55,368 autoreload 26536 22316 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:07:02,446 autoreload 26536 22316 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:07:05,382 autoreload 32480 28004 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:07:20,545 basehttp 32480 1724 "GET /ddrug/mic-pub_list HTTP/1.1" 200 126186
+django.utils.autoreload INFO 2023-08-17 18:07:37,413 autoreload 32480 28004 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:07:40,277 autoreload 26036 32924 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:08:34,062 autoreload 26036 32924 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:08:37,520 autoreload 32608 26672 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:09:04,218 autoreload 25180 15220 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:09:12,260 basehttp 25180 31240 "GET /ddrug/mic-pub_list HTTP/1.1" 200 126201
+django.utils.autoreload INFO 2023-08-17 18:09:53,390 autoreload 25180 15220 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:09:56,301 autoreload 26464 15720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:10:12,854 autoreload 26464 15720 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:10:21,469 autoreload 32440 25268 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:11:09,437 autoreload 32440 25268 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:11:14,264 autoreload 32640 22736 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:11:23,760 autoreload 32640 22736 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:11:28,479 autoreload 33712 24464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:11:39,101 autoreload 33712 24464 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:11:48,084 autoreload 33176 11044 Watching for file changes with StatReloader
+django.request ERROR 2023-08-17 18:11:57,474 log 33176 28168 Internal Server Error: /ddrug/mic-pub_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 172, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 125, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 229, in qs
+    self.errors
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 202, in errors
+    return self.form.errors
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 250, in form
+    Form = self.get_form_class()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 242, in get_form_class
+    [(name, filter_.field) for name, filter_ in self.filters.items()]
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 242, in <listcomp>
+    [(name, filter_.field) for name, filter_ in self.filters.items()]
+            ^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 360, in field
+    return super().field
+           ^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 149, in field
+    self._field = self.field_class(label=self.label, **field_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\fields.py", line 258, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\forms\models.py", line 1451, in __init__
+    Field.__init__(
+TypeError: Field.__init__() got an unexpected keyword argument 'choices'
+django.server ERROR 2023-08-17 18:11:57,498 basehttp 33176 28168 "GET /ddrug/mic-pub_list HTTP/1.1" 500 142911
+django.utils.autoreload INFO 2023-08-17 18:12:56,230 autoreload 33176 11044 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:13:02,902 autoreload 2232 8720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:13:49,459 autoreload 2232 8720 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:13:57,524 autoreload 23476 32252 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:14:12,209 basehttp 23476 4964 "GET /ddrug/mic-pub_list HTTP/1.1" 200 116588
+django.server INFO 2023-08-17 18:14:26,469 basehttp 23476 4964 "GET /ddrug/mic-pub_list?csrfmiddlewaretoken=PB5U7fIw8Xws0PFTVXpmOGrdI6WnU2A074WaLINgqMLs9GaJnIpwUWrzuBI0MXHd&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&fOrg_ID=&fOrg_Name=&fDrug_Name=&bp_profile=&mic=&zone_diameter=&mic_type=AST-Vitek2&source= HTTP/1.1" 200 115009
+django.server INFO 2023-08-17 18:14:37,996 basehttp 23476 4964 "GET /ddrug/mic-pub_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&fOrg_ID=&fOrg_Name=&fDrug_Name=&bp_profile=&mic=&zone_diameter=&mic_type=&source= HTTP/1.1" 200 117808
+django.utils.autoreload INFO 2023-08-17 18:15:14,101 autoreload 23476 32252 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:15:28,049 autoreload 31904 33692 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:15:55,585 autoreload 31904 33692 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:16:02,055 autoreload 24852 27080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:16:54,061 autoreload 24852 27080 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:17:01,559 autoreload 29136 25696 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:17:16,646 autoreload 29136 25696 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:17:22,628 autoreload 28560 29328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-08-17 18:17:39,423 autoreload 28560 29328 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:17:45,007 autoreload 13860 32444 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:18:06,422 basehttp 13860 31992 "GET /ddrug/vitekcard_list HTTP/1.1" 200 195903
+django.server INFO 2023-08-17 18:18:06,559 basehttp 13860 31992 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-08-17 18:18:25,239 autoreload 13860 32444 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:18:31,019 autoreload 8280 32516 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:18:35,849 basehttp 8280 20968 "GET /ddrug/vitekcard_list HTTP/1.1" 200 195893
+django.server INFO 2023-08-17 18:19:11,908 basehttp 8280 20968 "GET /ddrug/vitekcard_list?csrfmiddlewaretoken=iuPRkB0fREuY6ACAJOJ2LHyw3zKhcGlyAXG7Y45Z9tJYfr7qbzJcRXySP4wU4BsL&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&orgbatch_id=&card_type=AST&card_code=&expiry_date=&instrument=&proc_date=&analysis_time= HTTP/1.1" 200 197332
+django.server INFO 2023-08-17 18:19:15,802 basehttp 8280 20968 "GET /ddrug/vitekcard_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&orgbatch_id=&card_type=&card_code=&expiry_date=&instrument=&proc_date=&analysis_time= HTTP/1.1" 200 197131
+django.utils.autoreload INFO 2023-08-17 18:19:29,158 autoreload 8280 32516 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:19:33,166 autoreload 33304 27188 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:20:38,093 basehttp 33304 32996 "GET /ddrug/drug_card HTTP/1.1" 200 194267
+django.server WARNING 2023-08-17 18:20:38,502 basehttp 33304 17312 "GET /static/images/AMD00003.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:38,511 basehttp 33304 32996 "GET /static/images/AMD00002.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:38,551 basehttp 33304 23968 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:38,908 basehttp 33304 33336 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:38,985 basehttp 33304 2936 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,011 basehttp 33304 16052 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,061 basehttp 33304 28000 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,061 basehttp 33304 26636 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,061 basehttp 33304 3056 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,247 basehttp 33304 12788 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,355 basehttp 33304 25208 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,363 basehttp 33304 27896 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,448 basehttp 33304 33188 "GET /static/images/AMD00239.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,456 basehttp 33304 26284 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,460 basehttp 33304 23332 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,599 basehttp 33304 23620 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,753 basehttp 33304 32220 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,759 basehttp 33304 10480 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,833 basehttp 33304 25936 "GET /static/images/AMD00238.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,858 basehttp 33304 32368 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,861 basehttp 33304 31608 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:39,940 basehttp 33304 32292 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,117 basehttp 33304 10408 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,121 basehttp 33304 32380 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,173 basehttp 33304 21660 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,243 basehttp 33304 31360 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,251 basehttp 33304 25768 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,342 basehttp 33304 25812 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,513 basehttp 33304 18756 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,517 basehttp 33304 25524 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,523 basehttp 33304 33728 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,652 basehttp 33304 31276 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,657 basehttp 33304 20964 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,689 basehttp 33304 29156 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,890 basehttp 33304 29816 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,897 basehttp 33304 23156 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:40,901 basehttp 33304 33400 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,007 basehttp 33304 19956 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,020 basehttp 33304 28636 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,033 basehttp 33304 26728 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,260 basehttp 33304 31964 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,274 basehttp 33304 12380 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,279 basehttp 33304 32420 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,383 basehttp 33304 24048 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,387 basehttp 33304 25832 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,393 basehttp 33304 7728 "GET /static/images/AMD00045.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,627 basehttp 33304 1644 "GET /static/images/AMD00046.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,636 basehttp 33304 26176 "GET /static/images/AMD00047.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,637 basehttp 33304 24996 "GET /static/images/AMD00048.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:20:41,722 basehttp 33304 1200 "GET /static/images/AMD00049.svg HTTP/1.1" 404 1917
+django.server INFO 2023-08-17 18:21:10,053 basehttp 33304 25448 "GET /ddrug/drug_list HTTP/1.1" 200 93069
+django.utils.autoreload INFO 2023-08-17 18:22:11,817 autoreload 33304 27188 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:22:18,189 autoreload 31576 27540 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:22:22,169 basehttp 31576 10808 "GET /ddrug/drug_list HTTP/1.1" 200 93525
+django.utils.autoreload INFO 2023-08-17 18:22:35,399 autoreload 31576 27540 C:\Data\A02_WorkDB\03_Django\adjCOADD\ddrug\models.py changed, reloading.
+django.utils.autoreload INFO 2023-08-17 18:22:40,958 autoreload 31180 32400 Watching for file changes with StatReloader
+django.server INFO 2023-08-17 18:22:53,640 basehttp 31180 31212 "GET /ddrug/drug_list HTTP/1.1" 200 99984
+django.server INFO 2023-08-17 18:23:09,981 basehttp 31180 31212 "GET /ddrug/drug_card HTTP/1.1" 200 194267
+django.server WARNING 2023-08-17 18:23:10,283 basehttp 31180 31212 "GET /static/images/AMD00002.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,288 basehttp 31180 33688 "GET /static/images/AMD00003.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,341 basehttp 31180 1544 "GET /static/images/AMD00004.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,696 basehttp 31180 33256 "GET /static/images/AMD00010.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,741 basehttp 31180 2416 "GET /static/images/AMD00011.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,772 basehttp 31180 31284 "GET /static/images/AMD00012.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,834 basehttp 31180 25968 "GET /static/images/AMD00013.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,838 basehttp 31180 25592 "GET /static/images/AMD00014.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:10,840 basehttp 31180 22212 "GET /static/images/AMD00015.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,057 basehttp 31180 33592 "GET /static/images/AMD00016.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,097 basehttp 31180 29040 "GET /static/images/AMD00017.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,131 basehttp 31180 20968 "GET /static/images/AMD00018.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,244 basehttp 31180 32192 "GET /static/images/AMD00239.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,265 basehttp 31180 27848 "GET /static/images/AMD00019.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,273 basehttp 31180 33048 "GET /static/images/AMD00020.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,409 basehttp 31180 33012 "GET /static/images/AMD00021.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,443 basehttp 31180 32100 "GET /static/images/AMD00022.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,479 basehttp 31180 21424 "GET /static/images/AMD00023.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,629 basehttp 31180 33544 "GET /static/images/AMD00238.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,649 basehttp 31180 33432 "GET /static/images/AMD00005.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,656 basehttp 31180 24260 "GET /static/images/AMD00006.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,756 basehttp 31180 2772 "GET /static/images/AMD00007.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,798 basehttp 31180 22208 "GET /static/images/AMD00008.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:11,839 basehttp 31180 27408 "GET /static/images/AMD00009.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,010 basehttp 31180 18104 "GET /static/images/AMD00024.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,027 basehttp 31180 23340 "GET /static/images/AMD00025.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,036 basehttp 31180 32556 "GET /static/images/AMD00026.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,099 basehttp 31180 32436 "GET /static/images/AMD00027.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,149 basehttp 31180 32356 "GET /static/images/AMD00028.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,185 basehttp 31180 33092 "GET /static/images/AMD00029.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,357 basehttp 31180 32984 "GET /static/images/AMD00030.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,383 basehttp 31180 17072 "GET /static/images/AMD00031.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,394 basehttp 31180 14372 "GET /static/images/AMD00032.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,439 basehttp 31180 28280 "GET /static/images/AMD00033.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,486 basehttp 31180 32796 "GET /static/images/AMD00034.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,530 basehttp 31180 32296 "GET /static/images/AMD00035.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,692 basehttp 31180 15040 "GET /static/images/AMD00036.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,737 basehttp 31180 33248 "GET /static/images/AMD00037.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,746 basehttp 31180 27812 "GET /static/images/AMD00038.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,771 basehttp 31180 33564 "GET /static/images/AMD00039.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,833 basehttp 31180 22492 "GET /static/images/AMD00040.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:12,863 basehttp 31180 7052 "GET /static/images/AMD00041.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,036 basehttp 31180 18572 "GET /static/images/AMD00042.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,115 basehttp 31180 16272 "GET /static/images/AMD00043.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,128 basehttp 31180 32692 "GET /static/images/AMD00044.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,135 basehttp 31180 31760 "GET /static/images/AMD00045.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,169 basehttp 31180 30236 "GET /static/images/AMD00046.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,194 basehttp 31180 29188 "GET /static/images/AMD00047.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,375 basehttp 31180 12736 "GET /static/images/AMD00048.svg HTTP/1.1" 404 1917
+django.server WARNING 2023-08-17 18:23:13,452 basehttp 31180 29028 "GET /static/images/AMD00049.svg HTTP/1.1" 404 1917
