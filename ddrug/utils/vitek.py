@@ -175,7 +175,7 @@ def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
 
     """
 #-----------------------------------------------------------------------------
-    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=None)
+    pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=OrgBatchID)
 
     lstCards = []
     lstID = []
