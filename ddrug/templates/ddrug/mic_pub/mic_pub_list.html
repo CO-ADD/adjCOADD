@@ -6,16 +6,16 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with list_url='mic_pub_list' card_url='mic_pub_card' %}
+  {% include 'utils/leftbar.html' with list_url='mic_pub_list' card_url='mic_pub_card' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='MIC_Pub' model_name='MIC_Pub' application='ddrug' %}
+    {% include 'utils/main_horizalbar.html' with title='MIC from public sources' model_name='MIC_Pub' application='ddrug' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with modelname='MIC_Pub' %}
+      {% include 'utils/datatable_general.html' with modelname='MIC_Pub' %}
       
     </div>
   </div>
