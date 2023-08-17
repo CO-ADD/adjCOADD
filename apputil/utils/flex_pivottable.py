@@ -47,7 +47,10 @@ def flex_pivottable(request, app_model):
     except LookupError:
         # Handle the case where the model does not exist.
         return HttpResponse("Model not found.")
-    model_fields=[f.replace(".", "__") for f in list(Model.HEADER_FIELDS.keys())] #list(Model.HEADER_FIELDS.keys())
+    model_fields = [f.replace(".", "__") for f in list(Model.HEADER_FIELDS.keys())] #list(Model.HEADER_FIELDS.keys())
+    verbose_fields = Model.get_fields()
+    for i in range(len(model_fields)):
+        fields_dict = {model_fields[i]: verbose_fields[i] for i in range(len(verbose_fields)) }
     pk_list = request.session.get(f'{Model}_cached_queryset')
      # get queryset
     queryset = Model.objects.filter(pk__in=pk_list) if pk_list else Model.objects.all()
@@ -86,9 +89,10 @@ def flex_pivottable(request, app_model):
                 result = get_pivottable(querydata=data, aggfunc_table=aggfunc_name, columns_table=index_str, index_table=columns_str, values=values_str)
                 table = result["table"]
     
-                select_hrfields = result["columns"]
-                select_vtfields = result["index"]
-                select_fields = select_hrfields + select_vtfields
+                select_hrfields ={result["columns"][i]: fields_dict[result["columns"][i]] for i in range(len(result["columns"]))} #result["columns"]
+                select_vtfields ={result["index"][i]: fields_dict[result["index"][i]] for i in range(len(result["index"]))} # result["index"]
+                select_fields = list(select_hrfields.keys()) + list(select_vtfields.keys())
+
                 try:
                     # table_html = table.astype(str)
                     # print("html")
@@ -106,4 +110,5 @@ def flex_pivottable(request, app_model):
         
        
 
-    return render(request, 'utils/pivotedtable.html', {"table":table_html, "select_value": select_value, "select_fields":select_fields, "select_hrfields":select_hrfields, "select_vtfields":select_vtfields, "app_model":app_model, "model_fields":model_fields, "query_list": pk_list})
+    return render(request, 'utils/pivotedtable.html', {"table":table_html, "select_value": select_value, "select_fields":select_fields, "select_hrfields":select_hrfields, "select_vtfields":select_vtfields, "app_model":app_model, "model_fields":fields_dict, "query_list": pk_list})
+

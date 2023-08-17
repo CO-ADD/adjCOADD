@@ -131,7 +131,6 @@ class AppUserfilter(Filterbase_base):
 class Dictionaryfilter(Filterbase):
     dict_class = django_filters.ChoiceFilter(choices=[])
     dict_value = django_filters.CharFilter(lookup_expr='icontains')
-    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -145,19 +144,18 @@ class Dictionaryfilter(Filterbase):
         fields=['dict_class']
 
 #------------------------------------------------------------------------
-## Dictionary
+
+from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
 class Logfilter(Filterbase_base):
     Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
-    #dict_class = django_filters.ChoiceFilter(choices=[])
-    #dict_value = django_filters.CharFilter(lookup_expr='icontains')
-    #   dict_desc = django_filters.CharFilter(lookup_expr='icontains')
+    log_code = django_filters.ChoiceFilter(choices=[])
+    # start_date = DateFilter(field_name='log_time',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'}), label = 'Log date start from') 
+    log_time = DateRangeFilter(label = 'Log Time')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).distinct().order_by('dict_class').values('dict_class')]
-        # choice_class=[(x[0], x[0]) for x in a]
-        # self.filters['dict_class'].extra["choices"] = choice_class
-        # self.filters['dict_class'].label='Class'
+        choice_query = self.Meta.model.objects.order_by().values_list('log_code').distinct()
+        self.filters['log_code'].extra["choices"] = [(i[0], i[0]) for i in choice_query]
       
     class Meta:
         model=ApplicationLog

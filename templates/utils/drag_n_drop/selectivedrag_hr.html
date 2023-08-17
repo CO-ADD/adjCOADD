@@ -1,24 +1,23 @@
+{% load custom_filters %}
 {% if select_fields %}
-<ul id="sortable1" class="connectedSortable m-0" style="display:flex; border: 2px solid black; width: fit-content;">
-  {% for field in model_fields %}
-  {% if field not in select_fields %}
-  <li data-name="{{field}}" class="draggable ui-state-default" style="max-width: 80%">{{field}}</li>
-  {% endif %}
-  {%endfor%}
-</ul>
+
 <ul id="sortable3" class="connectedSortable d-flex border ms-0 text-info" style="max-width: 100%;">
   Column
-  {% for field in select_hrfields%}
-  <li data-name="{{field}}" class="draggable ui-state-default text-info">{{field}}</li>
+  {% for key, value in select_hrfields.items %}
+  <li data-name="{{key}}" class="ui-state-default text-info">
+    {% if value|is_dict %}
+    {% for key in value.keys %}
+    {{key }}
+    {% endfor %}
+  {% else %}
+    {{value}}
+  {% endif %}
+  </li>
   {% endfor %}
 </ul>
 
 {% else %}
-<ul id="sortable1" class="connectedSortable m-0" style="border: 2px solid black;  width: fit-content;">
-  {% for field in model_fields %}
-  <li data-name="{{field}}" class="draggable ui-state-default text-info" style="max-width: 80%">{{field}}</li>
-  {% endfor %}
-</ul>
+
 <ul id="sortable3" class="connectedSortable d-flex border ms-0 text-info" style="max-width: 100%;">
   Column
 

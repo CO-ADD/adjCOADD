@@ -304,11 +304,15 @@ class Batchfilter(Filterbase):
         fields = ["stock_date",  "biologist"]
 
 
-## Batch
+## Stock
+from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
 class Stockfilter(Filterbase):
-    Stock_Date = django_filters.IsoDateTimeFilter(field_name='stock_date')
+    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
+    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
+    Stock_Date = DateRangeFilter(field_name='stock_date')
+ 
     class Meta:
         model = OrgBatch_Stock
-        fields = ["orgbatch_id", "Stock_Date"]
+        fields = ["orgbatch_id", "Stock_Date", "start_date", "end_date"]
 
 
