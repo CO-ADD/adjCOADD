@@ -117,6 +117,7 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
             try:
                 object_.delete(**kwargs)
                 ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_.pk), 'switch entry_astatus -9','Completed')            
+
             except Exception as err:
                 messages.error(request, err)
 
