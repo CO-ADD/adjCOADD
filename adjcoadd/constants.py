@@ -40,5 +40,21 @@ LinkList={
 }
 
 # Cache Name
-# f"{Model}_cached_queryset"
+# •	Antiogram . Break Point
+# •	MIC Pub . BP
+# •	MIC Pub . Type
+# •	MIC Pub . Source 
+# •	Vitek ID . Vitek Process
+# •	Vitek ID .  ID Confidence
+# •	Vitek Cards . Card Type
+# •	Vitek Cards . Card Code 
+# •	Vitek AST . BP 
+# •	Vitek AST . Source 
+# •	Vitek AST . Codes (maybe) Foreignkey field!
+# •	Drug . Drug Target
+# •	Drug . Drug Class
+# •	Drug . Antimicro
+CharToChoice_filterList=["log_code","bp_profile","mic_type", "process", "id_confidence",  "card_type", 
+"card_code", "bp_source", "drug_target", "drug_class", " antimicro"
+]
 

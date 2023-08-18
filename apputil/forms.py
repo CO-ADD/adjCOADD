@@ -154,8 +154,7 @@ class Logfilter(Filterbase_base):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        choice_query = self.Meta.model.objects.order_by().values_list('log_code').distinct()
-        self.filters['log_code'].extra["choices"] = [(i[0], i[0]) for i in choice_query]
+        self.filters['log_code'].extra["choices"] = self.Meta.model.get_field_choices(field_name='log_code')
       
     class Meta:
         model=ApplicationLog

@@ -396,7 +396,7 @@ class AuditModel(models.Model):
                     
         return value_list
         
-    # used to get fieds and values as a paire
+    # used to get fieds and values for display in Card.html
     def get_fieldsandvalues(self, card_fields=None):
         if card_fields is None:
             card_fields = self.CARDS_FIELDS
@@ -407,6 +407,14 @@ class AuditModel(models.Model):
             return [(fields[i], values[i]) for i in range(len(fields))]
         except Exception as err:
             return [("error: ", err)]
+    
+    # get choice from model field queryset
+    @classmethod
+    def get_field_choices(cls, field_name = None):
+        choice_query = cls.objects.order_by().values_list(field_name).distinct()
+        choices = [(i[0], i[0]) for i in choice_query]
+        return choices
+
     
 
 
@@ -731,6 +739,14 @@ class ApplicationLog(models.Model):
                     value_list.append(" ")
                     
         return value_list
+        
+    # get choice from model field queryset
+    @classmethod
+    def get_field_choices(cls, field_name = None):
+        choice_query = cls.objects.order_by().values_list(field_name).distinct()
+        choices = [(i[0], i[0]) for i in choice_query]
+        return choices
+
 # #-------------------------------------------------------------------------------------------------
 # class Image(AuditModel):
 # #-------------------------------------------------------------------------------------------------

@@ -2,15 +2,14 @@
 <div class="d-flex m-0 p-0" id="add-container">
     <div class="leftbar d-flex flex-column p-0 bg-light">
         <form hx-post="{%url 'org_detail' object.pk %}" hx-target="#add-container" hx-swap="outerHTML">
-
-            <button type="submit" class="text-secondary border-0" value="Get_data" data-bs-toggle
+            <button id="load_antibiogram" type="submit" class="text-secondary border-0" value="Get_data" data-bs-toggle
                 style="max-height: 20px">
                 {%if pivottable%}
                 <i class="bi bi-arrow-clockwise text-success bg-light fs-5"></i>
                 {%else%}
-                <div class="spinner-border" role="status" style="max-height: 15px; max-width: 15px;">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+        
+                {% include 'utils/miscellaneous/load_indicator.html' %}
+        
                 {%endif%}
             </button>
         </form>
@@ -76,3 +75,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    load_Indicator($('#load_antibiogram'), $('.beforeloadtable'), $('.loadtable'))
+</script>

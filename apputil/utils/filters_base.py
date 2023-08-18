@@ -85,7 +85,7 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
     return q_object
 
 # -- Filterset base Class--
-
+from adjcoadd.constants import CharToChoice_filterList
 from django.contrib import messages
 class Filterbase_base(django_filters.FilterSet):
     Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', 'minlength':'3' }), validators=[MinLengthValidator(3)])
@@ -117,6 +117,13 @@ class Filterbase_base(django_filters.FilterSet):
         for field in self.filters:
             if 'CharFilter' == self.filters[field].__class__.__name__:
                 self.filters[field].lookup_expr='icontains'
+        
+        # Loop through all fields, find Charfield to Choicefield
+        # for field in self.filters:
+        #     if field in CharToChoice_filterList:
+        #         self.filters[str(field)] = django_filters.ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
+
+
           
 class Filterbase(Filterbase_base):
 

@@ -20,14 +20,14 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 from datetime import timedelta
 
 # development version
-from github import Github
-REPO_Org = 'CO-ADD'
-REPO_NAME = 'adjCOADD'
-g=Github()
-repo = g.get_organization(REPO_Org).get_repo(REPO_NAME)
-pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
-VERSION ='1.0'+ str(pull_requests[0].number) +' (Development) - JZG'
-# VERSION = '1.01'
+# from github import Github
+# REPO_Org = 'CO-ADD'
+# REPO_NAME = 'adjCOADD'
+# g=Github()
+# repo = g.get_organization(REPO_Org).get_repo(REPO_NAME)
+# pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
+# VERSION ='1.0'+ str(pull_requests[0].number) +' (Development) - JZG'
+VERSION = '1.01'
 
 # Development : Local/Work/<none>
 #DEVELOPMENT=None
