@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
+from django.conf import settings
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
@@ -46,8 +47,9 @@ def deleteImage(req, pk):
 # import setup
 @login_required(login_url='/')
 def index(req):
-
-    nDict = {    
+    version = settings.VERSION
+    nDict = {
+        'Version': version,    
         'nOrg':    str(Organism.objects.count()) + ' Organisms',
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',

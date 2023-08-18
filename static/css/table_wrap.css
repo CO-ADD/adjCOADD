@@ -212,7 +212,8 @@ table.dataframe tr:nth-child(even) {
   border: 2px solid var(--info);
 }
 .ui-sortable-placeholder {
-  border: 1px solid rgb(12,194,170);
+  width: 15px;
+  border: 5px solid rgb(12,194,170);
   visibility:visible !important;
 }
 /* Error Display */

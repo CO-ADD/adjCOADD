@@ -17,14 +17,19 @@
     </button>
   </h2>
   {%if query_list %}
-  <form action="{% url 'pivoted-table' app_model %}" class="container-fluid w-100 border" method="POST"
+  <form action="{% url 'pivoted-table' app_model %}" class="w-100 border" method="POST"
     id="id_pivottable_form">
     {% csrf_token %}
+   
     <input id="id_column" type="text" name="column" hidden>
     <input id="id_index" type="text" name="index" hidden>
-    <div class="d-flex justify-content-around p-0">
-
+    
+    <div class="d-flex p-0">
+      <button id="download_pt_as_csv" class="btn m-2 p-1" type="submit" name="download"><i
+        class="fa-solid fa-download text-success"></i> .XLSX</button>
+      <button class="submit_data btn"><i class="bi bi-arrow-right-circle-fill fs-3"></i></button>
       <div class="d-flex align-items-center">
+       
         <div class="d-flex flex-column mx-2">
           <span style="font-size: small">--Data visualization type--</span>
           <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
@@ -61,32 +66,35 @@
             <option value="Inhib">Inhib</option>
           </select>
         </div>
-        <button class="submit_data btn ms-3 "><i class="bi bi-arrow-right-circle-fill fs-4"></i></button>
+       
       </div>
-      <button id="download_pt_as_csv" class="btn m-2 float-end border p-1" type="submit" name="download"><i
-          class="fa-solid fa-download text-success"></i> .XLSX</button>
+      
 
     </div>
-    <div>
+    <div class="row m-2">
 
-      <h5 class="m-auto">--Model Fields--</h5>
-      {% if select_fields %}
-      <ul id="sortable1" class="connectedSortable mb-0" style="display:flex; width: fit-content;">
-        {% for key, value in model_fields.items %}
-        {% if key not in select_fields %}
-        <li data-name="{{key}}" class="draggable ui-state-default" style="max-width: 80%">
-          {% if value|is_dict %}
-          {% for key in value.keys %}
-          {{key }}
-          {% endfor %}
-          {% else %}
-          {{value}}
+      
+      <!-- <div class="col-md-9"> -->
+        <h5 class="m-auto">--Model Fields--</h5>
+
+        {% if select_fields %}
+        <ul id="sortable1" class="connectedSortable ms-2">
+          {% for key, value in model_fields.items %}
+          {% if key not in select_fields %}
+          <li data-name="{{key}}" class="draggable ui-state-default" style="max-width: 80%">
+            {% if value|is_dict %}
+            {% for key in value.keys %}
+            {{key }}
+            {% endfor %}
+            {% else %}
+            {{value}}
+            {% endif %}
+          </li>
           {% endif %}
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-
+          {% endfor %}
+        </ul>
+        
+      <!-- </div> -->
 
       {% else %}
       <ul id="sortable1" class="connectedSortable ms-0 mb-0" style=" width: fit-content;">
