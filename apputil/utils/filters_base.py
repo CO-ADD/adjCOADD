@@ -89,7 +89,7 @@ from adjcoadd.constants import CharToChoice_filterList
 from django.contrib import messages
 class Filterbase_base(django_filters.FilterSet):
     Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', 'minlength':'3' }), validators=[MinLengthValidator(3)])
-
+    # bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
    
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
@@ -120,8 +120,8 @@ class Filterbase_base(django_filters.FilterSet):
         
         # Loop through all fields, find Charfield to Choicefield
         # for field in self.filters:
-        #     if field in CharToChoice_filterList:
-        #         self.filters[str(field)] = django_filters.ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
+        #     if str(field) in CharToChoice_filterList:
+        #         self.filters[str(field)].extra["choices"] = django_filters.ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
 
 
           

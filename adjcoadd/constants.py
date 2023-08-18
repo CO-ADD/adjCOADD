@@ -54,7 +54,8 @@ LinkList={
 # •	Drug . Drug Target
 # •	Drug . Drug Class
 # •	Drug . Antimicro
-CharToChoice_filterList=["log_code","bp_profile","mic_type", "process", "id_confidence",  "card_type", 
-"card_code", "bp_source", "drug_target", "drug_class", " antimicro"
-]
+# CharToChoice_filterList=["log_code","bp_profile","mic_type", "process", "id_confidence",  "card_type", 
+# "card_code", "bp_source", "drug_target", "drug_class", " antimicro"
+# ]
+CharToChoice_filterList = ["bp_profile",]
 
