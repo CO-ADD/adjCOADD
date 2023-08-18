@@ -3,8 +3,11 @@
         {% csrf_token %}
         <!-- Here put search all fields input -->
         <div class="input-group input-group-sm my-2 p-1 w-100">
+            <div>
+            </div>
             <button class="input-group-text btn m-auto border" type="submit" name="applysingle" value="Apply">
-                <i class="fa-solid fa-magnifying-glass fs-4"></i>
+                {% include 'utils/miscellaneous/load_indicator.html' %}
+                <!-- <i class="fa-solid fa-magnifying-glass fs-4"></i> -->
             </button>
             {{ filter.form.Search_all_fields }} 
             <br>
@@ -49,12 +52,8 @@
             {{filterset | default_if_none:"&nbsp;"}}
             <button class="btn btn-danger my-2" type="reset" onclick="myfun()">Clear Condidtions</button>
         </div>
-        {%else%}
-        <div class="spinner-border text-secondary not-visible" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+       
         {%endif%}
-
 
         <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
         <div class="d-flex flex-column mb-3" id="Django-form-filter-items">
@@ -88,9 +87,8 @@
 <script src="{%static 'js/filter_toggle.js'%}"></script>
 
 <script>
+    // reset/clear filter 
     function myfun() {
-
-        console.log("button clicked")
         form = document.getElementById("django-filter-siderbar")
         form.querySelectorAll('input').forEach(item => item.removeAttribute("value"));
         // form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
@@ -102,7 +100,7 @@
     }
 </script>
 <script>
-
+// special render choice options for organism class field
     $(document).ready(function () {
         $('input[data-name="pivot"]').val('False')
         $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
@@ -111,4 +109,7 @@
         $("#btn_Class").removeClass('collapsed');
 
     })
+</script>
+<script>
+    load_Indicator( $('form'), $('.beforeloadtable'), $('.loadtable'), initial_switch = 'off')
 </script>

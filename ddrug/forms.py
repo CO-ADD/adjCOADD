@@ -82,9 +82,9 @@ class Drug_form(forms.ModelForm):
 class Drug_filter(Filterbase):
     Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
     Drug_Type=django_filters.ChoiceFilter(field_name='drug_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    Target=django_filters.CharFilter(field_name='drug_target', lookup_expr='icontains')
-    Drug_Class=django_filters.CharFilter(field_name='drug_class', lookup_expr='icontains')
-    Antimicro=django_filters.CharFilter(field_name='antimicro', lookup_expr='icontains')
+    Target=django_filters.ChoiceFilter(field_name='drug_target', choices=[])
+    Drug_Class=django_filters.ChoiceFilter(field_name='drug_class', choices=[])
+    Antimicro=django_filters.ChoiceFilter(field_name='antimicro', choices=[])
     Other_Name = django_filters.CharFilter(field_name='drug_othernames', lookup_expr='icontains')
 
     def __init__(self, *args, **kwargs):
@@ -95,6 +95,9 @@ class Drug_filter(Filterbase):
         self.filters['Target'].label='Drug Target'
         self.filters['Drug_Class'].label='Drug Class'
         self.filters['Antimicro'].label='Antimicro'
+        self.filters['Target'].extra["choices"] = self.Meta.model.get_field_choices(field_name='drug_target')
+        self.filters['Drug_Class'].extra["choices"] = self.Meta.model.get_field_choices(field_name='drug_class')
+        self.filters['Antimicro'].extra["choices"] = self.Meta.model.get_field_choices(field_name='antimicro')
     
     class Meta:
         model=Drug
@@ -104,12 +107,14 @@ class Drug_filter(Filterbase):
 
 # -----------------------------------------------------------------
 class Vitekcard_filter(Filterbase):
-# -----------------------------------------------------------------
-    card_type=django_filters.ChoiceFilter(field_name='card_type', choices=[], empty_label=None)
-
+    #card_barcode = django_filters.CharFilter(lookup_expr='icontains')
+    #card_type = django_filters.CharFilter()
+    card_code = django_filters.ChoiceFilter(field_name='card_code', choices=[], label="Card Code")
+    card_type = django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=VITEK_Card.Choice_Dictionary['card_type']))
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["card_type"].extra['choices']=[('', ''),] + [(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(VITEK_Card.Choice_Dictionary['card_type'])]
+        self.filters['card_code'].extra["choices"] = self.Meta.model.get_field_choices(field_name='card_code')
 
     class Meta:
         model=VITEK_Card
@@ -120,13 +125,19 @@ class Vitekcard_filter(Filterbase):
 # -----------------------------------------------------------------
 class Vitekast_filter(Filterbase):
 # -----------------------------------------------------------------
-    fOrgBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
-    fDrug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
+    Drug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
+    bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
+    bp_source = django_filters.ChoiceFilter(field_name = 'bp_source', choices=[], label = 'Source')
+    codes = django_filters.ChoiceFilter(field_name = 'drug_id__drug_codes', choices=[], label = 'Code')
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.filters['Drug_Name'].label='Drug Name'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
+        self.filters['bp_source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_source')
+        # code is Foreighkey field
+        choice_query = Drug.objects.order_by().values_list('drug_codes').distinct()
+        choices = [(i[0], i[0]) for i in choice_query]
+        self.filters['codes'].extra["choices"] = choices
 
     class Meta:
         model=VITEK_AST
@@ -142,13 +153,14 @@ class Vitekast_filter(Filterbase):
 # -----------------------------------------------------------------
 class VitekID_filter(Filterbase):
 # -----------------------------------------------------------------
-    fOrgBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    fBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label="Batch")
-    fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.filters['Org_ID'].label='OrgBatch ID'
+    Org_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    Org_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    id_confidence = django_filters.ChoiceFilter(field_name = 'id_confidence', choices=[], label = 'ID Confidence')
+    process = django_filters.ChoiceFilter(field_name = 'process', choices=[], label = 'Vitek Process')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['id_confidence'].extra["choices"] = self.Meta.model.get_field_choices(field_name='id_confidence')
+        self.filters['process'].extra["choices"] = self.Meta.model.get_field_choices(field_name='process')
 
     class Meta:
         model=VITEK_ID
@@ -161,25 +173,8 @@ class VitekID_filter(Filterbase):
 
 # -----------------------------------------------------------------
 class MIC_COADDfilter(Filterbase):
-# -----------------------------------------------------------------
-    fOrgBatch_ID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    fBatch_ID = django_filters.CharFilter(field_name='orgbatch_id__batch_id', lookup_expr='icontains',label="Batch")
-    fOrg_Name = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
-    fDrug_Name = django_filters.CharFilter(field_name="drug_id__drug_name", lookup_expr='icontains',label="Drug Name")
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-    class Meta:
-        model=MIC_COADD
-        #fields= ["drug_id__drug_name","MIC","bp_profile"]
-        fields = ['fOrgBatch_ID','fBatch_ID','fOrg_Name','fDrug_Name']
-        fields +=list(model.HEADER_FIELDS.keys())
-        exclude = ['orgbatch_id.organism_id.organism_id',
-                   'orgbatch_id.batch_id',
-                   'orgbatch_id.organism_id.organism_name',
-                   'drug_id.drug_name',
-                   ]
+    mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+    bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'Break Point')
 
     def filter_all_fields(self, queryset, name, value):
         if value:
@@ -221,8 +216,13 @@ class MIC_Pubfilter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["mic_type"].extra['choices']=[('', ''),] + [(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(MIC_Pub.Choice_Dictionary['mic_type'])]
-    
+        self.filters['drug_id__drug_name'].label='Drug Name'
+        self.filters['orgbatch_id__organism_id__gen_property'].label='Gen Property'
+        self.filters['mic'].label='MIC'
+        self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
+
+
+
     class Meta:
         model=MIC_Pub
         fields=["fOrg_ID", "fOrg_Name", "fDrug_Name"]
@@ -231,6 +231,12 @@ class MIC_Pubfilter(Filterbase):
                    'organism_id.organism_name',
                    'drug_id.drug_name',
                    ]
+
+class MIC_Pubfilter(Filterbase):
+    mic = django_filters.CharFilter(lookup_expr='icontains', label="MIC")
+    bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
+    mic_type = django_filters.ChoiceFilter(field_name = 'mic_type', choices=[], label = 'Type')
+    source = django_filters.ChoiceFilter(field_name = 'source', choices=[], label = 'Source')
 
     def filter_all_fields(self, queryset, name, value):
         if value:
@@ -256,6 +262,20 @@ class MIC_Pubfilter(Filterbase):
     def filter_all_fields_deep(self, queryset, name, value):
         queryset=self.filter_all_fields(queryset, name, value)
         return queryset
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['drug_id__drug_name'].label='Drug Name'
+        self.filters['organism_id__gen_property'].label='Gen Property'
+        self.filters['mic'].label='MIC'
+        self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
+        self.filters['mic_type'].extra["choices"] = self.Meta.model.get_field_choices(field_name='mic_type')
+        self.filters['source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='source')
+
+    
+    class Meta:
+        model=MIC_Pub
+        fields=["drug_id__drug_name", "organism_id__gen_property", "mic"]
 
 
 # -----------------------------------------------------------------

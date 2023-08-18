@@ -92,7 +92,6 @@ def flex_pivottable(request, app_model):
                 select_hrfields ={result["columns"][i]: fields_dict[result["columns"][i]] for i in range(len(result["columns"]))} #result["columns"]
                 select_vtfields ={result["index"][i]: fields_dict[result["index"][i]] for i in range(len(result["index"]))} # result["index"]
                 select_fields = list(select_hrfields.keys()) + list(select_vtfields.keys())
-
                 try:
                     # table_html = table.astype(str)
                     # print("html")
@@ -111,4 +110,3 @@ def flex_pivottable(request, app_model):
        
 
     return render(request, 'utils/pivotedtable.html', {"table":table_html, "select_value": select_value, "select_fields":select_fields, "select_hrfields":select_hrfields, "select_vtfields":select_vtfields, "app_model":app_model, "model_fields":fields_dict, "query_list": pk_list})
-
