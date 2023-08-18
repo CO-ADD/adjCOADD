@@ -68,10 +68,10 @@ DEBUG = True if DEVELOPMENT else False
 
 if DEVELOPMENT:
     # Devlopment/Local
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au:8008", "localhost", "127.0.0.1"]
 else:
     # Production
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au:8008", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
