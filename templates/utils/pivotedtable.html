@@ -40,7 +40,7 @@
           </select>
         </div>
         <div class="d-flex flex-column mx-2">
-          <span style="font-size: small">--Select Table Values--</span>
+          <span style="font-size: small">--Select Table Values--</span> 
           <select name="values" data-name="data_process_value" class="form-select form-select-sm"
             aria-label=".form-select-sm example" style="width: fit-content">
             {%for key, value in model_fields.items %}
@@ -55,6 +55,15 @@
             </option>
             {%endfor%}
           </select>
+        
+        </div>
+        <div class="d-flex flex-column mx-2">
+          <span style="font-size: small">--Table Value selected--</span> 
+          {% if select_value %}
+          <span class="">{{select_value}}</span>
+          {%else%}
+          <span class="">...</span>
+          {% endif %}
         </div>
         <div class="d-flex flex-column mx-2">
           <span style="font-size: small">--Aggregate Functions--</span>
