@@ -25,7 +25,7 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
-    smol=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '12'}),)
+    # smol=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '12'}),)
    
 
 
@@ -53,7 +53,7 @@ class Drug_form(forms.ModelForm):
     class Meta:
         model =Drug
         fields='__all__'
-        exclude=['ffp2', 'torsionbv', 'mfp2', ]
+        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol' ]
        
     
 
@@ -129,13 +129,13 @@ class Vitekast_filter(Filterbase):
     fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label='Drug Name')
     fOrgBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label='Drug Name')
     fDrug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
-    # bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
+    bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
     bp_source = django_filters.ChoiceFilter(field_name = 'bp_source', choices=[], label = 'Source')
     codes = django_filters.ChoiceFilter(field_name = 'drug_id__drug_codes', choices=[], label = 'Code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
+        self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
         self.filters['bp_source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_source')
         # code is Foreighkey field
         choice_query = Drug.objects.order_by().values_list('drug_codes').distinct()

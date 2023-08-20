@@ -36,8 +36,9 @@ def flex_pivottable(request, app_model):
     table = None
     model_name = app_model.split("-")[1]
     app_name = app_model.split("-")[0]
-    values_str = None
-    select_hrfields = None
+    fields_dict = {} # fields_dict contains key(modelfields): modelfields' verbosename
+    values_str = None # model field
+    select_hrfields = None # model field's verbosename
     select_vtfields = None
     select_fields = None
     select_value = None
@@ -67,7 +68,7 @@ def flex_pivottable(request, app_model):
         index_table = request.session.get(f"{request.user}_pivoteddata")[2]
         aggfunc_table = request.session.get(f"{request.user}_pivoteddata")[3]
 
-        table = get_pivottable(querydata=data, aggfunc_table = aggfunc_table, columns_table = columns_table, index_table= index_table, values = values_table)['table']
+        table = get_pivottable(querydata=data, aggfunc_table = aggfunc_table, columns_table = index_table, index_table= columns_table, values = values_table)['table']
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = f'attachment; filename="pivot.xlsx"'
         table_excel = table.to_excel(excel_writer=response, index=True)
@@ -84,7 +85,7 @@ def flex_pivottable(request, app_model):
         values = values_str or None  # pivottable values
         
         if values:
-            select_value = values
+            select_value = fields_dict[values]
             try:    
                 result = get_pivottable(querydata=data, aggfunc_table=aggfunc_name, columns_table=index_str, index_table=columns_str, values=values_str)
                 table = result["table"]
