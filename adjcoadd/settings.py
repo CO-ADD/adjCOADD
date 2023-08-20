@@ -23,8 +23,8 @@ from datetime import timedelta
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
-#DEVELOPMENT=None
-DEVELOPMENT='Work'
+DEVELOPMENT=None
+# DEVELOPMENT='Work'
 
 #======================================================================
 
