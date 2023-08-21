@@ -98,7 +98,8 @@ class DrugCardView(DrugListView):
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, pk=pk)
-    form=Drug_form(instance=object_,)# initial={"smol":Chem.MolToMolBlock(object_.smol)},)
+    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
+    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
