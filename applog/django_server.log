@@ -1,5 +1,0 @@
-django.utils.autoreload INFO 2023-08-21 14:11:39,637 autoreload 28928 22668 Watching for file changes with StatReloader
-django.utils.autoreload INFO 2023-08-21 14:22:37,530 autoreload 25952 27752 Watching for file changes with StatReloader
-django.utils.autoreload INFO 2023-08-21 14:55:24,995 autoreload 19720 23432 Watching for file changes with StatReloader
-django.utils.autoreload INFO 2023-08-21 14:55:35,889 autoreload 19720 23432 C:\Data\A02_WorkDB\03_Django\adjCOADD\adjcoadd\settings.py changed, reloading.
-django.utils.autoreload INFO 2023-08-21 14:55:43,478 autoreload 12808 11644 Watching for file changes with StatReloader

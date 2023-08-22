@@ -33,7 +33,7 @@ from apputil.utils.files_upload import Importhandler
 
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteImage(req, pk):
-    print('deleting...')
+
     kwargs={}
     kwargs['user']=req.user
     object_=get_object_or_404(Image, id=pk)
@@ -182,7 +182,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 class AppLogView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = ApplicationLog
-    template_name = 'apputil/logList.html'
+    template_name = 'apputil/log_List.html'
     filterset_class = Logfilter
     model_fields = model.HEADER_FIELDS
 
