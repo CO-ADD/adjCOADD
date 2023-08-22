@@ -96,7 +96,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'formtools',
-    'django_crontab',
 ]
 
 REST_FRAMEWORK = {

@@ -179,7 +179,7 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 ## ========================Dictionary View===========================================
 
-class AppLogView(LoginRequiredMixin, FilteredListView):
+class AppLogView(SuperUserRequiredMixin, FilteredListView):
     login_url = '/'
     model = ApplicationLog
     template_name = 'apputil/log_List.html'

@@ -3,12 +3,12 @@
 {% block title%} COADD{% endblock %}
 {% block content %}
 
-<div class="d-flex flex-row justify-content-between vh-100">
-    {%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
-   <!-- here put High Usage Items -->
-   <h1>High used Items for User - {{object}}: </h1>
-    {%include "utils/sidebar.html"%}
-
+<div class="d-flex flex-row vh-100">
+{%include 'utils/leftbar.html' with import_module=urlname list_url='userslist' card_url='userslist' create_object='createAppUser' create_objectModal='createAppUserModal' model_name='AppUser'%}
+{%include "utils/sidebar.html"%}
+<!-- Main View -->
+<div class="d-flex flex-column w-100">
+    <h1 class="mx-auto"> {{object}} </h1>
 </div>
-
+</div>
 {%endblock%}
