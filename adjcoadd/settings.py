@@ -275,8 +275,10 @@ else:
     # ...
 #]
 CRONJOBS = [
-    ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
-    ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
+    # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    ('*/1 * * * *','apputil.utils.cron.Backup_adjCOADD'),
+    # ('*/1 * * * *','django.core.management.call_command')
 ]
 
 # Password validation
