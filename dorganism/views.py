@@ -29,7 +29,7 @@ from dorganism.utils.data_visual import data_frame_style, pivottable_style
 class OrgbatchimgCreateView(CreateFileView):
     form_class=Orgbatchimg_form
     model = Organism
-    file_field = 'image_file'
+    file_field = 'image_file' #this is uploading field name of Orgbatchimg
     transaction_use = 'dorganism'
 
     def form_valid(self, form):
@@ -216,7 +216,6 @@ def detailOrganism(request, pk):
 @login_required
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
-    print(object_.pk)
     kwargs={}
     kwargs['user']=req.user
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)

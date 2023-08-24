@@ -1,0 +1,17 @@
+Mainmodel_detail htmls package including:
+- main_model_detail: HTML sections may contains the following:
+   1. main_model single object include lefticon.html (must be)
+   2. include main_model single object update html: main_model_u.html (must be)
+   3. submain_model data with sub_model include: table_sm.html
+   4. submain_model data include: table_sm.html
+   5. sub_model_img include sub_model_img.html
+   6. sub_model_file include sub_model_file.html
+   7. pivottable section include main_model_mic.html
+
+Implementation steps:
+1. delete unecessary sections (refer above)
+2. then replace main_model or old modelname with actual names, 
+3. change the line <h2 class="accordion-header" id="headingThree"> with different id, e.g, headingFour instead of headingThree
+4. check and change included html path,
+5. check names in included html, especially <div> id name and data-bs-target name (this is collapse section javascript parameter)
+6. check lefticon.html and templats/utils/modal/modal_form.html, add new model name in if condition, 

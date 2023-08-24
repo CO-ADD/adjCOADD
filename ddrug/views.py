@@ -264,7 +264,12 @@ class API_Drug_List(API_ListView):
 class API_VITEK_ASTList(API_ListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
- 
+
+from rest_framework import generics
+class API_Drug_Detail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = Drug.objects.all()
+    serializer_class = Drug_Serializer
  
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()
@@ -278,4 +283,3 @@ class API_VITEK_ASTList(API_ListView):
 #     queryset = VITEK_AST.objects.all()
 #     serializer_class = VITEK_ASTSerializer
 #
-

@@ -1,0 +1,12 @@
+<!-- trigger modal -->
+{%include 'utils/miscellaneous/delete_btn.html' with target='#organism_detail_del'%}
+
+<!-- Modal -->
+<div class="modal fade" id="organism_detail_del" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'organism_delete' pk=object.pk as deleteurl %}
+    {% include 'utils/modal/delete.html' with title='Delete Organism' deleteurl=deleteurl entry=object %}
+  </div>
+</div>
