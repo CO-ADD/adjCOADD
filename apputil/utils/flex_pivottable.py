@@ -49,6 +49,7 @@ def flex_pivottable(request, app_model):
     select_vtfields = None
     select_fields = None
     select_value = None
+    graph = None
 
     try:
         Model = apps.get_model(app_name, model_name)
@@ -83,7 +84,8 @@ def flex_pivottable(request, app_model):
         return response
     # 
     #  When click go arrow button (Generate Pivot table)
-    if request.method == "POST": #       
+    if request.method == "POST": #    
+        
         values_str = request.POST.get("values") or None  # or "n_left"
         columns_str =request.POST.get("column") or None # or "orgbatch_id"
         index_str = request.POST.get("index") or None 
@@ -91,7 +93,7 @@ def flex_pivottable(request, app_model):
         request.session[f"{request.user}_pivoteddata"]= [values_str, columns_str, index_str, aggfunc_name]
         values = values_str or None  # pivottable values
         
-        if values:
+        if values and request.POST.get("visual_type") == "1":
             try:    
                 result = get_pivottable(querydata=data, aggfunc_table=aggfunc_name, columns_table=index_str, index_table=columns_str, values=values_str, fields_dict=fields_dict)
                 table = result["table"]
@@ -113,5 +115,19 @@ def flex_pivottable(request, app_model):
             except Exception as err:
                 error_message = f"error is {err}"
                 table_html= f"error is {err}"
-        
-    return render(request, 'utils/pivotedtable.html', {"table":table_html, "select_value": select_value, "select_fields":select_fields, "select_hrfields":select_hrfields, "select_vtfields":select_vtfields, "app_model":app_model, "model_fields":fields_dict, "query_list": pk_list})
+
+        elif values and request.POST.get("visual_type") == "2":
+           
+            result = get_pivottable(querydata=data, aggfunc_table=aggfunc_name, columns_table=index_str, index_table=columns_str, values=values_str, fields_dict=fields_dict)
+            graph= {}
+            graph['x_axis'] = [comp[0] if isinstance(comp, tuple) else comp for comp in queryset.values_list(columns_str) ]
+            graph['y_axis'] = [comp[0] if isinstance(comp, tuple) else comp for comp in queryset.values_list(index_str) ]
+            select_hrfields ={result["columns"][i]: fields_dict[result["columns"][i]] for i in range(len(result["columns"]))} #result["columns"]
+            select_vtfields ={result["index"][i]: fields_dict[result["index"][i]] for i in range(len(result["index"]))} # result["index"]
+            select_fields = list(select_hrfields.keys()) + list(select_vtfields.keys())
+            graph['objects_selected'] = list(dict.fromkeys([comp[0] if isinstance(comp, tuple) else comp for comp in queryset.values_list('orgbatch_id__organism_id__organism_name') ]))
+           
+        else:
+            print("3")
+
+    return render(request, 'utils/pivotedtable.html', {"table":table_html, "select_value": select_value, "select_fields":select_fields, "select_hrfields":select_hrfields, "select_vtfields":select_vtfields, "app_model":app_model, "model_fields":fields_dict, "query_list": pk_list, "graph":graph})

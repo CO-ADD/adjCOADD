@@ -363,12 +363,13 @@ def createNew(req, orgbatch_id):
 
 ##
 @login_required
-def updateNEw(req, pk):
+def updateNew(req, pk):
     pass
     # object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     # kwargs={}
     # kwargs['user']=req.user
     # form=Stock_form(instance=object_)
+    
     # if req.method == 'POST' and req.headers.get('x-requested-with') == 'XMLHttpRequest':
     #     # process the data sent in the AJAX request
     #     n_left_value=req.POST.get('value')
@@ -377,6 +378,7 @@ def updateNEw(req, pk):
     #     ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
     #     response_data = {'result': str(object_.n_left)}
     #     return JsonResponse(response_data)
+
     # if req.method=='POST':
     #     form=Stock_form(req.POST, instance=object_)
     #     if "cancel" in req.POST:

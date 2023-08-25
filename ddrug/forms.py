@@ -283,7 +283,7 @@ class MIC_Pubfilter(Filterbase):
 # -----------------------------------------------------------------
 class Breakpointfilter(Filterbase):
 # -----------------------------------------------------------------
-    drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    drug_name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains', label="Drug")
     bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
     notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
     org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)

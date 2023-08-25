@@ -47,9 +47,8 @@ def deleteImage(req, pk):
 # import setup
 @login_required(login_url='/')
 def index(req):
-    version = settings.VERSION
     nDict = {
-        'Version': version,    
+         
         'nOrg':    str(Organism.objects.count()) + ' Organisms',
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
@@ -99,7 +98,7 @@ def login_user(req):
                 return redirect("/")
         else:
             form = Login_form()
-        return render(req, 'registration/login.html', {'form': form})    
+        return render(req, 'registration/login.html', {'form': form, 'Version': settings.VERSION})    
 
 def logout_user(req):
     logout(req)    
