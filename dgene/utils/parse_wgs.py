@@ -39,24 +39,6 @@ def parse_FastQC(AssemblyFolder,OrgBID,RunID):
 
     return(outLst)
 #-----------------------------------------------------------------------------
-def parse_Kraken(AssemblyFolder,OrgBID,RunID,outType="S",inType="fastq",pctCutOff=1.0):
-#-----------------------------------------------------------------------------
-    BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
-    KrakenDir = os.path.join(BatchDir,"kraken2")
-    KrakenF = f"{OrgBID}_{RunID}_{inType}.report"
-    outLst = []
-    if os.path.exists(KrakenDir):
-        with open(os.path.join(KrakenDir,KrakenF)) as file:
-            tsv_file = csv.reader(file,delimiter="\t")
-            for line in tsv_file:
-                if line[3] == outType:
-                    pctSeq = float(line[0])
-                    if pctSeq >= pctCutOff:
-                        org_name = line[5].strip()
-                        outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
-    return(outLst)
-
-#-----------------------------------------------------------------------------
 def parse_CheckM(AssemblyFolder,OrgBID,RunID,outType="scaffolds"):
 #-----------------------------------------------------------------------------
     BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
@@ -89,6 +71,65 @@ def parse_CheckM(AssemblyFolder,OrgBID,RunID,outType="scaffolds"):
             outDict["trans_table"] = binDict[outType]["Translation table"]
     return(outDict)
 
+
+#-----------------------------------------------------------------------------
+def parse_Kraken(AssemblyFolder,OrgBID,RunID,outType="S",inType="fasta",pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
+    KrakenDir = os.path.join(BatchDir,"kraken")
+    KrakenF = f"{OrgBID}_{RunID}_{inType}.report"
+    outLst = []
+    if os.path.exists(KrakenDir):
+        with open(os.path.join(KrakenDir,KrakenF)) as file:
+            tsv_file = csv.reader(file,delimiter="\t")
+            for line in tsv_file:
+                if line[3] == outType:
+                    pctSeq = float(line[0])
+                    if pctSeq >= pctCutOff:
+                        org_name = line[5].strip()
+                        outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
+    return(outLst)
+
+#-----------------------------------------------------------------------------
+def parse_Abricate(AssemblyFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
+    AbricateDir = os.path.join(BatchDir,"abricate")
+    AbricateF = f"{OrgBID}_{RunID}_{inType}.out"
+    outLst = []
+    if os.path.exists(AbricateDir):
+        with open(os.path.join(AbricateDir,AbricateF)) as file:
+            tsv_file = csv.reader(file,delimiter="\t")
+            for line in tsv_file:
+                if line[3] == outType:
+                    pctSeq = float(line[0])
+                    if pctSeq >= pctCutOff:
+                        org_name = line[5].strip()
+                        outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
+    return(outLst)
+
+
+#-----------------------------------------------------------------------------
+def parse_MLST(AssemblyFolder,OrgBID,RunID,outType="S",inType="fastq",pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
+    KrakenDir = os.path.join(BatchDir,"mlst")
+    KrakenF = f"{OrgBID}_{RunID}_{inType}.report"
+    outLst = []
+    if os.path.exists(KrakenDir):
+        with open(os.path.join(KrakenDir,KrakenF)) as file:
+            tsv_file = csv.reader(file,delimiter="\t")
+            for line in tsv_file:
+                if line[3] == outType:
+                    pctSeq = float(line[0])
+                    if pctSeq >= pctCutOff:
+                        org_name = line[5].strip()
+                        outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
+    return(outLst)
+
+
+
+
 #-----------------------------------------------------------------------------
 def parse_WGS_COADD(zAssemblyBase):
 #-----------------------------------------------------------------------------
@@ -117,9 +158,17 @@ def parse_WGS_COADD(zAssemblyBase):
                 lstCheckM.append(dict(sDict,**dCheckM))
 
                 # Kraken
-                lKraken = parse_Kraken(zAssemblyFolder,BatchID,RunID,outType="S",inType="fastq")
+                lKraken = parse_Kraken(zAssemblyFolder,BatchID,RunID,outType="S",inType="fasta")
                 sDict = {'OrgBatch_ID':BatchID, 'Run_ID':RunID, 'ID_Type': 'WGS','ID_Method': 'Kraken2 FastQ','Source':'CO-ADD'}
                 
+                # Abricate
+                lAbricate = parse_abricate(zAssemblyFolder,BatchID,RunID,outType="S",inType="fasta")
+                sDict = {'OrgBatch_ID':BatchID, 'Run_ID':RunID, 'ID_Type': 'WGS','ID_Method': 'Kraken2 FastQ','Source':'CO-ADD'}
+
+                # MLST
+                lMlst = parse_Kraken(zAssemblyFolder,BatchID,RunID,outType="S",inType="fastq")
+                sDict = {'OrgBatch_ID':BatchID, 'Run_ID':RunID, 'ID_Type': 'WGS','ID_Method': 'Kraken2 FastQ','Source':'CO-ADD'}
+
                 idLst = []
                 for i in range(len(lKraken)):
                     v = lKraken[i]

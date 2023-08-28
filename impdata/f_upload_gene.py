@@ -18,7 +18,6 @@ from dgene.utils.import_gene import imp_FastQC_fromDict, imp_CheckM_fromDict,imp
 from dgene.utils.parse_wgs import parse_WGS_COADD
 from apputil.utils import validation_log
 
-
 def run_impProcess(lstDict,toDictFunc,procName,appuser=None,upload=False,OutputN=100):
     nProc = {}
     nProc['Saved'] = 0
