@@ -20,7 +20,6 @@ def Backup_adjCOADD():
     try:
         call_command('dbbackup','-z')
         call_command('mediabackup','-z')
-       
         ApplicationLog.add('Backup', 'Backup_adjCOADD','type', None,"object","dec","finish")
     except:
         ApplicationLog.add('Backup', 'Backup_adjCOADD','type', None,"object","dec","failed")
