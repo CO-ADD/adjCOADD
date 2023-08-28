@@ -53,6 +53,8 @@ def highlight_val2(val):
         bg_color='green'
     elif val == 'I':
         bg_color='blue'
+    elif val == 'nan':
+        bg_color = '#FDE992'
     else:
         bg_color='transparent'
     

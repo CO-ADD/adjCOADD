@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+
+  <!--prettier-ignore-->
+  {% url 'pivoted-table' app_model='dorganism-OrgBatch_Stock' as url_pivotedtable%}
+  {%include 'utils/leftbar.html' with list_url='stock_list_overview' url_pivotedtable=url_pivotedtable %}
+  <!-- Sidebar View -->
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'utils/main_horizalbar.html' with title='OrgBatch_Stock' model_name='OrgBatch_Stock' application='dorganism' %}
+    <!-- list View Content -->
+    <div class="fixTableHead">
+      <!--prettier-ignore-->
+      {%include 'utils/datatable_general.html' with modelname='OrgBatch_Stock' %}
+    </div>
+    
+  </div>
+</div>
+
+
+{% endblock%}

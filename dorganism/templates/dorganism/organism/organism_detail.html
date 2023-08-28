@@ -23,12 +23,8 @@
             data-bs-parent="#organism-detail">
             <div class="accordion-body bg-transparent">
               <b> {% include 'utils/message.html' %} </b>
-
               {% include 'dorganism/organism/organism_u.html' %}
-             
-
-              <br>
-              
+              <br>           
               <hr>
               <!-- prettier-ignore -->
               {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
@@ -93,6 +89,42 @@
               <div class="table-responsive">
                 <!-- prettier-ignore -->
                 {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Vitek ID -->
+     <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+
+      {% include 'utils/lefticons.html' with title="" modal="" %}
+      <!-- change id to new model name -->
+      <div class="accordion w-100" id="vitek_id-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour"> <!-- change id to number+1 -->
+            <!-- change data-bs-target to collapse<NewmodelName> change aria-controls to collapseFour-->
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapseVitekID" aria-expanded="true" aria-controls="collapseFour">
+              <h5 class="fs-6 my-0">
+               Vitek ID
+              </h5>
+              <!-- prettier-ignore -->
+              <!-- change cultr_obj_count to newmodel_obj_count based on views.py-->
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitek_id_obj_count %}
+            </button>
+          </h2>
+          <!-- change id to collapseVitekID This is where button data-bs-target targets-->
+          <!-- change data-bs-parent to div accordion id #vitek_id-detail -->
+          <div id="collapseVitekID" class="accordion-collapse collapse show" aria-labelledby="headingFour"
+            data-bs-parent="#vitek_id-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                <!-- change parameter cultre to vitek_id based on views.py -->
+                {% include 'utils/datatable_sm.html' with table_id='datatable_vitek_id' objects=vitek_id_obj data_fields=vitek_id_fields%}
               </div>
             </div>
           </div>

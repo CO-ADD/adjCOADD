@@ -98,8 +98,7 @@
       <h2 class="accordion-header" id="drugStructureEditor_title">
         <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
           data-bs-target="#drugStructureEditor_canvas" aria-expanded="true" aria-controls="collapseOne">
-          <h5 class="fs-6 my-0">{{object.pk}} |
-            {{object.drug_name}}
+          <h5 class="fs-6 my-0">Edit Structure and Update Mol
           </h5>
         </button>
       </h2>
@@ -107,11 +106,7 @@
         aria-labelledby="headingOne" data-bs-parent="#drugStructureEditor">
         <div class="accordion-body bg-transparent w-100">
           <input type="text" id="mol" value="{{object_mol}}" hidden />
-          <!-- <div id="update_drug_mol" class="not-visible">
-
-            {{form.smol.name}}{{form.smol}}
-       
-          </div> -->
+        
           {%include 'utils/ketcher.html'%}
         </div>
       </div>
@@ -120,11 +115,3 @@
 
 </form>
 
-<!-- <script>
-  $(document).ready(()=>{
-
-    console.log($('#id_smol').val())
-    var smol= $('#id_smol').val()
-    $('#id_smol').val(smol.toString())
-  })
-</script> -->

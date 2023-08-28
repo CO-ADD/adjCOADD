@@ -1,0 +1,142 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+  <div class="w-100">
+    <!-- 1. Main Model single object -->
+    <div class="d-flex m-0 p-0">
+      {% include 'utils/lefticons.html' with title="Organism" %}
+      <div class="accordion bg-transparent w-100" id="main_model-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapsemain_modelDetail" aria-expanded="true" aria-controls="collapseOne">
+              <h5 class="fs-6 my-0">
+                {{object.pk}} | {{object.organism_name}}
+              </h5>
+            </button>
+          </h2>
+          <div id="collapsemain_modelDetail" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
+            data-bs-parent="#main_model-detail">
+            <div class="accordion-body bg-transparent">
+              <b> {% include 'utils/message.html' %} </b>
+              <!-- 2. update form -->
+              {% include 'dorganism/organism/main_model_u.html' %}
+             
+
+              <br>
+              
+              <hr>
+              <!-- prettier-ignore -->
+              {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
+              <!--  -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!--3. submain_model and sub_model as ChildTable -->
+    <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+      {% include 'utils/lefticons.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
+      <div class="accordion bg-transparent w-100" id="submain_model-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapsesubmain_model" aria-expanded="true" aria-controls="collapseTwo">
+              <h5 class="fs-6 my-0">
+                Batch and Stock
+              </h5>
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=submain_model_obj_count %}
+              <!-- prettier-ignore -->
+            </button>
+          </h2>
+          <div id="collapsesubmain_model" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+            data-bs-parent="#submain_model-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=submain_model_obj data_fields=submain_model_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+
+    <!--4. Submain_model -->
+    <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+      {% include 'utils/lefticons.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
+      <div class="accordion w-100" id="submain_model-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapsesubmain_model" aria-expanded="true" aria-controls="collapseThree">
+              <h5 class="fs-6 my-0">
+                Culture
+              </h5>
+              <!-- prettier-ignore -->
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=submain_model_obj_count %}
+            </button>
+          </h2>
+          <div id="collapsesubmain_model" class="accordion-collapse collapse show" aria-labelledby="headingThree"
+            data-bs-parent="#submain_model-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {% include 'utils/datatable_sm.html' with table_id='datatable_submain_model' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--5. Image -->
+    <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
+    {% include 'dorganism/organism/orgbatch_image.html' %}
+    </div>
+    <!--6. Files -->
+    <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+     <!--  -->
+    {% include 'dorganism/organism/organism_file.html' %}
+    </div>
+
+    <!--7. MIC_COADD Pivot -->
+    {%include './main_model_mic.html'%}
+
+    <div style="min-height: 100px;"></div>
+  </div>
+
+  
+  {% load static %}
+  <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      let url_batch = `{% url 'batch_create' object.pk %}`;
+      let url_culture = `{% url 'culture_create' object.pk %}`;
+      console.log(url_batch);
+      loadModal("#createCultureModal", "#createCulture", url_culture);
+      loadModal("#createBatchModal", "#createBatch", url_batch);
+
+      let url_doc= `{% url 'adddoc' object.pk %}`;
+      let url_img_orgbatch= `{% url 'batchimg_create' object.pk %}`;
+
+      ajaxSimpleUpload('#id_doc_file','doc_file', url_doc, '#id_doc_name', '#id_doc_type');
+      ajaxSimpleUpload('#id_image_file','image_file', url_img_orgbatch, '#id_image_name', '#id_image_type');
+
+    });
+  </script>
+
+  {%endblock%}
+</div>

@@ -33,7 +33,7 @@ from apputil.utils.files_upload import Importhandler
 
 @user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
 def deleteImage(req, pk):
-    print('deleting...')
+
     kwargs={}
     kwargs['user']=req.user
     object_=get_object_or_404(Image, id=pk)
@@ -47,9 +47,8 @@ def deleteImage(req, pk):
 # import setup
 @login_required(login_url='/')
 def index(req):
-    version = settings.VERSION
     nDict = {
-        'Version': version,    
+         
         'nOrg':    str(Organism.objects.count()) + ' Organisms',
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
@@ -99,7 +98,7 @@ def login_user(req):
                 return redirect("/")
         else:
             form = Login_form()
-        return render(req, 'registration/login.html', {'form': form})    
+        return render(req, 'registration/login.html', {'form': form, 'Version': settings.VERSION})    
 
 def logout_user(req):
     logout(req)    
@@ -179,10 +178,10 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 
 ## ========================Dictionary View===========================================
 
-class AppLogView(LoginRequiredMixin, FilteredListView):
+class AppLogView(SuperUserRequiredMixin, FilteredListView):
     login_url = '/'
     model = ApplicationLog
-    template_name = 'apputil/logList.html'
+    template_name = 'apputil/log_List.html'
     filterset_class = Logfilter
     model_fields = model.HEADER_FIELDS
 

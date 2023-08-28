@@ -17,30 +17,30 @@
     </button>
   </h2>
   {%if query_list %}
-  <form action="{% url 'pivoted-table' app_model %}" class="w-100 border" method="POST"
-    id="id_pivottable_form">
+
+  <form action="{% url 'pivoted-table' app_model %}" class="w-100 border" method="POST" id="id_pivottable_form">
     {% csrf_token %}
-   
+
     <input id="id_column" type="text" name="column" hidden>
     <input id="id_index" type="text" name="index" hidden>
-    
+
     <div class="d-flex p-0">
       <button id="download_pt_as_csv" class="btn m-2 p-1" type="submit" name="download"><i
-        class="fa-solid fa-download text-success"></i> .XLSX</button>
+          class="fa-solid fa-download text-success"></i> .XLSX</button>
       <button class="submit_data btn"><i class="bi bi-arrow-right-circle-fill fs-3"></i></button>
       <div class="d-flex align-items-center">
-       
+
         <div class="d-flex flex-column mx-2">
           <span style="font-size: small">--Data visualization type--</span>
           <select data-name="data_map_type" class="form-select form-select-sm" aria-label="form-select-sm example"
-            style="width: fit-content">
+            style="width: fit-content" name="visual_type">
             <option value="1" selected>Pivot table</option>
             <option value="2">Pie Chart</option>
             <option value="3">Plot</option>
           </select>
         </div>
         <div class="d-flex flex-column mx-2">
-          <span style="font-size: small">--Select Table Values--</span> 
+          <span style="font-size: small">--Select Table Values--</span>
           <select name="values" data-name="data_process_value" class="form-select form-select-sm"
             aria-label=".form-select-sm example" style="width: fit-content">
             {%for key, value in model_fields.items %}
@@ -55,10 +55,10 @@
             </option>
             {%endfor%}
           </select>
-        
+
         </div>
         <div class="d-flex flex-column mx-2">
-          <span style="font-size: small">--Table Value selected--</span> 
+          <span style="font-size: small">--Table Value selected--</span>
           {% if select_value %}
           <span class="">{{select_value}}</span>
           {%else%}
@@ -75,34 +75,34 @@
             <option value="Inhib">Inhib</option>
           </select>
         </div>
-       
+
       </div>
-      
+
 
     </div>
     <div class="row m-2">
 
-      
-      <!-- <div class="col-md-9"> -->
-        <h5 class="m-auto">--Model Fields--</h5>
 
-        {% if select_fields %}
-        <ul id="sortable1" class="connectedSortable ms-2">
-          {% for key, value in model_fields.items %}
-          {% if key not in select_fields %}
-          <li data-name="{{key}}" class="draggable ui-state-default" style="max-width: 80%">
-            {% if value|is_dict %}
-            {% for key in value.keys %}
-            {{key }}
-            {% endfor %}
-            {% else %}
-            {{value}}
-            {% endif %}
-          </li>
-          {% endif %}
+      <!-- <div class="col-md-9"> -->
+      <h5 class="m-auto">--Model Fields--</h5>
+
+      {% if select_fields %}
+      <ul id="sortable1" class="connectedSortable ms-2">
+        {% for key, value in model_fields.items %}
+        {% if key not in select_fields %}
+        <li data-name="{{key}}" class="draggable ui-state-default" style="max-width: 80%">
+          {% if value|is_dict %}
+          {% for key in value.keys %}
+          {{key }}
           {% endfor %}
-        </ul>
-        
+          {% else %}
+          {{value}}
+          {% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+
       <!-- </div> -->
 
       {% else %}
@@ -134,7 +134,6 @@
         </div>
         <div class="d-flex">
 
-
           <div class="">
             {% include 'utils/drag_n_drop/selectivedrag_vt.html' with model_fields=model_fields %}
 
@@ -144,11 +143,19 @@
             <div style="height:100vh; overflow: auto;">
               {% if table %}
               {{table | safe}}
+              {%elif graph%}
+               <div>
+                Selected objects:
+                {{graph.objects_selected}}
+               </div>
+              <div class="card w-50">
+                <canvas id="Piegraph"></canvas>
+                <canvas id="bargraph"></canvas>
+              </div>
               {% endif %}
             </div>
           </div>
         </div>
-        <button id="download_pt_as_csv" type="submit" name="download">...Download as CSV</button>
 
       </div>
     </div>
@@ -205,8 +212,61 @@
 
     })
 
-    // saveData(savecsv);
   });
+</script>
+<!-- Pie Chart Javascript -->
+<script>
+  $(function () {
+    var $Chart_Like = $("#bargraph");
+    var ctx = $Chart_Like[0].getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [{% for object in graph.x_axis %} '{{object}}', {% endfor %}],
+    datasets: [{
+      label: "n_left",
+
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      data: [{% for object in graph.y_axis %} '{{object}}', {% endfor %}],
+    backgroundColor: [
+    'rgba(255, 99, 132, 0.2)',
+    'rgba(54, 162, 235, 0.2)',
+    'rgba(255, 206, 86, 0.2)',
+    'rgba(75, 192, 192, 0.2)',
+    'rgba(153, 102, 255, 0.2)',
+    'rgba(255, 159, 64, 0.2)'
+  ],
+    borderColor: [
+    'rgba(255, 99, 132, 1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
+    'rgba(255, 159, 64, 1)'
+  ],
+    borderWidth: 1          
+                        },
+                       
+                      
+                      ],
+                 },
+    options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    },
+    //  legend: {
+    //  display: false
+    //      } 
+  }
+             });
+
+// }
+// });
+
+  });
+
 </script>
 
 {% endblock %}

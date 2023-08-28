@@ -1,0 +1,19 @@
+<!-- trigger modal -->
+{%include 'utils/miscellaneous/delete_btn.html' with target='#taxonomy_detail_del'%}
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="taxonomy_detail_del"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'taxonomy_delete' slug=object.urlname as deleteurl %}
+  {%include 'utils/modal/delete.html' with title='Delete Taxonomy' deleteurl=deleteurl entry=object.pk %}
+  </div>
+</div>

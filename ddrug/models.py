@@ -37,6 +37,12 @@ class Drug(AuditModel):
         'max_phase':'Max_Phase',
     }
 
+    CARDS_FIELDS= {
+        "antimicro" : "MIC",
+
+    }
+
+  
     ID_SEQUENCE = 'Drug'
     ID_PREFIX = 'AMD'
     ID_PAD = 5
