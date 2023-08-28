@@ -29,6 +29,7 @@
             </b>
             {%include 'ddrug/drug/drug_u.html'%}
             <!--prettier-ignore-->
+            <hr>
             {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
           </div>
         </div>
@@ -36,7 +37,9 @@
     </div>
 
 
-    
+    <div>
+      {%include 'utils/piediagram.html'%}
+    </div>
 
 
   </div>
@@ -47,15 +50,10 @@
   <!-- call drug structure editor modal -->
   <script>
     $(document).ready(function () {
-
-      $('#updateMol').click(function () {
-        // console.log($('#id_smol').val())
-        // $(".edit_detailtable").click();
-        // $('#update_drug_mol').removeClass('not-visible')
-        var smol_drug = localStorage.getItem('smiles_query')
-        // console.log(smol_drug)
-        $('#id_smol').val(smol_drug)
-        localStorage.removeItem('smiles_query')
+      $('#get_new_mol').prop('disabled', true);
+      $('#get_new_mol').click(function () {
+        $(".edit_detailtable").click();
+ 
       })
 
     });

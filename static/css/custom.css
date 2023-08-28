@@ -46,7 +46,7 @@ Animation)
 :root .darkMode {
   --body-bg: #2e2e2e;
   --plain-text: #a3a3a3;
-  --brand-text: rgb(126, 126, 126, 0.5);
+  --brand-text: #ebebeb;
   --info: #ad4b00;
   --plain-text-bg: #484e4e;
   --brand-bg: #324547;
@@ -117,6 +117,15 @@ a {
   color: var(--brand-bg) !important;
 }
 
+.darkMode .text-info,
+.darkMode .page-link,
+.darkMode .card-link,
+.darkMode a {
+  color: var(--plain-text) !important;
+}
+.darkMode .accordion-button{
+  color: var(--brand-text) !important;
+}
 p {
   color:var(--plain-text);
 }

@@ -275,8 +275,10 @@ else:
     # ...
 #]
 CRONJOBS = [
-    ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
-    ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
+    # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    ('*/1 * * * *','apputil.utils.cron.Backup_adjCOADD'),
+    # ('*/1 * * * *','django.core.management.call_command')
 ]
 
 # Password validation
@@ -322,7 +324,7 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -396,5 +398,4 @@ LOGGING = {
 X_FRAME_OPTIONS = 'ALLOWALL'
 
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
-
 

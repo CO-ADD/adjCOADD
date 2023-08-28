@@ -13,7 +13,7 @@
   {% else %}
     <a
       id="{{create_object}}"
-      class="btn-sm"
+      class="{%if create_object%}btn-sm {%else%} btn-sm text-muted {%endif%}"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       title="Add New Entry {{create_object}}"
