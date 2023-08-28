@@ -75,6 +75,7 @@ else:
 
 # Application definition
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,6 +84,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',   
     'django_rdkit',
     'django_filters',
+    'dbbackup',
     "sequences.apps.SequencesConfig",
     "django.contrib.postgres",
     'apputil.apps.ApputilConfig',
@@ -153,6 +155,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -251,6 +254,33 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
+# Backup Database
+#----------------------
+# Requires django-dbbackup
+DBBACKUP_DATABASES = list(DATABASES.keys())
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
+
+if DEVELOPMENT:
+    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+    DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-'+DEVELOPMENT+'-{datetime}.{extension}'
+    DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-'+DEVELOPMENT+'-{datetime}.{extension}'
+else:
+    DBBACKUP_STORAGE_OPTIONS = {'location': 'backup/'}
+    DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-{datetime}.{extension}'
+    DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-{datetime}.{extension}'
+
+# CRON_CLASSES = [
+#     "apputil.utils.cron.Backup_adjCOADD",
+    # ...
+#]
+CRONJOBS = [
+    # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
+    # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    ('*/1 * * * *','apputil.utils.cron.Backup_adjCOADD'),
+    # ('*/1 * * * *','django.core.management.call_command')
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -294,7 +324,7 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -321,7 +351,6 @@ SESSION_SAVE_EVERY_REQUEST=True
 # RDKit Settings
 #----------------------
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
-
 
 # Logging files
 LOG_PATH = os.path.join(BASE_DIR, 'applog')
@@ -369,3 +398,4 @@ LOGGING = {
 X_FRAME_OPTIONS = 'ALLOWALL'
 
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
+

@@ -21,6 +21,7 @@
    pdfplumber python-magic openpyxl  ipython CairoSVG
    rdkit -c rdkit
    gunicorn
+   postgresql
 
    [win] django-filter django-pandas psycopg2 requests djangorestframework 
    [win] openpyxl ipython CairoSVG
@@ -33,6 +34,8 @@
    django-auth-ldap 
    djangorestframework-simplejwt
    clamd
+   django-dbbackup
+   django-crontab 
 
    [win] django-model-utils django-sequences django-formtools
    [win] djangorestframework-simplejwt

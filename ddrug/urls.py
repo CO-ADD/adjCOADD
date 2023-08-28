@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, DrugUpdateView,#createDrug, updateDrug, 
     detailVitekcard,  VitekcardListView, VitekastListView, VitekIDListView, smartsQuery, 
-    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, MIC_COADDListView, MIC_COADDCardView, 
+    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, API_Drug_Detail, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView, BreakpointListView)#VitekcardListView,
 from .upload_views import Import_VitekView, Import_DrugView
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-vitek-ast/', API_VITEK_ASTList.as_view(), name="api_vitekast"),
     path('api-drug/', API_Drug_List.as_view(), name="api_drug"),
+    path('api-drug/<str:pk>', API_Drug_Detail.as_view(), name="api_drug_detail"),
     # path('vitek-ast/create/', VITEK_ASTCreate.as_view()),
     # path('vitek-ast/<pk>/', VITEK_ASTUpdate.as_view()),
     # path('vitek-ast/<pk>/delete/', VITEK_ASTDelete.as_view()),

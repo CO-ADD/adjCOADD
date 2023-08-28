@@ -98,7 +98,8 @@ class DrugCardView(DrugListView):
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, pk=pk)
-    form=Drug_form(instance=object_,)# initial={"smol":Chem.MolToMolBlock(object_.smol)},)
+    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
+    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
@@ -263,7 +264,12 @@ class API_Drug_List(API_ListView):
 class API_VITEK_ASTList(API_ListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
- 
+
+from rest_framework import generics
+class API_Drug_Detail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = Drug.objects.all()
+    serializer_class = Drug_Serializer
  
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()
@@ -277,4 +283,3 @@ class API_VITEK_ASTList(API_ListView):
 #     queryset = VITEK_AST.objects.all()
 #     serializer_class = VITEK_ASTSerializer
 #
-

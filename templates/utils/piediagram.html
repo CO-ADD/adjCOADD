@@ -1,0 +1,54 @@
+<div class="badget" style="width: 200px; height: 200px;">
+    <canvas id="chart{{object.pk}}"></canvas>
+</div>
+
+
+<script>
+
+    // jquery function
+   
+        data = '{{object.n_compounds}}'
+        console.log(data)
+        var ctx = document.getElementById('chart{{object.pk}}').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                // labels: [{%for data in qs%}'{{data.editor_name}}',{%endfor%}] //loop through queryset, 
+                labels: ['N_Compound', 'mic1', 'mic2'],
+                datasets: [{
+                    // label: '# of users',
+                    // data: [{%for data in qs%}{{data.num_users}},{%endfor%}],
+                    data: ['{{object.n_compounds}}', 0.1, 0.5],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                legend: {
+                    display: false
+                },
+            }
+        });
+  
+
+</script>

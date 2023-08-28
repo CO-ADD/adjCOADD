@@ -1,0 +1,25 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+
+  <div class="d-flex flex-row vh-100">
+    {%include 'utils/leftbar.html' with list_url='taxo_list' card_url='taxo_card' create_object='createTaxo' create_objectModal='createTaxoModal'%}
+    <!-- Sidebar View -->
+    {%include "utils/sidebar.html"%}
+     <!-- Main View -->
+    <div class="d-flex flex-column w-100">
+      {% include 'utils/main_horizalbar.html' with title='Taxonomy' model_name='Taxonomy' application='dorganism'%}
+        <!--  -->
+        <div class="contain-fluid data-contain">
+      <!-- list View Content -->
+             <!-- prettier-ignore -->
+        {%include 'utils/datatable_general.html' with modelname='Taxonomy'%}
+        </div>
+    </div>
+  </div>
+
+
+{% endblock%}

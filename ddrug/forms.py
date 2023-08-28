@@ -60,12 +60,9 @@ class Drug_form(forms.ModelForm):
     def clean_smol(self):
         data=self.cleaned_data['smol']
 
-        print("0",data)
         if data:
-            data=Chem.MolFromMolBlock(data)
-            print("1",data)
+            data=Chem.MolFromMolBlock('M- \n'+data)
         else:
-            print("1e")
             self.add_error('smol', 'Provide smol value, currently is None')
         
         return data
@@ -129,13 +126,13 @@ class Vitekast_filter(Filterbase):
     fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label='Drug Name')
     fOrgBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label='Drug Name')
     fDrug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
-    bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
+    # bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
     bp_source = django_filters.ChoiceFilter(field_name = 'bp_source', choices=[], label = 'Source')
     codes = django_filters.ChoiceFilter(field_name = 'drug_id__drug_codes', choices=[], label = 'Code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
+        # self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
         self.filters['bp_source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_source')
         # code is Foreighkey field
         choice_query = Drug.objects.order_by().values_list('drug_codes').distinct()
@@ -286,7 +283,7 @@ class MIC_Pubfilter(Filterbase):
 # -----------------------------------------------------------------
 class Breakpointfilter(Filterbase):
 # -----------------------------------------------------------------
-    drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    drug_name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains', label="Drug")
     bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
     notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
     org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)
