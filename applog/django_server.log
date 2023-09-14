@@ -3976,3 +3976,1743 @@ django.server WARNING 2023-09-13 16:43:01,912 basehttp 7212 20804 "GET /static/i
 django.server WARNING 2023-09-13 16:43:01,942 basehttp 7212 17356 "GET /static/images/AMD00048.svg HTTP/1.1" 404 1917
 django.server WARNING 2023-09-13 16:43:01,944 basehttp 7212 9236 "GET /static/images/AMD00049.svg HTTP/1.1" 404 1917
 django.server INFO 2023-09-13 16:43:03,613 basehttp 7212 21380 "GET /ddrug/createDrug/ HTTP/1.1" 200 12686
+django.utils.autoreload INFO 2023-09-14 10:01:08,206 autoreload 22876 28956 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:01:19,535 basehttp 22876 17856 "GET / HTTP/1.1" 200 14912
+django.server INFO 2023-09-14 10:01:19,592 basehttp 22876 17856 "GET /static/css/overideboot_size.css HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,598 basehttp 22876 20004 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,602 basehttp 22876 17856 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,604 basehttp 22876 25376 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,605 basehttp 22876 29320 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,606 basehttp 22876 25028 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,615 basehttp 22876 20004 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,616 basehttp 22876 25376 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,619 basehttp 22876 17856 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,626 basehttp 22876 25028 "GET /static/js/loadModal.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,627 basehttp 22876 20004 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,628 basehttp 22876 25376 "GET /static/js/load_indicator.js HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 10:01:19,648 basehttp 22876 29320 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:01:19,660 basehttp 22876 25376 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,667 basehttp 22876 25376 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-09-14 10:01:19,797 basehttp 22876 8868 "GET /static/css/custom.css HTTP/1.1" 200 19053
+django.server INFO 2023-09-14 10:01:22,511 basehttp 22876 8868 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 10:01:22,851 basehttp 22876 8868 "GET /index/ HTTP/1.1" 200 22193
+django.server WARNING 2023-09-14 10:01:22,889 basehttp 22876 8868 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:01:24,899 basehttp 22876 25376 "GET /dorganism/organism_card HTTP/1.1" 200 258624
+django.server INFO 2023-09-14 10:01:24,925 basehttp 22876 20004 "GET /static/js/filter_toggle.js HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 10:01:24,933 basehttp 22876 25376 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:01:27,547 basehttp 22876 20004 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100
+django.utils.autoreload INFO 2023-09-14 10:02:34,553 autoreload 22876 28956 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:02:44,342 autoreload 11224 25424 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:02:51,413 basehttp 11224 24536 "GET /dorganism/organism_card HTTP/1.1" 200 258390
+django.server WARNING 2023-09-14 10:02:51,492 basehttp 11224 24536 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:02:52,507 basehttp 11224 24308 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.utils.autoreload INFO 2023-09-14 10:03:29,278 autoreload 11224 25424 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:03:32,750 autoreload 844 16268 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:03:38,390 autoreload 844 16268 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:03:41,498 autoreload 20004 25376 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:03:45,643 basehttp 20004 28764 "GET /dorganism/organism_card HTTP/1.1" 200 262895
+django.server WARNING 2023-09-14 10:03:45,737 basehttp 20004 28764 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:04:37,949 autoreload 20004 25376 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:04:40,569 autoreload 15420 20240 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:04:49,569 autoreload 15420 20240 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:04:51,705 autoreload 17880 25068 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:04:57,240 basehttp 17880 19744 "GET /dorganism/organism_card HTTP/1.1" 200 258390
+django.server WARNING 2023-09-14 10:04:57,322 basehttp 17880 19744 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:05:05,877 autoreload 17880 25068 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:05:08,460 autoreload 10972 17516 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:06:08,357 autoreload 10972 17516 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:06:10,443 autoreload 16192 28448 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:06:21,899 autoreload 16192 28448 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:06:24,478 autoreload 23664 3800 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:06:48,511 autoreload 23664 3800 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:06:50,514 autoreload 16712 19880 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:06:57,501 autoreload 16712 19880 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:07:00,156 autoreload 11716 18968 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:07:07,706 autoreload 11716 18968 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:07:09,912 autoreload 1048 25772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:08:56,648 autoreload 1048 25772 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:09:00,343 autoreload 15984 11176 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:09:08,822 autoreload 15984 11176 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:09:11,454 autoreload 29764 28916 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:10:31,201 basehttp 29764 16108 "GET /dorganism/organism_card HTTP/1.1" 200 262895
+django.server WARNING 2023-09-14 10:10:31,302 basehttp 29764 16108 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:10:41,264 autoreload 29764 28916 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:10:44,955 autoreload 20540 21600 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:10:59,259 autoreload 20540 21600 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:11:01,211 autoreload 28872 16348 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:11:12,525 autoreload 28872 16348 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:11:16,320 autoreload 21676 30272 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:11:24,189 autoreload 21676 30272 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:11:28,087 autoreload 1560 22644 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:11:48,875 autoreload 1560 22644 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:11:52,174 autoreload 4980 7940 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:11:58,937 autoreload 4980 7940 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:12:02,321 autoreload 15548 22248 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:12:14,694 basehttp 15548 3372 "GET /dorganism/organism_card HTTP/1.1" 200 262895
+django.server WARNING 2023-09-14 10:12:14,773 basehttp 15548 3372 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:12:22,224 autoreload 15548 22248 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:12:25,475 autoreload 29252 27884 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:15:16,890 basehttp 29252 28324 "GET /index/ HTTP/1.1" 200 22060
+django.server WARNING 2023-09-14 10:15:16,941 basehttp 29252 28324 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:17:42,896 basehttp 29252 18972 "GET /index/ HTTP/1.1" 200 22361
+django.server WARNING 2023-09-14 10:17:42,939 basehttp 29252 18972 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:17:46,179 basehttp 29252 29228 "GET /index/ HTTP/1.1" 200 22361
+django.server WARNING 2023-09-14 10:17:46,211 basehttp 29252 29228 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:17:47,857 basehttp 29252 30688 "GET /index/ HTTP/1.1" 200 22361
+django.server WARNING 2023-09-14 10:17:47,883 basehttp 29252 30688 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:18:13,847 autoreload 29252 27884 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:18:15,925 autoreload 5288 16560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:18:25,163 autoreload 5288 16560 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:18:27,160 autoreload 4228 24956 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:18:38,514 autoreload 4228 24956 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:18:40,617 autoreload 22640 28572 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:18:56,366 autoreload 22640 28572 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:18:58,279 autoreload 13348 17332 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:19:09,840 autoreload 13348 17332 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:19:11,869 autoreload 19176 15552 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:19:17,435 autoreload 19176 15552 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:19:19,465 autoreload 1584 7972 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:19:21,988 basehttp 1584 724 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:19:22,040 basehttp 1584 724 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:19:57,819 basehttp 1584 30696 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:19:57,866 basehttp 1584 30696 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:20:00,769 basehttp 1584 23988 "GET /dorganism/organism_card HTTP/1.1" 200 262895
+django.server WARNING 2023-09-14 10:20:00,800 basehttp 1584 23988 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:20:02,536 basehttp 1584 11292 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100
+django.server INFO 2023-09-14 10:20:23,302 basehttp 1584 11292 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:20:23,356 basehttp 1584 11292 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:20:25,006 basehttp 1584 4580 "GET /dorganism/organism_list HTTP/1.1" 200 167684
+django.server WARNING 2023-09-14 10:20:25,044 basehttp 1584 4580 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:21:51,340 autoreload 1584 7972 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:21:53,435 autoreload 22304 27772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:21:58,161 autoreload 22304 27772 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:00,034 autoreload 19880 8212 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:06,806 autoreload 19880 8212 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:08,819 autoreload 7712 16392 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:16,638 autoreload 7712 16392 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:19,054 autoreload 17928 10504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:25,578 autoreload 17928 10504 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:27,538 autoreload 2240 12296 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:32,999 autoreload 2240 12296 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:34,972 autoreload 20028 1560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:44,430 autoreload 20028 1560 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:22:47,107 autoreload 15640 4056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:22:58,125 autoreload 15640 4056 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:23:01,206 autoreload 17912 28812 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:23:14,268 autoreload 17912 28812 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:23:16,381 autoreload 1124 13012 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:23:22,812 autoreload 1124 13012 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:23:25,850 autoreload 4544 17096 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:23:32,873 autoreload 4544 17096 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:23:35,563 autoreload 7752 23868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:23:45,270 autoreload 7752 23868 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:23:47,931 autoreload 1452 15772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:24:02,231 autoreload 1452 15772 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:24:04,775 autoreload 24852 26660 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:24:15,408 autoreload 24852 26660 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:24:17,725 autoreload 28656 19240 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:24:22,842 autoreload 28656 19240 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:24:25,080 autoreload 30372 16964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:24:30,913 autoreload 30372 16964 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:24:33,434 autoreload 22336 13144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:24:44,354 autoreload 22336 13144 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:24:46,559 autoreload 21628 29944 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:25:05,738 autoreload 21628 29944 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:25:07,515 autoreload 10996 21620 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:25:12,133 basehttp 10996 19240 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:25:12,229 basehttp 10996 19240 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:25:14,554 basehttp 10996 12296 "GET /dorganism/organism_list HTTP/1.1" 200 167684
+django.server WARNING 2023-09-14 10:25:14,589 basehttp 10996 12296 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:25:18,772 basehttp 10996 18496 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100
+django.utils.autoreload INFO 2023-09-14 10:25:28,587 autoreload 10996 21620 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:25:31,896 autoreload 18832 29328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:25:41,087 autoreload 18832 29328 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:25:43,851 autoreload 18068 21196 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:25:52,461 autoreload 18068 21196 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:25:54,687 autoreload 30124 18056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:26:01,436 autoreload 30124 18056 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:26:03,979 autoreload 12936 16216 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:26:16,523 autoreload 12936 16216 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:26:18,434 autoreload 7768 8488 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:26:27,417 autoreload 7768 8488 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:26:30,438 autoreload 14204 28872 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:26:35,927 autoreload 14204 28872 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:26:38,821 autoreload 18920 11080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:26:54,970 autoreload 18920 11080 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:26:58,066 autoreload 29080 19636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:03,600 autoreload 29080 19636 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:27:06,202 autoreload 22588 13152 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:14,224 autoreload 22588 13152 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:27:16,103 autoreload 22240 1736 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:27,256 autoreload 22240 1736 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:27:29,382 autoreload 16720 30396 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:38,395 autoreload 16720 30396 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:27:40,548 autoreload 20704 28988 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:49,628 autoreload 20704 28988 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:27:52,177 autoreload 10648 9876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:27:58,632 autoreload 10648 9876 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:01,800 autoreload 30424 3764 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:28:15,204 autoreload 30424 3764 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:17,188 autoreload 19400 16216 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:28:27,502 autoreload 19400 16216 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:29,908 autoreload 26252 30228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:28:35,297 autoreload 26252 30228 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:37,667 autoreload 9384 15444 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:28:45,212 autoreload 9384 15444 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:47,404 autoreload 17620 26120 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:28:53,296 autoreload 17620 26120 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:28:56,070 autoreload 24052 28116 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:02,698 autoreload 24052 28116 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:05,093 autoreload 21348 25560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:14,134 autoreload 21348 25560 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:16,834 autoreload 15384 20876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:30,801 autoreload 15384 20876 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:33,740 autoreload 15800 27288 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:38,707 autoreload 15800 27288 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:40,997 autoreload 27528 27492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:47,486 autoreload 27528 27492 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:50,309 autoreload 27640 11228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:29:56,378 autoreload 27640 11228 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:29:58,634 autoreload 9920 28460 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:30:13,209 autoreload 9920 28460 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:30:16,012 autoreload 22152 22548 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 10:30:20,004 autoreload 22152 22548 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:30:22,250 autoreload 15984 22012 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 10:30:24,763 basehttp 15984 5836 "GET /dorganism/organism_list HTTP/1.1" 200 167684
+django.server WARNING 2023-09-14 10:30:24,851 basehttp 15984 5836 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:31:00,928 autoreload 15984 22012 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:31:03,027 autoreload 6576 23324 Watching for file changes with StatReloader
+django.request ERROR 2023-09-14 10:31:05,801 log 6576 5256 Internal Server Error: /log_list/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword '' into field. Choices are: id, log_code, log_desc, log_object, log_proc, log_status, log_time, log_type, log_user, log_user_id
+django.server ERROR 2023-09-14 10:31:05,812 basehttp 6576 5256 "GET /log_list/ HTTP/1.1" 500 124305
+django.request WARNING 2023-09-14 10:31:06,237 log 6576 5256 Not Found: /favicon.ico
+django.server WARNING 2023-09-14 10:31:06,238 basehttp 6576 5256 "GET /favicon.ico HTTP/1.1" 404 6167
+django.server INFO 2023-09-14 10:31:22,015 basehttp 6576 5256 "GET /dorganism/taxonomy_card HTTP/1.1" 200 324930
+django.server WARNING 2023-09-14 10:31:22,068 basehttp 6576 5256 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 10:31:30,059 autoreload 6576 23324 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 10:31:32,452 autoreload 25872 19912 Watching for file changes with StatReloader
+django.request ERROR 2023-09-14 10:31:35,021 log 25872 12144 Internal Server Error: /log_list/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword '' into field. Choices are: id, log_code, log_desc, log_object, log_proc, log_status, log_time, log_type, log_user, log_user_id
+django.server ERROR 2023-09-14 10:31:35,030 basehttp 25872 12144 "GET /log_list/ HTTP/1.1" 500 124158
+django.server INFO 2023-09-14 10:31:54,051 basehttp 25872 12144 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:31:54,090 basehttp 25872 12144 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:31:58,080 basehttp 25872 14952 "GET /accounts/logout/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 10:31:58,183 basehttp 25872 14952 "GET / HTTP/1.1" 200 14912
+django.server WARNING 2023-09-14 10:31:58,225 basehttp 25872 14952 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:35:05,345 basehttp 25872 4000 "GET / HTTP/1.1" 200 14969
+django.server WARNING 2023-09-14 10:35:05,385 basehttp 25872 4000 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:35:24,726 basehttp 25872 1104 "GET / HTTP/1.1" 200 15004
+django.server WARNING 2023-09-14 10:35:24,753 basehttp 25872 1104 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:35:35,062 basehttp 25872 2252 "GET / HTTP/1.1" 200 15004
+django.server WARNING 2023-09-14 10:35:35,093 basehttp 25872 2252 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:35:55,649 basehttp 25872 896 "GET / HTTP/1.1" 200 15004
+django.server WARNING 2023-09-14 10:35:55,675 basehttp 25872 896 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:38:22,422 basehttp 25872 28816 "GET / HTTP/1.1" 200 15004
+django.server WARNING 2023-09-14 10:38:22,453 basehttp 25872 28816 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:38:24,867 basehttp 25872 15552 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 10:38:25,266 basehttp 25872 15552 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:38:25,297 basehttp 25872 15552 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:40:51,067 basehttp 25872 20648 "GET /dorganism/organism_list HTTP/1.1" 200 167684
+django.server WARNING 2023-09-14 10:40:51,102 basehttp 25872 20648 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:40:53,438 basehttp 25872 9328 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:40:53,485 basehttp 25872 9328 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:44:10,336 basehttp 25872 10100 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:44:10,377 basehttp 25872 10100 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:44:34,429 basehttp 25872 19404 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:44:34,456 basehttp 25872 19404 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:44:49,235 basehttp 25872 6372 "GET /index/ HTTP/1.1" 200 22379
+django.server WARNING 2023-09-14 10:44:49,269 basehttp 25872 6372 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:48:48,994 basehttp 25872 5408 "GET /index/ HTTP/1.1" 200 22292
+django.server WARNING 2023-09-14 10:48:49,031 basehttp 25872 5408 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:49:45,524 basehttp 25872 11508 "GET /index/ HTTP/1.1" 200 22227
+django.server WARNING 2023-09-14 10:49:45,558 basehttp 25872 11508 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:52:45,122 basehttp 25872 12120 "GET /index/ HTTP/1.1" 200 22240
+django.server WARNING 2023-09-14 10:52:45,151 basehttp 25872 12120 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:53:26,814 basehttp 25872 4088 "GET /index/ HTTP/1.1" 200 22252
+django.server WARNING 2023-09-14 10:53:26,856 basehttp 25872 4088 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:54:02,604 basehttp 25872 10348 - Broken pipe from ('127.0.0.1', 62279)
+django.server INFO 2023-09-14 10:54:28,089 basehttp 25872 3132 "GET /dorganism/organism_list HTTP/1.1" 200 167557
+django.server WARNING 2023-09-14 10:54:28,123 basehttp 25872 3132 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:54:56,083 basehttp 25872 8116 "GET /index/ HTTP/1.1" 200 22227
+django.server WARNING 2023-09-14 10:54:56,123 basehttp 25872 8116 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:55:41,267 basehttp 25872 27124 "GET /index/ HTTP/1.1" 200 22227
+django.server WARNING 2023-09-14 10:55:41,325 basehttp 25872 27124 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:56:40,177 basehttp 25872 6656 "GET /index/ HTTP/1.1" 200 22059
+django.server WARNING 2023-09-14 10:56:40,206 basehttp 25872 6656 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:56:58,339 basehttp 25872 26284 "GET /index/ HTTP/1.1" 200 22058
+django.server WARNING 2023-09-14 10:56:58,395 basehttp 25872 26284 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:57:37,663 basehttp 25872 24500 "GET /index/ HTTP/1.1" 200 22043
+django.server WARNING 2023-09-14 10:57:37,718 basehttp 25872 24500 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:57:50,958 basehttp 25872 29468 "GET /index/ HTTP/1.1" 200 22042
+django.server WARNING 2023-09-14 10:57:50,987 basehttp 25872 29468 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 10:58:18,560 basehttp 25872 29768 "GET /index/ HTTP/1.1" 200 22042
+django.server WARNING 2023-09-14 10:58:18,591 basehttp 25872 29768 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-14 11:01:38,827 log 25872 27464 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'sequernce_list' not found. 'sequernce_list' is not a valid view function or pattern name.
+django.server ERROR 2023-09-14 11:01:38,833 basehttp 25872 27464 "GET /index/ HTTP/1.1" 500 226682
+django.server INFO 2023-09-14 11:01:53,483 basehttp 25872 27464 "GET /index/ HTTP/1.1" 200 21407
+django.server WARNING 2023-09-14 11:01:53,548 basehttp 25872 27464 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:02:00,141 basehttp 25872 29572 "GET /dgene/sequence_list HTTP/1.1" 200 264997
+django.server WARNING 2023-09-14 11:02:00,203 basehttp 25872 29572 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:03:46,861 basehttp 25872 11128 "GET /index/ HTTP/1.1" 200 21298
+django.server WARNING 2023-09-14 11:03:46,924 basehttp 25872 11128 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:03:50,806 basehttp 25872 19488 "GET /ddrug/import-vitek/ HTTP/1.1" 200 20216
+django.server WARNING 2023-09-14 11:03:51,207 basehttp 25872 19488 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:03:53,808 basehttp 25872 15600 "GET /index/ HTTP/1.1" 200 21298
+django.server WARNING 2023-09-14 11:03:53,836 basehttp 25872 15600 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:05:18,761 basehttp 25872 22172 "GET /index/ HTTP/1.1" 200 21060
+django.server WARNING 2023-09-14 11:05:18,812 basehttp 25872 22172 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:06:22,582 basehttp 25872 26208 "GET /index/ HTTP/1.1" 200 20990
+django.server WARNING 2023-09-14 11:06:22,641 basehttp 25872 26208 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:07:11,827 basehttp 25872 28880 "GET /index/ HTTP/1.1" 200 20951
+django.server WARNING 2023-09-14 11:07:11,880 basehttp 25872 28880 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:08:52,083 basehttp 25872 19088 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:08:52,130 basehttp 25872 19088 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:09:35,081 basehttp 25872 17332 "GET /accounts/logout/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 11:09:35,180 basehttp 25872 17332 "GET / HTTP/1.1" 200 14777
+django.server WARNING 2023-09-14 11:09:35,255 basehttp 25872 17332 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:09:37,584 basehttp 25872 19204 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 11:09:37,908 basehttp 25872 19204 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:09:37,938 basehttp 25872 19204 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:09:45,259 basehttp 25872 21352 "GET /user_list/ HTTP/1.1" 200 133571
+django.server WARNING 2023-09-14 11:09:45,319 basehttp 25872 21352 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:09:50,461 basehttp 25872 12564 "GET /dict/ HTTP/1.1" 200 120227
+django.server INFO 2023-09-14 11:09:50,508 basehttp 25872 16252 "GET /static/js/editablerow.js HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 11:09:50,526 basehttp 25872 12564 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-14 11:09:53,089 log 25872 16252 Internal Server Error: /log_list/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword '' into field. Choices are: id, log_code, log_desc, log_object, log_proc, log_status, log_time, log_type, log_user, log_user_id
+django.server ERROR 2023-09-14 11:09:53,092 basehttp 25872 16252 "GET /log_list/ HTTP/1.1" 500 124140
+django.server INFO 2023-09-14 11:13:53,079 basehttp 25872 16252 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:13:53,168 basehttp 25872 16252 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:15:04,829 basehttp 25872 27936 "GET /dict/ HTTP/1.1" 200 120227
+django.server WARNING 2023-09-14 11:15:04,890 basehttp 25872 27936 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:18:54,051 basehttp 25872 16440 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:18:54,136 basehttp 25872 16440 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:20:06,461 basehttp 25872 15760 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:20:06,569 basehttp 25872 15760 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:22:16,483 basehttp 25872 10464 "GET /index/ HTTP/1.1" 200 20937
+django.server WARNING 2023-09-14 11:22:16,517 basehttp 25872 10464 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:23:55,093 basehttp 25872 17716 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:23:55,133 basehttp 25872 17716 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:27:19,151 basehttp 25872 12028 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:27:19,213 basehttp 25872 12028 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:28:56,085 basehttp 25872 1524 "GET /index/ HTTP/1.1" 200 20926
+django.server WARNING 2023-09-14 11:28:56,158 basehttp 25872 1524 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:29:08,582 basehttp 25872 27340 "GET /index/ HTTP/1.1" 200 20930
+django.server WARNING 2023-09-14 11:29:08,630 basehttp 25872 27340 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:29:25,710 basehttp 25872 19536 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:29:25,738 basehttp 25872 19536 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:33:57,096 basehttp 25872 10368 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:33:57,164 basehttp 25872 10368 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:34:28,867 basehttp 25872 14372 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:34:28,907 basehttp 25872 14372 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:38:58,008 basehttp 25872 14232 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:38:58,083 basehttp 25872 14232 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:39:29,359 basehttp 25872 15832 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:39:29,428 basehttp 25872 15832 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:43:59,161 basehttp 25872 6840 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:43:59,202 basehttp 25872 6840 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:44:29,984 basehttp 25872 15660 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:44:30,019 basehttp 25872 15660 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:49:00,129 basehttp 25872 25080 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:49:00,171 basehttp 25872 27564 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:49:00,314 basehttp 25872 25080 "GET /static/css/custom.css HTTP/1.1" 200 18412
+django.server INFO 2023-09-14 11:49:31,088 basehttp 25872 25080 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:49:31,121 basehttp 25872 25080 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:54:01,070 basehttp 25872 14412 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:54:01,109 basehttp 25872 14412 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:54:32,144 basehttp 25872 25384 "GET /index/ HTTP/1.1" 200 20936
+django.server INFO 2023-09-14 11:54:32,167 basehttp 25872 25384 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 11:54:32,173 basehttp 25872 22012 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:59:02,202 basehttp 25872 25384 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:59:02,247 basehttp 25872 25384 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 11:59:33,074 basehttp 25872 22740 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 11:59:33,115 basehttp 25872 22740 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:04:03,097 basehttp 25872 3780 "GET /index/ HTTP/1.1" 200 20936
+django.server INFO 2023-09-14 12:04:03,158 basehttp 25872 3780 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 12:04:03,171 basehttp 25872 3780 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:04:33,573 basehttp 25872 25404 "GET /index/ HTTP/1.1" 200 20936
+django.server WARNING 2023-09-14 12:04:33,629 basehttp 25872 25404 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:07:14,335 basehttp 25872 4600 "GET /index/ HTTP/1.1" 200 20925
+django.server WARNING 2023-09-14 12:07:14,396 basehttp 25872 4600 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:07:24,453 basehttp 25872 13056 "GET /index/ HTTP/1.1" 200 20935
+django.server WARNING 2023-09-14 12:07:24,482 basehttp 25872 13056 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:09:04,020 basehttp 25872 22940 "GET /index/ HTTP/1.1" 200 20935
+django.server WARNING 2023-09-14 12:09:04,085 basehttp 25872 22940 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:12:27,186 basehttp 25872 24020 "GET /index/ HTTP/1.1" 200 20935
+django.server INFO 2023-09-14 12:12:27,230 basehttp 25872 24020 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 12:12:27,242 basehttp 25872 2432 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:14:05,013 basehttp 25872 24020 "GET /index/ HTTP/1.1" 200 20935
+django.server WARNING 2023-09-14 12:14:05,079 basehttp 25872 24020 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 12:14:56,833 autoreload 25872 19912 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 12:14:59,219 autoreload 29264 11092 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 12:15:21,000 autoreload 29264 11092 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 12:15:23,853 autoreload 14996 22584 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 12:17:27,833 basehttp 14996 21900 "GET /index/ HTTP/1.1" 200 20935
+django.server WARNING 2023-09-14 12:17:27,866 basehttp 14996 21900 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 12:19:06,122 basehttp 14996 21732 "GET /index/ HTTP/1.1" 200 20935
+django.server WARNING 2023-09-14 12:19:06,169 basehttp 14996 21732 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-14 12:20:36,857 log 14996 13304 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 14: 'setting_value'. Did you forget to register or load this tag?
+django.server ERROR 2023-09-14 12:20:36,864 basehttp 14996 13304 "GET /index/ HTTP/1.1" 500 246772
+django.request ERROR 2023-09-14 12:22:15,372 log 14996 13304 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_tag'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_tag' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 12:22:15,375 basehttp 14996 13304 "GET /index/ HTTP/1.1" 500 262153
+django.request ERROR 2023-09-14 12:23:03,587 log 14996 13304 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 12:23:03,591 basehttp 14996 13304 "GET /index/ HTTP/1.1" 500 262189
+django.request ERROR 2023-09-14 12:23:30,894 log 14996 13304 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 12:23:30,896 basehttp 14996 13304 "GET /index/ HTTP/1.1" 500 262189
+django.request ERROR 2023-09-14 12:24:07,220 log 14996 13304 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 12:24:07,224 basehttp 14996 13304 "GET /index/ HTTP/1.1" 500 262043
+django.request ERROR 2023-09-14 13:45:04,380 log 14996 10200 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 13:45:04,384 basehttp 14996 10200 "GET /index/ HTTP/1.1" 500 262897
+django.request ERROR 2023-09-14 13:45:12,035 log 14996 10200 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+static
+tz
+django.server ERROR 2023-09-14 13:45:12,038 basehttp 14996 10200 "GET /index/ HTTP/1.1" 500 262897
+django.utils.autoreload INFO 2023-09-14 13:48:59,680 autoreload 10732 4256 Watching for file changes with StatReloader
+django.request ERROR 2023-09-14 13:49:05,630 log 10732 1600 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1026, in find_library
+    return parser.libraries[name]
+           ~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'setting_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1088, in load
+    lib = find_library(parser, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 1028, in find_library
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'setting_value' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+custom_filters
+i18n
+l10n
+log
+pagination_url
+rest_framework
+settings_value
+static
+tz
+django.server ERROR 2023-09-14 13:49:05,636 basehttp 10732 1600 "GET /index/ HTTP/1.1" 500 263296
+django.server INFO 2023-09-14 13:52:03,798 basehttp 10732 1600 "GET /index/ HTTP/1.1" 200 20949
+django.server INFO 2023-09-14 13:52:03,843 basehttp 10732 1600 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 13:52:03,887 basehttp 10732 20072 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 13:52:18,436 autoreload 10732 4256 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 13:52:20,767 autoreload 28584 25148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 13:52:55,369 autoreload 13432 16216 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 13:53:01,982 basehttp 13432 16804 "GET /index/ HTTP/1.1" 200 20949
+django.server WARNING 2023-09-14 13:53:02,098 basehttp 13432 16804 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 13:54:15,727 basehttp 13432 27224 "GET /index/ HTTP/1.1" 200 20958
+django.server WARNING 2023-09-14 13:54:15,789 basehttp 13432 27224 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 13:54:38,783 autoreload 13432 16216 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 13:54:41,063 autoreload 22380 14892 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 13:54:47,754 autoreload 22380 14892 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 13:54:50,072 autoreload 600 1104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-14 13:54:57,177 autoreload 600 1104 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 13:54:59,579 autoreload 22028 9572 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 13:55:01,575 basehttp 22028 25976 "GET /index/ HTTP/1.1" 200 20954
+django.server WARNING 2023-09-14 13:55:01,654 basehttp 22028 25976 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 13:55:20,716 autoreload 22028 9572 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 13:55:23,359 autoreload 8860 12072 Watching for file changes with StatReloader
+django.server INFO 2023-09-14 13:55:25,385 basehttp 8860 30624 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 13:55:25,449 basehttp 8860 30624 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:05:23,149 basehttp 8860 14180 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:05:23,212 basehttp 8860 14180 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:10:24,022 basehttp 8860 24624 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 14:10:24,049 basehttp 8860 24624 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 14:10:24,066 basehttp 8860 24624 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:15:25,072 basehttp 8860 12860 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:15:25,148 basehttp 8860 12860 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:20:26,118 basehttp 8860 12632 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:20:26,160 basehttp 8860 12632 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:25:27,049 basehttp 8860 13976 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:25:27,087 basehttp 8860 13976 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:30:28,060 basehttp 8860 13260 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 14:30:28,091 basehttp 8860 13260 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 14:30:28,091 basehttp 8860 13260 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:35:29,181 basehttp 8860 17480 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:35:29,227 basehttp 8860 17480 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:40:30,058 basehttp 8860 19968 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:40:30,094 basehttp 8860 19968 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:45:31,085 basehttp 8860 2508 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:45:31,129 basehttp 8860 2508 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:50:32,094 basehttp 8860 29660 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 14:50:32,151 basehttp 8860 29660 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 14:55:33,308 basehttp 8860 29140 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 14:55:33,344 basehttp 8860 29140 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 14:55:33,366 basehttp 8860 29140 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:00:34,050 basehttp 8860 18396 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:00:34,099 basehttp 8860 18396 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:05:35,261 basehttp 8860 14464 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:05:35,308 basehttp 8860 14464 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:10:36,077 basehttp 8860 14996 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:10:36,131 basehttp 8860 14996 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:15:37,179 basehttp 8860 25068 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:15:37,231 basehttp 8860 25068 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:20:38,126 basehttp 8860 21636 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 15:20:38,159 basehttp 8860 21636 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 15:20:38,170 basehttp 8860 21636 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:25:39,199 basehttp 8860 24992 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:25:39,235 basehttp 8860 24992 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:30:40,141 basehttp 8860 11224 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:30:40,183 basehttp 8860 11224 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:35:41,259 basehttp 8860 26888 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:35:41,312 basehttp 8860 26888 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:40:42,114 basehttp 8860 25900 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:40:42,153 basehttp 8860 25900 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:45:43,191 basehttp 8860 9264 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:45:43,240 basehttp 8860 9264 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:50:44,188 basehttp 8860 29644 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 15:50:44,216 basehttp 8860 29644 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 15:50:44,229 basehttp 8860 29644 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 15:55:45,099 basehttp 8860 25312 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 15:55:45,135 basehttp 8860 25312 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:00:46,172 basehttp 8860 24048 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:00:46,219 basehttp 8860 24048 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:05:47,352 basehttp 8860 19420 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:05:47,409 basehttp 8860 19420 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:10:48,128 basehttp 8860 532 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:10:48,167 basehttp 8860 532 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:15:49,129 basehttp 8860 20036 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:15:49,185 basehttp 8860 20036 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:20:50,142 basehttp 8860 10984 "GET /index/ HTTP/1.1" 200 20982
+django.server INFO 2023-09-14 16:20:50,168 basehttp 8860 10984 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 16:20:50,180 basehttp 8860 10984 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:25:51,265 basehttp 8860 372 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:25:51,319 basehttp 8860 372 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:30:52,082 basehttp 8860 2648 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:30:52,156 basehttp 8860 2648 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:35:53,178 basehttp 8860 21180 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:35:53,244 basehttp 8860 21180 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:40:54,126 basehttp 8860 7740 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:40:54,175 basehttp 8860 7740 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:47:41,403 basehttp 8860 30512 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:47:41,447 basehttp 8860 30512 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:47:43,231 basehttp 8860 22092 "GET /index/ HTTP/1.1" 200 20982
+django.server WARNING 2023-09-14 16:47:43,266 basehttp 8860 22092 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-14 16:50:06,165 log 8860 14024 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 952, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\smartif.py", line 197, in parse
+    raise self.error_class(
+django.template.exceptions.TemplateSyntaxError: Unused '"DEVELOPMENT"' at end of if expression.
+django.server ERROR 2023-09-14 16:50:06,172 basehttp 8860 14024 "GET /index/ HTTP/1.1" 500 252108
+django.server INFO 2023-09-14 16:51:23,769 basehttp 8860 14024 "GET /index/ HTTP/1.1" 200 20950
+django.server WARNING 2023-09-14 16:51:23,832 basehttp 8860 14024 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:51:31,829 basehttp 8860 15128 "GET /index/ HTTP/1.1" 200 20950
+django.server WARNING 2023-09-14 16:51:31,868 basehttp 8860 15128 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:51:34,736 basehttp 8860 17520 "GET /index/ HTTP/1.1" 200 20950
+django.server WARNING 2023-09-14 16:51:34,805 basehttp 8860 17520 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:51:40,235 basehttp 8860 7620 "GET /dorganism/organism_list HTTP/1.1" 200 166255
+django.server WARNING 2023-09-14 16:51:40,276 basehttp 8860 7620 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:53:34,503 basehttp 8860 28292 "GET /index/ HTTP/1.1" 200 20901
+django.server INFO 2023-09-14 16:53:34,531 basehttp 8860 28292 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-14 16:53:34,561 basehttp 8860 28292 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:54:42,762 basehttp 8860 7412 "GET /index/ HTTP/1.1" 200 21072
+django.server WARNING 2023-09-14 16:54:42,800 basehttp 8860 7412 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:55:06,224 basehttp 8860 23280 "GET /index/ HTTP/1.1" 200 21014
+django.server WARNING 2023-09-14 16:55:06,271 basehttp 8860 23280 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:55:10,434 basehttp 8860 17592 "GET /user_profile/J.Zuegg HTTP/1.1" 200 21819
+django.server WARNING 2023-09-14 16:55:10,467 basehttp 8860 17592 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 16:56:14,112 basehttp 8860 11316 "GET /index/ HTTP/1.1" 200 21019
+django.server WARNING 2023-09-14 16:56:14,182 basehttp 8860 11316 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-14 17:01:33,469 autoreload 8860 12072 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\templatetags\settings_value.py changed, reloading.
+django.utils.autoreload INFO 2023-09-14 17:01:36,241 autoreload 26988 25372 Watching for file changes with StatReloader
+django.request ERROR 2023-09-14 17:01:39,020 log 26988 1332 Internal Server Error: /index/
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'get_settings_value'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py", line 58, in index
+    return render(req, 'home.html', nDict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 197, in render
+    template = context.template.engine.select_template(template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 206, in select_template
+    return self.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 80: 'get_settings_value'. Did you forget to register or load this tag?
+django.server ERROR 2023-09-14 17:01:39,030 basehttp 26988 1332 "GET /index/ HTTP/1.1" 500 242139
+django.server INFO 2023-09-14 17:03:20,964 basehttp 26988 1332 "GET /index/ HTTP/1.1" 200 21004
+django.server WARNING 2023-09-14 17:03:21,041 basehttp 26988 1332 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:03:26,719 basehttp 26988 13152 "GET /dorganism/organism_list HTTP/1.1" 200 166309
+django.server WARNING 2023-09-14 17:03:26,753 basehttp 26988 13152 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:03:57,156 basehttp 26988 17004 "GET /accounts/logout/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 17:03:57,247 basehttp 26988 17004 "GET / HTTP/1.1" 200 14856
+django.server WARNING 2023-09-14 17:03:57,309 basehttp 26988 17004 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:05:22,036 basehttp 26988 28952 "GET / HTTP/1.1" 200 14801
+django.server WARNING 2023-09-14 17:05:22,068 basehttp 26988 28952 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:05:57,072 basehttp 26988 27188 "GET / HTTP/1.1" 200 14769
+django.server WARNING 2023-09-14 17:05:57,116 basehttp 26988 27188 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:06:20,816 basehttp 26988 12032 "GET / HTTP/1.1" 200 14773
+django.server WARNING 2023-09-14 17:06:20,867 basehttp 26988 12032 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:06:31,072 basehttp 26988 27184 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-09-14 17:06:31,490 basehttp 26988 27184 "GET /index/ HTTP/1.1" 200 20869
+django.server WARNING 2023-09-14 17:06:31,549 basehttp 26988 27184 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:06:42,419 basehttp 26988 11592 "GET /dorganism/organism_list HTTP/1.1" 200 166174
+django.server WARNING 2023-09-14 17:06:42,479 basehttp 26988 11592 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-14 17:06:44,098 basehttp 26988 26484 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100

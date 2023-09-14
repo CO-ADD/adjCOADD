@@ -113,6 +113,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model_fields = model.HEADER_FIELDS
     model_name = 'Organism'
     app_name = 'dorganism'
+    ordering=['-acreated_at']
     
 ##  
 class OrganismCardView(OrganismListView):

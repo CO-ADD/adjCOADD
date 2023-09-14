@@ -15,6 +15,105 @@ from apputil.models import AuditModel, Dictionary
 from dorganism.models import Taxonomy, Organism, Organism_Batch
 from dscreen.models import Screen_Run
 
+
+#=================================================================================================
+# List of Sequences
+class Genome_Sequence(AuditModel):
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
+        'seq_type':'Type',  
+        'seq_name':'SeqName',  
+        'orgbatch_id':'OrgBatch ID',
+        'source':'Source',
+        'source_code':'Source Code',
+        'source_link':'Link',
+        'reference':'Reference',
+        'run_id':'Run ID',
+    }
+
+    Choice_Dictionary = {
+        'seq_type':'Seq_Type',
+    }
+
+    ID_SEQUENCE = 'Sequence'
+    ID_PREFIX = 'SEQ'
+    ID_PAD = 5
+    
+    seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
+    seq_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq Type", on_delete=models.DO_NOTHING,
+         db_column="seq_type", related_name="%(class)s_seqtype")
+    seq_name = models.CharField(max_length=120, unique=True, blank=False, verbose_name = "Seq Name")
+    run_id = models.ForeignKey(Screen_Run, null=True, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)s_run_id") 
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+
+    class Meta:
+        app_label = 'dgene'
+        db_table = 'genome_seq'
+        ordering=['seq_id',]
+        indexes = [
+            models.Index(name="genoseq_seqid_idx",fields=['seq_id']),
+            models.Index(name="genoseq_scr_idx",fields=['source']),
+            models.Index(name="genoseq_seqnm_idx",fields=['seq_name']),
+            models.Index(name="genoseq_scode_idx",fields=['source_code']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.seq_id}"
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.seq_id} {self.seq_name} [{self.seq_type}]"
+
+   #------------------------------------------------
+    @classmethod
+    def get(cls,SeqID=None, SeqName=None, verbose=0):
+    # Returns an instance if found by [SeqID or SeqName]
+        if SeqID:
+            try:
+                retInstance = cls.objects.get(seq_id=SeqID)
+            except:
+                if verbose:
+                    print(f"[SeqID Not Found] {SeqID} ")
+                retInstance = None
+        elif SeqName:
+            try:
+                retInstance = cls.objects.get(seq_name=SeqName)
+            except:
+                if verbose:
+                    print(f"[SeqName Not Found] {SeqName} ")
+                retInstance = None
+        return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls,SeqID=None, SeqName=None,verbose=0):
+    # Returns an instance if found by [SeqID or SeqName]
+        if SeqID:
+            retValue = cls.objects.filter(seq_id=SeqID).exists()
+        elif SeqName:
+            retValue = cls.objects.filter(seq_name=SeqName).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.seq_id:
+            self.seq_id = self.next_id()
+            if self.seq_id: 
+                super(Genome_Sequence, self).save(*args, **kwargs)
+        else:
+            super(Genome_Sequence, self).save(*args, **kwargs) 
+
+
 #-------------------------------------------------------------------------------------------------
 # Gene and Identificationrelated Application Model
 #-------------------------------------------------------------------------------------------------
@@ -112,59 +211,6 @@ class Gene(AuditModel):
         else:
             super(Gene, self).save(*args, **kwargs) 
 
-#-------------------------------------------------------------------------------------------------
-class Genome_Sequence(AuditModel):
-#-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
-        'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
-        'seq_type':'Type',  
-        'organism_id':'Org ID',
-        'orgbatch_id':'OrgBatch ID',
-        'source':'Source',
-        'source_code':'Source Code',
-        'source':'Source',
-    }
-    ID_SEQUENCE = 'Sequence'
-    ID_PREFIC = 'SEQ'
-    ID_PAD = 5
-    
-    seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
-    seq_type =models.CharField(max_length=120, blank=False, verbose_name = "Type")
-    organism_name= models.ForeignKey(Taxonomy, null=True, blank=True, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
-        db_column="organism_name", related_name="%(class)s_organism_name")
-    strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs")
-    organism_id = models.ForeignKey(Organism, null=True, blank=True, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
-        db_column="organism_id", related_name="%(class)s_organism_id")
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, editable=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
-    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
-    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
-    source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
-    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
-    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)s_run_id") 
-
-    class Meta:
-        app_label = 'dgene'
-        db_table = 'genome_seq'
-        ordering=['seq_id',]
-        indexes = [
-            models.Index(name="genoseq_seqid_idx",fields=['seq_id']),
-            # models.Index(name="doc_scr_idx",fields=['doc_source']),
-        ]
-
-    #------------------------------------------------
-    def __repr__(self) -> str:
-        return f"[{self.seq_id}] {self.seq_type} ({self.reference})"
-
-    #------------------------------------------------
-    def save(self, *args, **kwargs):
-        if not self.seq_id:
-            self.seq_id = self.next_id()
-            if self.seq_id: 
-                super(Genome_Sequence, self).save(*args, **kwargs)
-        else:
-            super(Genome_Sequence, self).save(*args, **kwargs) 
 
 #=================================================================================================
 class ID_Pub(AuditModel):
@@ -173,7 +219,7 @@ class ID_Pub(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "organism_id":"Organism ID",
+        "organism_id":{'Organism ID': {'organism_id.organism_id':LinkList["organism_id"]}},
         "id_type":"ID Type",
         "id_method":"ID Method",
         "id_organisms":"Organisms",
@@ -242,13 +288,15 @@ class ID_Sequence(AuditModel):
 #=================================================================================================
     HEADER_FIELDS   = {
         "orgbatch_id":"OrgBatch ID",
+        "seq_id":"SeqID",
         "id_type":"ID Type",
         "id_method":"ID Method",
         "id_organisms":"Organisms",
+        "mlst": "MLST",
         "source": "Source",
         "id_date":"Date",
         "id_notes":"Notes",
-    }
+   }
     Choice_Dictionary = {
         'id_type':'ID_Type',
     }
@@ -261,6 +309,7 @@ class ID_Sequence(AuditModel):
         db_column="seq_id", related_name="%(class)s_seq_id") 
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
+    mlst = models.CharField(max_length=250, blank=True, verbose_name = "MLST")
     id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
     id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
@@ -314,7 +363,7 @@ class WGS_FastQC(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id":"OrgBatch ID",
+        "orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq":"Seq",
         "seq_id":"SeqID",
         "base_stat" :"Statistics",
@@ -396,7 +445,7 @@ class WGS_CheckM(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id":"OrgBatch ID",
+        "orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq_id":"SeqID",
         "marker_lineage" :"Marker lineage",
         "n_genomes" :"n_genomes",
