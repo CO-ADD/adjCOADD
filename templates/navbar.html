@@ -6,7 +6,6 @@
         <img class="d-inline-block align-text-top"
           src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
       </a>
-
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,19 +21,18 @@
           </p>
         </a>
 
+        <!-- DropDown Menu  -->
         <div class="dropdown d-inline-block">
           <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <p class="nav-title">Views</p>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <!-- item-->
-              <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a>
-              <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a>
-              <a class="dropdown-item"  href="{% url 'stock_list_overview' %}"> Stock</a>
-
+              <li> <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a> </li>
+              <li> <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a> </li> 
+              <li> <a class="dropdown-item"  href="{% url 'stock_list_overview' %}"> OrgBatch Stock</a> </li> 
             <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'drug_card' %}"> Drug</a>
-
+               <a class="dropdown-item" href="{% url 'drug_card' %}"> Drug</a>
             <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'mic_coadd_list' %}"> MIC Antibiogram</a>
               <a class="dropdown-item" href="{% url 'mic_pub_list' %}"> MIC Public</a>
@@ -45,8 +43,10 @@
               <a class="dropdown-item" href="{% url 'vitekast_list' %}"> Vitek Ast</a>
               <a class="dropdown-item" href="{% url 'vitekid_list' %}"> Vitek ID</a>
             <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'sequence_list' %}"> Sequence</a>
-
+              <a class="dropdown-item" href="{% url 'genomeseq_list' %}"> Sequence</a>
+              <a class="dropdown-item" href="{% url 'wgs_fastqc_list' %}"> FastQ QC</a>
+              <a class="dropdown-item" href="{% url 'wgs_checkm_list' %}"> FastA CheckM</a>
+              <a class="dropdown-item" href="{% url 'idseq_list' %}"> FastA Identity</a>
           </ul>
         </div>
 

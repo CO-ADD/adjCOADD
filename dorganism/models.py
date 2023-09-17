@@ -464,10 +464,12 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-       "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
+        #"orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
         "stock_type":"Stock Type",
-        "n_created":"#C",
-        "n_left":"#L",
+        "n_created":"#Created",
+        "n_left":"#Left",
         "location_freezer": "Freezer",
         "location_rack": "Rack",
         "location_column": "Column",
@@ -475,7 +477,6 @@ class OrgBatch_Stock(AuditModel):
         "stock_date":"Stock Date",
         "stock_note":"Stock Note",
         "biologist":"Biologist",
-        "orgbatch_id":"OrgBatch ID",
     }
 
     Choice_Dictionary = {
@@ -486,8 +487,8 @@ class OrgBatch_Stock(AuditModel):
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
-    n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
-    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
+    n_created = models.IntegerField(default=0, verbose_name = "#Created")
+    n_left = models.IntegerField(default=0, verbose_name = "#Left")
     stock_date = models.DateField(null=True, blank = True, verbose_name = "Stock Date")
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")

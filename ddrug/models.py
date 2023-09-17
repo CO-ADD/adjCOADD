@@ -309,14 +309,16 @@ class VITEK_Card(AuditModel):
 #     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id":"Orgbatch",
-        #"card_barcode":"Barcode",
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.batch_id":"Batch",
+        #"orgbatch_id":"Orgbatch",
+        "card_barcode":"Barcode",
         "card_type":"Card Type",
         "card_code":"Card Code",
         "expiry_date":"Expiry",
-        "instrument":"Instrument",
-        "proc_date":"Procesed",
+        "proc_date":"Processed",
         "analysis_time":"Time",
+        "instrument":"Instrument",
     }
 
     Choice_Dictionary= {
@@ -330,7 +332,7 @@ class VITEK_Card(AuditModel):
         db_column="card_type", related_name="%(class)s_cardtype")
     card_code = models.CharField(max_length=15, blank=False, verbose_name = "Card Code") 
     expiry_date = models.DateField(blank=True, verbose_name = "Expiry Date")
-    instrument = models.CharField(max_length=50, blank=True, verbose_name = "Vitek SN") 
+    instrument = models.CharField(max_length=50, blank=True, verbose_name = "Instrument") 
     proc_date = models.DateField(blank=False, verbose_name = "Processing Date")
     analysis_time = models.CharField(max_length=15, blank=True, verbose_name = "Analysis Time") 
 
@@ -379,16 +381,16 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "card_barcode.orgbatch_id.organism_id.organism_id":{'Organism ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "card_barcode.orgbatch_id.batch_id":"Batch",
-        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
-        "drug_id.drug_name":"Drug Name",
+        "card_barcode.orgbatch_id.organism_id.organism_name":"Organism Name",
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "drug_id.drug_codes":"Codes",
         "mic":"MIC",
         "bp_profile":"BP",
+        "organism":"Selected Organism",
         "bp_comment":"Comment",
         "bp_source":"Source",
-        "organism":"Selected Organism",
     }
 
     card_barcode = models.ForeignKey(VITEK_Card, null=False, blank=False, verbose_name = "Card Barcode", on_delete=models.DO_NOTHING,
@@ -530,9 +532,9 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-        "orgbatch_id.organism_id.organism_id":{'Org ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.batch_id":"Batch",
-        "orgbatch_id.organism_id.organism_name":"Organism",
+        "orgbatch_id.organism_id.organism_name":"Organism Name",
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
         "bp_profile":"Break Point",
         #"mic_type":"Type",

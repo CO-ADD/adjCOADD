@@ -11,7 +11,27 @@ from django.contrib.postgres.forms import SimpleArrayField
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import Filterbase
 from dorganism.models import Organism_Batch
-from .models import Gene, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
+from dgene.models import Genome_Sequence, Gene, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
+
+
+#=================================================================================================
+# Genome Sequences
+#=================================================================================================
+class GenomeSeq_Filter(Filterbase):
+
+    f_OrgBatchID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model=Genome_Sequence
+        fields = ['f_OrgBatchID','f_OrgName']
+        fields += list(model.HEADER_FIELDS.keys())
+        exclude = ['orgbatch_id.orgbatch_id',
+                   'orgbatch_id.organism_id.organism_name',
+                   ]
 
 # --Gene Forms--
 ## 
@@ -85,8 +105,27 @@ class ID_Pubfilter(Filterbase):
         model=ID_Pub
         fields=list(model.HEADER_FIELDS.keys())
 
-# --ID_Sequence forms--
-##
+#=================================================================================================
+# ID Sequence
+#=================================================================================================
+class IDSeq_Filter(Filterbase):
+    f_OrgBatchID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    id_organisms = django_filters.CharFilter(field_name='id_organisms', lookup_expr='icontains',label="ID Organisms")
+
+    #id_organisms=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=[] )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = ID_Sequence
+        fields = ['f_OrgBatchID','f_OrgName']
+        fields += list(model.HEADER_FIELDS.keys())
+        exclude = ['orgbatch_id.orgbatch_id',
+                   'orgbatch_id.organism_id.organism_name',
+                   ]
+
 class Sequence_form(ModelForm):
 
     id_organisms=SimpleArrayField(forms.CharField(), required=False)
@@ -113,25 +152,34 @@ class Sequence_form(ModelForm):
         fields="__all__"
 
 ## fitler forms
-class Sequencefilter(Filterbase):
-    id_organisms=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=[] )
+
+#=================================================================================================
+# WGS_FastQC - FastQ QC
+#=================================================================================================
+class WGS_FastQC_Filter(Filterbase):
+    f_OrgBatchID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    class Meta:
-        model = ID_Sequence
-        fields = list(model.HEADER_FIELDS.keys())
 
-# WGS_FastQCfilter forms
-class FastQCfilter(Filterbase):
     class Meta:
-        model = WGS_FastQC
-        fields = list(model.HEADER_FIELDS.keys())
+        model=WGS_FastQC
+        fields = ['f_OrgBatchID','f_OrgName']
+        fields += list(model.HEADER_FIELDS.keys())
+        exclude = ['orgbatch_id.orgbatch_id',
+                   'orgbatch_id.organism_id.organism_name',
+                   ]
+ 
+#=================================================================================================
+# WGS_CheckM - FastA CheckM
+#=================================================================================================
+class WGS_CheckM_Filter(Filterbase):
+    f_OrgBatchID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
   
-
-# WGS_CheckMfilter forms
-class CheckMfilter(Filterbase):
-  
-    # OrgBatch_ID=django_filters.ModelChoiceFilter(field_name='orgbatch_id', queryset=Organism_Batch.objects.filter(astatus__gte=0))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     def create_field_groups(self):
         self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
@@ -139,4 +187,8 @@ class CheckMfilter(Filterbase):
 
     class Meta:
         model = WGS_CheckM
-        fields = list(model.HEADER_FIELDS.keys())
+        fields = ['f_OrgBatchID','f_OrgName']
+        fields += list(model.HEADER_FIELDS.keys())
+        exclude = ['orgbatch_id.orgbatch_id',
+                   'orgbatch_id.organism_id.organism_name',
+                   ]

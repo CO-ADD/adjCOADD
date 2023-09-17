@@ -1,15 +1,16 @@
+
 <div class="modal-content card-bg">
   <div class="modal-header">
     <h5 class="modal-title">{{title}}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
-  {%if model_name == 'Dictionary'%}
+  {% if model_name == 'Dictionary' %}
   <div class="modal-footer d-flex justify-content-center align-center" data-name="{{title}}" data-type="deleteDict">
     <button class="p-0 border border-0 m-auto bg-transparent text-center" onclick="window.location.reload(true);" data-type="deleteDictButton"><i
         class="fa-regular fa-trash-can text-danger fs-6"></i></button>
-        {%include 'utils/miscellaneous/cancel_btn.html'%}
+        {% include 'utils/miscellaneous/cancel_btn.html' %}
       </div>
-  {%else%}
+  {% else %}
   <form method="POST" class="post-form" action="{{deleteurl}}">
     <div class="modal-body">
       <!--prettier-ignore-->
@@ -20,8 +21,8 @@
       <button type="submit" class="p-0 border border-0 m-auto bg-transparent text-center" name="note">
         <i class="fa-regular fa-trash-can text-danger fs-6"></i>
       </button>
-      {%include 'utils/miscellaneous/cancel_btn.html'%}
+      {% include 'utils/miscellaneous/cancel_btn.html' %}
     </div>
   </form>
-  {%endif%}
+  {% endif %}
 </div>

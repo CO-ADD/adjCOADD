@@ -15,8 +15,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 
-from adjcoadd.constants import *
-from django.conf import settings
+#from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
@@ -94,7 +93,7 @@ def login_user(req):
                 return redirect("/")
         else:
             form = Login_form()
-        return render(req, 'registration/login.html', {'form': form, 'Version': settings.VERSION})    
+        return render(req, 'registration/login.html', {'form': form})    
 
 #-------------------------------------------------------------------------------------------------
 def logout_user(req):

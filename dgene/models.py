@@ -18,13 +18,17 @@ from dscreen.models import Screen_Run
 
 #=================================================================================================
 # List of Sequences
+#=================================================================================================
 class Genome_Sequence(AuditModel):
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
-        'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
+        #'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
+        'seq_id':"Seq ID", 
         'seq_type':'Type',  
         'seq_name':'SeqName',  
-        'orgbatch_id':'OrgBatch ID',
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
+        #'orgbatch_id':'OrgBatch ID',
         'source':'Source',
         'source_code':'Source Code',
         'source_link':'Link',
@@ -287,12 +291,16 @@ class ID_Sequence(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id":"OrgBatch ID",
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "id_type":"ID Type",
         "id_method":"ID Method",
-        "id_organisms":"Organisms",
+        "id_organisms":"ID Organisms",
         "mlst": "MLST",
+    #    "mlst_scheme": "MLST Scheme",
+    #    "mlst_seqtype": "MLST SeqType",
+    #    "mlst_alleles": "MLST Alleles",
         "source": "Source",
         "id_date":"Date",
         "id_notes":"Notes",
@@ -303,13 +311,23 @@ class ID_Sequence(AuditModel):
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
-    id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
-         db_column="id_type", related_name="%(class)s_idtype")
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seq_id") 
+
+    id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
+         db_column="id_type", related_name="%(class)s_idtype")
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
     id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
+
     mlst = models.CharField(max_length=250, blank=True, verbose_name = "MLST")
+
+    #mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
+    #mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
+    #mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
+
+    #gtdbtk_class = models.CharField(max_length=120, blank=True, verbose_name = "MLST Scheme")
+    #gtdbtk_fastani = models.CharField(max_length=50, blank=True, verbose_name = "MLST SeqType")
+ 
     id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
     id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
@@ -363,7 +381,8 @@ class WGS_FastQC(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "seq":"Seq",
         "seq_id":"SeqID",
         "base_stat" :"Statistics",
@@ -445,25 +464,28 @@ class WGS_CheckM(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
+        "assembly":"Assembly",
+        "assembly_qc":"QC",
         "marker_lineage" :"Marker lineage",
-        "n_genomes" :"n_genomes",
-        "n_predit_genes" :"n_predit_genes",
-        "n_markers" :"n_markers",
-        "n_marker_sets" :"n_marker_sets",
-        "n_scaffolds" :"n_scaffolds",
-        "genome_size" :"genome_size",
-        "coding_density" :"coding_density",
-        "completeness" :"completeness",
-        "contamination" :"contamination",
-        "gc" : "gc",
-        "gc_std" : "gc_std",
-        "n_ambig_bases" :"n_ambig_bases",
-        "longest_scaffold" :"longest_scaffold",
-        "mean_scaffols" :"mean_scaffols",
-        "n50" :"N50",
-        "trans_table" :"trans_table",
+        "completeness" :"Completeness",
+        "contamination" :"Contamination",
+        "n_genomes" :"#Genomes",
+        "n_predit_genes" :"#Predit Genes",
+        "n_markers" :"#Markers",
+        "n_marker_sets" :"#Marker Sets",
+        "genome_size" :"Genome Size",
+        "coding_density" :"Coding Density",
+        "n_contigs" :"#Contigs",
+        "longest_contig" :"Longest Contig",
+        "mean_contigs" :"Mean Contigs",
+        "n50_contigs" :"N50 Contigs",
+        "gc" : "GC",
+        "gc_std" : "GC Std",
+        "n_ambig_bases" :"#Ambig Bases",
+        "trans_table" :"Trans Table",
     }
     Choice_Dictionary = {
     }
@@ -471,23 +493,25 @@ class WGS_CheckM(AuditModel):
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
-        db_column="seq_id", related_name="%(class)seq_id") 
+        db_column="seq_id", related_name="%(class)seq_id")
+    assembly = models.CharField(max_length=25, blank=True, verbose_name = "Assembly")
+    assembly_qc = models.CharField(max_length=15, blank=True, verbose_name = "Assembly QC") 
     marker_lineage = models.CharField(max_length=25, blank=True, verbose_name = "Linage")
     n_genomes = models.IntegerField(default=0, blank=True, verbose_name ="n_genomes")
     n_predit_genes = models.IntegerField(default=0, blank=True, verbose_name ="n_predit_genes")
     n_markers = models.IntegerField(default=0, blank=True, verbose_name ="n_markers")
     n_marker_sets = models.IntegerField(default=0, blank=True, verbose_name ="n_marker_sets")
-    n_scaffolds = models.IntegerField(default=0, blank=True, verbose_name ="n_scaffolds")
+    n_contigs = models.IntegerField(default=0, blank=True, verbose_name ="n_contigs")
     genome_size = models.IntegerField(default=0, blank=True, verbose_name ="genome_size")
     coding_density = models.FloatField(default=0, blank=True, verbose_name ="coding_density")
-    completeness = models.IntegerField(default=0, blank=True, verbose_name ="completeness")
+    completeness = models.FloatField(default=0, blank=True, verbose_name ="completeness")
     contamination = models.FloatField(default=0, blank=True, verbose_name ="contamination")
     gc = models.FloatField(default=0, blank=True, verbose_name ="gc")
     gc_std = models.FloatField(default=0, blank=True, verbose_name ="gc_std")
     n_ambig_bases = models.IntegerField(default=0, blank=True, verbose_name ="n_ambig_bases")
-    longest_scaffold = models.IntegerField(default=0, blank=True, verbose_name ="longest_scaffold")
-    mean_scaffols = models.FloatField(default=0, blank=True, verbose_name ="mean_scaffols")
-    n50 = models.IntegerField(default=0, blank=True, verbose_name ="N50")
+    longest_contig = models.IntegerField(default=0, blank=True, verbose_name ="longest_contig")
+    mean_contigs = models.FloatField(default=0, blank=True, verbose_name ="mean_contigs")
+    n50_contigs = models.IntegerField(default=0, blank=True, verbose_name ="N50_contigs")
     trans_table = models.IntegerField(default=0, blank=True, verbose_name ="trans_table")
 
     #------------------------------------------------
@@ -513,18 +537,18 @@ class WGS_CheckM(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,SeqID,verbose=0):
+    def get(cls,OrgBatchID,SeqID,Assembly,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_id=SeqID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_id=SeqID,assembly=Assembly)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqID}")
+                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqID} {Assembly}")
             retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,SeqID,verbose=0):
+    def exists(cls,OrgBatchID,SeqID,Assembly,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,seq_id=SeqID).exists()
+        return cls.objects.filter(orgbatch_id=OrgBatchID,seq_id=SeqID,assembly=Assembly).exists()
