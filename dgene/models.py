@@ -28,16 +28,17 @@ class Genome_Sequence(AuditModel):
         'seq_name':'SeqName',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
-        #'orgbatch_id':'OrgBatch ID',
         'source':'Source',
         'source_code':'Source Code',
         'source_link':'Link',
         'reference':'Reference',
         'run_id':'Run ID',
+        'seq_date':'Seq Date'
     }
 
     Choice_Dictionary = {
-        'seq_type':'Seq_Type',
+        'seq_type':'Seq_Type',      # WGS, 16S, ..
+        'seq_method':'Seq_Method',  # Illumina, MinION
     }
 
     ID_SEQUENCE = 'Sequence'
@@ -47,7 +48,9 @@ class Genome_Sequence(AuditModel):
     seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
     seq_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq Type", on_delete=models.DO_NOTHING,
          db_column="seq_type", related_name="%(class)s_seqtype")
-    seq_name = models.CharField(max_length=120, unique=True, blank=False, verbose_name = "Seq Name")
+    seq_method = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq Method", on_delete=models.DO_NOTHING,
+         db_column="seq_method", related_name="%(class)s_seqmethod")
+    seq_name = models.CharField(max_length=120, unique=True, blank=True, verbose_name = "Seq Name")
     run_id = models.ForeignKey(Screen_Run, null=True, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
@@ -55,6 +58,7 @@ class Genome_Sequence(AuditModel):
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
+    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
     class Meta:
@@ -223,7 +227,9 @@ class ID_Pub(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "organism_id":{'Organism ID': {'organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
+        #"organism_id":{'Organism ID': {'organism_id.organism_id':LinkList["organism_id"]}},
         "id_type":"ID Type",
         "id_method":"ID Method",
         "id_organisms":"Organisms",
@@ -235,8 +241,10 @@ class ID_Pub(AuditModel):
         'id_type':'ID_Type',
     }
 
-    organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
-        db_column="organism_id", related_name="%(class)s_organism_id") 
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    # organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+    #     db_column="organism_id", related_name="%(class)s_organism_id") 
     id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
          db_column="id_type", related_name="%(class)s_idtype")
     id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
@@ -249,7 +257,7 @@ class ID_Pub(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'id_pub'
-        ordering=['organism_id','id_type']
+        #ordering=['organism_id','id_type']
         indexes = [
              models.Index(name="idp_org_idx",fields=['id_organisms']),
              models.Index(name="idp_idtype_idx",fields=['id_type']),
@@ -287,48 +295,40 @@ class ID_Pub(AuditModel):
 #=================================================================================================
 class ID_Sequence(AuditModel):
     """
-     Identification from Whole Genome Sequencing    
+     Identification from Whole Genome Sequencing using Kraken, MLST and GTDBTK   
     """
 #=================================================================================================
     HEADER_FIELDS   = {
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
-        "id_type":"ID Type",
-        "id_method":"ID Method",
-        "id_organisms":"ID Organisms",
-        "mlst": "MLST",
-    #    "mlst_scheme": "MLST Scheme",
-    #    "mlst_seqtype": "MLST SeqType",
-    #    "mlst_alleles": "MLST Alleles",
+        "seq_file":"Seq File", 
+        "kraken_organisms":"Kraken2 Organisms",
+        "mlst_scheme": "MLST Scheme",
+        "mlst_seqtype": "MLST SeqType",
+        "mlst_alleles": "MLST Alleles",
+        "gtdbtk_class": "GTDBTK",
+        "gtdbtk_fastani": "FastANI",
         "source": "Source",
-        "id_date":"Date",
         "id_notes":"Notes",
    }
     Choice_Dictionary = {
-        'id_type':'ID_Type',
+        'seq_file':'Seq_File', # Trimmed, Contigs
     }
 
     orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seq_id") 
-
-    id_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "ID Method", on_delete=models.DO_NOTHING,
-         db_column="id_type", related_name="%(class)s_idtype")
-    id_method = models.CharField(max_length=25, blank=True, verbose_name = "Method")
-    id_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Organisms", null=True, blank=True)
-
-    mlst = models.CharField(max_length=250, blank=True, verbose_name = "MLST")
-
-    #mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
-    #mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
-    #mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
-
-    #gtdbtk_class = models.CharField(max_length=120, blank=True, verbose_name = "MLST Scheme")
-    #gtdbtk_fastani = models.CharField(max_length=50, blank=True, verbose_name = "MLST SeqType")
- 
-    id_date = models.DateField(null=True, blank=True, verbose_name = "ID Date")
+    seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
+         db_column="seq_file", related_name="%(class)s_seqfile")
+    
+    kraken_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Kraken2 Organisms", null=True, blank=True)
+    mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
+    mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
+    mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
+    gtdbtk_class = models.CharField(max_length=120, blank=True, verbose_name = "MLST Scheme")
+    gtdbtk_fastani = models.CharField(max_length=50, blank=True, verbose_name = "MLST SeqType")
     id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
@@ -336,11 +336,10 @@ class ID_Sequence(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'id_seq'
-        ordering=['orgbatch_id','id_type']
+        ordering=['orgbatch_id','seq_id']
         indexes = [
              models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
-             models.Index(name="idseq_idtype_idx",fields=['id_type']),
-             models.Index(name="idseq_idmed_idx",fields=['id_method']),
+             models.Index(name="idseq_seqfile_idx",fields=['seq_file']),
              models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),
         ]
@@ -358,21 +357,21 @@ class ID_Sequence(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,IDType,SeqID,verbose=0):
+    def get(cls,OrgBatchID,SeqFile,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,id_type=IDType,seq_id=SeqID)
+            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {IDType} {RunID}")
+                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqFile}")
             retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,IDType,SeqID,verbose=0):
-    # Returns an instance if found by [OrgBatchID, IDType,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,id_type=IDType,seq_id=SeqID).exists()
+    def exists(cls,OrgBatchID,SeqFile,SeqID,verbose=0):
+    # Returns an instance if found by [OrgBatchID, IDType]
+        return cls.objects.filter(rgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID).exists()
 
 #=================================================================================================
 class WGS_FastQC(AuditModel):

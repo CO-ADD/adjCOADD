@@ -33,7 +33,9 @@ class GenomeSeq_Filter(Filterbase):
                    'orgbatch_id.organism_id.organism_name',
                    ]
 
-# --Gene Forms--
+#=================================================================================================
+# List of Genes
+#=================================================================================================
 ## 
 class Gene_form(ModelForm):
     gene_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="gene_type"), required=False)
@@ -73,45 +75,51 @@ class Genefilter(Filterbase):
         model=Gene
         fields=list(model.HEADER_FIELDS.keys())
 
+#=================================================================================================
+# ID_Pub - Identification from Public sources
+#=================================================================================================
 # --ID_Pub Forms--
 ## 
 class ID_Pub_form(ModelForm):
-    id_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="id_type"), required=False)
+    #id_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="id_type"), required=False)
    
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
-        self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
-        self.create_field_groups()
-        for field in self.fields.values():
-            if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
-                # Add the 'group-input' class to the widget attrs
-                attrs = field.widget.attrs
-                attrs['class'] = attrs.get('class', '') + 'input-group'
-                field.widget.attrs = attrs
+        # self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
+        # self.create_field_groups()
+        # for field in self.fields.values():
+        #     if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
+        #         # Add the 'group-input' class to the widget attrs
+        #         attrs = field.widget.attrs
+        #         attrs['class'] = attrs.get('class', '') + 'input-group'
+        #         field.widget.attrs = attrs
 
-    def create_field_groups(self):
-        pass
- 
-    
+    # def create_field_groups(self):
+    #     pass
+     
     class Meta:
         model=ID_Pub
-        fields="__all__"
+        fields= ['id_type']
  
 ## fitler forms
 class ID_Pubfilter(Filterbase):
-    id_organisms=django_filters.CharFilter(method='filter_arrayfields')
-        
+    #id_organisms=django_filters.CharFilter(method='filter_arrayfields')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model=ID_Pub
-        fields=list(model.HEADER_FIELDS.keys())
+        fields= ['id_type']
+        #fields=list(model.HEADER_FIELDS.keys())
 
 #=================================================================================================
-# ID Sequence
+# ID_Seq - Identification from Sequence
 #=================================================================================================
 class IDSeq_Filter(Filterbase):
     f_OrgBatchID = django_filters.CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
-    id_organisms = django_filters.CharFilter(field_name='id_organisms', lookup_expr='icontains',label="ID Organisms")
+    kraken_organisms = django_filters.CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 
     #id_organisms=django_filters.MultipleChoiceFilter(method='multichoices_filter', choices=[] )
     
