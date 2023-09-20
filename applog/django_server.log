@@ -10845,3 +10845,5 @@ django.utils.autoreload INFO 2023-09-20 14:23:12,492 autoreload 22716 1344 C:\Da
 django.utils.autoreload INFO 2023-09-20 14:23:15,079 autoreload 16196 10584 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-09-20 14:23:21,511 autoreload 16196 10584 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\views_base.py changed, reloading.
 django.utils.autoreload INFO 2023-09-20 14:23:23,783 autoreload 27256 26040 Watching for file changes with StatReloader
+django.server INFO 2023-09-20 14:23:52,140 basehttp 27256 28292 "GET /index/ HTTP/1.1" 200 22207
+django.server WARNING 2023-09-20 14:23:52,196 basehttp 27256 28292 "GET /static/js/diagram.js HTTP/1.1" 404 1899
