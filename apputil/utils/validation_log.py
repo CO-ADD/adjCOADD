@@ -31,7 +31,7 @@ class Validation_Log():
     #-----------------------------------------------------
     # Adds a standard entry in the Log
     #-----------------------------------------------------
-    def add_log(self, logType, logFile, logItem, logNote, logHelp):
+    def add_log(self, logType, logFile, logItem, logNote=None, logHelp=None):
         lDict = {
             'Process': self.logProcess, 
             'Note': logNote, 
@@ -85,17 +85,32 @@ class Validation_Log():
             for l in self.Logs[t]:
                 logger.info(f"[{t:7s}] {l['Process']} : {l['Filename']} {l['Item']} {l['Note']} () {l['Help']} ")
 
+    #-----------------------------------------------------
+    # Show log entries in logger.info
+    #-----------------------------------------------------
+    def get_nlog(self,logTypes= ['Error','Warning', 'Info']):
+        nLog = 0
+        for t in logTypes:
+            nLog += self.nLogs[t]
+        return(nLog)
+
+    #-----------------------------------------------------
     def get_aslist(self,logTypes= ['Error','Warning', 'Info']):
+    #-----------------------------------------------------
         retLst = []
         for t in logTypes:
             for l in self.Logs[t]:
                 retLst.append({'Type': t, } | l)
         return(retLst)
 
+    #-----------------------------------------------------
     def get_asdf(self,logTypes= ['Error','Warning', 'Info']):
+    #-----------------------------------------------------
         return(pd.DataFrame(self.get_aslist(logTypes=logTypes)))
 
+    #-----------------------------------------------------
     def get_ashtml(self,logTypes= ['Error','Warning', 'Info'],classes=None,columns=None,index=False):
+    #-----------------------------------------------------
     #     df = self.get_asdf(logTypes=logTypes)
     #     html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
     #     return(html)
@@ -116,7 +131,9 @@ class Validation_Log():
         return(table_dict)
 
 
+    #-----------------------------------------------------
     def info(self,logTypes= ['Error','Warning', 'Info']):
+    #-----------------------------------------------------
         self.info={}
         for t in logTypes:
             self.info[t]=[]
@@ -126,7 +143,9 @@ class Validation_Log():
                 self.info[t].append(print_info) 
 
     
+    #-----------------------------------------------------
     def log_to_UI(self,logTypes= ['Error','Warning', 'Info']):
+    #-----------------------------------------------------
         info={} #info=[]
         for t in logTypes:
             # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")

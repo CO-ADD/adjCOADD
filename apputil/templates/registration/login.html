@@ -12,11 +12,14 @@
     left: 35%;
   ">
   <!-- <div class="card-body w-30 h-50 m-auto fs-4 py-5"> -->
-    <h5 class="logintext fs-6 fw-bold m-5">Welcome to Organism DataBase (v {{Version}})<br> <span> Log in </span> with your account to continue</h5>
+    <h5 class="logintext fs-6 fw-bold m-3">
+      Welcome to CO-ADD BlaskoGrp DataBase <br> 
+      <span> Log in </span> with your account to continue
+    </h5>
 
-    {%include 'utils/message.html'%}
+    {% include 'utils/message.html' %}
     <form method="POST" action="{% url 'login'%}" autocomplete="off">
-      {%csrf_token%}
+      {% csrf_token %}
       <!--  -->
       <div class="Login-form" style="position:relative">
 
@@ -34,6 +37,11 @@
     Log In
       </button>
     </form>
+    {% load settings_value %}
+    <h5 class="logintext fs-6 fw-bold m-3"> 
+      Version: {% settings_value "VERSION" %} <br>
+      DB: {% settings_value "HOST_NAME" %}
+    </h5>
   <!-- </div> -->
 </div>
 <!-- </div> -->

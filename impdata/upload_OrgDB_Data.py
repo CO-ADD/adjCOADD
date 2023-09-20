@@ -94,6 +94,7 @@ def main():
                     'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgBatchImages','OrgCulture',
                     'Drug','MICPub','MICCollab','MICCOADD','BP',
                     'Vitek',
+                    'wgsAssembly','wgsFastA',
                     ]
     if prgArgs.table in choiceTables:
 
@@ -188,9 +189,14 @@ def main():
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from oraOrgDB [Upload: {prgArgs.upload}]")
             dMIC.update_Breakpoints_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-        elif prgArgs.table == 'WGSCOADD':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from zAssembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
+
+        elif prgArgs.table == 'wgsAssembly':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 02_Assembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
             dGene.update_WGSCOADD_zAssembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            
+        elif prgArgs.table == 'wgsFastA':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
+            dGene.update_WGSCOADD_FastA(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     else:
         logger.error(f"[Upd_djCOADD] {prgArgs.table} not in {choiceTables}")
                      

@@ -155,6 +155,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     class Meta:
         abstract = True
+        ordering=['-acreated_at']
     
     #------------------------------------------------
     def validate(self,**kwargs):

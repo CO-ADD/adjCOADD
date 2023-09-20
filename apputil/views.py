@@ -15,41 +15,30 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 
-from adjcoadd.constants import *
-from django.conf import settings
+#from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
-from dgene.models import Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
+from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
 from apputil.forms import AppUserfilter, Logfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Document_form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
-from apputil.utils.views_base import SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
+from apputil.utils.views_base import HtmxupdateView, SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.files_upload import Importhandler
+from apputil.utils.files_upload import Importhandler, OverwriteStorage, file_location
+from apputil.utils.data_style import convert_heatmap
+from apputil.utils.form_wizard_tools import SelectFile_StepForm
+from apputil.utils.validation_log import Validation_Log
+from apputil.utils.views_base import DataExportBaseView
 
-## =================================APP Home========================================
 
-
-
-@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
-def deleteImage(req, pk):
-
-    kwargs={}
-    kwargs['user']=req.user
-    object_=get_object_or_404(Image, id=pk)
-    try:
-        object_.delete(**kwargs)
-        print('deleted')
-    except Exception as err:
-        print(err)
-    return redirect(req.META['HTTP_REFERER'])
-
-# import setup
+#=================================================================================================
+# Landing Page - Home
+#=================================================================================================
 @login_required(login_url='/')
 def index(req):
     nDict = {
          
-        'nOrg':    str(Organism.objects.count()) + ' Organisms',
+        'nOrg':    str(Organism.objects.count()) + ' Microorganisms',
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
         'nVCard':  VITEK_Card.objects.count(),
@@ -58,6 +47,7 @@ def index(req):
         'nMICC':   MIC_COADD.objects.count(),
         'nMICP':   MIC_Pub.objects.count(),
         'nBP':     Breakpoint.objects.count(),
+        'nSeq':    str(Genome_Sequence.objects.count()) + ' Sequences',
         'nGene':   Gene.objects.count(),
         'nCheckM': WGS_CheckM.objects.count(),
         'nFastQC': WGS_FastQC.objects.count(),
@@ -66,20 +56,30 @@ def index(req):
     }
     return render(req, 'home.html', nDict)
 
-# 
+#-------------------------------------------------------------------------------------------------
+# Handler 403
+def custom_page_not_found_view(request, exception):
+    return render(request, 'registration/error404.html')
+
+#-------------------------------------------------------------------------------------------------
 # Handler 404
 def custom_page_not_found_view(request, exception):
-   
     return render(request, 'registration/error404.html')
+
+#-------------------------------------------------------------------------------------------------
 # Handler 400
-def badrequest_view(request, exception):
-   
+def badrequest_view(request, exception):   
     return render(request, 'registration/error400.html')
+
+#-------------------------------------------------------------------------------------------------
 # Handler 500
-def servererror_view(request):
-   
+def servererror_view(request):  
     return render(request, 'registration/error500.html')
-## =================================APP Log in/out =================================
+
+
+#=================================================================================================
+# Login/Out Page 
+#=================================================================================================
 def login_user(req):
     if req.user.is_authenticated:
         return redirect("index")
@@ -98,14 +98,16 @@ def login_user(req):
                 return redirect("/")
         else:
             form = Login_form()
-        return render(req, 'registration/login.html', {'form': form, 'Version': settings.VERSION})    
+        return render(req, 'registration/login.html', {'form': form})    
 
+#-------------------------------------------------------------------------------------------------
 def logout_user(req):
     logout(req)    
     return redirect("/")
 
-## =========================Application Users View====================================
-
+#=================================================================================================
+# Application User
+#=================================================================================================
 class AppUserDetailView(DetailView):
     model = ApplicationUser
     template_name = 'apputil/appUserProfile.html' 
@@ -115,11 +117,13 @@ class AppUserDetailView(DetailView):
         # add extra context here...
         return context
 
+#-------------------------------------------------------------------------------------------------
 @login_required(login_url='/')
 def userprofile(req, id):
     current_user=get_object_or_404(User, pk=id)
     return render(req, 'apputil/appUserProfile.html', {'currentUser': current_user})
 
+#-------------------------------------------------------------------------------------------------
 class AppUserListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = ApplicationUser
@@ -127,6 +131,7 @@ class AppUserListView(LoginRequiredMixin, FilteredListView):
     filterset_class = AppUserfilter
     model_fields=model.HEADER_FIELDS
 
+#-------------------------------------------------------------------------------------------------
 class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
     
     form_class = ApplicationUser_form
@@ -141,9 +146,7 @@ class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
-##
-## here used HTMX
-from apputil.utils.views_base import HtmxupdateView
+#-------------------------------------------------------------------------------------------------
 class ApplicationUserUpdateView(HtmxupdateView):
     form_class = ApplicationUser_form
     template_name = "apputil/appUsersUpdate.html"
@@ -166,6 +169,7 @@ class ApplicationUserUpdateView(HtmxupdateView):
             messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
+#-------------------------------------------------------------------------------------------------
 class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
     model = ApplicationUser
     template_name = 'apputil/appUsersDel.html'
@@ -176,7 +180,9 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
         form.instance.is_appuser==False
         return super().form_valid(form)
 
-## ========================Dictionary View===========================================
+#=================================================================================================
+# Application log 
+#=================================================================================================
 
 class AppLogView(SuperUserRequiredMixin, FilteredListView):
     login_url = '/'
@@ -184,11 +190,14 @@ class AppLogView(SuperUserRequiredMixin, FilteredListView):
     template_name = 'apputil/log_List.html'
     filterset_class = Logfilter
     model_fields = model.HEADER_FIELDS
+    ordering = ['']
 
 
 
 
-## ========================Dictionary View===========================================
+#=================================================================================================
+# Dictionary log 
+#=================================================================================================
 
 class DictionaryView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -198,12 +207,13 @@ class DictionaryView(LoginRequiredMixin, FilteredListView):
     model_fields = model.HEADER_FIELDS
 
     
-# 
+#-------------------------------------------------------------------------------------------------
 class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
     form_class = Dictionary_form
     template_name = 'apputil/dictCreate.html'
 
 
+#-------------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def updateDictionary(req):
     kwargs = {'user': req.user}
@@ -232,6 +242,7 @@ def updateDictionary(req):
     return JsonResponse({})
 
 
+#-------------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
 def deleteDictionary(req):
     kwargs = {}
@@ -248,37 +259,28 @@ def deleteDictionary(req):
     
     return JsonResponse({})
 
-## ============================File and Image View======================================## 
-
+#=================================================================================================
+# Document  
+#=================================================================================================
 class CreatedocumentView(CreateFileView):
     form_class = Document_form
     model = Organism
     file_field = 'doc_file'
     related_name = 'assoc_documents'
     transaction_use_manytomany = 'dorganism'
-
-# class CreateimageView(CreateFileView):
-#     form_class = Image_form
-#     model = Organism
-#     file_field = 'image_file'
-#     related_name = 'assoc_images'
-#     transaction_use_manytomany = 'dorganism'
     
 class DocDeleteView(SimpledeleteView):
     model = Document
 
-# class ImageDeleteView(SimpledeleteView):
-#     model = Image
-# =========================== Export CSV View =============================
-from .utils.views_base import DataExportBaseView
+#=================================================================================================
+# Export 
+#=================================================================================================
 class DataExportView(DataExportBaseView):
     pass
 
-# =============Import Dictionary and appUsers via Excel==================
-from .utils.files_upload import FileUploadForm, OverwriteStorage, file_location
-from .utils.validation_log import Validation_Log
-from .utils.data_style import convert_heatmap
-from .utils.form_wizard_tools import SelectFile_StepForm
+#=================================================================================================
+# Import Handler 
+#=================================================================================================
 
 class Importhandler_apputils(Importhandler):
     form_class=SelectFile_StepForm
@@ -330,4 +332,31 @@ class Importhandler_apputils(Importhandler):
             context["excel_upload_info"]=f"{err} cause failed import"
             # self.delete_file(file_name=filename)
         return render(request, self.template_name, context)
-                  
+
+#=================================================================================================
+# Images 
+#=================================================================================================
+
+@user_passes_test(lambda u: u.has_permission('Admin'), login_url='permission_not_granted') 
+def deleteImage(req, pk):
+
+    kwargs={}
+    kwargs['user']=req.user
+    object_=get_object_or_404(Image, id=pk)
+    try:
+        object_.delete(**kwargs)
+        print('deleted')
+    except Exception as err:
+        print(err)
+    return redirect(req.META['HTTP_REFERER'])
+
+# class ImageDeleteView(SimpledeleteView):
+#     model = Image
+
+# class CreateimageView(CreateFileView):
+#     form_class = Image_form
+#     model = Organism
+#     file_field = 'image_file'
+#     related_name = 'assoc_images'
+#     transaction_use_manytomany = 'dorganism'
+

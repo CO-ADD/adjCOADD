@@ -6,11 +6,12 @@ from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
 from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
+from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from apputil.utils.filters_base import Filterbase
-from .models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
-from adjcoadd.constants import *
+#from adjcoadd.constants import *
+from dorganism.models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 
 # ----------------------------------------
 
@@ -174,7 +175,11 @@ class Batchupdate_form(forms.ModelForm):
         exclude=['stock_level']
 
 
-# ===============================Stock Create Form-------------------------------
+#=================================================================================================
+# OrgBatch Stock
+#=================================================================================================
+
+# -----------------------------------------------------------------------------------    
 class Stock_createform(forms.ModelForm):
 
     field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
@@ -194,7 +199,7 @@ class Stock_createform(forms.ModelForm):
         model =OrgBatch_Stock
         fields='__all__'
 
-#======================================== Stock Form================================================================
+# -----------------------------------------------------------------------------------    
 class Stock_form(Stock_createform):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
@@ -207,7 +212,21 @@ class Stock_form(Stock_createform):
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
-    
+
+# -----------------------------------------------------------------------------------    
+class OrgBatchStock_Filter(Filterbase):
+    f_OrgID = django_filters.CharFilter(field_name='orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
+    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
+    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
+    stock_date = DateRangeFilter(field_name='stock_date')
+ 
+    class Meta:
+        model = OrgBatch_Stock
+        fields = ["f_OrgID","orgbatch_id", "stock_date", "start_date", "end_date",
+                  "location_freezer", "location_rack"
+                ]
+
+
 
 # =============================== Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
@@ -306,14 +325,3 @@ class Batchfilter(Filterbase):
 
 
 ## Stock
-from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
-class Stockfilter(Filterbase):
-    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
-    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
-    Stock_Date = DateRangeFilter(field_name='stock_date')
- 
-    class Meta:
-        model = OrgBatch_Stock
-        fields = ["orgbatch_id", "Stock_Date", "start_date", "end_date"]
-
-

@@ -1,0 +1,155 @@
+<nav class="navbar fixed-top navbar-expand-lg">
+  <div class="container-fluid">
+    <div class="brand d-flex flex-column align-items-center">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        {% load static %}
+        <img class="d-inline-block align-text-top"
+          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      {% if user.is_authenticated %}
+      <div class="navbar-nav">
+        <a class="nav-link" href="{% url 'index' %}">
+          <p class="nav-title">
+            <i class="bi bi-house-fill text-light"></i>
+          </p>
+        </a>
+
+        <!-- DropDown Menu  -->
+        <div class="dropdown d-inline-block">
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <p class="nav-title">Views</p>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- item-->
+              <li> <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a> </li>
+              <li> <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a> </li> 
+              <li> <a class="dropdown-item"  href="{% url 'stock_list_overview' %}"> OrgBatch Stock</a> </li> 
+            <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="{% url 'drug_card' %}"> Drug</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'mic_coadd_list' %}"> MIC Antibiogram</a>
+              <a class="dropdown-item" href="{% url 'mic_pub_list' %}"> MIC Public</a>
+              <a class="dropdown-item" href="{% url 'breakpoint_list' %}"> Breakpoints</a>
+
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'vitekcard_list' %}"> Vitek Card</a>
+              <a class="dropdown-item" href="{% url 'vitekast_list' %}"> Vitek Ast</a>
+              <a class="dropdown-item" href="{% url 'vitekid_list' %}"> Vitek ID</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'genomeseq_list' %}"> Sequence</a>
+              <a class="dropdown-item" href="{% url 'wgs_fastqc_list' %}"> FastQ QC</a>
+              <a class="dropdown-item" href="{% url 'wgs_checkm_list' %}"> FastA CheckM</a>
+              <a class="dropdown-item" href="{% url 'idseq_list' %}"> FastA Identity</a>
+          </ul>
+        </div>
+
+        <div class="dropdown d-inline-block">
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <p class="nav-title">Import</p>
+          </a>
+          <ul class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'import-vitek' %}" target="_blank"> Vitek</a>
+          </ul>
+        </div>
+
+      </div>
+      {% endif %}
+
+      <ul class="navbar-nav ms-auto fs-5">
+        <li class="nav-item d-flex">
+
+          <div class="dropdown d-inline-block">
+            <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <img class="rounded-circle header-profile-user" src="{% static 'images/app/avatar.png' %}" alt="Avatar" />
+              <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
+
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="{% url 'userprofile' user.pk %}">
+                  Profile: <span class="text-info">{{user.permission}}</span>
+              </a>
+
+              <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->
+              <a class="dropdown-item" href="#" data-bs-toggle>
+                <input type="checkbox" id="dark-mode" />
+                <label class="form-check-label" for="flexSwitchCheckChecked"> Switch to Dark
+                </label>
+              </a>
+
+              {% if user.is_superuser %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{%url 'userslist' %}">Users</a>
+                <a class="dropdown-item" href="{%url 'dict_view'%}">Dictionary</a>
+                <a class="dropdown-item" href="{%url 'loglist' %}"> Logs</a>
+              {% endif %}
+
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="{%url 'logout'%}"> Logout</a>
+
+                <a class="dropdown-item version" style="font-size: x-small"
+                  href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
+                  data-bs-placement="bottom" title="Readme"target="_blank">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i> Readme
+                </a>
+              
+            </div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  var darkMode_screen = localStorage.getItem("darkMode");
+  var darkModeToggle = document.querySelector("#dark-mode");
+
+  // check if dark mode enabled
+  // if off turn on
+  // if on turn off
+
+  function enabledarkMode() {
+    // darkModeToggle.checked = true;
+    document.body.classList.add("darkMode");
+    const elements = document.querySelectorAll("table");
+    elements.forEach((element) => {
+      element.classList.add("table-dark");
+    });
+
+    localStorage.setItem("darkMode", "enabled");
+  }
+  function disabledarkMode() {
+    document.body.classList.remove("darkMode");
+    const elements = document.querySelectorAll("table");
+    elements.forEach((element) => {
+      element.classList.remove("table-dark");
+    });
+
+    localStorage.setItem("darkMode", null);
+  }
+
+  if (darkMode_screen === "enabled") {
+    darkModeToggle.checked = true;
+    enabledarkMode();
+  }
+
+  darkModeToggle.addEventListener("click", (e) => {
+    darkMode_screen = localStorage.getItem("darkMode");
+    if (darkMode_screen !== "enabled") {
+      enabledarkMode();
+      e.target.checked = true;
+    } else {
+      disabledarkMode();
+      e.target.checked = false;
+    }
+  });
+</script>

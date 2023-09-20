@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+  {%url 'excel-import' process_name='Gene' as urlname%}
+  <!--prettier-ignore-->
+  {%include 'utils/leftbar.html' with list_url='id_pub_list' create_object='createID_Pub' create_objectModal='createID_PubModal'%}
+  <!-- Sidebar View -->
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'utils/main_horizalbar.html' with title='ID_Pub' model_name='ID_Pub' application='dgene'%}
+    <!-- list View Content -->
+    <div class="fixTableHead">
+      <!--prettier-ignore-->
+      {%include 'utils/datatable_filter.html' with modelname='ID_Pub' url_name='id_pub_update' %}
+    </div>
+  </div>
+</div>
+{% endblock%}

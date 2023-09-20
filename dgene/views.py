@@ -14,11 +14,46 @@ from django.views.generic.detail import DetailView
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
-from .models import Gene, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
-from .forms import (Gene_form, Genefilter, Sequence_form, Sequencefilter, FastQCfilter, CheckMfilter, ID_Pub_form, ID_Pubfilter)
 
-# --Gene Views--
+from dgene.models import Gene, Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
+from dgene.forms import (GenomeSeq_Filter, Sequence_form,
+                         WGS_FastQC_Filter, WGS_CheckM_Filter,
+                         IDSeq_Filter,  
+                         Gene_form, Genefilter,  
+                         ID_Pub_form, ID_Pubfilter)
+
+
+
+#=================================================================================================
+# Genome Sequences
+#=================================================================================================
+
+class GenomeSeq_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model= Genome_Sequence
+    template_name = 'dgene/genomeseq/genomeseq_list.html' 
+    filterset_class=GenomeSeq_Filter
+    model_fields=model.HEADER_FIELDS
+
 ##
+class GenomeSeq_CardView(GenomeSeq_ListView):
+    template_name = 'dgene/genomeseq/genomeseq_card.html'
+
+##
+class GenomeSeq_CreateView(SimplecreateView):
+    form_class=Sequence_form
+    template_name='dgene/genomeseq/genomeseq_c.html'
+
+##
+class GenomeSeq_UpdateView(SimpleupdateView):
+    form_class=Sequence_form
+    template_name='dgene/genomeseq/genomeseq_u.html'
+    model=ID_Sequence
+
+#=================================================================================================
+# Genes
+#=================================================================================================
+
 class GeneListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= Gene
@@ -51,65 +86,55 @@ class GeneUpdateView(SimpleupdateView):
     template_name='dgene/gene/gene_u.html'
     model=Gene
 
-# -- ID-Pub Views--
-##
+
+#=================================================================================================
+# ID Sequence 
+#=================================================================================================
+
+class IDSeq_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model= ID_Sequence
+    template_name = 'dgene/idseq/idseq_list.html' 
+    filterset_class=IDSeq_Filter
+    model_fields=model.HEADER_FIELDS
+
 class ID_PubListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= ID_Pub
-    template_name = 'dgene/id_pub/id_pub_list.html' 
+    template_name = 'dgene/idseq/idpub_list.html' 
     filterset_class=ID_Pubfilter
     model_fields=model.HEADER_FIELDS
 
 ##
 class ID_PubCreateView(SimplecreateView):
     form_class=ID_Pub_form
-    template_name='dgene/id_pub/id_pub_c.html'
+    template_name='dgene/idseq/idpub_c.html'
 
 ##
 class ID_PubUpdateView(SimpleupdateView):
     form_class=ID_Pub_form
-    template_name='dgene/id_pub/id_pub_u.html'
+    template_name='dgene/idseq/idpub_u.html'
     model=ID_Sequence
     
-# --Sequence Views--
-##
-class SequenceListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model= ID_Sequence
-    template_name = 'dgene/id_sequence/sequence_list.html' 
-    filterset_class=Sequencefilter
-    model_fields=model.HEADER_FIELDS
 
-##
-class SequenceCardView(SequenceListView):
-    template_name = 'dgene/id_sequence/sequence_card.html'
-
-##
-class SequenceCreateView(SimplecreateView):
-    form_class=Sequence_form
-    template_name='dgene/id_sequence/sequence_c.html'
-
-##
-class SequenceUpdateView(SimpleupdateView):
-    form_class=Sequence_form
-    template_name='dgene/id_sequence/sequence_u.html'
-    model=ID_Sequence
-
-# --WGS FastQC--
-##
-class WGS_FastQCListView(LoginRequiredMixin, FilteredListView):
+#=================================================================================================
+# WGS_FastQC - FastQ QC
+#=================================================================================================
+class WGS_FastQC_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= WGS_FastQC
     template_name = 'dgene/wgs_fastqc/fastqc_list.html' 
-    filterset_class=FastQCfilter
+    filterset_class=WGS_FastQC_Filter
     model_fields=model.HEADER_FIELDS
+    #ordering = []
 
-# --WGS CheckM--
-##
-class WGS_CheckMListView(LoginRequiredMixin, FilteredListView):
+#=================================================================================================
+# WGS_CheckM - FastA CheckM
+#=================================================================================================
+class WGS_CheckM_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= WGS_CheckM
     template_name = 'dgene/wgs_checkm/checkm_list.html' 
-    filterset_class=CheckMfilter
+    filterset_class=WGS_CheckM_Filter
     model_fields=model.HEADER_FIELDS
-
+    #ordering = []

@@ -250,6 +250,7 @@ span {
 
 
 /* =================Functional CSS  Classes========================================= */
+
 /* ---------------------------1 Login Form --------------------------*/
 .logintext {
   position: relative;
@@ -358,6 +359,10 @@ span {
   font-size: large;
 }
 
+.nav-item {
+  color: var(--brand-text);
+}
+
 .navbar-toggler {
   background-color: var(--info);
 }
@@ -384,7 +389,7 @@ span {
 
 .navbar-brand:hover,
 .nav-title i:hover {
-  border-radius: 50% !important;
+  border-radius: 100% !important;
   box-shadow: 0px 0px 10px 0px white;
   transition: 0.3s ease-in;
 }
@@ -445,6 +450,24 @@ a:hover .tooltiptext {
   visibility: visible;
 }
 
+.dropdown-menu li {
+  position: relative;
+  }
+
+.dropdown-menu .dropdown-submenu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -7px;
+  }
+.dropdown-menu .dropdown-submenu-left {
+  right: 100%;
+  left: auto;
+  }
+.dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+  }
+  
 /* ---------------------------3 Landing page --------------------------*/
 
 .Land-frame-hidden,
@@ -522,35 +545,6 @@ a:hover .tooltiptext {
 
 .land-badge {
   animation: fadeIn 1.5s;
-}
-
-[data-value='ORGANISM']:hover:after{
-  position:absolute;
-  top: 105%;
-  left: -110%;
-  width: fit-content;
-  content: "overview, create, update, tracking organism batch, stock through individual organism view.";
-  color: var(--brand-bg);
-}
-
-[data-value='DRUG']:hover:after{
-  position:absolute;
-  top: 105%;
-  left: -110%;
-  content: "Browse Drugs, Structure edit in individual view";
-  color: var(--brand-bg);
-  /* width: 2px;
-  background-color: var(--info);
-  height: 300px; */
-  /* transform:rotate(90deg) */
-}
-
-[data-value='GENE']:hover:after{
-  position:absolute;
-  top: 105%;
-  left: 0px;
-  content: "Gene informations";
-  color: var(--plain-text);
 }
 
 /* ---------------------------4 Sidebar --------------------------*/

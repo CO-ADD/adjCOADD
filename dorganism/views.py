@@ -21,7 +21,8 @@ from adjcoadd.constants import *
 from dorganism.models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from dorganism.forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
                     Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
-                    Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
+                    Organismfilter, Taxonomyfilter, Batchfilter, 
+                    OrgBatchStock_Filter)
 from ddrug.models import VITEK_AST, MIC_COADD
 from dorganism.utils.data_visual import data_frame_style, pivottable_style
 
@@ -113,6 +114,7 @@ class OrganismListView(LoginRequiredMixin, FilteredListView):
     model_fields = model.HEADER_FIELDS
     model_name = 'Organism'
     app_name = 'dorganism'
+    ordering=['-acreated_at']
     
 ##  
 class OrganismCardView(OrganismListView):
@@ -316,8 +318,22 @@ class BatchDeleteView(SimpledeleteView):
     model = Organism_Batch
     transaction_use = 'dorganism'
 
-# --Stock Views--
-# view in organism detail views
+#=================================================================================================
+# OrgBatch Stock  
+#=================================================================================================
+class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model = OrgBatch_Stock  
+    template_name = 'dorganism/organism/batch_stock/stock_list.html'
+    filterset_class = OrgBatchStock_Filter
+    model_fields = model.HEADER_FIELDS
+    model_name = 'OrgBatch_Stock'
+    app_name = 'dorganism'
+
+
+
+#-------------------------------------------------------------------------------
+# within Organism_DetailView
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
@@ -347,17 +363,6 @@ def stockList(req, pk):
         res=data        
         return JsonResponse({'data':res})
     return JsonResponse({})
-#
-# Overview Stocks
-##
-class StockListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model = OrgBatch_Stock  
-    template_name = 'dorganism/organism/batch_stock/stock_list.html'
-    filterset_class = Stockfilter
-    model_fields = model.HEADER_FIELDS
-    model_name = 'OrgBatch_Stock'
-    app_name = 'dorganism'
 
 
       

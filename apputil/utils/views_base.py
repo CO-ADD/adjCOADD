@@ -18,18 +18,41 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apputil.models import ApplicationLog
 
+# -----------------------------------------------------------------
 # --utilized in Decoration has_permissions, an Alert on Permissions--
+# -----------------------------------------------------------------
+
 def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
 
+# -----------------------------------------------------------------
 # --Super UserRequire Mixin--
+# -----------------------------------------------------------------
 class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     login_url = '/'
 
     def test_func(self):
         return self.request.user.has_permission('Admin')
 
+    def handle_no_permission(self):
+        return HttpResponse( 'Only users with ADMIN permission have access to this view')
+
+# -----------------------------------------------------------------
+# --Write UserRequire Mixin--
+# -----------------------------------------------------------------
+class WriteUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = '/'
+
+    def test_func(self):
+        return self.request.user.has_permission('Write')
+    
+    def handle_no_permission(self):
+        return HttpResponse( 'Only users with WRITE permission have access to this view')
+
+
+# -----------------------------------------------------------------
 # --create view class--
+# -----------------------------------------------------------------
 class SimplecreateView(LoginRequiredMixin, View):
     form_class = None
     template_name = None
@@ -58,7 +81,9 @@ class SimplecreateView(LoginRequiredMixin, View):
 
 
 
+# -----------------------------------------------------------------
 # --update view class--
+# -----------------------------------------------------------------
 class SimpleupdateView(LoginRequiredMixin, View):
     form_class = None
     template_name = None
@@ -100,6 +125,8 @@ class SimpleupdateView(LoginRequiredMixin, View):
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
+# -----------------------------------------------------------------
+# -----------------------------------------------------------------
 class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
     model=None
     transaction_use = 'default'
@@ -124,7 +151,9 @@ class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
     
 
 
+# -----------------------------------------------------------------
 # --update view class with htmx put request--
+# -----------------------------------------------------------------
 from django.http import QueryDict
 class HtmxupdateView(LoginRequiredMixin, View):
     form_class = None
@@ -170,7 +199,9 @@ class HtmxupdateView(LoginRequiredMixin, View):
             # messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
+# -----------------------------------------------------------------
 # --View for simple update files and images to database--
+# -----------------------------------------------------------------
 class CreateFileView(LoginRequiredMixin,FormView):
     form_class = None
     model = None
@@ -225,7 +256,9 @@ class CreateFileView(LoginRequiredMixin,FormView):
 
     
     
+# -----------------------------------------------------------------
 # --export view--
+# -----------------------------------------------------------------
 import ddrug.utils.tables as drugtbl
 
 class DataExportBaseView(LoginRequiredMixin, View):

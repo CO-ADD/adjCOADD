@@ -3,7 +3,7 @@
 {% block title%} COADD {% endblock %}
 {% block content %}
 <!-- -->
-{%url 'import-vitek' as reset_url%}
+{% url 'import-vitek' as reset_url %}
 {% include 'utils/wizard_single_page.html' with data_model='Vitek' reset_url=reset_url %}
 
 {% endblock %}
