@@ -57,6 +57,11 @@ def index(req):
     return render(req, 'home.html', nDict)
 
 #-------------------------------------------------------------------------------------------------
+# Handler 403
+def custom_page_not_found_view(request, exception):
+    return render(request, 'registration/error404.html')
+
+#-------------------------------------------------------------------------------------------------
 # Handler 404
 def custom_page_not_found_view(request, exception):
     return render(request, 'registration/error404.html')

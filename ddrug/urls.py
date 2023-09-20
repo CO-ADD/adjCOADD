@@ -9,7 +9,7 @@ from ddrug.views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView,
     smartsQuery, 
     ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, API_Drug_Detail, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView, BreakpointListView)
-from .upload_views import Import_VitekView, Import_DrugView
+from ddrug.upload_views import Import_VitekView, Import_DrugView
 
 
 urlpatterns = [
@@ -44,7 +44,7 @@ urlpatterns = [
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
 
     path('import-vitek/', Import_VitekView.as_view(), name='import-vitek'),
-    path('import-drug/', Import_DrugView.as_view(), name='import-drug'),
+    #path('import-drug/', Import_DrugView.as_view(), name='import-drug'),
 
     
 ]

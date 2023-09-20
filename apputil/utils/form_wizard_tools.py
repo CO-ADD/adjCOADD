@@ -19,7 +19,7 @@ from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDict
-from apputil.utils.views_base import SuperUserRequiredMixin
+from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -38,7 +38,7 @@ class MultipleFileField(forms.FileField):
             result = single_file_clean(data, initial)
         return result
 # --------------------------------------------------------------------------------------------------
-class SelectFile_StepForm(SuperUserRequiredMixin, forms.Form):
+class SelectFile_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
     multi_files = MultipleFileField(label='Select one or multiple files', 
                                   validators=[validate_file], 
@@ -90,7 +90,7 @@ class Finalize_StepForm(forms.Form):
     pass
 
 # --------------------------------------------------------------------------------------------------
-class ImportHandler_View(SuperUserRequiredMixin,SessionWizardView):
+class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
 # --------------------------------------------------------------------------------------------------
     name_step1="Upload" # step label in template
     # define more steps name
