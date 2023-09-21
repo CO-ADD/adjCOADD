@@ -6,6 +6,7 @@
 {% block content%}
 <div class="d-flex flex-row vh-100">
   <div class="w-100">
+
     <!-- Organism -->
     <div class="d-flex m-0 p-0">
       {% include 'utils/lefticons.html' with title="Organism" %}
@@ -27,7 +28,7 @@
               <br>           
               <hr>
               <!-- prettier-ignore -->
-              {% include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at %}
+              {% include 'detailview/audit_status.html' %}
               <!--  -->
             </div>
           </div>

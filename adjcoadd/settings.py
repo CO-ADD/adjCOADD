@@ -29,6 +29,7 @@ DEVELOPMENT='Work'
 #======================================================================
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+#--------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 UPLOAD_DIR = '/opt/django/var/uploads/'
@@ -36,19 +37,15 @@ MEDIA_ROOT= UPLOAD_DIR if os.path.exists(UPLOAD_DIR) else os.path.join(BASE_DIR.
 MEDIA_URL = ('uploads/')
 
 # Define Version 
+#--------------------------------------------------------------------
 if DEVELOPMENT:
-    # Devlopment/Local
-    # from github import Github
-    # g=Github()
-    # repo = g.get_organization('CO-ADD').get_repo('adjCOADD')
-    # pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
-    # VERSION ='1.0.'+ str(pull_requests[0].number) +' (Development) - JZG'
     VERSION = '1.1.0244 Development'
 else:
     # Production
     VERSION = '1.2'
 
 # Define Structure Images folder path
+#--------------------------------------------------------------------
 if DEVELOPMENT=="Local":
     # structure_file_path = f"static/images/{file_name}.svg"
     STRUCTURE_FILES_DIR=os.path.join(BASE_DIR, 'static/images')
@@ -74,6 +71,7 @@ else:
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
+#--------------------------------------------------------------------
 INSTALLED_APPS = [
     'django_crontab',
     'django.contrib.admin',
@@ -81,12 +79,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',   
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',   
+    "django.contrib.postgres",
     'django_rdkit',
     'django_filters',
     'dbbackup',
     "sequences.apps.SequencesConfig",
-    "django.contrib.postgres",
     'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
@@ -98,6 +97,7 @@ INSTALLED_APPS = [
     'formtools',
 ]
 
+#--------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -105,6 +105,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+#--------------------------------------------------------------------
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -121,6 +122,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+#--------------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -134,6 +136,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'adjcoadd.urls'
 
+#--------------------------------------------------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -159,6 +162,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+#--------------------------------------------------------------------
 if DEVELOPMENT:
     DB_NAME = os.environ.get('db_name') or 'orgdb'
     DB_USER = os.environ.get('db_usr') or 'orgdb'
@@ -255,8 +259,8 @@ DATABASES = {
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
 # Backup Database
-#----------------------
-# Requires django-dbbackup
+#--------------------------------------------------------------------
+# Requires django-dbbackup django-crontab and pg_dump/restore
 DBBACKUP_DATABASES = list(DATABASES.keys())
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
@@ -277,12 +281,13 @@ else:
 CRONJOBS = [
     # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
     # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
-    ('*/1 * * * *','apputil.utils.cron.Backup_adjCOADD'),
+    ('0 0 * * FRI','apputil.utils.cron.Backup_adjCOADD'),
     # ('*/1 * * * *','django.core.management.call_command')
 ]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+#--------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -292,6 +297,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
+#--------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Australia/Brisbane'
 USE_I18N = True
@@ -301,18 +307,20 @@ USE_L10N = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+#--------------------------------------------------------------------
 STATIC_URL = 'static/'
 STATICFILES_DIRS=[BASE_DIR/"static",]
 STATIC_ROOT = BASE_DIR.parent / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+#--------------------------------------------------------------------
 AUTH_USER_MODEL = 'apputil.ApplicationUser'
 LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #LDAP Autherntications
-#----------------------
+#--------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
@@ -323,6 +331,7 @@ AUTH_LDAP_BIND_PASSWORD = ""
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
 # Security Setting
+#--------------------------------------------------------------------
 # CSRF_COOKIE_SECURE=True
 CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
 # CORS_REPLACE_HTTPS_REFERER      = True
@@ -349,10 +358,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
-#----------------------
+#--------------------------------------------------------------------
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
 
 # Logging files
+#--------------------------------------------------------------------
 LOG_PATH = os.path.join(BASE_DIR, 'applog')
 LOGGING = {
     'version': 1,
@@ -396,6 +406,5 @@ LOGGING = {
 }
 
 X_FRAME_OPTIONS = 'ALLOWALL'
-
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 

@@ -5,66 +5,63 @@
     <ul class="pagination">
         <!-- <span class="step-links"> -->
         {% if page_obj.has_previous %}
-        <li class="page-item">
-
-            <a class="page-link"
-                href="{% pagination_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&laquo;</a>
-        </li>
-        {%else%}
-        <li class="page-item">
-
-            <a class="page-link border border-0">&laquo;</a>
-        </li>
+            <li class="page-item">
+                <a class="page-link"
+                    href="{% pagination_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&laquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link border border-0">&laquo;</a>
+            </li>
         {% endif %}
 
         {% if page_obj.number > 3 %}
-        <li class="page-item">
-            <a class="page-link" href="{% pagination_url 1 'page' request.GET.urlencode %}"> 1</a>
-        </li>
-        {% if page_obj.number > 4 %}
-        <li class="page-item">
-
-            <a class="page-link">...</a>
-        </li>
+            <li class="page-item">
+                <a class="page-link" href="{% pagination_url 1 'page' request.GET.urlencode %}"> 1</a>
+            </li>
+            {% if page_obj.number > 4 %}
+                <li class="page-item">
+                    <a class="page-link">...</a>
+                </li>
+            {% endif %}
         {% endif %}
-        {%endif %}
 
         {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <li class="page-item">
+            {% if page_obj.number == num %}
+            <li class="page-item">
 
-            <a class="page-link fw-bold text-light" style="color:white !important; background-color: var(--info) !important;"
-                href="{% pagination_url num 'page' request.GET.urlencode %}">
-                {{num}}</a>
-        </li>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
-
-            <a class="page-link " href="{% pagination_url num 'page' request.GET.urlencode %}">
-                {{num}}</a>
+                <a class="page-link fw-bold text-light" style="color:white !important; background-color: var(--info) !important;"
+                    href="{% pagination_url num 'page' request.GET.urlencode %}">
+                    {{num}}</a>
             </li>
-            {%endif%}
-            {%endfor%}
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+
+                <a class="page-link " href="{% pagination_url num 'page' request.GET.urlencode %}">
+                    {{num}}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
             <!--prettier-ignore-->
 
-            {% if page_obj.has_next %}
+        {% if page_obj.has_next %}
             <li class="page-item ">
-
-
                 <a class="page-link " href="{% pagination_url page_obj.next_page_number 'page' request.GET.urlencode %}">
                     &raquo;</a>
             </li>
 
             <li class="page-item ">
                 <a class="page-link " href="{% pagination_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">
-                    End
+                    <strong>{{page_obj.paginator.num_pages}}</strong> pages
                 </a>
             </li>
-            {% endif %}
+        {% endif %}
     </ul>
+
     <!--prettier-ignore-->
     <!-- </span> -->
-    <span class="text-info">&nbsp; showing p.{{page_obj.number}} of {{page_obj.paginator.num_pages}} pages in
-        <strong> {{querycount}}
-            Entries</strong></span>
+    {% load humanize %}
+    <span class="text-info">&nbsp;  
+     | <strong> {{querycount|intcomma}} </strong> entries
+    </span>
 
 </div>

@@ -44,7 +44,6 @@ class ApplicationUser(AbstractUser):
     #------------------------------------------------
     class Meta:
         db_table = 'app_user'
-        ordering=['username']
     
     #------------------------------------------------  
     def __str__(self) -> str:

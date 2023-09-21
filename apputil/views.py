@@ -20,7 +20,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 
-from apputil.forms import AppUserfilter, Logfilter, Dictionaryfilter, ApplicationUser_form, Dictionary_form, Login_form, Document_form 
+from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
 from apputil.utils.views_base import HtmxupdateView, SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
 from apputil.utils.filters_base import FilteredListView
@@ -85,7 +85,7 @@ def login_user(req):
         return redirect("index")
     else:
         if req.method=='POST':
-            form=Login_form(data=req.POST)
+            form=Login_Form(data=req.POST)
             username_ldap=req.POST.get('username')
         # print(user)
             if form.is_valid():
@@ -97,7 +97,7 @@ def login_user(req):
                 messages.warning(req, ' no permission for this application, please contact Admin!')
                 return redirect("/")
         else:
-            form = Login_form()
+            form = Login_Form()
         return render(req, 'registration/login.html', {'form': form})    
 
 #-------------------------------------------------------------------------------------------------
@@ -108,7 +108,18 @@ def logout_user(req):
 #=================================================================================================
 # Application User
 #=================================================================================================
-class AppUserDetailView(DetailView):
+
+class AppUser_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model = ApplicationUser
+    template_name = 'apputil/appUsers.html'  
+    filterset_class = AppUser_Filter
+    model_fields=model.HEADER_FIELDS
+    ordering =['-is_active','-is_appuser','first_name','last_name']
+
+
+#-------------------------------------------------------------------------------------------------
+class AppUser_DetailView(DetailView):
     model = ApplicationUser
     template_name = 'apputil/appUserProfile.html' 
 
@@ -124,17 +135,9 @@ def userprofile(req, id):
     return render(req, 'apputil/appUserProfile.html', {'currentUser': current_user})
 
 #-------------------------------------------------------------------------------------------------
-class AppUserListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model = ApplicationUser
-    template_name = 'apputil/appUsers.html'  
-    filterset_class = AppUserfilter
-    model_fields=model.HEADER_FIELDS
-
-#-------------------------------------------------------------------------------------------------
-class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
+class AppUser_CreateView(SuperUserRequiredMixin, SimplecreateView):
     
-    form_class = ApplicationUser_form
+    form_class = AppUser_Form
     template_name = 'apputil/appUsersCreate.html'
 
     def post(self, request, *args, **kwargs):
@@ -147,8 +150,8 @@ class AppUserCreateView(SuperUserRequiredMixin, SimplecreateView):
             return redirect(request.META['HTTP_REFERER'])
 
 #-------------------------------------------------------------------------------------------------
-class ApplicationUserUpdateView(HtmxupdateView):
-    form_class = ApplicationUser_form
+class AppUser_UpdateView(HtmxupdateView):
+    form_class = AppUser_Form
     template_name = "apputil/appUsersUpdate.html"
     template_partial = "apputil/appuser_tr.html"
     model = ApplicationUser
@@ -170,7 +173,7 @@ class ApplicationUserUpdateView(HtmxupdateView):
             return render(request, self.template_partial, context)
 
 #-------------------------------------------------------------------------------------------------
-class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
+class AppUser_DeleteView(SuperUserRequiredMixin, UpdateView):
     model = ApplicationUser
     template_name = 'apputil/appUsersDel.html'
     success_url = reverse_lazy('userslist')
@@ -184,32 +187,29 @@ class AppUserDeleteView(SuperUserRequiredMixin, UpdateView):
 # Application log 
 #=================================================================================================
 
-class AppLogView(SuperUserRequiredMixin, FilteredListView):
+class AppLog_ListView(SuperUserRequiredMixin, FilteredListView):
     login_url = '/'
     model = ApplicationLog
     template_name = 'apputil/log_List.html'
-    filterset_class = Logfilter
+    filterset_class = AppLog_Filter
     model_fields = model.HEADER_FIELDS
-    ordering = ['']
-
-
 
 
 #=================================================================================================
-# Dictionary log 
+# Dictionary
 #=================================================================================================
 
-class DictionaryView(LoginRequiredMixin, FilteredListView):
+class Dictionary_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = Dictionary
     template_name = 'apputil/dictList.html'
-    filterset_class = Dictionaryfilter
+    filterset_class = Dictionary_Filter
     model_fields = model.HEADER_FIELDS
 
     
 #-------------------------------------------------------------------------------------------------
-class DictionaryCreateView(SuperUserRequiredMixin, SimplecreateView):
-    form_class = Dictionary_form
+class Dictionary_CreateView(SuperUserRequiredMixin, SimplecreateView):
+    form_class = Dictionary_Form
     template_name = 'apputil/dictCreate.html'
 
 
@@ -263,7 +263,7 @@ def deleteDictionary(req):
 # Document  
 #=================================================================================================
 class CreatedocumentView(CreateFileView):
-    form_class = Document_form
+    form_class = Document_Form
     model = Organism
     file_field = 'doc_file'
     related_name = 'assoc_documents'

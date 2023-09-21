@@ -1,16 +1,17 @@
-import django_filters
+#import django_filters
 from django import forms
 from .models import  ApplicationUser, ApplicationLog, Dictionary, Document
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
+from django_filters import DateRangeFilter, CharFilter, BooleanFilter, ChoiceFilter, DateFromToRangeFilter, DateFilter
 
-from .utils.filters_base import Filterbase, Filterbase_base
+from apputil.utils.filters_base import Filterbase, Filterbase_base
 
 
 #------------------------------------------------------------------------
 # --Login Form--
-class Login_form(AuthenticationForm):
+class Login_Form(AuthenticationForm):
 #------------------------------------------------------------------------
     username=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',  'id': 'user-input', 'autocomplete':'off'}), label='user-input')
     password= forms.CharField(widget=forms.PasswordInput(
@@ -41,32 +42,74 @@ class Login_form(AuthenticationForm):
         return self.cleaned_data
 
 
-# --Model Form--
-## Application User
+#=================================================================================================
+# Application User
+#=================================================================================================
 
 #------------------------------------------------------------------------
 Permission_Choices=[ ("Read","Read"),("Write","Write"),("Delete","Delete"), ("Admin","Admin"), ("No","No")]
-class ApplicationUser_form(forms.ModelForm):
+
+class AppUser_Form(forms.ModelForm):
+
     permission=forms.ChoiceField(choices=Permission_Choices)
+
     class Meta:
         model=ApplicationUser
         fields=['first_name','last_name','email', 'is_active', 'username', 'name', 'initials','permission','is_appuser']
 
-
 #------------------------------------------------------------------------
-## Dictionary
-class Dictionary_form(forms.ModelForm):
+class AppUser_Filter(Filterbase_base):
+
+    Search_all_fields = CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
+
+    username = CharFilter(lookup_expr='icontains',label='UQ Username')
+    first_name = CharFilter(lookup_expr='icontains')
+    last_name = CharFilter(lookup_expr='icontains')
+    initials = CharFilter(lookup_expr='icontains')
+    is_active = BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is Active')
+    is_appuser = BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is AppUser')
+    permission= ChoiceFilter(choices=Permission_Choices)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.form.initial['is_active'] = (True,'Yes')
+        self.form.initial['is_appuser'] = (True,'Yes')
+
+    class Meta:
+        model=ApplicationUser
+        fields=['username','first_name', 'last_name', 'initials','is_active','is_appuser','permission']
+
+#=================================================================================================
+# Application Dictionary
+#=================================================================================================
+
+class Dictionary_Form(forms.ModelForm):
     class Meta:
         model=Dictionary
         fields='__all__'
 
 #------------------------------------------------------------------------
+class Dictionary_Filter(Filterbase):
+    dict_class = ChoiceFilter(choices=[])
+    dict_value = CharFilter(lookup_expr='icontains')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).distinct().order_by('dict_class').values('dict_class')]
+        choice_class=[(x[0], x[0]) for x in a]
+        self.filters['dict_class'].extra["choices"] = choice_class
+        self.filters['dict_class'].label='Class'
+      
+    class Meta:
+        model=Dictionary
+        fields=['dict_class']
+
+#------------------------------------------------------------------------
 ## Document
-class Document_form(forms.ModelForm):
+class Document_Form(forms.ModelForm):
     doc_file = forms.FileField(label='Select a file', 
                                 #   validators=[validate_file], 
                                   required=True)
-    
     class Meta:
         model=Document
         fields='__all__'
@@ -93,25 +136,6 @@ class Document_form(forms.ModelForm):
 
 #------------------------------------------------------------------------
 ## Application User
-class AppUserfilter(Filterbase_base):
-    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
-
-    username = django_filters.CharFilter(lookup_expr='icontains',label='UQ Username')
-    first_name = django_filters.CharFilter(lookup_expr='icontains')
-    last_name = django_filters.CharFilter(lookup_expr='icontains')
-    initials = django_filters.CharFilter(lookup_expr='icontains')
-    is_active = django_filters.BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is Active')
-    is_appuser = django_filters.BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is AppUser')
-    permission=django_filters.ChoiceFilter(choices=Permission_Choices)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.form.initial['is_active'] = (True,'Yes')
-        self.form.initial['is_appuser'] = (True,'Yes')
-
-    class Meta:
-        model=ApplicationUser
-        fields=['username','first_name', 'last_name', 'initials','is_active','is_appuser','permission']
 
     # @property
     # def qs(self):
@@ -126,29 +150,14 @@ class AppUserfilter(Filterbase_base):
     #         return queryset.filter(q_object)
     #     return queryset
 
-#------------------------------------------------------------------------
-## Dictionary
-class Dictionaryfilter(Filterbase):
-    dict_class = django_filters.ChoiceFilter(choices=[])
-    dict_value = django_filters.CharFilter(lookup_expr='icontains')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        a=[tuple(d.values()) for d in Dictionary.objects.filter(astatus__gte=0).distinct().order_by('dict_class').values('dict_class')]
-        choice_class=[(x[0], x[0]) for x in a]
-        self.filters['dict_class'].extra["choices"] = choice_class
-        self.filters['dict_class'].label='Class'
-      
-    class Meta:
-        model=Dictionary
-        fields=['dict_class']
+#=================================================================================================
+# Application log 
+#=================================================================================================
 
-#------------------------------------------------------------------------
-
-from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
-class Logfilter(Filterbase_base):
-    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
-    log_code = django_filters.ChoiceFilter(choices=[])
+class AppLog_Filter(Filterbase_base):
+    Search_all_fields = CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
+    log_code = ChoiceFilter(choices=[])
     # start_date = DateFilter(field_name='log_time',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'}), label = 'Log date start from') 
     log_time = DateRangeFilter(label = 'Log Time')
 

@@ -34,7 +34,8 @@
                             <br>
                             <hr>
                             <!--prettier-ignore-->
-                            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
+                            {% include 'detailview/audit_status.html' %}
+
                         </div>
                     </div>
                 </div>

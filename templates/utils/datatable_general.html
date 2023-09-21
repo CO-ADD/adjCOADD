@@ -1,5 +1,6 @@
 {% load custom_filters %}
 <div style="height: 100vh;overflow: auto;">
+
   <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%">
     <thead>
       <tr>
@@ -17,6 +18,7 @@
         {% endfor %}
       </tr>
     </thead>
+
     <tbody hx-target="closest tr" hx-swap="outerHTML">
       {% if page_obj %}
         <!--prettier-ignore  -->
@@ -46,8 +48,9 @@
           {% endif %}
         {% endfor %}
         <!--  -->
-      {% else%}
-       {% for object in objects%}
+      {% else %}
+       {% for object in objects %}
+
         <tr>
           <td>
             <!--prettier-ignore  -->
@@ -57,7 +60,6 @@
           {% for item in object.get_values %}
             <td>
             {% if item|is_dict %} <!-- custom filter -->   
-              
               {% for key, value in item.items %}      
                 <a href="{{value}}" target="_blank">{{ key }}</a>
               {% endfor %}
@@ -65,9 +67,11 @@
               {{item}}
             {% endif %}
             </td>
+
           {% endfor %}      
         </tr>
-        {%endfor%}
+
+        {% endfor %}
       {% endif %}
     </tbody>
   </table>

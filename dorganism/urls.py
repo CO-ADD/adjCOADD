@@ -2,8 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from .views import  (TaxonomyCardView,TaxonomyListView,detailTaxonomy,TaxonomyCreateView, TaxonomyUpdateView, TaxonomyDeleteView, 
-                     createOrganism, detailOrganism, updateOrganism, OrganismDeleteView, OrganismListView,OrganismCardView, 
+from .views import  (Taxonomy_ListView,Taxonomy_CardView,detailTaxonomy,Taxonomy_CreateView, Taxonomy_UpdateView, Taxonomy_DeleteView, 
+                     Organism_ListView,Organism_CardView,createOrganism, detailOrganism, updateOrganism, Organism_DeleteView,
                      BatchUpdateView, createBatch, BatchDeleteView, BatchListView, OrgbatchimgDeleteView,
                      createStock, updateStock, stockList, StockDeleteView,
                      CultureUpdateView, createCulture, CultureDeleteView,
@@ -13,22 +13,20 @@ from .utils.utils import search_organism, search_organism_id
 
 urlpatterns = [
     # Taxonomy
-    path('taxonomy_card', TaxonomyCardView.as_view(), name="taxo_card"),
-    path('taxonomy_list', TaxonomyListView.as_view(), name="taxo_list"),
+    path('taxonomy_card', Taxonomy_CardView.as_view(), name="taxo_card"),
+    path('taxonomy_list', Taxonomy_ListView.as_view(), name="taxo_list"),
     path('taxonomy/<slug:slug>', detailTaxonomy, name="taxo_detail"),
-    path('createTaxo/', TaxonomyCreateView.as_view(), name="taxo_create"),
-    path('updateTax/<slug:slug>', TaxonomyUpdateView.as_view(), name="taxonomy_update"),
-    path('deleteTax/<slug:slug>', TaxonomyDeleteView.as_view(), name="taxonomy_delete"),
+    path('createTaxo/', Taxonomy_CreateView.as_view(), name="taxo_create"),
+    path('updateTax/<slug:slug>', Taxonomy_UpdateView.as_view(), name="taxonomy_update"),
+    path('deleteTax/<slug:slug>', Taxonomy_DeleteView.as_view(), name="taxonomy_delete"),
 
     # Organism 
-    path('organism_card', OrganismCardView.as_view(), name="org_card"),
-   
-    # ------------------------------------------------------------------
-    path('organism_list', OrganismListView.as_view(), name="org_list"),
+    path('organism_card', Organism_CardView.as_view(), name="org_card"),
+    path('organism_list', Organism_ListView.as_view(), name="org_list"),
     path('organism/<str:pk>', detailOrganism, name="org_detail"),
     path('createOrg/', createOrganism, name="org_create"),
     path('updateOrg/<str:pk>', updateOrganism, name="organism_update"),
-    path('deleteOrg/<str:pk>', OrganismDeleteView.as_view(), name="organism_delete"),
+    path('deleteOrg/<str:pk>', Organism_DeleteView.as_view(), name="organism_delete"),
 
     # OrgBatch
     path('batchlist', BatchListView.as_view(), name="batch_list"),
