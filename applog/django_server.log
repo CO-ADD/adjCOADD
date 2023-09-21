@@ -12816,3 +12816,33 @@ django.utils.autoreload INFO 2023-09-21 12:04:30,415 autoreload 27392 28892 C:\D
 django.utils.autoreload INFO 2023-09-21 12:04:32,356 autoreload 15124 24712 Watching for file changes with StatReloader
 django.utils.autoreload INFO 2023-09-21 12:04:42,419 autoreload 15124 24712 C:\Data\A02_WorkDB\03_Django\adjCOADD\adjcoadd\settings.py changed, reloading.
 django.utils.autoreload INFO 2023-09-21 12:04:44,381 autoreload 31844 23572 Watching for file changes with StatReloader
+django.server INFO 2023-09-21 12:04:49,385 basehttp 31844 27204 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 12:04:49,441 basehttp 31844 27204 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:04:58,627 basehttp 31844 25892 "GET /dorganism/taxonomy_card HTTP/1.1" 200 325726
+django.server WARNING 2023-09-21 12:04:58,666 basehttp 31844 25892 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:05:08,105 basehttp 31844 21700 "GET /dorganism/taxonomy_list HTTP/1.1" 200 207724
+django.server WARNING 2023-09-21 12:05:08,154 basehttp 31844 21700 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:05:29,702 basehttp 31844 18180 "GET /dorganism/taxonomy_list HTTP/1.1" 200 207730
+django.server WARNING 2023-09-21 12:05:29,746 basehttp 31844 18180 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:05:55,203 basehttp 31844 1128 "GET /dorganism/taxonomy_list HTTP/1.1" 200 207730
+django.server WARNING 2023-09-21 12:05:55,245 basehttp 31844 1128 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:06:48,412 basehttp 31844 24972 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 12:06:48,470 basehttp 31844 24972 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:16,921 basehttp 31844 20656 "GET /dorganism/taxonomy_list HTTP/1.1" 200 207730
+django.server WARNING 2023-09-21 12:07:16,966 basehttp 31844 20656 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:30,892 basehttp 31844 25224 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 12:07:30,931 basehttp 31844 25224 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:38,688 basehttp 31844 23168 "GET /dorganism/organism_list?page=36 HTTP/1.1" 200 108701
+django.server WARNING 2023-09-21 12:07:38,726 basehttp 31844 23168 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:44,440 basehttp 31844 6352 "GET /dorganism/organism_list?page=1& HTTP/1.1" 200 166433
+django.server WARNING 2023-09-21 12:07:44,496 basehttp 31844 6352 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:48,662 basehttp 31844 7896 "GET /dorganism/organism_list?page=36& HTTP/1.1" 200 108701
+django.server WARNING 2023-09-21 12:07:48,713 basehttp 31844 7896 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:07:52,057 basehttp 31844 6576 "GET /dorganism/organism_list?page=1& HTTP/1.1" 200 166433
+django.server WARNING 2023-09-21 12:07:52,092 basehttp 31844 6576 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:08:08,992 basehttp 31844 28176 "GET /dorganism/organism_list HTTP/1.1" 200 166425
+django.server WARNING 2023-09-21 12:08:09,027 basehttp 31844 28176 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:08:31,461 basehttp 31844 16076 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 12:08:31,499 basehttp 31844 16076 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 12:08:41,167 basehttp 31844 31104 "GET /dorganism/organism_list HTTP/1.1" 200 166404
+django.server WARNING 2023-09-21 12:08:41,229 basehttp 31844 31104 "GET /static/js/diagram.js HTTP/1.1" 404 1899
