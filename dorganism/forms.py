@@ -92,9 +92,7 @@ class Organism_Filter(Filterbase):
         model=Organism
         fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
 
-
-
-#=======================================Organism Create Form=============================================================
+# -----------------------------------------------------------------
 class CreateOrganism_form(forms.ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
@@ -159,19 +157,18 @@ class CreateOrganism_form(forms.ModelForm):
         model=Organism
         exclude=['organism_id',  'assoc_documents'] 
 
-#=======================================Organism update Form=============================================================
-class UpdateOrganism_form(CreateOrganism_form): 
-
-    
+# -----------------------------------------------------------------
+class UpdateOrganism_form(CreateOrganism_form):     
     class Meta:
         model=Organism
         exclude=['organism_id', 'assoc_documents'] 
+
+
    
-#========================================Taxonomy Form================================================================
-
-
-#========================================Batch Form================================================================
-class Batch_form(forms.ModelForm):
+#=================================================================================================
+# Organism Batch
+#=================================================================================================
+class OrgBatch_Form(forms.ModelForm):
     # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -180,15 +177,15 @@ class Batch_form(forms.ModelForm):
     batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input'}), help_text='**Optional with up to 5 characters', required=False)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     def __init__(self, *args, **kwargs):
-        super(Batch_form, self).__init__(*args, **kwargs)
+        super(OrgBatch_Form, self).__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
 
     class Meta:
         model =Organism_Batch
         exclude=['orgbatch_id', 'stock_level', 'organism_id']
         
-#========================================Batch Update Form================================================================
-class Batchupdate_form(forms.ModelForm):
+
+class OrgBatch_UpdateForm(forms.ModelForm):
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -213,13 +210,19 @@ class Batchupdate_form(forms.ModelForm):
         fields+=['orgbatch_id']
         exclude=['stock_level']
 
+# -----------------------------------------------------------------------------------    
+class OrgBatch_Filter(Filterbase):
+    Stock_Date = IsoDateTimeFilter(field_name='stock_date')
+    class Meta:
+        model = Organism_Batch
+        fields = ["stock_date",  "biologist"]
 
 #=================================================================================================
 # OrgBatch Stock
 #=================================================================================================
 
 # -----------------------------------------------------------------------------------    
-class Stock_createform(forms.ModelForm):
+class OrgBatchStock_CreateForm(forms.ModelForm):
 
     field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 
@@ -239,7 +242,7 @@ class Stock_createform(forms.ModelForm):
         fields='__all__'
 
 # -----------------------------------------------------------------------------------    
-class Stock_form(Stock_createform):
+class OrgBatchStock_Form(OrgBatchStock_CreateForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
 
@@ -252,9 +255,21 @@ class Stock_form(Stock_createform):
         model =OrgBatch_Stock
         fields="__all__"
     
+# -----------------------------------------------------------------------------------    
+class OrgBatchStock_Filter(Filterbase):
+    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
+    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
+    Stock_Date = DateRangeFilter(field_name='stock_date')
+ 
+    class Meta:
+        model = OrgBatch_Stock
+        fields = ["orgbatch_id", "Stock_Date", "start_date", "end_date"]
 
-# =============================== Culture Form-------------------------------
-class Culture_form(forms.ModelForm):
+
+#=================================================================================================
+# Organism Culture
+#=================================================================================================
+class OrgCulture_Form(forms.ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
     culture_source= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
@@ -270,8 +285,8 @@ class Culture_form(forms.ModelForm):
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys())
 
-# =============================== Culture Update Form-------------------------------
-class Cultureupdate_form(forms.ModelForm):
+# -----------------------------------------------------------------------------------    
+class OrgCulture_UpdateForm(forms.ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'width':'fit-content','disabled': 'disabled'}), required=False,queryset=Dictionary.objects.all(),)
     culture_source= forms.ModelChoiceField(widget=forms.Select(attrs={'class':'',  'width':'fit-content','disabled': 'disabled'}), required=False,queryset=Dictionary.objects.all(),)
@@ -291,29 +306,27 @@ class Cultureupdate_form(forms.ModelForm):
         fields=list(model.HEADER_FIELDS.keys()) 
         exclude=['culture_type', 'culture_source',]
 
-# --Filterset Forms--
-## Taxonomy
-
-## Organism
-       
-
-## Batch
-class Batchfilter(Filterbase):
-    Stock_Date = IsoDateTimeFilter(field_name='stock_date')
+#=================================================================================================
+# OrganismBatch Image
+#=================================================================================================
+class OrgBatchImg_Form(forms.ModelForm):
+    field_order = ['image_file','orgbatch_id','image_desc','image_source']
+    image_file = forms.ImageField(label='Select an image file',required=True)
+    image_type = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    image_name = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+ 
+    def __init__(self, *args, org=None, **kwargs):
+        
+        super().__init__(*args, **kwargs)
+        if org:
+            pk = org
+            organism = get_object_or_404(Organism, pk=pk)
+            self.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
+        
     class Meta:
-        model = Organism_Batch
-        fields = ["stock_date",  "biologist"]
+        model =OrgBatch_Image
+        fields="__all__"
 
 
 ## Stock
-from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
-class Stockfilter(Filterbase):
-    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
-    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
-    Stock_Date = DateRangeFilter(field_name='stock_date')
- 
-    class Meta:
-        model = OrgBatch_Stock
-        fields = ["orgbatch_id", "Stock_Date", "start_date", "end_date"]
-
 

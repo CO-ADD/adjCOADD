@@ -12849,3 +12849,387 @@ django.server INFO 2023-09-21 12:08:41,167 basehttp 31844 31104 "GET /dorganism/
 django.server WARNING 2023-09-21 12:08:41,229 basehttp 31844 31104 "GET /static/js/diagram.js HTTP/1.1" 404 1899
 =======
 >>>>>>> 8cd7a7fc382e3b2f57b9e7f9b945012463c42ea5
+django.utils.autoreload INFO 2023-09-21 14:24:16,199 autoreload 20540 7888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:26:42,148 autoreload 20540 7888 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:26:45,518 autoreload 21060 31320 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:26:52,600 autoreload 21060 31320 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:26:55,036 autoreload 30172 23572 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:27:39,921 autoreload 30172 23572 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:27:41,864 autoreload 20356 30560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:27:49,183 autoreload 20356 30560 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:27:53,048 autoreload 10152 14104 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:27:59,153 autoreload 10152 14104 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:28:01,848 autoreload 31860 29652 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:28:13,371 autoreload 31860 29652 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:28:16,195 autoreload 17916 5840 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:28:21,795 autoreload 17916 5840 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:28:23,953 autoreload 20144 30452 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:28:55,307 autoreload 20144 30452 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:28:57,758 autoreload 28808 23056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:09,182 autoreload 28808 23056 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:29:11,192 autoreload 17024 25236 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:25,751 autoreload 17024 25236 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:29:27,840 autoreload 21228 31496 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:31,235 autoreload 21228 31496 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:29:34,589 autoreload 24376 26560 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:38,722 autoreload 24376 26560 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:29:40,940 autoreload 17208 27200 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:44,365 autoreload 17208 27200 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:29:46,758 autoreload 2808 27420 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:29:59,590 autoreload 2808 27420 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:30:02,190 autoreload 31328 9020 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:30:12,651 autoreload 31328 9020 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:30:15,012 autoreload 23504 16912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:30:22,555 autoreload 23504 16912 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:30:24,963 autoreload 23512 33688 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:30:44,956 autoreload 23512 33688 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:30:47,734 autoreload 22308 2252 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:04,197 autoreload 22308 2252 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:31:07,294 autoreload 5956 26920 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:15,169 autoreload 5956 26920 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:31:18,184 autoreload 16308 17052 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:30,638 autoreload 16308 17052 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:31:32,755 autoreload 10300 9860 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:36,626 autoreload 10300 9860 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:31:38,970 autoreload 19248 22580 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:47,157 autoreload 19248 22580 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:31:50,857 autoreload 24748 12640 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:31:57,885 autoreload 24748 12640 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:32:00,488 autoreload 31652 19912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:32:09,966 autoreload 31652 19912 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:32:12,124 autoreload 12436 11944 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:32:30,362 autoreload 12436 11944 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:32:32,297 autoreload 32172 30296 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:34:43,293 autoreload 32172 30296 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:34:45,368 autoreload 27540 32756 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:35:09,564 autoreload 27540 32756 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:35:11,471 autoreload 22124 33192 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:35:15,832 autoreload 22124 33192 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:35:17,818 autoreload 25140 11964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:35:22,149 autoreload 25140 11964 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:35:24,275 autoreload 24140 21428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:35:34,945 autoreload 24140 21428 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:35:37,153 autoreload 16980 32280 Watching for file changes with StatReloader
+django.server INFO 2023-09-21 14:35:51,628 basehttp 16980 8196 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:35:51,701 basehttp 16980 8196 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:35:53,836 basehttp 16980 12424 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 14:35:53,878 basehttp 16980 12424 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:35:55,445 basehttp 16980 19248 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100
+django.server INFO 2023-09-21 14:35:59,202 basehttp 16980 19248 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 14:35:59,311 basehttp 16980 19248 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:35:59,510 basehttp 16980 21780 "GET /static/images/icons/0-square.svg HTTP/1.1" 304 0
+django.request WARNING 2023-09-21 14:35:59,654 log 16980 25332 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:35:59,655 basehttp 16980 25332 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.request WARNING 2023-09-21 14:35:59,880 log 16980 25332 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:35:59,881 basehttp 16980 25332 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 14:36:04,327 basehttp 16980 25332 "GET /dorganism/createBatch/GP_0316/ HTTP/1.1" 200 9932
+django.server INFO 2023-09-21 14:36:06,816 basehttp 16980 25332 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 14:36:06,853 basehttp 16980 25332 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 14:36:06,924 log 16980 21780 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:36:06,925 basehttp 16980 21780 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 14:36:07,993 basehttp 16980 21780 "GET /dorganism/stocklist/GP_0316_01?Batch_id=GP_0316_01&_=1695270966862 HTTP/1.1" 200 252
+django.server INFO 2023-09-21 14:36:11,452 basehttp 16980 21780 "GET /dorganism/createStock/GP_0316_01/ HTTP/1.1" 200 110579
+django.utils.autoreload INFO 2023-09-21 14:36:20,377 autoreload 16980 32280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:36:22,460 autoreload 3872 17700 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:36:52,482 autoreload 3872 17700 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:36:54,565 autoreload 26628 33012 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:37:02,620 autoreload 26628 33012 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:37:05,034 autoreload 24224 33256 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:37:10,847 autoreload 24224 33256 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:37:13,178 autoreload 5108 18816 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:37:20,646 autoreload 5108 18816 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:37:23,206 autoreload 25880 13584 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:37:36,596 autoreload 25880 13584 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:37:39,505 autoreload 25180 30860 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:37:47,114 autoreload 25180 30860 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:37:50,408 autoreload 17748 24664 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:38:17,391 autoreload 17748 24664 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:38:19,378 autoreload 3292 12592 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:38:24,042 autoreload 3292 12592 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:38:26,709 autoreload 18308 2280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:38:31,973 autoreload 18308 2280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:38:34,450 autoreload 15000 31984 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:38:52,255 autoreload 15000 31984 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:38:54,169 autoreload 14376 19328 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:38:59,041 autoreload 14376 19328 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:01,945 autoreload 29172 23812 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:39:06,914 autoreload 29172 23812 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:09,121 autoreload 19276 25608 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:39:15,565 autoreload 19276 25608 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:18,243 autoreload 14240 22340 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:39:25,596 autoreload 14240 22340 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:28,073 autoreload 29440 22268 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:39:37,335 autoreload 29440 22268 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:39,949 autoreload 21428 19716 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:39:47,485 autoreload 21428 19716 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:39:50,190 autoreload 20324 23656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:40:34,947 autoreload 20324 23656 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:40:37,636 autoreload 19176 33440 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:40:42,628 autoreload 19176 33440 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:40:46,447 autoreload 33504 6032 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:40:52,333 autoreload 33504 6032 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:40:54,429 autoreload 30748 23324 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:43:11,368 autoreload 30748 23324 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:43:13,277 autoreload 16252 19660 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:43:16,634 autoreload 16252 19660 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:43:18,552 autoreload 20456 14692 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:43:36,265 autoreload 20456 14692 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:43:38,460 autoreload 11796 10772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:43:43,880 autoreload 11796 10772 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:43:45,880 autoreload 22464 29868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:44:53,000 autoreload 22464 29868 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:44:54,967 autoreload 26448 31984 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:45:10,637 autoreload 26448 31984 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:45:13,070 autoreload 12464 11500 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:45:17,405 autoreload 12464 11500 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:45:19,297 autoreload 32492 3876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:45:25,032 autoreload 32492 3876 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:45:27,019 autoreload 16484 28036 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:45:43,380 autoreload 16484 28036 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:45:45,473 autoreload 10540 17476 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:45:59,802 autoreload 10540 17476 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:46:02,093 autoreload 7904 30044 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:47:02,055 autoreload 7904 30044 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:47:04,004 autoreload 20320 17760 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:47:10,768 autoreload 20320 17760 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:47:13,109 autoreload 2092 32580 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:47:21,104 autoreload 2092 32580 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:47:24,132 autoreload 22792 28456 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:47:34,388 autoreload 22792 28456 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:47:36,468 autoreload 15656 12880 Watching for file changes with StatReloader
+django.server INFO 2023-09-21 14:47:53,082 basehttp 15656 23040 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:47:53,131 basehttp 15656 23040 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:47:55,031 basehttp 15656 13360 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 14:47:55,110 basehttp 15656 13360 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:47:57,249 basehttp 15656 21944 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 14:47:57,349 basehttp 15656 21944 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 14:47:57,722 log 15656 19536 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:47:57,723 basehttp 15656 19536 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.request WARNING 2023-09-21 14:47:57,967 log 15656 19536 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:47:57,968 basehttp 15656 19536 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 14:48:00,633 basehttp 15656 19536 "GET /dorganism/stocklist/GP_0316_01?Batch_id=GP_0316_01&_=1695271677462 HTTP/1.1" 200 252
+django.utils.autoreload INFO 2023-09-21 14:48:14,724 autoreload 15656 12880 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:48:16,826 autoreload 13844 18192 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:48:21,505 autoreload 13844 18192 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:48:24,154 autoreload 20160 23428 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:48:34,701 autoreload 20160 23428 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:48:37,261 autoreload 31436 31832 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:49:15,652 autoreload 31436 31832 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:49:17,704 autoreload 14876 18404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:49:38,508 autoreload 14876 18404 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:49:40,363 autoreload 12720 7708 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:49:45,851 autoreload 12720 7708 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:49:49,941 autoreload 28388 27732 Watching for file changes with StatReloader
+django.server INFO 2023-09-21 14:49:52,645 basehttp 28388 8952 - Broken pipe from ('127.0.0.1', 61384)
+django.server INFO 2023-09-21 14:49:52,668 basehttp 28388 23568 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:49:52,776 basehttp 28388 23568 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:49:55,344 basehttp 28388 17232 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 14:49:55,385 basehttp 28388 17232 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:49:57,146 basehttp 28388 20916 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 14:49:57,276 basehttp 28388 20916 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 14:49:57,602 log 28388 27628 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:49:57,603 basehttp 28388 27628 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.request WARNING 2023-09-21 14:49:57,857 log 28388 27628 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:49:57,858 basehttp 28388 27628 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 14:50:01,900 basehttp 28388 27628 "GET /dorganism/stocklist/GP_0316_01?Batch_id=GP_0316_01&_=1695271797377 HTTP/1.1" 200 252
+django.server INFO 2023-09-21 14:50:03,101 basehttp 28388 27628 "GET /dorganism/createBatch/GP_0316/ HTTP/1.1" 200 9932
+django.server INFO 2023-09-21 14:50:04,859 basehttp 28388 27628 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 14:50:04,903 basehttp 28388 27628 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 14:50:04,989 log 28388 26404 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 14:50:04,990 basehttp 28388 26404 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 14:50:13,351 basehttp 28388 26404 "GET /dorganism/stocklist/GP_0316_01?Batch_id=GP_0316_01&_=1695271804907 HTTP/1.1" 200 252
+django.server INFO 2023-09-21 14:50:14,915 basehttp 28388 26404 "GET /dorganism/createStock/GP_0316_01/ HTTP/1.1" 200 110579
+django.utils.autoreload INFO 2023-09-21 14:50:40,680 autoreload 28388 27732 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:50:43,607 autoreload 8504 25148 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:50:50,844 autoreload 8504 25148 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:50:53,469 autoreload 32848 3524 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:51:02,409 autoreload 32848 3524 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:51:04,774 autoreload 11176 11708 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:51:12,906 autoreload 11176 11708 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:51:15,354 autoreload 18472 12232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:51:20,502 autoreload 18472 12232 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:51:23,353 autoreload 32716 5464 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:51:39,379 autoreload 32716 5464 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:51:41,766 autoreload 17744 25420 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:51:51,704 autoreload 17744 25420 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:51:54,242 autoreload 26852 26888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:52:00,639 autoreload 26852 26888 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:52:03,107 autoreload 26340 8776 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:52:31,008 autoreload 26340 8776 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:52:32,920 autoreload 21732 5888 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:52:38,267 autoreload 21732 5888 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:52:41,377 autoreload 21308 31296 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:52:45,554 autoreload 21308 31296 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:52:48,839 autoreload 33724 29860 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:03,762 autoreload 33724 29860 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:53:06,303 autoreload 2944 23980 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:14,137 autoreload 2944 23980 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:53:16,723 autoreload 30792 28176 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:21,651 autoreload 30792 28176 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:53:24,275 autoreload 29936 26404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:29,957 autoreload 29936 26404 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:53:31,962 autoreload 22500 12864 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:43,255 autoreload 22500 12864 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:53:45,728 autoreload 13036 15816 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:53:58,601 autoreload 13036 15816 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:00,948 autoreload 24628 29472 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:07,829 autoreload 24628 29472 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:10,216 autoreload 3340 8060 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:17,184 autoreload 3340 8060 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:19,532 autoreload 6292 24316 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:23,597 autoreload 6292 24316 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:26,279 autoreload 10824 11280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:30,533 autoreload 10824 11280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:33,219 autoreload 22024 19384 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:44,716 autoreload 22024 19384 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:47,643 autoreload 24004 11404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:54:56,450 autoreload 24004 11404 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:54:59,639 autoreload 8524 20868 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:55:10,978 autoreload 8524 20868 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:55:13,953 autoreload 31364 23880 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:55:28,854 autoreload 31364 23880 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:55:31,364 autoreload 10624 11456 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:55:38,961 autoreload 10624 11456 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:55:41,829 autoreload 13152 24692 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:55:46,923 autoreload 13152 24692 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:55:49,177 autoreload 28064 19208 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:55:53,854 autoreload 28064 19208 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:55:56,431 autoreload 21320 13704 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:00,259 autoreload 21320 13704 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:02,939 autoreload 13416 16808 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:09,180 autoreload 13416 16808 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:11,880 autoreload 28892 1964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:31,714 autoreload 28892 1964 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:33,809 autoreload 19836 23620 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:38,463 autoreload 19836 23620 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:40,589 autoreload 27700 32008 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:44,637 autoreload 27700 32008 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:47,035 autoreload 4752 15376 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:52,636 autoreload 4752 15376 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:56:55,157 autoreload 16588 14020 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:56:59,155 autoreload 16588 14020 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:57:01,409 autoreload 19176 7772 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:57:07,739 autoreload 19176 7772 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:57:10,034 autoreload 32568 33424 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:57:18,099 autoreload 32568 33424 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:57:20,469 autoreload 4216 10988 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:57:26,919 autoreload 4216 10988 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:57:28,960 autoreload 18052 29604 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:57:47,970 autoreload 18052 29604 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:57:51,053 autoreload 19916 3052 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:58:02,231 autoreload 19916 3052 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:58:04,239 autoreload 15484 23504 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 14:58:16,129 autoreload 15484 23504 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:58:18,071 autoreload 32776 7628 Watching for file changes with StatReloader
+django.request ERROR 2023-09-21 14:58:22,532 log 32776 33424 Internal Server Error: /dorganism/organism/GP_0316
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py", line 150, in detailOrganism
+    context["orgbatchimg_form"]=Orgbatchimg_form(org=pk)
+                                ^^^^^^^^^^^^^^^^
+NameError: name 'Orgbatchimg_form' is not defined
+django.server ERROR 2023-09-21 14:58:22,539 basehttp 32776 33424 "GET /dorganism/organism/GP_0316 HTTP/1.1" 500 87409
+django.server INFO 2023-09-21 14:58:29,019 basehttp 32776 33424 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-09-21 14:58:29,432 basehttp 32776 33424 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:58:29,492 basehttp 32776 33424 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:58:31,304 basehttp 32776 5944 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 14:58:31,372 basehttp 32776 5944 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-21 14:58:34,946 log 32776 28548 Internal Server Error: /dorganism/organism/GP_0316
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py", line 150, in detailOrganism
+    context["orgbatchimg_form"]=Orgbatchimg_form(org=pk)
+                                ^^^^^^^^^^^^^^^^
+NameError: name 'Orgbatchimg_form' is not defined
+django.server ERROR 2023-09-21 14:58:34,949 basehttp 32776 28548 "GET /dorganism/organism/GP_0316 HTTP/1.1" 500 87270
+django.utils.autoreload INFO 2023-09-21 14:59:07,504 autoreload 32776 7628 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:59:11,026 autoreload 33724 30044 Watching for file changes with StatReloader
+django.request ERROR 2023-09-21 14:59:17,346 log 33724 24700 Internal Server Error: /dorganism/organism/GP_0316
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py", line 150, in detailOrganism
+    context["orgbatchimg_form"]=OrgBatchImg_Form(org=pk)
+                                ^^^^^^^^^^^^^^^^
+NameError: name 'OrgBatchImg_form' is not defined
+django.server ERROR 2023-09-21 14:59:17,350 basehttp 33724 24700 "GET /dorganism/organism/GP_0316 HTTP/1.1" 500 87233
+django.request ERROR 2023-09-21 14:59:26,425 log 33724 24700 Internal Server Error: /dorganism/organism/GP_0316
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py", line 150, in detailOrganism
+    context["orgbatchimg_form"]=OrgBatchImg_Form(org=pk)
+                                ^^^^^^^^^^^^^^^^
+NameError: name 'OrgBatchImg_form' is not defined
+django.server ERROR 2023-09-21 14:59:26,427 basehttp 33724 24700 "GET /dorganism/organism/GP_0316 HTTP/1.1" 500 87233
+django.server INFO 2023-09-21 14:59:37,826 basehttp 33724 24700 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-09-21 14:59:38,423 basehttp 33724 24700 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:59:38,517 basehttp 33724 24700 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:59:40,190 basehttp 33724 13372 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 14:59:40,232 basehttp 33724 13372 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 14:59:42,827 basehttp 33724 14368 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 14:59:42,865 basehttp 33724 14368 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-21 14:59:44,380 log 33724 33060 Internal Server Error: /dorganism/organism/GP_0316
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py", line 150, in detailOrganism
+    context["orgbatchimg_form"]=OrgBatchImg_Form(org=pk)
+                                ^^^^^^^^^^^^^^^^
+NameError: name 'OrgBatchImg_form' is not defined
+django.server ERROR 2023-09-21 14:59:44,382 basehttp 33724 33060 "GET /dorganism/organism/GP_0316 HTTP/1.1" 500 87270
+django.utils.autoreload INFO 2023-09-21 14:59:53,817 autoreload 33724 30044 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 14:59:55,702 autoreload 29964 28744 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 15:00:41,446 autoreload 29964 28744 C:\Data\A02_WorkDB\03_Django\adjCOADD\dorganism\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-21 15:00:43,932 autoreload 23208 29908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-21 15:01:03,215 autoreload 31256 9432 Watching for file changes with StatReloader
+django.server WARNING 2023-09-21 15:01:09,368 basehttp 31256 21212 "GET /static/icons/0-square.svg HTTP/1.1" 404 1914
+django.server INFO 2023-09-21 15:01:14,510 basehttp 31256 18552 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-09-21 15:01:14,942 basehttp 31256 18552 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 15:01:15,023 basehttp 31256 18552 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:01:17,002 basehttp 31256 25720 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 15:01:17,046 basehttp 31256 25720 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:01:19,654 basehttp 31256 15880 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 15:01:19,751 basehttp 31256 15880 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:01:19,942 basehttp 31256 30764 "GET /static/images/icons/0-square.svg HTTP/1.1" 304 0
+django.request WARNING 2023-09-21 15:01:20,110 log 31256 30764 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 15:01:20,112 basehttp 31256 30764 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.request WARNING 2023-09-21 15:01:20,347 log 31256 30764 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 15:01:20,347 basehttp 31256 30764 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
