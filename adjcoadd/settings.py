@@ -39,7 +39,7 @@ MEDIA_URL = ('uploads/')
 # Define Version 
 #--------------------------------------------------------------------
 if DEVELOPMENT:
-    VERSION = '1.1.0244 Development'
+    VERSION = '1.1.0251 Development'
 else:
     # Production
     VERSION = '1.2'

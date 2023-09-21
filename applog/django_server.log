@@ -10847,6 +10847,7 @@ django.utils.autoreload INFO 2023-09-20 14:23:21,511 autoreload 16196 10584 C:\D
 django.utils.autoreload INFO 2023-09-20 14:23:23,783 autoreload 27256 26040 Watching for file changes with StatReloader
 django.server INFO 2023-09-20 14:23:52,140 basehttp 27256 28292 "GET /index/ HTTP/1.1" 200 22207
 django.server WARNING 2023-09-20 14:23:52,196 basehttp 27256 28292 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+<<<<<<< HEAD
 django.utils.autoreload INFO 2023-09-21 08:54:40,011 autoreload 15964 20572 Watching for file changes with StatReloader
 django.server INFO 2023-09-21 08:54:52,468 basehttp 15964 12976 "GET / HTTP/1.1" 200 14772
 django.server INFO 2023-09-21 08:54:52,526 basehttp 15964 12976 "GET /static/css/custom.css HTTP/1.1" 304 0
@@ -12846,3 +12847,5 @@ django.server INFO 2023-09-21 12:08:31,461 basehttp 31844 16076 "GET /dorganism/
 django.server WARNING 2023-09-21 12:08:31,499 basehttp 31844 16076 "GET /static/js/diagram.js HTTP/1.1" 404 1899
 django.server INFO 2023-09-21 12:08:41,167 basehttp 31844 31104 "GET /dorganism/organism_list HTTP/1.1" 200 166404
 django.server WARNING 2023-09-21 12:08:41,229 basehttp 31844 31104 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+=======
+>>>>>>> 8cd7a7fc382e3b2f57b9e7f9b945012463c42ea5

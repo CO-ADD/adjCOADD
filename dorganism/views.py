@@ -19,7 +19,7 @@ from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
-
+from apputil.models import ApplicationLog
 from adjcoadd.constants import *
 
 from dorganism.models import  Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image

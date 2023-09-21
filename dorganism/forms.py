@@ -251,21 +251,7 @@ class Stock_form(Stock_createform):
     class Meta:
         model =OrgBatch_Stock
         fields="__all__"
-
-# -----------------------------------------------------------------------------------    
-class OrgBatchStock_Filter(Filterbase):
-    f_OrgID = CharFilter(field_name='orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
-    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
-    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
-    stock_date = DateRangeFilter(field_name='stock_date')
- 
-    class Meta:
-        model = OrgBatch_Stock
-        fields = ["f_OrgID","orgbatch_id", "stock_date", "start_date", "end_date",
-                  "location_freezer", "location_rack"
-                ]
-
-
+    
 
 # =============================== Culture Form-------------------------------
 class Culture_form(forms.ModelForm):
@@ -320,21 +306,14 @@ class Batchfilter(Filterbase):
 
 
 ## Stock
-
-class Orgbatchimg_form(forms.ModelForm):
-    field_order = ['image_file','orgbatch_id','image_desc','image_source']
-    image_file = forms.ImageField(label='Select an image file',required=True)
-    image_type = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    image_name = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+from django_filters import DateRangeFilter, DateFromToRangeFilter, DateFilter
+class Stockfilter(Filterbase):
+    start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
+    end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
+    Stock_Date = DateRangeFilter(field_name='stock_date')
  
-    def __init__(self, *args, org=None, **kwargs):
-        
-        super().__init__(*args, **kwargs)
-        if org:
-            pk = org
-            organism = get_object_or_404(Organism, pk=pk)
-            self.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
-        
     class Meta:
-        model =OrgBatch_Image
-        fields="__all__"
+        model = OrgBatch_Stock
+        fields = ["orgbatch_id", "Stock_Date", "start_date", "end_date"]
+
+

@@ -193,6 +193,7 @@ class AppLog_ListView(SuperUserRequiredMixin, FilteredListView):
     template_name = 'apputil/log_List.html'
     filterset_class = AppLog_Filter
     model_fields = model.HEADER_FIELDS
+    ordering = ['']
 
 
 #=================================================================================================
