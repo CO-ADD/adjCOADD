@@ -15,12 +15,13 @@ from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView
 
-from dgene.models import Gene, Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM
-from dgene.forms import (GenomeSeq_Filter, Sequence_form,
+from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM, Gene, AMR_Genotype  
+from dgene.forms import (GenomeSeq_Filter, GenomeSeq_Form,
                          WGS_FastQC_Filter, WGS_CheckM_Filter,
-                         IDSeq_Filter,  
-                         Gene_form, Genefilter,  
-                         ID_Pub_form, ID_Pubfilter)
+                         IDSeq_Filter, IDSeq_Form, IDPub_Form, IDPub_Filter,
+                         Gene_Filter, Gene_Form, 
+                         AMRGenotype_Filter,  
+                         )
 
 
 
@@ -41,50 +42,15 @@ class GenomeSeq_CardView(GenomeSeq_ListView):
 
 ##
 class GenomeSeq_CreateView(SimplecreateView):
-    form_class=Sequence_form
+    form_class=GenomeSeq_Form
     template_name='dgene/genomeseq/genomeseq_c.html'
 
 ##
 class GenomeSeq_UpdateView(SimpleupdateView):
-    form_class=Sequence_form
+    form_class=GenomeSeq_Form
     template_name='dgene/genomeseq/genomeseq_u.html'
     model=ID_Sequence
 
-#=================================================================================================
-# Genes
-#=================================================================================================
-
-class GeneListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model= Gene
-    template_name = 'dgene/gene/gene_list.html' 
-    filterset_class=Genefilter
-    model_fields=model.HEADER_FIELDS
-
-##
-class GeneCardView(GeneListView):
-    template_name = 'dgene/gene/gene_card.html'
-
-
-class GeneCreateView(SimplecreateView):
-    form_class=Gene_form
-    template_name='dgene/gene/gene_c.html'
-
-@login_required
-def detailGene(req, pk):
-    context={}
-    object_=get_object_or_404(Gene, gene_id=pk)
-    form=Gene_form(instance=object_)    
-    context["object"]=object_
-    context["form"]=form
- 
-    return render(req, "dgene/gene/gene_detail.html", context)
-
-
-class GeneUpdateView(SimpleupdateView):
-    form_class=Gene_form
-    template_name='dgene/gene/gene_u.html'
-    model=Gene
 
 
 #=================================================================================================
@@ -98,23 +64,23 @@ class IDSeq_ListView(LoginRequiredMixin, FilteredListView):
     filterset_class=IDSeq_Filter
     model_fields=model.HEADER_FIELDS
 
-class ID_PubListView(LoginRequiredMixin, FilteredListView):
+class IDPub_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= ID_Pub
     template_name = 'dgene/idseq/idpub_list.html' 
-    filterset_class=ID_Pubfilter
+    filterset_class=IDPub_Filter
     model_fields=model.HEADER_FIELDS
 
 ##
-class ID_PubCreateView(SimplecreateView):
-    form_class=ID_Pub_form
+class IDPub_CreateView(SimplecreateView):
+    form_class=IDPub_Form
     template_name='dgene/idseq/idpub_c.html'
 
 ##
-class ID_PubUpdateView(SimpleupdateView):
-    form_class=ID_Pub_form
+class IDPub_UpdateView(SimpleupdateView):
+    form_class=IDPub_Form
     template_name='dgene/idseq/idpub_u.html'
-    model=ID_Sequence
+    model=ID_Pub
     
 
 #=================================================================================================
@@ -138,3 +104,52 @@ class WGS_CheckM_ListView(LoginRequiredMixin, FilteredListView):
     filterset_class=WGS_CheckM_Filter
     model_fields=model.HEADER_FIELDS
     #ordering = []
+
+
+#=================================================================================================
+# Genes
+#=================================================================================================
+
+class Gene_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model= Gene
+    template_name = 'dgene/gene/gene_list.html' 
+    filterset_class=Gene_Filter
+    model_fields=model.HEADER_FIELDS
+
+##
+class Gene_CardView(Gene_ListView):
+    template_name = 'dgene/gene/gene_card.html'
+
+
+class Gene_CreateView(SimplecreateView):
+    form_class=Gene_Form
+    template_name='dgene/gene/gene_c.html'
+
+@login_required
+def detailGene(req, pk):
+    context={}
+    object_=get_object_or_404(Gene, gene_id=pk)
+    form=Gene_Form(instance=object_)    
+    context["object"]=object_
+    context["form"]=form
+ 
+    return render(req, "dgene/gene/gene_detail.html", context)
+
+
+class Gene_UpdateView(SimpleupdateView):
+    form_class=Gene_Form
+    template_name='dgene/gene/gene_u.html'
+    model=Gene
+
+#=================================================================================================
+# AMR Genotype
+#=================================================================================================
+
+class AMRGenotype_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model= AMR_Genotype
+    template_name = 'dgene/gene/gene_list.html' 
+    filterset_class=AMRGenotype_Filter
+    model_fields=model.HEADER_FIELDS
+    ordering = ['orgbatch_id']

@@ -19,48 +19,38 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery
 
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-#--------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-#======================================================================
-# Define Version 
 #======================================================================
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
-#DEVELOPMENT=None
-DEVELOPMENT='Work'
+DEVELOPMENT=None
 
-#........................................................................
+#======================================================================
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+#--------------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+UPLOAD_DIR = '/opt/django/var/uploads/'
+MEDIA_ROOT= UPLOAD_DIR if os.path.exists(UPLOAD_DIR) else os.path.join(BASE_DIR.parent, 'uploads') 
+MEDIA_URL = ('uploads/')
+
+# Define Version 
+#--------------------------------------------------------------------
 if DEVELOPMENT:
-    # Development
     VERSION = '1.1.0251 Development'
-    DEBUG = True
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
-    UPLOAD_DIR = os.path.join(BASE_DIR.parent, 'uploads')
-    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')} 
 else:
     # Production
     VERSION = '1.2'
-    DEBUG = False
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
-    UPLOAD_DIR = '/opt/django/var/uploads/'
-    DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/'}
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+# Define Structure Images folder path
 #--------------------------------------------------------------------
-MEDIA_URL = ('uploads/')
-MEDIA_ROOT= UPLOAD_DIR
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
-
-STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
-
-#======================================================================
+if DEVELOPMENT=="Local":
+    # structure_file_path = f"static/images/{file_name}.svg"
+    STRUCTURE_FILES_DIR=os.path.join(BASE_DIR, 'static/images')
+else:
+    Base_dir = Path(__file__).resolve().parent.parent.parent
+    STRUCTURE_FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -70,8 +60,14 @@ STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True if DEVELOPMENT else False
 
-
+if DEVELOPMENT:
+    # Devlopment/Local
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+else:
+    # Production
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
 # Application definition
 #--------------------------------------------------------------------
@@ -308,6 +304,13 @@ USE_TZ = True
 DATE_FORMAT = "d-m-Y"
 USE_L10N = False
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+#--------------------------------------------------------------------
+STATIC_URL = 'static/'
+STATICFILES_DIRS=[BASE_DIR/"static",]
+STATIC_ROOT = BASE_DIR.parent / 'static'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 #--------------------------------------------------------------------
@@ -403,13 +406,4 @@ LOGGING = {
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
-
-# -------------------------------------------
-# print('Development:',DEVELOPMENT)
-# print('Debug:',DEBUG)
-# print('Base_Dir:',BASE_DIR)
-# print('Upload_Dir:',UPLOAD_DIR)
-# print('Media_Root:',MEDIA_ROOT)
-# print('Structure_files_dir:',STRUCTURE_FILES_DIR)
-# print('DbBackup:',DBBACKUP_STORAGE_OPTIONS)
 

@@ -224,6 +224,32 @@ def get_GTDBTK_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                                 })
     return(outLst)
 
+#-----------------------------------------------------------------------------
+def get_AMRFinder_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    AmrFinderDir = os.path.join(FastAFolder,"amrfinder")
+    AmrFinderF = os.path.join(AmrFinderDir,f"{OrgBID}_{inType}_amrfinder.tsv")
+    outLst = []
+    if os.path.exists(AmrFinderF):
+        with open(AmrFinderF) as file:
+            tsv_file = csv.reader(file,delimiter="\t",)
+            for line in tsv_file:
+                if 'Start' not in line:
+                    outLst.append({'amrfinder_contigid': line[1], 
+                                'gene_code': line[5], 
+                                'gene_name': line[6], 
+                                'gene_type': line[8], 
+                                'gene_subtype': line[9], 
+                                'amr_class': line[10], 
+                                'amr_subclass': line[11], 
+                                'amrfinder_coverage': line[15],
+                                'amrfinder_identitiy': line[16],
+                                'amrfinder_closest': line[18],
+                                'amrfinder_closestname': line[19],
+                                'amr_method':'AMR Finder'
+                                })
+    return(outLst)
+
 # #-----------------------------------------------------------------------------
 # def parse_MLST(AssemblyFolder,OrgBID,RunID,outType="S",inType="fastq",pctCutOff=1.0):
 # #-----------------------------------------------------------------------------

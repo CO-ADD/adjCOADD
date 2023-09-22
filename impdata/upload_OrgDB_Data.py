@@ -94,7 +94,7 @@ def main():
                     'Taxonomy','Organism','OrgBatch','OrgBatchStock','OrgBatchImages','OrgCulture',
                     'Drug','MICPub','MICCollab','MICCOADD','BP',
                     'Vitek',
-                    'wgsAssembly','wgsFastA',
+                    'wgsAssembly','wgsFastA','wgsAMR',
                     ]
     if prgArgs.table in choiceTables:
 
@@ -197,6 +197,10 @@ def main():
         elif prgArgs.table == 'wgsFastA':
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
             dGene.update_WGSCOADD_FastA(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+        elif prgArgs.table == 'wgsAMR':
+            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
+            dGene.update_WGSCOADD_AMR(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     else:
         logger.error(f"[Upd_djCOADD] {prgArgs.table} not in {choiceTables}")
                      

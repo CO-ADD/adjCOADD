@@ -57,6 +57,13 @@
             {% include 'button/land_btn_primary.html' with title='SEQUENCE' url=genomeseq_url totalnumber=nSeq %}
             <div class="row w-50">
                 <div class="col text-center m-auto">    
+                    {% url 'gene_list' as gene_url %}
+                    {% include 'button/land_btn_secondary.html' with title='Genes' url=gene_url  %}
+                    <!--  -->
+                    {% url 'amrgene_list' as amrgene_url %}
+                    {% include 'button/land_btn_secondary.html' with title='AMR Genotype' url=amrgene_url  %}
+                </div>
+                <div class="col text-center m-auto">    
                     {% url 'idseq_list' as idseq_url %}
                     {% include 'button/land_btn_secondary.html' with title='FastA Identity' url=idseq_url  %}
                     <!--  -->
@@ -73,7 +80,7 @@
         <div id="Label-Screens" class="card-body d-flex justify-content-center">
           
             {% url 'seq_list' as seq_url %}
-            {% include 'button/land_btn_primary.html' with title='ABASE' url=seq_url totalnumber=nSeq %}
+            {% include 'button/land_btn_primary.html' with title='SCREEN' url=seq_url totalnumber=nRun %}
         </div>
 
   

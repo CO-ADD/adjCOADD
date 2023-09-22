@@ -7,7 +7,7 @@ from django.conf import settings
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from dscreen.models import Screen_Run
-from dgene.models import Genome_Sequence,Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
+from dgene.models import Genome_Sequence,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM, Gene, AMR_Genotype
 
 from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.data import *
@@ -274,3 +274,85 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
     djInst.VALID_STATUS = validStatus
 
     return(djInst)
+
+# ----------------------------------------------------------------------------------------------------
+def imp_Gene_fromDict(iDict,valLog, objSeq = None):
+    """
+    Create CheckM instance from zAssembly Parser
+    """
+# ----------------------------------------------------------------------------------------------------
+
+    validStatus = True
+  
+    if objSeq is None:
+        objSeq = Genome_Sequence.get(None,iDict['seq_name'])
+
+    if objSeq is None:
+        valLog.add_log('Error','Sequence does not Exists',iDict['seq_name'],'Use existing Sequence')
+        validStatus = False
+    else:
+        iDict['seq_id'] = str(objSeq)
+
+    GeneType = Dictionary.get(Gene.Choice_Dictionary["gene_type"],iDict['gene_type'])
+    if GeneType is None:
+        valLog.add_log('Error','Gene Type not Correct',iDict['gene_type'],'-')
+        validStatus = False
+
+    # Find Instance if exist
+    djGene = Gene.get(None,iDict['gene_code'])
+    if djGene is None:
+        djGene = Gene()
+        djGene.gene_code  = iDict['gene_code']
+
+    djGene.gene_name = iDict['gene_name']
+    djGene.source = iDict['source']
+ 
+    djGene.gene_type = GeneType
+    djGene.gene_subtype = iDict['gene_subtype']
+    djGene.amr_class = iDict['amr_class']
+    djGene.amr_subclass = iDict['amr_subclass']
+
+    djGene.clean_Fields()
+    validDict = djGene.validate()
+    if validDict:
+        validStatus = False
+        for k in validDict:
+            valLog.add_log('Warning',validDict[k],k)
+
+    djGene.VALID_STATUS = validStatus
+
+    return(djGene)
+
+# ----------------------------------------------------------------------------------------------------
+def imp_AMRGenotype_fromDict(iDict,valLog):
+    """
+    Create CheckM instance from zAssembly Parser
+    """
+# ----------------------------------------------------------------------------------------------------
+    # Find Instance if exist
+
+    validStatus = True
+    djAMRGt = AMR_Genotype.get(iDict['gene_id'],iDict['amr_method'],iDict['seq_id'],None)
+    if djAMRGt is None:
+        djAMRGt = AMR_Genotype()
+        djAMRGt.gene_id  = iDict['gene_id']
+        djAMRGt.amr_method  = iDict['amr_method']
+        djAMRGt.seq_id  = iDict['seq_id']
+
+    djAMRGt.orgbatch_id  = iDict['seq_id'].orgbatch_id
+    djAMRGt.seq_coverage = round(float(iDict['amrfinder_coverage']),2)
+    djAMRGt.seq_identity = round(float(iDict['amrfinder_identitiy']),2)
+    djAMRGt.closest_id = iDict['amrfinder_closest']
+    djAMRGt.closest_name = iDict['amrfinder_closestname']
+    #djAMRGt.contig = iDict['amrfinder_contigid']
+
+    djAMRGt.clean_Fields()
+    validDict = djAMRGt.validate()
+    if validDict:
+        #validStatus = False
+        for k in validDict:
+            valLog.add_log('Warning',validDict[k],k)
+
+    djAMRGt.VALID_STATUS = validStatus
+
+    return(djAMRGt)

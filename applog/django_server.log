@@ -13233,3 +13233,1072 @@ django.request WARNING 2023-09-21 15:01:20,110 log 31256 30764 Not Found: /uploa
 django.server WARNING 2023-09-21 15:01:20,112 basehttp 31256 30764 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
 django.request WARNING 2023-09-21 15:01:20,347 log 31256 30764 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
 django.server WARNING 2023-09-21 15:01:20,347 basehttp 31256 30764 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.utils.autoreload INFO 2023-09-21 15:15:36,161 autoreload 13304 20876 Watching for file changes with StatReloader
+django.server INFO 2023-09-21 15:15:41,152 basehttp 13304 17976 "GET / HTTP/1.1" 302 0
+django.server INFO 2023-09-21 15:15:41,763 basehttp 13304 17976 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 15:15:41,849 basehttp 13304 17976 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:15:45,501 basehttp 13304 11276 "GET /dorganism/organism_list HTTP/1.1" 200 166408
+django.server WARNING 2023-09-21 15:15:45,539 basehttp 13304 11276 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:15:47,766 basehttp 13304 11212 "GET /dorganism/createOrg/ HTTP/1.1" 200 24100
+django.server INFO 2023-09-21 15:15:51,632 basehttp 13304 11212 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 15:15:51,704 basehttp 13304 11212 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 15:15:51,987 log 13304 17332 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 15:15:51,988 basehttp 13304 17332 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.request WARNING 2023-09-21 15:15:52,134 log 13304 17332 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 15:15:52,134 basehttp 13304 17332 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 15:15:54,429 basehttp 13304 17332 "GET /dorganism/createBatch/GP_0316/ HTTP/1.1" 200 9932
+django.server INFO 2023-09-21 15:15:56,419 basehttp 13304 17332 "GET /dorganism/organism/GP_0316 HTTP/1.1" 200 101442
+django.server WARNING 2023-09-21 15:15:56,457 basehttp 13304 17332 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request WARNING 2023-09-21 15:15:56,548 log 13304 21624 Not Found: /uploads/images/orgbatch/CO-ADD500-logotest.png
+django.server WARNING 2023-09-21 15:15:56,549 basehttp 13304 21624 "GET /uploads/images/orgbatch/CO-ADD500-logotest.png HTTP/1.1" 404 6497
+django.server INFO 2023-09-21 15:15:59,097 basehttp 13304 21624 "GET /user_list/ HTTP/1.1" 200 134274
+django.server WARNING 2023-09-21 15:15:59,128 basehttp 13304 21624 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-21 15:16:06,310 basehttp 13304 9048 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-21 15:16:06,351 basehttp 13304 9048 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 08:55:32,403 autoreload 19732 15844 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 08:55:36,917 basehttp 19732 2116 "GET / HTTP/1.1" 200 14772
+django.server WARNING 2023-09-22 08:55:37,035 basehttp 19732 20192 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 08:55:37,469 basehttp 19732 2116 "GET /static/css/custom.css HTTP/1.1" 200 18730
+django.server INFO 2023-09-22 08:55:47,779 basehttp 19732 2116 "POST /accounts/login/ HTTP/1.1" 302 0
+django.server INFO 2023-09-22 08:55:48,276 basehttp 19732 2116 "GET /index/ HTTP/1.1" 200 22208
+django.server WARNING 2023-09-22 08:55:48,345 basehttp 19732 2116 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 08:57:59,562 autoreload 19732 15844 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 08:58:03,385 autoreload 15596 22836 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 08:58:09,744 autoreload 15596 22836 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 08:58:12,734 autoreload 24832 6512 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 08:58:25,946 autoreload 24832 6512 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 08:58:28,633 autoreload 14884 23080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 08:58:33,578 autoreload 14884 23080 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 08:58:36,717 autoreload 7964 21220 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 08:58:41,764 autoreload 7964 21220 C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 08:58:43,836 autoreload 2116 15844 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 08:58:58,883 basehttp 2116 3032 "GET /index/ HTTP/1.1" 200 22203
+django.server WARNING 2023-09-22 08:58:58,924 basehttp 2116 3032 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 08:59:01,671 basehttp 2116 14332 "GET /index/ HTTP/1.1" 200 22203
+django.server WARNING 2023-09-22 08:59:01,721 basehttp 2116 14332 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 08:59:59,119 autoreload 2116 15844 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:00:01,925 autoreload 3752 8748 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:00:05,795 autoreload 3752 8748 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:00:08,148 autoreload 16456 10092 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:00:25,606 autoreload 16456 10092 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:00:29,287 autoreload 24080 3716 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:00:37,776 autoreload 24080 3716 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:00:40,991 autoreload 24180 21816 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:00:48,588 autoreload 24180 21816 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:00:51,406 autoreload 23708 2116 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:01:05,409 autoreload 23708 2116 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:01:08,131 autoreload 2400 14296 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:01:17,397 autoreload 2400 14296 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:01:19,720 autoreload 22404 11280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:01:37,106 autoreload 22404 11280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:01:39,379 autoreload 8408 21280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:01:47,147 autoreload 8408 21280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:01:49,490 autoreload 14604 24876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:02:06,436 autoreload 14604 24876 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:02:09,139 autoreload 18704 11024 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:02:30,515 autoreload 18704 11024 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:02:33,212 autoreload 11840 15256 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:02:43,644 autoreload 11840 15256 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:02:45,938 autoreload 24064 11284 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:03:17,755 autoreload 24064 11284 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:03:19,913 autoreload 18004 15552 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:03:56,894 autoreload 18004 15552 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:04:01,266 autoreload 24208 6432 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:04:08,660 autoreload 24208 6432 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:04:12,071 autoreload 2020 13076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:04:24,652 autoreload 2020 13076 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:04:26,676 autoreload 9800 6492 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:05:07,519 autoreload 9800 6492 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:05:09,646 autoreload 15416 18472 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:05:22,796 autoreload 15416 18472 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:05:24,961 autoreload 15612 17596 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:05:29,936 autoreload 15612 17596 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:05:32,478 autoreload 9852 23056 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:05:37,894 autoreload 9852 23056 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:05:40,800 autoreload 17028 3336 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:06:50,671 autoreload 17028 3336 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:06:52,981 autoreload 8508 4488 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:07:01,367 autoreload 8508 4488 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:07:07,186 autoreload 5908 24228 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:07:14,024 autoreload 5908 24228 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:07:17,549 autoreload 14412 7660 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:07:58,937 autoreload 14412 7660 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:08:03,664 autoreload 21136 14852 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:08:17,665 autoreload 21136 14852 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:08:21,315 autoreload 18340 4036 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:08:36,004 autoreload 18340 4036 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:08:40,599 autoreload 16788 4208 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:08:55,220 autoreload 16788 4208 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:08:58,697 autoreload 1820 13920 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:09:06,287 autoreload 1820 13920 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:09:10,898 autoreload 24388 3144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:09:17,127 autoreload 24388 3144 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:09:21,291 autoreload 14160 15416 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:09:46,768 autoreload 14160 15416 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:09:50,654 autoreload 14440 21032 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:10:05,463 autoreload 14440 21032 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:10:10,110 autoreload 7732 23728 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:10:16,225 autoreload 7732 23728 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:10:20,457 autoreload 12948 6656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:10:31,032 autoreload 12948 6656 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:10:35,114 autoreload 17612 9976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:13:04,520 autoreload 18088 11792 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:13:29,220 autoreload 18088 11792 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:13:33,618 autoreload 23200 23704 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:13:41,782 autoreload 23200 23704 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:13:45,189 autoreload 216 21952 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:13:53,086 autoreload 216 21952 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:13:56,546 autoreload 12412 22944 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:14:03,948 autoreload 12412 22944 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:14:07,548 autoreload 23188 22668 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:14:22,089 autoreload 23188 22668 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:14:26,193 autoreload 8540 3656 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:14:36,105 autoreload 8540 3656 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:14:42,981 autoreload 4584 13660 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 09:14:51,505 basehttp 4584 23700 "GET /index/ HTTP/1.1" 200 22219
+django.server WARNING 2023-09-22 09:14:51,644 basehttp 4584 23700 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 09:14:54,663 basehttp 4584 1768 "GET /index/ HTTP/1.1" 200 22219
+django.server WARNING 2023-09-22 09:14:54,735 basehttp 4584 1768 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 09:14:57,473 basehttp 4584 25116 "GET /dgene/sequence_list HTTP/1.1" 200 142154
+django.server WARNING 2023-09-22 09:14:57,546 basehttp 4584 25116 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 09:15:01,588 basehttp 4584 18504 "GET /index/ HTTP/1.1" 200 22219
+django.server WARNING 2023-09-22 09:15:01,713 basehttp 4584 18504 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 09:16:28,346 autoreload 4584 13660 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:16:34,452 autoreload 24400 9704 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:17:25,674 autoreload 24400 9704 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:17:29,634 autoreload 12540 16080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:17:42,672 autoreload 12540 16080 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:17:46,869 autoreload 13072 25400 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:18:49,486 autoreload 13072 25400 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:18:55,092 autoreload 18472 4584 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:19:03,870 autoreload 18472 4584 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:19:09,787 autoreload 7580 5908 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:19:24,786 autoreload 7580 5908 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:19:28,837 autoreload 25020 24336 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:19:49,110 autoreload 25020 24336 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:19:52,840 autoreload 21552 11756 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:20:00,447 autoreload 21552 11756 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:20:05,029 autoreload 22780 22152 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:20:13,511 autoreload 22780 22152 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:20:17,501 autoreload 10680 24976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 09:20:26,667 autoreload 10680 24976 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 09:20:30,328 autoreload 13628 17124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:00:09,270 autoreload 23824 11668 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:02:06,866 autoreload 7516 21508 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:04:25,324 autoreload 16388 17708 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:06:29,802 autoreload 23844 23136 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:30:06,456 autoreload 20452 27160 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:30:12,455 basehttp 20452 2280 "GET /index/ HTTP/1.1" 200 22524
+django.server INFO 2023-09-22 11:30:12,502 basehttp 20452 2280 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server WARNING 2023-09-22 11:30:12,533 basehttp 20452 2768 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:30:16,956 basehttp 20452 2280 "GET /dgene/gene_list HTTP/1.1" 200 34139
+django.server WARNING 2023-09-22 11:30:16,992 basehttp 20452 2280 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:30:27,415 basehttp 20452 13792 "GET /index/ HTTP/1.1" 200 22524
+django.server WARNING 2023-09-22 11:30:27,460 basehttp 20452 13792 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:30:30,703 basehttp 20452 18400 "GET /dgene/idseq_list HTTP/1.1" 200 193531
+django.server WARNING 2023-09-22 11:30:30,742 basehttp 20452 18400 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:30:42,852 basehttp 20452 13920 "GET /index/ HTTP/1.1" 200 22524
+django.server WARNING 2023-09-22 11:30:42,889 basehttp 20452 13920 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:31:02,248 autoreload 20452 27160 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:31:04,325 autoreload 27008 20440 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:31:38,256 autoreload 27008 20440 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:31:40,151 autoreload 23092 22744 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:31:44,178 autoreload 23092 22744 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:31:46,203 autoreload 11904 24532 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:31:50,139 autoreload 11904 24532 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:31:51,930 autoreload 18860 18232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:32:05,826 autoreload 18860 18232 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:32:07,943 autoreload 11976 27076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:32:19,449 autoreload 11976 27076 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:32:21,521 autoreload 23076 27064 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:32:27,848 autoreload 23076 27064 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:32:29,719 autoreload 25716 25784 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:33:21,900 basehttp 25716 13556 "GET /index/ HTTP/1.1" 200 22703
+django.server WARNING 2023-09-22 11:33:21,939 basehttp 25716 13556 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:33:25,272 basehttp 25716 17552 "GET /index/ HTTP/1.1" 200 22703
+django.server WARNING 2023-09-22 11:33:25,300 basehttp 25716 17552 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:33:51,907 autoreload 25716 25784 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:33:53,736 autoreload 16876 26016 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:33:56,551 basehttp 16876 25520 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:33:56,605 basehttp 16876 25520 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:34:01,013 basehttp 16876 20704 "GET /dgene/amrgene_list HTTP/1.1" 200 34139
+django.server WARNING 2023-09-22 11:34:01,048 basehttp 16876 20704 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:34:16,799 autoreload 16876 26016 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:34:18,726 autoreload 25636 6568 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:34:24,509 autoreload 25636 6568 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:34:26,851 autoreload 26860 10088 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:34:45,679 autoreload 26860 10088 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:34:47,607 autoreload 23660 23276 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:34:52,983 autoreload 23660 23276 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:34:55,059 autoreload 13920 20232 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:34:59,008 autoreload 13920 20232 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:00,898 autoreload 9884 25848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:35:09,787 autoreload 9884 25848 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:12,103 autoreload 608 22976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:35:20,227 autoreload 608 22976 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:22,071 autoreload 7764 13412 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:35:29,868 autoreload 7764 13412 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:32,214 autoreload 3032 16404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:35:37,741 autoreload 3032 16404 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:40,534 autoreload 15308 7876 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:35:49,433 autoreload 15308 7876 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:35:51,278 autoreload 2132 27024 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:36:05,730 autoreload 2132 27024 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:36:08,052 autoreload 2720 14856 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:36:16,979 autoreload 2720 14856 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:36:19,231 autoreload 13796 3828 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:36:29,698 autoreload 13796 3828 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:36:32,358 autoreload 23404 25752 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:36:46,616 autoreload 23404 25752 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:36:49,728 autoreload 3808 25020 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:36:54,849 autoreload 3808 25020 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:36:57,270 autoreload 7392 13744 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:37:14,444 autoreload 7392 13744 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:37:16,514 autoreload 16160 8252 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:37:20,367 basehttp 16160 12144 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:37:20,439 basehttp 16160 12144 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:37:22,355 basehttp 16160 12360 "GET /dgene/amrgene_list HTTP/1.1" 200 34139
+django.server WARNING 2023-09-22 11:37:22,405 basehttp 16160 12360 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:37:28,320 basehttp 16160 27508 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:37:28,382 basehttp 16160 27508 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:37:43,391 autoreload 16160 8252 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:37:45,799 autoreload 26088 22668 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:37:53,170 autoreload 26088 22668 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\urls.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:37:55,171 autoreload 9660 25544 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:38:01,158 basehttp 9660 27144 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:38:01,236 basehttp 9660 27144 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:02,927 basehttp 9660 3296 "GET /dgene/amrgene_list HTTP/1.1" 200 27108
+django.server WARNING 2023-09-22 11:38:02,972 basehttp 9660 3296 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:06,622 basehttp 9660 26840 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:38:06,670 basehttp 9660 26840 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:08,808 basehttp 9660 26916 "GET /dgene/gene_list HTTP/1.1" 200 34139
+django.server WARNING 2023-09-22 11:38:08,855 basehttp 9660 26916 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:11,073 basehttp 9660 2024 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:38:11,116 basehttp 9660 2024 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:12,642 basehttp 9660 13164 "GET /dgene/amrgene_list HTTP/1.1" 200 27108
+django.server WARNING 2023-09-22 11:38:12,681 basehttp 9660 13164 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:38:16,012 basehttp 9660 17920 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:38:16,053 basehttp 9660 17920 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:38:45,328 autoreload 9660 25544 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:38:47,188 autoreload 24444 24768 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:39:03,464 autoreload 24444 24768 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:39:05,372 autoreload 23684 19632 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:39:15,188 basehttp 23684 26128 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:39:15,240 basehttp 23684 26128 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:39:16,685 basehttp 23684 14328 "GET /dgene/amrgene_list HTTP/1.1" 200 27108
+django.server WARNING 2023-09-22 11:39:16,731 basehttp 23684 14328 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:39:21,136 basehttp 23684 20080 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:39:21,190 basehttp 23684 20080 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:39:24,691 basehttp 23684 27044 "GET /dgene/gene_list HTTP/1.1" 200 34139
+django.server WARNING 2023-09-22 11:39:24,750 basehttp 23684 27044 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:39:29,430 basehttp 23684 18768 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:39:29,487 basehttp 23684 18768 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 11:39:52,976 autoreload 23684 19632 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:39:54,871 autoreload 9748 16124 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:02,231 autoreload 9748 16124 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:04,916 autoreload 14244 23764 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:08,939 autoreload 14244 23764 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:11,940 autoreload 27616 27064 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:19,487 autoreload 27616 27064 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:21,539 autoreload 5140 12952 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:27,083 autoreload 5140 12952 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:29,589 autoreload 26864 5576 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:37,017 autoreload 26864 5576 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:41,749 autoreload 25444 19180 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:48,516 autoreload 25444 19180 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:40:50,384 autoreload 16324 23284 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:40:58,831 autoreload 16324 23284 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:41:01,080 autoreload 9992 26552 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:41:07,431 autoreload 9992 26552 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:41:10,976 autoreload 16936 25964 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:41:17,085 autoreload 16936 25964 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:41:19,680 autoreload 15976 12720 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:41:30,776 autoreload 15976 12720 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:41:33,258 autoreload 19720 25636 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 11:41:39,772 autoreload 19720 25636 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 11:41:44,382 autoreload 12372 2920 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 11:41:48,908 basehttp 12372 5140 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:41:48,993 basehttp 12372 5140 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:41:51,914 basehttp 12372 25772 "GET /dgene/amrgene_list HTTP/1.1" 200 311735
+django.server WARNING 2023-09-22 11:41:51,996 basehttp 12372 25772 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:43:35,242 basehttp 12372 12960 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:43:35,291 basehttp 12372 12960 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:43:38,210 basehttp 12372 25672 "GET /dgene/sequence_list HTTP/1.1" 200 142154
+django.server WARNING 2023-09-22 11:43:38,249 basehttp 12372 25672 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:43:44,738 basehttp 12372 26084 "GET /index/ HTTP/1.1" 200 22722
+django.server WARNING 2023-09-22 11:43:44,783 basehttp 12372 26084 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 11:43:49,995 basehttp 12372 8408 "GET /dgene/idseq_list HTTP/1.1" 200 193531
+django.server WARNING 2023-09-22 11:43:50,033 basehttp 12372 8408 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:36:21,204 autoreload 21508 24452 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:36:27,440 basehttp 21508 468 "GET /dgene/idseq_list HTTP/1.1" 200 193657
+django.server INFO 2023-09-22 13:36:27,489 basehttp 21508 468 "GET /static/css/overideboot_size.css HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,491 basehttp 21508 21560 "GET /static/css/custom.css HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,504 basehttp 21508 26268 "GET /static/css/main.6a646761.css HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,508 basehttp 21508 25300 "GET /static/css/table_wrap.css HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,511 basehttp 21508 21848 "GET /static/js/js_utils/getCookie.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,512 basehttp 21508 468 "GET /static/js/jquery-3.6.1.min.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,513 basehttp 21508 24004 "GET /static/js/sorting_table.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,516 basehttp 21508 21560 "GET /static/js/editableTable.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,522 basehttp 21508 25300 "GET /static/js/js_utils/custom_option.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,522 basehttp 21508 26268 "GET /static/js/js_utils/dataTables.min.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,524 basehttp 21508 468 "GET /static/js/loadModal.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,527 basehttp 21508 24004 "GET /static/js/load_indicator.js HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,529 basehttp 21508 21560 "GET /static/js/resizable.js HTTP/1.1" 304 0
+django.server WARNING 2023-09-22 13:36:27,544 basehttp 21508 21848 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 13:36:27,579 basehttp 21508 21560 "GET /static/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,635 basehttp 21508 21560 "GET /static/images/app/avatar.png HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:27,960 basehttp 21508 21560 "GET /static/images/app/CO-ADD_favicon.png HTTP/1.1" 304 0
+django.server INFO 2023-09-22 13:36:30,131 basehttp 21508 21560 "GET /index/ HTTP/1.1" 200 22724
+django.server WARNING 2023-09-22 13:36:30,182 basehttp 21508 21560 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 13:36:32,946 basehttp 21508 24004 "GET /dgene/amrgene_list HTTP/1.1" 200 431956
+django.server WARNING 2023-09-22 13:36:32,980 basehttp 21508 24004 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:37:52,389 autoreload 21508 24452 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:37:54,288 autoreload 25316 18768 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:38:21,847 autoreload 25316 18768 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:38:24,084 autoreload 14148 26436 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:38:28,396 autoreload 14148 26436 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:38:30,140 autoreload 20452 23912 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:40:50,313 autoreload 2592 2868 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:40:54,754 basehttp 2592 26044 "GET /index/ HTTP/1.1" 200 22724
+django.server WARNING 2023-09-22 13:40:54,830 basehttp 2592 26044 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 13:40:57,794 basehttp 2592 18788 "GET /dgene/amrgene_list HTTP/1.1" 200 377708
+django.server WARNING 2023-09-22 13:40:57,833 basehttp 2592 18788 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:41:15,000 autoreload 2592 2868 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:41:16,805 autoreload 12828 25652 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:41:28,010 autoreload 12828 25652 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:41:29,942 autoreload 9116 1612 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:41:35,176 autoreload 9116 1612 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:41:37,071 autoreload 3540 26144 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:41:40,234 autoreload 3540 26144 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:41:42,173 autoreload 18828 9036 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:41:50,282 autoreload 18828 9036 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:41:52,323 autoreload 11060 24112 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:42:44,886 autoreload 25720 13748 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:42:50,041 basehttp 25720 9512 "GET /dgene/amrgene_list HTTP/1.1" 200 95742
+django.server WARNING 2023-09-22 13:42:50,080 basehttp 25720 9512 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:43:30,155 autoreload 25720 13748 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:43:32,652 autoreload 7400 7872 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:43:52,300 autoreload 7400 7872 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:43:54,269 autoreload 23332 8220 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:44:00,758 basehttp 23332 18244 "GET /dgene/amrgene_list HTTP/1.1" 200 95730
+django.server WARNING 2023-09-22 13:44:00,805 basehttp 23332 18244 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:45:07,221 autoreload 23332 8220 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:09,183 autoreload 24556 3848 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:45:14,726 autoreload 24556 3848 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:16,518 autoreload 25304 26076 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:45:26,811 autoreload 25304 26076 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:28,677 autoreload 8520 6052 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:45:33,141 autoreload 8520 6052 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:35,023 autoreload 8220 25924 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:45:49,486 autoreload 8220 25924 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:52,404 autoreload 26248 11928 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:45:57,959 autoreload 26248 11928 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:45:59,994 autoreload 27168 11736 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:47:29,698 autoreload 15724 22648 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 13:47:34,886 log 15724 27364 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 364, in get_values
+    obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'organism_id'
+django.server ERROR 2023-09-22 13:47:34,892 basehttp 15724 27364 "GET /dgene/amrgene_list HTTP/1.1" 500 333088
+django.request WARNING 2023-09-22 13:47:35,295 log 15724 27364 Not Found: /favicon.ico
+django.server WARNING 2023-09-22 13:47:35,296 basehttp 15724 27364 "GET /favicon.ico HTTP/1.1" 404 6167
+django.utils.autoreload INFO 2023-09-22 13:47:46,145 autoreload 15724 22648 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:47:48,372 autoreload 5912 9512 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 13:47:50,451 log 5912 26864 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 364, in get_values
+    obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'organism_id'
+django.server ERROR 2023-09-22 13:47:50,460 basehttp 5912 26864 "GET /dgene/amrgene_list HTTP/1.1" 500 333088
+django.server INFO 2023-09-22 13:47:55,890 basehttp 5912 26864 "GET /index/ HTTP/1.1" 200 22724
+django.server WARNING 2023-09-22 13:47:55,945 basehttp 5912 26864 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-22 13:47:57,866 log 5912 17472 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\defaulttags.py", line 189, in render
+    values = self.sequence.resolve(context, ignore_failures=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    current = current()
+              ^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 364, in get_values
+    obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\models.py", line 337, in iter_foreignkey
+    obj = getattr(obj, nameArray[i])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'organism_id'
+django.server ERROR 2023-09-22 13:47:57,871 basehttp 5912 17472 "GET /dgene/amrgene_list HTTP/1.1" 500 333108
+django.utils.autoreload INFO 2023-09-22 13:48:28,775 autoreload 5912 9512 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:48:31,048 autoreload 25556 21208 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:48:33,723 basehttp 25556 7764 "GET /dgene/amrgene_list HTTP/1.1" 200 102090
+django.server WARNING 2023-09-22 13:48:33,776 basehttp 25556 7764 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.request ERROR 2023-09-22 13:49:04,964 log 25556 18532 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 179, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 132, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-09-22 13:49:04,974 basehttp 25556 18532 "GET /dgene/amrgene_list?csrfmiddlewaretoken=VRdRl9oPHYN1pmcx5hj2BgPQGiualjUTEChX7BnMdUh48IiVorMbhI4WNpbtR2bE&applysingle=Apply&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=&substructure=&f_OrgBatchID=GN_0001&f_OrgName=&f_GeneCode=&amr_method=&seq_coverage=&seq_identity=&closest_id=&closest_name= HTTP/1.1" 500 168210
+django.request ERROR 2023-09-22 13:49:43,777 log 25556 18532 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 179, in get_queryset
+    filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
+                            ^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 132, in qs
+    parent = super().qs
+             ^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 230, in qs
+    qs = self.filter_queryset(qs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filterset.py", line 213, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django_filters\filters.py", line 158, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1534, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1565, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1480, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1301, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1345, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+django.server ERROR 2023-09-22 13:49:43,780 basehttp 25556 18532 "GET /dgene/amrgene_list?f_OrgBatchID=GN_0001&f_OrgName=&f_GeneCode=&amr_method=&seq_coverage=&seq_identity=&closest_id=&closest_name= HTTP/1.1" 500 165128
+django.server INFO 2023-09-22 13:49:52,213 basehttp 25556 18532 "GET /dgene/amrgene_list HTTP/1.1" 200 102090
+django.server WARNING 2023-09-22 13:49:52,269 basehttp 25556 18532 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:50:11,073 autoreload 25556 21208 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:50:13,127 autoreload 20160 14928 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:50:32,090 autoreload 20160 14928 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:50:34,091 autoreload 27292 10140 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:50:44,689 autoreload 27292 10140 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:50:46,498 autoreload 7156 12080 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:50:52,749 autoreload 7156 12080 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:50:54,880 autoreload 12752 19956 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:51:00,482 autoreload 12752 19956 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:51:02,564 autoreload 25108 9404 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:51:06,517 autoreload 25108 9404 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\models.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:51:08,908 autoreload 11036 23468 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:54:36,035 autoreload 20424 27216 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 13:54:39,988 basehttp 20424 24076 "GET /dgene/amrgene_list HTTP/1.1" 200 113889
+django.server WARNING 2023-09-22 13:54:40,117 basehttp 20424 24076 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 13:55:11,727 autoreload 20424 27216 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:55:14,722 autoreload 8080 17540 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:55:20,941 autoreload 8080 17540 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:55:23,562 autoreload 15896 26252 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:55:29,445 autoreload 15896 26252 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:55:33,968 autoreload 22140 27484 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:55:39,617 autoreload 22140 27484 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:55:41,713 autoreload 26576 8236 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:55:53,344 autoreload 26576 8236 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:55:55,530 autoreload 11564 27548 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:56:02,410 autoreload 11564 27548 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:56:04,968 autoreload 24716 11684 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:56:15,479 autoreload 24716 11684 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:56:17,408 autoreload 20836 18420 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:56:24,398 autoreload 20836 18420 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:56:27,344 autoreload 4400 25780 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:56:35,332 autoreload 4400 25780 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:56:37,256 autoreload 21552 27280 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 13:56:42,088 autoreload 21552 27280 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\forms.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:56:44,732 autoreload 12400 3816 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 13:56:49,972 log 12400 19792 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'seq_id.orgbatch_id' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, amr_method, astatus, aupdated, aupdated_at, aupdated_id, closest_id, closest_name, gene_id, gene_id_id, id, orgbatch_id, orgbatch_id_id, seq_coverage, seq_id, seq_id_id, seq_identity, seq_method
+django.server ERROR 2023-09-22 13:56:49,978 basehttp 12400 19792 "GET /dgene/amrgene_list HTTP/1.1" 500 121221
+django.utils.autoreload INFO 2023-09-22 13:57:18,522 autoreload 12400 3816 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:57:20,668 autoreload 23792 24980 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 13:57:22,640 log 23792 23008 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'seq_id.orgbatch_id.orgbatch_id' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, amr_method, astatus, aupdated, aupdated_at, aupdated_id, closest_id, closest_name, gene_id, gene_id_id, id, orgbatch_id, orgbatch_id_id, seq_coverage, seq_id, seq_id_id, seq_identity, seq_method
+django.server ERROR 2023-09-22 13:57:22,646 basehttp 23792 23008 "GET /dgene/amrgene_list HTTP/1.1" 500 121353
+django.utils.autoreload INFO 2023-09-22 13:58:13,734 autoreload 23792 24980 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 13:58:15,739 autoreload 27148 11760 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 14:48:51,375 autoreload 25488 19580 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 14:48:59,627 basehttp 25488 11660 "GET /dgene/amrgene_list HTTP/1.1" 200 120895
+django.server WARNING 2023-09-22 14:48:59,691 basehttp 25488 11660 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 14:49:32,217 autoreload 25488 19580 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 14:49:34,138 autoreload 23580 15976 Watching for file changes with StatReloader
+django.utils.autoreload INFO 2023-09-22 14:49:39,429 autoreload 23580 15976 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 14:49:41,406 autoreload 26584 216 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 14:49:44,617 log 26584 5016 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'gene_id.gene_type' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, amr_method, astatus, aupdated, aupdated_at, aupdated_id, closest_id, closest_name, gene_id, gene_id_id, id, orgbatch_id, orgbatch_id_id, seq_coverage, seq_id, seq_id_id, seq_identity, seq_method
+django.server ERROR 2023-09-22 14:49:44,622 basehttp 26584 5016 "GET /dgene/amrgene_list HTTP/1.1" 500 121582
+django.utils.autoreload INFO 2023-09-22 14:49:51,947 autoreload 26584 216 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 14:49:54,105 autoreload 16948 26880 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 14:49:56,801 basehttp 16948 26796 "GET /dgene/amrgene_list HTTP/1.1" 200 120203
+django.server WARNING 2023-09-22 14:49:56,841 basehttp 16948 26796 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.utils.autoreload INFO 2023-09-22 14:50:07,725 autoreload 16948 26880 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 14:50:09,839 autoreload 26964 17828 Watching for file changes with StatReloader
+django.request ERROR 2023-09-22 14:50:13,992 log 26964 27032 Internal Server Error: /dgene/amrgene_list
+Traceback (most recent call last):
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Data\A02_WorkDB\03_Django\adjCOADD\apputil\utils\filters_base.py", line 159, in get_queryset
+    queryset = super().get_queryset()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 2210, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Local\Miniconda\envs\dj42py311\Lib\site-packages\django\db\models\sql\query.py", line 1713, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'amr_class' into field. Choices are: acreated, acreated_at, acreated_id, adeleted, adeleted_at, adeleted_id, amr_method, astatus, aupdated, aupdated_at, aupdated_id, closest_id, closest_name, gene_id, gene_id_id, id, orgbatch_id, orgbatch_id_id, seq_coverage, seq_id, seq_id_id, seq_identity, seq_method
+django.server ERROR 2023-09-22 14:50:13,999 basehttp 26964 27032 "GET /dgene/amrgene_list HTTP/1.1" 500 121401
+django.utils.autoreload INFO 2023-09-22 14:50:35,220 autoreload 26964 17828 C:\Data\A02_WorkDB\03_Django\adjCOADD\dgene\views.py changed, reloading.
+django.utils.autoreload INFO 2023-09-22 14:50:37,080 autoreload 20168 17292 Watching for file changes with StatReloader
+django.server INFO 2023-09-22 14:50:43,954 basehttp 20168 11116 "GET /dgene/amrgene_list HTTP/1.1" 200 120203
+django.server WARNING 2023-09-22 14:50:44,021 basehttp 20168 11116 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 14:50:48,253 basehttp 20168 25056 "GET /dgene/amrgene_list?csrfmiddlewaretoken=Tp6bc58O23DYsZIKAluHUsGSLNRz36vKCaahYx7LyZ71blO8TvXQAUVYSUySzPMv&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=-AMR+Class&substructure=&f_OrgBatchID=&f_OrgName=&f_GeneCode=&f_GeneType=&f_GeneClass=&f_GeneSClass=&seq_coverage=&seq_identity=&closest_id=&closest_name= HTTP/1.1" 200 123283
+django.server WARNING 2023-09-22 14:50:48,300 basehttp 20168 25056 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 14:50:49,839 basehttp 20168 3424 "GET /dgene/amrgene_list?csrfmiddlewaretoken=BjwBehGxeF658iLSePkGEXnkyaK5KQojk4AH0JFuKBA8RERgxZNPkpCqFhrogzF4&Search_all_fields=&reset=False&pivot=False&paginate_by=50&order_by=AMR+Class&substructure=&f_OrgBatchID=&f_OrgName=&f_GeneCode=&f_GeneType=&f_GeneClass=&f_GeneSClass=&seq_coverage=&seq_identity=&closest_id=&closest_name= HTTP/1.1" 200 124178
+django.server WARNING 2023-09-22 14:50:49,883 basehttp 20168 3424 "GET /static/js/diagram.js HTTP/1.1" 404 1899
+django.server INFO 2023-09-22 14:50:56,099 basehttp 20168 15628 "GET /dgene/amrgene_list?csrfmiddlewaretoken=&Search_all_fields=&reset=True&pivot=False&paginate_by=50&order_by=&substructure=&f_OrgBatchID=&f_OrgName=&f_GeneCode=&f_GeneType=&f_GeneClass=&f_GeneSClass=&seq_coverage=&seq_identity=&closest_id=&closest_name= HTTP/1.1" 200 121703
+django.server WARNING 2023-09-22 14:50:56,135 basehttp 20168 15628 "GET /static/js/diagram.js HTTP/1.1" 404 1899

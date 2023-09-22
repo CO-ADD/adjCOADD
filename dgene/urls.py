@@ -5,8 +5,9 @@ from django.urls import path, include, re_path
 from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_UpdateView, 
                      IDSeq_ListView,
                      WGS_FastQC_ListView, WGS_CheckM_ListView,
-                     GeneCardView,GeneListView,detailGene,GeneCreateView,GeneUpdateView,
-                     ID_PubListView,ID_PubCreateView,ID_PubUpdateView,
+                     Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView,
+                     AMRGenotype_ListView,
+                     IDPub_ListView,IDPub_CreateView,IDPub_UpdateView,
                      )
                      
 urlpatterns = [
@@ -26,16 +27,19 @@ urlpatterns = [
     #path('updateSequence/<str:pk>', SequenceUpdateView.as_view(), name="sequence_update"),
 
     # gene
-    #path('gene_list', GeneListView.as_view(), name="gene_list"),
+    path('gene_list', Gene_ListView.as_view(), name="gene_list"),
     path('gene/<str:pk>', detailGene, name="gene_detail"),
-    path('createGene/', GeneCreateView.as_view(), name="gene_create"),
+    path('createGene/', Gene_CreateView.as_view(), name="gene_create"),
     #path('updateGene/<str:pk>', GeneUpdateView.as_view(), name="gene_update"),
 
+    # gene
+    path('amrgene_list', AMRGenotype_ListView.as_view(), name="amrgene_list"),
+
     # id_pub
-    path('id_pub_list', ID_PubListView.as_view(), name="id_pub_list"),
+    path('idpub_list', IDPub_ListView.as_view(), name="id_pub_list"),
     # path('id_pub/<str:pk>', detailGene, name="id_pub_detail"),
-    path('createid_pub/', ID_PubCreateView.as_view(), name="id_pub_create"),
-    path('updateid_pub/<str:pk>', ID_PubUpdateView.as_view(), name="id_pub_update"),
+    path('createid_pub/', IDPub_CreateView.as_view(), name="id_pub_create"),
+    path('updateid_pub/<str:pk>', IDPub_UpdateView.as_view(), name="id_pub_update"),
 
 
 

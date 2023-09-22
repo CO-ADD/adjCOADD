@@ -14,8 +14,8 @@ from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
 from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
-from dgene.utils.import_gene import imp_Sequence_fromDict, imp_FastQC_fromDict, imp_CheckM_fromDict,imp_IDSeq_fromDict
-from dgene.utils.parse_wgs import split_BatchID_RunID, get_FastQC_Info, get_CheckM_Info, get_Kraken_Info, get_MLST_Info, get_GTDBTK_Info
+from dgene.utils.import_gene import imp_Sequence_fromDict, imp_FastQC_fromDict, imp_CheckM_fromDict,imp_IDSeq_fromDict, imp_Gene_fromDict, imp_AMRGenotype_fromDict
+from dgene.utils.parse_wgs import split_BatchID_RunID, get_FastQC_Info, get_CheckM_Info, get_Kraken_Info, get_MLST_Info, get_GTDBTK_Info, get_AMRFinder_Info
 
 from apputil.utils.data import listFolders
 from apputil.utils import validation_log
@@ -227,3 +227,79 @@ def update_WGSCOADD_FastA(upload=False,uploaduser=None,OutputN=100):
                     else:
                         vLog.show(logTypes= ['Error'])
 
+                
+
+#-----------------------------------------------------------------------------------
+def update_WGSCOADD_AMR(upload=False,uploaduser=None,OutputN=100):
+#-----------------------------------------------------------------------------------
+
+    nProc = {}
+    nProc['Saved'] = 0
+    nProc['notValid'] = 0
+    nProcessed = 0
+
+    MicroOrgDB = "Z:/MicroOrgDB-Q5308"
+    FastABase = os.path.join(MicroOrgDB,"Sequence","WGS","03_FastA")
+
+    vLog = validation_log.Validation_Log('WGS-FastA')
+
+    # check user
+    appuser = None
+    if uploaduser:
+        appuser = ApplicationUser.get(uploaduser)
+
+    for dirHead in listFolders(FastABase):
+        zFastAFolder = os.path.join(FastABase,dirHead)
+        for BatchRunID in listFolders(zFastAFolder):
+            dirFA = os.path.join(zFastAFolder,f"{BatchRunID}")
+            if os.path.exists(dirFA):
+
+                nProcessed = nProcessed + 1
+
+                # Sequences -----------------------------
+                seqDict={}
+                seqDict['seq_name'] = BatchRunID
+                seqDict['orgbatch_id'], seqDict['run_id'] = split_BatchID_RunID(seqDict['seq_name'])
+
+                seqDict['seq_type'] = 'WGS'
+                seqDict['seq_method'] = 'Illumina'
+                seqDict['seq_file'] = 'Contigs'
+                seqDict['source'] = 'CO-ADD'
+                seqDict['source_code'] = BatchRunID
+                seqDict['source_link'] = f"RDM: {dirHead};{BatchRunID}"
+                seqDict['reference'] = ""
+
+                djSeq = imp_Sequence_fromDict(seqDict,vLog) 
+                if djSeq.VALID_STATUS:
+                    if upload:
+                        djSeq.save(user=appuser)
+                        seqDict['seq_id'] = djSeq
+                else:
+                    vLog.show(logTypes= ['Error'])
+
+                if nProcessed%OutputN == 0:
+                    print(f"[WGS-AMR] {nProcessed:5d} {dirHead} {seqDict['orgbatch_id']} {seqDict['run_id']} ")
+
+                # AMR Finder -----------------------------
+                lAmrFinder=get_AMRFinder_Info(dirFA,seqDict['orgbatch_id'],seqDict['run_id'])
+                for row in lAmrFinder:
+
+                    row['source'] = "AMR Finder"
+                    djGene = imp_Gene_fromDict(row,vLog, objSeq = djSeq)
+                    row['gene_id'] = djGene
+                    if djGene.VALID_STATUS:
+                        if upload:
+                            djGene.save(user=appuser)
+                            row['gene_id'] = djGene
+                    else:
+                        vLog.show(logTypes= ['Error'])
+
+                    row['seq_id'] = djSeq
+                    djAMRgt = imp_AMRGenotype_fromDict(row,vLog)
+                    if djAMRgt.VALID_STATUS:
+                        if upload:
+                            djAMRgt.save(user=appuser)
+                    else:
+                        vLog.show(logTypes= ['Error'])
+
+               
