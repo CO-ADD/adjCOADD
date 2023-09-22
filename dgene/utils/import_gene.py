@@ -315,7 +315,7 @@ def imp_Gene_fromDict(iDict,valLog, objSeq = None):
     djGene.clean_Fields()
     validDict = djGene.validate()
     if validDict:
-        validStatus = False
+        #validStatus = False
         for k in validDict:
             valLog.add_log('Warning',validDict[k],k)
 

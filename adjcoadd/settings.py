@@ -11,13 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+from datetime import timedelta
 import psycopg2.extensions
-
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-from datetime import timedelta
+
+print(f"Project: adjCOADD ")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #--------------------------------------------------------------------
@@ -34,29 +34,45 @@ DEVELOPMENT=None
 
 #........................................................................
 if DEVELOPMENT:
-    # Development
+    # Development -----------------------------------------------------------------------
     VERSION = '1.1.0251 Development'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+
     UPLOAD_DIR = os.path.join(BASE_DIR.parent, 'uploads')
-    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')} 
+    MEDIA_URL = ('uploads/')
+    MEDIA_ROOT= UPLOAD_DIR
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
+
+    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+    STRUCTURE_IMG_DIR = os.path.join(BASE_DIR, 'static/images/mol') 
+
 else:
-    # Production
+    # Production ----------------------------------------------------------------------
     VERSION = '1.2'
     DEBUG = False
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
+
     UPLOAD_DIR = '/opt/django/var/uploads/'
-    DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/'}
+    MEDIA_URL = ('uploads/')
+    MEDIA_ROOT= UPLOAD_DIR
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
+
+    DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/var/backup'}
+
+    STRUCTURE_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
+
+print(f"Version: {VERSION}")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 #--------------------------------------------------------------------
-MEDIA_URL = ('uploads/')
-MEDIA_ROOT= UPLOAD_DIR
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 
 STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
 
@@ -182,6 +198,8 @@ else:
     DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+
+print(f"Host Name: {HOST_NAME}")
 
 DATABASES = {
     'default': {
