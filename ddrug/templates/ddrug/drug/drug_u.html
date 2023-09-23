@@ -2,11 +2,11 @@
   {% csrf_token %}
 
   <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
       
       <a id="drug_detail{{object.pk}}" class="float-end" href="#drugStructureEditor" data-bs-toggle>
         {% load static %}
-        <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload" loading="lazy"
+        <img src="/{{mol_img_url}}/{{object.pk}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
           style="background-color: transparent !important" />
       </a>
 

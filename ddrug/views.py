@@ -75,16 +75,17 @@ class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
     def get_context_data(self, **kwargs):
         try:
-            context = super().get_context_data(**kwargs)          
+            context = super().get_context_data(**kwargs)
+            context['mol_img_url'] = settings.MOL_IMG_URL         
         # clearIMGfolder()
             for object_ in context["object_list"]:
-                filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
+                filepath=os.path.join(settings.MOL_IMG_DIR, f"{object_.pk}.svg")
                 if os.path.exists(filepath):
                     continue
                 else:
                     m=object_.smol
                     try:
-                        molecule_to_svg(m, object_.pk)
+                        molecule_to_svg(m, object_.pk, path = settings.MOL_IMG_DIR)
                     except Exception as err:
                         pass
                         # messages.error(self.request, f'**{object_.pk} mol may not exists**')
@@ -103,6 +104,7 @@ def detailDrug(req, pk):
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
+    context['mol_img_url'] = settings.MOL_IMG_URL
     try:
         context["object_mol"]=Chem.MolToMolBlock(object_.smol)
         m="\\n".join(context["object_mol"].split("\n"))

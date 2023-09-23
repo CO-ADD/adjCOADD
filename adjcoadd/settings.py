@@ -48,7 +48,9 @@ if DEVELOPMENT:
     STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 
     DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
-    STRUCTURE_IMG_DIR = os.path.join(BASE_DIR, 'static/images/mol') 
+
+    MOL_IMG_URL = 'static/images/mol'
+    MOL_IMG_DIR = os.path.join(BASE_DIR, 'static/images/mol') 
 
 else:
     # Production ----------------------------------------------------------------------
@@ -66,7 +68,8 @@ else:
 
     DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/var/backup'}
 
-    STRUCTURE_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
+    MOL_IMG_URL = 'static/images/mol'
+    MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
 
 print(f"Version: {VERSION}")
 
@@ -74,7 +77,7 @@ print(f"Version: {VERSION}")
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 #--------------------------------------------------------------------
 
-STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
+#STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
 
 #======================================================================
 
@@ -287,11 +290,11 @@ DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
 
 if DEVELOPMENT:
-    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+    #DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
     DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-'+DEVELOPMENT+'-{datetime}.{extension}'
     DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-'+DEVELOPMENT+'-{datetime}.{extension}'
 else:
-    DBBACKUP_STORAGE_OPTIONS = {'location': 'backup/'}
+    #DBBACKUP_STORAGE_OPTIONS = {'location': 'backup/'}
     DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-{datetime}.{extension}'
     DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-{datetime}.{extension}'
 
@@ -428,6 +431,6 @@ XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 # print('Base_Dir:',BASE_DIR)
 # print('Upload_Dir:',UPLOAD_DIR)
 # print('Media_Root:',MEDIA_ROOT)
-# print('Structure_files_dir:',STRUCTURE_FILES_DIR)
+# print('Structure_files_dir:',MOL_IMG_DIR)
 # print('DbBackup:',DBBACKUP_STORAGE_OPTIONS)
 

@@ -29,11 +29,11 @@ def smiles2mol(Smiles,verbose=0):
 # ----------------------------------------------------------------------------------------------------
 # --Convert mol to Structure images--
 ## convert function
-def molecule_to_svg(mol, file_name, width=500, height=500):
+def molecule_to_svg(mol, file_name, width=500, height=500, path=settings.MOL_IMG_DIR):
     """Save substance structure as SVG"""
 # ----------------------------------------------------------------------------------------------------
    
-    file_svg=os.path.join(settings.STRUCTURE_FILES_DIR, f"{file_name}.svg")  #get_filewithpath(file_name=file_name) 
+    file_svg=os.path.join(path, f"{file_name}.svg")  #get_filewithpath(file_name=file_name) 
     # Render high resolution molecule
    
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
@@ -47,13 +47,13 @@ def molecule_to_svg(mol, file_name, width=500, height=500):
 
 # ----------------------------------------------------------------------------------------------------
 ## folder clean
-def clearIMGfolder():
+def clearIMGfolder(path = settings.MOL_IMG_DIR,verbose=0):
 # ----------------------------------------------------------------------------------------------------
-    if settings.DEVELOPMENT:
-        path='static/images'
-    else:
-        Base_dir = Path(__file__).resolve().parent.parent.parent
-        path=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+    # if settings.DEVELOPMENT:
+    #     path='static/images'
+    # else:
+    #     Base_dir = Path(__file__).resolve().parent.parent.parent
+    #     path=os.path.abspath(os.path.join(Base_dir, 'static/images'))
     for filename in os.listdir(path):
         file_path=os.path.join(path, filename)
         try:

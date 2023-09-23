@@ -16,7 +16,7 @@
       {%if object_img%}
       <a id="drug_detail{{object.pk}}" class="card-link">
         {%load static%}
-        <img src="{%static 'images/'%}{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
+        <img src="/{{mol_img_url}}/{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
           style="background-color: transparent !important" />
       </a>
     <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
