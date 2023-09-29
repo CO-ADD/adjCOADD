@@ -19,11 +19,12 @@ class HiddenSimpleArrayField(forms.Field):
 
     def clean(self, value):
         return value or []
+    
+
 class DateField(forms.Field):
     widget = forms.DateInput(attrs={'type': 'date'})
     def clean(self, value):
         return value
-
 
 #=================================================================================================
 # Taxonomy
@@ -169,6 +170,9 @@ class UpdateOrganism_form(CreateOrganism_form):
 # Organism Batch
 #=================================================================================================
 class OrgBatch_Form(forms.ModelForm):
+
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+
     # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -176,6 +180,7 @@ class OrgBatch_Form(forms.ModelForm):
     qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input'}), help_text='**Optional with up to 5 characters', required=False)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
+
     def __init__(self, *args, **kwargs):
         super(OrgBatch_Form, self).__init__(*args, **kwargs)
         self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 

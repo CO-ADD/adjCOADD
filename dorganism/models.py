@@ -1,7 +1,10 @@
+import re
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from django.core.validators import RegexValidator
+
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
@@ -308,10 +311,12 @@ class Organism_Batch(AuditModel):
        }
     #SEP = '_'
 
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+
     orgbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
-    batch_id  = models.CharField(max_length=12, null=False, blank=True, verbose_name = "Batch ID")
+    batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
@@ -353,6 +358,13 @@ class Organism_Batch(AuditModel):
     def find_Next_BatchID(self, OrganismID:str, BatchID:str=None) -> str:
         # Check for given BatchID    
         if BatchID:
+            # Clean up BatchID - remove non alphanumeric character and make uppercase
+            BatchID = re.sub(r'[^a-zA-Z0-9]', '', BatchID).upper()
+
+            # Clean up BatchID - reformat numbers
+            if BatchID.isnumeric():
+                BatchID = self.str_BatchID(int(BatchID))
+
             next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
             if ~self.exists(next_OrgBatch):
                 return(BatchID)
