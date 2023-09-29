@@ -77,12 +77,12 @@ def get_FastQC_Info(AssemblyFolder,OrgBID,RunID):
 
 
 #-----------------------------------------------------------------------------
-def get_CheckM_Info(AssemblyFolder,OrgBID,RunID, Assemblies = ['spades','shovill'], outType = 'contigs', Contamination_cutOff = 5.0):
+def get_CheckM_Info(AssemblyFolder,OrgBID,RunID, Assemblies = ['spades','shovill'], outType = 'contigs_filtered', Contamination_cutOff = 5.0):
 #-----------------------------------------------------------------------------
     retLst = []
 
     for Assembly in Assemblies:
-        AssInfo = os.path.join(AssemblyFolder,"assembly",Assembly,"checkm",f"info_checkm_{outType}.csv")
+        AssInfo = os.path.join(AssemblyFolder,Assembly,"checkm",f"info_checkm_{outType}.csv")
         if os.path.exists(AssInfo):
 
             with open(AssInfo) as file:
@@ -155,23 +155,7 @@ def get_Kraken_Info(FastAFolder,OrgBID,RunID, inType = 'fasta',outType="S",pctCu
                         outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
     return(outLst)
 
-# #-----------------------------------------------------------------------------
-# def parse_Kraken(AssemblyFolder,OrgBID,RunID,outType="S",inType="fasta",pctCutOff=1.0):
-# #-----------------------------------------------------------------------------
-#     BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
-#     KrakenDir = os.path.join(BatchDir,"kraken")
-#     KrakenF = f"{OrgBID}_{RunID}_{inType}.report"
-#     outLst = []
-#     if os.path.exists(KrakenDir):
-#         with open(os.path.join(KrakenDir,KrakenF)) as file:
-#             tsv_file = csv.reader(file,delimiter="\t")
-#             for line in tsv_file:
-#                 if line[3] == outType:
-#                     pctSeq = float(line[0])
-#                     if pctSeq >= pctCutOff:
-#                         org_name = line[5].strip()
-#                         outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
-#     return(outLst)
+
 
 # #-----------------------------------------------------------------------------
 # def parse_Abricate(AssemblyFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
@@ -235,38 +219,60 @@ def get_AMRFinder_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
             tsv_file = csv.reader(file,delimiter="\t",)
             for line in tsv_file:
                 if 'Start' not in line:
-                    outLst.append({'amrfinder_contigid': line[1], 
+                    outLst.append({'contigid': line[1], 
                                 'gene_code': line[5], 
-                                'gene_name': line[6], 
+                                'gene_note': line[6], 
                                 'gene_type': line[8], 
                                 'gene_subtype': line[9], 
                                 'amr_class': line[10], 
                                 'amr_subclass': line[11], 
-                                'amrfinder_coverage': line[15],
-                                'amrfinder_identitiy': line[16],
-                                'amrfinder_closest': line[18],
-                                'amrfinder_closestname': line[19],
+                                'coverage': line[15],
+                                'identitiy': line[16],
+                                'closest': line[18],
+                                'closestname': line[19],
                                 'amr_method':'AMR Finder'
                                 })
     return(outLst)
 
-# #-----------------------------------------------------------------------------
-# def parse_MLST(AssemblyFolder,OrgBID,RunID,outType="S",inType="fastq",pctCutOff=1.0):
-# #-----------------------------------------------------------------------------
-#     BatchDir = os.path.join(AssemblyFolder,OrgBID,RunID)
-#     KrakenDir = os.path.join(BatchDir,"mlst")
-#     KrakenF = f"{OrgBID}_{RunID}_{inType}.report"
-#     outLst = []
-#     if os.path.exists(KrakenDir):
-#         with open(os.path.join(KrakenDir,KrakenF)) as file:
-#             tsv_file = csv.reader(file,delimiter="\t")
-#             for line in tsv_file:
-#                 if line[3] == outType:
-#                     pctSeq = float(line[0])
-#                     if pctSeq >= pctCutOff:
-#                         org_name = line[5].strip()
-#                         outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
-#     return(outLst)
+#-----------------------------------------------------------------------------
+def get_Abricate_Info(FastAFolder,OrgBID,RunID,inType="fasta",DB='card',pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    AbricateFinderDir = os.path.join(FastAFolder,"abricate")
+    AbricateFinderF = os.path.join(AbricateFinderDir,f"{OrgBID}_{inType}_{DB}.tsv")
+
+    AbricateType = {
+        'card':{'amr_class':'AMR'}
+    }    
+    outLst = []
+    if os.path.exists(AbricateFinderF):
+        with open(AbricateFinderF) as file:
+            tsv_file = csv.reader(file,delimiter="\t",)
+            for line in tsv_file:
+                if 'START' not in line:
+                    gCode = line[5]
+                    if DB == 'card':
+                        if 'Klebsiella_pneumoniae' in gCode:
+                            gCode = gCode.replace('Klebsiella_pneumoniae_','') + ' (Kp)'
+                        elif 'Acinetobacter_baumannii' in gCode:
+                            gCode = gCode.replace('Acinetobacter_baumannii_','') + ' (Ab)'
+
+                    outLst.append({
+                                #'amrfinder_contigid': line[1], 
+                                'gene_code': gCode, 
+                                'gene_note': line[13], 
+                                'gene_type': AbricateType[DB]['amr_class'], 
+                                'gene_subtype': AbricateType[DB]['amr_class'], 
+                                'amr_class': AbricateType[DB]['amr_class'], 
+                                'amr_subclass': line[14], 
+                                'coverage': line[9],
+                                'identitiy': line[10],
+                                'closest': line[12],
+                                #'closestname': line[19],
+                                'amr_method':f'Abricate {DB}'
+                                })
+    return(outLst)
+
+
 
 
 

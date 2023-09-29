@@ -276,26 +276,43 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
     return(djInst)
 
 # ----------------------------------------------------------------------------------------------------
-def imp_Gene_fromDict(iDict,valLog, objSeq = None):
+def clean_GeneUpper(inStr):
+# ----------------------------------------------------------------------------------------------------
+    retStr = None
+    if inStr != 'NA':
+        if '/' in inStr:
+            lstStr = inStr.split('/')
+        elif ';' in inStr:
+            lstStr = inStr.split(';')
+        else:
+            lstStr = [inStr]
+
+        lstOut = []
+        for s in lstStr:
+            if s == 'AMR':
+                lstOut.append('Resistance')
+            else:
+                lstOut.append(s.title())
+        retStr = "; ".join(lstOut)
+    return(retStr)
+# ----------------------------------------------------------------------------------------------------
+def imp_Gene_fromDict(iDict,valLog):
     """
     Create CheckM instance from zAssembly Parser
     """
 # ----------------------------------------------------------------------------------------------------
 
+    #print(iDict)
     validStatus = True
   
-    if objSeq is None:
-        objSeq = Genome_Sequence.get(None,iDict['seq_name'])
+    #if objSeq is None:
+    #    objSeq = Genome_Sequence.get(None,iDict['seq_name'])
 
-    if objSeq is None:
-        valLog.add_log('Error','Sequence does not Exists',iDict['seq_name'],'Use existing Sequence')
-        validStatus = False
-    else:
-        iDict['seq_id'] = str(objSeq)
-
-    GeneType = Dictionary.get(Gene.Choice_Dictionary["gene_type"],iDict['gene_type'])
+    # Clean up Dictionary Uper/Title case
+    gType = clean_GeneUpper(iDict['gene_type'])
+    GeneType = Dictionary.get(Gene.Choice_Dictionary["gene_type"],gType)
     if GeneType is None:
-        valLog.add_log('Error','Gene Type not Correct',iDict['gene_type'],'-')
+        valLog.add_log('Error','Gene Type not Correct',gType,'-')
         validStatus = False
 
     # Find Instance if exist
@@ -304,20 +321,31 @@ def imp_Gene_fromDict(iDict,valLog, objSeq = None):
         djGene = Gene()
         djGene.gene_code  = iDict['gene_code']
 
-    djGene.gene_name = iDict['gene_name']
-    djGene.source = iDict['source']
- 
+    djGene.gene_note = iDict['gene_note']
+
+    # Add Sources
+    if djGene.source:
+        sLst = djGene.source.split(";")
+        sLst.append(iDict['amr_method'])
+        djGene.source = ";".join(list(set(sLst)))
+    else:    
+        djGene.source = iDict['amr_method']
+
     djGene.gene_type = GeneType
-    djGene.gene_subtype = iDict['gene_subtype']
-    djGene.amr_class = iDict['amr_class']
-    djGene.amr_subclass = iDict['amr_subclass']
+
+    # Clean up  Uper/Title case
+
+    djGene.gene_subtype = clean_GeneUpper(iDict['gene_subtype'])
+    djGene.amr_class = clean_GeneUpper(iDict['amr_class'])
+    djGene.amr_subclass = clean_GeneUpper(iDict['amr_subclass'])
 
     djGene.clean_Fields()
     validDict = djGene.validate()
     if validDict:
         #validStatus = False
         for k in validDict:
-            valLog.add_log('Warning',validDict[k],k)
+            valLog.add_log('Error',validDict[k],k)
+            print(f"{k} {validDict[k]}")
 
     djGene.VALID_STATUS = validStatus
 
@@ -340,11 +368,14 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
         djAMRGt.seq_id  = iDict['seq_id']
 
     djAMRGt.orgbatch_id  = iDict['seq_id'].orgbatch_id
-    djAMRGt.seq_coverage = round(float(iDict['amrfinder_coverage']),2)
-    djAMRGt.seq_identity = round(float(iDict['amrfinder_identitiy']),2)
-    djAMRGt.closest_id = iDict['amrfinder_closest']
-    djAMRGt.closest_name = iDict['amrfinder_closestname']
-    #djAMRGt.contig = iDict['amrfinder_contigid']
+    djAMRGt.seq_coverage = round(float(iDict['coverage']),2)
+    djAMRGt.seq_identity = round(float(iDict['identitiy']),2)
+
+    if 'closest' in iDict:
+        djAMRGt.closest_id = iDict['closest']
+    if 'closestname' in iDict:
+        djAMRGt.closest_name = iDict['closestname']
+    #djAMRGt.contig = iDict['contigid']
 
     djAMRGt.clean_Fields()
     validDict = djAMRGt.validate()

@@ -470,7 +470,7 @@ class Gene(AuditModel):
     HEADER_FIELDS = {
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
         "gene_code":"Gene Code",
-        "gene_name":"Gene Name",
+        "gene_note":"Gene Note",
         "gene_type":"Gene Type",
         "gene_subtype":"Gene SubType",
         "amr_class":"AMR Class",
@@ -484,7 +484,7 @@ class Gene(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group_gene': ["source", "gene_name", "gene_type", "organisms", "resistance_class", "uniprot", "variants"],
+       'Group_gene': ["source", "gene_note", "gene_type", "organisms", "resistance_class", "uniprot", "variants"],
        'Group_protein': ['protein_name','protein_class','protein_subclass','gene_note','gene_modification'],
     }
 
@@ -494,14 +494,14 @@ class Gene(AuditModel):
 
     gene_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Gene ID")
     gene_code = models.CharField(max_length=25, unique=True,  verbose_name = "Gene Code")
-    gene_name = models.CharField(max_length=150, blank=True,  verbose_name = "Gene Name")
+    gene_name = models.CharField(max_length=25, blank=True,  verbose_name = "Gene Name")
+    gene_note = models.CharField(max_length=500, verbose_name = "Gene Note")
     urlname = models.SlugField(max_length=30, verbose_name = "URLGene")
     gene_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Gene Type", on_delete=models.DO_NOTHING,
          db_column="gene_type", related_name="%(class)s_genetype")
     gene_subtype = models.CharField(max_length=50, blank=True,  verbose_name = "Gene Subtype")
     amr_class = models.CharField(max_length=50, blank=True,  verbose_name = "AMR Class")
-    amr_subclass = models.CharField(max_length=50, blank=True,  verbose_name = "AMR Subclass")
-    gene_note = models.CharField(max_length=120, verbose_name = "Gene Note")
+    amr_subclass = models.CharField(max_length=250, blank=True,  verbose_name = "AMR Subclass")
     gene_modification = models.CharField(max_length=120, verbose_name = "Modification")
     protein_name = models.CharField(max_length=150, blank=True,  verbose_name = "Protein")
     protein_class = models.CharField(max_length=50, blank=True,  verbose_name = "Class")
@@ -511,7 +511,7 @@ class Gene(AuditModel):
     genbank = models.CharField(max_length=120, blank=True,  verbose_name = "GenBank")
     uniprot = models.CharField(max_length=120, blank=True,  verbose_name = "UniProt")
     organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=10, verbose_name = "Organisms", null=True, blank=True)
-    source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
+    source = models.CharField(max_length=150, blank=True, verbose_name = "Source")
 
     #------------------------------------------------
     class Meta:
@@ -616,7 +616,7 @@ class AMR_Genotype(AuditModel):
     seq_method = models.CharField(max_length=25, blank=True,    verbose_name = "Seq Method")
     seq_coverage = models.FloatField(default=0, blank=True, verbose_name ="Seq Coverage") 
     seq_identity = models.FloatField(default=0, blank=True,     verbose_name ="Seq Identity")
-    closest_id = models.CharField(max_length=25, blank=True,    verbose_name = "Closest")
+    closest_id = models.CharField(max_length=150, blank=True,    verbose_name = "Closest")
     closest_name = models.CharField(max_length=150, blank=True, verbose_name = "Closest Name")
 
     #------------------------------------------------
