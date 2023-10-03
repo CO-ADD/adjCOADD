@@ -44,7 +44,6 @@ class ApplicationUser(AbstractUser):
     #------------------------------------------------
     class Meta:
         db_table = 'app_user'
-        ordering=['username']
     
     #------------------------------------------------  
     def __str__(self) -> str:
@@ -133,6 +132,9 @@ class AuditModel(models.Model):
 
     OWNER           = "orgdb" # Defaut username
     
+
+    # VALID_STATUS 0: Valid (New or Update) to save, -1: Invalid unable to save, 1: Valid no update required 
+
     VALID_STATUS    = False
     HEADER_FIELDS   = {}
     CARDS_FIELDS   = {}
@@ -155,6 +157,7 @@ class AuditModel(models.Model):
     #------------------------------------------------
     class Meta:
         abstract = True
+        ordering=['-acreated_at']
     
     #------------------------------------------------
     def validate(self,**kwargs):

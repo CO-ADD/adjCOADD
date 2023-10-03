@@ -8,7 +8,7 @@
 
   <!-- <div class="border border-2 w-100"> -->
 
-  {%include 'utils/lefticons.html' with title="Drug"%}
+  {% include 'utils/lefticons.html' with title="Drug" %}
   <div class="w-100">
 
     <div class="accordion bg-transparent" id="drug-detail">
@@ -24,43 +24,24 @@
         <div id="collapseOne" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
           data-bs-parent="#drug-detail">
           <div class="accordion-body bg-transparent">
-            <b>
-              {%include 'utils/message.html'%}
-            </b>
-            {%include 'ddrug/drug/drug_u.html'%}
-            <!--prettier-ignore-->
-            {%include 'utils/miscellaneous/entrylog.html' with object_acreated=object.acreated object_acreated_at=object.acreated_at object_aupdated=object.aupdated object_aupdated_at=object.aupdated_at%}
+            <b> {% include 'utils/message.html' %} </b>
+            {% include 'ddrug/drug/drug_u.html' %}
+            <hr>
+            {% include 'detailview/audit_status.html' %}
           </div>
         </div>
       </div>
     </div>
 
 
-    
-
+    <!--
+    <div>
+      {% include 'utils/piediagram.html' %}
+    </div>
+    -->
 
   </div>
-
-
-
-  <!-- </div> -->
-  <!-- call drug structure editor modal -->
-  <script>
-    $(document).ready(function () {
-
-      $('#updateMol').click(function () {
-        // console.log($('#id_smol').val())
-        // $(".edit_detailtable").click();
-        // $('#update_drug_mol').removeClass('not-visible')
-        var smol_drug = localStorage.getItem('smiles_query')
-        // console.log(smol_drug)
-        $('#id_smol').val(smol_drug)
-        localStorage.removeItem('smiles_query')
-      })
-
-    });
-
-  </script>
-
 </div>
-{%endblock%}
+
+
+{% endblock %}

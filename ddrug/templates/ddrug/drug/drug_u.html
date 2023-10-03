@@ -2,14 +2,14 @@
   {% csrf_token %}
 
   <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
       
       <a id="drug_detail{{object.pk}}" class="float-end" href="#drugStructureEditor" data-bs-toggle>
-        {%load static%}
-
-        <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload" loading="lazy"
+        {% load static %}
+        <img src="/{{mol_img_url}}/{{object.pk}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
           style="background-color: transparent !important" />
       </a>
+
       <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
     </div>
     <div class="col-md-3">
@@ -26,19 +26,16 @@
           </tr>
           <!--prettier-ignore-->
           {% for field in form.group1 %}
-          <tr>
-            <!--prettier-ignore-->
-            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
-            <!--prettier-ignore-->
-
-          </tr>
-          {%endfor%}
+            <tr>
+              <!--prettier-ignore-->
+              {% include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+              <!--prettier-ignore-->
+            </tr>
+          {% endfor %}
           <tr>
             <th scope="row" class="movable">Mol</th>
             <td class="editable" data-id="{{object.pk}}" data-type="">
-          
-          
-          
+      
               <div class="detail object_value">
                 Update click edit button
               </div>
@@ -59,12 +56,12 @@
       <table class="table table-hover table-sm align-middle table-bordered">
         <tbody>
           {% for field in form.group2 %}
-          <tr>
-            <!--prettier-ignore-->
-            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
-            <!--prettier-ignore-->
-          </tr>
-          {%endfor%}
+            <tr>
+              <!--prettier-ignore-->
+              {% include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+              <!--prettier-ignore-->
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -75,7 +72,7 @@
           {% for field in form.group3 %}
           <tr>
             <!--prettier-ignore-->
-            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            {% include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
             <!--prettier-ignore-->
           </tr>
           {%endfor%}
@@ -84,35 +81,10 @@
       </table>
       <div class="col-md-3 updateformshow not-visible">
         <div class="d-flex justify-content-evenly align-baseline ">
-          {%include 'utils/miscellaneous/save_btn.html'%}
+          {% include 'utils/miscellaneous/save_btn.html' %}
           <!--  -->
-          {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+          {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
 
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion bg-transparent" id="drugStructureEditor">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="drugStructureEditor_title">
-        <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
-          data-bs-target="#drugStructureEditor_canvas" aria-expanded="true" aria-controls="collapseOne">
-          <h5 class="fs-6 my-0">{{object.pk}} |
-            {{object.drug_name}}
-          </h5>
-        </button>
-      </h2>
-      <div id="drugStructureEditor_canvas" class="accordion-collapse collapse show bg-transparent"
-        aria-labelledby="headingOne" data-bs-parent="#drugStructureEditor">
-        <div class="accordion-body bg-transparent w-100">
-          <input type="text" id="mol" value="{{object_mol}}" hidden />
-          <!-- <div id="update_drug_mol" class="not-visible">
-
-            {{form.smol.name}}{{form.smol}}
-       
-          </div> -->
-          {%include 'utils/ketcher.html'%}
         </div>
       </div>
     </div>
@@ -120,11 +92,3 @@
 
 </form>
 
-<!-- <script>
-  $(document).ready(()=>{
-
-    console.log($('#id_smol').val())
-    var smol= $('#id_smol').val()
-    $('#id_smol').val(smol.toString())
-  })
-</script> -->

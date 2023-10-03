@@ -1,0 +1,117 @@
+<form id="DrugUpdateForm" method="POST" action="{%url 'drug_update' object.pk %}">
+  {% csrf_token %}
+
+  <div class="row">
+    <div class="col-md-1">
+      
+      <a id="drug_detail{{object.pk}}" class="float-end" href="#drugStructureEditor" data-bs-toggle>
+        {%load static%}
+
+        <img src="{%static 'images/'%}{{object.pk}}.svg" alt="structure" width="80%" class="lazyload" loading="lazy"
+          style="background-color: transparent !important" />
+      </a>
+      <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
+    </div>
+    <div class="col-md-3">
+      <table class="table table-hover table-sm align-middle table-bordered">
+        <tbody>
+          <!--prettier-ignore-->
+          <tr>
+            <th>Name</th>
+            <td>
+              {{object.drug_name}}
+              <div class="not-visible">{{form.drug_name}} {{form.drug_id}}</div>
+            </td>
+
+          </tr>
+          <!--prettier-ignore-->
+          {% for field in form.group1 %}
+          <tr>
+            <!--prettier-ignore-->
+            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            <!--prettier-ignore-->
+
+          </tr>
+          {%endfor%}
+          <tr>
+            <th scope="row" class="movable">Mol</th>
+            <td class="editable" data-id="{{object.pk}}" data-type="">
+          
+          
+          
+              <div class="detail object_value">
+                Update click edit button
+              </div>
+          
+              <div class="select input_form">
+                {{form.smol}} <br />
+                {{form.smol.errors}}
+              </div>
+            </td>
+          
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-md-3">
+      <!-- Table 2 -->
+      <table class="table table-hover table-sm align-middle table-bordered">
+        <tbody>
+          {% for field in form.group2 %}
+          <tr>
+            <!--prettier-ignore-->
+            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            <!--prettier-ignore-->
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-3">
+      <!-- Table 3 -->
+      <table class="table table-hover table-sm align-middle table-bordered">
+        <tbody>
+          {% for field in form.group3 %}
+          <tr>
+            <!--prettier-ignore-->
+            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            <!--prettier-ignore-->
+          </tr>
+          {%endfor%}
+
+        </tbody>
+      </table>
+      <div class="col-md-3 updateformshow not-visible">
+        <div class="d-flex justify-content-evenly align-baseline ">
+          {%include 'utils/miscellaneous/save_btn.html'%}
+          <!--  -->
+          {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion bg-transparent" id="drugStructureEditor">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="drugStructureEditor_title">
+        <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
+          data-bs-target="#drugStructureEditor_canvas" aria-expanded="true" aria-controls="collapseOne">
+          <h5 class="fs-6 my-0">Edit Structure and Update Mol
+          </h5>
+        </button>
+      </h2>
+      <div id="drugStructureEditor_canvas" class="accordion-collapse collapse show bg-transparent"
+        aria-labelledby="headingOne" data-bs-parent="#drugStructureEditor">
+        <div class="accordion-body bg-transparent w-100">
+          <input type="text" id="mol" value="{{object_mol}}" hidden />
+        
+          {%include 'utils/ketcher.html'%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+

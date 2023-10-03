@@ -9,120 +9,96 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
-from apputil.models import Dictionary, ApplicationUser
-from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+
 from apputil.models import ApplicationLog
+from apputil.forms import Document_Form
+from apputil.utils.filters_base import FilteredListView
+from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+
 from adjcoadd.constants import *
-from dorganism.models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
-from dorganism.forms import (CreateOrganism_form, UpdateOrganism_form, Taxonomy_form, Orgbatchimg_form,
-                    Batch_form, Batchupdate_form, Stock_createform, Stock_form, Culture_form, Cultureupdate_form,
-                    Organismfilter, Taxonomyfilter, Batchfilter, Stockfilter)
+
+from dorganism.models import  Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
+from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
+                            Organism_Filter, CreateOrganism_form, UpdateOrganism_form, 
+                            OrgBatch_Filter, OrgBatch_Form, OrgBatch_UpdateForm,  
+                            OrgBatchStock_Form, OrgBatchStock_Filter, OrgBatchStock_CreateForm, 
+                            OrgCulture_Form, OrgCulture_UpdateForm,
+                            OrgBatchImg_Form,)
 from ddrug.models import VITEK_AST, MIC_COADD
 from dorganism.utils.data_visual import data_frame_style, pivottable_style
-
-
-class OrgbatchimgCreateView(CreateFileView):
-    form_class=Orgbatchimg_form
-    model = Organism
-    file_field = 'image_file'
-    transaction_use = 'dorganism'
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        if getattr(instance, self.file_field):
-            with transaction.atomic(using=self.transaction_use):
-                kwargs={'user': self.request.user}
-                instance.save(**kwargs)
-        else:
-            messages.warning(self.request, 'No file provided.')
-        return redirect(self.request.META['HTTP_REFERER'])
     
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     print("1",self.request)
-    #     kwargs["pk"] = self.request
-    #     return kwargs
+#=================================================================================================
+# Taxonomy
+#=================================================================================================
 
-    # def get_form(self, form_class=None):
-    #     print("wil called")
-    #     form = super().get_form(form_class)
-    #     organism = get_object_or_404(self.model, organism_id=kwargs['pk'])
-    #     form.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
-    #     return form     
-
-
-class OrgbatchimgDeleteView(SimpledeleteView):
-    model = OrgBatch_Image
-    transaction_use = 'dorganism'
-
-# --TAXONOMY Views--
-##
-class TaxonomyListView(LoginRequiredMixin, FilteredListView):
+class Taxonomy_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
-    filterset_class=Taxonomyfilter
+    filterset_class=Taxonomy_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Taxonomy'
     app_name = 'dorganism'
+    ordering = ['org_class']
 
-##
-class TaxonomyCardView(TaxonomyListView):
+# -----------------------------------------------------------------
+class Taxonomy_CardView(Taxonomy_ListView):
     template_name = 'dorganism/taxonomy/taxonomy_card.html'
     
-##
+# -----------------------------------------------------------------
 @login_required
 def detailTaxonomy(req, slug=None):
     context={}
     object_=get_object_or_404(Taxonomy, urlname=slug)
     context["object"]=object_
-    context['form']=Taxonomy_form(instance=object_)
+    context['form']=Taxonomy_Form(instance=object_)
     return render(req, "dorganism/taxonomy/taxonomy_detail.html", context)
 
-##
-class TaxonomyCreateView(SimplecreateView):
-    form_class=Taxonomy_form
+# -----------------------------------------------------------------
+class Taxonomy_CreateView(SimplecreateView):
+    form_class=Taxonomy_Form
     template_name='dorganism/taxonomy/taxonomy_c.html'
     transaction_use = 'dorganism'
         
-##
-class TaxonomyUpdateView(SimpleupdateView):
-    form_class=Taxonomy_form
+# -----------------------------------------------------------------
+class Taxonomy_UpdateView(SimpleupdateView):
+    form_class=Taxonomy_Form
     template_name='dorganism/taxonomy/taxonomy_u.html'
     model=Taxonomy
     transaction_use = 'dorganism'
 
-##
-class TaxonomyDeleteView(SimpledeleteView):
+# -----------------------------------------------------------------
+class Taxonomy_DeleteView(SimpledeleteView):
     model = Taxonomy
     transaction_use = 'dorganism'
 
+#=================================================================================================
+# Organism
+#=================================================================================================
 
-#--ORGANISM Views--
-##
-class OrganismListView(LoginRequiredMixin, FilteredListView):
+class Organism_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = Organism  
     template_name = 'dorganism/organism/organism_list.html'
-    filterset_class = Organismfilter
+    filterset_class = Organism_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'Organism'
     app_name = 'dorganism'
+    ordering=['-acreated_at']
     
-##  
-class OrganismCardView(OrganismListView):
+# -----------------------------------------------------------------
+class Organism_CardView(Organism_ListView):
     template_name = 'dorganism/organism/organism_card.html'
     model = Organism  
     model_fields = model.CARDS_FIELDS
-    
 
-##
-    # =============================step 2. Create new record by form===================#
+
+# -----------------------------------------------------------------
 @login_required
 def createOrganism(req):
     '''
@@ -149,8 +125,7 @@ def createOrganism(req):
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
 
-
-##
+# -----------------------------------------------------------------
 @login_required
 def detailOrganism(request, pk):
     """
@@ -161,8 +136,6 @@ def detailOrganism(request, pk):
     - data visual table: dataframe and pivot- table
     """
    
-    from django.db.models import Count
-    from apputil.forms import Document_form
     context={}
     object_=get_object_or_404(Organism, organism_id=pk)
     try:
@@ -171,10 +144,10 @@ def detailOrganism(request, pk):
         print(err)
     context["object"]=object_
     context["form"]=form
-    context["doc_form"]=Document_form
+    context["doc_form"]=Document_Form
     # kwargs={'org': pk}
 
-    context["orgbatchimg_form"]=Orgbatchimg_form(org=pk)
+    context["orgbatchimg_form"]=OrgBatchImg_Form(org=pk)
 
     # data in related tables
 
@@ -208,15 +181,12 @@ def detailOrganism(request, pk):
         context["pivottable"] = pivottable_style(pk)
         return render(request, "dorganism/organism/organism_mic.html", context)
     
-
-
     return render(request, "dorganism/organism/organism_detail.html", context)
 
-##
+# -----------------------------------------------------------------
 @login_required
 def updateOrganism(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
-    print(object_.pk)
     kwargs={}
     kwargs['user']=req.user
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
@@ -260,33 +230,32 @@ def updateOrganism(req, pk):
    
     return render(req, "dorganism/organism/organism_u.html", context)
 
-##
-
-class OrganismDeleteView(SimpledeleteView):
+# -----------------------------------------------------------------
+class Organism_DeleteView(SimpledeleteView):
     model = Organism
     transaction_use = 'dorganism'
 
+#=================================================================================================
+# OrgBatch  
+#=================================================================================================
 
-   
-#--Batch Views--
-##
-class BatchListView(LoginRequiredMixin, FilteredListView):
+class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
     template_name = 'dorganism/organism/batch/batch_list.html' 
-    filterset_class=Batchfilter
+    filterset_class=OrgBatch_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Organism_Batch'
     app_name = 'dorganism'
 
-## 
+# -----------------------------------------------------------------
 @login_required
 def createBatch(req, organism_id):
     kwargs={'user': req.user}
-    form=Batch_form()
+    form=OrgBatch_Form()
     
     if req.method=='POST':
-        form=Batch_form(req.POST)
+        form=OrgBatch_Form(req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
@@ -303,22 +272,35 @@ def createBatch(req, organism_id):
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
-## here used HTMX
-from apputil.utils.views_base import HtmxupdateView
-class BatchUpdateView(HtmxupdateView):
-    form_class=Batchupdate_form
+# -----------------------------------------------------------------
+class OrgBatch_UpdateView(HtmxupdateView):
+    form_class=OrgBatch_UpdateForm
     template_name="dorganism/organism/batch/batch_u.html"
     template_partial="dorganism/organism/batch/batch_tr.html"
     model=Organism_Batch
     transaction_use = 'dorganism'
 
-##
-class BatchDeleteView(SimpledeleteView):
+# -----------------------------------------------------------------
+class OrgBatch_DeleteView(SimpledeleteView):
     model = Organism_Batch
     transaction_use = 'dorganism'
 
-# --Stock Views--
-# view in organism detail views
+#=================================================================================================
+# OrgBatch Stock  
+#=================================================================================================
+class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
+    login_url = '/'
+    model = OrgBatch_Stock  
+    template_name = 'dorganism/organism/batch_stock/stock_list.html'
+    filterset_class = OrgBatchStock_Filter
+    model_fields = model.HEADER_FIELDS
+    model_name = 'OrgBatch_Stock'
+    app_name = 'dorganism'
+
+
+
+#-------------------------------------------------------------------------------
+# within Organism_DetailView
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
@@ -348,29 +330,15 @@ def stockList(req, pk):
         res=data        
         return JsonResponse({'data':res})
     return JsonResponse({})
-#
-# Overview Stocks
-##
-class StockListView(LoginRequiredMixin, FilteredListView):
-    login_url = '/'
-    model = OrgBatch_Stock  
-    template_name = 'dorganism/organism/batch_stock/stock_list.html'
-    filterset_class = Stockfilter
-    model_fields = model.HEADER_FIELDS
-    model_name = 'OrgBatch_Stock'
-    app_name = 'dorganism'
-
-
       
-
-
+#-------------------------------------------------------------------------------
 @login_required
 def createStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
-    form = Stock_createform(initial={"orgbatch_id":orgbatch_id},)
+    form = OrgBatchStock_CreateForm(initial={"orgbatch_id":orgbatch_id},)
     if req.method=='POST':
-        form=Stock_createform(req.POST)
+        form=OrgBatchStock_CreateForm(req.POST)
         if form.is_valid():
 
             try:
@@ -386,13 +354,13 @@ def createStock(req, orgbatch_id):
             print(f'wrong {form.errors}')
     return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
 
-##
+#-------------------------------------------------------------------------------
 @login_required
 def updateStock(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=Stock_form(instance=object_)
+    form=OrgBatchStock_Form(instance=object_)
     if req.method == 'POST' and req.headers.get('x-requested-with') == 'XMLHttpRequest':
         # process the data sent in the AJAX request
         n_left_value=req.POST.get('value')
@@ -402,7 +370,7 @@ def updateStock(req, pk):
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
-        form=Stock_form(req.POST, instance=object_)
+        form=OrgBatchStock_Form(req.POST, instance=object_)
         if "cancel" in req.POST:
             return redirect(req.META['HTTP_REFERER'])
         else:
@@ -427,21 +395,23 @@ def updateStock(req, pk):
     }
     return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
 
-##
-class StockDeleteView(SimpledeleteView):
+#-------------------------------------------------------------------------------
+class OrgBatchStock_DeleteView(SimpledeleteView):
     model = OrgBatch_Stock
     transaction_use = 'dorganism'
 
-# --Culture Views--
-## 
+#=================================================================================================
+# Organim Culture 
+#=================================================================================================
+
 @login_required
 def createCulture(req, organism_id):
     
     kwargs={'user' : req.user}
-    form=Culture_form()
+    form=OrgCulture_Form()
     
     if req.method=='POST':
-        form=Culture_form(req.POST)
+        form=OrgCulture_Form(req.POST)
         if form.is_valid():
             try:
                 with transaction.atomic(using='dorganism'):
@@ -458,16 +428,52 @@ def createCulture(req, organism_id):
             return redirect(req.META['HTTP_REFERER'])      
     return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
-## Here used HTMX
-class CultureUpdateView(HtmxupdateView):
-    form_class=Cultureupdate_form
+#-------------------------------------------------------------------------------
+class OrgCulture_UpdateView(HtmxupdateView):
+    form_class=OrgCulture_UpdateForm
     template_name="dorganism/organism/culture/culture_u.html"
     template_partial="dorganism/organism/culture/culture_tr.html"
     model=Organism_Culture
     transaction_use = 'dorganism'
 
-##
-class CultureDeleteView(SimpledeleteView):
+#-------------------------------------------------------------------------------
+class OrgCulture_DeleteView(SimpledeleteView):
     model = Organism_Culture
     transaction_use = 'dorganism'
 
+#=================================================================================================
+# OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage
+#=================================================================================================
+class OrgBatchImg_DeleteView(SimpledeleteView):
+    model = OrgBatch_Image
+    transaction_use = 'dorganism'
+
+#-------------------------------------------------------------------------------
+class OrgBatchImg_CreateView(CreateFileView):
+    form_class=OrgBatchImg_Form
+    model = Organism
+    file_field = 'image_file' #this is uploading field name of Orgbatchimg
+    transaction_use = 'dorganism'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if getattr(instance, self.file_field):
+            with transaction.atomic(using=self.transaction_use):
+                kwargs={'user': self.request.user}
+                instance.save(**kwargs)
+        else:
+            messages.warning(self.request, 'No file provided.')
+        return redirect(self.request.META['HTTP_REFERER'])
+    
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     print("1",self.request)
+    #     kwargs["pk"] = self.request
+    #     return kwargs
+
+    # def get_form(self, form_class=None):
+    #     print("wil called")
+    #     form = super().get_form(form_class)
+    #     organism = get_object_or_404(self.model, organism_id=kwargs['pk'])
+    #     form.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
+    #     return form     

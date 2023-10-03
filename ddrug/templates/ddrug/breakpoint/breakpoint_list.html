@@ -12,7 +12,8 @@
   <div class="d-flex flex-column w-100">
     {% include 'utils/main_horizalbar.html' with title='Breakpoint' model_name='Breakpoint' application='ddrug' %}
     <!-- list View Content -->
-    <div class="fixTableHead">
+
+    <div class="contain-fluid data-contain">
       <!--prettier-ignore-->
       {%include 'utils/datatable_filter.html' with modelname='Breakpoint' %}
       

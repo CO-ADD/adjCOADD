@@ -1,7 +1,10 @@
+import re
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from django.core.validators import RegexValidator
+
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
@@ -216,7 +219,7 @@ class Organism(AuditModel):
     class Meta:
         app_label = 'dorganism'
         db_table = 'organism'
-        ordering=['organism_id']
+        #ordering=['organism_id']
         indexes = [
             models.Index(name="org_stid_idx", fields=['strain_ids']),
             models.Index(name="org_stcode_idx", fields=['strain_code']),
@@ -308,10 +311,12 @@ class Organism_Batch(AuditModel):
        }
     #SEP = '_'
 
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+
     orgbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "OrgBatch ID")
     organism_id = models.ForeignKey(Organism, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
-    batch_id  = models.CharField(max_length=12, null=False, blank=True, verbose_name = "Batch ID")
+    batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
@@ -353,6 +358,13 @@ class Organism_Batch(AuditModel):
     def find_Next_BatchID(self, OrganismID:str, BatchID:str=None) -> str:
         # Check for given BatchID    
         if BatchID:
+            # Clean up BatchID - remove non alphanumeric character and make uppercase
+            BatchID = re.sub(r'[^a-zA-Z0-9]', '', BatchID).upper()
+
+            # Clean up BatchID - reformat numbers
+            if BatchID.isnumeric():
+                BatchID = self.str_BatchID(int(BatchID))
+
             next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
             if ~self.exists(next_OrgBatch):
                 return(BatchID)
@@ -464,10 +476,12 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS={
-       "orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_name":"Organism",
+        #"orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
         "stock_type":"Stock Type",
-        "n_created":"#C",
-        "n_left":"#L",
+        "n_created":"#Created",
+        "n_left":"#Left",
         "location_freezer": "Freezer",
         "location_rack": "Rack",
         "location_column": "Column",
@@ -475,7 +489,6 @@ class OrgBatch_Stock(AuditModel):
         "stock_date":"Stock Date",
         "stock_note":"Stock Note",
         "biologist":"Biologist",
-        "orgbatch_id":"OrgBatch ID",
     }
 
     Choice_Dictionary = {
@@ -486,8 +499,8 @@ class OrgBatch_Stock(AuditModel):
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     stock_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Stock Type", on_delete=models.DO_NOTHING,
         db_column="stock_type", related_name="%(class)s_stock")
-    n_created = models.IntegerField(default=0, verbose_name = "#Vials created")
-    n_left = models.IntegerField(default=0, verbose_name = "#Vials left")
+    n_created = models.IntegerField(default=0, verbose_name = "#Created")
+    n_left = models.IntegerField(default=0, verbose_name = "#Left")
     stock_date = models.DateField(null=True, blank = True, verbose_name = "Stock Date")
     stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
     # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")

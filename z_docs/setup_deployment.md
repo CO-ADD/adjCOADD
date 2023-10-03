@@ -5,20 +5,14 @@
 # nginx - Advanced load balancer, Web server and Reserve Proxy
 #
 
-#-------------------------------------------------------------------------------------
-# Install gunicorn ino conda env
-#-------------------------------------------------------------------------------------
+# Install gunicorn into conda env
 dj41py310> conda install gunicorn  #gunicorn-20.1.0  
 
-#-------------------------------------------------------------------------------------
 # Install nginx
-#-------------------------------------------------------------------------------------
 root> yum install epel-release
 root> yum install nginx  #nginx 1:1.20.1-10.el7
 
-#-------------------------------------------------------------------------------------
 # start nginx service
-#-------------------------------------------------------------------------------------
 root> systemctl start nginx
 root> systemctl status nginx
  
@@ -46,10 +40,8 @@ root> systemctl eneable nginx  #to enable start nginx on boot-up
 root> systemctl restart nginx
 root> systemctl stop nginx
 
-#-------------------------------------------------------------------------------------
-# configuration of nginx service
-#-------------------------------------------------------------------------------------
-# /etc/nginx/
+# configuration of nginx service (/etc/nginx/)
+# 
 root> more /etc/nginx/nginx.conf
         # For more information on configuration, see:
         #   * Official English Documentation: http://nginx.org/en/docs/

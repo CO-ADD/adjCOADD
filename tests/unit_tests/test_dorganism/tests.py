@@ -5,8 +5,6 @@ from django.urls import reverse, resolve
 from dorganism.models import Organism, Taxonomy
 from dorganism.views import *
 
-
-
 # ------------------
 #Test Concurrency when Create Entry
 # -----------------

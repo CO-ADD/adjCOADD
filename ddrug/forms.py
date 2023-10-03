@@ -60,12 +60,9 @@ class Drug_form(forms.ModelForm):
     def clean_smol(self):
         data=self.cleaned_data['smol']
 
-        print("0",data)
         if data:
-            data=Chem.MolFromMolBlock(data)
-            print("1",data)
+            data=Chem.MolFromMolBlock('M- \n'+data)
         else:
-            print("1e")
             self.add_error('smol', 'Provide smol value, currently is None')
         
         return data
@@ -105,10 +102,16 @@ class Drug_filter(Filterbase):
         # fields=list(model.HEADER_FIELDS.keys())
 
 
+#=================================================================================================
+# Vitek Data
+#=================================================================================================
+
 # -----------------------------------------------------------------
-class Vitekcard_filter(Filterbase):
+# VitekCard
+# -----------------------------------------------------------------
+class VitekCard_Filter(Filterbase):
+    f_OrgID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
     #card_barcode = django_filters.CharFilter(lookup_expr='icontains')
-    #card_type = django_filters.CharFilter()
     card_code = django_filters.ChoiceFilter(field_name='card_code', choices=[], label="Card Code")
     card_type = django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=VITEK_Card.Choice_Dictionary['card_type']))
     
@@ -118,33 +121,42 @@ class Vitekcard_filter(Filterbase):
 
     class Meta:
         model=VITEK_Card
-        #fields=['card_barcode']
-        fields =list(model.HEADER_FIELDS.keys())
+        fields=['f_OrgID']
+        fields += list(model.HEADER_FIELDS.keys())
+        exclude = ['orgbatch_id.organism_id.organism_id',
+                   'orgbatch_id.batch_id',
+                   ]
 
 
 # -----------------------------------------------------------------
-class Vitekast_filter(Filterbase):
+# Vitek AST
 # -----------------------------------------------------------------
-    fOrg_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
-    fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label='Drug Name')
-    fOrgBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label='Drug Name')
-    fDrug_Name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
+class VitekAST_Filter(Filterbase):
+# -----------------------------------------------------------------
+    f_OrgID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
+    f_OrgName = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label='Organism Name')
+    f_OrgBatchID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label='Batch')
+    f_DrugName = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains',label='Drug Name')
+
     # bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
     bp_source = django_filters.ChoiceFilter(field_name = 'bp_source', choices=[], label = 'Source')
-    codes = django_filters.ChoiceFilter(field_name = 'drug_id__drug_codes', choices=[], label = 'Code')
+
+    codes = django_filters.CharFilter(field_name='drug_id__drug_codes', lookup_expr='icontains',label="Drug Code")
+    #codes = django_filters.ChoiceFilter(field_name = 'drug_id__drug_codes', choices=[], label = 'Code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
         self.filters['bp_source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_source')
+        
         # code is Foreighkey field
-        choice_query = Drug.objects.order_by().values_list('drug_codes').distinct()
-        choices = [(str(i[0]), str(i[0])) for i in choice_query]
-        self.filters['codes'].extra["choices"] = choices
+        #choice_query = Drug.objects.order_by().values_list('drug_codes').distinct()
+        #choices = [(str(i[0]), str(i[0])) for i in choice_query]
+        #self.filters['codes'].extra["choices"] = choices
 
     class Meta:
         model=VITEK_AST
-        fields=['fOrg_ID','fOrgBatch_ID','fOrg_Name','fDrug_Name', 'codes']
+        fields=['f_OrgID','f_OrgBatchID','f_OrgName','f_DrugName', 'codes']
         fields +=list(model.HEADER_FIELDS.keys())
         exclude = ['card_barcode.orgbatch_id.organism_id.organism_id',
                    'card_barcode.orgbatch_id.batch_id',
@@ -154,10 +166,12 @@ class Vitekast_filter(Filterbase):
                    ]
 
 # -----------------------------------------------------------------
-class VitekID_filter(Filterbase):
+# Vitek ID
+# -----------------------------------------------------------------
+class VitekID_Filter(Filterbase):
 # -----------------------------------------------------------------
     fOrg_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
-    fBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label="OrgBatch ID")
+    fBatch_ID = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label="Batch")
     fOrg_Name = django_filters.CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
     id_confidence = django_filters.ChoiceFilter(field_name = 'id_confidence', choices=[], label = 'ID Confidence')
     process = django_filters.ChoiceFilter(field_name = 'process', choices=[], label = 'Vitek Process')
@@ -174,6 +188,10 @@ class VitekID_filter(Filterbase):
                    'card_barcode.orgbatch_id.batch_id',
                    'card_barcode.orgbatch_id.organism_id.organism_name',
                    ]
+
+#=================================================================================================
+# AntiBiogram
+#=================================================================================================
 
 # -----------------------------------------------------------------
 class MIC_COADDfilter(Filterbase):
@@ -286,7 +304,7 @@ class MIC_Pubfilter(Filterbase):
 # -----------------------------------------------------------------
 class Breakpointfilter(Filterbase):
 # -----------------------------------------------------------------
-    drug_name = django_filters.CharFilter(field_name='drug_id.drug_name', lookup_expr='icontains', label="Drug")
+    drug_name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains', label="Drug")
     bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
     notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
     org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)

@@ -1,0 +1,28 @@
+<!-- 
+  replace org_create with the name <main_model>_create;
+  replace title with Create <main_model>;
+  replace form_id with Create_Organism
+  
+
+-->
+  
+<div class="modal-dialog modal-lg">
+  <!--prettier-ignore-->
+  {% url 'org_create' as createurl %}
+   {%include 'utils/modal/modal_form.html' with title='Create Organism' urlname=createurl form_id="Create_Organism"%}
+</div>
+<!-- validate organism name input -->
+<script>
+  $(document).ready(function () {
+    $('button[type="submit"]').click(function (e) {
+      console.log($("#taxo-name"));
+      if ($("#taxo-name").length) {
+        var searchName = $("#taxo-name").val(); //
+        if (searchName == "") {
+          e.preventDefault(); // prevent form submission
+          $("#search-input").focus();
+        }
+      }
+    });
+  });
+</script>

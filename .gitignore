@@ -1,8 +1,8 @@
 
-# ignore log
-/applog/
-/impdata/**.log
-**/*.log
+# adjCOADD stuff:
+applog/
+impdata/*.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -10,7 +10,6 @@ __pycache__/
 *.log
 # C extensions
 *.so
-/impdata/*.log
 # Distribution / packaging
 .Python
 env/
@@ -58,13 +57,6 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-
-
-
-# adjCOADD stuff:
-applog/*.log
-impdata/*.log
-
 
 # Flask stuff:
 instance/

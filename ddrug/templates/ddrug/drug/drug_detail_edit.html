@@ -1,0 +1,63 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex vh-100">
+
+  <!-- <div class="border border-2 w-100"> -->
+
+  {% include 'utils/lefticons.html' with title="Drug" %}
+  <div class="w-100">
+
+    <div class="accordion bg-transparent" id="drug-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="fs-6 my-0">{{object.pk}} |
+              {{object.drug_name}}
+            </h5>
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
+          data-bs-parent="#drug-detail">
+          <div class="accordion-body bg-transparent">
+            <b> {% include 'utils/message.html' %} </b>
+            {% include 'ddrug/drug/drug_u.html' %}
+            <hr>
+            {% include 'detailview/audit_status.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--
+    <div>
+      {% include 'utils/piediagram.html' %}
+    </div>
+    -->
+
+  </div>
+
+
+
+  <!-- call drug structure editor modal
+  <script>
+    $(document).ready(function () {
+      $('#get_new_mol').prop('disabled', true);
+      $('#get_new_mol').click(function () {
+        $(".edit_detailtable").click();
+ 
+      })
+
+    });
+
+  </script>
+  -->
+</div>
+
+
+{% endblock %}

@@ -23,7 +23,7 @@ from apputil.utils.views_base import SimplecreateView, SimpleupdateView
 from adjcoadd.constants import *
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import molecule_to_svg, get_mfp2_neighbors
-from ddrug.forms import Drug_form, Drug_filter, Vitekcard_filter, Vitekast_filter, VitekID_filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
+from ddrug.forms import Drug_form, Drug_filter, VitekCard_Filter, VitekAST_Filter, VitekID_Filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
 from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
 
 # ===================================================================
@@ -75,16 +75,17 @@ class DrugCardView(DrugListView):
     template_name = 'ddrug/drug/drug_card.html'
     def get_context_data(self, **kwargs):
         try:
-            context = super().get_context_data(**kwargs)          
+            context = super().get_context_data(**kwargs)
+            context['mol_img_url'] = settings.MOL_IMG_URL         
         # clearIMGfolder()
             for object_ in context["object_list"]:
-                filepath=os.path.join(settings.STRUCTURE_FILES_DIR, f"{object_.pk}.svg") 
+                filepath=os.path.join(settings.MOL_IMG_DIR, f"{object_.pk}.svg")
                 if os.path.exists(filepath):
                     continue
                 else:
                     m=object_.smol
                     try:
-                        molecule_to_svg(m, object_.pk)
+                        molecule_to_svg(m, object_.pk, path = settings.MOL_IMG_DIR)
                     except Exception as err:
                         pass
                         # messages.error(self.request, f'**{object_.pk} mol may not exists**')
@@ -98,10 +99,12 @@ class DrugCardView(DrugListView):
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, pk=pk)
-    form=Drug_form(instance=object_,)# initial={"smol":Chem.MolToMolBlock(object_.smol)},)
+    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
+    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
+    context['mol_img_url'] = settings.MOL_IMG_URL
     try:
         context["object_mol"]=Chem.MolToMolBlock(object_.smol)
         m="\\n".join(context["object_mol"].split("\n"))
@@ -124,100 +127,49 @@ class DrugUpdateView(SimpleupdateView):
     model=Drug
 
 
+#=================================================================================================
+# Vitek Data
+#=================================================================================================
 
-#==  VITEK Card View =============================================================
-# --Vitek Card--
-class VitekcardListView(LoginRequiredMixin, FilteredListView):
+# -----------------------------------------------------------------
+# VitekCard
+# -----------------------------------------------------------------
+class VitekCard_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_Card  
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
-    filterset_class=Vitekcard_filter
+    filterset_class=VitekCard_Filter
     model_fields=model.HEADER_FIELDS
-    context_list=''
+    #context_list=''
     
-    def get_context_data(self,  **kwargs):
+    # def get_context_data(self,  **kwargs):
 
-        context =super().get_context_data( **kwargs)
-        # context['defaultcolumns1']='expiry_date'
-        # context['defaultcolumns2']='card_barcode'
-        # context['defaultindex1']='analysis_time'
-        # context['defaultindex2']='proc_date'
-        # context['defaultvalues']='instrument'
-      
-      
-        # data=list(context["object_list"].values())
-        # df=pd.DataFrame(data)
-        # try:
-        #     table=pd.pivot_table(df, values=["instrument"] or None, index=["proc_date", "analysis_time"],
-        #                 columns=["expiry_date","card_barcode"], aggfunc=np.sum).to_html(classes=["table-bordered"])
-        #     context['table']=table
-        # except Exception as err:
-        #     context['table']= 'table error : '+ str(err) 
-        return context
-    
-   
-    # def post(self, request, *args, **kwargs ):
-    #     queryset=self.get_queryset()#
-    #     if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' and self.request.method == "POST":
-    #         selected_data=request.POST.getlist("selected_data[]") or None
-    #         values_str=request.POST.get("values") or None
-    #         columns_str=request.POST.get("columns") or None
-    #         index_str=request.POST.get("index") or None
-    #         card_barcode=request.POST.get("card_barcode")
-    #         aggfunc_name=request.POST.get("functions")
-    #         if selected_data:
-    #             querydata=queryset.filter(pk__in=selected_data)
-    #         else:
-    #             querydata=queryset.filter(card_barcode__contains=card_barcode)
-                
-    #         values=values_str or None # pivottable values
-    #         if values:
-    #             try:
-    #                 table=VITEK_Card.get_pivottable(querydata=querydata, columns_str=columns_str, index_str=index_str,aggfunc=aggfunc_name, values=values)
-    #                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')#(content_type='text/csv')
-    #                 response['Content-Disposition'] = 'attachment; filename=pivottable.xlsx'
-    #                 table_html=table.head().to_html(classes=["table-bordered",])
-    #                 table_csv=table.to_excel()
-    #                 return JsonResponse({"table_html":table_html, "table_csv":table_csv})
-    #             except Exception as err:
-    #                 error_message=str(err)
-    #                 print(err)
-    #                 return JsonResponse({"table_html":error_message,})
-    #     return JsonResponse({})
+    #     context =super().get_context_data( **kwargs)
+    #     return context
 
-##
-@login_required
-def detailVitekcard(req, pk):
-    context={}
-    object_=get_object_or_404(VITEK_Card, pk=pk)
-    context["object"]=object_
-    context["vitekid_obj"]=VITEK_ID.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekid_fields"]=VITEK_ID.get_fields(fields=VITEK_ID.HEADER_FIELDS)
-    context["vitekast_obj"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0)
-    context["vitekast_obj_count"]=VITEK_AST.objects.filter(card_barcode=object_.pk, astatus__gte=0).count()
-    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
-
-    return render(req, "ddrug/vitek_card/vitekcard_detail.html", context)
-
-# --Vitek Ast--
-## Query Across Tables:
-## Card, Drug, OrgBatch, Organism
-class VitekastListView(LoginRequiredMixin, FilteredListView):
+# -----------------------------------------------------------------
+# Vitek AST
+# -----------------------------------------------------------------
+class VitekAST_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_AST  
     template_name = 'ddrug/vitek_ast/vitekast_list.html' 
-    filterset_class=Vitekast_filter
+    filterset_class=VitekAST_Filter
     model_fields=model.HEADER_FIELDS
-    context_list=''
+    #context_list=''
 
       
-# --Vitek ID--
-class VitekIDListView(LoginRequiredMixin, FilteredListView):
+# -----------------------------------------------------------------
+# Vitek ID
+# -----------------------------------------------------------------
+class VitekID_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=VITEK_ID 
     template_name = 'ddrug/vitek_id/vitekid_list.html' 
-    filterset_class=VitekID_filter
+    filterset_class=VitekID_Filter
     model_fields=model.HEADER_FIELDS  
+
+    
 ## -----------
 class MIC_COADDListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -263,7 +215,12 @@ class API_Drug_List(API_ListView):
 class API_VITEK_ASTList(API_ListView):
     queryset = VITEK_AST.objects.all()
     serializer_class = VITEK_ASTSerializer
- 
+
+from rest_framework import generics
+class API_Drug_Detail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = Drug.objects.all()
+    serializer_class = Drug_Serializer
  
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()
@@ -277,4 +234,3 @@ class API_VITEK_ASTList(API_ListView):
 #     queryset = VITEK_AST.objects.all()
 #     serializer_class = VITEK_ASTSerializer
 #
-

@@ -11,14 +11,20 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+from datetime import timedelta
 import psycopg2.extensions
-
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-from datetime import timedelta
 
+print(f"Project: adjCOADD ")
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+#--------------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+#======================================================================
+# Define Version 
 #======================================================================
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
@@ -26,35 +32,54 @@ from datetime import timedelta
 DEVELOPMENT=None
 # DEVELOPMENT='Work'
 
-#======================================================================
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-UPLOAD_DIR = '/opt/django/var/uploads/'
-MEDIA_ROOT= UPLOAD_DIR if os.path.exists(UPLOAD_DIR) else os.path.join(BASE_DIR.parent, 'uploads') 
-MEDIA_URL = ('uploads/')
-
-# Define Version 
+#........................................................................
 if DEVELOPMENT:
-    # Devlopment/Local
-    # from github import Github
-    # g=Github()
-    # repo = g.get_organization('CO-ADD').get_repo('adjCOADD')
-    # pull_requests = repo.get_pulls(state = 'all', direction = 'desc')
-    # VERSION ='1.0.'+ str(pull_requests[0].number) +' (Development) - JZG'
-    VERSION = '1.0244 Development'
-else:
-    # Production
-    VERSION = '1.1'
+    # Development -----------------------------------------------------------------------
+    VERSION = '1.1.0251 Development'
+    DEBUG = True
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
-# Define Structure Images folder path
-if DEVELOPMENT=="Local":
-    # structure_file_path = f"static/images/{file_name}.svg"
-    STRUCTURE_FILES_DIR=os.path.join(BASE_DIR, 'static/images')
+    UPLOAD_DIR = os.path.join(BASE_DIR.parent, 'uploads')
+    MEDIA_URL = ('uploads/')
+    MEDIA_ROOT= UPLOAD_DIR
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
+
+    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+
+    MOL_IMG_URL = 'static/images/mol'
+    MOL_IMG_DIR = os.path.join(BASE_DIR, 'static/images/mol') 
+
 else:
-    Base_dir = Path(__file__).resolve().parent.parent.parent
-    STRUCTURE_FILES_DIR=os.path.abspath(os.path.join(Base_dir, 'static/images'))
+    # Production ----------------------------------------------------------------------
+    VERSION = '1.2.0'
+    DEBUG = False
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
+
+    UPLOAD_DIR = '/opt/django/var/uploads/'
+    MEDIA_URL = ('uploads/')
+    MEDIA_ROOT= UPLOAD_DIR
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
+
+    DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/var/backup'}
+
+    MOL_IMG_URL = 'static/images/mol'
+    MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
+
+print(f"Version: {VERSION}")
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+#--------------------------------------------------------------------
+
+#STRUCTURE_FILES_DIR=os.path.join(STATIC_ROOT, 'static/images')
+
+#======================================================================
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -64,27 +89,25 @@ else:
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-_fzrv(t#j+r4y)7s$nm=v!qt=+!@vs(2-=z)ls(h^$ozyj!$g^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if DEVELOPMENT else False
 
-if DEVELOPMENT:
-    # Devlopment/Local
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
-else:
-    # Production
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
+
 
 # Application definition
+#--------------------------------------------------------------------
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',   
+    'django.contrib.staticfiles',
+    'django.contrib.humanize',   
+    "django.contrib.postgres",
     'django_rdkit',
     'django_filters',
+    'dbbackup',
     "sequences.apps.SequencesConfig",
-    "django.contrib.postgres",
     'apputil.apps.ApputilConfig',
     'dorganism.apps.DorganismConfig',
     'ddrug.apps.DdrugConfig',
@@ -96,6 +119,7 @@ INSTALLED_APPS = [
     'formtools',
 ]
 
+#--------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -103,6 +127,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+#--------------------------------------------------------------------
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -119,6 +144,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+#--------------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -132,6 +158,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'adjcoadd.urls'
 
+#--------------------------------------------------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -154,8 +181,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+#--------------------------------------------------------------------
 if DEVELOPMENT:
     DB_NAME = os.environ.get('db_name') or 'orgdb'
     DB_USER = os.environ.get('db_usr') or 'orgdb'
@@ -172,6 +201,8 @@ else:
     DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+
+print(f"Host Name: {HOST_NAME}")
 
 DATABASES = {
     'default': {
@@ -251,8 +282,36 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 
+# Backup Database
+#--------------------------------------------------------------------
+# Requires django-dbbackup django-crontab and pg_dump/restore
+DBBACKUP_DATABASES = list(DATABASES.keys())
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
+
+if DEVELOPMENT:
+    #DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+    DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-'+DEVELOPMENT+'-{datetime}.{extension}'
+    DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-'+DEVELOPMENT+'-{datetime}.{extension}'
+else:
+    #DBBACKUP_STORAGE_OPTIONS = {'location': 'backup/'}
+    DBBACKUP_FILENAME_TEMPLATE = 'adjCOADD-DB-{datetime}.{extension}'
+    DBBACKUP_MEDIA_FILENAME_TEMPLATE = 'adjCOADD-Media-{datetime}.{extension}'
+
+# CRON_CLASSES = [
+#     "apputil.utils.cron.Backup_adjCOADD",
+    # ...
+#]
+CRONJOBS = [
+    # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
+    # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
+    ('0 0 * * FRI','apputil.utils.cron.Backup_adjCOADD'),
+    # ('*/1 * * * *','django.core.management.call_command')
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+#--------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -262,6 +321,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
+#--------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Australia/Brisbane'
 USE_I18N = True
@@ -269,20 +329,15 @@ USE_TZ = True
 DATE_FORMAT = "d-m-Y"
 USE_L10N = False
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = 'static/'
-STATICFILES_DIRS=[BASE_DIR/"static",]
-STATIC_ROOT = BASE_DIR.parent / 'static'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+#--------------------------------------------------------------------
 AUTH_USER_MODEL = 'apputil.ApplicationUser'
 LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #LDAP Autherntications
-#----------------------
+#--------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
@@ -293,8 +348,9 @@ AUTH_LDAP_BIND_PASSWORD = ""
 AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
 # Security Setting
+#--------------------------------------------------------------------
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -319,11 +375,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST=True
 
 # RDKit Settings
-#----------------------
+#--------------------------------------------------------------------
 DJANGO_RDKIT_MOL_SERIALIZATION = "TEXT"
 
-
 # Logging files
+#--------------------------------------------------------------------
 LOG_PATH = os.path.join(BASE_DIR, 'applog')
 LOGGING = {
     'version': 1,
@@ -367,5 +423,14 @@ LOGGING = {
 }
 
 X_FRAME_OPTIONS = 'ALLOWALL'
-
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
+
+# -------------------------------------------
+# print('Development:',DEVELOPMENT)
+# print('Debug:',DEBUG)
+# print('Base_Dir:',BASE_DIR)
+# print('Upload_Dir:',UPLOAD_DIR)
+# print('Media_Root:',MEDIA_ROOT)
+# print('Structure_files_dir:',MOL_IMG_DIR)
+# print('DbBackup:',DBBACKUP_STORAGE_OPTIONS)
+
