@@ -29,8 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
-#DEVELOPMENT=None
-DEVELOPMENT='Work'
+DEVELOPMENT=None
+#DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:
