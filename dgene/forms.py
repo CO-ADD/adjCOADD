@@ -206,11 +206,10 @@ class Gene_Filter(Filterbase):
 
 #=================================================================================================
 class AMRGenotype_Filter(Filterbase):
-    f_OrgBatchID = CharFilter(field_name='orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
-    #f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
     f_GeneCode = CharFilter(field_name='gene_id__gene_code', lookup_expr='icontains',label="Gene Code")
-    f_GeneType = CharFilter(field_name='gene_id__gene_type', lookup_expr='icontains',label="Gene Type")
+    f_GeneType = CharFilter(field_name='gene_id__gene_type__dict_value', lookup_expr='icontains',label="Gene Type")
     f_GeneClass = CharFilter(field_name='gene_id__amr_class', lookup_expr='icontains',label="AMR Class")
     f_GeneSClass = CharFilter(field_name='gene_id__amr_subclass', lookup_expr='icontains',label="AMR SubClass")
     #gene_type=ChoiceFilter(choices=[])
