@@ -2,6 +2,9 @@
 # adjCOADD stuff:
 applog/
 impdata/*.log
+utilities/upload_data/*.log
+utilities/export_data/*.log
+utilities/export_data/Output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
