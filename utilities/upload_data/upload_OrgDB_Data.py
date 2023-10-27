@@ -37,15 +37,15 @@ def main():
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    djDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD"
-    uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
+    djDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD"
+    uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/impdata/Data"
+        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     elif prgArgs.database == 'WorkLinux':
         djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/impdata/Data"
+        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
 
     xlFiles = {
         'Application': "ApplicationData_v05.xlsx",
