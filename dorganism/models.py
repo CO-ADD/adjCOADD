@@ -295,8 +295,8 @@ class Organism_Batch(AuditModel):
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
-        "qc_status":"QC_Status",
-        "qc_record": "QC Record",
+        "qc_status":"Batch Quality",
+        "qc_record": "Quality by",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
         "biologist":"Biologist"
