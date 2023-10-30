@@ -73,7 +73,7 @@ def main():
     OutBase = "Output"
     #uploadFile = os.path.join(uploadDir,"ApplicationData_2022_11_21_JZuegg_v01.xlsx")
 
-    choiceTables = ['Vitek',
+    choiceTables = ['Vitek','MIC',
                     'wgsFastA','wgsAMR',
                     ]
     if prgArgs.table in choiceTables:
@@ -82,6 +82,10 @@ def main():
         if prgArgs.table == 'Vitek':
             OutDir = os.path.join(OutBase,"Vitek")
             dVitek.export_Vitek(OutDir)
+
+        if prgArgs.table == 'MIC':
+            OutDir = os.path.join(OutBase,"Antibiogram")
+            dVitek.export_Antibiogram(OutDir)
 
     logger.info(f"-------------------------------------------------------------------")
     logger.info(f"LogFile        : {logFileName}")
