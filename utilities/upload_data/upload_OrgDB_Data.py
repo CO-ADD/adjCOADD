@@ -31,9 +31,9 @@ def main():
     prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
     prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
+    prgParser.add_argument("-o","--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
     prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
@@ -191,18 +191,27 @@ def main():
 
 
         elif prgArgs.table == 'wgsAssembly':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 02_Assembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
-            #dGene.update_WGSCOADD_Trim(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-            dGene.update_WGSCOADD_Assembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            if prgArgs.orgbatch and prgArgs.runid:
+                dGene.update_WGSCOADD_Assembly_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            else:   
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from 02_Assembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
+                #dGene.update_WGSCOADD_Trim(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                dGene.update_WGSCOADD_Assembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
             
         elif prgArgs.table == 'wgsFastA':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
-            dGene.update_WGSCOADD_FastA(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            if prgArgs.orgbatch and prgArgs.runid:
+                dGene.update_WGSCOADD_FastA_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            else:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
+                dGene.update_WGSCOADD_FastA(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'wgsAMR':
-            logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
-            #dGene.update_WGSCOADD_AMR(Methods= ['AMR Finder'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-            dGene.update_WGSCOADD_AMR(Methods= ['Abricate card'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            if prgArgs.orgbatch and prgArgs.runid:
+                dGene.update_WGSCOADD_AMR_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            else:
+                logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
+                #dGene.update_WGSCOADD_AMR(Methods= ['AMR Finder'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                dGene.update_WGSCOADD_AMR(Methods= ['Abricate card'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)
     else:
         logger.error(f"[Upd_djCOADD] {prgArgs.table} not in {choiceTables}")
                      
