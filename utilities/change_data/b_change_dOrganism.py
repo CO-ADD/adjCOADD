@@ -124,7 +124,7 @@ def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwarg
         newOrgID = 'GP_0317'
         djOrg = Organism.get(newOrgID)
 
-        print(f"[Rename ID] [Organism] {oldOrgID} => {newOrgID} ")
+        print(f"[* Rename Organism] {oldOrgID} => {newOrgID} ")
 
         # Find all Models with FK to Organism
         org_fk_models = get_Models_byForeignKey('Organism')
@@ -136,7 +136,7 @@ def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwarg
             else:
                 qryInst = fk.objects.filter(organism_id=oldOrgID)
                 for q in qryInst:
-                    print(f"[Rename subID] [{fk.__name__}] {str(q)}")
+                    print(f"[ +- Rename {fk.__name__}] {str(q)}")
 
 #-----------------------------------------------------------------------------------
 def rename_OrgBatchID(oldBatch, newOrgBatchID=None, newOrg=None, updateDict = None, **kwargs):
@@ -151,11 +151,15 @@ def rename_OrgBatchID(oldBatch, newOrgBatchID=None, newOrg=None, updateDict = No
 
     if oldBatch:
 
-        print(f"[Rename ID] [Organism_Batch] {oldOrgBatchID} => {newOrgBatchID} ")
+        print(f"[ +- Rename Organism_Batch] {oldOrgBatchID} => {newOrgBatchID} ")
 
         batch_fk_models = get_Models_byForeignKey('Organism_Batch')
-        for fk in batch_fk_models:
+        for fk in batch_fk_models:                
             qryInst = fk.objects.filter(orgbatch_id=oldOrgBatchID)
             for q in qryInst:
-                print(f"[Rename subID] [{fk.__name__}] {str(q)}")
+                print(f"[  +- Rename {fk.__name__}] {str(q)}")
+                if fk.__name__ == 'OrgBatch_Image':
+                    print(f"[  +- Rename {fk.__name__}] --> Rename Image Files")
+                elif fk.__name__ == 'Genome_Sequence':
+                    print(f"[  +- Rename {fk.__name__}] --> Rename Sequence Folder/Files {q.seq_name}")
 
