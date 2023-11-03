@@ -99,16 +99,63 @@ def get_Models_byForeignKey(fkModel):
         for f in m._meta.fields:
             #print(type(f), f.related_model)
             if isinstance(f, ForeignKey) and f.related_model == objModel:
-                models_with_fk.append(m.__name__)    
+                models_with_fk.append(m)    
 
     return(models_with_fk)
 
 #-----------------------------------------------------------------------------------
-def rename_OrgID(OrgID, newOrgName, newOrgCode = None, newOrgID=None, uploaduser=None, upload=False):
+def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwargs):
 #-----------------------------------------------------------------------------------
 
-    djOrg = Organism.get(OrgID)
-    djTax = Taxonomy.get(newOrgName,verbose=1)
-    if djOrg and djTax:
-        if ~newOrgID:
-            Organism.next_id()
+    djOrg = Organism.get(oldOrgID)
+    newTax = Taxonomy.get(newOrgName,verbose=1)
+    if djOrg and newTax:
+        oldOrgName = djOrg.organism_name
+        djOrg.organism_name = newTax
+        djOrg.organism_id = newOrgID
+        if updateDict:
+            for k,v in updateDict.items():
+                setattr(djOrg,k,v)
+
+        #djOrg.save()
+        #newOrgID = djOrg.organism_id
+
+        #Test
+        newOrgID = 'GP_0317'
+        djOrg = Organism.get(newOrgID)
+
+        print(f"[Rename ID] [Organism] {oldOrgID} => {newOrgID} ")
+
+        # Find all Models with FK to Organism
+        org_fk_models = get_Models_byForeignKey('Organism')
+        for fk in org_fk_models:
+            if fk.__name__ == 'Organism_Batch':
+                qryBatchID = Organism_Batch.objects.filter(organism_id=oldOrgID)
+                for b in qryBatchID:
+                    rename_OrgBatchID(b, None, djOrg, None, **kwargs)
+            else:
+                qryInst = fk.objects.filter(organism_id=oldOrgID)
+                for q in qryInst:
+                    print(f"[Rename subID] [{fk.__name__}] {str(q)}")
+
+#-----------------------------------------------------------------------------------
+def rename_OrgBatchID(oldBatch, newOrgBatchID=None, newOrg=None, updateDict = None, **kwargs):
+#-----------------------------------------------------------------------------------
+    oldOrgBatchID = oldBatch.orgbatch_id
+    oldOrgID = oldBatch.organism_id.organism_id
+    newOrgID = newOrg.organism_id
+
+    if not newOrgBatchID:
+        if newOrgID:
+            newOrgBatchID = oldOrgBatchID.replace(oldOrgID,newOrgID)
+
+    if oldBatch:
+
+        print(f"[Rename ID] [Organism_Batch] {oldOrgBatchID} => {newOrgBatchID} ")
+
+        batch_fk_models = get_Models_byForeignKey('Organism_Batch')
+        for fk in batch_fk_models:
+            qryInst = fk.objects.filter(orgbatch_id=oldOrgBatchID)
+            for q in qryInst:
+                print(f"[Rename subID] [{fk.__name__}] {str(q)}")
+

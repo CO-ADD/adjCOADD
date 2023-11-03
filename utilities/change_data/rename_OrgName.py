@@ -85,7 +85,7 @@ def main():
     #    dOrg.rename_OrgName_xls(prgArgs.file,XlsSheet="New OrgName",
     #                            upload=prgArgs.upload,uploaduser=appuser)
 
-    dOrg.get_Models_byForeignKey('Organism_Batch')
+    dOrg.rename_OrgID('GN_0696','Bacillus velezensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.ve BRf 79136'})
 
 #==============================================================================
 if __name__ == "__main__":
