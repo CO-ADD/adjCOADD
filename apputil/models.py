@@ -620,15 +620,15 @@ class ApplicationLog(models.Model):
 
     OWNER     = "orgdb"
 
-    log_code = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Code")
-    log_proc = models.CharField(max_length=50, blank=True, db_index = True, editable=False,verbose_name = "Log Procedure")
-    log_type = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Type")
-    log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Log Time")
-    log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "Log User", on_delete=models.DO_NOTHING, 
+    log_code = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Code")
+    log_proc = models.CharField(max_length=50, blank=True, db_index = True, editable=False,verbose_name = "Procedure")
+    log_type = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Type")
+    log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Time")
+    log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "User", on_delete=models.DO_NOTHING, 
         db_column="log_user", related_name="%(class)s_user")
-    log_object = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Object")
-    log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Log Code")
-    log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Status")
+    log_object = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Object")
+    log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Description")
+    log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Status")
 
     class Meta:
         app_label = 'apputil'
@@ -647,7 +647,7 @@ class ApplicationLog(models.Model):
     #
     # Saves an Log Entry
     #
-    def add(cls, LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus):
+    def add(cls, LogCode, LogProc, LogType,  LogUser, LogObject, LogDesc, LogStatus):
         log_inst = cls()
         log_inst.log_code = LogCode
         log_inst.log_proc = LogProc

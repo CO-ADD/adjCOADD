@@ -8,12 +8,18 @@ logger = logging.getLogger(__name__)
 
 import django
 #from zUtils import zData
+from django_rdkit.models import *
+from django_rdkit.config import config
+from django.conf import settings
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils import validation_log
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub
-from ddrug.utils.import_drug import *
+from dgene.models import ID_Sequence, ID_Pub, WGS_CheckM
+from dgene.utils.upload_gene import split_kraken, agg_kraken
+
+#from ddrug.utils.import_drug import *
 
 import ddrug.utils.vitek as Vitek
 
@@ -147,3 +153,55 @@ def export_Antibiogram(OutDir):
         pivMIC.to_excel(writer, sheet_name='MIC')
     #     #dfAST.to_excel(writer, sheet_name='Pub MIC')
     #     #pivAST.to_excel(writer, sheet_name='MICpub')
+
+#-----------------------------------------------------------------------------------
+def export_wgsFastA(OutDir):
+#-----------------------------------------------------------------------------------
+    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id','id']
+
+    vSEQs = ID_Sequence.objects.filter(astatus__gte=0).values().annotate(
+        batch_id = F("seq_id__orgbatch_id__batch_id"),
+        organism_id = F("seq_id__orgbatch_id__organism_id"),
+        orgname = F("seq_id__orgbatch_id__organism_id__organism_name"),
+        )
+    logger.info(f"[wgsFastA] {len(vSEQs)} WGS FastA's ID")
+
+    #vIDs = []
+    for v in vSEQs:
+        _k = split_kraken(v['kraken_organisms'])
+        v['kraken2'] = agg_kraken(_k,5)
+        v['mlst'] = f"{v['mlst_scheme']} ({v['mlst_seqtype']})"
+        #vIDs.append(v)
+
+    rmCols = ['kraken_organisms','mlst_seqtype','mlst_scheme','mlst_alleles','gtdbtk_fastani']
+    dfID = pd.DataFrame(vSEQs).drop(columns=AuditFields+rmCols)
+
+
+    
+    vCMs = WGS_CheckM.objects.filter(astatus__gte=0).values().annotate(
+        batch_id = F("seq_id__orgbatch_id__batch_id"),
+        organism_id = F("seq_id__orgbatch_id__organism_id"),
+        orgname = F("seq_id__orgbatch_id__organism_id__organism_name"),
+        )
+    logger.info(f"[wgsFastA] {len(vCMs)} WGS FastA's CheckM")
+    for v in vCMs:
+        v['piv_value'] = f"{v['marker_lineage']} [{v['assembly_qc']}]"
+
+
+    dfCM = pd.DataFrame(vCMs).drop(columns=AuditFields)
+    pivCM = dfCM.pivot_table(index=['organism_id','orgname','batch_id'],columns=['assembly'],values=['piv_value'],aggfunc=agg_ListStr)
+
+    if not os.path.exists(OutDir):
+        os.makedirs(OutDir)
+    xlFile = os.path.join(OutDir,"Identification_Data.xlsx")
+
+    with pd.ExcelWriter(xlFile) as writer:
+        dfID.to_excel(writer, sheet_name='ID')
+        #pivMIC.to_excel(writer, sheet_name='MIC')
+        dfCM.to_excel(writer, sheet_name='CheckM')
+        pivCM.to_excel(writer, sheet_name='Marker')
+
+#-----------------------------------------------------------------------------------
+def export_wgsAMR(OutDir):
+#-----------------------------------------------------------------------------------
+    pass

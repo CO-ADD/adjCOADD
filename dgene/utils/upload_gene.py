@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from django_rdkit.models import *
@@ -176,6 +177,40 @@ def upload_CheckM(OrgBatchID, RunID, AssemblyDir, vLog, upload=False,uploaduser=
             lstCheckM.append(dict(sDict,**row))
     return(lstCheckM)    
 
+
+#-----------------------------------------------------------------------------------
+def split_kraken(lstKraken):
+#-----------------------------------------------------------------------------------
+    idLst = []
+    for v in lstKraken:
+        _k = {}
+        m = re.search(r'(.*?) \((\d+)\) \[(.*?) pct\]',v)
+        if m:
+            _k['org_name'] = m.group(1)
+            _k['tax_id'] = int(m.group(2))
+            _k['pct'] = float(m.group(3))
+            idLst.append(_k)
+    return(idLst)
+
+#-----------------------------------------------------------------------------------
+def agg_kraken(lstKraken,cutoff=10):
+#-----------------------------------------------------------------------------------
+    _agg = []
+    for v in lstKraken:
+        if v['pct'] >= cutoff :
+            _agg.append(f"{v['org_name']} [{v['pct']:.1f} pct]")
+    if len(_agg)<len(lstKraken):
+        _agg.append(f"+{len(lstKraken)-len(_agg)} [<{cutoff} pct]")
+    return "; ".join(_agg)
+#-----------------------------------------------------------------------------------
+def merge_kraken(lstKraken):
+#-----------------------------------------------------------------------------------
+    idLst = []
+    for v in lstKraken:
+        # Formatted String for ArrayField
+        idLst.append(f"{v['org_name']} ({v['tax_id']}) [{v['pct']:.1f} pct]")
+    return(idLst)
+
 #-----------------------------------------------------------------------------------
 def upload_FastA(OrgBatchID, RunID, FastaDir, vLog, upload=False,uploaduser=None,verbose=False):  
 #-----------------------------------------------------------------------------
@@ -198,13 +233,7 @@ def upload_FastA(OrgBatchID, RunID, FastaDir, vLog, upload=False,uploaduser=None
 
         # Kraken2 -----------------------------
         lKraken=get_Kraken_Info(FastaDir,OrgBatchID, RunID)
-        #sDict = {'OrgBatch_ID':fa['orgbatchid'], 'Run_ID':fa['runid'], 'ID_Type': 'WGS','ID_Method': 'Kraken2 FastA','Source':'CO-ADD'}
-        idLst = []
-        for v in lKraken:
-            # Formatted String for ArrayField
-            idLst.append(f"{v['org_name']} ({v['tax_id']}) [{v['pct']:.1f} pct]")
-        #print(idLst)
-        SeqDict['kraken_organisms'] = idLst
+        SeqDict['kraken_organisms'] = merge_kraken(lKraken)
 
         # MLST -----------------------------
         lMLST=get_MLST_Info(FastaDir,OrgBatchID, RunID)

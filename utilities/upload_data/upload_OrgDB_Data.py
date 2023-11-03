@@ -207,7 +207,7 @@ def main():
 
         elif prgArgs.table == 'wgsAMR':
             if prgArgs.orgbatch and prgArgs.runid:
-                dGene.update_WGSCOADD_AMR_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                dGene.update_WGSCOADD_AMR_single(prgArgs.orgbatch,prgArgs.runid,Methods= ['Abricate card'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)
             else:
                 logger.info(f"[Upd_djCOADD] {prgArgs.table} from 03_FastA {prgArgs.runid} [Upload: {prgArgs.upload}]")
                 #dGene.update_WGSCOADD_AMR(Methods= ['AMR Finder'],upload=prgArgs.upload,uploaduser=prgArgs.appuser)

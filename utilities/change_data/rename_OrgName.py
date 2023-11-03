@@ -1,4 +1,6 @@
 #
+#
+#
 import os, sys
 import datetime
 import csv
@@ -18,40 +20,48 @@ import logging
 
 #-----------------------------------------------------------------------------
 def main():
-
     # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_OrgDB_Data', 
-                                description="Uploading data to adjCOADD from Oracle or Excel")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    prgParser = argparse.ArgumentParser(prog='change_OrgDB_Data', 
+                                description="Changing data to adjCOADD from Excel")
+    # prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
-    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
-    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+    # prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
+    # prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
+    # prgParser.add_argument("-o","--orgbatch",default=None,required=False, dest="orgbatch", action='store', help="OrganismBatch ID")
     prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    # prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
     djDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD"
-    outputDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/export_data/Output"
+    uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
     if prgArgs.database == 'Work':
         djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-        outputDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/export_data/Output"
+        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     elif prgArgs.database == 'WorkLinux':
         djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        outputDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/export_data/Output"
+        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
+
+    xlFiles = {
+        'Application': "ApplicationData_v05.xlsx",
+        'Drug': "DrugData_v04.xlsx",
+        'MIC': "LMIC_Data_v06.xlsx",
+        'OrgDB': "OrgDB_v20_30Jun2023.xlsx",
+    }
 
     sys.path.append(djDir)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
-    import d_export_Vitek as dVitek
+    from apputil.models import ApplicationUser
+    import b_change_dOrganism as dOrg
 
-   # Logger ----------------------------------------------------------------
+    # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
-    logName = "ExportOrgDB"
+    logName = "ChangeOrgDB"
     logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
     logLevel = logging.INFO 
 
@@ -69,34 +79,14 @@ def main():
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-    # Excel  -------------------------------------------------------------
-    OutBase = "Output"
-    #uploadFile = os.path.join(uploadDir,"ApplicationData_2022_11_21_JZuegg_v01.xlsx")
+    appuser = ApplicationUser.get(prgArgs.appuser)
 
-    choiceTables = ['Vitek','MIC',
-                    'wgsFastA','wgsAMR',
-                    ]
-    if prgArgs.table in choiceTables:
-        logger.info(f"[Exp_djCOADD] Table: {prgArgs.table}") 
+    #if prgArgs.file:
+    #    dOrg.rename_OrgName_xls(prgArgs.file,XlsSheet="New OrgName",
+    #                            upload=prgArgs.upload,uploaduser=appuser)
 
-        if prgArgs.table == 'Vitek':
-            OutDir = os.path.join(OutBase,"Vitek")
-            dVitek.export_Vitek(OutDir)
+    dOrg.get_Models_byForeignKey('Organism_Batch')
 
-        if prgArgs.table == 'MIC':
-            OutDir = os.path.join(OutBase,"Antibiogram")
-            dVitek.export_Antibiogram(OutDir)
-
-        if prgArgs.table == 'wgsFastA':
-            OutDir = os.path.join(OutBase,"FastA")
-            dVitek.export_wgsFastA(OutDir)
-
-    logger.info(f"-------------------------------------------------------------------")
-    logger.info(f"LogFile        : {logFileName}")
-
-    #
-
-        
 #==============================================================================
 if __name__ == "__main__":
 
