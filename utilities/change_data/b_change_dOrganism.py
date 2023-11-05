@@ -135,9 +135,13 @@ def rename_OrgID_xls(XlsFile, XlsSheet=0, lower=False, OutputN=20,**kwargs):
         nTotal = len(orgLst)
         
 
-        #rename_OrgID('GN_0696','Bacillus velezensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.ve BRf 79136'},**kwargs)
-        #rename_OrgID('GN_0697','Bacillus safensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.sa BRf 79197'},**kwargs)
-        rename_OrgID('GN_1045','Enterococcus faecalis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'En.fas PK 49'},**kwargs)
+        #rename_OrgID_allBatches('GN_0696','Bacillus velezensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.ve BRf 79136'},**kwargs)
+        #rename_OrgID_allBatches('GN_0697','Bacillus safensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.sa BRf 79197'},**kwargs)
+        #rename_OrgID_allBatches('GN_1045','Enterococcus faecalis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'En.fas PK 49'},**kwargs)
+
+        #rename_OrgID_sngBatches('GN_0952_02','Acinetobacter baumannii',None,{},**kwargs)
+        #rename_OrgID_sngBatches('GN_0981_01','Serratia marcescens',None,{},**kwargs)
+        rename_OrgID_sngBatches('GN_1149_02','Escherichia coli',None,{},**kwargs)
 
         # for org in orgLst:
         #     if 'strain_code' not in org:
@@ -147,7 +151,7 @@ def rename_OrgID_xls(XlsFile, XlsSheet=0, lower=False, OutputN=20,**kwargs):
 
 
 #-----------------------------------------------------------------------------------
-def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwargs):
+def rename_OrgID_allBatches(oldOrgID, newOrgName, newOrgID=None, updateDict = None, delete=True, **kwargs):
 #-----------------------------------------------------------------------------------
 
     djOrg = Organism.get(oldOrgID)
@@ -172,7 +176,7 @@ def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwarg
 
         _obj = f'Organism  ({oldOrgID})'
         _desc = f'Update Organism_id: {newOrgID} (old {oldOrgID})'
-        ApplicationLog.add('Update','rename_OrgID','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
+        ApplicationLog.add('Update','rename_OrgID_allBatches','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
 
         logger.info(f"[* Rename Organism] {oldOrgID} => {newOrgID} [{djOrg.strain_ids}]")
 
@@ -189,25 +193,62 @@ def rename_OrgID(oldOrgID, newOrgName, newOrgID=None, updateDict = None, **kwarg
                     q.organism_id = djOrg
                     q.save()
                     _obj = f"{fk.__name__} ({q.pk})"
-                    ApplicationLog.add('Update','rename_OrgID','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
+                    ApplicationLog.add('Update','rename_OrgID_allBatches','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
                     logger.info(f"[ +- Rename {fk.__name__}] {str(q)}")
 
         # Change old Organism with new ID in strain_ids, and mark as deleted 
         oldOrg = Organism.get(oldOrgID)
         oldOrg.strain_ids = append_StrList(djOrg.strain_ids,f"[New ID: {newOrgID}]")
         oldOrg.save()
-        _obj = f'Organism  ({oldOrgID})'
-        _desc = f'Marked as Deleted Organism_id: {oldOrgID}'
-        ApplicationLog.add('Deleted','rename_OrgID','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
-        oldOrg.delete()
+        if delete:
+            _obj = f'Organism  ({oldOrgID})'
+            _desc = f'Marked as Deleted Organism_id: {oldOrgID}'
+            ApplicationLog.add('Deleted','rename_OrgID_allBatches','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
+            oldOrg.delete()
 
 #-----------------------------------------------------------------------------------
-def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = None, **kwargs):
+def rename_OrgID_sngBatches(oldOrgBatchID, newOrgName, newOrgID=None, updateDict = None, **kwargs):
+#-----------------------------------------------------------------------------------
+
+    
+    djBatch = Organism_Batch.get(oldOrgBatchID)
+    djOrg = Organism.get(djBatch.organism_id.organism_id)
+    oldOrgID = djOrg.organism_id
+
+    newTax = Taxonomy.get(newOrgName,verbose=1)
+    if djOrg and newTax and djBatch:
+        oldOrgName = djOrg.organism_name
+        djOrg.organism_name = newTax
+        djOrg.organism_id = newOrgID
+        djOrg.strain_ids = append_StrList(djOrg.strain_ids,f"[Split ID: {oldOrgID}]")
+        if updateDict:
+            for k,v in updateDict.items():
+                setattr(djOrg,k,v)
+
+        djOrg.save()
+        newOrgID = djOrg.organism_id
+
+        _obj = f'Organism  ({oldOrgID})'
+        _desc = f'New Organism_id: {newOrgID} (from {oldOrgID})'
+        ApplicationLog.add('Update','rename_OrgID_sngBatches','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
+
+        logger.info(f"[* New Organism] {oldOrgID} => {newOrgID} [{djOrg.strain_ids}]")
+
+        # # Find all Models with FK to Organism
+        rename_OrgBatchID(djBatch, None, djOrg, None, delete=False, **kwargs)
+
+        # # Change old Organism with new ID in strain_ids
+        oldOrg = Organism.get(oldOrgID)
+        oldOrg.strain_ids = append_StrList(djOrg.strain_ids,f"[Split ID: {newOrgID}]")
+        oldOrg.save()
+
+#-----------------------------------------------------------------------------------
+def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = None, delete=True, **kwargs):
 #-----------------------------------------------------------------------------------
     oldOrgBatchID = OrgBatch.orgbatch_id
     oldOrgID = OrgBatch.organism_id.organism_id
     newOrgID = newOrg.organism_id
-
+        
     if not newOrgBatchID:
         if newOrgID:
             newOrgBatchID = oldOrgBatchID.replace(oldOrgID,newOrgID)
@@ -229,7 +270,7 @@ def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = No
         for fk in batch_fk_models:                
             qryInst = fk.objects.filter(orgbatch_id=oldOrgBatchID)
             for q in qryInst:
-                logger.info(f"[  +- Rename {fk.__name__}] {str(q)}")
+                logger.info(f"[  +- Change {fk.__name__}] {str(q)} with {OrgBatch}")
 
                 if fk.__name__ == 'OrgBatch_Image':
                     # Rename orgbatch_ID specific values
@@ -254,8 +295,9 @@ def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = No
         oldBatch = OrgBatch.get(oldOrgBatchID)
         oldBatch.batch_notes = append_StrList(oldBatch.batch_notes,f"[New ID: {newOrgBatchID}]")
         oldBatch.save()
-        _obj = f'OrgBatch ({oldOrgBatchID})'
-        _desc = f'Marked as Deleted OrgBatch_id: {oldOrgBatchID}'
-        ApplicationLog.add('Deleted','rename_OrgBatchID','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
-        oldBatch.delete()
+        if delete:
+            _obj = f'OrgBatch ({oldOrgBatchID})'
+            _desc = f'Marked as Deleted OrgBatch_id: {oldOrgBatchID}'
+            ApplicationLog.add('Deleted','rename_OrgBatchID','Info',kwargs['uploaduser'],_obj,_desc,'Completed')
+            oldBatch.delete()
  

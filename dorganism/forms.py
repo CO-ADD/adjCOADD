@@ -172,19 +172,19 @@ class UpdateOrganism_form(CreateOrganism_form):
 class OrgBatch_Form(forms.ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
-
+ 
     # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
-    qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
+    quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
                                         help_text='Optional - If empty, next number will be assigned', required=False)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
 
     def __init__(self, *args, **kwargs):
         super(OrgBatch_Form, self).__init__(*args, **kwargs)
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['batch_quality'])] 
 
     class Meta:
         model =Organism_Batch
@@ -192,19 +192,21 @@ class OrgBatch_Form(forms.ModelForm):
         
 
 class OrgBatch_UpdateForm(forms.ModelForm):
-    qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+
+    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    qc_record=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
+    quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False,)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
+    
     def __init__(self, *args, **kwargs):   
         super().__init__(*args, **kwargs)
         instance=kwargs.get('instance')
         if instance and instance.stock_level:
             self.fields['stock_level'].initial=instance.stock_level
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['batch_quality'])]
         self.create_field_groups()
 
     def create_field_groups(self):
