@@ -141,7 +141,8 @@ def rename_OrgID_xls(XlsFile, XlsSheet=0, lower=False, OutputN=20,**kwargs):
 
         #rename_OrgID_sngBatches('GN_0952_02','Acinetobacter baumannii',None,{},**kwargs)
         #rename_OrgID_sngBatches('GN_0981_01','Serratia marcescens',None,{},**kwargs)
-        rename_OrgID_sngBatches('GN_1149_02','Escherichia coli',None,{},**kwargs)
+        #rename_OrgID_sngBatches('GN_1149_02','Escherichia coli',None,{},**kwargs)
+        rename_OrgID_sngBatches('GN_1115_03','Enterococcus faecalis',None,{},**kwargs)
 
         # for org in orgLst:
         #     if 'strain_code' not in org:
@@ -278,14 +279,14 @@ def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = No
                     _old = q.image_file
                     q.image_name = _oldI.replace(oldOrgBatchID,newOrgBatchID)
                     q.image_file = f"images/orgbatch/{get_subdir(q.image_name)}/{q.image_name}"
-                    logger.warning(f"[  +- Rename {fk.__name__} --> Rename Image Files {_old} -> {q.image_file}")
+                    logger.warning(f"[  XXX Rename {fk.__name__} --> Rename Image Files {_old} -> {q.image_file}")
                 elif fk.__name__ == 'Genome_Sequence':
                     # Rename orgbatch_ID specific values
                     _old = q.seq_name
                     q.seq_name = _old.replace(oldOrgBatchID,newOrgBatchID)
                     q.source_code = q.source_code.replace(oldOrgBatchID,newOrgBatchID)
                     q.source_link = q.source_link.replace(oldOrgBatchID,newOrgBatchID)
-                    logger.warning(f"[  +- Rename {fk.__name__} --> Rename Sequence Folder/Files {_old} -> {q.seq_name}")
+                    logger.warning(f"[  XXX Rename {fk.__name__} --> Rename Sequence Folder/Files {_old} -> {q.seq_name}")
                 q.orgbatch_id = OrgBatch
                 q.save()
                 _obj = f"{fk.__name__} ({q.pk})"
