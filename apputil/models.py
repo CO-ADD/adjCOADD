@@ -626,7 +626,7 @@ class ApplicationLog(models.Model):
     log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Time")
     log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "User", on_delete=models.DO_NOTHING, 
         db_column="log_user", related_name="%(class)s_user")
-    log_object = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Object")
+    log_object = models.CharField(max_length=150, blank=True, db_index = True, editable=False,verbose_name = "Object")
     log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Description")
     log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Status")
 

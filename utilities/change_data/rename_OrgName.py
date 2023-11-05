@@ -23,7 +23,7 @@ def main():
     # ArgParser -------------------------------------------------------------
     prgParser = argparse.ArgumentParser(prog='change_OrgDB_Data', 
                                 description="Changing data to adjCOADD from Excel")
-    # prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     # prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
@@ -79,13 +79,25 @@ def main():
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-    appuser = ApplicationUser.get(prgArgs.appuser)
+ 
+ 
+    choiceTables = ['Rename_OrgName','Rename_OrgID','Rename_OrgBatchID'
+                    ]
+    if prgArgs.table in choiceTables:
 
-    #if prgArgs.file:
-    #    dOrg.rename_OrgName_xls(prgArgs.file,XlsSheet="New OrgName",
-    #                            upload=prgArgs.upload,uploaduser=appuser)
+        appuser = ApplicationUser.get(prgArgs.appuser)
 
-    dOrg.rename_OrgID('GN_0696','Bacillus velezensis',None,{'Old Strain Code':'Kp BRf 79136','strain_code':'Ba.ve BRf 79136'})
+        logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
+        logger.info(f"[Upd_djCOADD] User:  {appuser}") 
+
+        if prgArgs.table == 'Rename_OrgName' and prgArgs.file:
+            dOrg.rename_OrgName_xls(prgArgs.file,XlsSheet="New OrgName",
+                                    upload=prgArgs.upload,uploaduser=appuser)
+
+        if prgArgs.table == 'Rename_OrgID' and prgArgs.file:
+            dOrg.rename_OrgID_xls(prgArgs.file,XlsSheet="New GP OrgID",
+                                    upload=prgArgs.upload,uploaduser=appuser)
+
 
 #==============================================================================
 if __name__ == "__main__":
