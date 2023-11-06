@@ -251,12 +251,12 @@ class ID_Sequence(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {str(self.seq_id)}"
+        retStr = f"{self.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.id_type} {self.id_method} {str(self.seq_id)}"
+        retStr = f"{self.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
         return(retStr)
 
 

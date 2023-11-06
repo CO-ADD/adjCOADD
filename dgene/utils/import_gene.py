@@ -339,6 +339,9 @@ def imp_Gene_fromDict(iDict,valLog):
     djGene.amr_class = clean_GeneUpper(iDict['amr_class'])
     djGene.amr_subclass = clean_GeneUpper(iDict['amr_subclass'])
 
+    if 'gene_modification' not in iDict:
+        djGene.gene_modification = '-'
+
     djGene.clean_Fields()
     validDict = djGene.validate()
     if validDict:

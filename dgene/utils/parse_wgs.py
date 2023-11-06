@@ -6,13 +6,34 @@ import numpy as np
 import pandas as pd
 
 from apputil.utils.data import listFolders
+# #-----------------------------------------------------------------------------
+# def split_BatchID_RunID(batch_run_id):
+# #-----------------------------------------------------------------------------
+#     arrStr = batch_run_id.split("_")
+#     batchID = '_'.join(arrStr[0:3])
+#     runID = '_'.join(arrStr[3:])
+#     return batchID, runID
+
+# #-----------------------------------------------------------------------------
+# def get_subdir(OrgBatchID,binsize=200):
+# #-----------------------------------------------------------------------------
+#     """
+#      Gets the SubFolder name based on the XX_NNNN with splits into 200
+#       GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
+#     """
+#     _org = OrgBatchID.split('_')
+#     return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
+
+#--------------------------------------------------------------------------------------
+def parse_seqid(SeqID):
 #-----------------------------------------------------------------------------
-def split_BatchID_RunID(batch_run_id):
-#-----------------------------------------------------------------------------
-    arrStr = batch_run_id.split("_")
-    batchID = '_'.join(arrStr[0:3])
-    runID = '_'.join(arrStr[3:])
-    return batchID, runID
+    """
+     Parses SeqID into OrgBatchID and Run_ID 
+    """
+    _seq = SeqID.split('_')
+    orgbatchid = "_".join(_seq[0:3])
+    runid   = "_".join(_seq[3:])
+    return(orgbatchid,runid)
 
 #-----------------------------------------------------------------------------
 def get_FastQC_Info(AssemblyFolder,OrgBID,RunID):

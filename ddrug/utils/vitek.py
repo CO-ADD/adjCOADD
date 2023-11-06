@@ -333,7 +333,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                                     else:
                                         sOrg['Confidence'] = "-"
 
-                                #print(sOrg['Organism'])
+                                #print(f"{xcell} =>  {sOrg['Organism']} {sOrg['Probability']} {sOrg['Confidence']}")
                                 df['ID'] = sOrg
                                 df['Organism'] = sOrg['Organism']
                             else:
@@ -347,13 +347,16 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                             lowLst =[]
                             for r in row[0].split('\n'):
                                 lowLst.append(" ".join(r.split(',')[0].split(' ')[:2]))
-                            if len(lowLst)>1:
-                                df['ID']['Organism'] = ", ".join(lowLst[1:])
+                            # if len(lowLst)>1:
+                            #     df['ID']['Organism'] = ", ".join(lowLst[1:])
+                            #print(f" {row} {lowLst} {_biop}")
+
 
                         # - Susceptibility Information Section (2 rows) -----------------------------
                         if if_AST_Section:
                             df['AST_Analysis'] = row[2].replace('Analysis Time: ','')
                             if_AST_Section = False     
+
                         if 'Susceptibility Information' == col1:
                             #to_be_Saved = True
                             if_AST_Section = True 

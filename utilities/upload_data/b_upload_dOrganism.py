@@ -15,33 +15,28 @@ from oraCastDB import oraCastDB
 from zUtils import zData
 
 from apputil.models import ApplicationUser, Dictionary
+from apputil.utils.data import split_StrList
+
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock, OrgBatch_Image
+from dorganism.utils.utils import get_subdir, reformat_OrganismID
 from django.utils.text import slugify
 
-#-----------------------------------------------------------------------------------
-def reformat_OrganismID(OrgID):
-#-----------------------------------------------------------------------------------
-    xStr = OrgID.split("_")
-    return(f"{xStr[0]}_{int(xStr[1]):04d}")
+# #-----------------------------------------------------------------------------------
+# def reformat_OrganismID(OrgID):
+# #-----------------------------------------------------------------------------------
+#     xStr = OrgID.split("_")
+#     return(f"{xStr[0]}_{int(xStr[1]):04d}")
 
-#-----------------------------------------------------------------------------------
-def split_StrList(strList,sep=";"):
-    if strList:
-        retLst = strList.split(sep)
-        for i in range(len(retLst)):
-            retLst[i] = retLst[i].strip()
-    else:
-        retLst = None
-    return(retLst)
+# #-----------------------------------------------------------------------------------
+# def split_StrList(strList,sep=";"):
+#     if strList:
+#         retLst = strList.split(sep)
+#         for i in range(len(retLst)):
+#             retLst[i] = retLst[i].strip()
+#     else:
+#         retLst = None
+#     return(retLst)
 
-#--------------------------------------------------------------------------------------
-def get_subdir(OrgBatchID,binsize=100):
-    """
-     Gets the SubFolder name based on the XX_NNNN with splits into 200
-      GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
-    """
-    _org = OrgBatchID.split('_')
-    return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
 
 #-----------------------------------------------------------------------------------
 def delete_OrgCulture(upload=False):
