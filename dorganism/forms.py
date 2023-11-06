@@ -171,7 +171,7 @@ class UpdateOrganism_form(CreateOrganism_form):
 class OrgBatch_Form(forms.ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
- 
+
     # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
     batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
