@@ -29,13 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
-DEVELOPMENT=None
-#DEVELOPMENT='Work'
+#DEVELOPMENT=None
+DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = '1.2.0254 Development'
+    VERSION = '1.2.0257 Development'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
