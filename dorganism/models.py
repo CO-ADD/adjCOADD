@@ -295,6 +295,7 @@ class Organism_Batch(AuditModel):
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
+        "qc_status":"QC",
         "batch_quality":"Batch Quality",
         "quality_source": "Quality by",
         "stock_date":"Stock Date",
@@ -308,7 +309,7 @@ class Organism_Batch(AuditModel):
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
+       'Group1': ["batch_id", "batch_notes", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
     #SEP = '_'
 

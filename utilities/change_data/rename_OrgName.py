@@ -81,7 +81,7 @@ def main():
 
  
  
-    choiceTables = ['Rename_OrgName','Rename_OrgID','Rename_OrgBatchID'
+    choiceTables = ['Rename_OrgName','Rename_OrgID','Rename_OrgBatchID','Manual'
                     ]
     if prgArgs.table in choiceTables:
 
@@ -97,6 +97,63 @@ def main():
         if prgArgs.table == 'Rename_OrgID' and prgArgs.file:
             dOrg.rename_OrgID_xls(prgArgs.file,XlsSheet="New GP OrgID",
                                     upload=prgArgs.upload,uploaduser=appuser)
+        
+        if prgArgs.table == 'Manual':
+            # dOrg.rename_OrgID_allBatches('GN_0696','Bacillus velezensis',None,{'strain_code':'Ba.ve BRf 79136'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_0697','Bacillus safensis',None,{'strain_code':'Ba.sa BRf 79197'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1034','Enterococcus faecium',None,{'strain_code':'En.fam PK 38'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1044','Enterococcus faecalis',None,{'strain_code':'En.fas PK 48'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1045','Enterococcus faecalis',None,{'strain_code':'En.fas PK 49'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1052','Enterococcus faecalis',None,{'strain_code':'En.fas PK 56'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1060','Enterococcus faecalis',None,{'strain_code':'En.fas PK 65'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1069','Enterococcus faecalis',None,{'strain_code':'En.fas PK 74'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1083','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1084','Enterococcus faecium',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1085','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1086','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1087','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1092','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1096','Enterococcus faecalis',None,{'strain_code':'En.fas NP U8546'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1099','Enterococcus faecium',None,{'strain_code':'En.fam NP U292'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1100','Enterococcus faecium',None,{'strain_code':'En.fam NP U299'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1109','Enterococcus faecalis',None,{'strain_code':'En.fas NP U1057'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1110','Staphylococcus aureus',None,{'strain_code':'Sa NP P5605'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1111','Enterococcus faecalis',None,{'strain_code':'En.fas NP P3721'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1113','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1120','Enterococcus faecalis',None,{'strain_code':'En.fas NP P5089'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1122','Enterococcus faecium',None,{'strain_code':'En.fam NP P4963'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1131','Enterococcus faecalis',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1134','Staphylococcus epidermidis',None,{'strain_code':'St.ep NP P4992'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1204','Staphylococcus gallinarum',None,{'strain_code':'St.ga NG 761830041'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1178','Bacillus sp.',None,{'strain_code':'Ba.sp NG 761831767'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1192','Staphylococcus haemolyticus',None,{'strain_code':'St.ha NG 761832918'},uploaduser=appuser)
+
+
+            # dOrg.rename_OrgID_sngBatches('GN_0952_02','Acinetobacter baumannii',None,{'strain_code':'Ab IHMA 2007771'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_0981_01','Serratia marcescens',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_0982_02','Serratia marcescens',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1149_02','Escherichia coli',None,{'strain_code':'Ec EG 6'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1254_02','Escherichia coli',None,{'strain_code':'Ec ZM 2911NK-1'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1258_01','Klebsiella pneumoniae',None,{'strain_code':'Kp ZM 2716BN-1'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1270_03','Escherichia coli',None,{'strain_code':'Ec ZM 2315NKU'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1274_02','Acinetobacter baumannii',None,{'strain_code':'Ab ZM 217NK-1'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1275_02','Escherichia coli',None,{'strain_code':'Ec ZM 2118N-1'},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1282_02','Enterobacter cloacae',None,{'strain_code':'En.cl ZM 2491BL83A'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1285_02','Acinetobacter junii',None,{'strain_code':'Ac.ju ZM 2917BL93'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1308_01','Achromobacter xylosoxidans',None,{'strain_code':''},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1307_01','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1316_02','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1318_01','Pseudomonas aeruginosa',None,{'strain_code':''},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1323_02','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1334_02','Pseudomonas aeruginosa',None,{'strain_code':''},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1115_03','Enterococcus faecalis',None,{'strain_code':'En.fas NP P5010'},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1207_02','Staphylococcus gallinarum',None,{'strain_code':'St.ga NG 761831834'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1270_02','Enterococcus faecalis',None,{'strain_code':'En.fas ZM 2315NKU'},uploaduser=appuser)
 
 
 #==============================================================================
