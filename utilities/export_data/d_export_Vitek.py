@@ -29,6 +29,38 @@ def agg_ListStr(x,unique_only=True):
     sx = ', '.join(['{:s}'.format(i) for i in x if i is not None])
     return(sx)
 
+
+#-----------------------------------------------------------------------------------
+def export_OrgBatch(OutDir):
+#-----------------------------------------------------------------------------------
+    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id']
+
+    vOrgBatch = Organism_Batch.objects.filter(astatus__gte=0).values().annotate(
+#        batch_id = F("card_barcode_id__orgbatch_id__batch_id"),
+#        organism_id = F("organism_id"),
+        orgname = F("organism_id__organism_name"),
+        strain = F("organism_id__strain_ids"),
+        strain_source = F("organism_id__source"),
+        strain_id = F("organism_id__strain_identification"),
+        )
+    logger.info(f"[OrgBatch ] {len(vOrgBatch)} ID's ")
+
+    # for v in vOrgBatch:
+    #     v['piv_value'] = f"{v['id_organism']} ({v['id_probability']})"
+
+    dfOrgBatch = pd.DataFrame(vOrgBatch).drop(columns=AuditFields)
+    # pivID = dfOrgBatch.pivot_table(index=['organism_id','orgname','batch_id'],columns=['card_code'],values=['piv_value'],aggfunc=agg_ListStr)
+
+    if not os.path.exists(OutDir):
+        os.makedirs(OutDir)
+    xlFile = os.path.join(OutDir,"OrgBatch_Data.xlsx")
+    with pd.ExcelWriter(xlFile) as writer:
+        dfOrgBatch.to_excel(writer, sheet_name='OrgBatch')
+        # pivID.to_excel(writer, sheet_name='ID')
+        # dfAST.to_excel(writer, sheet_name='VitekAST')
+        # pivAST.to_excel(writer, sheet_name='AST')
+
+
 #-----------------------------------------------------------------------------------
 def export_Vitek(OutDir):
 #-----------------------------------------------------------------------------------
@@ -163,6 +195,7 @@ def export_wgsFastA(OutDir):
         batch_id = F("seq_id__orgbatch_id__batch_id"),
         organism_id = F("seq_id__orgbatch_id__organism_id"),
         orgname = F("seq_id__orgbatch_id__organism_id__organism_name"),
+        seq_name = F("seq_id__seq_name"),
         )
     logger.info(f"[wgsFastA] {len(vSEQs)} WGS FastA's ID")
 
