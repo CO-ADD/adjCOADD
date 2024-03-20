@@ -39,9 +39,15 @@
 #------------------------------------------------------
 # 4. Collect static and create uploads folder 
 (base)>cd adjCOADD
-(base)>conda activate dj41py310
+(base)>edit adjCOADD/setting.py 
+       DEVELOPMENT=None
+       VERSION = '1.?.?'
+       
+(base)>conda activate dj42py311
+(dj41py310)>mkdir applog
 (dj41py310)>python manage.py collectstatic
 (dj41py310)>cd ..
+(dj41py310)>mkdir static/images/mol
 (dj41py310)>chmod 775 -R static
 (dj41py310)>cd ..
 
@@ -54,3 +60,10 @@
 (base)>more var/log/gunicorn_error.log
 (base)>curl localhost:8009 # gunicorn reply
 (base)>curl localhost:8008 # nginx reply
+
+
+#------------------------------------------------------
+# Backup 
+(base)> exit
+[uqjzuegg]> cd /opt/django/var/backup
+[uqjzuegg]> cp *.tgz ~/Code\Python\Django\99_Backup

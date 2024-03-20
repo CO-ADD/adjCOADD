@@ -73,11 +73,16 @@ def main():
     OutBase = "Output"
     #uploadFile = os.path.join(uploadDir,"ApplicationData_2022_11_21_JZuegg_v01.xlsx")
 
-    choiceTables = ['Vitek','MIC',
+
+    choiceTables = ['OrgBatch','Vitek','MIC',
                     'wgsFastA','wgsAMR',
                     ]
     if prgArgs.table in choiceTables:
         logger.info(f"[Exp_djCOADD] Table: {prgArgs.table}") 
+
+        if prgArgs.table == 'OrgBatch':
+            OutDir = os.path.join(OutBase,"OrgBatch")
+            dVitek.export_OrgBatch(OutDir)
 
         if prgArgs.table == 'Vitek':
             OutDir = os.path.join(OutBase,"Vitek")
