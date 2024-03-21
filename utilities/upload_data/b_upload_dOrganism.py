@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 import django
 
 from oraCastDB import oraCastDB
-from zUtils import zData
+from zUtils.zMonitor import Timer
 
 from apputil.models import ApplicationUser, Dictionary
 from apputil.utils.data import split_StrList
@@ -120,7 +120,7 @@ def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lowe
         # df -> lstDict and remove null items 
         cultLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
         nTotal = len(cultLst)
-        nTime  = zData.Timer(nTotal)
+        nTime  = Timer(nTotal)
         nProcessed = 0
 
 
@@ -220,7 +220,7 @@ def update_OrgBatchStock_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, l
         # df -> lstDict and remove null items 
         stockLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
         nTotal = len(stockLst)
-        nTime  = zData.Timer(nTotal)
+        nTime  = Timer(nTotal)
         nProcessed = 0
 
 
@@ -418,7 +418,7 @@ def update_OrgBatch_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
         # df -> lstDict and remove null items 
         batchLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in dfSheet.to_dict(orient='records')]
         nTotal = len(batchLst)
-        nTime  = zData.Timer(nTotal)
+        nTime  = Timer(nTotal)
         nProcessed = 0
 
         # check user
@@ -570,7 +570,6 @@ def update_Organism_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
     nProc['Saved'] = 0
     nProc['notClass'] = 0
     nProc['notFound'] = 0
-
 
     rmColumns = ['chk']
     if os.path.exists(XlsFile):
@@ -780,7 +779,7 @@ def update_Taxonomy_ora(upload=False,uploaduser=None,OutputN=1000):
     logger.info(f"[Taxonomy] {nTotal} ")
     OrgDB.close()
 
-    nTime  = zData.Timer(nTotal)
+    nTime  = Timer(nTotal)
     nProcessed = 0
 
     checkCharFields = []

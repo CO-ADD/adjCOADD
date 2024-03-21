@@ -119,8 +119,11 @@ def main():
             dOrg.update_Taxonomy_ora(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'Organism':
-            prgArgs.upload = False
-            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            #prgArgs.upload = False
+            if prgArgs.excel:
+                uploadFile = prgArgs.excel
+            else:
+                uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from [Organism] in {uploadFile} [Upload: {prgArgs.upload}]") 
             dOrg.update_Organism_xls(uploadFile,XlsSheet="Organism",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
@@ -128,8 +131,11 @@ def main():
             #dOrg.update_Organism_ora(uploaduser=prgArgs.appuser)
 
         elif prgArgs.table == 'OrgBatch':
-            prgArgs.upload = False
-            uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
+            #prgArgs.upload = False
+            if prgArgs.excel:
+                uploadFile = prgArgs.excel
+            else:
+                uploadFile = os.path.join(orgdbDir,xlFiles['OrgDB'])
             logger.info(f"[Upd_djCOADD] {prgArgs.table} from [OrgBatch] in {uploadFile} [Upload: {prgArgs.upload}]") 
             dOrg.update_OrgBatch_xls(uploadFile,XlsSheet="OrgBatch",upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
