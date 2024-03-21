@@ -73,6 +73,7 @@ def main():
     OutBase = "Output"
     #uploadFile = os.path.join(uploadDir,"ApplicationData_2022_11_21_JZuegg_v01.xlsx")
 
+
     choiceTables = ['OrgBatch','Vitek','MIC',
                     'wgsFastA','wgsAMR',
                     ]
