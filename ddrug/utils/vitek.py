@@ -231,12 +231,12 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
             txt_lst = page.extract_text().splitlines()
             #print(txt_lst)
             for l in txt_lst:
-                mX = re.search('Isolate:(.+?)\((.+?)\)', l)
+                #mX = re.search('Isolate:(.+?)\((.+?)\)', l)
                 if mX:
                     if_IsolateData = True
                     xName = mX.group(1)
                     df['VitekProcess'] = mX.group(2)
-                    mOrg = re.search('([a-zA-Z]+)(\d+)B(\d+)(.+)',xName)
+                    #mOrg = re.search('([a-zA-Z]+)(\d+)B(\d+)(.+)',xName)
                     if mOrg:
                         df['OrganismID'] = mOrg.group(1)+f"_{int(mOrg.group(2)):04d}"
                         df['BatchID'] = int(mOrg.group(3))
