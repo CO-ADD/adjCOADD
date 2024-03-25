@@ -155,6 +155,8 @@ def main():
             # dOrg.rename_OrgID_sngBatches('GN_1207_02','Staphylococcus gallinarum',None,{'strain_code':'St.ga NG 761831834'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1270_02','Enterococcus faecalis',None,{'strain_code':'En.fas ZM 2315NKU'},uploaduser=appuser)
 
+            #dOrg.rename_OrgID_sngBatches('GN_1062_01','Enterococcus faecalis',None,{'strain_code':'En.fas PK 67'},uploaduser=appuser)
+            dOrg.rename_OrgID_allBatches('GN_1129','Enterococcus faecalis',None,{},uploaduser=appuser)
 
 #==============================================================================
 if __name__ == "__main__":

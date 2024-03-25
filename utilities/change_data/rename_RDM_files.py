@@ -175,10 +175,11 @@ def rename_SeqName(oldSeqName,newSeqName,MicroOrgDB):
                     change_file(assTypeDir,assFiles,oldSeq['orgbatch_id'],newSeq['orgbatch_id'],content=False)
                     print(" - ", assFiles)
 
-            for chmFiles in listFiles(assCheckMDir):
-                if oldSeqName in chmFiles:
-                    change_file(assCheckMDir,chmFiles,oldSeq['orgbatch_id'],newSeq['orgbatch_id'],content=False)
-                    print(" - CheckM - ", chmFiles)
+            if os.path.isdir(assCheckMDir):
+                for chmFiles in listFiles(assCheckMDir):
+                    if oldSeqName in chmFiles:
+                        change_file(assCheckMDir,chmFiles,oldSeq['orgbatch_id'],newSeq['orgbatch_id'],content=False)
+                        print(" - CheckM - ", chmFiles)
         os.rename(assDir, new_assDir)
 
     # 03_FastA
@@ -273,6 +274,11 @@ def main():
     # rename_SeqName('GN_1318_01_AGRF_R004','GN_1396_01_AGRF_R004',MicroOrgDB)
     # rename_SeqName('GN_1323_02_AGRF_R004','GN_1397_02_AGRF_R004',MicroOrgDB)
     # rename_SeqName('GN_1334_02_AGRF_R004','GN_1398_02_AGRF_R004',MicroOrgDB)
+
+    #rename_SeqName('GN_1062_01_AGRF_R003','GP_0344_01_AGRF_R003',MicroOrgDB)
+    #rename_SeqName('GN_1129_01_AGRF_R004','GP_0345_01_AGRF_R004',MicroOrgDB)
+
+    #rename_SeqName('GN_1072_02_AGRF_R003','GN_1072_00_AGRF_R003',MicroOrgDB)
 
     # rename_Work('GN_0696_00_AGRF_R001','GP_0313_00_AGRF_R001',MicroOrgDB)
     # rename_Work('GN_0697_01_AGRF_R001','GP_0314_01_AGRF_R001',MicroOrgDB)
