@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     'dscreen',
     'dcollab',
     'dgene',
+    'dcell',
     #'rest_framework',
     #'rest_framework.authtoken',
     'formtools',
