@@ -20,6 +20,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 from dscreen.models import Screen_Run
+from dcell.models import Cell
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
@@ -40,6 +41,7 @@ def index(req):
     nDict = {
          
         'nOrg':    str(Organism.objects.count()) + ' Microorganisms',
+        'nCell':   Cell.objects.count(),
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
         'nVCard':  VITEK_Card.objects.count(),
