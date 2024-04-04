@@ -10,10 +10,10 @@
               <th scope="row" class="">Cell Name</th>
               <td class="editable" data-id="{{object.pk}}" data-type="cell_name">
                 <div class="detail">
-                  <a href="{%url 'taxo_detail' object.cell_name.urlname %}">{{object.cell_name}}</a>
+                  <a href="{%url 'taxo_detail' object.organism_name.urlname %}">{{object.organism_name}}</a>
                 </div>
                 <div class="input-group select">
-                  {% include 'utils/search_cell.html' %}
+                  {% include 'utils/search_organism.html' %}
                 </div>
               </td>
             </tr>

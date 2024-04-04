@@ -9,14 +9,14 @@
 
     <!-- Cell -->
     <div class="d-flex m-0 p-0">
-      {% include 'utils/lefticons.html' with title="Cell" %}
+      {% include 'utils/lefticons.html' with title="Organism" %}
       <div class="accordion bg-transparent w-100" id="cell-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseCellDetail" aria-expanded="true" aria-controls="collapseOne">
               <h5 class="fs-6 my-0">
-                {{object.pk}} | {{object.cell_name}}
+                {{object.pk}} | {{object.organism_name}}
               </h5>
             </button>
           </h2>
@@ -66,11 +66,11 @@
       </div>
     </div>
 
+    
 
     <!-- Files -->
     <div class="d-flex m-0 p-0">
     {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
-     <!--  -->
     {% include 'dcell/cell/cell_file.html' %}
     </div>
 

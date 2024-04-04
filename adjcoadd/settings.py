@@ -208,7 +208,7 @@ print(f"Host Name: {HOST_NAME}")
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=apputil,dorganism,dcell,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,
         'USER': DB_USER, 
         'PASSWORD':DB_PASSWD,
@@ -234,7 +234,7 @@ DATABASES = {
     'dcell': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcell,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': DB_NAME,
+        'NAME': DB_NAME,   
         'USER': DB_USER, 
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,

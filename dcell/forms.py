@@ -10,7 +10,7 @@ from dorganism.models import  Taxonomy
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from apputil.utils.filters_base import Filterbase
-from adjcoadd.constants import ORGANISM_CLASSES #<not needed due to lack of cell classes>
+from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES #<not needed due to lack of cell classes>
 from dcell.models import Cell, Cell_Batch, CellBatch_Stock
 
 
@@ -21,59 +21,51 @@ from dcell.models import Cell, Cell_Batch, CellBatch_Stock
 class Cell_Filter(Filterbase):
     
     ID = CharFilter(field_name='cell_id', lookup_expr='icontains')
-    Name = CharFilter(field_name='cell_name__cell_name', lookup_expr='icontains')
+    Name = CharFilter(field_name='cell_names__cell_names', lookup_expr='icontains')
     # Class = ChoiceFilter(field_name='cell_name__org_class__dict_value',  
     #                                   widget=forms.RadioSelect, 
     #                                   choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB"))) <not needed due to lack of cell classes>
-    Strain = CharFilter(field_name='strain_ids', lookup_expr='icontains')
-    Notes = CharFilter(field_name='strain_notes', lookup_expr='icontains')
-    Type = MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
+    Line = CharFilter(field_name='cell_line', lookup_expr='icontains')
+    Notes = CharFilter(field_name='cell_notes', lookup_expr='icontains')
+    Type = MultipleChoiceFilter(field_name='cell_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
     MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Cell.Choice_Dictionary['mta_status'], astatus__gte=0))
-    Panel = MultipleChoiceFilter(field_name='strain_panel', method='multichoices_filter', 
+    Panel = MultipleChoiceFilter(field_name='cell_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['strain_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['strain_panel'], showDesc = False)
+        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    
     class Meta:
         model=Cell
-        fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
+        fields=[ 'ID', 'Name','Line',  'Notes', 'Type', 'MTA', 'Panel', ]
 
 # -----------------------------------------------------------------
 class CreateCell_form(forms.ModelForm):
 
-    strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    cell_line= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    cell_names= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    cell_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    oxygen_pref=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
-    risk_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
-    pathogen_group=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False,queryset=Dictionary.objects.all())
     mta_status = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False, queryset=Dictionary.objects.all())
-    lab_restriction = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),required=False, queryset=Dictionary.objects.all())
-    res_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    gen_property=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    cell_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
+    organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
-    collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
+    #collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
    
-    def __init__(self, cell_name=None, *args, **kwargs): 
-        self.cell_name=cell_name
+    def __init__(self, organism_name=None, *args, **kwargs): 
+        self.organism_name=organism_name
         super(CreateCell_form, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['strain_type'], showDesc=False),)
-        self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
-        self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['strain_panel'], showDesc=False),)
-        self.fields['strain_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
-        self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['oxygen_pref'])]
-        self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['risk_group'])]
-        self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['pathogen_group'])]
+        self.fields['cell_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_type'], showDesc=False),)
+        self.fields['cell_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
+        self.fields['cell_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_panel'], showDesc=False),)
+        self.fields['cell_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
         self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['mta_status'])]
-        self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['lab_restriction'])]
         self.create_field_groups()
 
         for field in self.fields.values():
@@ -85,10 +77,10 @@ class CreateCell_form(forms.ModelForm):
     
     def clean_organism_name(self):       
        
-        data=get_object_or_404(Taxonomy, cell_name=self.cell_name)
+        data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
     
         if data:
-            if str(data.org_class) in ORGANISM_CLASSES:
+            if str(data.org_class) in CELL_CLASSES:
                 return data
             else:
                 self.add_error('org_name', 'Create failed with invalid Organism class')

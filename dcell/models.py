@@ -27,10 +27,9 @@ class Cell(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {
-#       'cell_name':{"VerboseName":'Cell Name','Updatable':False}
+#       'organism_name':{"VerboseName":'Cell Name','Updatable':False}
         'cell_id':{'Cell ID': {'cell_id':LinkList['cell_id']}}, 
-        'cell_names':'Cell Name',
-        'cell_id':'Cell ID',
+        'cell_names':'Cell Names',
         'cell_line':'Cell Line',
         'cell_type':'Cell Type',
         'cell_panel':'Panel',
@@ -46,22 +45,22 @@ class Cell(AuditModel):
 
     CARDS_FIELDS= {
         "source" : "Source",
-        "strain_type": "Type",
-        "res_property": "Phenotype",
-        "gen_property": "Genotype",
+        "cell_type": "Type",
+    #     "res_property": "Phenotype",
+    #     "gen_property": "Genotype",
     }
 
     FORM_GROUPS={
-       'Group1': ["strain_ids", "sero_clone", "strain_code", "strain_type", "strain_panel", "strain_origin", "strain_notes"],
-       'Group2': ["strain_identification", 'res_property','gen_property','oxygen_pref', 'source', 'source_code','reference','tax_id'],
-       'Group3': ['mta_status','mta_notes','mta_document','risk_group','pathogen_group','lab_restriction','biologist'],
-       'Group4': ['collect_date', 'collect_region', 'collect_country', 'collect_site', 'collect_specie', 'collect_tissue', 'patient_diagnosis', 'patient']
+       'Group1': ["cell_line", "cell_type", "cell_names", "cell_panel", "cell_origin", "cell_notes"],
+       'Group2': ['source', 'source_code','reference'],
+       'Group3': ['mta_status','mta_notes','mta_document','biologist'],
+       'Group4': ['collect_tissue', 'patient_diagnosis', 'patient']
     }
 
     Choice_Dictionary = {
         'mta_status':'License_Status',
         'cell_type':'Cell_Type',
-        'cell_panel':'Strain_Panel',
+        'cell_panel':'Cell_Panel',
     }
 
     cell_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Cell ID") 
@@ -93,7 +92,7 @@ class Cell(AuditModel):
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
-    assoc_documents = models.ManyToManyField(Document,verbose_name = "Douments", blank=True,
+    assoc_documents = models.ManyToManyField(Document,verbose_name = "Documents", blank=True,
         db_table = "cell_doc", related_name="%(class)s_document")
     
     #tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
@@ -127,7 +126,7 @@ class Cell(AuditModel):
     #           CellNo 
     # Output:   Cell_ID as string like GN_0001 
     #
-        return(f"CL{ORGANSIM_SEP}{CellNo:04d}")
+        return(f"CL{CELL_SEP}{CellNo:04d}")
 
     #------------------------------------------------
     @classmethod

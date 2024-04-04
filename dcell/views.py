@@ -63,8 +63,8 @@ def createCell(req):
     kwargs['user']=req.user
     form=CreateCell_form()
     if req.method=='POST':
-        Cell_Name=req.POST.get('search_cell') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
-        form=CreateCell_form( Cell_Name, req.POST,) # -2. get create-form with ajax call result
+        Organism_Name=req.POST.get('search_cell') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
+        form=CreateCell_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
             try:
                 with transaction.atomic(using='dcell'): # -3. write new entry in atomic transaction
@@ -94,7 +94,7 @@ def detailCell(request, pk):
     context={}
     object_=get_object_or_404(Cell, cell_id=pk)
     try:
-        form=UpdateCell_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,}, instance=object_)
+        form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
     except Exception as err:
         print(err)
     context["object"]=object_
@@ -144,38 +144,43 @@ def updateCell(req, pk):
     object_=get_object_or_404(Cell, cell_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateCell_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
-    if object_.cell_name.cell_class: # Cell_Class_str for display class
-        Cell_Class_str=object_.cell_name.cell_class.dict_value
+    form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
+    if object_.organism_name.org_class: # Organism_Class_str for display class
+        Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
-        Cell_Class_str="No Class"
+        Organism_Class_str="No Class"
+    print(Organism_Class_str)
     if req.method=='POST':
+        print("POST")
         try:
             with transaction.atomic(using='dcell'):        # testing!
                 obj = Cell.objects.select_for_update().get(cell_id=pk)
                 #If update Cell Name
                 if  req.POST.get('search_cell'):
-                    Cell_Name_str=req.POST.get('search_cell')
-                    Cell_new_obj=get_object_or_404(Taxonomy, cell_name=Cell_Name_str)
-                    form=UpdateCell_form(Cell_Name_str, req.POST, instance=obj)
+                    Organism_Name_str=req.POST.get('search_cell')
+                    Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
+                    
+                    form=UpdateCell_form(Organism_Name_str, req.POST, instance=obj)
                     #-Not allow to update name in different class--
-                    if Cell_new_obj.cell_class.dict_value and Cell_new_obj.cell_class.dict_value != Cell_Class_str:
+                    if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                 else:
-                    form=UpdateCell_form(object_.cell_name, req.POST, instance=obj) 
+                    print("Else")
+                    form=UpdateCell_form(object_.organism_name, req.POST, instance=obj) 
                 
-                if form.is_valid():       
+                if form.is_valid():  
+                    print(f"Saving {obj}")     
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Cell','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
-                    messages.warning(req, f'Update failed due to {form.errors} error')
+                
+                    messages.warning(req, f'Update 1 failed due to {form.errors} error')
                    
         except Exception as err:
-            print(err)
-            messages.warning(req, f'Update failed due to {err} error')
+            messages.warning(req, f'Update 2 failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
   
     context={
