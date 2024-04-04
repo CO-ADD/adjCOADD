@@ -22,13 +22,15 @@ from apputil.utils.views_base import permission_not_granted, HtmxupdateView, Sim
 
 from adjcoadd.constants import *
 
+from dorganism.models import Taxonomy
 from dcell.models import  Cell, Cell_Batch, CellBatch_Stock
-from dcell.forms import (Taxonomy_Filter, Taxonomy_Form,
-                            Organism_Filter, CreateOrganism_form, UpdateOrganism_form, 
-                            OrgBatch_Filter, OrgBatch_Form, OrgBatch_UpdateForm,  
-                            OrgBatchStock_Form, OrgBatchStock_Filter, OrgBatchStock_CreateForm, 
-                            OrgCulture_Form, OrgCulture_UpdateForm,
-                            OrgBatchImg_Form,)
+from dcell.forms import (Cell_Filter,
+                            CreateCell_form, UpdateCell_form, 
+                            CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
+                            CellBatchStock_Form, CellBatchStock_Filter, CellBatchStock_CreateForm,)
+from ddrug.models import VITEK_AST, MIC_COADD
+from dorganism.utils.data_visual import data_frame_style, pivottable_style
+    
 
 #=================================================================================================
 # Cell
@@ -52,37 +54,37 @@ class Cell_CardView(Cell_ListView):
 
 
 # -----------------------------------------------------------------
-# @login_required
-# def createOrganism(req):
-#     '''
-#     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
-#     '''  
-#     kwargs={}
-#     kwargs['user']=req.user
-#     form=CreateOrganism_form()
-#     if req.method=='POST':
-#         Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_organism/) find Foreignkey orgname
-#         form=CreateOrganism_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
-#         if form.is_valid():
-#             try:
-#                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
-#                     instance=form.save(commit=False) 
-#                     instance.save(**kwargs)
-#                     ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
-#                     return redirect(req.META['HTTP_REFERER'])
-#             except IntegrityError as err:
-#                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-#                     return redirect(req.META['HTTP_REFERER'])                
-#         else:
-#             messages.warning(req, form.errors)
-#             return redirect(req.META['HTTP_REFERER'])          
-#     return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
+@login_required
+def createCell(req):
+    '''
+    Function View Create new Cell table row with foreignkey: Taxonomy and Dictionary. 
+    '''  
+    kwargs={}
+    kwargs['user']=req.user
+    form=CreateCell_form()
+    if req.method=='POST':
+        Cell_Name=req.POST.get('search_cell') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
+        form=CreateCell_form( Cell_Name, req.POST,) # -2. get create-form with ajax call result
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dcell'): # -3. write new entry in atomic transaction
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            messages.warning(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])          
+    return render(req, 'dcell/cell/cell_c.html', { 'form':form, }) 
 
 # -----------------------------------------------------------------
 @login_required
-def detailOrganism(request, pk):
+def detailCell(request, pk):
     """
-    - Detail view handle organism single entry
+    - Detail view handle cell single entry
     display,update and delete.
     - related table overview display, update, create and delete.
     - related table are: batch, stock, culture.
@@ -90,82 +92,82 @@ def detailOrganism(request, pk):
     """
    
     context={}
-    object_=get_object_or_404(Organism, organism_id=pk)
+    object_=get_object_or_404(Cell, cell_id=pk)
     try:
-        form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,}, instance=object_)
+        form=UpdateCell_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel,}, instance=object_)
     except Exception as err:
         print(err)
     context["object"]=object_
     context["form"]=form
     context["doc_form"]=Document_Form
-    # kwargs={'org': pk}
+    # kwargs={'cell': pk}
 
-    context["orgbatchimg_form"]=OrgBatchImg_Form(org=pk)
+    #context["cellbatchimg_form"]=CellBatchImg_Form(cell=pk)
 
     # data in related tables
 
-    context["batchimg_obj"]=OrgBatch_Image.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
-    context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
+    #context["batchimg_obj"]=OrgBatch_Image.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
+    #context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
    
 
-    context["batch_obj"]=Organism_Batch.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
+    context["batch_obj"]=Cell_Batch.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
     context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
-    context["batch_fields"]=Organism_Batch.get_fields()
+    context["batch_fields"]=Cell_Batch.get_fields()
 
-    # context["stock_obj"]=OrgBatch_Stock.objects.filter(orgbatch_id__organism_id=object_.organism_id, astatus__gte=0)
-    # context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
-    # context["stock_fields"]=OrgBatch_Stock.get_fields()
+    context["stock_obj"]=CellBatch_Stock.objects.filter(cellbatch_id__cell_id=object_.cell_id, astatus__gte=0)
+    context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
+    context["stock_fields"]=CellBatch_Stock.get_fields()
 
-    context["stock_count"]=Organism_Batch.objects.annotate(number_of_stocks=Count('orgbatch_id')) 
-    context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
-    context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
-    context["cultr_fields"]=Organism_Culture.get_fields() 
-    if 'organism_id' in context["cultr_fields"]:
-        context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
-    context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
-    context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    context["stock_count"]=Cell_Batch.objects.annotate(number_of_stocks=Count('cellbatch_id')) 
+    #context["cultr_obj"]=Cell_Culture.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
+    #context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
+    #context["cultr_fields"]=Cell_Culture.get_fields() 
+    # if 'cell_id' in context["cultr_fields"]:
+    #     context["cultr_fields"].remove('cell_id')    # customize HEADER_FIELDS
+    # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
+    # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
-        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source'] #<what is needed from here?>
         context["table"] = data_frame_style(pk, displaycols)['style_table']
         context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
         context["pivottable"] = pivottable_style(pk)
-        return render(request, "dorganism/organism/organism_mic.html", context)
+        return render(request, "dcell/cell/cell_mic.html", context)
     
-    return render(request, "dorganism/organism/organism_detail.html", context)
+    return render(request, "dcell/cell/cell_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
-def updateOrganism(req, pk):
-    object_=get_object_or_404(Organism, organism_id=pk)
+def updateCell(req, pk):
+    object_=get_object_or_404(Cell, cell_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
-    if object_.organism_name.org_class: # Organism_Class_str for display class
-        Organism_Class_str=object_.organism_name.org_class.dict_value
+    form=UpdateCell_form(initial={'strain_type':object_.strain_type, 'strain_panel':object_.strain_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
+    if object_.cell_name.cell_class: # Cell_Class_str for display class
+        Cell_Class_str=object_.cell_name.cell_class.dict_value
     else:
-        Organism_Class_str="No Class"
+        Cell_Class_str="No Class"
     if req.method=='POST':
         try:
-            with transaction.atomic(using='dorganism'):        # testing!
-                obj = Organism.objects.select_for_update().get(organism_id=pk)
-                #If update Organism Name
-                if  req.POST.get('search_organism'):
-                    Organism_Name_str=req.POST.get('search_organism')
-                    Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
-                    form=UpdateOrganism_form(Organism_Name_str, req.POST, instance=obj)
+            with transaction.atomic(using='dcell'):        # testing!
+                obj = Cell.objects.select_for_update().get(cell_id=pk)
+                #If update Cell Name
+                if  req.POST.get('search_cell'):
+                    Cell_Name_str=req.POST.get('search_cell')
+                    Cell_new_obj=get_object_or_404(Taxonomy, cell_name=Cell_Name_str)
+                    form=UpdateCell_form(Cell_Name_str, req.POST, instance=obj)
                     #-Not allow to update name in different class--
-                    if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
+                    if Cell_new_obj.cell_class.dict_value and Cell_new_obj.cell_class.dict_value != Cell_Class_str:
                         raise ValidationError('Not the same Class')
                 else:
-                    form=UpdateOrganism_form(object_.organism_name, req.POST, instance=obj) 
+                    form=UpdateCell_form(object_.cell_name, req.POST, instance=obj) 
                 
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Organism','Completed')
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Cell','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
@@ -181,7 +183,7 @@ def updateOrganism(req, pk):
         "object":object_,
     }
    
-    return render(req, "dorganism/organism/organism_u.html", context)
+    return render(req, "dcell/cell/cell_u.html", context)
 
 # -----------------------------------------------------------------
 class Cell_DeleteView(SimpledeleteView):
@@ -189,7 +191,7 @@ class Cell_DeleteView(SimpledeleteView):
     transaction_use = 'dcell'
 
 #=================================================================================================
-# OrgBatch  
+# CellBatch  
 #=================================================================================================
 
 class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
@@ -202,28 +204,28 @@ class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
     app_name = 'dcell'
 
 # -----------------------------------------------------------------
-# @login_required
-# def createBatch(req, organism_id):
-#     kwargs={'user': req.user}
-#     form=OrgBatch_Form()
+@login_required
+def createBatch(req, cell_id):
+    kwargs={'user': req.user}
+    form=CellBatch_Form()
     
-#     if req.method=='POST':
-#         form=OrgBatch_Form(req.POST)
-#         if form.is_valid():
-#             try:
-#                 with transaction.atomic(using='dorganism'):
-#                     instance=form.save(commit=False) 
-#                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
-#                     instance.save(**kwargs)
-#                     ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
-#                     return redirect(req.META['HTTP_REFERER']) 
+    if req.method=='POST':
+        form=CellBatch_Form(req.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dcell'):
+                    instance=form.save(commit=False) 
+                    instance.cell_id=get_object_or_404(Cell, pk=cell_id)              
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    return redirect(req.META['HTTP_REFERER']) 
 
-#             except IntegrityError as err:
-#                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-#                     return redirect(req.META['HTTP_REFERER'])                
-#         else:
-#             return redirect(req.META['HTTP_REFERER'])      
-#     return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            return redirect(req.META['HTTP_REFERER'])      
+    return render(req, 'dcell/cell/batch/batch_c.html', { 'form':form, 'cell_id':cell_id}) 
 
 # -----------------------------------------------------------------
 class CellBatch_UpdateView(HtmxupdateView):
@@ -239,7 +241,7 @@ class CellBatch_DeleteView(SimpledeleteView):
     transaction_use = 'dcell'
 
 #=================================================================================================
-# OrgBatch Stock  
+# CellBatch Stock  
 #=================================================================================================
 class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
@@ -253,7 +255,7 @@ class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 
 
 #-------------------------------------------------------------------------------
-# within Organism_DetailView
+# within Cell_DetailView
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
@@ -261,9 +263,9 @@ def stockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
-        object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
+        object_=get_object_or_404(Cell_Batch, cellbatch_id=batch_id)#Cell_Batch.objects.get(cellbatch_id=batch_id)
         print(object_)
-        qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
+        qs=CellBatch_Stock.objects.filter(cellbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
             item={
@@ -285,68 +287,68 @@ def stockList(req, pk):
     return JsonResponse({})
       
 #-------------------------------------------------------------------------------
-# @login_required
-# def createStock(req, orgbatch_id):
-#     kwargs={}
-#     kwargs['user']=req.user
-#     form = OrgBatchStock_CreateForm(initial={"orgbatch_id":orgbatch_id},)
-#     if req.method=='POST':
-#         form=OrgBatchStock_CreateForm(req.POST)
-#         if form.is_valid():
+@login_required
+def createStock(req, cellbatch_id):
+    kwargs={}
+    kwargs['user']=req.user
+    form = CellBatchStock_CreateForm(initial={"cellbatch_id":cellbatch_id},)
+    if req.method=='POST':
+        form=CellBatchStock_CreateForm(req.POST)
+        if form.is_valid():
 
-#             try:
-#                 with transaction.atomic(using='dorganism'):
-#                     instance=form.save(commit=False) 
-#                     instance.save(**kwargs)
-#                     ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
-#                     return redirect(req.META['HTTP_REFERER']) 
-#             except IntegrityError as err:
-#                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-#                     return redirect(req.META['HTTP_REFERER'])                
-#         else:
-#             print(f'wrong {form.errors}')
-#     return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
+            try:
+                with transaction.atomic(using='dcell'):
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    return redirect(req.META['HTTP_REFERER']) 
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            print(f'wrong {form.errors}')
+    return render(req, 'dcell/cell/batch_stock/stock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
 
 #-------------------------------------------------------------------------------
-# @login_required
-# def updateStock(req, pk):
-#     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
-#     kwargs={}
-#     kwargs['user']=req.user
-#     form=OrgBatchStock_Form(instance=object_)
-#     if req.method == 'POST' and req.headers.get('x-requested-with') == 'XMLHttpRequest':
-#         # process the data sent in the AJAX request
-#         n_left_value=req.POST.get('value')
-#         object_.n_left=int(n_left_value)-1
-#         object_.save(**kwargs)
-#         ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
-#         response_data = {'result': str(object_.n_left)}
-#         return JsonResponse(response_data)
-#     if req.method=='POST':
-#         form=OrgBatchStock_Form(req.POST, instance=object_)
-#         if "cancel" in req.POST:
-#             return redirect(req.META['HTTP_REFERER'])
-#         else:
-#             try:
-#                 with transaction.atomic(using='dorganism'):      
-#                     obj = OrgBatch_Stock.objects.select_for_update().get(pk=pk)
-#                     try:
-#                         if form.is_valid():               
-#                             instance=form.save(commit=False)
-#                             instance.save(**kwargs)
-#                             ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
-#                             return redirect(req.META['HTTP_REFERER'])
+@login_required
+def updateStock(req, pk):
+    object_=get_object_or_404(CellBatch_Stock, pk=pk)
+    kwargs={}
+    kwargs['user']=req.user
+    form=CellBatchStock_Form(instance=object_)
+    if req.method == 'POST' and req.headers.get('x-requested-with') == 'XMLHttpRequest':
+        # process the data sent in the AJAX request
+        n_left_value=req.POST.get('value')
+        object_.n_left=int(n_left_value)-1
+        object_.save(**kwargs)
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
+        response_data = {'result': str(object_.n_left)}
+        return JsonResponse(response_data)
+    if req.method=='POST':
+        form=CellBatchStock_Form(req.POST, instance=object_)
+        if "cancel" in req.POST:
+            return redirect(req.META['HTTP_REFERER'])
+        else:
+            try:
+                with transaction.atomic(using='dcell'):      
+                    obj = CellBatch_Stock.objects.select_for_update().get(pk=pk)
+                    try:
+                        if form.is_valid():               
+                            instance=form.save(commit=False)
+                            instance.save(**kwargs)
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
+                            return redirect(req.META['HTTP_REFERER'])
                             
-#                     except Exception as err:
-#                         print(f'form erroro is {form.errors} and error {err}')
-#             except Exception as err:
-#                 messages.warning(req, f'Update failed due to {err} error')
-#                 return redirect(req.META['HTTP_REFERER'])
-#     context={
-#         "form":form,
-#         "object":object_,
-#     }
-#     return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
+                    except Exception as err:
+                        print(f'form erroro is {form.errors} and error {err}')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+                return redirect(req.META['HTTP_REFERER'])
+    context={
+        "form":form,
+        "object":object_,
+    }
+    return render(req, "dcell/cell/batch_stock/stock_u.html", context)
 
 #-------------------------------------------------------------------------------
 class CellBatchStock_DeleteView(SimpledeleteView):

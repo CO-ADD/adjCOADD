@@ -1,0 +1,27 @@
+{% load custom_filters %}
+<tr>
+  <td width="6%" class="p-0">
+    <a class="dt-control toggle-btn" data-value="{{object.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip"
+        data-bs-placement="right" title="Click to Open StockTable"></i>
+    </a>
+    <!-- Other template code -->
+    {% with stocknumber=object|count_filtered_stock %}
+    {%if stocknumber > 0%}
+    <span class="badge text-light bg-info m-0 ms-1 p-1">{{stocknumber}}</span>
+    {%else%}
+    <span class="badge text-light bg-secondary m-0 ms-1 p-1">{{stocknumber}}</span>
+    {%endif%}
+    {%endwith%}
+    <div class="mx-0 " style="float: right">
+      {% url 'batch_update' object.pk as batch_url %}
+      <!--  -->
+      {% include 'utils/miscellaneous/update_btn_htmx.html' with url=batch_url %}
+
+      <span class=""> {%include 'dcell/cell/batch/batch_d.html' with object_batch=object.pk %} </span>
+    </div>
+  </td>
+  {%for value in object.get_values%}
+  <td>{{value}}</td>
+  {%endfor%}
+  <td class="not-visible">{{object.pk}}</td>
+</tr>

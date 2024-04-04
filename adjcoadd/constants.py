@@ -3,9 +3,13 @@
 #
 
 # -dOrganism Settings ---------------------------------------------------
-ORGANISM_CLASSES = ['GN','GP','MB','FG','MA']
+ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
+
+CELL_CLASSES = ['CL']
+CELL_SEP = "_"
+CELLBATCH_SEP = "_"
 
 COMPOUND_SEP = '|'
 # column name can be edited here 
