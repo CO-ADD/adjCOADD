@@ -1,0 +1,2 @@
+2024-04-10 10:43:52.407 AEST [74207] FATAL:  data directory "/Users/jordl/documents/coadd/postgresql/coadd-db" has invalid permissions
+2024-04-10 10:43:52.407 AEST [74207] DETAIL:  Permissions should be u=rwx (0700) or u=rwx,g=rx (0750).
