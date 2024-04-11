@@ -238,8 +238,19 @@ span {
 /* bootstrap override */
 
 .dropdown-menu {
+  position:absolute;
+  left:0;
   background-color: var(--plain-text-bg) !important;
   border: 2px solid var(--brand-bg);
+}
+
+.dropdown-menu2 {
+  position:absolute;
+  left: 100%;
+  top:0;
+  background-color: var(--plain-text-bg) !important;
+  border: 2px solid var(--brand-bg);
+  display:none;
 }
 
 
@@ -359,6 +370,27 @@ span {
   font-size: large;
 }
 
+.dropdown-item {
+  color: var(--brand-bg);
+  font-size: medium;
+  width: 200px;
+}
+
+.dropdown-sub-item {
+  color: var(--brand-bg);
+  font-size: medium;
+  width: 200px;
+}
+
+.dropdown:hover .dropdown-menu{
+  display: block;
+}
+
+.dropdown2:hover > .dropdown-menu2{
+  display: block;
+}
+
+
 .nav-item {
   color: var(--brand-text);
 }
@@ -393,6 +425,7 @@ span {
   box-shadow: 0px 0px 10px 0px white;
   transition: 0.3s ease-in;
 }
+
 
 .nav-link:hover:after {
   transform: scaleX(1);
@@ -460,13 +493,17 @@ a:hover .tooltiptext {
   left: 100%;
   top: -7px;
   }
+
+
 .dropdown-menu .dropdown-submenu-left {
-  right: 100%;
+  right: 100%;  
   left: auto;
   }
-.dropdown-menu > li:hover > .dropdown-submenu {
-  display: block;
-  }
+
+
+
+
+
   
 /* ---------------------------3 Landing page --------------------------*/
 

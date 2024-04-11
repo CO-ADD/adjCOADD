@@ -19,14 +19,14 @@ urlpatterns = [
 
     # CellBatch
     path('batchlist', CellBatch_ListView.as_view(), name="batch_list"),
-    path('createBatch/<str:organism_id>/', createBatch, name="batch_create"),
+    path('createBatch/<str:cell_id>/', createBatch, name="cell_batch_create"),
     path('updateBat/<str:pk>', CellBatch_UpdateView.as_view(), name="batch_update"),
     path('deleteBat/<str:pk>', CellBatch_DeleteView.as_view(), name="batch_delete"),
 
     # CellBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
-    path('stocklist', CellBatchStock_ListView.as_view(), name="stock_list_overview"),
-    path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
+    path('stocklist', CellBatchStock_ListView.as_view(), name="cell_stock_list_overview"),
+    path('createStock/<str:cellbatch_id>/', createStock, name="stock_create"),
     path('updateStock/<str:pk>/', updateStock, name="stock_update"),
     path('deleteStock/<str:pk>/', CellBatchStock_DeleteView.as_view(), name="stock_delete"),
 

@@ -30,7 +30,7 @@ urlpatterns = [
 
     # OrgBatch
     path('batchlist', OrgBatch_ListView.as_view(), name="batch_list"),
-    path('createBatch/<str:organism_id>/', createBatch, name="batch_create"),
+    path('createBatch/<str:organism_id>/', createBatch, name="org_batch_create"),
     path('updateBat/<str:pk>', OrgBatch_UpdateView.as_view(), name="batch_update"),
     path('deleteBat/<str:pk>', OrgBatch_DeleteView.as_view(), name="batch_delete"),
     path('createbatchimg/<str:pk>', OrgBatchImg_CreateView.as_view(), name="batchimg_create"),
@@ -38,7 +38,7 @@ urlpatterns = [
 
     # OrgBatch Stock
     path('stocklist/<str:pk>', stockList, name="stock_list"),
-    path('stocklist', OrgBatchStock_ListView.as_view(), name="stock_list_overview"),
+    path('stocklist', OrgBatchStock_ListView.as_view(), name="org_stock_list_overview"),
     path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
     path('updateStock/<str:pk>/', updateStock, name="stock_update"),
     path('deleteStock/<str:pk>/', OrgBatchStock_DeleteView.as_view(), name="stock_delete"),

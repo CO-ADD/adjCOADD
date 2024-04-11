@@ -82,7 +82,7 @@
   <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
   <script>
     $(document).ready(function () {
-      let url_batch = `{% url 'batch_create' object.pk %}`;
+      let url_batch = `{% url 'cell_batch_create' object.pk %}`;
       let url_culture = `{% url 'culture_create' object.pk %}`;
       console.log(url_batch);
       loadModal("#createCultureModal", "#createCulture", url_culture);

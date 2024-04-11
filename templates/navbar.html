@@ -28,26 +28,66 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <!-- item-->
-              <li> <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a> </li>
-              <li> <a class="dropdown-item " href="{% url 'cell_list' %}"> Cell</a> </li>
-              <li> <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a> </li> 
-              <li> <a class="dropdown-item"  href="{% url 'stock_list_overview' %}"> OrgBatch Stock</a> </li> 
-            <div class="dropdown-divider"></div>
-               <a class="dropdown-item" href="{% url 'drug_card' %}"> Drug</a>
-            <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'mic_coadd_list' %}"> MIC Antibiogram</a>
-              <a class="dropdown-item" href="{% url 'mic_pub_list' %}"> MIC Public</a>
-              <a class="dropdown-item" href="{% url 'breakpoint_list' %}"> Breakpoints</a>
-
-            <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'vitekcard_list' %}"> Vitek Card</a>
-              <a class="dropdown-item" href="{% url 'vitekast_list' %}"> Vitek Ast</a>
-              <a class="dropdown-item" href="{% url 'vitekid_list' %}"> Vitek ID</a>
-            <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'genomeseq_list' %}"> Sequence</a>
-              <a class="dropdown-item" href="{% url 'wgs_fastqc_list' %}"> FastQ QC</a>
-              <a class="dropdown-item" href="{% url 'wgs_checkm_list' %}"> FastA CheckM</a>
-              <a class="dropdown-item" href="{% url 'idseq_list' %}"> FastA Identity</a>
+              <!-- <li> <a class="dropdown-item "> Organism</a> 
+                <ul class="dropdown-menu2" aria-labelledby="dropdownMenuButton"></ul>
+                  <li><a class="dropdown-item " href="{% url 'cell_list' %}"> Organism2</a> </li>
+              </li> -->
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
+                  Cell &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <!-- Dropdown menu links -->
+                  <a class="dropdown-item " href="{% url 'cell_list' %}"> Cell</a>
+                  <a class="dropdown-item " href="{% url 'cell_stock_list_overview' %}"> CellBatch Stock</a>
+                </ul>
+              </div>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
+                  Organism &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <!-- Dropdown menu links -->
+                  <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> OrgBatch Stock</a>
+                </ul>
+              </div>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
+                  Drug &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <!-- Dropdown menu links -->
+                  <a class="dropdown-item" href="{% url 'drug_card' %}"> Drug</a>
+                  <a class="dropdown-item" href="{% url 'vitekcard_list' %}"> Vitek Card</a>
+                  <a class="dropdown-item" href="{% url 'vitekast_list' %}"> Vitek Ast</a>
+                  <a class="dropdown-item" href="{% url 'vitekid_list' %}"> Vitek ID</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'mic_coadd_list' %}"> MIC Antibiogram</a>
+                  <a class="dropdown-item" href="{% url 'mic_pub_list' %}"> MIC Public</a>
+                  <a class="dropdown-item" href="{% url 'breakpoint_list' %}"> Breakpoints</a>
+                </ul>
+              </div>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sequence &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <!-- Dropdown menu links -->
+                  <a class="dropdown-item" href="{% url 'genomeseq_list' %}"> Sequence</a>
+                  <a class="dropdown-item" href="{% url 'wgs_fastqc_list' %}"> FastQ QC</a>
+                  <a class="dropdown-item" href="{% url 'wgs_checkm_list' %}"> FastA CheckM</a>
+                  <a class="dropdown-item" href="{% url 'idseq_list' %}"> FastA Identity</a>
+                </ul>
+              </div>
+              </li>
           </ul>
         </div>
 
