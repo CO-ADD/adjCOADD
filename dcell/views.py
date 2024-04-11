@@ -63,7 +63,7 @@ def createCell(req):
     kwargs['user']=req.user
     form=CreateCell_form()
     if req.method=='POST':
-        Organism_Name=req.POST.get('search_cell') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
+        Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
         form=CreateCell_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
             try:

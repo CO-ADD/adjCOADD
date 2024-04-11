@@ -76,7 +76,7 @@ class CreateCell_form(forms.ModelForm):
                 field.widget.attrs = attrs
     
     def clean_organism_name(self):       
-       
+        print(self.organism_name)
         data=get_object_or_404(Taxonomy, organism_name=self.organism_name)
     
         if data:
