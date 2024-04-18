@@ -110,15 +110,15 @@ def detailCell(request, pk):
     #context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
    
 
-    context["batch_obj"]=Cell_Batch.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
-    context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
+    context["cell_batch_obj"]=Cell_Batch.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
+    context["cell_batch_obj_count"]=context["cell_batch_obj"].count() if context["cell_batch_obj"].count()!=0 else None
     context["batch_fields"]=Cell_Batch.get_fields()
 
-    context["stock_obj"]=CellBatch_Stock.objects.filter(cellbatch_id__cell_id=object_.cell_id, astatus__gte=0)
-    context["stock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
-    context["stock_fields"]=CellBatch_Stock.get_fields()
+    context["cell_stock_obj"]=CellBatch_Stock.objects.filter(cellbatch_id__cell_id=object_.cell_id, astatus__gte=0)
+    context["cell_stock_obj_count"]=context["cell_stock_obj"].count() if context["cell_stock_obj"].count()!=0 else None
+    context["cell_stock_fields"]=CellBatch_Stock.get_fields()
 
-    context["stock_count"]=Cell_Batch.objects.annotate(number_of_stocks=Count('cellbatch_id')) 
+    context["cell_stock_count"]=Cell_Batch.objects.annotate(number_of_stocks=Count('cellbatch_id')) 
     #context["cultr_obj"]=Cell_Culture.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
     #context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
     #context["cultr_fields"]=Cell_Culture.get_fields() 
@@ -210,7 +210,7 @@ class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createBatch(req, cell_id):
+def createCellBatch(req, cell_id):
     kwargs={'user': req.user}
     form=CellBatch_Form()
     
@@ -264,7 +264,7 @@ class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def stockList(req, pk):
+def CellstockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
@@ -293,7 +293,7 @@ def stockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def createStock(req, cellbatch_id):
+def CellcreateStock(req, cellbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = CellBatchStock_CreateForm(initial={"cellbatch_id":cellbatch_id},)
@@ -316,7 +316,7 @@ def createStock(req, cellbatch_id):
 
 #-------------------------------------------------------------------------------
 @login_required
-def updateStock(req, pk):
+def CellupdateStock(req, pk):
     object_=get_object_or_404(CellBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user

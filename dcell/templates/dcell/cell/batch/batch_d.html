@@ -6,7 +6,7 @@
   tabindex="-1" aria-labelledby="modal-default{{object_batch}}Label" aria-hidden="true">
   <div class="modal-dialog">
     <!--prettier-ignore-->
-    {% url 'batch_delete' pk=object_batch as deleteurl %}
+    {% url 'cell_batch_delete' pk=object_batch as deleteurl %}
     {%include 'utils/modal/delete.html' with title='Delete Batch' deleteurl=deleteurl entry=object_batch %}
   </div>
 </div>

@@ -5,7 +5,7 @@
         data-bs-placement="right" title="Click to Open StockTable"></i>
     </a>
     <!-- Other template code -->
-    {% with stocknumber=object|count_filtered_stock %}
+    {% with stocknumber=object|count_filtered_cell_stock %}
     {%if stocknumber > 0%}
     <span class="badge text-light bg-info m-0 ms-1 p-1">{{stocknumber}}</span>
     {%else%}
@@ -13,7 +13,7 @@
     {%endif%}
     {%endwith%}
     <div class="mx-0 " style="float: right">
-      {% url 'batch_update' object.pk as batch_url %}
+      {% url 'cell_batch_update' object.pk as batch_url %}
       <!--  -->
       {% include 'utils/miscellaneous/update_btn_htmx.html' with url=batch_url %}
 

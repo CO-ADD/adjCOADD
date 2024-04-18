@@ -8,7 +8,7 @@
       <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
     </button>
     {{form_errors}}
-    {% url 'batch_update' pk=object.pk as my_url %}
+    {% url 'cell_batch_update' pk=object.pk as my_url %}
     {% with urlname=my_url|add:'?_value=cancel' %}
     {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
     {% endwith %}

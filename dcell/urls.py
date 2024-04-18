@@ -3,8 +3,8 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dcell.views import  (Cell_ListView,Cell_CardView,createCell, detailCell, updateCell, Cell_DeleteView,
-                     CellBatch_ListView, createBatch, CellBatch_DeleteView, CellBatch_UpdateView, 
-                     CellBatchStock_ListView, createStock, updateStock, stockList, CellBatchStock_DeleteView,)
+                     CellBatch_ListView, createCellBatch, CellBatch_DeleteView, CellBatch_UpdateView, 
+                     CellBatchStock_ListView, CellcreateStock, CellupdateStock, CellstockList, CellBatchStock_DeleteView,)
 from dorganism.utils.utils import search_organism, search_organism_id
 
 urlpatterns = [
@@ -18,17 +18,17 @@ urlpatterns = [
     path('deleteCell/<str:pk>', Cell_DeleteView.as_view(), name="cell_delete"),
 
     # CellBatch
-    path('batchlist', CellBatch_ListView.as_view(), name="batch_list"),
-    path('createBatch/<str:cell_id>/', createBatch, name="cell_batch_create"),
-    path('updateBat/<str:pk>', CellBatch_UpdateView.as_view(), name="batch_update"),
-    path('deleteBat/<str:pk>', CellBatch_DeleteView.as_view(), name="batch_delete"),
+    path('batchlist', CellBatch_ListView.as_view(), name="cell_batch_list"),
+    path('createBatch/<str:cell_id>/', createCellBatch, name="cell_batch_create"),
+    path('updateBat/<str:pk>', CellBatch_UpdateView.as_view(), name="cell_batch_update"),
+    path('deleteBat/<str:pk>', CellBatch_DeleteView.as_view(), name="cell_batch_delete"),
 
     # CellBatch Stock
-    path('stocklist/<str:pk>', stockList, name="stock_list"),
+    path('stocklist/<str:pk>', CellstockList, name="cell_stock_list"),
     path('stocklist', CellBatchStock_ListView.as_view(), name="cell_stock_list_overview"),
-    path('createStock/<str:cellbatch_id>/', createStock, name="stock_create"),
-    path('updateStock/<str:pk>/', updateStock, name="stock_update"),
-    path('deleteStock/<str:pk>/', CellBatchStock_DeleteView.as_view(), name="stock_delete"),
+    path('createStock/<str:cellbatch_id>/', CellcreateStock, name="cell_stock_create"),
+    path('updateStock/<str:pk>/', CellupdateStock, name="cell_stock_update"),
+    path('deleteStock/<str:pk>/', CellBatchStock_DeleteView.as_view(), name="cell_stock_delete"),
 
     # path('pivottable/<str:pk>', pivottable, name="pivottable"),
   

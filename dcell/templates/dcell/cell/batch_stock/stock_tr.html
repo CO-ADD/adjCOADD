@@ -1,6 +1,6 @@
 <tr>
     <td style="width: 6%">
-      {% url 'stock_update' object.pk as stock_url %}
+      {% url 'cell_stock_update' object.pk as stock_url %}
       <!--  -->
       {% include 'utils/miscellaneous/update_btn_htmx.html' with url=stock_url %}
       <!--  -->

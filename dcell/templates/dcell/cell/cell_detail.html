@@ -9,14 +9,14 @@
 
     <!-- Cell -->
     <div class="d-flex m-0 p-0">
-      {% include 'utils/lefticons.html' with title="Organism" %}
+      {% include 'utils/lefticons.html' with title="Cell" %}
       <div class="accordion bg-transparent w-100" id="cell-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseCellDetail" aria-expanded="true" aria-controls="collapseOne">
               <h5 class="fs-6 my-0">
-                {{object.pk}} | {{object.organism_name}}
+                {{object.pk}} | {{object.cell_name}}
               </h5>
             </button>
           </h2>
@@ -58,7 +58,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dcell/cell/batch/batch_tr.html' hiddenfield='Batch ID'%}
+                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=cell_batch_obj data_fields=batch_fields html_name='dcell/cell/batch/batch_tr.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>
