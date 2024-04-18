@@ -54,11 +54,11 @@
             </button>
           </h2>
           <div id="collapseCellBatch" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
-            data-bs-parent="#cell-batch-detail">
+            data-bs-parent="#Cell-batch-detail">
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=cell_batch_obj data_fields=batch_fields html_name='dcell/cell/batch/batch_tr.html' hiddenfield='Batch ID'%}
+                {%include 'utils/datatable_sm.html' with table_id='datatable_cell_batch' objects=batch_obj data_fields=batch_fields html_name='dcell/cell/batch/batch_tr.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>

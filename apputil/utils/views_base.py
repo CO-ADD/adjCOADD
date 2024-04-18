@@ -103,6 +103,7 @@ class SimpleupdateView(LoginRequiredMixin, View):
         else: 
             pk=kwargs.get("pk")
             object_=self.get_object(pk)
+            print("test")
         form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 

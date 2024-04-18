@@ -34,9 +34,15 @@
 ></script>
 
 {%load static%}
-<script type="text/javascript" src="{% static 'js/create_childtable.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/destroy_childtable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/childtable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/destroy_childtable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/create_childtable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/org_stocktable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/destroy_org_stocktable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/create_org_stocktable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cell_stocktable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/destroy_cell_stocktable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/create_cell_stocktable.js' %}"></script>
 <script>
   $(document).ready(function () {
     // Table Batch
@@ -47,11 +53,18 @@
       order: [[1, 'asc']],
     });
     
-    if ("{{table_id}}"==="datatable_batch"){
+    if ("{{table_id}}"==="datatable_org_batch"){
 
       permission='{{user.permission}}'
-      childtable(permission, table)
+      orgstocktable(permission, table)
+    }
+    if ("{{table_id}}"==="datatable_cell_batch"){
+      
+      permission='{{user.permission}}'
+      cellstocktable(permission, table)
     }
     const csrftoken = getCookie("csrftoken");    
   });
 </script>
+
+

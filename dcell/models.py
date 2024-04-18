@@ -313,7 +313,7 @@ class CellBatch_Stock(AuditModel):
 #=================================================================================================
     HEADER_FIELDS={
         "cellbatch_id.cellbatch_id":{'CellBatch ID': {'cellbatch_id.cell_id.cell_id':LinkList["cell_id"]}},
-        "cellbatch_id.cell_id.cell_name":"Cell",
+        "cellbatch_id.cell_id.cell_names":"Cell",
         #"cellbatch_id.cell_id.cell_name":{'Cell ID': {'cell_id.cell_id.cell_id':LinkList['cell_id']}},
         "stock_type":"Stock Type",
         "n_created":"#Created",

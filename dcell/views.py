@@ -110,13 +110,13 @@ def detailCell(request, pk):
     #context["batchimg_obj_count"]=context["batchimg_obj"].count() if context["batchimg_obj"].count()!=0 else None
    
 
-    context["cell_batch_obj"]=Cell_Batch.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
-    context["cell_batch_obj_count"]=context["cell_batch_obj"].count() if context["cell_batch_obj"].count()!=0 else None
+    context["batch_obj"]=Cell_Batch.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
+    context["batch_obj_count"]=context["batch_obj"].count() if context["batch_obj"].count()!=0 else None
     context["batch_fields"]=Cell_Batch.get_fields()
 
-    context["cell_stock_obj"]=CellBatch_Stock.objects.filter(cellbatch_id__cell_id=object_.cell_id, astatus__gte=0)
-    context["cell_stock_obj_count"]=context["cell_stock_obj"].count() if context["cell_stock_obj"].count()!=0 else None
-    context["cell_stock_fields"]=CellBatch_Stock.get_fields()
+    context["stock_obj"]=CellBatch_Stock.objects.filter(cellbatch_id__cell_id=object_.cell_id, astatus__gte=0)
+    context["tock_obj_count"]=context["stock_obj"].count() if context["stock_obj"].count()!=0 else None
+    context["tock_fields"]=CellBatch_Stock.get_fields()
 
     context["cell_stock_count"]=Cell_Batch.objects.annotate(number_of_stocks=Count('cellbatch_id')) 
     #context["cultr_obj"]=Cell_Culture.objects.filter(cell_id=object_.cell_id, astatus__gte=0)
