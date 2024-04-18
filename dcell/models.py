@@ -35,7 +35,7 @@ class Cell(AuditModel):
         'cell_panel':'Panel',
         'cell_notes':'Notes',
         'cell_code':'Cell Code',
-        'cell_idenfication':'Identification',
+        'cell_identification':'Identification',
         'cell_origin':'Origin',
         'source':"Source",
         'source_code':"Source Code",
