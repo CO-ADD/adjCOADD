@@ -3,7 +3,7 @@
 <!-- Add Image Modal -->
 
 <div class="modal fade" id="{{title}}Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl card-bg">
+    <div class="modal-dialog modal-lg card-bg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
@@ -15,7 +15,7 @@
                     <!-- prettier-ignore -->
                     <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3 ">
                         {%for field in form%}
-                        <div class="col border border-2 django-form-table">
+                        <div class="col border-top border-2 django-form-table">
                             <label>{{field.label}}</label>
                             <p>{{field | safe}}</p>
                             <span class="badge bg-info text-light">{{field.help_text}}</span>

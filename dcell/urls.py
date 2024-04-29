@@ -5,6 +5,7 @@ from django.urls import path, include, re_path
 from dcell.views import  (Cell_ListView,Cell_CardView,createCell, detailCell, updateCell, Cell_DeleteView,
                      CellBatch_ListView, createCellBatch, CellBatch_DeleteView, CellBatch_UpdateView, 
                      CellBatchStock_ListView, CellcreateStock, CellupdateStock, CellstockList, CellBatchStock_DeleteView,)
+from ddrug.upload_views import Import_CellView, Import_DrugView
 from dorganism.utils.utils import search_organism, search_organism_id
 
 urlpatterns = [
@@ -29,6 +30,8 @@ urlpatterns = [
     path('createStock/<str:cellbatch_id>/', CellcreateStock, name="cell_stock_create"),
     path('updateStock/<str:pk>/', CellupdateStock, name="cell_stock_update"),
     path('deleteStock/<str:pk>/', CellBatchStock_DeleteView.as_view(), name="cell_stock_delete"),
+
+    path('import-cell/', Import_CellView.as_view(), name='import-cell'),
 
     # path('pivottable/<str:pk>', pivottable, name="pivottable"),
   

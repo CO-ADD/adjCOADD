@@ -828,6 +828,9 @@ form p {
 }
 
 /* modal form style */
+.django-form-table {
+  border-top: 1px solid var(--border-color);
+}
 .django-form-table:hover {
   background-color: var(--plain-text-bg);
 }

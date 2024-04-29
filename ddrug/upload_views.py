@@ -82,6 +82,33 @@ class Import_DrugView(ImportHandler_View):
         
         valLog=imp_Drug_fromXlsx(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
         return(valLog)
+
+
+#=================================================================================================
+# Cell Import Wizard
+#=================================================================================================
+
+class Import_CellView(ImportHandler_View):
+    
+    name_step1="Upload"
+    form_list = [
+        ('select_file', SelectFile_StepForm),
+        ('upload', Upload_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+    template_name = 'dcell/cell/importhandler_cell.html'
+    
+    # customize util functions to validate files:
+    # vitek -- upload_VitekPDF_Process
+    def file_process_handler(self, request, *args, **kwargs):
+        try:
+            form_data=kwargs.get('form_data', None)
+        except Exception as err:
+            print(err)
+        
+        valLog=imp_Drug_fromXlsx(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
+        return(valLog)
+        
         
 # ---------------------------------------------------------------------------------
 # util function to parse and validation drug excel files

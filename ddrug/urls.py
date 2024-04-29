@@ -44,7 +44,7 @@ urlpatterns = [
     path("ketcher_test/", ketcher_test, name="ketcher_test"),
 
     path('import-vitek/', Import_VitekView.as_view(), name='import-vitek'),
-    #path('import-drug/', Import_DrugView.as_view(), name='import-drug'),
+    path('import-drug/', Import_DrugView.as_view(), name='import-drug'),
 
     
 ]
