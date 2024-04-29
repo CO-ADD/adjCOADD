@@ -28,7 +28,7 @@ from apputil.utils.views_base import HtmxupdateView, SuperUserRequiredMixin, per
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, OverwriteStorage, file_location
 from apputil.utils.data_style import convert_heatmap
-from apputil.utils.form_wizard_tools import SelectFile_StepForm
+from apputil.utils.form_wizard_tools import SelectMultipleFiles_StepForm
 from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import DataExportBaseView
 
@@ -286,7 +286,7 @@ class DataExportView(DataExportBaseView):
 #=================================================================================================
 
 class Importhandler_apputils(Importhandler):
-    form_class=SelectFile_StepForm
+    form_class=SelectMultipleFiles_StepForm
     template_name='apputil/importhandler_excel.html'
     upload_model_type=None
     lObject={}   

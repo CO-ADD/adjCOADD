@@ -5,7 +5,7 @@ from django.urls import path, include, re_path
 from dcell.views import  (Cell_ListView,Cell_CardView,createCell, detailCell, updateCell, Cell_DeleteView,
                      CellBatch_ListView, createCellBatch, CellBatch_DeleteView, CellBatch_UpdateView, 
                      CellBatchStock_ListView, CellcreateStock, CellupdateStock, CellstockList, CellBatchStock_DeleteView,)
-from ddrug.upload_views import Import_CellView, Import_DrugView
+from dcell.cell_upload_views import Import_CellView
 from dorganism.utils.utils import search_organism, search_organism_id
 
 urlpatterns = [

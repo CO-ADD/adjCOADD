@@ -83,6 +83,62 @@ body {
   border: 2px solid var(--brand-bg) !important;
 }
 
+.btn-active{
+  border: 1px solid;
+  color: var(--plain-text);
+  background-color: var(--bs-custom-white) !important;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+
+.btn-disabled{
+  border: 1px solid;
+  color: var(--plain-text);
+  background-color: var(--bs-custom-white) !important;
+  opacity: 10%;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+
+.btn-active-small{
+  border: 1px solid;
+  color: var(--plain-text);
+  background-color: var(--bs-custom-white) !important;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+
+.btn-active:hover{
+  background-color: var(--bs-table-hover-bg) !important;
+  color: var(--plain-text) !important;
+  
+}
+
+.btn-active-small:hover{
+  background-color: var(--bs-table-hover-bg) !important;
+  color: var(--plain-text) !important;
+  
+}
+
+
 .btn-color.disabled{
   color: var(--plain-text)!important;
   background-color: transparent!important;
@@ -168,6 +224,7 @@ i {
   background-color: var(--info) !important;
  
 }
+
 .btn:hover {
   background-color: var(--body-bg) !important;
   color: var(--info) !important;
