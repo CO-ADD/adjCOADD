@@ -4,8 +4,8 @@ from django.urls import path, include, re_path
 
 from dorganism.views import  (Taxonomy_ListView,Taxonomy_CardView,detailTaxonomy,Taxonomy_CreateView, Taxonomy_UpdateView, Taxonomy_DeleteView, 
                      Organism_ListView,Organism_CardView,createOrganism, detailOrganism, updateOrganism, Organism_DeleteView,
-                     OrgBatch_ListView, createBatch, OrgBatch_DeleteView, OrgBatch_UpdateView, 
-                     OrgBatchStock_ListView, createStock, updateStock, stockList, OrgBatchStock_DeleteView,
+                     OrgBatch_ListView, OrgcreateBatch, OrgBatch_DeleteView, OrgBatch_UpdateView, 
+                     OrgBatchStock_ListView, OrgcreateStock, OrgupdateStock, OrgstockList, OrgBatchStock_DeleteView,
                      OrgCulture_UpdateView, createCulture, OrgCulture_DeleteView,
                      OrgBatchImg_DeleteView,OrgBatchImg_CreateView) 
 from dorganism.utils.utils import search_organism, search_organism_id
@@ -29,19 +29,19 @@ urlpatterns = [
     path('deleteOrg/<str:pk>', Organism_DeleteView.as_view(), name="organism_delete"),
 
     # OrgBatch
-    path('batchlist', OrgBatch_ListView.as_view(), name="batch_list"),
-    path('createBatch/<str:organism_id>/', createBatch, name="batch_create"),
-    path('updateBat/<str:pk>', OrgBatch_UpdateView.as_view(), name="batch_update"),
-    path('deleteBat/<str:pk>', OrgBatch_DeleteView.as_view(), name="batch_delete"),
+    path('batchlist', OrgBatch_ListView.as_view(), name="org_batch_list"),
+    path('createBatch/<str:organism_id>/', OrgcreateBatch, name="org_batch_create"),
+    path('updateBat/<str:pk>', OrgBatch_UpdateView.as_view(), name="org_batch_update"),
+    path('deleteBat/<str:pk>', OrgBatch_DeleteView.as_view(), name="org_batch_delete"),
     path('createbatchimg/<str:pk>', OrgBatchImg_CreateView.as_view(), name="batchimg_create"),
     path('deleteBatimg/<str:pk>', OrgBatchImg_DeleteView.as_view(), name="batchimg_delete"),
 
     # OrgBatch Stock
-    path('stocklist/<str:pk>', stockList, name="stock_list"),
-    path('stocklist', OrgBatchStock_ListView.as_view(), name="stock_list_overview"),
-    path('createStock/<str:orgbatch_id>/', createStock, name="stock_create"),
-    path('updateStock/<str:pk>/', updateStock, name="stock_update"),
-    path('deleteStock/<str:pk>/', OrgBatchStock_DeleteView.as_view(), name="stock_delete"),
+    path('stocklist/<str:pk>', OrgstockList, name="org_stock_list"),
+    path('stocklist', OrgBatchStock_ListView.as_view(), name="org_stock_list_overview"),
+    path('createStock/<str:orgbatch_id>/', OrgcreateStock, name="org_stock_create"),
+    path('updateStock/<str:pk>/', OrgupdateStock, name="org_stock_update"),
+    path('deleteStock/<str:pk>/', OrgBatchStock_DeleteView.as_view(), name="org_stock_delete"),
 
     # Organism Culture 
     path('createCulture/<str:organism_id>/', createCulture, name="culture_create"),

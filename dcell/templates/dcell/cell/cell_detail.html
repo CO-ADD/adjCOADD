@@ -1,0 +1,101 @@
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+  <div class="w-100">
+
+    <!-- Cell -->
+    <div class="d-flex m-0 p-0">
+      {% include 'utils/lefticons.html' with title="Cell" %}
+      <div class="accordion bg-transparent w-100" id="cell-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseCellDetail" aria-expanded="true" aria-controls="collapseOne">
+              <h5 class="fs-6 my-0">
+                {{object.pk}} | {{object.cell_name}}
+              </h5>
+            </button>
+          </h2>
+          <div id="collapseCellDetail" class="accordion-collapse collapse show bg-transparent" aria-labelledby="headingOne"
+            data-bs-parent="#cell-detail">
+            <div class="accordion-body bg-transparent">
+              <b> {% include 'utils/message.html' %} </b>
+              {% include 'dcell/cell/cell_u.html' %}
+              <br>           
+              <hr>
+              <!-- prettier-ignore -->
+              {% include 'detailview/audit_status.html' %}
+              <!--  -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Batch and Stock as ChildTable -->
+    <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+      {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+      <div class="accordion bg-transparent w-100" id="cell-batch-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapseCellBatch" aria-expanded="true" aria-controls="collapseTwo">
+              <h5 class="fs-6 my-0">
+                Batch and Stock
+              </h5>
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+              <!-- prettier-ignore -->
+            </button>
+          </h2>
+          <div id="collapseCellBatch" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+            data-bs-parent="#Cell-batch-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                {%include 'utils/datatable_sm.html' with table_id='datatable_cell_batch' objects=batch_obj data_fields=batch_fields html_name='dcell/cell/batch/batch_tr.html' hiddenfield='Batch ID'%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Files -->
+    <div class="d-flex m-0 p-0">
+    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+    {% include 'dcell/cell/cell_file.html' %}
+    </div>
+
+    <div style="min-height: 100px;"></div>
+  </div>
+
+
+  {% load static %}
+  <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      let url_batch = `{% url 'cell_batch_create' object.pk %}`;
+      let url_culture = `{% url 'culture_create' object.pk %}`;
+      console.log(url_batch);
+      loadModal("#createCultureModal", "#createCulture", url_culture);
+      loadModal("#createBatchModal", "#createBatch", url_batch);
+
+      let url_doc= `{% url 'adddoc' object.pk %}`;
+      let url_img_cellbatch= `{% url 'batchimg_create' object.pk %}`;
+
+      ajaxSimpleUpload('#id_doc_file','doc_file', url_doc, '#id_doc_name', '#id_doc_type');
+      ajaxSimpleUpload('#id_image_file','image_file', url_img_cellbatch, '#id_image_name', '#id_image_type');
+
+    });
+  </script>
+
+  {%endblock%}
+</div>

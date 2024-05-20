@@ -25,6 +25,9 @@ from apputil.utils.files_upload import validate_file,file_location, OverwriteSto
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+class SingleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = False
+
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("widget", MultipleFileInput())
@@ -37,8 +40,55 @@ class MultipleFileField(forms.FileField):
         else:
             result = single_file_clean(data, initial)
         return result
+
+class SingleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", SingleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
 # --------------------------------------------------------------------------------------------------
-class SelectFile_StepForm(WriteUserRequiredMixin, forms.Form):
+class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
+# --------------------------------------------------------------------------------------------------
+    multi_files = SingleFileField(label='Select one file', 
+                                  validators=[validate_file], 
+                                  required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        uploadfiles=[]
+        # List of file fields to validate
+        file_fields = ['multi_files',]
+        
+        # check if filelist is MultiValueDict
+        if not isinstance(self.files, MultiValueDict):
+            return cleaned_data
+        
+        for field in file_fields:
+            files = self.files.getlist(f'select_file-{field}')
+            
+            uploadfiles.extend(files)
+
+            for file in files:
+                for validator in self.fields[field].validators:
+                    try:
+                        validator(file)
+                    except ValidationError as e:
+                        self.add_error(field, f"{file.name}: {str(e)}")
+                        
+        if len(uploadfiles)<1: 
+            self.add_error('single_file', "Select one file")
+            raise forms.ValidationError("No files selected")
+        return cleaned_data
+    
+# --------------------------------------------------------------------------------------------------
+class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
     multi_files = MultipleFileField(label='Select one or multiple files', 
                                   validators=[validate_file], 

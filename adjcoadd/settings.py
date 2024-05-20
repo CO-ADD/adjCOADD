@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #DEVELOPMENT=None
-DEVELOPMENT='Work'
+DEVELOPMENT='Local'
 
 #........................................................................
 if DEVELOPMENT:
@@ -114,8 +114,9 @@ INSTALLED_APPS = [
     'dscreen',
     'dcollab',
     'dgene',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'dcell',
+    #'rest_framework',
+    #'rest_framework.authtoken',
     'formtools',
 ]
 
@@ -207,7 +208,7 @@ print(f"Host Name: {HOST_NAME}")
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=apputil,dorganism,dcell,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,
         'USER': DB_USER, 
         'PASSWORD':DB_PASSWD,
@@ -229,6 +230,21 @@ DATABASES = {
            
         },
     },
+
+    'dcell': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dcell,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,   
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "dcell",
+           
+        },
+    },
+
     'ddrug': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},

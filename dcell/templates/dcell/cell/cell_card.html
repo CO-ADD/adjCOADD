@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
+{% block content%}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  {% url 'pivoted-table' app_model='dcell-Cell' as url_pivotedtable%}
+  {% include 'utils/leftbar.html' with list_url='cell_list' card_url='cell_card' create_object='createCell' create_objectModal='createCellModal'  url_pivotedtable=url_pivotedtable %}
+  <!-- Sidebar View -->
+  {% include "utils/sidebar.html" %}
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    <!-- prettier-ignore -->
+    {% include 'utils/main_horizalbar.html' with title='Cell' model_name='Cell' application='dcell' %}
+    <!-- prettier-ignore -->
+
+    <!-- Card View Content -->
+    <div class="contain-fluid data-contain">
+      <div class="row d-flex flex-wrap mx-2">
+        {% for object in page_obj %}
+        <!--  -->
+          {% url 'cell_detail' object.pk as url_name %}
+          <!--prettier-ignore-->
+          {% include 'utils/card.html' with url_name=url_name datatype='Cell' object_name=object.cell_id object_id_slug=object.cell_id object_var1=object.strain_code object_var2=object.cell_name object_var3=object.strain_ids %}
+        <!--prettier-ignore-->
+        {%endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{%endblock%}

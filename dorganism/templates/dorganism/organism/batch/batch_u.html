@@ -3,12 +3,11 @@
 @htmx:after-swap="state = 'success'">
   <!-- <td></td> -->
   <td>
-    <button class="border border-0 bg-transparent" type="submit" value="update"
-      hx-put="{%url 'batch_update' pk=object.pk%}" hx-include="closest tr" hx-trigger="click" onclick="window.location.reload(true);">
-      <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
+    <button class="btn-active-small" type="submit" value="update"
+      hx-put="{%url 'org_batch_update' pk=object.pk%}" hx-include="closest tr" hx-trigger="click" onclick="window.location.reload(true);"> Save
     </button>
     {{form_errors}}
-    {% url 'batch_update' pk=object.pk as my_url %}
+    {% url 'org_batch_update' pk=object.pk as my_url %}
     {% with urlname=my_url|add:'?_value=cancel' %}
     {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
     {% endwith %}

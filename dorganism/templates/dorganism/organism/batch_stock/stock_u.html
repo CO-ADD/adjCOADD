@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-lg">
-  {% url 'stock_update' object.pk as updateurl %}
+  {% url 'org_stock_update' object.pk as updateurl %}
   {%include 'utils/modal/modal_form.html' with title='Update Stock' urlname=updateurl %}
 
 </div>

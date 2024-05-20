@@ -250,7 +250,7 @@ class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createBatch(req, organism_id):
+def OrgcreateBatch(req, organism_id):
     kwargs={'user': req.user}
     form=OrgBatch_Form()
     
@@ -304,7 +304,7 @@ class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def stockList(req, pk):
+def OrgstockList(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
@@ -333,7 +333,7 @@ def stockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def createStock(req, orgbatch_id):
+def OrgcreateStock(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = OrgBatchStock_CreateForm(initial={"orgbatch_id":orgbatch_id},)
@@ -356,7 +356,7 @@ def createStock(req, orgbatch_id):
 
 #-------------------------------------------------------------------------------
 @login_required
-def updateStock(req, pk):
+def OrgupdateStock(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user

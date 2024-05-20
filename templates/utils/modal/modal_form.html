@@ -15,10 +15,10 @@
   </div>
   <div class="modal-body">
     <!-- -->
-    {%if title == 'Create Organism' %}
+    {%if title == 'Create Organism' or title == 'Create Cell'%}
     <!--  -->
     {% include 'utils/search_organism.html' %}
-    <!--  -->
+    <!--  --> 
     {%endif%}
     <!--  -->
     <hr />
@@ -26,7 +26,7 @@
     <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
       {% csrf_token %}
       <!--  -->
-      {%if title == 'Create Organism' %}
+      {%if title == 'Create Organism' or title == 'Create Cell' %}
       <input type="text" id="taxo-name" name="search_organism" hidden />
       {%endif%}
       <!--  -->
