@@ -45,7 +45,7 @@ class Cell_Filter(Filterbase):
         fields=[ 'ID', 'Name','Line',  'Notes', 'Type', 'MTA', 'Panel', ]
 
 # -----------------------------------------------------------------
-class CreateCell_form(forms.ModelForm):
+class Cell_CreateForm(forms.ModelForm):
 
     cell_line= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     cell_names= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
@@ -58,13 +58,15 @@ class CreateCell_form(forms.ModelForm):
    
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
-        super(CreateCell_form, self).__init__(*args, **kwargs)
+        super(Cell_CreateForm, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
         self.fields['cell_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_type'], showDesc=False),)
         self.fields['cell_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
+
         self.fields['cell_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_panel'], showDesc=False),)
         self.fields['cell_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
+
         self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['mta_status'])]
         self.create_field_groups()
 
@@ -102,7 +104,7 @@ class CreateCell_form(forms.ModelForm):
         exclude=['cell_id',  'assoc_documents'] 
 
 # -----------------------------------------------------------------
-class UpdateCell_form(CreateCell_form):     
+class Cell_UpdateForm(Cell_CreateForm):     
     class Meta:
         model=Cell
         exclude=['cell_id', 'assoc_documents'] 
@@ -116,14 +118,13 @@ class CellBatch_Form(forms.ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
-    # organism_id=forms.ModelChoiceField(queryset=Organism.objects.filter(astatus__gte=0), widget=forms.HiddenInput(),required=False,)
+    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
+                                        help_text='Optional - If empty, next number will be assigned', required=False)
+    batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
-                                        help_text='Optional - If empty, next number will be assigned', required=False)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
 
     def __init__(self, *args, **kwargs):

@@ -19,7 +19,7 @@ urlpatterns = [
     path('deleteCell/<str:pk>', Cell_DeleteView.as_view(), name="cell_delete"),
 
     # CellBatch
-    path('batchlist', CellBatch_ListView.as_view(), name="cell_batch_list"),
+    path('cellbatch_list', CellBatch_ListView.as_view(), name="cellbatch_list"),
     path('createBatch/<str:cell_id>/', createCellBatch, name="cell_batch_create"),
     path('updateBat/<str:pk>', CellBatch_UpdateView.as_view(), name="cell_batch_update"),
     path('deleteBat/<str:pk>', CellBatch_DeleteView.as_view(), name="cell_batch_delete"),

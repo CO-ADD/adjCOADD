@@ -7,16 +7,16 @@
 
   <!--prettier-ignore-->
   {% url 'pivoted-table' app_model='dcell-Cell_Batch' as url_pivotedtable%}
-  {%include 'utils/leftbar.html' with list_url='cell_batch_list' url_pivotedtable=url_pivotedtable %}
+  {% include 'utils/leftbar.html' with list_url='cellbatch_list' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
     {% include 'utils/main_horizalbar.html' with title='Cell_Batch' model_name='Cell_Batch' application='dcell' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with modelname='Cell_Batch' %}
+      {% include 'utils/datatable_general.html' with modelname='Cell_Batch' %}
     </div>
     
   </div>

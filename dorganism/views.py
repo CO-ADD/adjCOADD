@@ -115,7 +115,7 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Organism','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -212,7 +212,7 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Organism','Completed')
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Organism','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
@@ -262,7 +262,7 @@ def OrgcreateBatch(req, organism_id):
                     instance=form.save(commit=False) 
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new OrgBatch','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -345,7 +345,7 @@ def OrgcreateStock(req, orgbatch_id):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create new OrgBatchStock','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -366,7 +366,7 @@ def OrgupdateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_N_Left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -381,7 +381,7 @@ def OrgupdateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
-                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update OrgBatchStock','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
@@ -418,7 +418,7 @@ def createCulture(req, organism_id):
                     instance=form.save(commit=False)
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')                  
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create new OrgCulture','Completed')                  
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')

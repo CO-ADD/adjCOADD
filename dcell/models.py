@@ -29,8 +29,8 @@ class Cell(AuditModel):
     HEADER_FIELDS = {
 #       'organism_name':{"VerboseName":'Cell Name','Updatable':False}
         'cell_id':{'Cell ID': {'cell_id':LinkList['cell_id']}}, 
-        'cell_names':'Cell Names',
         'cell_line':'Cell Line',
+        'cell_names':'Cell Names',
         'cell_type':'Cell Type',
         'cell_panel':'Panel',
         'cell_notes':'Notes',
@@ -51,7 +51,7 @@ class Cell(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["cell_line", "cell_type", "cell_names", "cell_panel", "cell_origin", "cell_notes"],
+       'Group1': ["cell_line", "cell_names", "cell_type", "cell_panel", "cell_origin", "cell_notes"],
        'Group2': ['source', 'source_code','reference'],
        'Group3': ['mta_status','mta_notes','mta_document','biologist'],
        'Group4': ['collect_tissue', 'patient_diagnosis', 'patient']
@@ -64,8 +64,8 @@ class Cell(AuditModel):
     }
 
     cell_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Cell ID") 
-    cell_names= models.CharField(max_length=200, blank=True, verbose_name = "Cell Names") 
     cell_line= models.CharField(max_length=200, blank=True, verbose_name = "Cell Line") 
+    cell_names= models.CharField(max_length=200, blank=True, verbose_name = "Cell Names") 
     cell_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Cell Notes")
     cell_code= models.CharField(max_length=30, blank=True, verbose_name = "Cell Code")
     cell_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
@@ -300,6 +300,7 @@ class Cell_Batch(AuditModel):
             # confirms Batch_ID from CellBatchID
             self.batch_id = str(self.cellbatch_id).replace(str(self.cell_id.cell_id),"").split(ORGBATCH_SEP)[1]
             super(Cell_Batch,self).save(*args, **kwargs)
+            print(f"Save CellBatch: {self.cellbatch_id}")
         
 # ================================================================================================
 

@@ -24,11 +24,10 @@ from adjcoadd.constants import *
 
 from dorganism.models import Taxonomy
 from dcell.models import  Cell, Cell_Batch, CellBatch_Stock
-from dcell.forms import (Cell_Filter,
-                            CreateCell_form, UpdateCell_form, 
-                            CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
-                            CellBatchStock_Form, CellBatchStock_Filter, CellBatchStock_CreateForm,)
-from ddrug.models import VITEK_AST, MIC_COADD
+from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm, 
+                         CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
+                         CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm,)
+#from ddrug.models import VITEK_AST, MIC_COADD
 from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 
@@ -61,16 +60,16 @@ def createCell(req):
     '''  
     kwargs={}
     kwargs['user']=req.user
-    form=CreateCell_form()
+    form=Cell_CreateForm()
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
-        form=CreateCell_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
+        form=Cell_CreateForm( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
             try:
                 with transaction.atomic(using='dcell'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Cell','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -94,7 +93,7 @@ def detailCell(request, pk):
     context={}
     object_=get_object_or_404(Cell, cell_id=pk)
     try:
-        form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
+        form=Cell_UpdateForm(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
     except Exception as err:
         print(err)
     context["object"]=object_
@@ -144,7 +143,7 @@ def updateCell(req, pk):
     object_=get_object_or_404(Cell, cell_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
+    form=Cell_UpdateForm(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -160,13 +159,13 @@ def updateCell(req, pk):
                     Organism_Name_str=req.POST.get('search_cell')
                     Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
                     
-                    form=UpdateCell_form(Organism_Name_str, req.POST, instance=obj)
+                    form=Cell_UpdateForm(Organism_Name_str, req.POST, instance=obj)
                     #-Not allow to update name in different class--
                     if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                 else:
                     print("Else")
-                    form=UpdateCell_form(object_.organism_name, req.POST, instance=obj) 
+                    form=Cell_UpdateForm(object_.organism_name, req.POST, instance=obj) 
                 
                 if form.is_valid():  
                     print(f"Saving {obj}")     
@@ -202,7 +201,7 @@ class Cell_DeleteView(SimpledeleteView):
 class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Cell_Batch 
-    template_name = 'dcell/cell/batch/batch_list.html' 
+    template_name = 'dcell/cellbatch/cellbatch_list.html' 
     filterset_class=CellBatch_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Cell_Batch'
@@ -222,7 +221,7 @@ def createCellBatch(req, cell_id):
                     instance=form.save(commit=False) 
                     instance.cell_id=get_object_or_404(Cell, pk=cell_id)              
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a CellBatch','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -230,13 +229,13 @@ def createCellBatch(req, cell_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dcell/cell/batch/batch_c.html', { 'form':form, 'cell_id':cell_id}) 
+    return render(req, 'dcell/cellbatch/cellbatch_c.html', { 'form':form, 'cell_id':cell_id}) 
 
 # -----------------------------------------------------------------
 class CellBatch_UpdateView(HtmxupdateView):
     form_class=CellBatch_UpdateForm
-    template_name="dcell/cell/batch/batch_u.html"
-    template_partial="dcell/cell/batch/batch_tr.html"
+    template_name="dcell/cellbatch/cellbatch_u.html"
+    template_partial="dcell/cellbatch/cellbatch_tr.html"
     model=Cell_Batch
     transaction_use = 'dcell'
 
@@ -251,7 +250,7 @@ class CellBatch_DeleteView(SimpledeleteView):
 class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = CellBatch_Stock  
-    template_name = 'dcell/cell/batch_stock/stock_list.html'
+    template_name = 'dcell/cellbatchstock/cellbatchstock_list.html'
     filterset_class = CellBatchStock_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'CellBatch_Stock'
@@ -305,14 +304,14 @@ def CellcreateStock(req, cellbatch_id):
                 with transaction.atomic(using='dcell'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new CellBatchStock','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             print(f'wrong {form.errors}')
-    return render(req, 'dcell/cell/batch_stock/stock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
+    return render(req, 'dcell/cellbatchstock/cellbatchstock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
 
 #-------------------------------------------------------------------------------
 @login_required
@@ -326,7 +325,7 @@ def CellupdateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_N_Left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -341,7 +340,7 @@ def CellupdateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
-                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated CellBatchStock','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
@@ -353,7 +352,7 @@ def CellupdateStock(req, pk):
         "form":form,
         "object":object_,
     }
-    return render(req, "dcell/cell/batch_stock/stock_u.html", context)
+    return render(req, "dcell/cellbatchstock/cellbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
 class CellBatchStock_DeleteView(SimpledeleteView):

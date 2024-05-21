@@ -89,11 +89,11 @@ class Drug(AuditModel):
     smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
 
     # Require RDKit-PostgreSQL 
-    #smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
-    #torsionbv = models.BfpField(null=True)	
-    #ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
-    #mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
-    #salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
+    smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
+    torsionbv = models.BfpField(null=True)	
+    ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
+    mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
+    salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
 
     #------------------------------------------------
     class Meta:

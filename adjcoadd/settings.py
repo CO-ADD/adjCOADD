@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #DEVELOPMENT=None
-DEVELOPMENT='Local'
+DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:
@@ -215,6 +215,7 @@ DATABASES = {
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
+
     'dorganism': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dorganism,apputil,ddrug,dgene,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -241,7 +242,6 @@ DATABASES = {
         'PORT': '5432',
         "TEST": {
             "NAME": "dcell",
-           
         },
     },
 
@@ -254,10 +254,10 @@ DATABASES = {
         'HOST': HOST_NAME,
         'PORT': '5432',
         "TEST": {
-            "NAME": "ddrug",
-           
+            "NAME": "ddrug",   
         },
     },
+
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -270,6 +270,7 @@ DATABASES = {
             "NAME": "dscreen",
         },
     },
+
     'dgene': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dgene,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -282,6 +283,7 @@ DATABASES = {
             "NAME": "dgene",
         },
     },
+    
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},

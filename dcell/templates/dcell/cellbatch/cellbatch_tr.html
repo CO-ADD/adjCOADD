@@ -17,7 +17,7 @@
       <!--  -->
       {% include 'utils/miscellaneous/update_btn_htmx.html' with url=batch_url %}
 
-      <span class=""> {%include 'dcell/cell/batch/batch_d.html' with object_batch=object.pk %} </span>
+      <span class=""> {%include 'dcell/cellbatch/cellbatch_d.html' with object_batch=object.pk %} </span>
     </div>
   </td>
   {%for value in object.get_values%}
