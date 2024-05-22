@@ -121,10 +121,12 @@ class CellBatch_Form(forms.ModelForm):
     batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
                                         help_text='Optional - If empty, next number will be assigned', required=False)
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+    previous_batch_id= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group'}), required=False,)
+    passage_number= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group'}), required=False,)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
-    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
 
     def __init__(self, *args, **kwargs):
@@ -139,13 +141,17 @@ class CellBatch_Form(forms.ModelForm):
 
 class CellBatch_UpdateForm(forms.ModelForm):
 
-    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
-    qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+
     cellbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
-    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
+    previous_batch_id= forms.CharField(widget=forms.TextInput(), required=False,)
+    passage_number= forms.CharField(widget=forms.TextInput(), required=False,)
+    qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+    batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False,)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False,)
+    #SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     
     def __init__(self, *args, **kwargs):   

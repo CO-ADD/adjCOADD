@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #DEVELOPMENT=None
-DEVELOPMENT='Work'
+DEVELOPMENT='Meran'
 
 #........................................................................
 if DEVELOPMENT:
@@ -195,6 +195,9 @@ if DEVELOPMENT:
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+        PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+    elif DEVELOPMENT == 'Meran':
+        HOST_NAME = 'schlern'
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 else:
     DB_NAME = os.environ.get('db_name') or 'coadd'
@@ -368,7 +371,7 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 # Security Setting
 #--------------------------------------------------------------------
 # CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8000"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')

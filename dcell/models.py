@@ -192,7 +192,7 @@ class Cell_Batch(AuditModel):
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
+       'Group1': ["batch_id", "batch_notes", "previous_batch_id", "passage_number", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
     #SEP = '_'
 

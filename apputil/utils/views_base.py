@@ -167,7 +167,6 @@ class HtmxupdateView(LoginRequiredMixin, View):
         return get_object_or_404(self.model, pk=pk)
 
     def get(self, request, *args, **kwargs):
-        print("Get HtmxupdateView Form")   
         pk=kwargs.get("pk")
         object_=self.get_object(pk)
         form=self.form_class(instance=object_)
@@ -177,28 +176,24 @@ class HtmxupdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def put(self, request, *args, **kwargs):
-        print("Put HtmxupdateView Form ")   
         pk=kwargs.get("pk")
         object_=self.get_object(pk)
         qd=QueryDict(request.body).dict()
         form =self.form_class(data=qd, instance=object_)
         context={"form":form,
                 "object":object_,
-                }
-        
+                }        
         if request.GET.get('_value') == 'cancel':
-            print("Put HtmxupdateView Form - Cancel")   
             return render(request, self.template_partial, context)
         elif form.is_valid():
-            print("Put HtmxupdateView Form - Valid")
             with transaction.atomic(using=self.transaction_use):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
-                ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),'Update an entry','Completed')              
+                ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),f'Update an {object_new._meta.model}','Completed')              
+                #print(f'Update an {object_new._meta.model} : {str(object_new.pk)}')
             return render(request, self.template_partial, context)
         else:
-            print("Put HtmxupdateView Form - Error")
             # raise ValidationError
             context["form_errors"] = form.errors
             # messages.error(request, form.errors)

@@ -242,7 +242,7 @@ class Organism_DeleteView(SimpledeleteView):
 class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
-    template_name = 'dorganism/organism/batch/batch_list.html' 
+    template_name = 'dorganism/orgbatch/orgbatch_list.html' 
     filterset_class=OrgBatch_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Organism_Batch'
@@ -270,13 +270,13 @@ def OrgcreateBatch(req, organism_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
+    return render(req, 'dorganism/orgbatch/orgbatch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 # -----------------------------------------------------------------
 class OrgBatch_UpdateView(HtmxupdateView):
     form_class=OrgBatch_UpdateForm
-    template_name="dorganism/organism/batch/batch_u.html"
-    template_partial="dorganism/organism/batch/batch_tr.html"
+    template_name="dorganism/orgbatch/orgbatch_u.html"
+    template_partial="dorganism/orgbatch/orgbatch_tr.html"
     model=Organism_Batch
     transaction_use = 'dorganism'
 
@@ -291,7 +291,7 @@ class OrgBatch_DeleteView(SimpledeleteView):
 class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = OrgBatch_Stock  
-    template_name = 'dorganism/organism/batch_stock/stock_list.html'
+    template_name = 'dorganism/orgbatchstock/orgbatchstock_list.html'
     filterset_class = OrgBatchStock_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'OrgBatch_Stock'
@@ -352,7 +352,7 @@ def OrgcreateStock(req, orgbatch_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             print(f'wrong {form.errors}')
-    return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
+    return render(req, 'dorganism/orgbatchstock/orgbatchstock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
 
 #-------------------------------------------------------------------------------
 @login_required
@@ -393,7 +393,7 @@ def OrgupdateStock(req, pk):
         "form":form,
         "object":object_,
     }
-    return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
+    return render(req, "dorganism/orgbatchstock/orgbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
 class OrgBatchStock_DeleteView(SimpledeleteView):
@@ -426,13 +426,13 @@ def createCulture(req, organism_id):
         else:
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
+    return render(req, 'dorganism/orgculture/orgculture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 #-------------------------------------------------------------------------------
 class OrgCulture_UpdateView(HtmxupdateView):
     form_class=OrgCulture_UpdateForm
-    template_name="dorganism/organism/culture/culture_u.html"
-    template_partial="dorganism/organism/culture/culture_tr.html"
+    template_name="dorganism/orgculture/orgculture_u.html"
+    template_partial="dorganism/orgculture/orgculture_tr.html"
     model=Organism_Culture
     transaction_use = 'dorganism'
 

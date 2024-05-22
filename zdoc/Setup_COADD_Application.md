@@ -22,7 +22,7 @@
       gunicorn<br>
       postgresql<br>
 
-   [win] django-filter django-pandas psycopg2 requests djangorestframework <br>
+   [win] django-filter django-pandas psycopg2 requests djangorestframework django-dbbackup <br>
    [win] openpyxl ipython CairoSVG<br>
    [win] rdkit -c rdkit  <br>
     conda install libpython m2w64-toolchain <br>
@@ -39,6 +39,7 @@
    [win] django-model-utils django-sequences django-formtools
    [win] djangorestframework-simplejwt
    [win] python-magic pdfplumber
+   [win] django_crontab 
 
    [win] get python_ldap-3.4.3-cp311-cp311-win_amd64.whl from https://github.com/cgohlke/python-ldap-build/releases<br>
    [win] pip install ldap-3.4.3-cp311-cp311-win_amd64.whl<br>

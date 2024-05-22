@@ -17,16 +17,16 @@
   {{form.errors}}
   {% url 'culture_update' pk=object.pk as my_url %}
   {% with urlname=my_url|add:'?_value=cancel' %}
-  {%include 'utils/miscellaneous/cancel_btn_htmx.html'%}
+  {% include 'utils/miscellaneous/cancel_btn_htmx.html'%}
   {% endwith %}
 </td>
-{%for field in form.group1%}
-<td>
-  {{field}} 
-  <!--  -->
-  {{field.errors}}
-</td>
-{%endfor%}
+{% for field in form.group1%}
+  <td>
+    {{field}} 
+    <!--  -->
+    {{field.errors}}
+  </td>
+{% endfor %}
 </tr>
 
 

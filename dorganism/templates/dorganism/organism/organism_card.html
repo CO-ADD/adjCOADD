@@ -24,11 +24,11 @@
           <!--prettier-ignore-->
           {% include 'utils/card.html' with url_name=url_name datatype='Organism' object_name=object.organism_id object_id_slug=object.organism_id object_var1=object.strain_code object_var2=object.organism_name object_var3=object.strain_ids %}
         <!--prettier-ignore-->
-        {%endfor%}
+        {% endfor %}
       </div>
     </div>
   </div>
 </div>
 
 
-{%endblock%}
+{% endblock %}
