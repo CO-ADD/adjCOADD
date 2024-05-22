@@ -30,7 +30,8 @@ from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
                             OrgCulture_Form, OrgCulture_UpdateForm,
                             OrgBatchImg_Form,)
 from ddrug.models import VITEK_AST, MIC_COADD
-from dorganism.utils.data_visual import data_frame_style, pivottable_style
+from ddrug.utils.antibiogram import get_Antibiogram_byOrgID_Html
+#from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 #=================================================================================================
 # Taxonomy
@@ -52,7 +53,7 @@ class Taxonomy_CardView(Taxonomy_ListView):
     
 # -----------------------------------------------------------------
 @login_required
-def detailTaxonomy(req, slug=None):
+def Taxonomy_DetailView(req, slug=None):
     context={}
     object_=get_object_or_404(Taxonomy, urlname=slug)
     context["object"]=object_
@@ -100,7 +101,7 @@ class Organism_CardView(Organism_ListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createOrganism(req):
+def Organism_CreateView(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''  
@@ -127,7 +128,7 @@ def createOrganism(req):
 
 # -----------------------------------------------------------------
 @login_required
-def detailOrganism(request, pk):
+def Organism_DetailView(request, pk):
     """
     - Detail view handle organism single entry
     display,update and delete.
@@ -172,20 +173,24 @@ def detailOrganism(request, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    context["n_entries"] = 0
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
         displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        context["table"] = data_frame_style(pk, displaycols)['style_table']
-        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
-        context["pivottable"] = pivottable_style(pk)
+        print('POST')
+        _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
+        print(_pivDict['n_entries'])
+        context["table"] = _pivDict['html_table']
+        context["n_entries"] = _pivDict['n_entries']
+        context["pivottable"] = _pivDict['pivot_table']
         return render(request, "dorganism/organism/organism_mic.html", context)
     
     return render(request, "dorganism/organism/organism_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
-def updateOrganism(req, pk):
+def Organism_UpdateView(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -250,7 +255,7 @@ class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def OrgcreateBatch(req, organism_id):
+def OrgBatch_CreateView(req, organism_id):
     kwargs={'user': req.user}
     form=OrgBatch_Form()
     
@@ -304,7 +309,7 @@ class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def OrgstockList(req, pk):
+def OrgBatchStock_DetailView(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
@@ -333,7 +338,7 @@ def OrgstockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def OrgcreateStock(req, orgbatch_id):
+def OrgBatchStock_CreateView(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = OrgBatchStock_CreateForm(initial={"orgbatch_id":orgbatch_id},)
@@ -356,7 +361,7 @@ def OrgcreateStock(req, orgbatch_id):
 
 #-------------------------------------------------------------------------------
 @login_required
-def OrgupdateStock(req, pk):
+def OrgBatchStock_UpdateView(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -405,7 +410,7 @@ class OrgBatchStock_DeleteView(SimpledeleteView):
 #=================================================================================================
 
 @login_required
-def createCulture(req, organism_id):
+def OrgCulture_CreateView(req, organism_id):
     
     kwargs={'user' : req.user}
     form=OrgCulture_Form()

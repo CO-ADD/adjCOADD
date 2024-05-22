@@ -28,7 +28,7 @@ from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm,
                          CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
                          CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm,)
 #from ddrug.models import VITEK_AST, MIC_COADD
-from dorganism.utils.data_visual import data_frame_style, pivottable_style
+#from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 
 #=================================================================================================
@@ -54,7 +54,8 @@ class Cell_CardView(Cell_ListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createCell(req):
+#def createCell(req):
+def Cell_CreateView(req):
     '''
     Function View Create new Cell table row with foreignkey: Taxonomy and Dictionary. 
     '''  
@@ -81,7 +82,7 @@ def createCell(req):
 
 # -----------------------------------------------------------------
 @login_required
-def detailCell(request, pk):
+def Cell_DetailView(request, pk):
     """
     - Detail view handle cell single entry
     display,update and delete.
@@ -128,18 +129,19 @@ def detailCell(request, pk):
     # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     # data in pivotted and highlighted Tables
-    if request.method == 'POST':
-        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source'] #<what is needed from here?>
-        context["table"] = data_frame_style(pk, displaycols)['style_table']
-        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
-        context["pivottable"] = pivottable_style(pk)
-        return render(request, "dcell/cell/cell_mic.html", context)
+    
+    # if request.method == 'POST':
+    #     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source'] #<what is needed from here?>
+    #     context["table"] = data_frame_style(pk, displaycols)['style_table']
+    #     context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
+    #     context["pivottable"] = pivottable_style(pk)
+    #     return render(request, "dcell/cell/cell_mic.html", context)
     
     return render(request, "dcell/cell/cell_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
-def updateCell(req, pk):
+def Cell_UpdateView(req, pk):
     object_=get_object_or_404(Cell, cell_id=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -209,7 +211,7 @@ class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createCellBatch(req, cell_id):
+def CellBatch_CreateView(req, cell_id):
     kwargs={'user': req.user}
     form=CellBatch_Form()
     
@@ -263,7 +265,7 @@ class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def CellstockList(req, pk):
+def CellBatchStock_DetailView(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
@@ -292,7 +294,7 @@ def CellstockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def CellcreateStock(req, cellbatch_id):
+def CellBatchStock_CreateView(req, cellbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = CellBatchStock_CreateForm(initial={"cellbatch_id":cellbatch_id},)
@@ -315,7 +317,7 @@ def CellcreateStock(req, cellbatch_id):
 
 #-------------------------------------------------------------------------------
 @login_required
-def CellupdateStock(req, pk):
+def CellBatchStock_UpdateView(req, pk):
     object_=get_object_or_404(CellBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user

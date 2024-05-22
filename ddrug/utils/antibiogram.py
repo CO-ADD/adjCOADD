@@ -12,8 +12,41 @@ from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_P
 from ddrug.utils.molecules import *
 from ddrug.utils.bio_data import agg_DR
 
-from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import *
+#from apputil.utils.data import *
+from apputil.utils.data_style import highlight_RSI
+
+# -----------------------------------------------------------------------------------------
+def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
+    df = get_Antibiogram_byOrgID(str(pk))
+    if df is not None:
+        df.reset_index(inplace=True)
+        df = df[displaycols]
+        df_entries=len(df)
+        
+        piv_table = piv_Antibiogram_byOrgID(df)
+
+        # Styling pivottable
+        if with_style:       
+            html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+            
+            html_pivtable = piv_table.style.applymap(highlight_RSI)
+            html_pivtable = html_pivtable.set_table_attributes('class="table table-bordered fixTableHead"').to_html()
+        else:
+            html_table    = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+            html_pivtable = piv_table.to_html()
+
+        table={'n_entries':df_entries, 'html_table': html_table, 'pivot_table': html_pivtable} 
+    else:
+        table = {'n_entries':0, 'html_table': None, 'pivot_table': None}
+    return table 
+
+# -----------------------------------------------------------------------------------------
+def piv_Antibiogram_byOrgID(df):
+    piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
+                                aggfunc= lambda x:  " ".join([str(y) for y in x]))
+    piv_table = piv_table.fillna("-").astype(str)
+    return(piv_table)
+    
 
 # -----------------------------------------------------------------------------------------
 def get_Antibiogram_byOrgID(OrgID):
@@ -22,14 +55,14 @@ def get_Antibiogram_byOrgID(OrgID):
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
+    showCol = ['Drug Class','Drug Name','BatchID','Source','MIC','BP Profile','BP Source']
     grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
     vMIC = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id=OrgObj)
+    print(f"Getting {len(vMIC)} Vitek AST data for {OrgID} ")
     for m in vMIC:
-        #print(f" -*- {m}")
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
         aDict['Drug Code'] = m.drug_id.drug_codes
@@ -49,6 +82,7 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
 
     pMIC = MIC_Pub.objects.filter(organism_id=OrgObj)
+    print(f"Getting {len(pMIC)} MIC Pub data for {OrgID} ")
     for m in pMIC:
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
@@ -63,6 +97,7 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
 
     cMIC = MIC_COADD.objects.filter(orgbatch_id__organism_id=OrgObj)
+    print(f"Getting {len(cMIC)} MIC CO-ADD data for {OrgID} ")
     for m in cMIC:
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
@@ -82,21 +117,21 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['Source'] = "CO-ADD"
         orgMIC.append(aDict)
    
-    df = pd.DataFrame(orgMIC)
-    #df.to_excel(f"{OrgID}_Antibio.xlsx")
-    df = df.fillna("-").astype(str)
+    if len(orgMIC) > 0:
+        df = pd.DataFrame(orgMIC)
+        #df.to_excel(f"{OrgID}_Antibio.xlsx")
+        df = df.fillna("-").astype(str)
 
-    showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
-    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
+        showCol = ['Drug Name','Drug Class','BatchID','Source','MIC','BP Profile','BP Source']
+        grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
-
-    print(df[showCol])
-    agg_df = df[showCol].groupby(grbyCol) \
-                        .aggregate(lambda x: ", ".join(list(np.unique(x))))
-                        # .aggregate(lambda x: agg_DR(x)) 
-             
-    print(agg_df)
-    return(agg_df)
+        agg_df = df[showCol].groupby(grbyCol) \
+                            .aggregate(lambda x: ", ".join(list(np.unique(x))))
+                            # .aggregate(lambda x: agg_DR(x))                 
+        return(agg_df)
+    else:
+        print(" No MIC data found")
+        return(None)
 
 
 # -----------------------------------------------------------------------------------------

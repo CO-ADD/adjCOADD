@@ -19,9 +19,10 @@ from django.core.files.storage import FileSystemStorage
 from django.template.defaultfilters import filesizeformat
 from django.utils.deconstruct import deconstructible
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from apputil.utils.views_base import SuperUserRequiredMixin
+#from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.validation_log import Validation_Log
 from apputil.utils.data import Timer
 
@@ -104,6 +105,19 @@ class FileValidator(object):
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
                              content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/png'))
+
+
+# -----------------------------------------------------------------
+# --Super UserRequire Mixin--
+# -----------------------------------------------------------------
+class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = '/'
+
+    def test_func(self):
+        return self.request.user.has_permission('Admin')
+
+    def handle_no_permission(self):
+        return HttpResponse( 'Only users with ADMIN permission have access to this view')
 
 ## set uploading/import data forms
 class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
