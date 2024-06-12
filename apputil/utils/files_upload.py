@@ -4,7 +4,7 @@ File-upload...
 import os
 #import pylibmagic
 import magic
-# from winmagic import magic
+#from winmagic import magic
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,7 +34,8 @@ def file_location(instance, filename=None):
     return a file path
     instance - request or request.user
     '''
-    location=settings.MEDIA_ROOT+'/'+str(instance)
+    #location=settings.MEDIA_ROOT+'/'+str(instance)
+    location=os.path.join(settings.MEDIA_ROOT,str(instance))
     return location
 
 ## Override filename in FileStorage
@@ -66,18 +67,24 @@ class FileValidator(object):
         self.max_size = max_size
         self.min_size = min_size
         self.content_types = content_types
+        self.read_size = 5 * (1024 *1024)
 
-    def __call__(self, data):
+    def __call__(self, fileobj):
         
         # Scan File 
         # Connect to ClamAV daemon 
         # cd = clamd.ClamdUnixSocket(path="/run/clamd.scan/clamd.sock")
-        # self.scan_file(data, cd)
+        # self.scan_file(fileobj, cd)
 
         # Type validation
         if self.content_types:
-            content_type =magic.from_buffer(data.read(), mime=True)
-            data.seek(0)
+            print(self.content_types)
+            content_type = magic.from_buffer(fileobj.read(self.read_size), mime=True)
+
+            # seek back to start so a valid file could be read
+            # later without resetting the position
+            fileobj.seek(0)
+
             if content_type not in self.content_types:
                 params = { 'content_type': content_type }
                 raise ValidationError(self.error_messages['content_type'],
@@ -104,7 +111,10 @@ class FileValidator(object):
 
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
-                             content_types=('text/csv', 'application/pdf','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/png'))
+                             content_types=('text/csv', 
+                                            'application/pdf',
+                                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
+                                            'image/png'))
 
 
 # -----------------------------------------------------------------

@@ -86,7 +86,7 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
             self.add_error('single_file', "Select one file")
             raise forms.ValidationError("No files selected")
         return cleaned_data
-    
+
 # --------------------------------------------------------------------------------------------------
 class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
