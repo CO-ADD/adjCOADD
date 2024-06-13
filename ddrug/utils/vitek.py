@@ -12,7 +12,7 @@ from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
-from ddrug.utils.import_drug import imp_VitekCard_fromDict,imp_VitekAST_fromDict,imp_VitekID_fromDict
+from ddrug.utils.uploads.import_vitek import imp_VitekCard_fromDict,imp_VitekAST_fromDict,imp_VitekID_fromDict
 
 import logging
 logger = logging.getLogger(__name__)

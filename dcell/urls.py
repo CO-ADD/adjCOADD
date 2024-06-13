@@ -4,7 +4,8 @@ from django.urls import path, include, re_path
 
 from dcell.views import  (Cell_ListView,Cell_CardView,Cell_CreateView, Cell_DetailView, Cell_UpdateView, Cell_DeleteView,
                      CellBatch_ListView, CellBatch_CreateView, CellBatch_DeleteView, CellBatch_UpdateView, 
-                     CellBatchStock_ListView, CellBatchStock_CreateView, CellBatchStock_UpdateView, CellBatchStock_DetailView, CellBatchStock_DeleteView,)
+                     CellBatchStock_ListView, CellBatchStock_CreateView, CellBatchStock_UpdateView, CellBatchStock_DetailView, CellBatchStock_DeleteView,
+                     Cell_Upload_HandlerView)
 from dcell.cell_upload_views import Import_CellView
 from dorganism.utils.utils import search_organism, search_organism_id
 
@@ -31,7 +32,8 @@ urlpatterns = [
     path('updateStock/<str:pk>/', CellBatchStock_UpdateView, name="cell_stock_update"),
     path('deleteStock/<str:pk>/', CellBatchStock_DeleteView.as_view(), name="cell_stock_delete"),
 
-    path('import-cell/', Import_CellView.as_view(), name='import-cell'),
+    # path('import-cell/', Import_CellView.as_view(), name='import-cell'),
+    path('import-cell/', Cell_Upload_HandlerView.as_view(), name='import-cell'),
 
     # path('pivottable/<str:pk>', pivottable, name="pivottable"),
   

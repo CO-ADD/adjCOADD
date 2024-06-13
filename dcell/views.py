@@ -19,6 +19,7 @@ from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+from apputil.utils.upload_steps import UploadHandler_View, SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm
 
 from adjcoadd.constants import *
 
@@ -27,6 +28,8 @@ from dcell.models import  Cell, Cell_Batch, CellBatch_Stock
 from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm, 
                          CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
                          CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm,)
+from dcell.utils.upload_cell import upload_Cells_Process
+
 #from ddrug.models import VITEK_AST, MIC_COADD
 #from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
@@ -195,6 +198,30 @@ def Cell_UpdateView(req, pk):
 class Cell_DeleteView(SimpledeleteView):
     model = Cell
     transaction_use = 'dcell'
+
+
+# -----------------------------------------------------------------
+class Cell_Upload_HandlerView(UploadHandler_View):
+    
+    name_step1="Upload"
+    form_list = [
+        ('select_file', SelectSingleFile_StepForm),
+        ('upload', Upload_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+
+    template_name = 'dcell/cell/importhandler_cell.html'
+    
+    # customize util functions to validate files:
+    # vitek -- upload_VitekPDF_Process
+    def file_process_handler(self, request, *args, **kwargs):
+        try:
+            form_data=kwargs.get('form_data', None)
+        except Exception as err:
+            print(f"[Import_CellView] {err}")
+        
+        valLog=upload_Cells_Process(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
+        return(valLog)
 
 #=================================================================================================
 # CellBatch  

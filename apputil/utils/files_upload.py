@@ -8,6 +8,7 @@ import magic
 
 import logging
 logger = logging.getLogger(__name__)
+
 #import clamd
 from io import BytesIO
 import mimetypes
@@ -26,21 +27,31 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apputil.utils.validation_log import Validation_Log
 from apputil.utils.data import Timer
 
+# ==================================================================================
+# General File Utilities
+# ==================================================================================
 
-# --files upload--
-## create user folder
+#-----------------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------------
 def file_location(instance, filename=None):
     '''
-    return a file path
+    Create a User folder
+        return a file path
     instance - request or request.user
     '''
-    #location=settings.MEDIA_ROOT+'/'+str(instance)
+#-----------------------------------------------------------------------------------
     location=os.path.join(settings.MEDIA_ROOT,str(instance))
     return location
 
-## Override filename in FileStorage
+
+#-----------------------------------------------------------------------------------
 class OverwriteStorage(FileSystemStorage):
-    
+    """
+    Override filename in FileStorage
+    """
+#-----------------------------------------------------------------------------------
     def get_available_name(self, name, max_length=None):
         """
         Returns a filename that's free on the target storage system, and
@@ -53,14 +64,16 @@ class OverwriteStorage(FileSystemStorage):
         return name
 
 ## validate files size, type, scan virus...
+#-----------------------------------------------------------------------------------
 @deconstructible
 class FileValidator(object):
+#-----------------------------------------------------------------------------------
     error_messages = {
      'max_size': ("Ensure this file size is not greater than %(max_size)s."
                   " Your file size is %(size)s."),
      'min_size': ("Ensure this file size is not less than %(min_size)s. "
                   "Your file size is %(size)s."),
-     'content_type': "Files is not correct type.",
+     'content_type': "File is not the correct file type.",
     }
 
     def __init__(self, max_size=None, min_size=None, content_types=()):
@@ -78,9 +91,9 @@ class FileValidator(object):
 
         # Type validation
         if self.content_types:
-            print(self.content_types)
+            
             content_type = magic.from_buffer(fileobj.read(self.read_size), mime=True)
-
+            #print(f"[FileValidator] {content_type}")
             # seek back to start so a valid file could be read
             # later without resetting the position
             fileobj.seek(0)
@@ -139,11 +152,14 @@ class MultiFileUploadForm(SuperUserRequiredMixin, forms.Form):
     #         MyModel.objects.create(file=each)
 
 ##
+#-----------------------------------------------------------------------------------
 class FileUploadForm(SuperUserRequiredMixin, forms.Form):
     
     file_field = forms.FileField(widget=forms.ClearableFileInput(),  validators=[validate_file])
 
 ## Import data base view, Legacy
+
+#-----------------------------------------------------------------------------------
 class Importhandler(SuperUserRequiredMixin, View):  
     """
     upload, parse and import data from pdf
@@ -154,6 +170,7 @@ class Importhandler(SuperUserRequiredMixin, View):
     validate_result={}
     file_report={}
     process_name=None
+
     # Use to delete uploaded files
     def delete_file(self, file_name):
         location=file_location(self.request)
@@ -165,6 +182,7 @@ class Importhandler(SuperUserRequiredMixin, View):
         
     # use to validate records
     def validates (self, newentry_dict, app_model, vlog, report_result, report_filelog, save, **kwargs):
+
         if any(newentry_dict.values()):
             for key in newentry_dict:
                 for e in newentry_dict[key]:

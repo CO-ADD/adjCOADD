@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #DEVELOPMENT=None
-DEVELOPMENT='Meran'
+DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:

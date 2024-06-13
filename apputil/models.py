@@ -562,26 +562,30 @@ class Dictionary(AuditModel):
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
-    def get_DictValues_fromStrList(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    def get_DictValues_fromStrList(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#",verbose=1):
     #-----------------------------------------------------------------------------------
         retDictList = []
+        retErrList = []
         if DictValueStr:
             dLst = DictValueStr.split(sep)
             for dVal in dLst:
-                xDict = cls.get(DictClass,dVal.strip(),None)
+                xDict = cls.get(DictClass,dVal.strip(),None,verbose=verbose)
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
-                    retDictList.append(f"{dVal.strip()}{notFound}")
+                    retErrList.append(dVal.strip())
+                    #retDictList.append(f"{dVal.strip()}{notFound}")
+
         elif DictDescStr:
             dLst = DictDescStr.split(sep)
             for dDesc in dLst:
-                xDict = cls.get(DictClass,None,dDesc.strip())
+                xDict = cls.get(DictClass,None,dDesc.strip(),verbose=verbose)
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
-                    retDictList.append(f"{dDesc.strip()}{notFound}")
-        return(retDictList)
+                    retErrList.append(dDesc.strip())
+                    #retDictList.append(f"{dDesc.strip()}{notFound}")
+        return(retDictList,retErrList)
 
     # @classmethod
     # def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):

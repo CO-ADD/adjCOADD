@@ -1,3 +1,13 @@
+import os
+from django import forms
+from django.shortcuts import HttpResponse, render, redirect
+from formtools.wizard.views import SessionWizardView
+from django.core.files.storage import FileSystemStorage
+from django.core.exceptions import ValidationError
+from django.utils.datastructures import MultiValueDict
+from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
+from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
+
 '''
 Steps process driven by form submission requests. for imporing data with PDFs, Excels
 -Select Files to upload : parsing, validating
@@ -12,15 +22,6 @@ Process variables in sessionView storages:
         validation_message - summarize progress store in "validation_message";
         step_1 - store step name.
 '''
-import os
-from django import forms
-from django.shortcuts import HttpResponse, render, redirect
-from formtools.wizard.views import SessionWizardView
-from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ValidationError
-from django.utils.datastructures import MultiValueDict
-from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
-from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
@@ -255,6 +256,6 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
             context['validation_result']="Select VITEK PDF files"
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
-            print(f"result: {context['validation_result']}")
             context['confirm_to_upload']=self.storage.extra_data.get('confirm_to_upload', None)
+        print(f"[ImportHandler_View] {current_step} validation_result: {context['validation_result']}")
         return context
