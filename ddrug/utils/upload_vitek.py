@@ -1,19 +1,15 @@
 import os
 from pathlib import Path
-# from django_rdkit.models import *
-# from django_rdkit.config import config
-# from django.conf import settings
-
-from dorganism.models import Organism_Batch
-from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
-from dscreen.models import Screen_Run
-# from ddrug.utils.molecules import *
 
 from apputil.models import ApplicationUser, Dictionary
+from dorganism.models import Organism_Batch
+from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST
+#from dscreen.models import Screen_Run
+
 # from apputil.utils.data import *
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekCard_fromDict(iDict,valLog,upload=False):
+def VitekCard_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_Card instance from a {Dict}
     """
@@ -72,7 +68,7 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
     return(djVitekCard)
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekID_fromDict(iDict,valLog,upload=False):
+def VitekID_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_ID instance from a {Dict}
     """
@@ -121,7 +117,7 @@ def imp_VitekID_fromDict(iDict,valLog,upload=False):
 
 
 # ----------------------------------------------------------------------------------------------------
-def imp_VitekAST_fromDict(iDict,valLog,upload=False):
+def VitekAST_fromDict(iDict,valLog,upload=False):
     """
     Create VITEK_ID instance from a {Dict}
     """

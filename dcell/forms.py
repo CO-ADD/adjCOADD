@@ -141,7 +141,6 @@ class CellBatch_Form(forms.ModelForm):
 
 class CellBatch_UpdateForm(forms.ModelForm):
 
-
     cellbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     previous_batch_id= forms.CharField(widget=forms.TextInput(), required=False,)

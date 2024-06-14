@@ -371,7 +371,7 @@ class Organism_Batch(AuditModel):
                 BatchID = self.str_BatchID(int(BatchID))
 
             next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
-            if ~self.exists(next_OrgBatch):
+            if not self.exists(next_OrgBatch):
                 return(BatchID)
 
         # Find new BatchID    

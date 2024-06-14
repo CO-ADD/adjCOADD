@@ -27,7 +27,8 @@ from dorganism.models import Taxonomy
 from dcell.models import  Cell, Cell_Batch, CellBatch_Stock
 from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm, 
                          CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
-                         CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm,)
+                         CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm)
+
 from dcell.utils.upload_cell import upload_Cells_Process
 
 #from ddrug.models import VITEK_AST, MIC_COADD

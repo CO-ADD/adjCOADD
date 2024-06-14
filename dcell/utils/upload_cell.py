@@ -67,13 +67,26 @@ def upload_Cells_fromXls(DirName, FileName, upload=False,appuser=None,valLog=Non
     dict = df.to_dict('records')
 
     for c in dict:
-        djCell = Cell_fromDict(c,valLog)
-        djCellBatch = CellBatch_fromDict(c,valLog)
-
+        djCell = Cell_fromDict(c,valLog,for_upload=upload)
+        if upload:
+            if djCell.VALID_STATUS:
+                logger.debug(f" {djCell} <- {FileName}")
+                djCell.save(user=appuser)
+                c['cell_id'] = str(djCell)
+            else:
+                valLog.add_log('Error','Cell not validated',f"{c['cell_line']}",'-')    
+        print(f" [upload_Cells_fromXls] cell_id: {c['cell_id']}")
+        djCellBatch = CellBatch_fromDict(c,valLog,for_upload=upload)
+        if upload:
+            if djCellBatch.VALID_STATUS:
+                logger.debug(f" {djCellBatch} <- {FileName}")
+                djCellBatch.save(user=appuser)
+            else:
+                valLog.add_log('Error','CellBatch not validated',f"{c['cell_line']}",'-')    
 
 
 # ----------------------------------------------------------------------------------------------------
-def Cell_fromDict(iDict,valLog):
+def Cell_fromDict(iDict,valLog,for_upload=True):
     """
     Create Cell instance from {iDict}
     """
@@ -122,6 +135,7 @@ def Cell_fromDict(iDict,valLog):
     # Change Key names to Lowercase
     iDict =  {k.lower(): v for k, v in iDict.items()} 
     validStatus = True
+    vlog_Process = "Upload Cell"
 
     # -- Remove nan 
     for c in iDict:
@@ -139,20 +153,20 @@ def Cell_fromDict(iDict,valLog):
     if djCell is None:
         djCell = Cell()
         djCell.cell_line = iDict['cell_line']
-        valLog.add_log("Info","",f"{iDict['cell_line']}",'New Cell Line','-') 
+        valLog.add_log("Info",vlog_Process,f"{iDict['cell_line']}",'New Cell Line','-') 
 
     # -- Find ForeignKeys
     _OrgName = Taxonomy.get(iDict['organism_name'])
     if _OrgName is None:
         validStatus = False
-        valLog.add_log("Error","Upload Cell",f"{iDict['organism_name']} ",'[Organism Name] does not Exists','-')
+        valLog.add_log("Error",vlog_Process,f"{iDict['organism_name']} ",'[Organism Name] does not Exists','-')
     else:
         djCell.organism_name = _OrgName
 
     if 'biologist' in iDict:
         djCell.biologist = ApplicationUser.get(iDict['biologist'])
         if djCell.biologist is None:
-            valLog.add_log("Error","Upload Cell",f"{iDict['biologist']} ",'[Biologist]  not found','-')
+            valLog.add_log("Error",vlog_Process,f"{iDict['biologist']} ",'[Biologist]  not found','-')
             validStatus = False
 
     # -- Special Consideration
@@ -169,7 +183,7 @@ def Cell_fromDict(iDict,valLog):
             if iDict[_field] is not None:
                 _dictValue = Dictionary.get(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
                 if _dictValue is None:
-                    valLog.add_log("Error","Upload Cell",f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
+                    valLog.add_log("Error",vlog_Process,f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
                     validStatus = False
                 setattr(djCell, _field, _dictValue)
 
@@ -182,7 +196,7 @@ def Cell_fromDict(iDict,valLog):
                 _dictList, _errList = Dictionary.get_DictValues_fromStrList(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
                 if len(_errList) > 0 :
                     for _errValue in _errList:
-                        valLog.add_log("Error","Upload Cell",f"Value: {_errValue} ",f"[{_field}] not found",'-')
+                        valLog.add_log("Error",vlog_Process,f"Value: {_errValue} ",f"[{_field}] not found",'-')
                         validStatus = False
                 setattr(djCell, _field, _dictList)
 
@@ -190,27 +204,31 @@ def Cell_fromDict(iDict,valLog):
     # -- Assign normal fields
     _AssignFields = ['cell_names','cell_notes','cell_code','cell_identification','cell_origin',
                   'source','source_code','reference',
-                  'mta_notes','mta_document',
+                  'mta_document',
                   'collect_tissue','patient_diagnosis','patient']
     for _field in _AssignFields:
         if _field in iDict:
             setattr(djCell, _field, iDict[_field])
 
     # -- Clean and Validate Entry
+    print(f"---------------------------------")
     djCell.clean_Fields()
     validStatus = True
     validDict = djCell.validate()
+    print(f"{djCell}")
+    print(f"{validDict}")
+
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning','',k,validDict[k],'-')
+            valLog.add_log("Warning",vlog_Process,k,validDict[k],'-')
 
     djCell.VALID_STATUS = validStatus
 
     return(djCell)
 
 # ----------------------------------------------------------------------------------------------------
-def CellBatch_fromDict(iDict,valLog):
+def CellBatch_fromDict(iDict,valLog,for_upload=True):
     """
     Create Cell instance from {iDict}
     """
@@ -236,6 +254,7 @@ def CellBatch_fromDict(iDict,valLog):
 
     iDict =  {k.lower(): v for k, v in iDict.items()} 
     validStatus = True
+    vlog_Process = "Upload CellBatch"
 
     # -- Remove nan 
     for c in iDict:
@@ -251,20 +270,30 @@ def CellBatch_fromDict(iDict,valLog):
     if djCellBatch is None:
         djCellBatch = Cell_Batch()
         #djCell.cell_line = iDict['cell_line']
-        valLog.add_log("Info","",f"{iDict['cell_line']}",'New CellBatch ','-') 
+        if for_upload:
+            valLog.add_log("Info",vlog_Process,f"{iDict['cell_line']}",'New CellBatch created.','-')
+        else: 
+            valLog.add_log("Info",vlog_Process,f"{iDict['cell_line']}",'New CellBatch to be created.','-') 
 
     # -- Find ForeignKeys
-    # _OrgName = Taxonomy.get(iDict['organism_name'])
-    # if _OrgName is None:
-    #     validStatus = False
-    #     valLog.add_log("Error","Upload Cell",f"{iDict['organism_name']} ",'[Organism Name] does not Exists','-')
-    # else:
-    #     djCell.organism_name = _OrgName
+    _CellID = None
+    if 'cell_id' in iDict:
+        if iDict['cell_id'] is not None:
+            _CellID = Cell.get(iDict['cell_id'],None)
+
+    if _CellID is None:
+        validStatus = False
+        if for_upload:
+            valLog.add_log("Error",vlog_Process,f"{iDict['cell_id']} ",'[Cell ID] does not exist','-')
+        else:
+            valLog.add_log("Warning",vlog_Process,f"{iDict['cell_id']} ",'[Cell ID] will be assigned on Upload','-')
+    else:
+        djCellBatch.cell_id = _CellID
 
     if 'biologist' in iDict:
         djCellBatch.biologist = ApplicationUser.get(iDict['biologist'])
         if djCellBatch.biologist is None:
-            valLog.add_log("Error","Upload CellBatch",f"{iDict['biologist']} ",'[Biologist]  not found','-')
+            valLog.add_log("Error",vlog_Process,f"{iDict['biologist']} ",'[Biologist]  not found','-')
             validStatus = False
 
     # -- Find Single Dictionaries
@@ -274,7 +303,7 @@ def CellBatch_fromDict(iDict,valLog):
             if iDict[_field] is not None:
                 _dictValue = Dictionary.get(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
                 if _dictValue is None:
-                    valLog.add_log("Error","Upload Cell",f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
+                    valLog.add_log("Error",vlog_Process,f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
                     validStatus = False
                 setattr(djCellBatch, _field, _dictValue)
 
@@ -293,7 +322,7 @@ def CellBatch_fromDict(iDict,valLog):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning','',k,validDict[k],'-')
+            valLog.add_log('Warning',vlog_Process,k,validDict[k],'-')
 
     djCellBatch.VALID_STATUS = validStatus
 
