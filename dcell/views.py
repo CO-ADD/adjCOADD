@@ -100,7 +100,7 @@ def Cell_DetailView(request, pk):
     try:
         form=Cell_UpdateForm(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
     except Exception as err:
-        print(err)
+        print(f"[Cell_DetailView] {err}")
     context["object"]=object_
     context["form"]=form
     context["doc_form"]=Document_Form
@@ -154,9 +154,9 @@ def Cell_UpdateView(req, pk):
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
         Organism_Class_str="No Class"
-    print(Organism_Class_str)
+    #print(f"[Cell_UpdateView] Organism_Class_str")
     if req.method=='POST':
-        print("POST")
+        #print(f"[Cell_UpdateView] POST")
         try:
             with transaction.atomic(using='dcell'):        # testing!
                 obj = Cell.objects.select_for_update().get(cell_id=pk)
@@ -170,11 +170,11 @@ def Cell_UpdateView(req, pk):
                     if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                 else:
-                    print("Else")
+                    #print("Else")
                     form=Cell_UpdateForm(object_.organism_name, req.POST, instance=obj) 
                 
                 if form.is_valid():  
-                    print(f"Saving {obj}")     
+                    #print(f"Saving {obj}")     
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Cell','Completed')
@@ -298,7 +298,7 @@ def CellBatchStock_DetailView(req, pk):
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
         object_=get_object_or_404(Cell_Batch, cellbatch_id=batch_id)#Cell_Batch.objects.get(cellbatch_id=batch_id)
-        print(object_)
+        #print(f"[CellBatchStock_DetailView] {object_}"")
         qs=CellBatch_Stock.objects.filter(cellbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
@@ -340,7 +340,7 @@ def CellBatchStock_CreateView(req, cellbatch_id):
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'wrong {form.errors}')
+            print(f'[CellBatchStock_CreateView] {form.errors}')
     return render(req, 'dcell/cellbatchstock/cellbatchstock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
 
 #-------------------------------------------------------------------------------
@@ -374,7 +374,7 @@ def CellBatchStock_UpdateView(req, pk):
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
-                        print(f'form erroro is {form.errors} and error {err}')
+                        print(f'[CellBatchStock_UpdateView] form.error:  {form.errors}, error: {err}')
             except Exception as err:
                 messages.warning(req, f'Update failed due to {err} error')
                 return redirect(req.META['HTTP_REFERER'])

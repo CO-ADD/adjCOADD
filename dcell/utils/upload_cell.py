@@ -75,7 +75,7 @@ def upload_Cells_fromXls(DirName, FileName, upload=False,appuser=None,valLog=Non
                 c['cell_id'] = str(djCell)
             else:
                 valLog.add_log('Error','Cell not validated',f"{c['cell_line']}",'-')    
-        print(f" [upload_Cells_fromXls] cell_id: {c['cell_id']}")
+        #print(f" [upload_Cells_fromXls] cell_id: {c['cell_id']}")
         djCellBatch = CellBatch_fromDict(c,valLog,for_upload=upload)
         if upload:
             if djCellBatch.VALID_STATUS:
@@ -211,12 +211,11 @@ def Cell_fromDict(iDict,valLog,for_upload=True):
             setattr(djCell, _field, iDict[_field])
 
     # -- Clean and Validate Entry
-    print(f"---------------------------------")
     djCell.clean_Fields()
     validStatus = True
     validDict = djCell.validate()
-    print(f"{djCell}")
-    print(f"{validDict}")
+    #print(f"{djCell}")
+    #print(f"{validDict}")
 
     if validDict:
         validStatus = False

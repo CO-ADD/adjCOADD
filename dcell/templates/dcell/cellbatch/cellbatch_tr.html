@@ -1,6 +1,6 @@
 {% load custom_filters %}
 <tr>
-  <td width="6%" class="p-0">
+  <td width="6%" class="text-left">
     <a class="dt-control toggle-btn" data-value="{{object.pk}}"> <i class="fa fa-chevron-down" data-bs-toggle="tooltip"
         data-bs-placement="right" title="Click to Open StockTable"></i>
     </a>
@@ -12,12 +12,12 @@
         <span class="badge text-light bg-secondary m-0 ms-1 p-1">{{stocknumber}}</span>
       {% endif %}
     {% endwith %}
+
     <div class="mx-0 " style="float: right">
       {% url 'cell_batch_update' object.pk as batch_url %}
       <!--  -->
       {% include 'utils/miscellaneous/update_btn_htmx.html' with url=batch_url %}
-
-      <span class=""> {% include 'dcell/cellbatch/cellbatch_d.html' with object_batch=object.pk %} </span>
+      {% include 'dcell/cellbatch/cellbatch_d.html' with object_batch=object.pk %} 
     </div>
   </td>
   {% for value in object.get_values%}

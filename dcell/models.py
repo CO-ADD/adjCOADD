@@ -312,7 +312,7 @@ class Cell_Batch(AuditModel):
             # confirms Batch_ID from CellBatchID
             self.batch_id = str(self.cellbatch_id).replace(str(self.cell_id.cell_id),"").split(ORGBATCH_SEP)[1]
             super(Cell_Batch,self).save(*args, **kwargs)
-            print(f"Save CellBatch: {self.cellbatch_id}")
+            #print(f"[CellBatch.save]: {self.cellbatch_id}")
         
 # ================================================================================================
 
