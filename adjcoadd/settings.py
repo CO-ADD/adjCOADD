@@ -36,7 +36,7 @@ DEVELOPMENT='Meran'
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = '1.2.0257 Development'
+    VERSION = '1.3.0263 Development'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -55,7 +55,7 @@ if DEVELOPMENT:
 
 else:
     # Production ----------------------------------------------------------------------
-    VERSION = '1.3.0'
+    VERSION = '1.3.1'
     DEBUG = False
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 

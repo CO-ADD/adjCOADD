@@ -35,6 +35,7 @@
 #------------------------------------------------------
 # 3. Create new project file
 (base)>git clone https://github.com/CO-ADD/adjCOADD
+Usually development branch 
 
 #------------------------------------------------------
 # 4. Collect static and create uploads folder 
@@ -51,19 +52,39 @@
 (dj41py310)>chmod 775 -R static
 (dj41py310)>cd ..
 
+
 #------------------------------------------------------
-# 5. start django server (gunicorn application server)
+# 5. Apply database migrations 
+In case the Migration is for new schema:
+pgAdmin> create new schema 
+
+Cleanup Migration in <app>/migrations
+rm <either all or only the new part> 
+dbeaver> check apputil.django_migration and remove any entry which not yet been applied
+
+(dj41py310)> python manage.py makemigrations <app> 
+(dj41py310)> python manage.py migrate <app> --database <app>
+
+(dj41py310)> python manage.py makemigrations 
+If any changes listed:
+(dj41py310)> python manage.py migrate
+
+#------------------------------------------------------
+# 6. start django server (gunicorn application server)
 (base)>./etc/dj_start.sh
 
 #------------------------------------------------------
-# check running instance
+# 7.check running instance
 (base)>more var/log/gunicorn_error.log
 (base)>curl localhost:8009 # gunicorn reply
 (base)>curl localhost:8008 # nginx reply
 
+#------------------------------------------------------
+# 8.pull request development->main
 
 #------------------------------------------------------
 # Backup 
 (base)> exit
 [uqjzuegg]> cd /opt/django/var/backup
 [uqjzuegg]> cp *.tgz ~/Code\Python\Django\99_Backup
+
