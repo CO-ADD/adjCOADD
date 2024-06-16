@@ -29,8 +29,8 @@ class Cell(AuditModel):
     HEADER_FIELDS = {
 #       'organism_name':{"VerboseName":'Cell Name','Updatable':False}
         'cell_id':{'Cell ID': {'cell_id':LinkList['cell_id']}}, 
-        'cell_names':'Cell Names',
         'cell_line':'Cell Line',
+        'cell_names':'Cell Names',
         'cell_type':'Cell Type',
         'cell_panel':'Panel',
         'cell_notes':'Notes',
@@ -51,7 +51,7 @@ class Cell(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["cell_line", "cell_type", "cell_names", "cell_panel", "cell_origin", "cell_notes"],
+       'Group1': ["cell_line", "cell_names", "cell_type", "cell_panel", "cell_origin", "cell_notes"],
        'Group2': ['source', 'source_code','reference'],
        'Group3': ['mta_status','mta_notes','mta_document','biologist'],
        'Group4': ['collect_tissue', 'patient_diagnosis', 'patient']
@@ -64,8 +64,8 @@ class Cell(AuditModel):
     }
 
     cell_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Cell ID") 
-    cell_names= models.CharField(max_length=200, blank=True, verbose_name = "Cell Names") 
     cell_line= models.CharField(max_length=200, blank=True, verbose_name = "Cell Line") 
+    cell_names= models.CharField(max_length=200, blank=True, verbose_name = "Cell Names") 
     cell_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Cell Notes")
     cell_code= models.CharField(max_length=30, blank=True, verbose_name = "Cell Code")
     cell_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
@@ -81,9 +81,8 @@ class Cell(AuditModel):
 
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
-    mta_notes = models.CharField(max_length=150, blank=True, verbose_name = "MTA Notes")
+    mta_notes = models.CharField(max_length=512, blank=True, verbose_name='MTA Notes')
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
-    mta_notes = models.CharField(max_length=512, blank=True, verbose_name = "MTA Notes")
 
     collect_tissue = models.CharField(max_length=120, blank=True, verbose_name = "From Tissue/Organ")
     patient_diagnosis = models.CharField(max_length=120, blank=True, verbose_name = "Patient Diagnosis")
@@ -115,7 +114,7 @@ class Cell(AuditModel):
         ]
 
     #------------------------------------------------
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"{self.cell_id} ({self.cell_line})"
 
     #------------------------------------------------
@@ -130,20 +129,33 @@ class Cell(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,CellID,verbose=0):
-    # Returns if an instance exists by cell_id
-        return cls.objects.filter(cell_id=CellID).exists()
+    def exists(cls,CellID=None,CellLine=None,verbose=0):
+        if CellID:
+            # Returns if an instance exists by cell_id
+            return cls.objects.filter(cell_id=CellID).exists()
+        elif CellLine:
+            # Returns if an instance exists by cell_line
+            return cls.objects.filter(cell_line=CellLine).exists()
 
     #------------------------------------------------
     @classmethod
-    def get(cls,CellID,verbose=0):
-    # Returns an instance by cell_id
-        try:
-            retInstance = cls.objects.get(cell_id=CellID)
-        except:
-            if verbose:
-                print(f"[CellID Not Found] {CellID} ")
-            retInstance = None
+    def get(cls,CellID=None,CellLine=None,verbose=0):
+        if CellID:
+            # Returns an instance by cell_id
+            try:
+                retInstance = cls.objects.get(cell_id=CellID)
+            except:
+                if verbose:
+                    print(f"[CellID Not Found] {CellID} ")
+                retInstance = None
+        elif CellLine:
+            # Returns an instance by cell_id
+            try:
+                retInstance = cls.objects.get(cell_line=CellLine)
+            except:
+                if verbose:
+                    print(f"[Cell Line Not Found] {CellLine} ")
+                retInstance = None
         return(retInstance)
 
     #------------------------------------------------
@@ -192,7 +204,7 @@ class Cell_Batch(AuditModel):
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
+       'Group1': ["batch_id", "batch_notes", "previous_batch_id", "passage_number", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
     #SEP = '_'
 
@@ -201,8 +213,8 @@ class Cell_Batch(AuditModel):
     cellbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "CellBatch ID")
     cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
         db_column="cell_id", related_name="%(class)s_cell_id")
-    previous_batch_id= models.CharField(max_length=20, verbose_name = "Previous CellBatch ID")
-    passage_number= models.CharField(max_length=20, verbose_name = "Passage Number")
+    previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous CellBatch ID")
+    passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
@@ -257,7 +269,7 @@ class Cell_Batch(AuditModel):
                 BatchID = self.str_BatchID(int(BatchID))
 
             next_CellBatch = self.str_CellBatchID(CellID,BatchID)
-            if ~self.exists(next_CellBatch):
+            if not self.exists(next_CellBatch):
                 return(BatchID)
 
         # Find new BatchID    
@@ -300,6 +312,7 @@ class Cell_Batch(AuditModel):
             # confirms Batch_ID from CellBatchID
             self.batch_id = str(self.cellbatch_id).replace(str(self.cell_id.cell_id),"").split(ORGBATCH_SEP)[1]
             super(Cell_Batch,self).save(*args, **kwargs)
+            #print(f"[CellBatch.save]: {self.cellbatch_id}")
         
 # ================================================================================================
 

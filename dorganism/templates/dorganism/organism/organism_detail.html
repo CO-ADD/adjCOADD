@@ -1,7 +1,7 @@
 <!--prettier-ignore-->
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title%}COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
@@ -58,7 +58,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html' with table_id='datatable_org_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+                {% include 'utils/datatable_sm.html' with table_id='datatable_org_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/orgbatch/orgbatch_tr.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/orgculture/orgculture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
               </div>
             </div>
           </div>
@@ -135,18 +135,18 @@
     
     <!-- Image OrgBatches -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
-    {% include 'dorganism/organism/orgbatch_image.html' %}
+      {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
+      {% include 'dorganism/organism/orgbatch_image.html' %}
     </div>
     <!-- Files -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
-     <!--  -->
-    {% include 'dorganism/organism/organism_file.html' %}
+      {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+      <!--  -->
+      {% include 'dorganism/organism/organism_file.html' %}
     </div>
 
     <!-- MIC_COADD Pivot -->
-    {%include './organism_mic.html'%}
+    {% include 'dorganism/organism/organism_mic.html'%}
 
     <div style="min-height: 100px;"></div>
   </div>
@@ -171,5 +171,5 @@
     });
   </script>
 
-  {%endblock%}
+  {% endblock %}
 </div>

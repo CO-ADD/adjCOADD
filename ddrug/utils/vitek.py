@@ -12,7 +12,7 @@ from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
-from ddrug.utils.import_drug import imp_VitekCard_fromDict,imp_VitekAST_fromDict,imp_VitekID_fromDict
+from ddrug.utils.upload_vitek import VitekCard_fromDict, VitekAST_fromDict, VitekID_fromDict
 
 import logging
 logger = logging.getLogger(__name__)
@@ -119,7 +119,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
 
     nProcess = {'Uploaded':0,'Invalid':0}
     for c in lCards:
-        djCard = imp_VitekCard_fromDict(c,valLog,upload=upload)
+        djCard = VitekCard_fromDict(c,valLog,upload=upload)
         if upload:
             if djCard.VALID_STATUS:
                 logger.debug(f" {djCard} <- {FileName}")
@@ -131,7 +131,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lID:
-        djID = imp_VitekID_fromDict(c,valLog,upload=upload)
+        djID = VitekID_fromDict(c,valLog,upload=upload)
         if upload:
             if djID.VALID_STATUS:
                 logger.debug(f" {djID} <- {FileName}")
@@ -142,7 +142,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lAST:
-        djAST = imp_VitekAST_fromDict(c,valLog,upload=upload)
+        djAST = VitekAST_fromDict(c,valLog,upload=upload)
         if upload:
             if djAST.VALID_STATUS:
                 logger.debug(f" {djAST} <- {FileName}")

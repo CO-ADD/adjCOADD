@@ -30,7 +30,8 @@ from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
                             OrgCulture_Form, OrgCulture_UpdateForm,
                             OrgBatchImg_Form,)
 from ddrug.models import VITEK_AST, MIC_COADD
-from dorganism.utils.data_visual import data_frame_style, pivottable_style
+from ddrug.utils.antibiogram import get_Antibiogram_byOrgID_Html
+#from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 #=================================================================================================
 # Taxonomy
@@ -52,7 +53,7 @@ class Taxonomy_CardView(Taxonomy_ListView):
     
 # -----------------------------------------------------------------
 @login_required
-def detailTaxonomy(req, slug=None):
+def Taxonomy_DetailView(req, slug=None):
     context={}
     object_=get_object_or_404(Taxonomy, urlname=slug)
     context["object"]=object_
@@ -100,7 +101,7 @@ class Organism_CardView(Organism_ListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createOrganism(req):
+def Organism_CreateView(req):
     '''
     Function View Create new Organism table row with foreignkey: Taxonomy and Dictionary. 
     '''  
@@ -115,7 +116,7 @@ def createOrganism(req):
                 with transaction.atomic(using='dorganism'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Organism','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -127,7 +128,7 @@ def createOrganism(req):
 
 # -----------------------------------------------------------------
 @login_required
-def detailOrganism(request, pk):
+def Organism_DetailView(request, pk):
     """
     - Detail view handle organism single entry
     display,update and delete.
@@ -172,20 +173,24 @@ def detailOrganism(request, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    context["n_entries"] = 0
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
         displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        context["table"] = data_frame_style(pk, displaycols)['style_table']
-        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
-        context["pivottable"] = pivottable_style(pk)
+        print('POST')
+        _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
+        print(_pivDict['n_entries'])
+        context["table"] = _pivDict['html_table']
+        context["n_entries"] = _pivDict['n_entries']
+        context["pivottable"] = _pivDict['pivot_table']
         return render(request, "dorganism/organism/organism_mic.html", context)
     
     return render(request, "dorganism/organism/organism_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
-def updateOrganism(req, pk):
+def Organism_UpdateView(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -212,7 +217,7 @@ def updateOrganism(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Organism','Completed')
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Organism','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
                 else:
@@ -242,7 +247,7 @@ class Organism_DeleteView(SimpledeleteView):
 class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Organism_Batch 
-    template_name = 'dorganism/organism/batch/batch_list.html' 
+    template_name = 'dorganism/orgbatch/orgbatch_list.html' 
     filterset_class=OrgBatch_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Organism_Batch'
@@ -250,7 +255,7 @@ class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def OrgcreateBatch(req, organism_id):
+def OrgBatch_CreateView(req, organism_id):
     kwargs={'user': req.user}
     form=OrgBatch_Form()
     
@@ -262,7 +267,7 @@ def OrgcreateBatch(req, organism_id):
                     instance=form.save(commit=False) 
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)              
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new OrgBatch','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -270,13 +275,13 @@ def OrgcreateBatch(req, organism_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/batch/batch_c.html', { 'form':form, 'organism_id':organism_id}) 
+    return render(req, 'dorganism/orgbatch/orgbatch_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 # -----------------------------------------------------------------
 class OrgBatch_UpdateView(HtmxupdateView):
     form_class=OrgBatch_UpdateForm
-    template_name="dorganism/organism/batch/batch_u.html"
-    template_partial="dorganism/organism/batch/batch_tr.html"
+    template_name="dorganism/orgbatch/orgbatch_u.html"
+    template_partial="dorganism/orgbatch/orgbatch_tr.html"
     model=Organism_Batch
     transaction_use = 'dorganism'
 
@@ -291,7 +296,7 @@ class OrgBatch_DeleteView(SimpledeleteView):
 class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = OrgBatch_Stock  
-    template_name = 'dorganism/organism/batch_stock/stock_list.html'
+    template_name = 'dorganism/orgbatchstock/orgbatchstock_list.html'
     filterset_class = OrgBatchStock_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'OrgBatch_Stock'
@@ -304,7 +309,7 @@ class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def OrgstockList(req, pk):
+def OrgBatchStock_DetailView(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
@@ -333,7 +338,7 @@ def OrgstockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def OrgcreateStock(req, orgbatch_id):
+def OrgBatchStock_CreateView(req, orgbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = OrgBatchStock_CreateForm(initial={"orgbatch_id":orgbatch_id},)
@@ -345,18 +350,18 @@ def OrgcreateStock(req, orgbatch_id):
                 with transaction.atomic(using='dorganism'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create new OrgBatchStock','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             print(f'wrong {form.errors}')
-    return render(req, 'dorganism/organism/batch_stock/stock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
+    return render(req, 'dorganism/orgbatchstock/orgbatchstock_c.html', { 'form':form, 'orgbatch_id':orgbatch_id }) 
 
 #-------------------------------------------------------------------------------
 @login_required
-def OrgupdateStock(req, pk):
+def OrgBatchStock_UpdateView(req, pk):
     object_=get_object_or_404(OrgBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -366,7 +371,7 @@ def OrgupdateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_N_Left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -381,7 +386,7 @@ def OrgupdateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
-                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update OrgBatchStock','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
@@ -393,7 +398,7 @@ def OrgupdateStock(req, pk):
         "form":form,
         "object":object_,
     }
-    return render(req, "dorganism/organism/batch_stock/stock_u.html", context)
+    return render(req, "dorganism/orgbatchstock/orgbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
 class OrgBatchStock_DeleteView(SimpledeleteView):
@@ -405,7 +410,7 @@ class OrgBatchStock_DeleteView(SimpledeleteView):
 #=================================================================================================
 
 @login_required
-def createCulture(req, organism_id):
+def OrgCulture_CreateView(req, organism_id):
     
     kwargs={'user' : req.user}
     form=OrgCulture_Form()
@@ -418,7 +423,7 @@ def createCulture(req, organism_id):
                     instance=form.save(commit=False)
                     instance.organism_id=get_object_or_404(Organism, pk=organism_id)
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')                  
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create new OrgCulture','Completed')                  
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -426,13 +431,13 @@ def createCulture(req, organism_id):
         else:
             messages.error(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/organism/culture/culture_c.html', { 'form':form, 'organism_id':organism_id}) 
+    return render(req, 'dorganism/orgculture/orgculture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 #-------------------------------------------------------------------------------
 class OrgCulture_UpdateView(HtmxupdateView):
     form_class=OrgCulture_UpdateForm
-    template_name="dorganism/organism/culture/culture_u.html"
-    template_partial="dorganism/organism/culture/culture_tr.html"
+    template_name="dorganism/orgculture/orgculture_u.html"
+    template_partial="dorganism/orgculture/orgculture_tr.html"
     model=Organism_Culture
     transaction_use = 'dorganism'
 

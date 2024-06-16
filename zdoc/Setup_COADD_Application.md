@@ -22,7 +22,7 @@
       gunicorn<br>
       postgresql<br>
 
-   [win] django-filter django-pandas psycopg2 requests djangorestframework <br>
+   [win] django-filter django-pandas psycopg2 requests djangorestframework django-dbbackup <br>
    [win] openpyxl ipython CairoSVG<br>
    [win] rdkit -c rdkit  <br>
     conda install libpython m2w64-toolchain <br>
@@ -39,6 +39,7 @@
    [win] django-model-utils django-sequences django-formtools
    [win] djangorestframework-simplejwt
    [win] python-magic pdfplumber
+   [win] django_crontab 
 
    [win] get python_ldap-3.4.3-cp311-cp311-win_amd64.whl from https://github.com/cgohlke/python-ldap-build/releases<br>
    [win] pip install ldap-3.4.3-cp311-cp311-win_amd64.whl<br>
@@ -67,6 +68,9 @@
    djangorestframework-simplejwt<br>
    python-magic pdfplumber
 
+   download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/ into "C:/Windows/System32/"
+   set $Env:MAGIC = "C:/Windows/System32/magic.mgc"
+
 - (dj42py311) > <b>pip</b> install django-auth-ldap<br>
    installed VC Build Tools from https://visualstudio.microsoft.com/visual-cpp-build-tools/ <br>
       Visual C++ build tools <br>
@@ -82,7 +86,7 @@
    pip install ldap-3.4.3-cp311-cp311-win_amd64.whl
 
    pip install django-auth-ldap 
-
+ 
    or try https://github.com/etianen/django-python3-ldap
 
 This document includes two parts: Developing and Using the Application

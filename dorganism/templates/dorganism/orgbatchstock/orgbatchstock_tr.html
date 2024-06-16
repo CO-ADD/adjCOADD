@@ -4,10 +4,10 @@
       <!--  -->
       {% include 'utils/miscellaneous/update_btn_htmx.html' with url=stock_url %}
       <!--  -->
-      {%include './stock_d.html' with object_stock=object.pk %}
+      {% include './stock_d.html' with object_stock=object.pk %}
       
     </td>
-    {%for value in object.get_values%}
-    <td>{{value}}</td>
-    {%endfor%}
+    {% for value in object.get_values%}
+      <td>{{value}}</td>
+    {% endfor %}
   </tr>

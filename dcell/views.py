@@ -19,17 +19,20 @@ from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+from apputil.utils.upload_steps import UploadHandler_View, SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm
 
 from adjcoadd.constants import *
 
 from dorganism.models import Taxonomy
 from dcell.models import  Cell, Cell_Batch, CellBatch_Stock
-from dcell.forms import (Cell_Filter,
-                            CreateCell_form, UpdateCell_form, 
-                            CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
-                            CellBatchStock_Form, CellBatchStock_Filter, CellBatchStock_CreateForm,)
-from ddrug.models import VITEK_AST, MIC_COADD
-from dorganism.utils.data_visual import data_frame_style, pivottable_style
+from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm, 
+                         CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
+                         CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm)
+
+from dcell.utils.upload_cell import upload_Cells_Process
+
+#from ddrug.models import VITEK_AST, MIC_COADD
+#from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 
 #=================================================================================================
@@ -55,22 +58,23 @@ class Cell_CardView(Cell_ListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createCell(req):
+#def createCell(req):
+def Cell_CreateView(req):
     '''
     Function View Create new Cell table row with foreignkey: Taxonomy and Dictionary. 
     '''  
     kwargs={}
     kwargs['user']=req.user
-    form=CreateCell_form()
+    form=Cell_CreateForm()
     if req.method=='POST':
         Organism_Name=req.POST.get('search_organism') # -1. Ajax Call(/search_cell/) find Foreignkey cellname
-        form=CreateCell_form( Organism_Name, req.POST,) # -2. get create-form with ajax call result
+        form=Cell_CreateForm( Organism_Name, req.POST,) # -2. get create-form with ajax call result
         if form.is_valid():
             try:
                 with transaction.atomic(using='dcell'): # -3. write new entry in atomic transaction
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Cell','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
@@ -82,7 +86,7 @@ def createCell(req):
 
 # -----------------------------------------------------------------
 @login_required
-def detailCell(request, pk):
+def Cell_DetailView(request, pk):
     """
     - Detail view handle cell single entry
     display,update and delete.
@@ -94,9 +98,9 @@ def detailCell(request, pk):
     context={}
     object_=get_object_or_404(Cell, cell_id=pk)
     try:
-        form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
+        form=Cell_UpdateForm(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel,}, instance=object_)
     except Exception as err:
-        print(err)
+        print(f"[Cell_DetailView] {err}")
     context["object"]=object_
     context["form"]=form
     context["doc_form"]=Document_Form
@@ -129,29 +133,30 @@ def detailCell(request, pk):
     # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
 
     # data in pivotted and highlighted Tables
-    if request.method == 'POST':
-        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source'] #<what is needed from here?>
-        context["table"] = data_frame_style(pk, displaycols)['style_table']
-        context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
-        context["pivottable"] = pivottable_style(pk)
-        return render(request, "dcell/cell/cell_mic.html", context)
+    
+    # if request.method == 'POST':
+    #     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source'] #<what is needed from here?>
+    #     context["table"] = data_frame_style(pk, displaycols)['style_table']
+    #     context["df_entries"] = data_frame_style(pk, displaycols)['df_entries']
+    #     context["pivottable"] = pivottable_style(pk)
+    #     return render(request, "dcell/cell/cell_mic.html", context)
     
     return render(request, "dcell/cell/cell_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
-def updateCell(req, pk):
+def Cell_UpdateView(req, pk):
     object_=get_object_or_404(Cell, cell_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    form=UpdateCell_form(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
+    form=Cell_UpdateForm(initial={'cell_type':object_.cell_type, 'cell_panel':object_.cell_panel, 'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
         Organism_Class_str="No Class"
-    print(Organism_Class_str)
+    #print(f"[Cell_UpdateView] Organism_Class_str")
     if req.method=='POST':
-        print("POST")
+        #print(f"[Cell_UpdateView] POST")
         try:
             with transaction.atomic(using='dcell'):        # testing!
                 obj = Cell.objects.select_for_update().get(cell_id=pk)
@@ -160,16 +165,16 @@ def updateCell(req, pk):
                     Organism_Name_str=req.POST.get('search_cell')
                     Organism_new_obj=get_object_or_404(Taxonomy, organism_name=Organism_Name_str)
                     
-                    form=UpdateCell_form(Organism_Name_str, req.POST, instance=obj)
+                    form=Cell_UpdateForm(Organism_Name_str, req.POST, instance=obj)
                     #-Not allow to update name in different class--
                     if Organism_new_obj.org_class.dict_value and Organism_new_obj.org_class.dict_value != Organism_Class_str:
                         raise ValidationError('Not the same Class')
                 else:
-                    print("Else")
-                    form=UpdateCell_form(object_.organism_name, req.POST, instance=obj) 
+                    #print("Else")
+                    form=Cell_UpdateForm(object_.organism_name, req.POST, instance=obj) 
                 
                 if form.is_valid():  
-                    print(f"Saving {obj}")     
+                    #print(f"Saving {obj}")     
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated Cell','Completed')
@@ -195,6 +200,30 @@ class Cell_DeleteView(SimpledeleteView):
     model = Cell
     transaction_use = 'dcell'
 
+
+# -----------------------------------------------------------------
+class Cell_Upload_HandlerView(UploadHandler_View):
+    
+    name_step1="Upload"
+    form_list = [
+        ('select_file', SelectSingleFile_StepForm),
+        ('upload', Upload_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+
+    template_name = 'dcell/cell/importhandler_cell.html'
+    
+    # customize util functions to validate files:
+    # vitek -- upload_VitekPDF_Process
+    def file_process_handler(self, request, *args, **kwargs):
+        try:
+            form_data=kwargs.get('form_data', None)
+        except Exception as err:
+            print(f"[Import_CellView] {err}")
+        
+        valLog=upload_Cells_Process(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
+        return(valLog)
+
 #=================================================================================================
 # CellBatch  
 #=================================================================================================
@@ -202,7 +231,7 @@ class Cell_DeleteView(SimpledeleteView):
 class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model=Cell_Batch 
-    template_name = 'dcell/cell/batch/batch_list.html' 
+    template_name = 'dcell/cellbatch/cellbatch_list.html' 
     filterset_class=CellBatch_Filter
     model_fields=model.HEADER_FIELDS
     model_name = 'Cell_Batch'
@@ -210,7 +239,7 @@ class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
 
 # -----------------------------------------------------------------
 @login_required
-def createCellBatch(req, cell_id):
+def CellBatch_CreateView(req, cell_id):
     kwargs={'user': req.user}
     form=CellBatch_Form()
     
@@ -222,7 +251,7 @@ def createCellBatch(req, cell_id):
                     instance=form.save(commit=False) 
                     instance.cell_id=get_object_or_404(Cell, pk=cell_id)              
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a CellBatch','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
 
             except IntegrityError as err:
@@ -230,13 +259,13 @@ def createCellBatch(req, cell_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dcell/cell/batch/batch_c.html', { 'form':form, 'cell_id':cell_id}) 
+    return render(req, 'dcell/cellbatch/cellbatch_c.html', { 'form':form, 'cell_id':cell_id}) 
 
 # -----------------------------------------------------------------
 class CellBatch_UpdateView(HtmxupdateView):
     form_class=CellBatch_UpdateForm
-    template_name="dcell/cell/batch/batch_u.html"
-    template_partial="dcell/cell/batch/batch_tr.html"
+    template_name="dcell/cellbatch/cellbatch_u.html"
+    template_partial="dcell/cellbatch/cellbatch_tr.html"
     model=Cell_Batch
     transaction_use = 'dcell'
 
@@ -251,7 +280,7 @@ class CellBatch_DeleteView(SimpledeleteView):
 class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model = CellBatch_Stock  
-    template_name = 'dcell/cell/batch_stock/stock_list.html'
+    template_name = 'dcell/cellbatchstock/cellbatchstock_list.html'
     filterset_class = CellBatchStock_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'CellBatch_Stock'
@@ -264,12 +293,12 @@ class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
 ## here is response to an Ajax call
 ## to send data to child datatable 
 @user_passes_test(lambda u: u.has_permission('Read'), login_url='permission_not_granted') 
-def CellstockList(req, pk):
+def CellBatchStock_DetailView(req, pk):
     res=None
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
         object_=get_object_or_404(Cell_Batch, cellbatch_id=batch_id)#Cell_Batch.objects.get(cellbatch_id=batch_id)
-        print(object_)
+        #print(f"[CellBatchStock_DetailView] {object_}"")
         qs=CellBatch_Stock.objects.filter(cellbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
@@ -293,7 +322,7 @@ def CellstockList(req, pk):
       
 #-------------------------------------------------------------------------------
 @login_required
-def CellcreateStock(req, cellbatch_id):
+def CellBatchStock_CreateView(req, cellbatch_id):
     kwargs={}
     kwargs['user']=req.user
     form = CellBatchStock_CreateForm(initial={"cellbatch_id":cellbatch_id},)
@@ -305,18 +334,18 @@ def CellcreateStock(req, cellbatch_id):
                 with transaction.atomic(using='dcell'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new entry','Completed')
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new CellBatchStock','Completed')
                     return redirect(req.META['HTTP_REFERER']) 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
         else:
-            print(f'wrong {form.errors}')
-    return render(req, 'dcell/cell/batch_stock/stock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
+            print(f'[CellBatchStock_CreateView] {form.errors}')
+    return render(req, 'dcell/cellbatchstock/cellbatchstock_c.html', { 'form':form, 'cellbatch_id':cellbatch_id }) 
 
 #-------------------------------------------------------------------------------
 @login_required
-def CellupdateStock(req, pk):
+def CellBatchStock_UpdateView(req, pk):
     object_=get_object_or_404(CellBatch_Stock, pk=pk)
     kwargs={}
     kwargs['user']=req.user
@@ -326,7 +355,7 @@ def CellupdateStock(req, pk):
         n_left_value=req.POST.get('value')
         object_.n_left=int(n_left_value)-1
         object_.save(**kwargs)
-        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_n_left','Completed')
+        ApplicationLog.add('Updated',str(object_.pk),'Info',req.user,str(object_.pk),'Updated Stock_N_Left','Completed')
         response_data = {'result': str(object_.n_left)}
         return JsonResponse(response_data)
     if req.method=='POST':
@@ -341,11 +370,11 @@ def CellupdateStock(req, pk):
                         if form.is_valid():               
                             instance=form.save(commit=False)
                             instance.save(**kwargs)
-                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated an entry','Completed')
+                            ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Updated CellBatchStock','Completed')
                             return redirect(req.META['HTTP_REFERER'])
                             
                     except Exception as err:
-                        print(f'form erroro is {form.errors} and error {err}')
+                        print(f'[CellBatchStock_UpdateView] form.error:  {form.errors}, error: {err}')
             except Exception as err:
                 messages.warning(req, f'Update failed due to {err} error')
                 return redirect(req.META['HTTP_REFERER'])
@@ -353,7 +382,7 @@ def CellupdateStock(req, pk):
         "form":form,
         "object":object_,
     }
-    return render(req, "dcell/cell/batch_stock/stock_u.html", context)
+    return render(req, "dcell/cellbatchstock/cellbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
 class CellBatchStock_DeleteView(SimpledeleteView):

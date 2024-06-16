@@ -2,29 +2,30 @@
   <thead>
     <tr>
       <th style="width: 10em"></th>
-     {%if hiddenfield%}
-      <th class="not-visible">{{hiddenfield}}</th>
-     {%endif%}
-      {%for th in data_fields %}
-      <th>{{th}}</th>
-      {%endfor%}
+      {% if hiddenfield %}
+        <th class="not-visible">{{hiddenfield}}</th>
+      {% endif %}
+
+      {% for th in data_fields %}
+        <th>{{th}}</th>
+      {% endfor %}
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
     {% for object in objects %}
     <!--  -->
-    {%if html_name%}
-    {%include html_name%}
-    {%else%}
-    <tr>
-    <td></td>
-    {%for value in object.get_values|slice:"1:" %}
-    <td>{{value}}</td>
-    {%endfor%}
-    </tr>
-    {%endif%}
+      {% if html_name %}
+        {% include html_name %}
+      {% else %}
+        <tr>
+        <td></td>
+        {% for value in object.get_values|slice:"1:" %}
+          <td>{{value}}</td>
+        {% endfor%}
+          </tr>
+      {% endif %}
     <!--  -->
-    {%endfor%}
+    {% endfor %}
   </tbody>
 </table>
 <script
@@ -33,7 +34,7 @@
   crossorigin="anonymous"
 ></script>
 
-{%load static%}
+{% load static %}
 <script type="text/javascript" src="{% static 'js/childtable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/destroy_childtable.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/create_childtable.js' %}"></script>

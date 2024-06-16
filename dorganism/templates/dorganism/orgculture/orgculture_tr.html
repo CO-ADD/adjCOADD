@@ -4,10 +4,10 @@
     <!--  -->
     {% include 'utils/miscellaneous/update_btn_htmx.html' with url=culture_url %}
     <!--  -->
-    {%include './culture_d.html' with object_cultr=object.pk %}
+    {% include 'dorganism/orgculture/orgculture_d.html' with object_cultr=object.pk %}
     
   </td>
-  {%for value in object.get_values%}
-  <td>{{value}}</td>
-  {%endfor%}
+  {% for value in object.get_values %}
+    <td>{{value}}</td>
+  {% endfor %}
 </tr>

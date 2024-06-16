@@ -32,6 +32,23 @@
                 <ul class="dropdown-menu2" aria-labelledby="dropdownMenuButton"></ul>
                   <li><a class="dropdown-item " href="{% url 'cell_list' %}"> Organism2</a> </li>
               </li> -->
+
+
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  Organism &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <!-- Dropdown menu links -->
+                  <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> OrgBatch Stock</a>
+                </ul>
+              </div>
+              </li>
+
+              <div class="dropdown-divider"></div>
+
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
                   Cell &raquo;
@@ -43,19 +60,7 @@
                 </ul>
               </div>
               </li>
-              <div class="dropdown-divider"></div>
-              <li><div class="dropdown2 d-inline-block">
-                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
-                  Organism &raquo;
-                </a>
-                <ul class="dropdown-menu2">
-                  <!-- Dropdown menu links -->
-                  <a class="dropdown-item " href="{% url 'org_list' %}"> Organism</a>
-                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> Taxonomy</a>
-                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> OrgBatch Stock</a>
-                </ul>
-              </div>
-              </li>
+
               <div class="dropdown-divider"></div>
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
@@ -74,7 +79,9 @@
                 </ul>
               </div>
               </li>
+
               <div class="dropdown-divider"></div>
+
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
                   Sequence &raquo;
