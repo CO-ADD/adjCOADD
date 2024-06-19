@@ -27,8 +27,6 @@ class Drug_form(forms.ModelForm):
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
     # smol=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '12'}),)
    
-
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
@@ -53,7 +51,9 @@ class Drug_form(forms.ModelForm):
     class Meta:
         model =Drug
         fields='__all__'
-        exclude=['ffp2', 'torsionbv', 'mfp2', 'smol' ]
+        exclude = []
+        # Require RDKit-PostgreSQL
+        #exclude=['ffp2', 'torsionbv', 'mfp2', 'smol' ]
        
     
 

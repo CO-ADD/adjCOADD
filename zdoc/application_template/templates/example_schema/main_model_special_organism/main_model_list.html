@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title%} COADD{% endblock %}
+<!--  -->
+{% block content %}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  {% url 'pivoted-table' app_model='dorganism-Organism' as url_pivotedtable%}
+  {% include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createOrganism' create_objectModal='createOrganismModal' url_pivotedtable=url_pivotedtable %}
+  <!-- Sidebar View -->
+  {% include "utils/sidebar.html" %}
+  
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100"> 
+
+    <!-- prettier-ignore -->
+    {% include 'utils/main_horizalbar.html' with title='Organism'  model_name='Organism' application='dorganism' %}
+    <!-- prettier-ignore -->
+    <!--  -->
+
+
+    <!-- list View Content -->
+   <div class="contain-fluid data-contain">
+      <!-- prettier-ignore --> <!-- Here include datatable_general --> 
+      {% include 'utils/datatable_general.html' with tax_id='TaxID' url_name='org_detail' modelname='Organism' %}
+    </div>
+    </div>
+
+</div>
+{% endblock %}

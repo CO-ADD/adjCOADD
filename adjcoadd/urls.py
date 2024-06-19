@@ -32,6 +32,7 @@ urlpatterns = [
     path('dorganism/', include('dorganism.urls')),
     path('ddrug/', include('ddrug.urls')),
     path('dgene/', include('dgene.urls')),
+    path('dcell/', include('dcell.urls')),
 ]
 
 if settings.DEBUG:

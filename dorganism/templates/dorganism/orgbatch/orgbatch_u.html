@@ -1,0 +1,33 @@
+<tr hx-trigger="cancel" class="editing" hx-get="{%url 'org_detail' object.organism_id.pk %}" x-data="{ state: '' }"   @htmx:send-error="state = 'send error'" 
+@htmx:response-error="state = 'response error'" 
+@htmx:after-swap="state = 'success'">
+  <!-- <td></td> -->
+  <td>
+    <button class="btn-active-small" type="submit" value="update"
+      hx-put="{%url 'org_batch_update' pk=object.pk%}" hx-include="closest tr" hx-trigger="click" onclick="window.location.reload(true);"> Save
+    </button>
+    {{form_errors}}
+    {% url 'org_batch_update' pk=object.pk as my_url %}
+    {% with urlname=my_url|add:'?_value=cancel' %}
+    {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+    {% endwith %}
+  </td>
+
+  {% for field in form.group1 %}
+  <td>{{field}}<br>
+  </td>
+  {%endfor%}
+  <td class="not-visible">{{form.orgbatch_id}}</td>
+
+</tr>
+
+
+<script>
+  $(document).ready(function () {
+    $('option').each(function () {
+      console.log("selectt")
+      replace_string = $(this).text().replace("<small class='not-visible'>", " | ").replace("</small>", "")
+      $(this).text(replace_string)
+    })
+  })
+</script>

@@ -3,9 +3,12 @@
 #
 
 # -dOrganism Settings ---------------------------------------------------
-ORGANISM_CLASSES = ['GN','GP','MB','FG','MA']
 ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
+
+CELL_CLASSES = ['MA']
+CELL_SEP = "_"
+CELLBATCH_SEP = "_"
 
 COMPOUND_SEP = '|'
 # column name can be edited here 
@@ -17,6 +20,7 @@ LinkList={
     "urlname":      '/dorganism/taxonomy/{VALUE1}',
     'tax_id':       'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={VALUE1}',
     'organism_id':  '/dorganism/organism/{VALUE1}',
+    'cell_id':  '/dcell/cell/{VALUE1}',
     'drug_id':      '/ddrug/drug/{VALUE1}',
     'cas':          'https://commonchemistry.cas.org/detail?cas_rn={VALUE1}',
     'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/{VALUE1}',

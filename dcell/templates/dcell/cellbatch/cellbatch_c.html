@@ -1,0 +1,11 @@
+<div class="modal-dialog modal-lg">
+  {% url 'cell_batch_create' cell_id=cell_id as createurl %}
+  {% include 'utils/modal/modal_form.html' with title='Create Batch' urlname=createurl %}
+
+</div>
+<!-- <script>
+  //this function will be called after the JavaScriptApplet code has been loaded.
+  $(".btn-close, a").on('click', function(){
+  $(".modal-dialog").remove();
+})
+</script>   -->

@@ -1,0 +1,5 @@
+<div class="modal-dialog">
+  <!--prettier-ignore-->
+  {% url 'org_stock_delete' pk=object.pk as deleteurl %}
+  {% include 'utils/modal/delete.html' with title='Delete Stock' deleteurl=deleteurl entry=object %}
+</div>

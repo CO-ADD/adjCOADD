@@ -1,0 +1,42 @@
+<tr
+  hx-trigger="cancel"
+  class="editing"
+  hx-get="{%url 'org_detail' object.organism_id.pk %}"
+>
+<td>
+  <button
+    class="border border-0 bg-transparent"
+    type="submit"
+    value="update"
+    hx-put="{%url 'culture_update' pk=object.pk%}"
+    hx-include="closest tr"
+    hx-trigger="click"
+  >
+  <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
+  </button>
+  {{form.errors}}
+  {% url 'culture_update' pk=object.pk as my_url %}
+  {% with urlname=my_url|add:'?_value=cancel' %}
+  {% include 'utils/miscellaneous/cancel_btn_htmx.html'%}
+  {% endwith %}
+</td>
+{% for field in form.group1%}
+  <td>
+    {{field}} 
+    <!--  -->
+    {{field.errors}}
+  </td>
+{% endfor %}
+</tr>
+
+
+<script>
+
+  $(document).ready(function () {
+    $('option').each(function () {
+      console.log("custom_option")
+      replace_string = $(this).text().replace("<small class='not-visible'>", " | ").replace("</small>", "")
+      $(this).text(replace_string)
+    })
+  })
+</script>

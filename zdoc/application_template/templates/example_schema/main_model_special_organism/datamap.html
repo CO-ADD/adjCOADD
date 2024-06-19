@@ -1,0 +1,45 @@
+<div style="height: 100vh;overflow: auto;" class="w-100">
+          {{table | safe}}
+</div>
+
+<script>
+    $(document).ready(function() {
+       var table= $('table.dataframe').DataTable({
+           language: {
+            paginate: {
+              next: '&raquo;', // or '→'
+              previous: '&laquo;' // or '←' 
+            }
+          },
+            pageLength: 50,
+            //"paging": false,
+            //lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]], 
+            order: [],
+            responsive: true,
+            dom: '<"row"<"d-flex align-items-baseline"pl>><"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7">><"fixed-pagination"p>',
+            //'<"row"<"col-sm-12"tr>>',
+            info: false,
+            columnDefs: [
+            { orderable: true, targets: [0, 1, 4, 5] },  // Enable sorting for the first and third columns
+            { orderable: false, targets: '_all' } // Disable sorting for all other columns
+        ],
+        });
+
+       // List of column indices for which you want to add search fields
+        var columns_with_search = [1, 4];
+        // console.log($(columns_with_search))
+
+
+      // Create search input elements for each column
+    table.columns().every(function() {
+       var column = this;
+       var input = $('<br><input type="text" placeholder="Search..." />')
+        .appendTo($(column.header()))
+        .on('keyup change clear', function() {
+            if (column.search() !== this.value) {
+                column.search(this.value).draw();
+            }
+        });
+      });
+    });
+</script>

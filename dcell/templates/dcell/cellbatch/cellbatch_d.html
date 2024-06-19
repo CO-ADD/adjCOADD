@@ -1,0 +1,12 @@
+<!-- trigger modal -->
+{% include 'utils/miscellaneous/delete_btn.html' with target='#modal-default'|add:object_batch %}
+
+<!-- Modal -->
+<div class="modal fade" id="modal-default{{object_batch}}" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="modal-default{{object_batch}}Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'cell_batch_delete' pk=object_batch as deleteurl %}
+    {% include 'utils/modal/delete.html' with title='Delete Batch' deleteurl=deleteurl entry=object_batch %}
+  </div>
+</div>

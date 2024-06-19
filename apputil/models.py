@@ -44,6 +44,8 @@ class ApplicationUser(AbstractUser):
     #------------------------------------------------
     class Meta:
         db_table = 'app_user'
+        ordering=['name']
+
     
     #------------------------------------------------  
     def __str__(self) -> str:
@@ -169,28 +171,34 @@ class AuditModel(models.Model):
             self.full_clean(**kwargs)
         except ValidationError as e:
             for key in e.message_dict:
+                _field = self._meta.get_field(key)
+                #print(f"{key} PK:{_field.primary_key},Null:{_field.null},Blank:{_field.blank}")
                 errMsgList = e.message_dict[key]
                 retMsg = []
                 for errMsg in errMsgList:
-                    if 'This field cannot be null.' == errMsg: 
-                        if ~self._meta.get_field(key).null:
+                    #print(f"{key} -- {errMsg}")
+        
+                    if not _field.primary_key:
+                        if 'This field cannot be null.' == errMsg: 
+                            if not _field.null:
+                                retMsg.append(errMsg)
+                        elif 'This field cannot be blank.' == errMsg:
+                            if not _field.blank:
+                                retMsg.append(errMsg)
+                        elif 'Ensure that there are no more than' in errMsg:
+                            if _field.get_internal_type() != 'DecimalField':
+                                retMsg.append(errMsg)
+                        else:
                             retMsg.append(errMsg)
-                    elif 'This field cannot be blank.' == errMsg:
-                        if ~self._meta.get_field(key).blank:
-                            retMsg.append(errMsg)
-                    elif 'Ensure that there are no more than' in errMsg:
-                        if self._meta.get_field(key).get_internal_type() != 'DecimalField':
-                            retMsg.append(errMsg)
-                    else:
-                        retMsg.append(errMsg)
+
                 if len(retMsg) > 0 :
                     retValid[key] = "; ".join(retMsg)
                 #print(len(e.message_dict[key]))
                 # if e.message_dict[key] == ['This field cannot be null.']:
-                #     if ~self._meta.get_field(key).null:
+                #     if not self._meta.get_field(key).null:
                 #         retValid[key] = ", ".join(e.message_dict[key])
                 # elif e.message_dict[key] == ['This field cannot be blank.']:
-                #     if ~self._meta.get_field(key).blank:
+                #     if not self._meta.get_field(key).blank:
                 #         retValid[key] = ", ".join(e.message_dict[key])
                 # else:
                 #     retValid[key] = ", ".join(e.message_dict[key])
@@ -560,26 +568,30 @@ class Dictionary(AuditModel):
     #
     # Returns Dictionary entries for a DictClass as Choices
     #
-    def get_DictValues_fromStrList(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
+    def get_DictValues_fromStrList(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#",verbose=1):
     #-----------------------------------------------------------------------------------
         retDictList = []
+        retErrList = []
         if DictValueStr:
             dLst = DictValueStr.split(sep)
             for dVal in dLst:
-                xDict = cls.get(DictClass,dVal.strip(),None)
+                xDict = cls.get(DictClass,dVal.strip(),None,verbose=verbose)
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
-                    retDictList.append(f"{dVal.strip()}{notFound}")
+                    retErrList.append(dVal.strip())
+                    #retDictList.append(f"{dVal.strip()}{notFound}")
+
         elif DictDescStr:
             dLst = DictDescStr.split(sep)
             for dDesc in dLst:
-                xDict = cls.get(DictClass,None,dDesc.strip())
+                xDict = cls.get(DictClass,None,dDesc.strip(),verbose=verbose)
                 if xDict:
                     retDictList.append(xDict.dict_value)
                 else:
-                    retDictList.append(f"{dDesc.strip()}{notFound}")
-        return(retDictList)
+                    retErrList.append(dDesc.strip())
+                    #retDictList.append(f"{dDesc.strip()}{notFound}")
+        return(retDictList,retErrList)
 
     # @classmethod
     # def get_DictionaryStrList_asArray(cls,DictClass,DictValueStr=None,DictDescStr=None,sep=";",notFound="#"):
@@ -620,15 +632,15 @@ class ApplicationLog(models.Model):
 
     OWNER     = "orgdb"
 
-    log_code = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Code")
-    log_proc = models.CharField(max_length=50, blank=True, db_index = True, editable=False,verbose_name = "Log Procedure")
-    log_type = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Type")
-    log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Log Time")
-    log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "Log User", on_delete=models.DO_NOTHING, 
+    log_code = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Code")
+    log_proc = models.CharField(max_length=50, blank=True, db_index = True, editable=False,verbose_name = "Procedure")
+    log_type = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Type")
+    log_time = models.DateTimeField(auto_now=True, editable=False,verbose_name = "Time")
+    log_user = models.ForeignKey(ApplicationUser, blank=True, verbose_name = "User", on_delete=models.DO_NOTHING, 
         db_column="log_user", related_name="%(class)s_user")
-    log_object = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Object")
-    log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Log Code")
-    log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Log Status")
+    log_object = models.CharField(max_length=150, blank=True, db_index = True, editable=False,verbose_name = "Object")
+    log_desc = models.CharField(max_length=1024, blank=True, editable=False,verbose_name = "Description")
+    log_status = models.CharField(max_length=15, blank=True, db_index = True, editable=False,verbose_name = "Status")
 
     class Meta:
         app_label = 'apputil'
@@ -647,7 +659,7 @@ class ApplicationLog(models.Model):
     #
     # Saves an Log Entry
     #
-    def add(cls, LogCode, LogProc,LogType,LogUser,LogObject,LogDesc,LogStatus):
+    def add(cls, LogCode, LogProc, LogType,  LogUser, LogObject, LogDesc, LogStatus):
         log_inst = cls()
         log_inst.log_code = LogCode
         log_inst.log_proc = LogProc

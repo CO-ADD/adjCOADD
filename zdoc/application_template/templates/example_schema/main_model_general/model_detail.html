@@ -1,0 +1,68 @@
+
+
+
+<!--prettier-ignore-->
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+<div class="d-flex flex-row vh-100">
+
+    <div class="border border-2 w-100">
+
+        <div class="d-flex m-0 p-0">
+
+            {%include 'utils/lefticons.html' with title="Taxonomy"%}
+            <div class="accordion bg-transparent w-100" id="taxonomy-detail">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" style="max-height:20px;" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">
+                            <h5 class="fs-6 my-0">{{object.pk}} 
+                            </h5>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show bg-transparent"
+                        aria-labelledby="headingOne" data-bs-parent="#taxonomy-detail">
+                        <div class="accordion-body bg-transparent">
+                            <b>
+                                {%include 'utils/message.html'%}
+                            </b>
+                            {%include 'dorganism/taxonomy/taxonomy_u.html'%}
+                            <br>
+                            <hr>
+                            <!--prettier-ignore-->
+                            {% include 'detailview/audit_status.html' %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+
+
+    </div>
+      <!-- call drug structure editor modal -->
+      <script>
+        $(document).ready(function () {
+            let my_modal = $("#drug_detail_structure{{object.pk}}");
+
+            $("#drug_detail{{object.pk}}").click(function () {
+                console.log("click structrue")
+                my_modal.load("/drug_detail_structure/{{object.pk}}", function (response) {
+                    if (response == "Permission Not Granted") {
+                        alert("permission!");
+                    } else {
+                        my_modal.modal("show"); // Open Modal
+                    }
+                });
+            });
+        });
+    </script>
+
+</div>
+{%endblock%}

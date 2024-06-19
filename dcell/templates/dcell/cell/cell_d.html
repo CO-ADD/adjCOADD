@@ -1,0 +1,12 @@
+<!-- trigger modal -->
+{%include 'utils/miscellaneous/delete_btn.html' with target='#cell_detail_del'%}
+
+<!-- Modal -->
+<div class="modal fade" id="cell_detail_del" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <!--prettier-ignore-->
+    {% url 'cell_delete' pk=object.pk as deleteurl %}
+    {% include 'utils/modal/delete.html' with title='Delete Cell' deleteurl=deleteurl entry=object %}
+  </div>
+</div>

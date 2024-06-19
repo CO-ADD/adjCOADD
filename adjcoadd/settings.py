@@ -29,13 +29,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Development : None - Production
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
-DEVELOPMENT=None
-# DEVELOPMENT='Work'
+#               Meran - Devlopment using Schlern PostgrSQL database  
+#DEVELOPMENT=None
+DEVELOPMENT='Meran'
 
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = '1.1.0251 Development'
+    VERSION = '1.2.0257 Development'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -54,7 +55,7 @@ if DEVELOPMENT:
 
 else:
     # Production ----------------------------------------------------------------------
-    VERSION = '1.2.0'
+    VERSION = '1.3.0'
     DEBUG = False
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -114,8 +115,9 @@ INSTALLED_APPS = [
     'dscreen',
     'dcollab',
     'dgene',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'dcell',
+    #'rest_framework',
+    #'rest_framework.authtoken',
     'formtools',
 ]
 
@@ -195,6 +197,9 @@ if DEVELOPMENT:
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
         PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+    elif DEVELOPMENT == 'Meran':
+        HOST_NAME = 'schlern'
+        PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 else:
     DB_NAME = os.environ.get('db_name') or 'coadd'
     DB_USER = os.environ.get('db_usr') or 'coadd'
@@ -207,13 +212,14 @@ print(f"Host Name: {HOST_NAME}")
 DATABASES = {
     'default': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=apputil,dorganism,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'OPTIONS':{'options': '-c search_path=apputil,dorganism,dcell,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,
         'USER': DB_USER, 
         'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME,
         'PORT': '5432',
     },
+
     'dorganism': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dorganism,apputil,ddrug,dgene,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -229,6 +235,20 @@ DATABASES = {
            
         },
     },
+
+    'dcell': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dcell,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,   
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "dcell",
+        },
+    },
+
     'ddrug': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=ddrug,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -238,10 +258,10 @@ DATABASES = {
         'HOST': HOST_NAME,
         'PORT': '5432',
         "TEST": {
-            "NAME": "ddrug",
-           
+            "NAME": "ddrug",   
         },
     },
+
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -254,6 +274,7 @@ DATABASES = {
             "NAME": "dscreen",
         },
     },
+
     'dgene': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dgene,dscreen,dorganism,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -266,6 +287,7 @@ DATABASES = {
             "NAME": "dgene",
         },
     },
+    
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
@@ -349,8 +371,8 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=a
 
 # Security Setting
 #--------------------------------------------------------------------
-# CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8001"]
+#CSRF_COOKIE_SECURE=True
+CSRF_TRUSTED_ORIGINS = ["http://imb-coadd.imb.uq.edu.au:8008", "http://imb-coadd-db.imb.uq.edu.au", "http://imb-coadd-work.imb.uq.edu.au:8008", "http://127.0.0.1:8000"]
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')

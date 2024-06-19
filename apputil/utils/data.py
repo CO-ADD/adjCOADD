@@ -34,6 +34,14 @@ def split_StrList(strList,sep=";"):
     return(retLst)
 
 #-----------------------------------------------------------------------------
+def append_StrList(strLst, newValue, sep=';'):
+#-----------------------------------------------------------------------------
+    _lst = split_StrList(strLst,sep=sep)
+    if newValue not in _lst:
+        _lst.append(newValue)
+    return(sep.join(_lst))
+
+#-----------------------------------------------------------------------------
 def limit_StrList(strLst,maxLenght=1024,sep="; "):
     if sep in strLst:
         while len(strLst) > maxLenght:

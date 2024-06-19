@@ -295,8 +295,9 @@ class Organism_Batch(AuditModel):
     HEADER_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
-        "qc_status":"QC_Status",
-        "qc_record": "QC Record",
+        "qc_status":"QC",
+        "batch_quality":"Batch Quality",
+        "quality_source": "Quality by",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
         "biologist":"Biologist"
@@ -304,10 +305,11 @@ class Organism_Batch(AuditModel):
 
     Choice_Dictionary = {
         'qc_status':'QC_Status',
+        'batch_quality':'OrgBatch_Quality',
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "qc_status", "qc_record", "stock_date", "stock_level", "biologist" ]
+       'Group1': ["batch_id", "batch_notes", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
     #SEP = '_'
 
@@ -318,6 +320,9 @@ class Organism_Batch(AuditModel):
         db_column="organism_id", related_name="%(class)s_organism_id")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
+    batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
+        db_column="batch_quality", related_name="%(class)s_batchquality")
+    quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
@@ -366,7 +371,7 @@ class Organism_Batch(AuditModel):
                 BatchID = self.str_BatchID(int(BatchID))
 
             next_OrgBatch = self.str_OrgBatchID(OrganismID,BatchID)
-            if ~self.exists(next_OrgBatch):
+            if not self.exists(next_OrgBatch):
                 return(BatchID)
 
         # Find new BatchID    

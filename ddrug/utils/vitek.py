@@ -12,7 +12,7 @@ from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
-from ddrug.utils.import_drug import imp_VitekCard_fromDict,imp_VitekAST_fromDict,imp_VitekID_fromDict
+from ddrug.utils.upload_vitek import VitekCard_fromDict, VitekAST_fromDict, VitekID_fromDict
 
 import logging
 logger = logging.getLogger(__name__)
@@ -119,7 +119,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
 
     nProcess = {'Uploaded':0,'Invalid':0}
     for c in lCards:
-        djCard = imp_VitekCard_fromDict(c,valLog,upload=upload)
+        djCard = VitekCard_fromDict(c,valLog,upload=upload)
         if upload:
             if djCard.VALID_STATUS:
                 logger.debug(f" {djCard} <- {FileName}")
@@ -131,7 +131,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lID:
-        djID = imp_VitekID_fromDict(c,valLog,upload=upload)
+        djID = VitekID_fromDict(c,valLog,upload=upload)
         if upload:
             if djID.VALID_STATUS:
                 logger.debug(f" {djID} <- {FileName}")
@@ -142,7 +142,7 @@ def upload_VitekPDF(DirName,FileName,OrgBatchID=None,upload=False,appuser=None,v
                 nProc['notValid'] = nProc['notValid'] + 1
 
     for c in lAST:
-        djAST = imp_VitekAST_fromDict(c,valLog,upload=upload)
+        djAST = VitekAST_fromDict(c,valLog,upload=upload)
         if upload:
             if djAST.VALID_STATUS:
                 logger.debug(f" {djAST} <- {FileName}")
@@ -333,7 +333,7 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                                     else:
                                         sOrg['Confidence'] = "-"
 
-                                #print(sOrg['Organism'])
+                                #print(f"{xcell} =>  {sOrg['Organism']} {sOrg['Probability']} {sOrg['Confidence']}")
                                 df['ID'] = sOrg
                                 df['Organism'] = sOrg['Organism']
                             else:
@@ -347,13 +347,16 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                             lowLst =[]
                             for r in row[0].split('\n'):
                                 lowLst.append(" ".join(r.split(',')[0].split(' ')[:2]))
-                            if len(lowLst)>1:
-                                df['ID']['Organism'] = ", ".join(lowLst[1:])
+                            # if len(lowLst)>1:
+                            #     df['ID']['Organism'] = ", ".join(lowLst[1:])
+                            #print(f" {row} {lowLst} {_biop}")
+
 
                         # - Susceptibility Information Section (2 rows) -----------------------------
                         if if_AST_Section:
                             df['AST_Analysis'] = row[2].replace('Analysis Time: ','')
                             if_AST_Section = False     
+
                         if 'Susceptibility Information' == col1:
                             #to_be_Saved = True
                             if_AST_Section = True 

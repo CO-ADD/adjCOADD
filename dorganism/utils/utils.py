@@ -21,6 +21,18 @@ def reformat_OrgBatchID(OrgBatchID):
     #print(xStr)
     return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
 
+
+#-----------------------------------------------------------------------------------
+def get_subdir(OrgBatchID,binsize=100):
+    """
+     Gets the SubFolder name based on the XX_NNNN with splits into 200
+      GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
+    """
+#-----------------------------------------------------------------------------------
+    _org = OrgBatchID.split('_')
+    return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
+
+
 #--Ajax search funcion--
 ## Search Organism Name in Taxonomy
 def search_organism(req):

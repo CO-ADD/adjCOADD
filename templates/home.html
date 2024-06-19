@@ -83,6 +83,11 @@
             {% include 'button/land_btn_primary.html' with title='SCREEN' url=seq_url totalnumber=nRun %}
         </div>
 
+        <div id="Cells" class="card-body d-flex justify-content-center">
+          
+            {% url 'cell_list' as cell_url %}
+            {% include 'button/land_btn_primary.html' with title='CELL' url=cell_url totalnumber=nCell %}
+        </div>
   
 <!-- 
         <div id="Label-GeneModel" class="card-body d-flex justify-content-center">

@@ -1,7 +1,7 @@
 <!--prettier-ignore-->
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title%}COADD{% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
@@ -58,7 +58,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+                {% include 'utils/datatable_sm.html' with table_id='datatable_org_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/orgbatch/orgbatch_tr.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>
@@ -89,7 +89,43 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+                {% include 'utils/datatable_sm.html' with table_id='datatable_culture' html_name='dorganism/orgculture/orgculture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Vitek ID -->
+     <div class="d-flex m-0 p-0">
+      <!-- prettier-ignore -->
+
+      {% include 'utils/lefticons.html' with title="" modal="" %}
+      <!-- change id to new model name -->
+      <div class="accordion w-100" id="vitek_id-detail">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour"> <!-- change id to number+1 -->
+            <!-- change data-bs-target to collapse<NewmodelName> change aria-controls to collapseFour-->
+            <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+              data-bs-target="#collapseVitekID" aria-expanded="true" aria-controls="collapseFour">
+              <h5 class="fs-6 my-0">
+               Vitek ID
+              </h5>
+              <!-- prettier-ignore -->
+              <!-- change cultr_obj_count to newmodel_obj_count based on views.py-->
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitek_id_obj_count %}
+            </button>
+          </h2>
+          <!-- change id to collapseVitekID This is where button data-bs-target targets-->
+          <!-- change data-bs-parent to div accordion id #vitek_id-detail -->
+          <div id="collapseVitekID" class="accordion-collapse collapse show" aria-labelledby="headingFour"
+            data-bs-parent="#vitek_id-detail">
+            <div class="accordion-body">
+              <div class="table-responsive">
+                <!-- prettier-ignore -->
+                <!-- change parameter cultre to vitek_id based on views.py -->
+                {% include 'utils/datatable_sm.html' with table_id='datatable_vitek_id' objects=vitek_id_obj data_fields=vitek_id_fields%}
               </div>
             </div>
           </div>
@@ -135,18 +171,18 @@
     
     <!-- Image OrgBatches -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
-    {% include 'dorganism/organism/orgbatch_image.html' %}
+      {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
+      {% include 'dorganism/organism/orgbatch_image.html' %}
     </div>
     <!-- Files -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
-     <!--  -->
-    {% include 'dorganism/organism/organism_file.html' %}
+      {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+      <!--  -->
+      {% include 'dorganism/organism/organism_file.html' %}
     </div>
 
     <!-- MIC_COADD Pivot -->
-    {%include './organism_mic.html'%}
+    {% include 'dorganism/organism/organism_mic.html'%}
 
     <div style="min-height: 100px;"></div>
   </div>
@@ -156,7 +192,7 @@
   <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
   <script>
     $(document).ready(function () {
-      let url_batch = `{% url 'batch_create' object.pk %}`;
+      let url_batch = `{% url 'org_batch_create' object.pk %}`;
       let url_culture = `{% url 'culture_create' object.pk %}`;
       console.log(url_batch);
       loadModal("#createCultureModal", "#createCulture", url_culture);
@@ -171,5 +207,5 @@
     });
   </script>
 
-  {%endblock%}
+  {% endblock %}
 </div>

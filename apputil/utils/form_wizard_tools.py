@@ -1,3 +1,13 @@
+import os
+from django import forms
+from django.shortcuts import HttpResponse, render, redirect
+from formtools.wizard.views import SessionWizardView
+from django.core.files.storage import FileSystemStorage
+from django.core.exceptions import ValidationError
+from django.utils.datastructures import MultiValueDict
+from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
+from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
+
 '''
 Steps process driven by form submission requests. for imporing data with PDFs, Excels
 -Select Files to upload : parsing, validating
@@ -12,18 +22,12 @@ Process variables in sessionView storages:
         validation_message - summarize progress store in "validation_message";
         step_1 - store step name.
 '''
-import os
-from django import forms
-from django.shortcuts import HttpResponse, render, redirect
-from formtools.wizard.views import SessionWizardView
-from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ValidationError
-from django.utils.datastructures import MultiValueDict
-from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
-from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
+
+class SingleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = False
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
@@ -37,8 +41,55 @@ class MultipleFileField(forms.FileField):
         else:
             result = single_file_clean(data, initial)
         return result
+
+class SingleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", SingleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
 # --------------------------------------------------------------------------------------------------
-class SelectFile_StepForm(WriteUserRequiredMixin, forms.Form):
+class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
+# --------------------------------------------------------------------------------------------------
+    multi_files = SingleFileField(label='Select one file', 
+                                  validators=[validate_file], 
+                                  required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        uploadfiles=[]
+        # List of file fields to validate
+        file_fields = ['multi_files',]
+        
+        # check if filelist is MultiValueDict
+        if not isinstance(self.files, MultiValueDict):
+            return cleaned_data
+        
+        for field in file_fields:
+            files = self.files.getlist(f'select_file-{field}')
+            
+            uploadfiles.extend(files)
+
+            for file in files:
+                for validator in self.fields[field].validators:
+                    try:
+                        validator(file)
+                    except ValidationError as e:
+                        self.add_error(field, f"{file.name}: {str(e)}")
+                        
+        if len(uploadfiles)<1: 
+            self.add_error('single_file', "Select one file")
+            raise forms.ValidationError("No files selected")
+        return cleaned_data
+
+# --------------------------------------------------------------------------------------------------
+class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
     multi_files = MultipleFileField(label='Select one or multiple files', 
                                   validators=[validate_file], 
@@ -205,6 +256,6 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
             context['validation_result']="Select VITEK PDF files"
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
-            print(f"result: {context['validation_result']}")
             context['confirm_to_upload']=self.storage.extra_data.get('confirm_to_upload', None)
+        print(f"[ImportHandler_View] {current_step} validation_result: {context['validation_result']}")
         return context

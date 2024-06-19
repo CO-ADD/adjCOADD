@@ -1,0 +1,5 @@
+<div class="modal-dialog modal-lg">
+  {% url 'cell_stock_create' cellbatch_id=cellbatch_id as createurl %}
+  {%include 'utils/modal/modal_form.html' with title='Create Stock' urlname=createurl %}
+  
+</div>

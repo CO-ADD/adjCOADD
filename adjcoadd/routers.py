@@ -20,6 +20,7 @@ class DatabaseRouter(object):
     route_app_labels = {
         'default': {'auth', 'contenttypes','apputil'},
         'dorganism': {'dorganism'},
+        'dcell': {'dcell'},
         'ddrug': {'ddrug'},
         'dgene': {'dgene'},
         'dcollab': {'dcollab'},

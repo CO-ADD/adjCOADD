@@ -4,7 +4,7 @@ View for uploading Vitek PDFs
 import pandas as pd
 
 from django import forms
-from apputil.utils.form_wizard_tools import ImportHandler_View, SelectFile_StepForm, Upload_StepForm, Finalize_StepForm
+from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
 from dorganism.models import Organism_Batch
 from ddrug.utils.vitek import upload_VitekPDF_Process
 
@@ -27,7 +27,7 @@ class Import_VitekView(ImportHandler_View):
 # -----------------------------------------------------------------    
     name_step1="Upload"
     form_list = [
-        ('select_file', SelectFile_StepForm),
+        ('select_file', SelectMultipleFiles_StepForm),
         ('upload', VitekValidation_StepForm),
         ('finalize', Finalize_StepForm),
     ]
@@ -66,7 +66,7 @@ class Import_DrugView(ImportHandler_View):
     
     name_step1="Upload"
     form_list = [
-        ('select_file', SelectFile_StepForm),
+        ('select_file', SelectMultipleFiles_StepForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
@@ -82,6 +82,7 @@ class Import_DrugView(ImportHandler_View):
         
         valLog=imp_Drug_fromXlsx(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
         return(valLog)
+        
         
 # ---------------------------------------------------------------------------------
 # util function to parse and validation drug excel files

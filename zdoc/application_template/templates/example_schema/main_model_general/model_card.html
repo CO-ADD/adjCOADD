@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD{% endblock %}
+{% block content%}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  {%include 'utils/leftbar.html' with list_url='taxo_list' card_url='taxo_card' create_object='createTaxo' create_objectModal='createTaxoModal'%}
+  <!-- Sidebar View -->
+  {%include "utils/sidebar.html"%}
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'utils/main_horizalbar.html' with title='Taxonomy' model_name='Taxonomy' application='dorganism' %}
+    <!-- Card View Content -->
+    <div class="contain-fluid data-contain">
+      <div class="row d-flex flex-wrap mx-2">
+        {% for object in page_obj %}
+        <!--  -->
+        {% url 'taxo_detail' object.urlname as url_name %}
+        <!--prettier-ignore-->
+        {%include 'utils/card.html' with url_name=url_name object_name_ita=object.organism_name datatype='Taxonomy' object_var2=object.division object_var3=object.org_class object_var_link_label="Tax ID: " object_var_link=object.tax_id object_id_slug=object.urlname object_var6_label="Rank" object_var6=object.tax_rank object_var8_label="Lineage" object_var8=object.lineage object_var9_label="Other Names: " object_var9=object.other_names%}
+        <!--  -->
+        {%endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock%}

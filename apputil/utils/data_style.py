@@ -32,12 +32,12 @@ def highlight_val(val, threhold_number=80.00):
     return 'background-color: %s' % bg_color
 
 # 
-def highlight_val2(val):
+def highlight_RSI(val):
     '''
     Value Colors,
     R:
     S:
-    L:
+    I:
     '''
     # formatting value 
     if pd.isnull(val):

@@ -16,7 +16,11 @@ from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+from ddrug.utils.antibiogram import get_Antibiogram_byOrgID,piv_Antibiogram_byOrgID
 from apputil.models import ApplicationLog
+from apputil.utils.files_upload import SuperUserRequiredMixin
+
 
 # -----------------------------------------------------------------
 # --utilized in Decoration has_permissions, an Alert on Permissions--
@@ -25,17 +29,17 @@ from apputil.models import ApplicationLog
 def permission_not_granted(req):
     return HttpResponse("Permission Not Granted")
 
-# -----------------------------------------------------------------
-# --Super UserRequire Mixin--
-# -----------------------------------------------------------------
-class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
-    login_url = '/'
+# # -----------------------------------------------------------------
+# # --Super UserRequire Mixin--
+# # -----------------------------------------------------------------
+# class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+#     login_url = '/'
 
-    def test_func(self):
-        return self.request.user.has_permission('Admin')
+#     def test_func(self):
+#         return self.request.user.has_permission('Admin')
 
-    def handle_no_permission(self):
-        return HttpResponse( 'Only users with ADMIN permission have access to this view')
+#     def handle_no_permission(self):
+#         return HttpResponse( 'Only users with ADMIN permission have access to this view')
 
 # -----------------------------------------------------------------
 # --Write UserRequire Mixin--
@@ -103,6 +107,7 @@ class SimpleupdateView(LoginRequiredMixin, View):
         else: 
             pk=kwargs.get("pk")
             object_=self.get_object(pk)
+            print("test")
         form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 
@@ -169,10 +174,9 @@ class HtmxupdateView(LoginRequiredMixin, View):
         pk=kwargs.get("pk")
         object_=self.get_object(pk)
         form=self.form_class(instance=object_)
-        context={
-        "form":form,
-        "object":object_,
-    }
+        context={"form":form,
+                 "object":object_,
+                }
         return render(request, self.template_name, context)
 
     def put(self, request, *args, **kwargs):
@@ -180,10 +184,9 @@ class HtmxupdateView(LoginRequiredMixin, View):
         object_=self.get_object(pk)
         qd=QueryDict(request.body).dict()
         form =self.form_class(data=qd, instance=object_)
-        context={
-        "form":form,
-        "object":object_,
-    }   
+        context={"form":form,
+                "object":object_,
+                }        
         if request.GET.get('_value') == 'cancel':
             return render(request, self.template_partial, context)
         elif form.is_valid():
@@ -191,7 +194,8 @@ class HtmxupdateView(LoginRequiredMixin, View):
                 object_new=form.save(commit=False)
                 kwargs={'user': request.user}
                 object_new.save(**kwargs)
-                ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),'Update an entry','Completed')              
+                ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),f'Update an {object_new._meta.model}','Completed')              
+                #print(f'Update an {object_new._meta.model} : {str(object_new.pk)}')
             return render(request, self.template_partial, context)
         else:
             # raise ValidationError
@@ -253,13 +257,9 @@ class CreateFileView(LoginRequiredMixin,FormView):
         context["object"] = self.object_
         return context
     
-
-    
-    
 # -----------------------------------------------------------------
 # --export view--
 # -----------------------------------------------------------------
-import ddrug.utils.tables as drugtbl
 
 class DataExportBaseView(LoginRequiredMixin, View):
     '''
@@ -283,6 +283,7 @@ class DataExportBaseView(LoginRequiredMixin, View):
         except LookupError:
             # Handle the case where the model does not exist.
             return HttpResponse("Model not found.")
+        
         self.selected_pks_string = request.POST.get('selected_pks')
         self.organism = request.POST.get('organism_pk')
 
@@ -295,7 +296,8 @@ class DataExportBaseView(LoginRequiredMixin, View):
         else:
             if self.organism:
                 displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-                df = drugtbl.get_Antibiogram_byOrgID(self.organism)
+                df = get_Antibiogram_byOrgID(self.organism)
+                pivdf = piv_Antibiogram_byOrgID(df)
                 df.reset_index(inplace=True)
                 df = df[displaycols]
                 filename = f'Antibiogram_{current_date}'
@@ -325,4 +327,3 @@ class DataExportBaseView(LoginRequiredMixin, View):
 
         return response
  
-from django import forms

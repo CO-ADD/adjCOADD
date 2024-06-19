@@ -20,6 +20,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 from dscreen.models import Screen_Run
+from dcell.models import Cell
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
@@ -27,7 +28,7 @@ from apputil.utils.views_base import HtmxupdateView, SuperUserRequiredMixin, per
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.files_upload import Importhandler, OverwriteStorage, file_location
 from apputil.utils.data_style import convert_heatmap
-from apputil.utils.form_wizard_tools import SelectFile_StepForm
+from apputil.utils.form_wizard_tools import SelectMultipleFiles_StepForm,SelectSingleFile_StepForm
 from apputil.utils.validation_log import Validation_Log
 from apputil.utils.views_base import DataExportBaseView
 
@@ -40,6 +41,7 @@ def index(req):
     nDict = {
          
         'nOrg':    str(Organism.objects.count()) + ' Microorganisms',
+        'nCell':   Cell.objects.count(),
         'nTax':    Taxonomy.objects.count(),
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
         'nVCard':  VITEK_Card.objects.count(),
@@ -284,7 +286,7 @@ class DataExportView(DataExportBaseView):
 #=================================================================================================
 
 class Importhandler_apputils(Importhandler):
-    form_class=SelectFile_StepForm
+    form_class=SelectMultipleFiles_StepForm
     template_name='apputil/importhandler_excel.html'
     upload_model_type=None
     lObject={}   

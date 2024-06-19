@@ -6,46 +6,47 @@
 <div class="modal-content card-bg">
   <div class="modal-header">
     <h5 class="modal-title">{{title}}</h5>
-    {%if title == 'Create Batch' or title == 'Create Culture' %}
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-      onclick="window.location.reload(true);"></button>
-    {%else%}
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    {%endif%}
+    {% if title == 'Create Batch' or title == 'Create Culture' %}
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          onclick="window.location.reload(true);"></button>
+    {% else %}
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    {% endif %}
   </div>
+
   <div class="modal-body">
     <!-- -->
-    {%if title == 'Create Organism' %}
-    <!--  -->
-    {% include 'utils/search_organism.html' %}
-    <!--  -->
-    {%endif%}
+    {% if title == 'Create Organism' or title == 'Create Cell'%}
+      <!-- Include the Organism Name Search  -->
+      {% include 'utils/search_organism.html' %}
+    <!--  --> 
+    {% endif %}
     <!--  -->
     <hr />
  
     <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
       {% csrf_token %}
       <!--  -->
-      {%if title == 'Create Organism' %}
-      <input type="text" id="taxo-name" name="search_organism" hidden />
-      {%endif%}
+      {% if title == 'Create Organism' or title == 'Create Cell' %}
+        <input type="text" id="taxo-name" name="search_organism" hidden />
+      {% endif %}
       <!--  -->
 
       <!--  -->
-      {%include 'utils/django_form_lgtable.html'%}
+      {% include 'utils/django_form_lgtable.html' %}
       <hr />
       <div class="d-flex justify-content-center align-center">
-        {%include 'utils/miscellaneous/save_btn.html'%}
+        {% include 'utils/miscellaneous/save_btn.html' %}
         <!--  -->
-        {%if title == 'Create Batch' or title == 'Create Culture' %}
+        {% if title == 'Create Batch' or title == 'Create Culture' %}
+          <!-- Relocated Cancel Button  -->
+          {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
         <!--  -->
-        {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+        {% else %}
+          <!-- Normal Cancel Button -->
+          {% include 'utils/miscellaneous/cancel_btn.html' %}
         <!--  -->
-        {%else%}
-        <!--  -->
-        {%include 'utils/miscellaneous/cancel_btn.html'%}
-        <!--  -->
-        {%endif%}
+        {% endif %}
       </div>
     </form>
 

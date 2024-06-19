@@ -87,11 +87,13 @@ class Drug(AuditModel):
     mw = models.DecimalField(default=0, max_digits=12, decimal_places=2, blank=True, verbose_name = "MW")	
     mf = models.CharField(max_length=25, blank=True, verbose_name = "MF")	
     smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
+
+    # Require RDKit-PostgreSQL 
     smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
     torsionbv = models.BfpField(null=True)	
     ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
     mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
-    #salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
+    salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
 
     #------------------------------------------------
     class Meta:
@@ -100,9 +102,9 @@ class Drug(AuditModel):
         ordering=['drug_name']
         indexes = [
             models.Index(name="drug_dname_idx", fields=['drug_name']),
-            GistIndex(name="drug_smol_idx",fields=['smol']),
-            GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
-            GistIndex(name="drug_mfp2_idx",fields=['mfp2'])
+            #GistIndex(name="drug_smol_idx",fields=['smol']),
+            #GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
+            #GistIndex(name="drug_mfp2_idx",fields=['mfp2'])
         ]
 
     #------------------------------------------------
@@ -164,10 +166,12 @@ class Drug(AuditModel):
     #------------------------------------------------
     @classmethod
     def update_all_fp(cls):
-        cls.objects.update(ffp2=FEATMORGANBV_FP('smol'),
-                           mfp2=MORGANBV_FP('smol'), 
-                           torsionbv=TORSIONBV_FP('smol')
-                           )
+        pass
+        # Require RDKit-PostgreSQL
+        # cls.objects.update(ffp2=FEATMORGANBV_FP('smol'),
+        #                    mfp2=MORGANBV_FP('smol'), 
+        #                    torsionbv=TORSIONBV_FP('smol')
+        #                    )
 
     #------------------------------------------------
     @classmethod
@@ -187,17 +191,20 @@ class Drug(AuditModel):
             if self.drug_id: 
                 super(Drug, self).save(*args, **kwargs)
                 # self.__dict__.update(ffp2=FEATMORGANBV_FP('smol'), mfp2=MORGANBV_FP('smol'), torsionbv=TORSIONBV_FP('smol'))
-                Drug.objects.filter(drug_id=self.drug_id).update(
-                    ffp2=FEATMORGANBV_FP('smol'), 
-                    mfp2=MORGANBV_FP('smol'), 
-                    torsionbv=TORSIONBV_FP('smol')
-                    )
+
+                # Require RDKit-PostgreSQL
+                # Drug.objects.filter(drug_id=self.drug_id).update(
+                #     ffp2=FEATMORGANBV_FP('smol'), 
+                #     mfp2=MORGANBV_FP('smol'), 
+                #     torsionbv=TORSIONBV_FP('smol')
+                #     )
         else:
-            self.__dict__.update(
-                ffp2=FEATMORGANBV_FP('smol'), 
-                mfp2=MORGANBV_FP('smol'), 
-                torsionbv=TORSIONBV_FP('smol')
-                )
+            # Require RDKit-PostgreSQL
+            # self.__dict__.update(
+            #     ffp2=FEATMORGANBV_FP('smol'), 
+            #     mfp2=MORGANBV_FP('smol'), 
+            #     torsionbv=TORSIONBV_FP('smol')
+            #     )
             super(Drug, self).save(*args, **kwargs) 
 
 #=================================================================================================
