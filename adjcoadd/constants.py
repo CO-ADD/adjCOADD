@@ -3,6 +3,7 @@
 #
 
 # -dOrganism Settings ---------------------------------------------------
+ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
 
