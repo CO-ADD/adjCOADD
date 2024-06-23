@@ -9,7 +9,7 @@ ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
 
-# -dCell Settings ---------------------------------------------------
+# -dCell Settings 
 CELL_CLASSES = ['MA']
 CELL_SEP = "_"
 CELLBATCH_SEP = "_"
