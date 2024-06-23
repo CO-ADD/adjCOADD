@@ -208,14 +208,12 @@ class Cell_Batch(AuditModel):
        }
     #SEP = '_'
 
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
-
     cellbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "CellBatch ID")
     cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
         db_column="cell_id", related_name="%(class)s_cell_id")
     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous CellBatch ID")
     passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
-    batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
+    batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
         db_column="batch_quality", related_name="%(class)s_batchquality")

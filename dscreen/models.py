@@ -8,6 +8,72 @@ from django_rdkit.models import *
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
 
+#=================================================================================================
+class Project(AuditModel):
+    """
+    List of Projects, Chem Library 
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'project_class':'Project_Class',
+    }
+    ID_SEQUENCE = 'Project'
+    ID_PREFIX = 'P'
+    ID_PAD = 5
+
+    project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
+    project_name = models.CharField(max_length=50, unique=True, verbose_name = "Project Name")
+    project_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="project_class", related_name="%(class)s_projectclass")
+    project_owner =  models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="project_class", related_name="%(class)s_projectclass")
+    
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+
+    class Meta:
+        app_label = 'dscreen'
+        db_table = 'project'
+        ordering=['project_id']
+        indexes = [
+            models.Index(name="prj_pname_idx", fields=['project_name']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.project_id}  {self.source}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ProjectID,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            retInstance = cls.objects.get(project_id=ProjectID)
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Project Not Found] {ProjectID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ProjectID,verbose=0):
+    # Returns if an instance exists by drug_name or durg_id
+        retValue = cls.objects.filter(project_id=ProjectID).exists()
+        return(retValue)
+
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.project_id:
+            self.project_id = self.next_id()
+            if self.project_id: 
+                super(Project, self).save(*args, **kwargs)
+        else:
+            super(Project, self).save(*args, **kwargs) 
+
+
 #-------------------------------------------------------------------------------------------------
 # Screening Application Model
 #-------------------------------------------------------------------------------------------------

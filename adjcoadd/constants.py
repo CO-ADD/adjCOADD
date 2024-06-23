@@ -1,3 +1,5 @@
+from django.core.validators import RegexValidator
+
 #
 # Application Constants/Settings 
 #
@@ -7,11 +9,18 @@ ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGANSIM_SEP = "_"
 ORGBATCH_SEP = "_"
 
+# -dCell Settings ---------------------------------------------------
 CELL_CLASSES = ['MA']
 CELL_SEP = "_"
 CELLBATCH_SEP = "_"
 
+# -dChem Settings ---------------------------------------------------
+SAMPLE_SEP = "_"
+SAMPLEBATCH_SEP = "_"
 COMPOUND_SEP = '|'
+
+AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+
 # column name can be edited here 
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
 
