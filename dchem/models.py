@@ -100,7 +100,7 @@ class Chem_Structure(AuditModel):
     """
 #=================================================================================================
     Choice_Dictionary = {
-        'chem_class':'Chem_Class',
+        'structure_class':'Structure_Class',
     }
 
     ID_SEQUENCE = 'ChemStructure'
@@ -109,8 +109,9 @@ class Chem_Structure(AuditModel):
 
     structure_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Structure ID")
     structure_name = models.CharField(max_length=50, unique=True, verbose_name = "Structure Name")
-    chem_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
-        db_column="chem_class", related_name="%(class)s_chemclass")
+    structure_code = models.CharField(max_length=15, unique=True, verbose_name = "Structure Code")
+    structure_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="structure_class", related_name="%(class)s_structureclass")
 
     smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
     torsionbv = models.BfpField(null=True)	
@@ -119,6 +120,10 @@ class Chem_Structure(AuditModel):
 
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
     mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
+    inchikey = models.CharField(max_length=50, blank=True,verbose_name ="InChiKey")
+    natom = models.IntegerField(default=0, blank=True, verbose_name ="nAtom")
+    nfrag = models.IntegerField(default=0, blank=True, verbose_name ="nFrag")
+    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
 
     class Meta:
         app_label = 'dchem'
@@ -126,6 +131,7 @@ class Chem_Structure(AuditModel):
         ordering=['structure_name']
         indexes = [
             models.Index(name="cstruct_dname_idx", fields=['structure_name']),
+            models.Index(name="cstruct_dcode_idx", fields=['structure_code']),
             GistIndex(name="cstruct_smol_idx",fields=['smol']),
             GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
             GistIndex(name="cstruct_mfp2_idx",fields=['mfp2'])
@@ -213,6 +219,48 @@ class Chem_Structure(AuditModel):
             #     torsionbv=TORSIONBV_FP('smol')
             #     )
             super(Chem_Structure, self).save(*args, **kwargs) 
+
+#=================================================================================================
+class Chem_Salt(AuditModel):
+    """
+    List of Salt/Ion/Solvent 
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'salt_type':'Salt_Type',
+    }
+
+#  PKID           Serial Primary Key,
+#  Salt_ID	    Varchar(15) Not Null,
+#  Salt_Code      Varchar(15),
+#  Salt_Name      Varchar(150),
+#  Salt_Type      Varchar(10),
+#  Smiles         Varchar(1025),
+#  sMol           mol,
+#  MW             Numeric(12,2),
+#  MF             Varchar(100),
+#  nATOM          Integer,
+#  Charge         Integer,
+#  H_EQUIV        Integer,
+
+#=================================================================================================
+class Chem_Reaction(AuditModel):
+    """
+    List of Chemical Reaction/Transformations/Substructures/Alerts
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'salt_type':'Salt_Type',
+    }
+
+#  PKID           Serial Primary Key,
+#  Reaction_ID	Varchar(15) Not Null,
+#  Reaction_Code  Varchar(15),
+#  Reaction_Name  Varchar(150),
+#  Reaction_Type  Varchar(25),
+#  Run_Status     Integer,
+#  Smarts         Varchar(1025),
+#  rMol           qmol,
 
 #=================================================================================================
 class Sample(AuditModel):
