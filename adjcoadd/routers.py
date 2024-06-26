@@ -24,6 +24,7 @@ class DatabaseRouter(object):
         'ddrug': {'ddrug'},
         'dgene': {'dgene'},
         'dcollab': {'dcollab'},
+        'dchem': {'dchem'},
         'dscreen': {'dscreen'},
         }
 

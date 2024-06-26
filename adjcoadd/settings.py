@@ -116,9 +116,11 @@ INSTALLED_APPS = [
     'dcollab',
     'dgene',
     'dcell',
+    'dchem',
     #'rest_framework',
     #'rest_framework.authtoken',
     'formtools',
+    'pgtrigger',
 ]
 
 #--------------------------------------------------------------------
@@ -298,6 +300,18 @@ DATABASES = {
         'PORT': '5432',
         "TEST": {
             "NAME": "dcollab",
+        },
+    },
+    'dchem': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dchem,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "dchem",
         },
     }
 }

@@ -67,6 +67,7 @@
    django-model-utils django-sequences django-formtools<br>
    djangorestframework-simplejwt<br>
    python-magic pdfplumber
+   django-pgtrigger
 
    download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/ into "C:/Windows/System32/"
    set $Env:MAGIC = "C:/Windows/System32/magic.mgc"
