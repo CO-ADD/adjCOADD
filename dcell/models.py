@@ -1,17 +1,18 @@
-from django.db import models
 import re
+
+#from django_rdkit import models
+from django.db import models
 from model_utils import Choices
 from sequences import Sequence
-#from django_rdkit import models
-from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from django.core.validators import RegexValidator
-from dorganism.models import Taxonomy 
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
+from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
 #-------------------------------------------------------------------------------------------------

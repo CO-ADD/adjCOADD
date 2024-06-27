@@ -142,12 +142,13 @@ class Chem_Structure(AuditModel):
 
     @classmethod
     def get_bySmiles(cls,Smiles,verbose=0):
-    # Returns an instance by structure_id or structure_name
+    # Returns an instance by smiles exact search
         try:
             retInstance = cls.objects.filter(smol__exact=Smiles).first()
         except:
             retInstance = None
-            print(f"[Structure Not Found] {Smiles} ")
+            if verbose:
+                print(f"[Structure Not Found] {Smiles} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -188,6 +189,7 @@ class Chem_Structure(AuditModel):
     def set_properties(self):
         self.charge = Chem.GetFormalCharge(self.smol)
     
+    #------------------------------------------------
     def get_smiles(self):
         return(Chem.MolToSmiles(self.smol))
 
@@ -331,7 +333,7 @@ class Chem_Structure(AuditModel):
 # #=================================================================================================
 #     ID_SEQUENCE = 'Sample'
 #     ID_PREFIX = 'S'
-#     ID_PAD = 7
+#     ID_PAD = 9
 
 #     sample_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Sample ID")
 #     sample_name = models.CharField(max_length=50, unique=True, verbose_name = "Sample Name")
@@ -361,9 +363,12 @@ class Chem_Structure(AuditModel):
 #     List of Sample Batches 
 #     """
 # #=================================================================================================
+#     ID_SEQUENCE = 'Sample'
+#     ID_PREFIX = 'SB'
+#     ID_PAD = 9
 
 #     samplebatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "SampleBatch ID")
-#     sample_id = models.ForeignKey(Sample, null=False, blank=False, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
+#     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
 #         db_column="sample_id", related_name="%(class)s_sample_id")
 #     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous SampleBatch ID")
 #     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
