@@ -36,7 +36,7 @@ class Chem_Structure(AuditModel):
     structure_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Structure ID")
     structure_code = models.CharField(max_length=15, blank=True, verbose_name = "Structure Code")
     structure_name = models.CharField(max_length=50, blank=True, verbose_name = "Structure Name")
-    structure_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    structure_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="structure_type", related_name="%(class)s_structuretype")
     parent_structure_ids = ArrayField(models.CharField(max_length=15, null=True, blank=True), size=4, verbose_name = "Panel", 
                                       null=True, blank=True)
@@ -69,7 +69,7 @@ class Chem_Structure(AuditModel):
 
     class Meta:
         app_label = 'dchem'
-        db_table = 'chemstructure'
+        db_table = 'chem_structure'
         ordering=['structure_name']
         indexes = [
             models.Index(name="cstruct_dname_idx", fields=['structure_name']),
@@ -283,47 +283,122 @@ class Chem_Structure(AuditModel):
 
 
 
-# #=================================================================================================
-# class Chem_Salt(AuditModel):
-#     """
-#     List of Salt/Ion/Solvent 
-#     """
-# #=================================================================================================
-#     Choice_Dictionary = {
-#         'salt_type':'Salt_Type',
-#     }
+#=================================================================================================
+class Chem_Salt(AuditModel):
+    """
+    List of Salt/Ion/Solvent 
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'salt_type':'Salt_Type',
+    }
 
-#  PKID           Serial Primary Key,
-#  Salt_ID	    Varchar(15) Not Null,
-#  Salt_Code      Varchar(15),
-#  Salt_Name      Varchar(150),
-#  Salt_Type      Varchar(10),
-#  Smiles         Varchar(1025),
-#  sMol           mol,
-#  MW             Numeric(12,2),
-#  MF             Varchar(100),
-#  nATOM          Integer,
-#  Charge         Integer,
-#  H_EQUIV        Integer,
+    salt_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Salt ID")
+    salt_code = models.CharField(max_length=15, blank=True, verbose_name = "Salt Code")
+    salt_name = models.CharField(max_length=50, blank=True, verbose_name = "Salt Name")
+    salt_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="salt_type", related_name="%(class)s_salttype")
+    smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
+    smol = models.MolField(verbose_name = "MOL")	
+    mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
+    mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
+    natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
+    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
+    h_equiv = models.IntegerField(default=0, blank=True, verbose_name ="H Equivalent")
 
-# #=================================================================================================
-# class Chem_Reaction(AuditModel):
-#     """
-#     List of Chemical Reaction/Transformations/Substructures/Alerts
-#     """
-# #=================================================================================================
-#     Choice_Dictionary = {
-#         'salt_type':'Salt_Type',
-#     }
 
-#  PKID           Serial Primary Key,
-#  Reaction_ID	Varchar(15) Not Null,
-#  Reaction_Code  Varchar(15),
-#  Reaction_Name  Varchar(150),
-#  Reaction_Type  Varchar(25),
-#  Run_Status     Integer,
-#  Smarts         Varchar(1025),
-#  rMol           qmol,
+    class Meta:
+        app_label = 'dchem'
+        db_table = 'chem_salt'
+        ordering=['salt_code']
+        indexes = [
+            models.Index(name="csalt_dcode_idx", fields=['salt_code']),
+            models.Index(name="csalt_type_idx", fields=['salt_type']),
+            GistIndex(name="csalt_smol_idx",fields=['smol']),
+            # GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
+            # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
+            # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
+        ]
+        triggers = [pgtrigger.Trigger(
+                        name= "trigfunc_chemsalt_biu",
+                        operation = pgtrigger.Insert | pgtrigger.Update,
+                        when = pgtrigger.Before,
+                        func = """
+                                New.mw := mol_amw(NEW.sMol);
+                                New.mf := mol_formula(NEW.sMol);
+                                New.natoms := mol_numheavyatoms(NEW.sMol);
+                                RETURN NEW;
+                            """
+                            )
+                    ]
+
+#=================================================================================================
+class Chem_Alert(AuditModel):
+    """
+    List of Chemical Reaction/Transformations/Substructures/Alerts
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'alert_type':'Alert_Type',
+    }
+
+    alert_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Alert ID")
+    alert_code = models.CharField(max_length=15, blank=True, verbose_name = "Alert Code")
+    alert_name = models.CharField(max_length=50, blank=True, verbose_name = "Alert Name")
+    alert_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="alert_type", related_name="%(class)s_alerttype")
+    smarts = models.CharField(max_length=10125, blank=True, verbose_name = "Smarts")
+    allow_min = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
+    allow_ax = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
+
+
+    class Meta:
+        app_label = 'dchem'
+        db_table = 'chem_alert'
+        ordering=['alert_code']
+        indexes = [
+            models.Index(name="calert_dcode_idx", fields=['alert_code']),
+            models.Index(name="calert_type_idx", fields=['alert_type']),
+            #GistIndex(name="calert_smol_idx",fields=['smol']),
+            # GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
+            # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
+            # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
+        ]
+
+
+
+#=================================================================================================
+class Chem_Reaction(AuditModel):
+    """
+    List of Chemical Reaction/Transformations/Substructures/Alerts
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'alert_type':'Alert_Type',
+    }
+
+    reaction_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Reaction ID")
+    reaction_code = models.CharField(max_length=15, blank=True, verbose_name = "Reaction Code")
+    reaction_name = models.CharField(max_length=50, blank=True, verbose_name = "Reaction Name")
+    reaction_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="reaction_type", related_name="%(class)s_reactiontype")
+    smarts = models.CharField(max_length=10125, blank=True, verbose_name = "Smarts")
+    run_status = models.IntegerField(default=0, blank=True, verbose_name ="RunStatus")
+
+
+    class Meta:
+        app_label = 'dchem'
+        db_table = 'chem_reaction'
+        ordering=['reaction_code']
+        indexes = [
+            models.Index(name="creact_dcode_idx", fields=['reaction_code']),
+            models.Index(name="creact_type_idx", fields=['reaction_type']),
+            #GistIndex(name="calert_smol_idx",fields=['smol']),
+            # GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
+            # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
+            # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
+        ]
+
 
 # #=================================================================================================
 # class Sample(AuditModel):

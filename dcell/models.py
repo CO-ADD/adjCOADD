@@ -374,10 +374,64 @@ class CellBatch_Stock(AuditModel):
         ]
 
     #------------------------------------------------
-    def __str__(self) -> str:
-        return f"{self.pk} "
-    #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.cellbatch_id} {self.stock_type} {self.n_left}"
 
 # ================================================================================================
+
+#=================================================================================================
+class Cell_Culture(AuditModel):
+    """
+    Recommanded and optimised Growth/Culture conditions 
+    
+    """
+#=================================================================================================
+    HEADER_FIELDS = {
+        # "organism_id":"Organism ID",
+        "culture_type":"Type",
+        "culture_source":"Source",
+        "media":"Media",
+        "addition":"Addition",
+        "atmosphere":"Atmosphere",
+        "temperature":"Temperature",
+        "culture_notes":"Notes",
+        "biologist":"Biologist"
+    }
+
+    Choice_Dictionary = {
+        'culture_type':'Culture_Type',
+        'culture_source':'Culture_Source',
+    }
+    
+    FORM_GROUPS = {
+        'Group1': ["culture_type", "culture_source", "media", "addition", "atmosphere", "temperature", "culture_notes", "biologist"]
+    }
+
+    cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id")
+    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
+        db_column="culture_type", related_name="%(class)s_culture_type")
+    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
+        db_column="culture_source", related_name="%(class)s_culture_source")
+    media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    addition = models.CharField(max_length=55, blank=True, verbose_name = "Addition") 
+    atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
+    temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
+    # labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
+    culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Notes") 
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_biologist")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dcell'
+        db_table = 'cell_culture'
+        ordering=['cell_id','culture_type','media']
+        indexes = [
+            models.Index(name="cellcult_media_idx",fields=['media']),
+            models.Index(name="cellcult_ctype_idx",fields=['culture_type']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.organism_id} {self.culture_type} {self.culture_source}"

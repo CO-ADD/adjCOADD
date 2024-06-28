@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Local - Devlopment using local PostgrSQL database  
 #               Meran - Devlopment using Schlern PostgrSQL database  
 #DEVELOPMENT=None
-DEVELOPMENT='Meran'
+DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:
@@ -117,6 +117,8 @@ INSTALLED_APPS = [
     'dgene',
     'dcell',
     'dchem',
+    'dsample',
+    'dplate',
     #'rest_framework',
     #'rest_framework.authtoken',
     'formtools',
@@ -312,6 +314,30 @@ DATABASES = {
         'PORT': '5432',
         "TEST": {
             "NAME": "dchem",
+        },
+    },
+    'dsample': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dsample,dchem,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "dsample",
+        },
+    },
+    'dplate': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dplate,dsample,apputil,public', 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,
+        'USER': DB_USER, 
+        'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME,
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "dplate",
         },
     }
 }
