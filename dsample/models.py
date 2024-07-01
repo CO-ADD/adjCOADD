@@ -1,3 +1,312 @@
 from django.db import models
+from model_utils import Choices
+from sequences import Sequence
+from django.core.validators import RegexValidator
 
-# Create your models here.
+from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.db import transaction, IntegrityError
+from django.utils.text import slugify
+
+from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from dcollab.models import Collab_Group, Collab_User
+from dchem.models import Chem_Structure
+from adjcoadd.constants import *
+
+
+#=================================================================================================
+class Project(AuditModel):
+    """
+    List of Projects, Chem Library 
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'project_class':'Project_Class',
+    }
+    ID_SEQUENCE = 'Project'
+    ID_PREFIX = 'P'
+    ID_PAD = 5
+
+    project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
+    old_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
+    project_name = models.CharField(max_length=50, blank=True, verbose_name = "Project Name")
+    project_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="project_class", related_name="%(class)s_projectclass")
+    owner_group =  models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group", on_delete=models.DO_NOTHING,
+        db_column="owner_group", related_name="%(class)s_ownergroup")
+    owner_user =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, verbose_name = "User", null=True, blank=True)
+    #owner_users = models.ManyToManyField(Collab_User)
+         
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'project'
+        ordering=['project_id']
+        indexes = [
+            models.Index(name="prj_pname_idx", fields=['project_name']),
+            models.Index(name="prj_opid_idx", fields=['old_project_id']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.project_id}  {self.source}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ProjectID,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            retInstance = cls.objects.get(project_id=ProjectID)
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Project Not Found] {ProjectID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ProjectID,verbose=0):
+    # Returns if an instance exists by drug_name or durg_id
+        retValue = cls.objects.filter(project_id=ProjectID).exists()
+        return(retValue)
+
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.project_id:
+            self.project_id = self.next_id()
+            if self.project_id: 
+                super(Project, self).save(*args, **kwargs)
+        else:
+            super(Project, self).save(*args, **kwargs) 
+
+#-------------------------------------------------------------------------------------------------
+class COADD_Sample(AuditModel):
+    """
+    List of Compounds srceened
+    """
+#-------------------------------------------------------------------------------------------------
+
+    ID_SEQUENCE = 'COADD_Sample'
+    ID_PREFIX = 'S'
+    ID_PAD = 9
+    
+    sample_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Sample ID")
+    sample_code = models.CharField(max_length=150, blank=True, verbose_name = "Sample Code")
+    sample_name = models.CharField(max_length=250, blank=True, verbose_name = "Sample Name")
+    sample_desc = models.CharField(max_length=512, blank=True, verbose_name = "Sample Name")
+    sample_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Sample Type", on_delete=models.DO_NOTHING,
+        db_column="sample_type", related_name="%(class)s_sampletype")
+    
+    old_compound_id = models.CharField(max_length=15, unique=True, verbose_name = "Compound ID")
+    previous_ids = models.CharField(max_length=100, blank=True, verbose_name = "Previous IDs")
+    parent_structure_ids = ArrayField(models.CharField(max_length=15, null=True, blank=True), size=4, verbose_name = "Panel", 
+                                      null=True, blank=True)
+    
+    project_id = models.ForeignKey(Project, null=True, blank=True, verbose_name = "Project ID", on_delete=models.DO_NOTHING,
+        db_column="project_id", related_name="%(class)s_project_id")
+
+    reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
+    reg_mw = models.FloatField(default=0, blank=True, verbose_name = "Reg MW")
+    reg_mf = models.CharField(max_length=100, blank=True, verbose_name = "Reg MF")
+    reg_structure = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Structure")
+    reg_amount = models.FloatField(default=0, blank=True, verbose_name = "Reg Amount")
+    reg_amount_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Amount Unit")
+    reg_volume = models.FloatField(default=0, blank=True, verbose_name = "Reg Volume")
+    reg_volume_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Volume Unit")
+    reg_conc = models.FloatField(default=0, blank=True, verbose_name = "Reg Conc")
+    reg_conc_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Conc Unit")
+    reg_solvent = models.FloatField(default=0, blank=True, verbose_name = "Reg Solvent")
+    
+    prep_date = models.DateField(null=True, blank=True, verbose_name="Prepared")
+    stock_amount = models.FloatField(default=0, blank=True, verbose_name = "Stock Amount")
+    stock_amount_unit = models.CharField(max_length=100, blank=True, verbose_name = "Stock Amount Unit")
+    
+    cpoz_sn = models.CharField(max_length=25, blank=True, verbose_name = "CpOz SN")
+    cpoz_id = models.CharField(max_length=25, blank=True, verbose_name = "CpOz Lib ID")
+    coadd_id = models.CharField(max_length=25, blank=True, verbose_name = "CO-ADD ID")
+    chembl_id = models.CharField(max_length=25, blank=True, verbose_name = "ChEMBL ID")
+    spark_id = models.CharField(max_length=25, blank=True, verbose_name = "SPARK ID")
+
+    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+        db_column="structure_id", related_name="%(class)s_structureid")
+    
+    salt_code = models.CharField(max_length=120, blank=True, verbose_name = "Salts")
+    full_mw = models.FloatField(default=0, blank=True, verbose_name = "Full MW")
+    full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
+    
+    std_status = models.CharField(max_length=10, blank=True, verbose_name = "Std Status")
+    std_action = models.CharField(max_length=120, blank=True, verbose_name = "Std Action")
+    std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
+    std_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Std Smiles")
+ 
+    pub_status = models.CharField(max_length=10, blank=True, verbose_name = "Pub Status")
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
+    
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'coadd_sample'
+        ordering=['sample_id']
+        indexes = [
+            models.Index(name="coadd_name_idx", fields=['sample_name']),
+            models.Index(name="coadd_code_idx", fields=['sample_code']),
+            models.Index(name="coadd_type_idx", fields=['sample_type']),
+            models.Index(name="coadd_rmw_idx", fields=['reg_mw']),
+            models.Index(name="coadd_salt_idx", fields=['salt_code']),
+            models.Index(name="coadd_ocid_idx", fields=['old_compound_id']),
+            models.Index(name="coadd_sst_idx", fields=['std_status']),
+            models.Index(name="coadd_pst_idx", fields=['pub_status']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.sample_id}  {self.old_compound_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,SampleID,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            retInstance = cls.objects.get(sample_id=SampleID)
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Sample Not Found] {SampleID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,SampleID,verbose=0):
+    # Returns if an instance exists by drug_name or durg_id
+        retValue = cls.objects.filter(sample_id=SampleID).exists()
+        return(retValue)
+
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.sample_id:
+            self.sample_id = self.next_id()
+            if self.sample_id: 
+                super(COADD_Sample, self).save(*args, **kwargs)
+        else:
+            super(COADD_Sample, self).save(*args, **kwargs) 
+
+# #=================================================================================================
+# class Sample_Batch(AuditModel):
+#     """
+#     List of Sample Batches 
+#     """
+# #=================================================================================================
+#     ID_SEQUENCE = 'Sample'
+#     ID_PREFIX = 'SB'
+#     ID_PAD = 9
+
+#     samplebatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "SampleBatch ID")
+#     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
+#         db_column="sample_id", related_name="%(class)s_sample_id")
+#     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous SampleBatch ID")
+#     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
+#     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
+
+    # structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+    #     db_column="structure_id", related_name="%(class)s_structureid")
+
+#     salt = models.CharField(max_length=500, blank=True, verbose_name = "Salt")
+#     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
+#     mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
+
+#     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
+#     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
+#         db_column="qc_status", related_name="%(class)s_qc")
+#     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
+#     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
+#     stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels") 
+#     chemist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Chemist", on_delete=models.DO_NOTHING, 
+#         db_column="chemist", related_name="%(class)s_chemist")
+
+#     #------------------------------------------------
+#     class Meta:
+#         app_label = 'dsample'
+#         db_table = 'samplebatch'
+#         ordering=['samplebatch_id']
+#         indexes = [
+#             models.Index(name="smpbatch_samplebatch_idx",fields=['sample_id','batch_id']),
+#             models.Index(name="smpbatch_qc_idx",fields=['qc_status']),
+#             models.Index(name="smpbatch_sdate_idx",fields=['stock_date']),
+#             models.Index(name="smpbatch_slevel_idx",fields=['stock_level']),
+#         ]
+
+#     #------------------------------------------------
+#     def __str__(self) -> str:
+#         return f"{self.samplebatch_id}"
+
+#     #------------------------------------------------
+#     @classmethod
+#     # Formats BatchNo:int -> BatchID:str 
+#     def str_BatchID(self,BatchNo:int) -> str:
+#         return(f"{BatchNo:02d}")
+#     #------------------------------------------------
+#     @classmethod
+#     def str_SampleBatchID(self,SampleID:str,BatchID:str) -> str:
+#         return(f"{SampleID}{SAMPLEBATCH_SEP}{BatchID}")
+
+#     #------------------------------------------------
+#     def find_Next_BatchID(self, SampleID:str, BatchID:str=None) -> str:
+#         # Check for given BatchID    
+#         if BatchID:
+#             # Clean up BatchID - remove non alphanumeric character and make uppercase
+#             BatchID = re.sub(r'[^a-zA-Z0-9]', '', BatchID).upper()
+
+#             # Clean up BatchID - reformat numbers
+#             if BatchID.isnumeric():
+#                 BatchID = self.str_BatchID(int(BatchID))
+
+#             next_SampleBatch = self.str_SampleBatchID(SampleID,BatchID)
+#             if not self.exists(next_SampleBatch):
+#                 return(BatchID)
+
+#         # Find new BatchID    
+#         next_BatchNo = 1
+#         next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
+#         while self.exists(next_SampleBatch):
+#             next_BatchNo = next_BatchNo + 1
+#             next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
+#         return(self.str_BatchID(next_BatchNo))    
+
+#     #------------------------------------------------
+#     @classmethod
+#     def get(cls,SampleBatchID,verbose=0):
+#     # Returns an instance if found by samplebatch_id
+#         try:
+#             retInstance = cls.objects.get(samplebatch_id=SampleBatchID)
+#         except:
+#             if verbose:
+#                 print(f"[SampleBatch Not Found] {SampleBatchID} ")
+#             retInstance = None
+#         return(retInstance)
+
+#     #------------------------------------------------
+#     @classmethod
+#     def exists(cls,SampleBatchID,verbose=0):
+#     # Returns if instance exists
+#         return cls.objects.filter(samplebatch_id=SampleBatchID).exists()
+
+#     #------------------------------------------------
+#     def save(self, *args, **kwargs):
+#         if not self.samplebatch_id: 
+#             # creates new SampleBatchID
+#             SampleID = self.sample_id.sample_id
+#             BatchID = self.find_Next_BatchID(SampleID,self.batch_id)
+#             if BatchID:
+#                 self.batch_id = BatchID
+#                 self.samplebatch_id = self.str_SampleBatchID(SampleID,BatchID)
+#                 super(Sample_Batch,self).save(*args, **kwargs)
+#         else:
+#             # confirms Batch_ID from SampleBatchID
+#             self.batch_id = str(self.samplebatch_id).replace(str(self.sample_id.sample_id),"").split(SAMPLEBATCH_SEP)[1]
+#             super(Sample_Batch,self).save(*args, **kwargs)
+#             #print(f"[SampleBatch.save]: {self.samplebatch_id}")
+    

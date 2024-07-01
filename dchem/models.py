@@ -48,24 +48,24 @@ class Chem_Structure(AuditModel):
     ffp2 = models.BfpField(verbose_name = "Feature Morgan FP (FCFP)")
     mfp2 = models.BfpField(verbose_name = "Morgan FP (ECFP)")
 
-    nfrag = models.IntegerField(default=1, blank=True, verbose_name ="nFrag")
-    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
-
+    nfrag = models.PositiveSmallIntegerField(default=1, blank=True, verbose_name ="nFrag")
+    charge = models.DecimalField(max_digits=10, decimal_places=2,  blank=True, verbose_name ="Charge")
+    
     # Calculated by Trigger Function
     inchikey = models.CharField(max_length=50, blank=True,verbose_name ="InChiKey")
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-    mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
-    natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
-    hba = models.IntegerField(default=0, blank=True, verbose_name ="HBond Acc")
-    hbd = models.IntegerField(default=0, blank=True, verbose_name ="HBond Don")
-    logp = models.FloatField(default=0, blank=True, verbose_name ="logP")
-    tpsa = models.FloatField(default=0, blank=True, verbose_name ="tPSA")
-    fractioncsp3 = models.FloatField(default=0, blank=True, verbose_name ="Sp3")
-    nrotbonds = models.IntegerField(default=0, blank=True, verbose_name ="nRotBond")
-    nrings = models.IntegerField(default=0, blank=True, verbose_name ="nRings")
-    narorings = models.IntegerField(default=0, blank=True, verbose_name ="nAroRings")
-    nhetarorings = models.IntegerField(default=0, blank=True, verbose_name ="nHetAroRings")
-    nhetaliphrings = models.IntegerField(default=0, blank=True, verbose_name ="nHetAliphRings")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+    natoms = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nAtoms")
+    hba = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="HBond Acc")
+    hbd = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="HBond Don")
+    logp = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="logP")
+    tpsa = models.DecimalField(max_digits=12, decimal_places=2, default=0, blank=True, verbose_name ="tPSA")
+    fractioncsp3 = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="Sp3")
+    nrotbonds = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nRotBond")
+    nrings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nRings")
+    narorings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nAroRings")
+    nhetarorings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nHetAroRings")
+    nhetaliphrings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nHetAliphRings")
 
     class Meta:
         app_label = 'dchem'
@@ -301,11 +301,10 @@ class Chem_Salt(AuditModel):
     smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
     smol = models.MolField(verbose_name = "MOL")	
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-    mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
-    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
+    charge = models.DecimalField(max_digits=10, decimal_places=2,  blank=True, verbose_name ="Charge")
     h_equiv = models.IntegerField(default=0, blank=True, verbose_name ="H Equivalent")
-
 
     class Meta:
         app_label = 'dchem'
@@ -432,115 +431,4 @@ class Chem_Reaction(AuditModel):
 #             models.Index(name="smp_scode_idx", fields=['sample_code']),
 #         ]
 
-# #=================================================================================================
-# class Sample_Batch(AuditModel):
-#     """
-#     List of Sample Batches 
-#     """
-# #=================================================================================================
-#     ID_SEQUENCE = 'Sample'
-#     ID_PREFIX = 'SB'
-#     ID_PAD = 9
 
-#     samplebatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "SampleBatch ID")
-#     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
-#         db_column="sample_id", related_name="%(class)s_sample_id")
-#     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous SampleBatch ID")
-#     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
-#     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
-
-#     salt = models.CharField(max_length=500, blank=True, verbose_name = "Salt")
-#     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-#     mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
-
-#     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
-#     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
-#         db_column="qc_status", related_name="%(class)s_qc")
-#     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
-#     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
-#     stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels") 
-#     chemist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Chemist", on_delete=models.DO_NOTHING, 
-#         db_column="chemist", related_name="%(class)s_chemist")
-
-#     #------------------------------------------------
-#     class Meta:
-#         app_label = 'dchem'
-#         db_table = 'samplebatch'
-#         ordering=['samplebatch_id']
-#         indexes = [
-#             models.Index(name="smpbatch_samplebatch_idx",fields=['sample_id','batch_id']),
-#             models.Index(name="smpbatch_qc_idx",fields=['qc_status']),
-#             models.Index(name="smpbatch_sdate_idx",fields=['stock_date']),
-#             models.Index(name="smpbatch_slevel_idx",fields=['stock_level']),
-#         ]
-
-#     #------------------------------------------------
-#     def __str__(self) -> str:
-#         return f"{self.samplebatch_id}"
-
-#     #------------------------------------------------
-#     @classmethod
-#     # Formats BatchNo:int -> BatchID:str 
-#     def str_BatchID(self,BatchNo:int) -> str:
-#         return(f"{BatchNo:02d}")
-#     #------------------------------------------------
-#     @classmethod
-#     def str_SampleBatchID(self,SampleID:str,BatchID:str) -> str:
-#         return(f"{SampleID}{SAMPLEBATCH_SEP}{BatchID}")
-
-#     #------------------------------------------------
-#     def find_Next_BatchID(self, SampleID:str, BatchID:str=None) -> str:
-#         # Check for given BatchID    
-#         if BatchID:
-#             # Clean up BatchID - remove non alphanumeric character and make uppercase
-#             BatchID = re.sub(r'[^a-zA-Z0-9]', '', BatchID).upper()
-
-#             # Clean up BatchID - reformat numbers
-#             if BatchID.isnumeric():
-#                 BatchID = self.str_BatchID(int(BatchID))
-
-#             next_SampleBatch = self.str_SampleBatchID(SampleID,BatchID)
-#             if not self.exists(next_SampleBatch):
-#                 return(BatchID)
-
-#         # Find new BatchID    
-#         next_BatchNo = 1
-#         next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
-#         while self.exists(next_SampleBatch):
-#             next_BatchNo = next_BatchNo + 1
-#             next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
-#         return(self.str_BatchID(next_BatchNo))    
-
-#     #------------------------------------------------
-#     @classmethod
-#     def get(cls,SampleBatchID,verbose=0):
-#     # Returns an instance if found by samplebatch_id
-#         try:
-#             retInstance = cls.objects.get(samplebatch_id=SampleBatchID)
-#         except:
-#             if verbose:
-#                 print(f"[SampleBatch Not Found] {SampleBatchID} ")
-#             retInstance = None
-#         return(retInstance)
-
-#     #------------------------------------------------
-#     @classmethod
-#     def exists(cls,SampleBatchID,verbose=0):
-#     # Returns if instance exists
-#         return cls.objects.filter(samplebatch_id=SampleBatchID).exists()
-
-#     #------------------------------------------------
-#     def save(self, *args, **kwargs):
-#         if not self.samplebatch_id: 
-#             # creates new SampleBatchID
-#             SampleID = self.sample_id.sample_id
-#             BatchID = self.find_Next_BatchID(SampleID,self.batch_id)
-#             if BatchID:
-#                 self.batch_id = BatchID
-#                 self.samplebatch_id = self.str_SampleBatchID(SampleID,BatchID)
-#                 super(Sample_Batch,self).save(*args, **kwargs)
-#         else:
-#             # confirms Batch_ID from SampleBatchID
-#             self.batch_id = str(self.samplebatch_id).replace(str(self.sample_id.sample_id),"").split(SAMPLEBATCH_SEP)[1]
-#             super(Sample_Batch,self).save(*args, **kwargs)
-#             #print(f"[SampleBatch.save]: {self.samplebatch_id}")

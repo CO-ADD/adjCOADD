@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DscreenConfig(AppConfig):
+class dScreenConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'dscreen'
