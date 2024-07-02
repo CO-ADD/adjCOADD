@@ -93,7 +93,9 @@ def main():
         if prgArgs.table == 'COADD_Sample' and prgArgs.excel:
             print(f"Reading {prgArgs.excel}.[SampleID]")
             df = pd.read_excel(prgArgs.excel,sheet_name='SampleID')
+            df.compound_name = df.compound_name.fillna('')
             print(df.columns)
+            outDict = []    
             for idx,row in tqdm(df.iterrows(), total=df.shape[0]):
                 if row['stype'] in ['C0','CX']:
                     #print(f"{row['old_compound_id']} {row['sample_id']}")                
@@ -110,7 +112,21 @@ def main():
                             if prgArgs.upload:
                                 djSmp.clean_Fields()
                                 djSmp.save()
-                            
+                        else:
+                            row['Issue'] = f"No Project ID"
+                            #row['IssueValue'] = f"{row['project_id']}"
+                            outDict.append(row)
+                    else:
+                        row['Issue'] = f"Sample_ID Exists"
+                        #row['IssueValue'] = f"{row['sample_id']}; {row['old_compound_id']}"
+                        outDict.append(row)
+                else:
+                    row['Issue'] = f"Not C0 or CX"
+                    #row['IssueValue'] = f"{row['sample_id']}; {row['old_compound_id']}"
+                    outDict.append(row)
+                                                    
+            outDF = pd.DataFrame(outDict)
+            outDF.to_excel('UploadSamples_Issues.xlsx')
 
     
 #==============================================================================
