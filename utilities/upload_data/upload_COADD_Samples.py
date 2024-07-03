@@ -9,6 +9,7 @@ import numpy as np
 import argparse
 
 from tqdm import tqdm
+tqdm.pandas()
 # from zUtils import zData
 
 import django
@@ -58,7 +59,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
-    from dchem.models import Chem_Structure
+    from dsample.models import Project, COADD_Sample    
     from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
@@ -82,54 +83,51 @@ def main():
 
    # Table -------------------------------------------------------------
 
-    choiceTables = ['ChemStructure',
+    choiceTables = ['COADD_Sample',
                     ]
     if prgArgs.table in choiceTables:
 
         logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
         logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
-        if prgArgs.table == 'ChemStructure' and prgArgs.file:
-            with open(prgArgs.file, mode='r') as csv_file:
-                lines = len(csv_file.readlines())
-            
+        if prgArgs.table == 'COADD_Sample' and prgArgs.excel:
+            print(f"Reading {prgArgs.excel}.[SampleID]")
+            df = pd.read_excel(prgArgs.excel,sheet_name='SampleID')
+            df.compound_name = df.compound_name.fillna('')
+            print(df.columns)
             outDict = []    
-            with open(prgArgs.file, mode='r') as infile:
-                reader = csv.DictReader(infile)
-                for row in tqdm(reader,total=lines, desc="Reading ChemStructures"):
-                    _nfrag = int(row['nfrag'])
-                    if  _nfrag< 2:    
-                        if Chem_Structure.exists_bySmiles(row['smiles']):
-                            o = Chem_Structure.get_bySmiles(row['smiles'])
-                            if o.structure_id != row['structure_id']:
-                                row['Issue'] = f"Exists"
-                                row['IssueValue'] = f"{o.structure_id}; {o.get_smiles()}"
-                                outDict.append(row)
-                                print(f" Exists: {row['structure_id']} {row['smiles']} -> {o.structure_id} {o.get_smiles()}")
+            for idx,row in tqdm(df.iterrows(), total=df.shape[0]):
+                if row['stype'] in ['C0','CX']:
+                    #print(f"{row['old_compound_id']} {row['sample_id']}")                
+                    djSmp = COADD_Sample.get(row['sample_id'])
+                    if djSmp is None: 
+                        djSmp = COADD_Sample()
+                        djPrj = Project.get(row['project_id'])
+                        if djPrj is not None: 
+                            djSmp.project_id = djPrj
+                            djSmp.old_compound_id = row['old_compound_id']
+                            djSmp.sample_id = row['sample_id']
+                            djSmp.sample_code = row['compound_code']
+                            djSmp.sample_name = row['compound_name']
+                            if prgArgs.upload:
+                                djSmp.clean_Fields()
+                                djSmp.save()
                         else:
-                            c = Chem_Structure()
-                            c.set_molecule(row['smiles'])
-                            c.nfrag = _nfrag
-                            c.structure_id = row['structure_id']
-                            c.atom_classes = get_atomclass_list(c.smol)
-                            lstMetall=list_metalatoms(c.smol)
-                            if len(lstMetall)>0:
-                                row['Issue'] = f"Metal"
-                                row['IssueValue'] = f"{lstMetall}"
-                                outDict.append(row)
-                                print(f" Metal: {row['structure_id']} {row['smiles']} -> Metal: {lstMetall}") 
-                            else:    
-                                if prgArgs.upload:
-                                    c.save()
-
+                            row['Issue'] = f"No Project ID"
+                            #row['IssueValue'] = f"{row['project_id']}"
+                            outDict.append(row)
                     else:
-                        row['Issue'] = f"nFrag"
-                        row['IssueValue'] = f"{_nfrag}"
+                        row['Issue'] = f"Sample_ID Exists"
+                        #row['IssueValue'] = f"{row['sample_id']}; {row['old_compound_id']}"
                         outDict.append(row)
-                        print(f" nFrag: {row['structure_id']} {row['smiles']} -> nFrag: {_nfrag}") 
- 
+                else:
+                    row['Issue'] = f"Not C0 or CX"
+                    #row['IssueValue'] = f"{row['sample_id']}; {row['old_compound_id']}"
+                    outDict.append(row)
+                                                    
             outDF = pd.DataFrame(outDict)
-            outDF.to_excel('UploadChemStructure_Issues.xlsx')
+            outDF.to_excel('UploadSamples_Issues.xlsx')
+
     
 #==============================================================================
 if __name__ == "__main__":

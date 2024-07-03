@@ -48,24 +48,24 @@ class Chem_Structure(AuditModel):
     ffp2 = models.BfpField(verbose_name = "Feature Morgan FP (FCFP)")
     mfp2 = models.BfpField(verbose_name = "Morgan FP (ECFP)")
 
-    nfrag = models.IntegerField(default=1, blank=True, verbose_name ="nFrag")
-    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
-
+    nfrag = models.PositiveSmallIntegerField(default=1, blank=True, verbose_name ="nFrag")
+    charge = models.DecimalField(max_digits=10, decimal_places=2,  blank=True, verbose_name ="Charge")
+    
     # Calculated by Trigger Function
     inchikey = models.CharField(max_length=50, blank=True,verbose_name ="InChiKey")
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-    mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
-    natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
-    hba = models.IntegerField(default=0, blank=True, verbose_name ="HBond Acc")
-    hbd = models.IntegerField(default=0, blank=True, verbose_name ="HBond Don")
-    logp = models.FloatField(default=0, blank=True, verbose_name ="logP")
-    tpsa = models.FloatField(default=0, blank=True, verbose_name ="tPSA")
-    fractioncsp3 = models.FloatField(default=0, blank=True, verbose_name ="Sp3")
-    nrotbonds = models.IntegerField(default=0, blank=True, verbose_name ="nRotBond")
-    nrings = models.IntegerField(default=0, blank=True, verbose_name ="nRings")
-    narorings = models.IntegerField(default=0, blank=True, verbose_name ="nAroRings")
-    nhetarorings = models.IntegerField(default=0, blank=True, verbose_name ="nHetAroRings")
-    nhetaliphrings = models.IntegerField(default=0, blank=True, verbose_name ="nHetAliphRings")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+    natoms = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nAtoms")
+    hba = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="HBond Acc")
+    hbd = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="HBond Don")
+    logp = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="logP")
+    tpsa = models.DecimalField(max_digits=12, decimal_places=2, default=0, blank=True, verbose_name ="tPSA")
+    fractioncsp3 = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="Sp3")
+    nrotbonds = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nRotBond")
+    nrings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nRings")
+    narorings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nAroRings")
+    nhetarorings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nHetAroRings")
+    nhetaliphrings = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nHetAliphRings")
 
     class Meta:
         app_label = 'dchem'
@@ -301,11 +301,10 @@ class Chem_Salt(AuditModel):
     smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
     smol = models.MolField(verbose_name = "MOL")	
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-    mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
-    charge = models.FloatField(default=0, blank=True, verbose_name ="Charge")
+    charge = models.DecimalField(max_digits=10, decimal_places=2,  blank=True, verbose_name ="Charge")
     h_equiv = models.IntegerField(default=0, blank=True, verbose_name ="H Equivalent")
-
 
     class Meta:
         app_label = 'dchem'
@@ -400,3 +399,39 @@ class Chem_Reaction(AuditModel):
         ]
 
 
+<<<<<<< HEAD
+=======
+# #=================================================================================================
+# class Sample(AuditModel):
+#     """
+#     List of ChemStructure 
+#     """
+# #=================================================================================================
+#     ID_SEQUENCE = 'Sample'
+#     ID_PREFIX = 'S'
+#     ID_PAD = 9
+
+#     sample_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Sample ID")
+#     sample_name = models.CharField(max_length=50, unique=True, verbose_name = "Sample Name")
+#     library_id = models.ForeignKey(Library, null=False, blank=False, verbose_name = "Library ID", on_delete=models.DO_NOTHING,
+#         db_column="library_id", related_name="%(class)s_library_id")
+
+#     sample_code = models.CharField(max_length=50, unique=True, verbose_name = "Sample Code")
+#     structure_id = models.ForeignKey(Chem_Structure, null=False, blank=False, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+#         db_column="structure_id", related_name="%(class)s_structure_id")
+#     other_ids = models.CharField(max_length=50, unique=True, verbose_name = "Other IDs")
+
+#     chemist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Chemist", on_delete=models.DO_NOTHING, 
+#         db_column="chemist", related_name="%(class)s_chemist")
+
+#     class Meta:
+#         app_label = 'dchem'
+#         db_table = 'sample'
+#         ordering=['library_id','sample_name']
+#         indexes = [
+#             models.Index(name="smp_sname_idx", fields=['sample_name']),
+#             models.Index(name="smp_scode_idx", fields=['sample_code']),
+#         ]
+
+
+>>>>>>> 6765201c9b6221beead216fd02de7c05d3e6e7d0

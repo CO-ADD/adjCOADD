@@ -409,14 +409,15 @@ class WGS_CheckM(AuditModel):
     n_marker_sets = models.IntegerField(default=0, blank=True, verbose_name ="n_marker_sets")
     n_contigs = models.IntegerField(default=0, blank=True, verbose_name ="n_contigs")
     genome_size = models.IntegerField(default=0, blank=True, verbose_name ="genome_size")
-    coding_density = models.FloatField(default=0, blank=True, verbose_name ="coding_density")
-    completeness = models.FloatField(default=0, blank=True, verbose_name ="completeness")
-    contamination = models.FloatField(default=0, blank=True, verbose_name ="contamination")
-    gc = models.FloatField(default=0, blank=True, verbose_name ="gc")
-    gc_std = models.FloatField(default=0, blank=True, verbose_name ="gc_std")
+    
+    coding_density = models.DecimalField(max_digits=9, decimal_places=3, default=0, blank=True, verbose_name ="coding_density")
+    completeness = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="completeness")
+    contamination = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="contamination")
+    gc = models.DecimalField(max_digits=9, decimal_places=3,default=0, blank=True, verbose_name ="gc")
+    gc_std = models.DecimalField(max_digits=9, decimal_places=3,default=0, blank=True, verbose_name ="gc_std")
     n_ambig_bases = models.IntegerField(default=0, blank=True, verbose_name ="n_ambig_bases")
     longest_contig = models.IntegerField(default=0, blank=True, verbose_name ="longest_contig")
-    mean_contigs = models.FloatField(default=0, blank=True, verbose_name ="mean_contigs")
+    mean_contigs = models.DecimalField(max_digits=12, decimal_places=2, default=0, blank=True, verbose_name ="mean_contigs")
     n50_contigs = models.IntegerField(default=0, blank=True, verbose_name ="N50_contigs")
     trans_table = models.IntegerField(default=0, blank=True, verbose_name ="trans_table")
 
@@ -614,8 +615,8 @@ class AMR_Genotype(AuditModel):
     amr_method = models.CharField(max_length=25, blank=True,   verbose_name = "AMR Method")
 
     seq_method = models.CharField(max_length=25, blank=True,    verbose_name = "Seq Method")
-    seq_coverage = models.FloatField(default=0, blank=True, verbose_name ="Seq Coverage") 
-    seq_identity = models.FloatField(default=0, blank=True,     verbose_name ="Seq Identity")
+    seq_coverage = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Seq Coverage") 
+    seq_identity = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Seq Identity")
     closest_id = models.CharField(max_length=150, blank=True,    verbose_name = "Closest")
     closest_name = models.CharField(max_length=150, blank=True, verbose_name = "Closest Name")
 
@@ -630,11 +631,6 @@ class AMR_Genotype(AuditModel):
              models.Index(name="amrgt_sid_idx",fields=['seq_id']),
              models.Index(name="amrgt_obid_idx",fields=['orgbatch_id']),
         ]
-
-    #------------------------------------------------
-    def __str__(self) -> str:
-        retStr = f"{self.pk}"
-        return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
