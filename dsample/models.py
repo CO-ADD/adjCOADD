@@ -21,7 +21,10 @@ class Project(AuditModel):
     """
 #=================================================================================================
     Choice_Dictionary = {
-        'project_class':'Project_Class',
+        'project_type':'Project_Type',
+        'project_status':'Project_Status',
+        'provided_container':'Container_Type',
+        'stock_conc_unit':'Unit_Concentration',
     }
     
     ID_SEQUENCE = 'Project'
@@ -29,18 +32,70 @@ class Project(AuditModel):
     ID_PAD = 5
 
     project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
-    old_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
-    project_name = models.CharField(max_length=50, blank=True, verbose_name = "Project Name")
-    project_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
-        db_column="project_class", related_name="%(class)s_projectclass")
+    project_name = models.CharField(max_length=150, blank=True, verbose_name = "Name")
+    project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="project_type", related_name="%(class)s_project_type")
+    cpoz_id = models.CharField(max_length=50, blank=True, verbose_name = "CpOz ID")
+    
+    process_status = models.CharField(max_length=250, blank=True, verbose_name = "Process")
+    project_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Status", on_delete=models.DO_NOTHING,
+        db_column="project_status", related_name="%(class)s_project_status")
+    project_comment = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+    
+    provided_container = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Provided Container", on_delete=models.DO_NOTHING,
+        db_column="provided_container", related_name="%(class)s_provided_container")
+    provided_comment = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+    
+    received = models.DateField(null=True, blank=True, verbose_name = "Received")
+    completed = models.DateField(null=True, blank=True, verbose_name = "Completed")
+    
+    stock_container = models.CharField(max_length=120, blank=True, verbose_name = "Stock Container")
+    stock_conc = models.DecimalField(max_digits=9, decimal_places=2, default=0,verbose_name = "Stock Conc")
+    stock_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Stock Conc Unit", on_delete=models.DO_NOTHING,
+        db_column="stock_conc_unit", related_name="%(class)s_stock_conc_unit")
+    stock_comment = models.CharField(max_length=150, blank=True, verbose_name = "Stock Comment")
+    stock_status = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
+                                 size=20, verbose_name = "Stock Status", null=True, blank=True)
+    
+    compound_comment = models.CharField(max_length=150, blank=True, verbose_name = "Compound Comment")
+    compound_status = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
+                                 size=20, verbose_name = "Compound Status", null=True, blank=True)
+    
+    screen_comment = models.CharField(max_length=150, blank=True, verbose_name = "Screen Comment")
+    screen_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+                                 size=20, verbose_name = "Screen Status", null=True, blank=True)
+
+    data_comment = models.CharField(max_length=150, blank=True, verbose_name = "Data Comment")
+    data_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+                                 size=20, verbose_name = "Data Status", null=True, blank=True)
+
+    report_comment = models.CharField(max_length=150, blank=True, verbose_name = "Report Comment")
+    report_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+                                 size=20, verbose_name = "Report Status", null=True, blank=True)
+
     owner_group =  models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group", on_delete=models.DO_NOTHING,
-        db_column="owner_group", related_name="%(class)s_ownergroup")
-    owner_user =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, verbose_name = "User", null=True, blank=True)
+        db_column="owner_group", related_name="%(class)s_owner_group")
+    owner_user =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
+                             verbose_name = "User", null=True, blank=True)
     #owner_users = models.ManyToManyField(Collab_User)
+
+    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
+    ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
+    ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
+                                 verbose_name = "Old ContactsUser", null=True, blank=True)
+    ora_organisation = models.CharField(max_length=100, blank=True, verbose_name = "Old Organisation")
+    ora_psreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="PS Report")
+    ora_hcreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HC Report")
+    ora_hvreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HV Report")
          
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+
+    pub_name = models.CharField(max_length=150, blank=True, verbose_name = "Public Name")
+    pub_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+                                 size=20, verbose_name = "Public Status", null=True, blank=True)
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
 
     class Meta:
         app_label = 'dsample'
@@ -48,7 +103,7 @@ class Project(AuditModel):
         ordering=['project_id']
         indexes = [
             models.Index(name="prj_pname_idx", fields=['project_name']),
-            models.Index(name="prj_opid_idx", fields=['old_project_id']),
+            models.Index(name="prj_opid_idx", fields=['ora_project_id']),
         ]
 
     #------------------------------------------------
@@ -180,6 +235,10 @@ class COADD_Compound(AuditModel):
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
         'compound_type':'Sample_Type',
+        'reg_amount_unit': 'Unit_Amount',
+        'reg_volume_unit':'Unit_Volume',
+        'reg_conc_unit':'Unit_Conc',
+        'stock_amount_unit':'Unit_Amount',
     }
 
     ID_SEQUENCE = 'COADD_Compound'
@@ -204,28 +263,32 @@ class COADD_Compound(AuditModel):
     
     # CO-ADD - Registration ------
     reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
-    reg_mw = models.FloatField(default=0, blank=True, verbose_name = "Reg MW")
+    reg_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Reg MW")
     reg_mf = models.CharField(max_length=100, blank=True, verbose_name = "Reg MF")
     reg_structure = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Structure")
-    reg_amount = models.FloatField(default=0, blank=True, verbose_name = "Reg Amount")
-    reg_amount_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Amount Unit")
-    reg_volume = models.FloatField(default=0, blank=True, verbose_name = "Reg Volume")
-    reg_volume_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Volume Unit")
-    reg_conc = models.FloatField(default=0, blank=True, verbose_name = "Reg Conc")
-    reg_conc_unit = models.CharField(max_length=100, blank=True, verbose_name = "Reg Conc Unit")
+    reg_amount = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name = "Reg Amount")
+    reg_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Reg Amount Unit", on_delete=models.DO_NOTHING,
+        db_column="reg_amount_unit", related_name="%(class)s_reg_amount_unit")
+    reg_volume = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name = "Reg Volume")
+    reg_volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Reg Volume Unit", on_delete=models.DO_NOTHING,
+        db_column="reg_volume_unit", related_name="%(class)s_reg_volume_unit")
+    reg_conc = models.DecimalField(max_digits=9, decimal_places=2, default=0,verbose_name = "Reg Conc")
+    reg_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Reg Conc Unit", on_delete=models.DO_NOTHING,
+        db_column="reg_conc_unit", related_name="%(class)s_reg_conc_unit")
     reg_solvent = models.FloatField(default=0, blank=True, verbose_name = "Reg Solvent")
     
     # CO-ADD - Stock 
     prep_date = models.DateField(null=True, blank=True, verbose_name="Prepared")
-    stock_amount = models.FloatField(default=0, blank=True, verbose_name = "Stock Amount")
-    stock_amount_unit = models.CharField(max_length=100, blank=True, verbose_name = "Stock Amount Unit")
+    stock_amount = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name = "Stock Amount")
+    stock_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Stock Amount Unit", on_delete=models.DO_NOTHING,
+        db_column="stock_amount_unit", related_name="%(class)s_stock_amount_unit")
     
     # CO-ADD - Strcuture Curation 
     std_status = models.CharField(max_length=10, blank=True, verbose_name = "Std Status")
     std_action = models.CharField(max_length=120, blank=True, verbose_name = "Std Action")
     std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
     std_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Std Smiles")
-    std_mw = models.FloatField(default=0, blank=True, verbose_name = "Std MW")
+    std_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Std MW")
     std_mf = models.CharField(max_length=100, blank=True, verbose_name = "Std MF")
 
     # CO-ADD - Link to External ID's

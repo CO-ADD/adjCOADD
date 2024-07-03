@@ -61,9 +61,9 @@ def main():
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # Table -------------------------------------------------------------
-    runTable = 'CompoundID'
+    runTables = ["CompoundID","ProjectID"]
 
-    if runTable == "ProjectID":
+    if "ProjectID" in runTables:
         ExcelFile = "D:/Upload/CastDB/Old2New_ID.xlsx"
         SheetName = "ProjectID"
         print(f"[Reading Excel] {ExcelFile} {SheetName} ")
@@ -83,7 +83,7 @@ def main():
             else:
                 print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
 
-    if runTable == "CompoundID":
+    if "CompoundID" in runTables:
         ExcelFile = "D:/Upload/CastDB/Old2New_ID.xlsx"
         SheetName = "CompoundID"
         print(f"[Reading Excel] {ExcelFile} {SheetName} ")

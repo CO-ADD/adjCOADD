@@ -81,6 +81,7 @@ def main():
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # Table -------------------------------------------------------------
+    ExcelFile = "D:/Upload/CastDB/pgData/Chem_Structure.csv"
 
     choiceTables = ['ChemStructure',
                     ]
