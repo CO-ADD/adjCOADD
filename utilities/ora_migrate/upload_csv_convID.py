@@ -54,8 +54,8 @@ def main(prgArgs,djDir):
    # Table -------------------------------------------------------------
     runTables = ["CompoundID","ProjectID"]
 
-    if "ProjectID" in runTables:
-        ExcelFile = "D:/Upload/CastDB/Old2New_ID.xlsx"
+    if prgArgs.table == "ProjectID" :
+        ExcelFile = prgArgs.file
         SheetName = "ProjectID"
         print(f"[Reading Excel] {ExcelFile} {SheetName} ")
         prjDF = pd.read_excel(ExcelFile,sheet_name=SheetName)
@@ -74,8 +74,8 @@ def main(prgArgs,djDir):
             else:
                 print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
 
-    if "CompoundID" in runTables:
-        ExcelFile = "D:/Upload/CastDB/Old2New_ID.xlsx"
+    if prgArgs.table == "CompoundID" :
+        ExcelFile = prgArgs.file
         SheetName = "CompoundID"
         print(f"[Reading Excel] {ExcelFile} {SheetName} ")
         cmpDF = pd.read_excel(ExcelFile,sheet_name=SheetName)
