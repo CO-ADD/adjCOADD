@@ -15,12 +15,7 @@ import django
 #from djCOADD import djOrgDB
 # from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
-
-import logging
 #-----------------------------------------------------------------------------
-
-def runProcess():
-   # Table -------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -32,7 +27,9 @@ def main(prgArgs,djDir):
     from apputil.models import ApplicationUser
     from dchem.models import Chem_Structure
     from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
+
     # Logger ----------------------------------------------------------------
+    import logging
     logTime= datetime.datetime.now()
     logName = "UploadOrgDB"
     logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
