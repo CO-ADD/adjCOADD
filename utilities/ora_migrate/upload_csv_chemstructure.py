@@ -124,7 +124,7 @@ if __name__ == "__main__":
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    if prgArgs.config == 'Meran'
+    if prgArgs.config == 'Meran':
         djDir = "D:/Code/zdjCode/adjCOADD"
     #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
