@@ -78,7 +78,7 @@ def main(prgArgs,djDir):
         ExcelFile = prgArgs.file
         SheetName = "CompoundID"
         print(f"[Reading Excel] {ExcelFile} {SheetName} ")
-        cmpDF = pd.read_excel(ExcelFile,sheet_name=SheetName)ProjectID -f               Ol  
+        cmpDF = pd.read_excel(ExcelFile,sheet_name=SheetName)  
         cmpDF.compound_name = cmpDF.compound_name.fillna('')
         cmpDF.compound_code = cmpDF.compound_code.fillna('')
         
