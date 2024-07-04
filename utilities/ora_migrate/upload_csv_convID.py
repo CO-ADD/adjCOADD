@@ -21,16 +21,7 @@ import logging
 
 
 #-----------------------------------------------------------------------------
-def main():
-
-    # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
-                                description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
-    prgArgs = prgParser.parse_args()
-
-    # Django -------------------------------------------------------------
-    djDir = "D:/Code/zdjCode/adjCOADD"
+def main(prgArgs,djDir):
 
     sys.path.append(djDir)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
@@ -110,10 +101,44 @@ def main():
 #==============================================================================
 if __name__ == "__main__":
 
+#==============================================================================
+if __name__ == "__main__":
+
     print("-------------------------------------------------------------------")
     print("Running : ",sys.argv)
     print("-------------------------------------------------------------------")
-    main()
-    print("...................................................................")
+
+
+    # ArgParser -------------------------------------------------------------
+    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+                                description="Uploading data to adjCOADD from Oracle/Excel/CSV")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
+    prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
+#    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
+#    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
+    prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
+#    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
+#    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgArgs = prgParser.parse_args()
+
+    # Django -------------------------------------------------------------
+    if prgArgs.config == 'Meran':
+        djDir = "D:/Code/zdjCode/adjCOADD"
+    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
+    elif prgArgs.config == 'Work':
+        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
+    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    elif prgArgs.config == 'Laptop':
+        djDir = "D:/Code/zdjCode/adjCOADD"
+    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
+    else:
+        djDir = None
+
+    if djDir:
+        main(prgArgs,djDir)
+        print("-------------------------------------------------------------------")
 
 #==============================================================================
