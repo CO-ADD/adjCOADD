@@ -19,40 +19,11 @@ import django
 import logging
 #-----------------------------------------------------------------------------
 
+def runProcess():
+   # Table -------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
-def main():
-
-    # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
-                                description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
-    prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
-    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
-    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
-    prgArgs = prgParser.parse_args()
-
-    # Django -------------------------------------------------------------
-    djDir = "D:/Code/zdjCode/adjCOADD"
-    # uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    # orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    # if prgArgs.database == 'Work':
-    #     djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    # elif prgArgs.database == 'WorkLinux':
-    #     djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-
-    # xlFiles = {
-    #     'Application': "ApplicationData_v05.xlsx",
-    #     'Drug': "DrugData_v04.xlsx",
-    #     'MIC': "LMIC_Data_v06.xlsx",
-    #     'OrgDB': "OrgDB_v20_30Jun2023.xlsx",
-    # }
+def main(prgArgs,djDir):
 
     sys.path.append(djDir)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
@@ -81,11 +52,9 @@ def main():
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-   # Table -------------------------------------------------------------
     ExcelFile = "D:/Upload/CastDB/pgData/Chem_Structure.csv"
 
-    choiceTables = ['ChemStructure',
-                    ]
+    choiceTables = ['ChemStructure']
     if prgArgs.table in choiceTables:
 
         logger.info(f"[Upd_djCOADD] Table: {prgArgs.table}") 
@@ -134,15 +103,46 @@ def main():
                         print(f" nFrag: {row['structure_id']} {row['smiles']} -> nFrag: {_nfrag}") 
  
             outDF = pd.DataFrame(outDict)
-            outDF.to_excel('UploadChemStructure_Issues.xlsx')
-    
+            outDF.to_excel('UploadChemStructure_Issues.xlsx')    
 #==============================================================================
 if __name__ == "__main__":
 
     print("-------------------------------------------------------------------")
     print("Running : ",sys.argv)
     print("-------------------------------------------------------------------")
-    main()
+
+
+    # ArgParser -------------------------------------------------------------
+    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+                                description="Uploading data to adjCOADD from Oracle/Excel/CSV")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
+    prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
+#    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
+#    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
+    prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
+#    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
+#    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgArgs = prgParser.parse_args()
+
+    # Django -------------------------------------------------------------
+    if prgArgs.config == 'Meran'
+        djDir = "D:/Code/zdjCode/adjCOADD"
+    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
+    elif prgArgs.config == 'Work':
+        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
+    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    elif prgArgs.config == 'Laptop':
+        djDir = "D:/Code/zdjCode/adjCOADD"
+    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
+    else:
+        djDir = None
+
+    if djDir:
+        main(prgArgs,djDir)
+
     print("...................................................................")
 
 #==============================================================================
