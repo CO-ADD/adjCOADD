@@ -58,6 +58,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    from apputil.models import ApplicationUser
     from dchem.models import Chem_Structure
     from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
     # Logger ----------------------------------------------------------------
@@ -91,6 +92,9 @@ def main():
         logger.info(f"[Upd_djCOADD] User:  {prgArgs.appuser}") 
 
         if prgArgs.table == 'ChemStructure' and prgArgs.file:
+
+            appuser = ApplicationUser.get(prgArgs.appuser)
+
             with open(prgArgs.file, mode='r') as csv_file:
                 lines = len(csv_file.readlines())
             
@@ -121,7 +125,7 @@ def main():
                                 print(f" Metal: {row['structure_id']} {row['smiles']} -> Metal: {lstMetall}") 
                             else:    
                                 if prgArgs.upload:
-                                    c.save()
+                                    c.save(user=appuser)
 
                     else:
                         row['Issue'] = f"nFrag"
