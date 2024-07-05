@@ -26,7 +26,8 @@ logLevel = logging.INFO
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format="[%(name)-20s] %(message)s ",
-    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+    handlers=[logging.StreamHandler()],
     level=logLevel)
 #-----------------------------------------------------------------------------
 
