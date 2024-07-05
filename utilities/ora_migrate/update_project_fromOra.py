@@ -32,26 +32,6 @@ logging.basicConfig(
 #-----------------------------------------------------------------------------
 
 
-# def set_arrayFields_fromDict(djModel,rowDict, arrDict):
-#     for f in arrDict:
-#         #print("arrFields",f)
-#         if isinstance(arrDict[f],str):
-#             if pd.notnull(rowDict[arrDict[f]]):
-#                 setattr(djModel,f,rowDict[arrDict[f]].split(";"))
-                
-#         elif isinstance(arrDict[f],list):
-#             _list = []
-#             for l in arrDict[f]:
-#                 if pd.notnull(rowDict[l]):
-#                     _list.append(rowDict[l])
-#             setattr(djModel,f,_list)
-        
-# def set_fromDict(djModel,rowDict,setList):
-#     for e in setList:
-#         #print("fromDict",e)
-#         if pd.notnull(rowDict[e]):
-#             setattr(djModel,e,rowDict[e])
-
 
 def get_oraProject():
     from oraCastDB.oraCastDB import openCastDB
@@ -129,15 +109,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-    def set_DictFields(djModel,rowDict,dictList):
-        for d in dictList:
-            #print("fromDict",d)
-            if pd.notnull(rowDict[d]):
-                if d in djModel.Choice_Dictionary:
-                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
-
    # Table -------------------------------------------------------------
-    runTables = ["CompoundID","ProjectID"]
 
     if prgArgs.table == "ProjectID" :
 
