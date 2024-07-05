@@ -163,9 +163,11 @@ def main(prgArgs,djDir):
         dictFields = ['project_type','provided_container','stock_conc_unit',]
 
 
+        outNumbers = {'Proc':0,'New':0,'Upload':0}
         outDict = []    
         for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
             new_entry = False
+            outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
             if cvPrj:
                 #print(f"{row['ora_project_id']} {cvPrj.project_id}")
@@ -174,6 +176,7 @@ def main(prgArgs,djDir):
                     djPrj = Project()
                     djPrj.project_id = cvPrj.project_id
                     new_entry = True
+                    outNumbers['New'] += 1
                 else:
                     row['Issue'] = f"Exists"
 
@@ -194,10 +197,12 @@ def main(prgArgs,djDir):
                 if validStatus:
                     if prgArgs.upload:
                         if new_entry or prgArgs.overwrite:
+                            outNumbers['Upload'] += 1
                             djPrj.save()
             else:
                 row['Issue'] = f"ConvProject not found"
                 outDict.append(row)
+        print(f"{outNumbers}")
         if len(outDict) > 0:
             print(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(outDict)
