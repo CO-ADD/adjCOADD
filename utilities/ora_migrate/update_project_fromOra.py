@@ -63,6 +63,7 @@ def get_oraProject():
         "report_hv_date":   "ora_hvreport_date",
         "project_id":       "ora_project_id",
         "country":          "ora_country",
+        "library_name":     "pub_name",
     }
 
     replaceValues = {
