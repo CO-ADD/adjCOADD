@@ -30,6 +30,26 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
     level=logLevel)
 #-----------------------------------------------------------------------------
+def set_arrayFields_fromDict(djModel,rowDict, arrDict):
+    for f in arrDict:
+        #print("arrFields",f)
+        if isinstance(arrDict[f],str):
+            if pd.notnull(rowDict[arrDict[f]]):
+                setattr(djModel,f,rowDict[arrDict[f]].split(";"))
+                
+        elif isinstance(arrDict[f],list):
+            _list = []
+            for l in arrDict[f]:
+                if pd.notnull(rowDict[l]):
+                    _list.append(rowDict[l])
+            setattr(djModel,f,_list)
+        
+def set_fromDict(djModel,rowDict,setList):
+    for e in setList:
+        #print("fromDict",e)
+        if pd.notnull(rowDict[e]):
+            setattr(djModel,e,rowDict[e])
+
 
 def get_oraProject():
     from oraCastDB.oraCastDB import openCastDB
@@ -112,7 +132,6 @@ def main(prgArgs,djDir):
 
         prjDF = get_oraProject()
 
-        ignoreFields = ['COUNTRY','STATUS','PROJECT_ACTION','SCREEN_CONC','SCREEN_CONC_UNIT','COADD_ID','ANTIMICRO_STATUS']
         cpyFields = ['project_name','project_comment',
                     'provided_comment','stock_container','cpoz_id','process_status',
                     'received','completed',
@@ -130,7 +149,44 @@ def main(prgArgs,djDir):
                         'pub_status': 'pub_status',
                         'ora_contact_ids':['CONTACT_A_ID','CONTACT_B_ID']
                     }
+        dictFields = ['project_type','provided_container','stock_conc_unit',]
 
+        outDict = []    
+        for idx,row in tqdm(prjDF.iterrows(), total=df.shape[0]):
+            
+            cvPrj = Convert_ProjectID.get(row['ora_project_id'])
+            if cvPrj:
+                #print(f"{row['ora_project_id']} {cvPrj.project_id}")
+                djPrj = Project.get(cvPrj.project_id)
+                if djPrj is None:
+                    djPrj = Project()
+                    djPrj.project_id = cvPrj.project_id
+                    
+                    set_fromDict(djPrj,row,cpyFields)
+                    set_arrayFields_fromDict(djPrj,row,arrayFields)
+                    set_DictFields(djPrj,row,dictFields)
+                    if prgArgs.upload:
+                        validStatus = True
+                        djPrj.clean_Fields()
+                        validDict = djPrj.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+                        if validStatus:
+                            djPrj.save()
+                else:
+                    row['Issue'] = f"Exists"
+                    outDict.append(row)
+            else:
+                row['Issue'] = f"ConvProject not found"
+                outDict.append(row)
+        if len(outDict) > 0:
+            print(f"Writing Issues: {OutFile}")
+            outDF = pd.DataFrame(outDict)
+            outDF.to_excel(OutFile)
+        else:
+            print(f"No Issues")
 
 
         # ExcelFile = prgArgs.file
