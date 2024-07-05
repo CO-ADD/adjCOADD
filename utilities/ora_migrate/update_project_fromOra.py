@@ -84,7 +84,7 @@ def main(prgArgs,djDir):
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
-    logger.info(f"LogFile        : {logFileName}")
+    #logger.info(f"LogFile        : {logFileName}")
 
     logger.info(f"Django         : {django.__version__}")
     logger.info(f"Django Folder  : {djDir}")
