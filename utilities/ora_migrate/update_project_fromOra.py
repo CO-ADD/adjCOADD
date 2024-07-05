@@ -148,7 +148,7 @@ def main(prgArgs,djDir):
                         'data_status': 'data_status',
                         'stock_status': 'stock_status',
                         'pub_status': 'pub_status',
-                        'ora_contact_ids':['CONTACT_A_ID','CONTACT_B_ID']
+                        'ora_contact_ids':['contact_a_id','contact_b_id']
                     }
         dictFields = ['project_type','provided_container','stock_conc_unit',]
 
