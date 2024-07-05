@@ -152,7 +152,7 @@ def main(prgArgs,djDir):
         dictFields = ['project_type','provided_container','stock_conc_unit',]
 
         outDict = []    
-        for idx,row in tqdm(prjDF.iterrows(), total=df.shape[0]):
+        for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
             
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
             if cvPrj:
