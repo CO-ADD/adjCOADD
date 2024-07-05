@@ -46,7 +46,7 @@ def get_oraProject():
     }
 
     replaceValues = {
-      'provided_container' : {'Tubes':'Tube'} 
+      'provided_container':{'Tubes':'Tube', 'Vials':'Vial', 'Plates':'Plate'}
     }
 
     prjSQL = """
@@ -75,9 +75,14 @@ def get_oraProject():
     logger.info(f"[Projects] {nTotal} ")
     CastDB.close()
 
+    logger.info(f"DF - Rename Columns {len(renameCol)}")
     prjDF.rename(columns=renameCol, inplace=True)
+
+    logger.info(f"DF - Rename Columns {len(renameCol)}")
     for k in replaceValues:
-        prjDF[k].replace(to_replace=replaceValues[k],inplace=True)
+        print(prjDF[k])
+        prjDF[k].replace(replaceValues[k],inplace=True)
+        print(prjDF[k])
     return(prjDF)
 
 #-----------------------------------------------------------------------------
