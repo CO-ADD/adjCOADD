@@ -20,7 +20,7 @@ import django
 import logging
 logTime= datetime.datetime.now()
 logName = "Upload_ConvertID"
-logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
 logger = logging.getLogger(__name__)
