@@ -66,7 +66,9 @@ def get_oraProject():
     prjList = CastDB.get_dict_list(prjSQL)
     nTotal = len(prjList)
     logger.info(f"[Projects] {nTotal} ")
-    CastDB.close(prjList)
+    CastDB.close()
+    print(prjList[0])
+    return(prjList)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
