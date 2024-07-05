@@ -69,7 +69,9 @@ def get_oraProject():
     }
 
     replaceValues = {
-      'provided_container':{'Tubes':'Tube', 'Vials':'Vial', 'Plates':'Plate'}
+      'provided_container':{'Tubes':'Tube', 'Vials':'Vial', 'Plates':'Plate'},
+      'project_type':{'Internal':'Reference', 'Project':'GrpProject', 'Agreement':'Contract'},
+      'stock_conc_unit':{'mg':'mg/mL'},
     }
 
     prjSQL = """
