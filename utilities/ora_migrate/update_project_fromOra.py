@@ -44,8 +44,6 @@ def get_oraProject():
     firstStockDate = datetime.date(2010, 1, 1)
     prjSQL = """
      Select PROJECT_ID, PROJECT_NAME, PROJECT_STATUS, PROJECT_TYPE, LIBRARY_NAME,
-
-
         COADD_ID, CPOZ_ID,
         RECEIVED, COMPLETED,
         COMPOUND_COMMENT, COMPOUND_STATUS,
@@ -59,7 +57,7 @@ def get_oraProject():
         ANTIMICRO_STATUS,
         PROJECT_ACTION, PROJECT_COMMENT,
         PROVIDED_COMMENT, PROVIDED_CONTAINER,
-        PUB_DATE, PUB_STATUS,
+        PUB_DATE, PUB_STATUS
     From Project
     -- Where Organism_Name like 'Klebsiella%'
     """
