@@ -115,8 +115,8 @@ def main(prgArgs,djDir):
         #         if prgArgs.upload:
         #             djE.clean_Fields()
         #             djE.save()
-            else:
-                print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
+            # else:
+            #     print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
 
     
 #==============================================================================
