@@ -34,41 +34,51 @@ logging.basicConfig(
 def get_oraProject():
     from oraCastDB.oraCastDB import openCastDB
 
-    fix_StockType = {
-        "Master"    : "MasterStock",
-        "Master_LN2":"MasterLN2",
-        "Stock"     :"Stock",
-        "HighUse"   :"HighUse",
+    renameCol = {
+        "project_status":   "process_status",
+        "group_id":         "ora_group_id",
+        "organisation":     "ora_organisation",
+        "report_ps_date":   "ora_psreport_date",
+        "report_hc_date":   "ora_hcreport_date",
+        "report_hv_date":   "ora_hvreport_date",
+        "project_id":       "ora_project_id",
+        "country":          "ora_country",
     }
 
-    firstStockDate = datetime.date(2010, 1, 1)
+    replaceValues = {
+      'provided_container' : {'Tubes':'Tube'} 
+    }
+
     prjSQL = """
-     Select PROJECT_ID, PROJECT_NAME, PROJECT_STATUS, PROJECT_TYPE, LIBRARY_NAME,
-            COADD_ID, CPOZ_ID,
-            RECEIVED, COMPLETED,
-            COMPOUND_COMMENT, COMPOUND_STATUS,
-            GROUP_ID, CONTACT_A_ID, CONTACT_B_ID,
-            ORGANISATION, COUNTRY,
-            REPORT_COMMENT, REPORT_HC_DATE, REPORT_HV_DATE, REPORT_PS_DATE, REPORT_STATUS,
-            SCREEN_COMMENT,
-            SCREEN_CONC, SCREEN_CONC_UNIT, SCREEN_STATUS,
-            STOCK_COMMENT, STOCK_CONC, STOCK_CONC_UNIT, STOCK_CONTAINER, STOCK_STATUS,
-            DATA_COMMENT, DATA_STATUS,
-            ANTIMICRO_STATUS,
-            PROJECT_ACTION, PROJECT_COMMENT,
-            PROVIDED_COMMENT, PROVIDED_CONTAINER,
-            PUB_DATE, PUB_STATUS
+     Select project_id, project_name, project_status, project_type, library_name,
+            coadd_id, cpoz_id,
+            received, completed,
+            compound_comment, compound_status,
+            group_id, contact_a_id, contact_b_id,
+            organisation, country,
+            report_comment, report_hc_date, report_hv_date, report_ps_date, report_status,
+            screen_comment,
+            screen_conc, screen_conc_unit, screen_status,
+            stock_comment, stock_conc, stock_conc_unit, stock_container, stock_status,
+            data_comment, data_status,
+            antimicro_status,
+            project_action, project_comment,
+            provided_comment, provided_container,
+            pub_date, pub_status
      From Project
     -- Where Organism_Name like 'Klebsiella%'
     """
     CastDB = openCastDB()
     logger.info(f"[Projects] ... ")
-    prjList = CastDB.get_dict_list(prjSQL)
-    nTotal = len(prjList)
+    prjDF = pd.DataFrame(CastDB.get_dict_list(prjSQL))
+    nTotal = len(prjDF)
     logger.info(f"[Projects] {nTotal} ")
     CastDB.close()
-    print(prjList[0])
-    return(prjList)
+
+    prjDF.rename(columns=renameCol, inplace=True)
+    for k in replaceValues:
+        prjDF[k].replace(to_replace=replaceValues[k],inplace=True)
+    return(prjDF)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -95,8 +105,26 @@ def main(prgArgs,djDir):
 
     if prgArgs.table == "ProjectID" :
 
-        prjList = get_oraProject()
+        prjDF = get_oraProject()
 
+        ignoreFields = ['COUNTRY','STATUS','PROJECT_ACTION','SCREEN_CONC','SCREEN_CONC_UNIT','COADD_ID','ANTIMICRO_STATUS']
+        cpyFields = ['project_name','project_comment',
+                    'provided_comment','stock_container','cpoz_id','process_status',
+                    'received','completed',
+                    'screen_comment','report_comment',
+                    'compound_comment','data_comment',
+                    'stock_comment', 'stock_conc',
+                    'pub_name', 'pub_date',		
+                    'ora_group_id','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date','ora_project_id'
+                    ]
+        arrayFields = {'screen_status': 'screen_status',
+                        'report_status': 'report_status',
+                        'compound_status': 'compound_status',
+                        'data_status': 'data_status',
+                        'stock_status': 'stock_status',
+                        'pub_status': 'pub_status',
+                        'ora_contact_ids':['CONTACT_A_ID','CONTACT_B_ID']
+                    }
 
 
 
