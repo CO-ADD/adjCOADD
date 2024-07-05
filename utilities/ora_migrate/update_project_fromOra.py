@@ -115,6 +115,7 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    from apputil.models import Dictionary
     from dsample.models import Project
     from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
     from dsample.models import Convert_ProjectID, Convert_CompoundID
