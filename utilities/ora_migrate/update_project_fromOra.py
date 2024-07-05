@@ -32,25 +32,25 @@ logging.basicConfig(
 #-----------------------------------------------------------------------------
 
 
-def set_arrayFields_fromDict(djModel,rowDict, arrDict):
-    for f in arrDict:
-        #print("arrFields",f)
-        if isinstance(arrDict[f],str):
-            if pd.notnull(rowDict[arrDict[f]]):
-                setattr(djModel,f,rowDict[arrDict[f]].split(";"))
+# def set_arrayFields_fromDict(djModel,rowDict, arrDict):
+#     for f in arrDict:
+#         #print("arrFields",f)
+#         if isinstance(arrDict[f],str):
+#             if pd.notnull(rowDict[arrDict[f]]):
+#                 setattr(djModel,f,rowDict[arrDict[f]].split(";"))
                 
-        elif isinstance(arrDict[f],list):
-            _list = []
-            for l in arrDict[f]:
-                if pd.notnull(rowDict[l]):
-                    _list.append(rowDict[l])
-            setattr(djModel,f,_list)
+#         elif isinstance(arrDict[f],list):
+#             _list = []
+#             for l in arrDict[f]:
+#                 if pd.notnull(rowDict[l]):
+#                     _list.append(rowDict[l])
+#             setattr(djModel,f,_list)
         
-def set_fromDict(djModel,rowDict,setList):
-    for e in setList:
-        #print("fromDict",e)
-        if pd.notnull(rowDict[e]):
-            setattr(djModel,e,rowDict[e])
+# def set_fromDict(djModel,rowDict,setList):
+#     for e in setList:
+#         #print("fromDict",e)
+#         if pd.notnull(rowDict[e]):
+#             setattr(djModel,e,rowDict[e])
 
 
 def get_oraProject():
@@ -103,7 +103,7 @@ def get_oraProject():
     logger.info(f"DF - Rename Columns {len(renameCol)}")
     prjDF.rename(columns=renameCol, inplace=True)
 
-    logger.info(f"DF - Rename Columns {len(renameCol)}")
+    logger.info(f"DF - Replace Values {len(replaceValues)}")
     for k in replaceValues:
         prjDF[k].replace(replaceValues[k],inplace=True)
     return(prjDF)
@@ -116,8 +116,8 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
+    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
     from dsample.models import Project
-    from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
     
@@ -165,7 +165,7 @@ def main(prgArgs,djDir):
 
         outDict = []    
         for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
-            
+            new_entry = False
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
             if cvPrj:
                 #print(f"{row['ora_project_id']} {cvPrj.project_id}")
@@ -173,23 +173,28 @@ def main(prgArgs,djDir):
                 if djPrj is None:
                     djPrj = Project()
                     djPrj.project_id = cvPrj.project_id
-                    
-                    set_fromDict(djPrj,row,cpyFields)
-                    set_arrayFields_fromDict(djPrj,row,arrayFields)
-                    set_DictFields(djPrj,row,dictFields)
-                    if prgArgs.upload:
-                        validStatus = True
-                        djPrj.clean_Fields()
-                        validDict = djPrj.validate()
-                        if validDict:
-                            validStatus = False
-                            for k in validDict:
-                                print('Warning',k,validDict[k],'-')
-                        if validStatus:
-                            djPrj.save()
+                    new_entry = True
                 else:
                     row['Issue'] = f"Exists"
+
+                set_dictFields(djPrj,row,cpyFields)
+                set_arrayFields(djPrj,row,arrayFields)
+                set_Dictionaries(djPrj,row,dictFields)
+
+                validStatus = True
+                djPrj.clean_Fields()
+                validDict = djPrj.validate()
+
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
                     outDict.append(row)
+
+                if validStatus:
+                    if prgArgs.upload:
+                        if new_entry or prgArgs.overwrite:
+                            djPrj.save()
             else:
                 row['Issue'] = f"ConvProject not found"
                 outDict.append(row)
@@ -199,27 +204,6 @@ def main(prgArgs,djDir):
             outDF.to_excel(OutFile)
         else:
             print(f"No Issues")
-
-
-        # ExcelFile = prgArgs.file
-        # SheetName = "ProjectID"
-        # print(f"[Reading Excel] {ExcelFile} {SheetName} ")
-        # prjDF = pd.read_excel(ExcelFile,sheet_name=SheetName)
-        # prjDF.project_name = prjDF.project_name.fillna('')
-        
-        # for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
-        #     djE = Convert_ProjectID.get(row['ora_project_id'])
-        #     if djE is None:
-        #         djE = Convert_ProjectID()
-        #         djE.ora_project_id = row['ora_project_id']
-        #         djE.project_id = row['project_id']
-        #         djE.project_name = row['project_name']
-        #         if prgArgs.upload:
-        #             djE.clean_Fields()
-        #             djE.save()
-            # else:
-            #     print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
-
     
 #==============================================================================
 if __name__ == "__main__":
@@ -234,6 +218,7 @@ if __name__ == "__main__":
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
+    prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
 #    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
