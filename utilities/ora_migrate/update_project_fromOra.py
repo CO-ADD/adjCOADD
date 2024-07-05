@@ -105,9 +105,7 @@ def get_oraProject():
 
     logger.info(f"DF - Rename Columns {len(renameCol)}")
     for k in replaceValues:
-        print(prjDF[k])
         prjDF[k].replace(replaceValues[k],inplace=True)
-        print(prjDF[k])
     return(prjDF)
 
 #-----------------------------------------------------------------------------
@@ -144,7 +142,7 @@ def main(prgArgs,djDir):
     if prgArgs.table == "ProjectID" :
 
         prjDF = get_oraProject()
-
+        OutFile = f"UpdateProject_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         cpyFields = ['project_name','project_comment',
                     'provided_comment','stock_container','cpoz_id','process_status',
                     'received','completed',
