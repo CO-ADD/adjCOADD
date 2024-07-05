@@ -30,6 +30,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
     level=logLevel)
 #-----------------------------------------------------------------------------
+
+
 def set_arrayFields_fromDict(djModel,rowDict, arrDict):
     for f in arrDict:
         #print("arrFields",f)
@@ -126,6 +128,13 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
+    def set_DictFields(djModel,rowDict,dictList):
+        for d in dictList:
+            #print("fromDict",d)
+            if pd.notnull(rowDict[d]):
+                if d in djModel.Choice_Dictionary:
+                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
+
    # Table -------------------------------------------------------------
     runTables = ["CompoundID","ProjectID"]
 
@@ -151,6 +160,7 @@ def main(prgArgs,djDir):
                         'ora_contact_ids':['contact_a_id','contact_b_id']
                     }
         dictFields = ['project_type','provided_container','stock_conc_unit',]
+
 
         outDict = []    
         for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
