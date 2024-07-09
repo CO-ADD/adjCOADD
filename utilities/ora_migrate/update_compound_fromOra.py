@@ -31,21 +31,12 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-
-
 def get_oraCompound():
     from oraCastDB.oraCastDB import openCastDB
 
     renameCol = {
-        "project_status":   "process_status",
-        "group_id":         "ora_group_id",
-        "organisation":     "ora_organisation",
-        "report_ps_date":   "ora_psreport_date",
-        "report_hc_date":   "ora_hcreport_date",
-        "report_hv_date":   "ora_hvreport_date",
+        "compound_id":      "ora_compound_id",
         "project_id":       "ora_project_id",
-        "country":          "ora_country",
-        "library_name":     "pub_name",
     }
 
     replaceValues = {
@@ -55,38 +46,25 @@ def get_oraCompound():
     }
 
     prjSQL = """
-     Select project_id, project_name, project_status, project_type, library_name,
-            coadd_id, cpoz_id,
-            received, completed,
-            compound_comment, compound_status,
-            group_id, contact_a_id, contact_b_id,
-            organisation, country,
-            report_comment, report_hc_date, report_hv_date, report_ps_date, report_status,
-            screen_comment,
-            screen_conc, screen_conc_unit, screen_status,
-            stock_comment, stock_conc, stock_conc_unit, stock_container, stock_status,
-            data_comment, data_status,
-            antimicro_status,
-            project_action, project_comment,
-            provided_comment, provided_container,
-            pub_date, pub_status
+     Select *
      From Compound
     -- Where Organism_Name like 'Klebsiella%'
     """
     CastDB = openCastDB()
-    logger.info(f"[Projects] ... ")
-    prjDF = pd.DataFrame(CastDB.get_dict_list(prjSQL))
-    nTotal = len(prjDF)
-    logger.info(f"[Projects] {nTotal} ")
+    logger.info(f"[Compounds] ... ")
+    cmpDF = pd.DataFrame(CastDB.get_dict_list(prjSQL))
+    nTotal = len(cmpDF)
+    logger.info(f"[Compounds] {nTotal} ")
     CastDB.close()
 
     logger.info(f"DF - Rename Columns {len(renameCol)}")
-    prjDF.rename(columns=renameCol, inplace=True)
+    cmpDF.rename(columns=renameCol, inplace=True)
 
-    logger.info(f"DF - Replace Values {len(replaceValues)}")
-    for k in replaceValues:
-        prjDF[k].replace(replaceValues[k],inplace=True)
-    return(prjDF)
+    # logger.info(f"DF - Replace Values {len(replaceValues)}")
+    # for k in replaceValues:
+    #     cmpDF[k].replace(replaceValues[k],inplace=True)
+
+    return(cmpDF)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -111,10 +89,11 @@ def main(prgArgs,djDir):
 
    # Table -------------------------------------------------------------
 
-    if prgArgs.table == "ProjectID" :
+    if prgArgs.table == "CompoundID" :
 
-        prjDF = get_oraProject()
+        prjDF = get_oraCompound()
         OutFile = f"UpdateCompound_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+
         cpyFields = ['project_name','project_comment',
                     'provided_comment','stock_container','cpoz_id','process_status',
                     'received','completed',
@@ -173,8 +152,9 @@ def main(prgArgs,djDir):
                             djPrj.save()
             else:
                 row['Issue'] = f"ConvProject not found"
+                print(f"[oraCompound] ConvProject {row['ora_compound_id']} not found")
                 outDict.append(row)
-        print(f"{outNumbers}")
+        print(f"[oraCompound] :{outNumbers}")
         if len(outDict) > 0:
             print(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(outDict)

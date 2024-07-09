@@ -250,7 +250,8 @@ class COADD_Compound(AuditModel):
     compound_name = models.CharField(max_length=120, blank=True, verbose_name = "Name")
     compound_desc = models.CharField(max_length=150, blank=True, verbose_name = "Comment")
 
-    old_compound_id = models.CharField(max_length=15, unique=True, verbose_name = "Old ID")
+    ora_compound_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Compound ID")
+    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
 
     project_id = models.ForeignKey(Project, null=True, blank=True, verbose_name = "Project ID", on_delete=models.DO_NOTHING,
         db_column="project_id", related_name="%(class)s_project_id")
@@ -305,7 +306,7 @@ class COADD_Compound(AuditModel):
     class Meta:
         app_label = 'dsample'
         db_table = 'coadd_sample'
-        ordering=['sample_id']
+        ordering=['compound_id']
         indexes = [
             models.Index(name="coadd_name_idx", fields=['compound_name']),
             models.Index(name="coadd_code_idx", fields=['compound_code']),

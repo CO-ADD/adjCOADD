@@ -88,6 +88,7 @@ def get_oraProject():
         prjDF[k].replace(replaceValues[k],inplace=True)
     return(prjDF)
 
+
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
@@ -173,10 +174,11 @@ def main(prgArgs,djDir):
                             djPrj.save()
             else:
                 row['Issue'] = f"ConvProject not found"
+                print(f"[oraProject] ConvProject {row['ora_project_id']} not found")
                 outDict.append(row)
-        print(f"{outNumbers}")
+        print(f"[oraProject] : {outNumbers}")
         if len(outDict) > 0:
-            print(f"Writing Issues: {OutFile}")
+            print(f"Writing {len(outDict)} Issues: {OutFile}")
             outDF = pd.DataFrame(outDict)
             outDF.to_excel(OutFile)
         else:
@@ -214,7 +216,7 @@ if __name__ == "__main__":
         djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
     #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     elif prgArgs.config == 'Laptop':
-        djDir = "D:/Code/zdjCode/adjCOADD"
+        djDir = "C:/Code/zdjCode/adjCOADD"
     #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
     else:
         djDir = None
