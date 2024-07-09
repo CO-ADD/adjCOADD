@@ -283,7 +283,7 @@ class COADD_Compound(AuditModel):
     reg_conc = models.DecimalField(max_digits=9, decimal_places=2, default=0,verbose_name = "Reg Conc")
     reg_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Reg Conc Unit", on_delete=models.DO_NOTHING,
         db_column="reg_conc_unit", related_name="%(class)s_reg_conc_unit")
-    reg_solvent = models.FloatField(default=0, blank=True, verbose_name = "Reg Solvent")
+    reg_solvent = models.CharField(max_length=100, blank=True, verbose_name = "Reg Solvent")
     
     # CO-ADD - Stock 
     prep_date = models.DateField(null=True, blank=True, verbose_name="Prepared")
