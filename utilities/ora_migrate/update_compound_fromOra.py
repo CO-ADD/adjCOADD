@@ -37,6 +37,10 @@ def get_oraCompound():
     renameCol = {
         "compound_id":      "ora_compound_id",
         "project_id":       "ora_project_id",
+        "compound_type":    "ora_compound_type",
+        "link_spark":       "spark_id",
+        "link_chembl":      "chembl_id",
+        "reg_solubility":   "reg_solvent",
     }
 
     replaceValues = {
@@ -76,7 +80,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dsample.models import Project
+    from dsample.models import Project, COADD_Compound
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
     
@@ -92,69 +96,74 @@ def main(prgArgs,djDir):
 
     if prgArgs.table == "CompoundID" :
 
-        prjDF = get_oraCompound()
+        cmpDF = get_oraCompound()
+        print(cmpDF.columns)
         OutFile = f"UpdateCompound_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        cpyFields = ['project_name','project_comment',
-                    'provided_comment','stock_container','cpoz_id','process_status',
-                    'received','completed',
-                    'screen_comment','report_comment',
-                    'compound_comment','data_comment',
-                    'stock_comment', 'stock_conc',
-                    'pub_name', 'pub_date',		
-                    'ora_group_id','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date','ora_project_id'
+        cpyFields = ['compound_code','compound_name','compound_description',
+                     'cpoz_sn','cpoz_id','coadd_id','spark_id',
+                    'reg_smiles','reg_structure','reg_mw','reg_mf',
+                    'reg_amount','reg_volume','reg_conc','reg_solvent',
+                    'stock_amount','prep_date',
+                    'pub_status','pub_date',
+                    'ora_compound_id','ora_project_id'
                     ]
-        arrayFields = {'screen_status': 'screen_status',
-                        'report_status': 'report_status',
-                        'compound_status': 'compound_status',
-                        'data_status': 'data_status',
-                        'stock_status': 'stock_status',
-                        'pub_status': 'pub_status',
-                        'ora_contact_ids':['contact_a_id','contact_b_id']
-                    }
-        dictFields = ['project_type','provided_container','stock_conc_unit',]
+        # arrayFields = {'screen_status': 'screen_status',
+        #                 'report_status': 'report_status',
+        #                 'compound_status': 'compound_status',
+        #                 'data_status': 'data_status',
+        #                 'stock_status': 'stock_status',
+        #                 'pub_status': 'pub_status',
+        #                 'ora_contact_ids':['contact_a_id','contact_b_id']
+        #             }
+        dictFields = [
+                    'reg_amount_unit','reg_volume_unit','reg_conc_unit','stock_amount_unit',
+                      ]
 
 
         outNumbers = {'Proc':0,'New':0,'Upload':0}
         outDict = []    
-        for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
+        for idx,row in tqdm(cmpDF.iterrows(), total=cmpDF.shape[0]):
             new_entry = False
             outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
-            if cvPrj:
+            cvCmpd = Convert_CompoundID.get(row['ora_compound_id'])
+
+            cmpDF
+            if cvCmpd:
                 #print(f"{row['ora_project_id']} {cvPrj.project_id}")
-                djPrj = Project.get(cvPrj.project_id)
-                if djPrj is None:
-                    djPrj = Project()
-                    djPrj.project_id = cvPrj.project_id
+                djCmpd = COADD_Compound.get(cvPrj.project_id)
+                if djCmpd is None:
+                    djCmpd = COADD_Compound()
+                    djCmpd.compound_id = cvCmpd.compound_id
                     new_entry = True
                     outNumbers['New'] += 1
                 else:
                     row['Issue'] = f"Exists"
 
-                set_dictFields(djPrj,row,cpyFields)
-                set_arrayFields(djPrj,row,arrayFields)
-                set_Dictionaries(djPrj,row,dictFields)
+                set_dictFields(djCmpd,row,cpyFields)
+            #     set_arrayFields(djPrj,row,arrayFields)
+                set_Dictionaries(djCmpd,row,dictFields)
 
-                validStatus = True
-                djPrj.clean_Fields()
-                validDict = djPrj.validate()
+            #     validStatus = True
+            #     djPrj.clean_Fields()
+            #     validDict = djPrj.validate()
 
-                if validDict:
-                    validStatus = False
-                    for k in validDict:
-                        print('Warning',k,validDict[k],'-')
-                    outDict.append(row)
+            #     if validDict:
+            #         validStatus = False
+            #         for k in validDict:
+            #             print('Warning',k,validDict[k],'-')
+            #         outDict.append(row)
 
-                if validStatus:
-                    if prgArgs.upload:
-                        if new_entry or prgArgs.overwrite:
-                            outNumbers['Upload'] += 1
-                            djPrj.save()
-            else:
-                row['Issue'] = f"ConvProject not found"
-                print(f"[oraCompound] ConvProject {row['ora_compound_id']} not found")
-                outDict.append(row)
+            #     if validStatus:
+            #         if prgArgs.upload:
+            #             if new_entry or prgArgs.overwrite:
+            #                 outNumbers['Upload'] += 1
+            #                 djPrj.save()
+            # else:
+            #     row['Issue'] = f"ConvProject not found"
+            #     print(f"[oraCompound] ConvProject {row['ora_compound_id']} not found")
+            #     outDict.append(row)
         print(f"[oraCompound] :{outNumbers}")
         if len(outDict) > 0:
             print(f"Writing Issues: {OutFile}")
@@ -195,7 +204,7 @@ if __name__ == "__main__":
         djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
     #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     elif prgArgs.config == 'Laptop':
-        djDir = "D:/Code/zdjCode/adjCOADD"
+        djDir = "C:/Code/zdjCode/adjCOADD"
     #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
     else:
         djDir = None
