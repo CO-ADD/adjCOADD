@@ -189,7 +189,7 @@ class Sample(AuditModel):
         db_table = 'sample'
         ordering=['sample_id']
         indexes = [
-            models.Index(name="sample_name_idx", fields=['sample_name']),
+            models.Index(name="sample_src_idx", fields=['sample_source']),
             models.Index(name="sample_code_idx", fields=['sample_code']),
             models.Index(name="sample_type_idx", fields=['sample_type']),
             models.Index(name="sample_fmw_idx", fields=['full_mw']),
