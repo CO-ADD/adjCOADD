@@ -259,9 +259,9 @@ class COADD_Compound(AuditModel):
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
     
-    ora_compound_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Compound ID")
-    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
-    ora_compound_type = models.CharField(max_length=150, unique=True, verbose_name = "Old Compound Type")
+    ora_compound_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Compound ID")
+    ora_project_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Project ID")
+    ora_compound_type = models.CharField(max_length=150, blank=True, verbose_name = "Old Compound Type")
 
     # CO-ADD - Registration ------
     reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
