@@ -52,8 +52,7 @@ def get_oraCompound():
     prjSQL = """
      Select *
      From Compound
-    -- Where Organism_Name like 'Klebsiella%'
-     Fetch First 10 Rows Only
+    -- Fetch First 10 Rows Only
     """
     CastDB = openCastDB()
     logger.info(f"[Compounds] ... ")
