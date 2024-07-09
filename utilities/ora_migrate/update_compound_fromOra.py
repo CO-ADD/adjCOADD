@@ -49,7 +49,9 @@ def get_oraCompound(test=0):
       'stock_conc_unit':{'mg':'mg/mL'},
     }
 
-    cmpSQL = "Select * From Compound "
+    cmpSQL = "Select * From Compound Where Substr(Compound_ID,0,2) in ('C0','CX') "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
     if test>0:
         cmpSQL += f" Fetch First {test} Rows Only "
 
@@ -78,7 +80,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dsample.models import Project, COADD_Compound
+    from dsample.models import Project, COADD_Compound, Sample
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
     
@@ -122,48 +124,90 @@ def main(prgArgs,djDir):
                       ]
 
 
-        outNumbers = {'Proc':0,'New':0,'Upload':0}
+        outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
         outDict = []    
         for idx,row in tqdm(cmpDF.iterrows(), total=cmpDF.shape[0]):
-            new_entry = False
+            new_compound = False
             outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
-            cvCmpd = Convert_CompoundID.get(row['ora_compound_id'])
 
-            cmpDF
-            if cvCmpd:
-                #print(f"{row['ora_project_id']} {cvPrj.project_id}")
-                djCmpd = COADD_Compound.get(cvPrj.project_id)
-                if djCmpd is None:
-                    djCmpd = COADD_Compound()
-                    djCmpd.compound_id = cvCmpd.compound_id
-                    new_entry = True
-                    outNumbers['New'] += 1
+            if cvPrj:
+
+                cvCmpd = Convert_CompoundID.get(row['ora_compound_id'])
+
+                if cvCmpd:
+                    #print(f"{row['ora_project_id']} {cvPrj.project_id}")
+                    new_compound = False
+                    djCmpd = COADD_Compound.get(cvCmpd.compound_id)
+                    if djCmpd is None:
+                        djCmpd = COADD_Compound()
+                        djCmpd.compound_id = cvCmpd.compound_id
+                        new_compound = True
+                        outNumbers['New Compounds'] += 1
+                    else:
+                        row['Issue'] = f"Exists"
+
+                    djPrj= Project.get(cvPrj.project_id)
+                    djCmpd.project_id = djPrj
+                    
+                    new_sample = False
+                    djSample = Sample.get(djCmpd.compound_id)
+                    if djSample is None:
+                        djSample = Sample()
+                        djSample.sample_id = cvCmpd.compound_id
+                        djSample.sample_source = 'COADD'
+                        new_sample = True
+                        outNumbers['New Samples'] += 1
+
+                    set_dictFields(djCmpd,row,cpyFields)
+                #     set_arrayFields(djPrj,row,arrayFields)
+                    set_Dictionaries(djCmpd,row,dictFields)
+
+                    # - Sample --------------------------------------
+                    djSample.sample_code = djCmpd.compound_code
+
+                    validStatus = True
+
+                    djSample.clean_Fields()
+                    validDict = djSample.validate()
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            print('Warning',k,validDict[k],'-')
+                        outDict.append(row)
+
+                    if validStatus:
+                        if prgArgs.upload:
+                            if new_sample or prgArgs.overwrite:
+                                outNumbers['Upload Samples'] += 1
+                                djSample.save()
+
+                    # - Compound --------------------------------------
+
+                    djCmpd.sample_id = djSample
+                    validStatus = True
+
+                    djCmpd.clean_Fields()
+                    validDict = djCmpd.validate()
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            print('Warning',k,validDict[k],'-')
+                        outDict.append(row)
+
+                    if validStatus:
+                        if prgArgs.upload:
+                            if new_compound or prgArgs.overwrite:
+                                outNumbers['Upload Compounds'] += 1
+                                djCmpd.save()
+                            
                 else:
-                    row['Issue'] = f"Exists"
-
-                set_dictFields(djCmpd,row,cpyFields)
-            #     set_arrayFields(djPrj,row,arrayFields)
-                set_Dictionaries(djCmpd,row,dictFields)
-
-                validStatus = True
-                djCmpd.clean_Fields()
-                validDict = djCmpd.validate()
-
-                if validDict:
-                    validStatus = False
-                    for k in validDict:
-                        print('Warning',k,validDict[k],'-')
+                    row['Issue'] = f"ConvCompound not found"
+                    print(f"[oraCompound] ConvCompound {row['ora_compound_id']} not found")
                     outDict.append(row)
-
-                if validStatus:
-                    if prgArgs.upload:
-                        if new_entry or prgArgs.overwrite:
-                            outNumbers['Upload'] += 1
-                            djCmpd.save()
             else:
-                row['Issue'] = f"ConvCompound not found"
-                print(f"[oraCompound] ConvCompound {row['ora_compound_id']} not found")
+                row['Issue'] = f"ConvProject not found"
+                print(f"[oraCompound] ConvProject {row['ora_project_id']} not found")
                 outDict.append(row)
 
         print(f"[oraCompound] :{outNumbers}")

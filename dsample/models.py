@@ -14,6 +14,11 @@ from dchem.models import Chem_Structure
 from adjcoadd.constants import *
 
 
+
+SAMPLE_SOURCES = Choices( ('COADD','COADD Sample'),
+                          ('ABASE','ResearchGrp Sample'),
+                          ('EXTERNAL','External Sample'),
+                        )
 #=================================================================================================
 class Project(AuditModel):
     """
@@ -157,9 +162,10 @@ class Sample(AuditModel):
     batch_id  = models.CharField(default= '00',max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
 
+    sample_source = models.CharField(max_length=25, choices=SAMPLE_SOURCES, blank=False, verbose_name = "Sample Source")
     sample_code = models.CharField(max_length=150, blank=True, verbose_name = "Sample Code")
-    sample_name = models.CharField(max_length=250, blank=True, verbose_name = "Sample Name")
-    sample_desc = models.CharField(max_length=512, blank=True, verbose_name = "Sample Description")
+#    sample_name = models.CharField(max_length=250, blank=True, verbose_name = "Sample Name")
+#    sample_desc = models.CharField(max_length=512, blank=True, verbose_name = "Sample Description")
     
     sample_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Sample Type", on_delete=models.DO_NOTHING,
         db_column="sample_type", related_name="%(class)s_sample_type")
