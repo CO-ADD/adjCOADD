@@ -31,7 +31,7 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-def get_oraCompound():
+def get_oraCompound(test=0):
     from oraCastDB.oraCastDB import openCastDB
 
     renameCol = {
@@ -49,14 +49,13 @@ def get_oraCompound():
       'stock_conc_unit':{'mg':'mg/mL'},
     }
 
-    prjSQL = """
-     Select *
-     From Compound
-     --Fetch First 100 Rows Only
-    """
+    cmpSQL = "Select * From Compound "
+    if test>0:
+        cmpSQL += f" Fetch First {test} Rows Only "
+
     CastDB = openCastDB()
     logger.info(f"[Compounds] ... ")
-    cmpDF = pd.DataFrame(CastDB.get_dict_list(prjSQL))
+    cmpDF = pd.DataFrame(CastDB.get_dict_list(cmpSQL))
     nTotal = len(cmpDF)
     logger.info(f"[Compounds] {nTotal} ")
     CastDB.close()
@@ -95,8 +94,11 @@ def main(prgArgs,djDir):
 
     if prgArgs.table == "CompoundID" :
 
-        cmpDF = get_oraCompound()
+        cmpDF = get_oraCompound(int(prgArgs.test))
+        print("--> oraCompound ---------------------------------------------------------")
+
         print(cmpDF.columns)
+        print("-------------------------------------------------------------------------")
         OutFile = f"UpdateCompound_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
         cpyFields = ['compound_code','compound_name','compound_description',
@@ -144,25 +146,26 @@ def main(prgArgs,djDir):
             #     set_arrayFields(djPrj,row,arrayFields)
                 set_Dictionaries(djCmpd,row,dictFields)
 
-            #     validStatus = True
-            #     djPrj.clean_Fields()
-            #     validDict = djPrj.validate()
+                validStatus = True
+                djCmpd.clean_Fields()
+                validDict = djCmpd.validate()
 
-            #     if validDict:
-            #         validStatus = False
-            #         for k in validDict:
-            #             print('Warning',k,validDict[k],'-')
-            #         outDict.append(row)
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
+                    outDict.append(row)
 
-            #     if validStatus:
-            #         if prgArgs.upload:
-            #             if new_entry or prgArgs.overwrite:
-            #                 outNumbers['Upload'] += 1
-            #                 djPrj.save()
-            # else:
-            #     row['Issue'] = f"ConvProject not found"
-            #     print(f"[oraCompound] ConvProject {row['ora_compound_id']} not found")
-            #     outDict.append(row)
+                if validStatus:
+                    if prgArgs.upload:
+                        if new_entry or prgArgs.overwrite:
+                            outNumbers['Upload'] += 1
+                            djCmpd.save()
+            else:
+                row['Issue'] = f"ConvCompound not found"
+                print(f"[oraCompound] ConvCompound {row['ora_compound_id']} not found")
+                outDict.append(row)
+
         print(f"[oraCompound] :{outNumbers}")
         if len(outDict) > 0:
             print(f"Writing Issues: {OutFile}")
@@ -186,7 +189,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
-#    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
+    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
     prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")

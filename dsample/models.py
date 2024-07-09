@@ -312,7 +312,9 @@ class COADD_Compound(AuditModel):
             models.Index(name="coadd_name_idx", fields=['compound_name']),
             models.Index(name="coadd_code_idx", fields=['compound_code']),
             models.Index(name="coadd_type_idx", fields=['compound_type']),
-            models.Index(name="coadd_ocid_idx", fields=['old_compound_id']),
+            models.Index(name="coadd_pid_idx", fields=['project_id']),
+            models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
+            models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
             models.Index(name="coadd_sst_idx", fields=['std_status']),
             models.Index(name="coadd_pst_idx", fields=['pub_status']),
         ]
