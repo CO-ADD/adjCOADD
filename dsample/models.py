@@ -237,7 +237,7 @@ class COADD_Compound(AuditModel):
         'compound_type':'Sample_Type',
         'reg_amount_unit': 'Unit_Amount',
         'reg_volume_unit':'Unit_Volume',
-        'reg_conc_unit':'Unit_Conc',
+        'reg_conc_unit':'Unit_Concentration',
         'stock_amount_unit':'Unit_Amount',
     }
 

@@ -52,7 +52,7 @@ def get_oraCompound():
     prjSQL = """
      Select *
      From Compound
-    -- Fetch First 10 Rows Only
+     --Fetch First 100 Rows Only
     """
     CastDB = openCastDB()
     logger.info(f"[Compounds] ... ")
