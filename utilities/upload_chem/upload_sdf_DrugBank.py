@@ -75,7 +75,7 @@ def main(prgArgs,djDir):
             with Chem.ForwardSDMolSupplier(prgArgs.file) as sdSupl:
                 #reader = csv.DictReader(infile)
 #                for mol in tqdm(sdSupl,total=lines, desc="Reading Library"):
-                for mol in sdSupl:
+                for mol in tqdm(sdSupl, desc="Reading SDFile"):
                     outNumbers['Proc'] += 1
                     if mol is not None:
                         new_compound = False
