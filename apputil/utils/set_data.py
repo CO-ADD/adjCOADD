@@ -29,16 +29,16 @@ def set_arrayFields(djModel,rowDict, arrDict):
         
 def set_dictFields(djModel,rowDict,dictList):
     for e in dictList:
-        #print("fromDict",e)
-        if pd.notnull(rowDict[e]):
-            setattr(djModel,e,rowDict[e])
+        if e in rowDict:
+            if pd.notnull(rowDict[e]):
+                setattr(djModel,e,rowDict[e])
 
 def set_Dictionaries(djModel,rowDict,dictFields):
     for d in dictFields:
-        #print("fromDict",d)
-        if pd.notnull(rowDict[d]):
-            if d in djModel.Choice_Dictionary:
-                setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
+        if d in rowDict:
+            if pd.notnull(rowDict[d]):
+                if d in djModel.Choice_Dictionary:
+                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
 
 
 # if upload:

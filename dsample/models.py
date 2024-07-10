@@ -469,9 +469,9 @@ class Library_Compound(AuditModel):
     ID_PAD = 9
     
     compound_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Compound ID")
-    compound_code = models.CharField(max_length=120, blank=True, verbose_name = "Code")
-    compound_name = models.CharField(max_length=120, blank=True, verbose_name = "Name")
-    compound_desc = models.CharField(max_length=150, blank=True, verbose_name = "Comment")
+    compound_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
+    compound_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
+    compound_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
 
     library_id = models.ForeignKey(Library, null=True, blank=True, verbose_name = "Library ID", on_delete=models.DO_NOTHING,
         db_column="library_id", related_name="%(class)s_library_id")
@@ -494,6 +494,50 @@ class Library_Compound(AuditModel):
             models.Index(name="lcmp_lid_idx", fields=['library_id']),
             models.Index(name="lcmp_sid_idx", fields=['sample_id']),
         ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,CompoundID, CompoundCode=None, LibraryID=None, verbose=0):
+    # Returns an instance by compound_id
+        try:
+            if CompoundID:
+                retInstance = cls.objects.get(compound_id=CompoundID)
+            elif CompoundCode and LibraryID:
+                retInstance = cls.objects.get(compound_code=CompoundCode,library_id=LibraryID)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if CompoundID:
+                    print(f"[Compound Not Found] {CompoundID} ")
+                elif CompoundCode and LibraryID:
+                    print(f"[Compound Not Found] {CompoundCode} in {LibraryID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,CompoundID, CompoundCode=None, LibraryID=None, verbose=0):
+    # Returns if an instance exists by compound_id
+        if CompoundID:
+            retValue = cls.objects.filter(compound_id=CompoundID).exists()
+        elif CompoundCode and LibraryID:
+            retValue = cls.objects.filter(compound_code=CompoundCode,library_id=LibraryID).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.compound_id:
+            self.compound_id = self.next_id()
+            if self.compound_id:
+                #self.save_sample() 
+                super(Library_Compound, self).save(*args, **kwargs)
+        else:
+            #self.save_sample()
+            super(Library_Compound, self).save(*args, **kwargs) 
+
 
 
 # #=================================================================================================
