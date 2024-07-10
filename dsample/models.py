@@ -489,12 +489,10 @@ class Library_Compound(AuditModel):
         db_table = 'library_compound'
         ordering=['compound_id']
         indexes = [
-            models.Index(name="lib_lname_idx", fields=['library_name']),
-            models.Index(name="lib_lclass_idx", fields=['library_class']),
-            models.Index(name="lib_code_idx", fields=['compound_code']),
-            models.Index(name="lib_type_idx", fields=['compound_type']),
-            models.Index(name="lib_lid_idx", fields=['library_id']),
-            models.Index(name="lib_sid_idx", fields=['sample_id']),
+            models.Index(name="lcmp_code_idx", fields=['compound_code']),
+            models.Index(name="lcmp_type_idx", fields=['compound_type']),
+            models.Index(name="lcmp_lid_idx", fields=['library_id']),
+            models.Index(name="lcmp_sid_idx", fields=['sample_id']),
         ]
 
 
