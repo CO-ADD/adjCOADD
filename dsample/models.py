@@ -185,6 +185,37 @@ class Library(AuditModel):
     def __repr__(self) -> str:
         return f"{self.library_id}  {self.source}"
 
+    #------------------------------------------------
+    @classmethod
+    def get(cls,LibraryID=None,LibraryName=None,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            if LibraryID:
+                retInstance = cls.objects.get(library_id=LibraryID)
+            elif LibraryName:
+                retInstance = cls.objects.get(library_name=LibraryName)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if LibraryID:
+                    print(f"[Library Not Found] {LibraryID} ")
+                elif LibraryName:
+                    print(f"[Library Not Found] {LibraryName} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,LibraryID=None,LibraryName=None,verbose=0):
+    # Returns if an instance exists by drug_name or durg_id
+        if LibraryID:
+            retValue = cls.objects.filter(library_id=LibraryID).exists()
+        elif LibraryName:
+            retValue = cls.objects.filter(library_name=LibraryName).exists()
+        else:
+            retValue = False
+        return(retValue)
 
 #-------------------------------------------------------------------------------------------------
 class Sample(AuditModel):
@@ -361,6 +392,7 @@ class COADD_Compound(AuditModel):
             models.Index(name="coadd_code_idx", fields=['compound_code']),
             models.Index(name="coadd_type_idx", fields=['compound_type']),
             models.Index(name="coadd_pid_idx", fields=['project_id']),
+            models.Index(name="coadd_sid_idx", fields=['sample_id']),
             models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
             models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
             models.Index(name="coadd_sst_idx", fields=['std_status']),
@@ -398,8 +430,6 @@ class COADD_Compound(AuditModel):
                 _sample = Sample()
             _sample.sample_id = self.compound_id 
             _sample.sample_code = self.compound_code 
-            _sample.sample_name = self.compound_name
-            _sample.sample_desc = self.compound_desc
             _sample.sample_type = self.compound_type
             
             # mw,mf, salt and structure_id
@@ -417,6 +447,7 @@ class COADD_Compound(AuditModel):
         else:
             self.save_sample()
             super(COADD_Compound, self).save(*args, **kwargs) 
+
 
 
 #-------------------------------------------------------------------------------------------------
@@ -452,6 +483,19 @@ class Library_Compound(AuditModel):
         db_column="compound_type", related_name="%(class)s_compound_type")
     
     reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'library_compound'
+        ordering=['compound_id']
+        indexes = [
+            models.Index(name="lib_lname_idx", fields=['library_name']),
+            models.Index(name="lib_lclass_idx", fields=['library_class']),
+            models.Index(name="lib_code_idx", fields=['compound_code']),
+            models.Index(name="lib_type_idx", fields=['compound_type']),
+            models.Index(name="lib_lid_idx", fields=['library_id']),
+            models.Index(name="lib_sid_idx", fields=['sample_id']),
+        ]
 
 
 # #=================================================================================================
