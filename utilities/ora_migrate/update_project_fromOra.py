@@ -142,6 +142,10 @@ def main(prgArgs,djDir):
             new_entry = False
             outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
+
+            if not cvPrj:
+                cvPrj = Convert_ProjectID.new_COADD_Project_ID(row['ora_project_id'])
+
             if cvPrj:
                 #print(f"{row['ora_project_id']} {cvPrj.project_id}")
                 djPrj = Project.get(cvPrj.project_id)

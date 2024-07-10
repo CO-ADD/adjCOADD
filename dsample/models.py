@@ -17,7 +17,7 @@ from adjcoadd.constants import *
 
 SAMPLE_SOURCES = Choices( ('COADD','COADD Sample'),
                           ('ABASE','ResearchGrp Sample'),
-                          ('EXTERNAL','External Sample'),
+                          ('LIBRARY','Library Sample'),
                         )
 #=================================================================================================
 class Project(AuditModel):
@@ -312,7 +312,7 @@ class COADD_Compound(AuditModel):
 
     class Meta:
         app_label = 'dsample'
-        db_table = 'coadd_sample'
+        db_table = 'coadd_compound'
         ordering=['compound_id']
         indexes = [
             models.Index(name="coadd_name_idx", fields=['compound_name']),
@@ -518,13 +518,17 @@ class Convert_ProjectID(AuditModel):
     def new_COADD_Project_ID(cls,OldProjectID,verbose=0):
 
         if 'P' in OldProjectID:
-            _cno = int(OldProjectID[1:])
-            _newID = Project.str_id(_cno)
-
-            newEntry = cls()
-            newEntry.ora_project_id = OldProjectID
-            newEntry.project_id = _newID
-            newEntry.save()
+            try:
+                _cno = int(OldProjectID[1:])
+            except:
+                _cno = 0
+                return(Project.str_id(_cno))
+            if _cno > 0 :
+                _newID = Project.str_id(_cno)
+                newEntry = cls()
+                newEntry.ora_project_id = OldProjectID
+                newEntry.project_id = _newID
+                newEntry.save()
             return(newEntry)
 
 
