@@ -22,7 +22,7 @@ SAMPLE_SOURCES = Choices( ('COADD','COADD Sample'),
 #=================================================================================================
 class Project(AuditModel):
     """
-    List of Projects, Chem Library 
+    List of Projects
     """
 #=================================================================================================
     Choice_Dictionary = {
@@ -143,6 +143,48 @@ class Project(AuditModel):
                 super(Project, self).save(*args, **kwargs)
         else:
             super(Project, self).save(*args, **kwargs) 
+
+
+#=================================================================================================
+class Library(AuditModel):
+    """
+    List of Chem Library 
+    """
+#=================================================================================================
+    Choice_Dictionary = {
+        'project_type':'Project_Type',
+        'project_status':'Project_Status',
+        'provided_container':'Container_Type',
+        'stock_conc_unit':'Unit_Concentration',
+    }
+    
+    ID_SEQUENCE = 'Library'
+    ID_PREFIX = 'L'
+    ID_PAD = 5
+
+    library_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Library ID")
+    library_name = models.CharField(max_length=150, blank=True, verbose_name = "Name")
+    library_version = models.CharField(max_length=15, blank=True, verbose_name = "Version")
+
+    library_class = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="library_class", related_name="%(class)s_library_class")
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'library'
+        ordering=['library_id']
+        indexes = [
+            models.Index(name="lib_lname_idx", fields=['library_name']),
+            models.Index(name="lib_lclass_idx", fields=['library_class']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.library_id}  {self.source}"
+
 
 #-------------------------------------------------------------------------------------------------
 class Sample(AuditModel):
@@ -375,6 +417,42 @@ class COADD_Compound(AuditModel):
         else:
             self.save_sample()
             super(COADD_Compound, self).save(*args, **kwargs) 
+
+
+#-------------------------------------------------------------------------------------------------
+class Library_Compound(AuditModel):
+    """
+    List of CO-ADD Samples as per Registration
+    """
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'compound_type':'Sample_Type',
+        'reg_amount_unit': 'Unit_Amount',
+        'reg_volume_unit':'Unit_Volume',
+        'reg_conc_unit':'Unit_Concentration',
+    #    'stock_volume_unit':'Unit_Volume',
+    }
+
+    ID_SEQUENCE = 'Library_Compound'
+    ID_PREFIX = 'LC'
+    ID_PAD = 9
+    
+    compound_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Compound ID")
+    compound_code = models.CharField(max_length=120, blank=True, verbose_name = "Code")
+    compound_name = models.CharField(max_length=120, blank=True, verbose_name = "Name")
+    compound_desc = models.CharField(max_length=150, blank=True, verbose_name = "Comment")
+
+    library_id = models.ForeignKey(Library, null=True, blank=True, verbose_name = "Library ID", on_delete=models.DO_NOTHING,
+        db_column="library_id", related_name="%(class)s_library_id")
+
+    sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
+        db_column="sample_id", related_name="%(class)s_sample_id")
+
+    compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="compound_type", related_name="%(class)s_compound_type")
+    
+    reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
+
 
 # #=================================================================================================
 # class Sample_Batch(AuditModel):
