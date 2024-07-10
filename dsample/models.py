@@ -244,7 +244,7 @@ class COADD_Compound(AuditModel):
         'reg_amount_unit': 'Unit_Amount',
         'reg_volume_unit':'Unit_Volume',
         'reg_conc_unit':'Unit_Concentration',
-        'stock_amount_unit':'Unit_Amount',
+    #    'stock_volume_unit':'Unit_Volume',
     }
 
     ID_SEQUENCE = 'COADD_Compound'
@@ -287,9 +287,9 @@ class COADD_Compound(AuditModel):
     
     # CO-ADD - Stock 
     prep_date = models.DateField(null=True, blank=True, verbose_name="Prepared")
-    stock_amount = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name = "Stock Amount")
-    stock_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Stock Amount Unit", on_delete=models.DO_NOTHING,
-        db_column="stock_amount_unit", related_name="%(class)s_stock_amount_unit")
+    # stock_volume = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name = "Stock Volume")
+    # stock_volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Stock Volume Unit", on_delete=models.DO_NOTHING,
+    #     db_column="stock_amount_unit", related_name="%(class)s_stock_amount_unit")
     
     # CO-ADD - Strcuture Curation 
     std_status = models.CharField(max_length=10, blank=True, verbose_name = "Std Status")
@@ -513,6 +513,21 @@ class Convert_ProjectID(AuditModel):
 #            models.Index(name="wprj_opid_idx", fields=['old_project_id']),
         ]
 
+
+    @classmethod
+    def new_COADD_Project_ID(cls,OldProjectID,verbose=0):
+
+        if 'P' in OldProjectID:
+            _cno = int(OldProjectID[1:])
+            _newID = Project.str_id(_cno)
+
+            newEntry = cls()
+            newEntry.ora_project_id = OldProjectID
+            newEntry.project_id = _newID
+            newEntry.save()
+            return(newEntry)
+
+
 #=================================================================================================
 class Convert_CompoundID(AuditModel):
     """
@@ -536,3 +551,16 @@ class Convert_CompoundID(AuditModel):
             models.Index(name="wcmpd_ccode_idx", fields=['compound_code']),
             models.Index(name="wcmpd_stype_idx", fields=['sample_type']),
         ]
+
+    @classmethod
+    def new_COADD_Compound_ID(cls,OldCompoundID,verbose=0):
+
+        if 'C0' in OldCompoundID:
+            _cno = int(OldCompoundID[1:])
+            _newID = COADD_Compound.str_id(_cno)
+
+            newEntry = cls()
+            newEntry.ora_compound_id = OldCompoundID
+            newEntry.compound_id = _newID
+            newEntry.save()
+            return(newEntry)

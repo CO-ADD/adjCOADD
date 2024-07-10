@@ -44,9 +44,7 @@ def get_oraCompound(test=0):
     }
 
     replaceValues = {
-      'provided_container':{'Tubes':'Tube', 'Vials':'Vial', 'Plates':'Plate'},
-      'project_type':{'Internal':'Reference', 'Project':'GrpProject', 'Agreement':'Contract'},
-      'stock_conc_unit':{'mg':'mg/mL'},
+      'reg_conc_unit':{'ug/ul':'mg/mL','mg/ml':'mg/mL'},
     }
 
     cmpSQL = "Select * From Compound Where Substr(Compound_ID,0,2) in ('C0','CX') "
@@ -134,6 +132,8 @@ def main(prgArgs,djDir):
             if cvPrj:
 
                 cvCmpd = Convert_CompoundID.get(row['ora_compound_id'])
+                if not cvCmpd:
+                    cvCmpd = Convert_CompoundID.new_COADD_Compound_ID(row['ora_compound_id'])
 
                 if cvCmpd:
                     #print(f"{row['ora_project_id']} {cvPrj.project_id}")
