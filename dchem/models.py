@@ -287,7 +287,7 @@ class Chem_Group(AuditModel):
 
     chemgroup_id = models.CharField(max_length=15, primary_key=True, verbose_name = "ChemGroup ID")
     chemgroup_code = models.CharField(max_length=15, unique=True, verbose_name = "ChemGroup Code")
-    cehmgroup_name = models.CharField(max_length=150, blank=True, verbose_name = "ChemGroup Name")
+    chemgroup_name = models.CharField(max_length=150, blank=True, verbose_name = "ChemGroup Name")
     chemgroup_set = models.CharField(max_length=150, blank=False, verbose_name = "ChemGroup Set")
     chemgroup_type = models.ForeignKey(Dictionary, null=False, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="alert_type", related_name="%(class)s_alerttype")
