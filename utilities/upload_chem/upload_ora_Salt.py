@@ -42,8 +42,9 @@ def openChemDB(User='chemdb', Passwd='CHEMDB'):
     return(db)
 
 
-def get_oarSalt(test=0):
-
+#-----------------------------------------------------------------------------
+def get_oraSalt(test=0):
+#-----------------------------------------------------------------------------
     saltSQL = """
             Select SALT_ID, SALT_NAME, SALT_TYPE, SMILES,
                 INCHIKEY,
@@ -63,9 +64,10 @@ def get_oarSalt(test=0):
 
     return(cmpdLst)
 
-def get_oarGroup(test=0):
-
-    saltSQL = """
+#-----------------------------------------------------------------------------
+def get_oraGroup(test=0):
+#-----------------------------------------------------------------------------
+    grpSQL = """
             Select chemgroup_code, chemgroup_name, chemgroup_set, chemgroup_type,
                 smarts,
                 allowed_min, allowed_max
@@ -73,11 +75,11 @@ def get_oarGroup(test=0):
             """
     
     if test>0:
-        saltSQL += f" Fetch First {test} Rows Only "
+        grpSQL += f" Fetch First {test} Rows Only "
 
     oraChemDB = openChemDB()
     logger.info(f"[ChemDB] ... ")
-    cmpdLst = oraChemDB.get_dict_list(saltSQL)
+    cmpdLst = oraChemDB.get_dict_list(grpSQL)
     nTotal = len(cmpdLst)
     logger.info(f"[ChemDB]  {nTotal} Groups")
     oraChemDB.close()
@@ -94,7 +96,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import ApplicationUser, Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dchem.models import Chem_Structure, Chem_Salt
+    from dchem.models import Chem_Structure, Chem_Salt, Chem_Group
     from dsample.models import Library, Library_Compound
 
     
@@ -106,11 +108,11 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-    # Table -------------------------------------------------------------
+    # Salt Table -------------------------------------------------------------
     if prgArgs.table == "Salt":
 
         appuser = ApplicationUser.get(prgArgs.appuser)
-        cmpdLst = get_oarSalt(int(prgArgs.test))
+        cmpdLst = get_oraSalt(int(prgArgs.test))
 
         outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
         outDict = []
@@ -143,6 +145,46 @@ def main(prgArgs,djDir):
                     if new_compound or prgArgs.overwrite:
                         outNumbers['Upload Compounds'] += 1
                         djSalt.save()
+
+        print(f"[LibCompounds] :{outNumbers}")
+
+    # Salt Table -------------------------------------------------------------
+    if prgArgs.table == "ChemGroup":
+
+        appuser = ApplicationUser.get(prgArgs.appuser)
+        cmpdLst = get_oraGroup(int(prgArgs.test))
+
+        outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
+        outDict = []
+        new_compound = False
+        
+        for row in tqdm(cmpdLst):
+            outNumbers['Proc'] += 1
+            djGroup = Chem_Group.get(None,row['chemgroup_code'])
+            if not djGroup:
+                djGroup = Chem_Group()
+                djGroup.chemgroup_code = row['chemgroup_code']
+                new_compound = True
+
+            set_dictFields(djGroup,row,['chemgroup_name','chemgroup_set','smarts','allowed_min','allowed_max'])
+            # set_arrayFields(djCmpd,row,arrayFields)
+            set_Dictionaries(djGroup,row,['chemgroup_type'])
+
+            validStatus = True
+
+            djGroup.clean_Fields()
+            validDict = djGroup.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+                outDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if new_compound or prgArgs.overwrite:
+                        outNumbers['Upload Compounds'] += 1
+                        djGroup.save()
 
         print(f"[LibCompounds] :{outNumbers}")
 

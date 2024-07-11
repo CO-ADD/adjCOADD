@@ -273,16 +273,12 @@ class Chem_Group(AuditModel):
     List of Chemical Reaction/Transformations/Substructures/Alerts
     """
 #=================================================================================================
-    Choice_Dictionary = {
-        'structure_type':'Structure_Type',
-    }
-
     ID_SEQUENCE = 'ChemGroup'
     ID_PREFIX = 'CG'
     ID_PAD = 5
 
     Choice_Dictionary = {
-        'group_type':'ChemGroup_Type',
+        'chemgroup_type':'ChemGroup_Type',
     }
 
     chemgroup_id = models.CharField(max_length=15, primary_key=True, verbose_name = "ChemGroup ID")
