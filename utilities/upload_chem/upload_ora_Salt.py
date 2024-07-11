@@ -63,6 +63,26 @@ def get_oarSalt(test=0):
 
     return(cmpdLst)
 
+def get_oarGroup(test=0):
+
+    saltSQL = """
+            Select chemgroup_code, chemgroup_name, chemgroup_set, chemgroup_type,
+                smarts,
+                allowed_min, allowed_max
+            From  ChemGroup
+            """
+    
+    if test>0:
+        saltSQL += f" Fetch First {test} Rows Only "
+
+    oraChemDB = openChemDB()
+    logger.info(f"[ChemDB] ... ")
+    cmpdLst = oraChemDB.get_dict_list(saltSQL)
+    nTotal = len(cmpdLst)
+    logger.info(f"[ChemDB]  {nTotal} Groups")
+    oraChemDB.close()
+
+    return(cmpdLst)
 
 
 #-----------------------------------------------------------------------------

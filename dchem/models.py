@@ -285,13 +285,13 @@ class Chem_Group(AuditModel):
         'group_type':'ChemGroup_Type',
     }
 
-    group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
-    group_code = models.CharField(max_length=15, blank=True, verbose_name = "Group Code")
-    group_name = models.CharField(max_length=150, blank=True, verbose_name = "Group Name")
-    group_set = models.CharField(max_length=150, blank=True, verbose_name = "Group Set")
-    group_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    chemgroup_id = models.CharField(max_length=15, primary_key=True, verbose_name = "ChemGroup ID")
+    chemgroup_code = models.CharField(max_length=15, unique=True, verbose_name = "ChemGroup Code")
+    cehmgroup_name = models.CharField(max_length=150, blank=True, verbose_name = "ChemGroup Name")
+    chemgroup_set = models.CharField(max_length=150, blank=False, verbose_name = "ChemGroup Set")
+    chemgroup_type = models.ForeignKey(Dictionary, null=False, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="alert_type", related_name="%(class)s_alerttype")
-    smarts = models.CharField(max_length=10125, blank=True, verbose_name = "Smarts")
+    smarts = models.CharField(max_length=10125, blank=False, verbose_name = "Smarts")
     allowed_min = models.IntegerField(default=0, blank=True, verbose_name ="Min")
     allowed_max = models.IntegerField(default=0, blank=True, verbose_name ="Max")
 
@@ -299,20 +299,52 @@ class Chem_Group(AuditModel):
     class Meta:
         app_label = 'dchem'
         db_table = 'chem_group'
-        ordering=['group_set','group_code']
+        ordering=['chemgroup_set','chemgroup_code']
         indexes = [
-            models.Index(name="cgrp_dcode_idx", fields=['group_code']),
-            models.Index(name="cgrp_type_idx", fields=['group_type']),
-            models.Index(name="cgrp_set_idx", fields=['group_set']),
-            models.Index(name="cgrp_name_idx", fields=['group_name']),
+#            models.Index(name="cgrp_dcode_idx", fields=['chemgroup_code']),
+            models.Index(name="cgrp_type_idx", fields=['chemgroup_type']),
+            models.Index(name="cgrp_set_idx", fields=['chemgroup_set']),
+            models.Index(name="cgrp_name_idx", fields=['chemgroup_name']),
         ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.chemgroup_id} {self.chemgroup_code} ({self.chemgroup_set})"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ChemGroupID,ChemGroupCode=None,ChemGroupSet=None,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            if ChemGroupID:
+                retInstance = cls.objects.get(chemgroup_id=ChemGroupID)
+            elif ChemGroupCode:
+                if ChemGroupSet:
+                    retInstance = cls.objects.get(chemgroup_code=ChemGroupCode,chemgroup_set=ChemGroupSet)
+                else:
+                    retInstance = cls.objects.get(chemgroup_code=ChemGroupCode)
+        except:
+            retInstance = None
+            if verbose:
+                if ChemGroupID:
+                    print(f"[ChemGroup Not Found] {ChemGroupID} ")
+                else :
+                    print(f"[ChemGroup Not Found] {ChemGroupCode} ({ChemGroupSet}) ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ChemGroupID,verbose=0):
+    # Returns if an instance exists by salt_id
+        retValue = cls.objects.filter(chemgroup_id=ChemGroupID).exists()
+        return(retValue)
 
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.group_id:
-            self.group_id = self.next_id()
-            if self.group_id: 
+        if not self.chemgroup_id:
+            self.chemgroup_id = self.next_id()
+            if self.chemgroup_id: 
                 super(Chem_Group, self).save(*args, **kwargs)
         else:
             super(Chem_Group, self).save(*args, **kwargs)
