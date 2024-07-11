@@ -39,6 +39,28 @@ def openChEMBL(User='chembl', Passwd='chembl',DataBase="chembl",verbose=1):
     dbPG.open(User,Passwd,"imb-coadd-db.imb.uq.edu.au",DataBase,verbose=verbose)
     return(dbPG)
 
+def get_pgCompound(test=0):
+
+    cmpdSQL = """
+    Select s.canonical_smiles reg_smiles, s.molregno, m.chembl_id compound_code, m.pref_name compound_name, molecule_type compound_type
+    From compound_structures s
+     Left join molecule_dictionary m on s.molregno = m.molregno
+    Where s.canonical_smiles is not Null
+    """
+    if test>0:
+        cmpdSQL += f" Fetch First {test} Rows Only "
+
+    pgCHEMBL = openChEMBL()
+    logger.info(f"[ChEMBL] ... ")
+    cmpdLst = pgCHEMBL.get_dict_list(cmpdSQL)
+    nTotal = len(cmpdLst)
+    logger.info(f"[ChEMBL]  {nTotal} Compounds")
+    pgCHEMBL.close()
+
+    return(cmpdLst)
+
+
+
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
@@ -74,37 +96,24 @@ def main(prgArgs,djDir):
 
         if djLib:
 
-            cmpdSQL = """
-            Select s.canonical_smiles, s.molregno, c.chembl_id
-            From compound_structures s
-             Left join chembl_id_lookup c on s.molregno = c.entity_id
-             Where c.entity_type = 'COMPOUND'
-            """
+            cmpdLst = get_pgCompound(int(prgArgs.test))
 
-            pgCHEMBL = openChEMBL()
-            logger.info(f"[ChEMBL] ... ")
-            cmpdLst = pgCHEMBL.get_dict_list(cmpdSQL)
-            nTotal = len(cmpdLst)
-            logger.info(f"[ChEMBL]  {nTotal} Compounds")
-            pgCHEMBL.close()
-
-            # with Chem.ForwardSDMolSupplier(prgArgs.file) as sdSupl:
-            #     lines = 0
-            #     for mol in sdSupl:
-            #         lines += 1
 
             outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
             outDict = []
 
             for row in tqdm(cmpdLst):
-                djCmpd = Library_Compound.get(None,row['chembl_id'],LibraryID)
+                djCmpd = Library_Compound.get(None,row['compound_code'],LibraryID)
                 if not djCmpd:
                     djCmpd = Library_Compound()
-                    djCmpd.compound_code = row['chembl_id']
+                    djCmpd.compound_code = row['compound_code']
                     djCmpd.library_id = djLib
-                    djCmpd.compound_name = f"MolRegNo: {row['molregno']}"
-                    djCmpd.reg_smiles = row['canonical_smiles']
                     new_compound = True
+                djCmpd.compound_desc = f"MolRegNo: {row['molregno']}"
+
+                set_dictFields(djCmpd,row,['reg_smiles','compound_name'])
+                # set_arrayFields(djCmpd,row,arrayFields)
+                set_Dictionaries(djCmpd,row,['compound_type'])
 
                 validStatus = True
 
@@ -143,6 +152,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
     prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
     prgArgs = prgParser.parse_args()

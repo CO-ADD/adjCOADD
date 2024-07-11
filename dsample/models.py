@@ -457,10 +457,10 @@ class Library_Compound(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
-        'compound_type':'Sample_Type',
-        'reg_amount_unit': 'Unit_Amount',
-        'reg_volume_unit':'Unit_Volume',
-        'reg_conc_unit':'Unit_Concentration',
+        'compound_type':'Compound_Type',
+        # 'reg_amount_unit': 'Unit_Amount',
+        # 'reg_volume_unit':'Unit_Volume',
+        # 'reg_conc_unit':'Unit_Concentration',
     #    'stock_volume_unit':'Unit_Volume',
     }
 
@@ -470,6 +470,7 @@ class Library_Compound(AuditModel):
     
     compound_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Compound ID")
     compound_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
+    
     compound_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
     compound_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
 
