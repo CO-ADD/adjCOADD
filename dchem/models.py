@@ -218,8 +218,7 @@ class Chem_Salt(AuditModel):
     }
 
     salt_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Salt ID")
-    salt_code = models.CharField(max_length=15, blank=True, verbose_name = "Salt Code")
-    salt_name = models.CharField(max_length=50, blank=True, verbose_name = "Salt Name")
+    salt_name = models.CharField(max_length=100, blank=True, verbose_name = "Salt Name")
     salt_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="salt_type", related_name="%(class)s_salttype")
     smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
@@ -233,14 +232,11 @@ class Chem_Salt(AuditModel):
     class Meta:
         app_label = 'dchem'
         db_table = 'chem_salt'
-        ordering=['salt_code']
+        ordering=['salt_type','salt_id']
         indexes = [
-            models.Index(name="csalt_dcode_idx", fields=['salt_code']),
+            models.Index(name="csalt_sid_idx", fields=['salt_id']),
             models.Index(name="csalt_type_idx", fields=['salt_type']),
             GistIndex(name="csalt_smol_idx",fields=['smol']),
-            # GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
-            # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
-            # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
         ]
         triggers = [pgtrigger.Trigger(
                         name= "trigfunc_chemsalt_biu",
@@ -255,6 +251,36 @@ class Chem_Salt(AuditModel):
                             )
                     ]
 
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.salt_id} ({self.salt_type})"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,SaltID,SaltType=None,verbose=0):
+    # Returns an instance by structure_id or structure_name
+        try:
+            if SaltType:
+                retInstance = cls.objects.get(salt_id=SaltID,salt_type=SaltType)
+            else:
+                retInstance = cls.objects.get(salt_id=SaltID)
+        except:
+            retInstance = None
+            if verbose:
+                if SaltType:
+                    print(f"[Salt Not Found] {SaltID} for {SaltType} ")
+                else :
+                    print(f"[Salt Not Found] {SaltID} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,SaltID,verbose=0):
+    # Returns if an instance exists by salt_id
+        retValue = cls.objects.filter(salt_id=SaltID).exists()
+        return(retValue)
+
+ 
 #=================================================================================================
 class Chem_Alert(AuditModel):
     """
