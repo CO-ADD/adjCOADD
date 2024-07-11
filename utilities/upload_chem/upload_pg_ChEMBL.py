@@ -101,7 +101,8 @@ def main(prgArgs,djDir):
 
             outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
             outDict = []
-
+            new_compound = False
+            
             for row in tqdm(cmpdLst):
                 djCmpd = Library_Compound.get(None,row['compound_code'],LibraryID)
                 if not djCmpd:
