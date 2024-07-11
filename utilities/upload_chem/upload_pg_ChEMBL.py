@@ -7,8 +7,10 @@ import csv
 import pandas as pd
 import numpy as np
 import argparse
+
+from zSql import zSqlConnector
 from rdkit import Chem 
-from pgCastDB.pgCastDB import openChEMBL
+
 from tqdm import tqdm
 # from zUtils import zData
 
@@ -32,6 +34,10 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
+def openChEMBL(User='chembl', Passwd='chembl',DataBase="chembl",verbose=1):
+    dbPG = zSqlConnector.PostgreSQL()
+    dbPG.open(User,Passwd,"imb-coadd-db.imb.uq.edu.au",DataBase,verbose=verbose)
+    return(dbPG)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -65,12 +71,13 @@ def main(prgArgs,djDir):
         
         appuser = ApplicationUser.get(prgArgs.appuser)
         djLib = Library.get(LibraryID)
+
         if djLib:
 
             cmpdSQL = """
-            Select s.canonical_smiles, s.molregno, c.
+            Select s.canonical_smiles, s.molregno, c.chembl_id
             From compound_structures s
-             Left join on s.molregno = c.entity_id
+             Left join chembl_id_lookup c on s.molregno = c.entity_id
              Where c.entity_type = 'COMPOUND'
             """
 
@@ -87,47 +94,35 @@ def main(prgArgs,djDir):
             #         lines += 1
 
             outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
-            outDict = []    
-#             with Chem.ForwardSDMolSupplier(prgArgs.file) as sdSupl:
-#                 #reader = csv.DictReader(infile)
-# #                for mol in tqdm(sdSupl,total=lines, desc="Reading Library"):
-#                 for mol in tqdm(sdSupl, desc="Reading SDFile"):
-#                     outNumbers['Proc'] += 1
-#                     if mol is not None:
-#                         new_compound = False
-#                         row = mol.GetPropsAsDict()
-#                         compound_code = row['DRUGBANK_ID']
+            outDict = []
 
-#                         djCmpd = Library_Compound.get(None,compound_code,LibraryID)
-#                         if not djCmpd:
-#                             djCmpd = Library_Compound()
-#                             djCmpd.compound_code = compound_code
-#                             djCmpd.library_id = djLib
-#                             djCmpd.compound_name = row['GENERIC_NAME']
-#                             djCmpd.compound_desc = row['DRUG_GROUPS']
-#                             djCmpd.reg_smiles = row['SMILES']
-#                             new_compound = True
+            for row in tqdm(cmpdLst):
+                djCmpd = Library_Compound.get(None,row['chembl_id'],LibraryID)
+                if not djCmpd:
+                    djCmpd = Library_Compound()
+                    djCmpd.compound_code = row['chembl_id']
+                    djCmpd.library_id = djLib
+                    djCmpd.compound_name = f"MolRegNo: {row['molregno']}"
+                    djCmpd.reg_smiles = row['canonical_smiles']
+                    new_compound = True
 
-#                         set_dictFields(djCmpd,row,cpyFields)
-                        
-#                         validStatus = True
+                validStatus = True
 
-#                         djCmpd.clean_Fields()
-#                         validDict = djCmpd.validate()
-#                         if validDict:
-#                             validStatus = False
-#                             for k in validDict:
-#                                 print('Warning',k,validDict[k],'-')
-#                             outDict.append(row)
+                djCmpd.clean_Fields()
+                validDict = djCmpd.validate()
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
+                    outDict.append(row)
 
-#                         if validStatus:
-#                             if prgArgs.upload:
-#                                 if new_compound or prgArgs.overwrite:
-#                                     outNumbers['Upload Compounds'] += 1
-#                                     djCmpd.save()
-#                     else:
-#                         outNumbers['Failed'] += 1
-#             print(f"[LibCompounds] :{outNumbers}")
+                if validStatus:
+                    if prgArgs.upload:
+                        if new_compound or prgArgs.overwrite:
+                            outNumbers['Upload Compounds'] += 1
+                            djCmpd.save()
+
+            print(f"[LibCompounds] :{outNumbers}")
 
 #==============================================================================
 if __name__ == "__main__":
