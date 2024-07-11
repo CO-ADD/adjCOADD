@@ -222,7 +222,7 @@ class Chem_Salt(AuditModel):
     salt_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="salt_type", related_name="%(class)s_salttype")
     smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
-    smol = models.MolField(verbose_name = "MOL")	
+#    smol = models.MolField(verbose_name = "MOL")	
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
@@ -236,20 +236,20 @@ class Chem_Salt(AuditModel):
         indexes = [
             models.Index(name="csalt_sid_idx", fields=['salt_id']),
             models.Index(name="csalt_type_idx", fields=['salt_type']),
-            GistIndex(name="csalt_smol_idx",fields=['smol']),
+#            GistIndex(name="csalt_smol_idx",fields=['smol']),
         ]
-        triggers = [pgtrigger.Trigger(
-                        name= "trigfunc_chemsalt_biu",
-                        operation = pgtrigger.Insert | pgtrigger.Update,
-                        when = pgtrigger.Before,
-                        func = """
-                                New.mw := mol_amw(NEW.sMol);
-                                New.mf := mol_formula(NEW.sMol);
-                                New.natoms := mol_numheavyatoms(NEW.sMol);
-                                RETURN NEW;
-                            """
-                            )
-                    ]
+        # triggers = [pgtrigger.Trigger(
+        #                 name= "trigfunc_chemsalt_biu",
+        #                 operation = pgtrigger.Insert | pgtrigger.Update,
+        #                 when = pgtrigger.Before,
+        #                 func = """
+        #                         New.mw := mol_amw(NEW.sMol);
+        #                         New.mf := mol_formula(NEW.sMol);
+        #                         New.natoms := mol_numheavyatoms(NEW.sMol);
+        #                         RETURN NEW;
+        #                     """
+        #                     )
+        #             ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
