@@ -222,7 +222,6 @@ class Chem_Salt(AuditModel):
     salt_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="salt_type", related_name="%(class)s_salttype")
     smiles = models.CharField(max_length=500, blank=True, verbose_name = "Smiles")
-#    smol = models.MolField(verbose_name = "MOL")	
     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     natoms = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
@@ -236,20 +235,7 @@ class Chem_Salt(AuditModel):
         indexes = [
             models.Index(name="csalt_sid_idx", fields=['salt_id']),
             models.Index(name="csalt_type_idx", fields=['salt_type']),
-#            GistIndex(name="csalt_smol_idx",fields=['smol']),
         ]
-        # triggers = [pgtrigger.Trigger(
-        #                 name= "trigfunc_chemsalt_biu",
-        #                 operation = pgtrigger.Insert | pgtrigger.Update,
-        #                 when = pgtrigger.Before,
-        #                 func = """
-        #                         New.mw := mol_amw(NEW.sMol);
-        #                         New.mf := mol_formula(NEW.sMol);
-        #                         New.natoms := mol_numheavyatoms(NEW.sMol);
-        #                         RETURN NEW;
-        #                     """
-        #                     )
-        #             ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
@@ -282,39 +268,54 @@ class Chem_Salt(AuditModel):
 
  
 #=================================================================================================
-class Chem_Alert(AuditModel):
+class Chem_Group(AuditModel):
     """
     List of Chemical Reaction/Transformations/Substructures/Alerts
     """
 #=================================================================================================
     Choice_Dictionary = {
-        'alert_type':'Alert_Type',
+        'structure_type':'Structure_Type',
     }
 
-    alert_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Alert ID")
-    alert_code = models.CharField(max_length=15, blank=True, verbose_name = "Alert Code")
-    alert_name = models.CharField(max_length=50, blank=True, verbose_name = "Alert Name")
-    alert_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    ID_SEQUENCE = 'ChemGroup'
+    ID_PREFIX = 'CG'
+    ID_PAD = 5
+
+    Choice_Dictionary = {
+        'group_type':'ChemGroup_Type',
+    }
+
+    group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
+    group_code = models.CharField(max_length=15, blank=True, verbose_name = "Group Code")
+    group_name = models.CharField(max_length=150, blank=True, verbose_name = "Group Name")
+    group_set = models.CharField(max_length=150, blank=True, verbose_name = "Group Set")
+    group_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="alert_type", related_name="%(class)s_alerttype")
     smarts = models.CharField(max_length=10125, blank=True, verbose_name = "Smarts")
-    allow_min = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
-    allow_ax = models.IntegerField(default=0, blank=True, verbose_name ="nAtoms")
+    allowed_min = models.IntegerField(default=0, blank=True, verbose_name ="Min")
+    allowed_max = models.IntegerField(default=0, blank=True, verbose_name ="Max")
 
 
     class Meta:
         app_label = 'dchem'
-        db_table = 'chem_alert'
-        ordering=['alert_code']
+        db_table = 'chem_group'
+        ordering=['group_set','group_code']
         indexes = [
-            models.Index(name="calert_dcode_idx", fields=['alert_code']),
-            models.Index(name="calert_type_idx", fields=['alert_type']),
-            #GistIndex(name="calert_smol_idx",fields=['smol']),
-            # GistIndex(name="cstruct_ffp2_idx",fields=['ffp2']),
-            # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
-            # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
+            models.Index(name="cgrp_dcode_idx", fields=['group_code']),
+            models.Index(name="cgrp_type_idx", fields=['group_type']),
+            models.Index(name="cgrp_set_idx", fields=['group_set']),
+            models.Index(name="cgrp_name_idx", fields=['group_name']),
         ]
 
 
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.group_id:
+            self.group_id = self.next_id()
+            if self.group_id: 
+                super(Chem_Group, self).save(*args, **kwargs)
+        else:
+            super(Chem_Group, self).save(*args, **kwargs)
 
 #=================================================================================================
 class Chem_Reaction(AuditModel):

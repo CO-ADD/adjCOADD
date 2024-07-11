@@ -47,7 +47,7 @@ def get_oarSalt(test=0):
     saltSQL = """
             Select SALT_ID, SALT_NAME, SALT_TYPE, SMILES,
                 INCHIKEY,
-                MW,MF,MASS,NATOM,CHARGE,H_EQUIV
+                MW,MF,MASS,NATOM natoms,CHARGE,H_EQUIV
             From  ChemSalt
             """
     
@@ -89,15 +89,8 @@ def main(prgArgs,djDir):
     # Table -------------------------------------------------------------
     if prgArgs.table == "Salt":
 
-        cpyFields = ['compound_name',
-                    'reg_smiles',
-                    ]
-        
         appuser = ApplicationUser.get(prgArgs.appuser)
-
-
         cmpdLst = get_oarSalt(int(prgArgs.test))
-
 
         outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
         outDict = []
@@ -111,7 +104,7 @@ def main(prgArgs,djDir):
                 djSalt.salt_id = row['salt_id']
                 new_compound = True
 
-            set_dictFields(djSalt,row,['salt_name','smiles','mw','mf','h_equiv'])
+            set_dictFields(djSalt,row,['salt_name','smiles','mw','mf','charge','natoms','h_equiv'])
             # set_arrayFields(djCmpd,row,arrayFields)
             set_Dictionaries(djSalt,row,['salt_type'])
 
