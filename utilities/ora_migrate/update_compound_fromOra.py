@@ -107,7 +107,7 @@ def main(prgArgs,djDir):
                     'reg_amount','reg_volume','reg_conc','reg_solvent',
                     'stock_amount','prep_date',
                     'pub_status','pub_date',
-                    'ora_compound_id','ora_project_id'
+                    'ora_compound_id','ora_project_id','ora_compound_type'
                     ]
         # arrayFields = {'screen_status': 'screen_status',
         #                 'report_status': 'report_status',
