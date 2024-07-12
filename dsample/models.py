@@ -337,7 +337,10 @@ class COADD_Compound(AuditModel):
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
-    
+
+    # compound_subtypes = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
+    #                                size=10, verbose_name = "Subtypes", null=True, blank=True)
+
     ora_compound_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Compound ID")
     ora_project_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Project ID")
     ora_compound_type = models.CharField(max_length=150, blank=True, verbose_name = "Old Compound Type")
