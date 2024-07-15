@@ -82,40 +82,42 @@ def main(prgArgs,djDir):
         for djCmpd in tqdm(qryCmpd):
             #_valid = 9
             #print(f"[{_valid}] {qry.reg_smiles}")
-            _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
-            if _moldict['valid'] > 0:
-                djCmpd.std_status = 'Valid'
-                djCmpd.std_process = "Std"
-                djCmpd.std_smiles = _moldict['smi']
-                djCmpd.std_mw = _moldict['mw']
-                djCmpd.std_nfrag = _moldict['nfrag']
+            if djCmpd.std_status != 'Valid' or prgArgs.overwrite:
+                _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
-                djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
-                djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
-                djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
-                djCmpd.std_smiles_extra = _moldict['smiles_extra']
-                djCmpd.std_mw_extra = _moldict['mw_extra']
-                updated_sample = True
-            else:
-                djCmpd.std_status = 'Invalid'
-                djCmpd.std_process = "Std"
+                if _moldict['valid'] > 0:
+                    djCmpd.std_status = 'Valid'
+                    djCmpd.std_process = "Std"
+                    djCmpd.std_smiles = _moldict['smi']
+                    djCmpd.std_mw = _moldict['mw']
+                    djCmpd.std_nfrag = _moldict['nfrag']
+
+                    djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
+                    djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
+                    djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
+                    djCmpd.std_smiles_extra = _moldict['smiles_extra']
+                    djCmpd.std_mw_extra = _moldict['mw_extra']
+                    updated_sample = True
+                else:
+                    djCmpd.std_status = 'Invalid'
+                    djCmpd.std_process = "Std"
 
 
-            validStatus = True
+                validStatus = True
 
-            djCmpd.clean_Fields()
-            validDict = djCmpd.validate()
-            if validDict:
-                validStatus = False
-                for k in validDict:
-                    print('Warning',k,validDict[k],'-')
-                #outDict.append(row)
+                djCmpd.clean_Fields()
+                validDict = djCmpd.validate()
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
+                    #outDict.append(row)
 
-            if validStatus:
-                if prgArgs.upload:
-                    if updated_sample:
-                        outNumbers['Updated Compounds'] += 1
-                        djCmpd.save()
+                if validStatus:
+                    if prgArgs.upload:
+                        if updated_sample:
+                            outNumbers['Updated Compounds'] += 1
+                            djCmpd.save()
 
         # print(f"[CO-ADD Compound] MinSMI {minSMI}")
 
