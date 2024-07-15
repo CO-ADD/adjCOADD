@@ -31,10 +31,15 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-def dict_to_code(dict):
-    _lst = []
-    for key in dict:
-        _lst.append(f"{key} ({dict[key]})")
+def SaltDict_to_SaltCode(saltDict,sep=';'):
+    # sDict - > key (value); key (value)
+    if len(saltDict)>0:
+        _lst = []
+        for k,d in saltDict.items():
+            _lst.append(f"{k} ({d['n']})")
+        return(sep.join(_lst))
+    else:
+        return(None)
     
 
 #-----------------------------------------------------------------------------
@@ -67,7 +72,7 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         print("--> COADD_Compound ---------------------------------------------------------")
-        qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
+        qryCmpd = COADD_Compound.objects.exclude(reg_smiles="",)
         print(f"[CO-ADD Compound] {len(qryCmpd)}")
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
@@ -78,15 +83,20 @@ def main(prgArgs,djDir):
             #_valid = 9
             #print(f"[{_valid}] {qry.reg_smiles}")
             _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
-            updated_sample = True
             if _moldict['valid'] > 0:
                 djCmpd.std_status = 'Valid'
                 djCmpd.std_smiles = _moldict['smi']
-                djCmpd.std_salt = Dict_to_StrList(_saltdict)
-                djCmpd.std_ion = Dict_to_StrList(_iondict)
-                djCmpd.std_solvent = Dict_to_StrList(_solvdict)
+                djCmpd.std_mw = _moldict['mw']
+
+                djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
+                djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
+                djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
+                djCmpd.std_smiles_extra = _moldict['smiles_extra']
+                djCmpd.std_mw_extra = _moldict['mw_extra']
+                updated_sample = True
             else:
                 djCmpd.std_status = 'Invalid; STD'
+                updated_sample = True
 
 
             validStatus = True
