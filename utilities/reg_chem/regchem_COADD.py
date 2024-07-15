@@ -85,6 +85,7 @@ def main(prgArgs,djDir):
             _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
             if _moldict['valid'] > 0:
                 djCmpd.std_status = 'Valid'
+                djCmpd.std_process = "Std"
                 djCmpd.std_smiles = _moldict['smi']
                 djCmpd.std_mw = _moldict['mw']
 
@@ -95,8 +96,8 @@ def main(prgArgs,djDir):
                 djCmpd.std_mw_extra = _moldict['mw_extra']
                 updated_sample = True
             else:
-                djCmpd.std_status = 'Invalid; STD'
-                updated_sample = True
+                djCmpd.std_status = 'Invalid'
+                djCmpd.std_process = "Std"
 
 
             validStatus = True
