@@ -372,6 +372,7 @@ class COADD_Compound(AuditModel):
     std_action = models.CharField(max_length=120, blank=True, verbose_name = "Std Action")
     std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
     std_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Std Smiles")
+    std_nfrag = models.SmallIntegerField(default=0, verbose_name = "Std nFrag")
     std_smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Std Smiles Extra")
     std_salt = models.CharField(max_length=2048, blank=True, verbose_name = "Std Salt")
     std_ion = models.CharField(max_length=2048, blank=True, verbose_name = "Std Ion")

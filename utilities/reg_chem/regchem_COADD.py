@@ -72,7 +72,7 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         print("--> COADD_Compound ---------------------------------------------------------")
-        qryCmpd = COADD_Compound.objects.exclude(reg_smiles="",std_status="")
+        qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
         print(f"[CO-ADD Compound] {len(qryCmpd)}")
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
@@ -88,6 +88,7 @@ def main(prgArgs,djDir):
                 djCmpd.std_process = "Std"
                 djCmpd.std_smiles = _moldict['smi']
                 djCmpd.std_mw = _moldict['mw']
+                djCmpd.std_nfrag = _moldict['nfrag']
 
                 djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
                 djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
