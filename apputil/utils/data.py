@@ -26,18 +26,18 @@ def sig_round(f,n=3):
 # ==================================================================================
 # General utilities for processing List, Dictionaries
 # ==================================================================================
-def Dict_to_StrList(Dict,sep=';'):
-    # Dict - > key (value); key (value)
-    if len(Dict)>0:
+def Dict_to_StrList(sDict,sep=';'):
+    # sDict - > key (value); key (value)
+    if len(sDict)>0:
         _lst = []
-        for key in dict:
-            _lst.append(f"{key} ({Dict[key]})")
+        for key in sDict:
+            _lst.append(f"{key} ({sDict[key]})")
         return(sep.join(_lst))
     else:
         return(None)
     
 def StrList_to_Dict(strList,sep=';'):
-    #  key (value); key (value) -> Dict
+    #  key (value); key (value) -> sDict
     if len(strList) >0:
         _lst = split_StrList(strList,sep=sep)
         _dict = {}
