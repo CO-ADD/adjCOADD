@@ -145,7 +145,8 @@ def main(prgArgs,djDir):
         outNumbers = {'Proc':0,'New Compounds':0,'Updated Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
 
         for djCmpd in tqdm(qryCmpd):
-
+            outNumbers['Proc'] += 1
+            updated_sample = False
             if djCmpd.reg_smiles:
                 try:
                     _mol = Chem.MolFromSmiles(djCmpd.reg_smiles)
@@ -155,11 +156,26 @@ def main(prgArgs,djDir):
                     _valid = 0
                 if _valid> 0:
                     djCmpd.std_structure_type = list(list_moltype(_mol))
+                    updated_sample = True
+
             elif djCmpd.reg_mf:
                 djCmpd.std_structure_type = list(list_mftype(djCmpd.reg_mf))
+                updated_sample = True
 
-            print(djCmpd.std_structure_type)
+            validStatus = True
+            djCmpd.clean_Fields()
+            validDict = djCmpd.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
 
+
+            if validStatus and prgArgs.upload and updated_sample:
+                outNumbers['Updated Compounds'] += 1
+                djCmpd.save()
+
+        print(f"[CO-ADD Compound] {outNumbers}")
 #==============================================================================
 if __name__ == "__main__":
 
