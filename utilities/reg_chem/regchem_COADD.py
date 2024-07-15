@@ -97,20 +97,23 @@ def main(prgArgs,djDir):
                     djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
                     djCmpd.std_smiles_extra = _moldict['smiles_extra']
                     djCmpd.std_mw_extra = _moldict['mw_extra']
+
+                    validStatus = True
+
+                    djCmpd.clean_Fields()
+                    validDict = djCmpd.validate()
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            print('Warning',k,validDict[k],'-')
+
                     updated_sample = True
                 else:
                     djCmpd.std_status = 'Invalid'
                     djCmpd.std_process = "Std"
+                    validStatus = True
+                    updated_sample = True
 
-
-                validStatus = True
-
-                djCmpd.clean_Fields()
-                validDict = djCmpd.validate()
-                if validDict:
-                    validStatus = False
-                    for k in validDict:
-                        print('Warning',k,validDict[k],'-')
                     #outDict.append(row)
 
                 if validStatus:
