@@ -111,7 +111,7 @@ def main(prgArgs,djDir):
 
             if validStatus:
                 if prgArgs.upload:
-                    if updated_sample or prgArgs.overwrite:
+                    if updated_sample:
                         outNumbers['Updated Compounds'] += 1
                         djCmpd.save()
 
