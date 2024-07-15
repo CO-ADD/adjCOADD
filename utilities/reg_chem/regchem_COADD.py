@@ -31,7 +31,11 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-
+def dict_to_code(dict):
+    _lst = []
+    for key in dict:
+        _lst.append(f"{key} ({dict[key]})")
+    
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -42,8 +46,9 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dsample.models import Project, COADD_Compound, Sample
-    from dsample.models import Convert_ProjectID, Convert_CompoundID
+    from apputil.utils.data import Dict_to_StrList
+    from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
+    from dchem.models import Chem_Salt
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -59,7 +64,7 @@ def main(prgArgs,djDir):
     if prgArgs.table == "COADD_Compound" :
 
 
-        MolStd = SmiStandardizer_DB() 
+        MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         print("--> COADD_Compound ---------------------------------------------------------")
         qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
@@ -67,20 +72,39 @@ def main(prgArgs,djDir):
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
+        outNumbers = {'Proc':0,'New Compounds':0,'Updated Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
 
-        for qry in tqdm(qryCmpd):
+        for djCmpd in tqdm(qryCmpd):
             #_valid = 9
             #print(f"[{_valid}] {qry.reg_smiles}")
-            _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(qry.reg_smiles)
+            _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
+            updated_sample = True
+            if _moldict['valid'] > 0:
+                djCmpd.std_status = 'Valid'
+                djCmpd.std_smiles = _moldict['smi']
+                djCmpd.std_salt = Dict_to_StrList(_saltdict)
+                djCmpd.std_ion = Dict_to_StrList(_iondict)
+                djCmpd.std_solvent = Dict_to_StrList(_solvdict)
+            else:
+                djCmpd.std_status = 'Invalid; STD'
 
-            print(_saltdict)
-            # if _moldict['valid'] > 0:
-            #     qry.std_smiles = _moldict['smi']
-            #     qry.std_smiles = _moldict['smi']
-            #     qry.std_smiles = _moldict['smi']
-            #     qry.std_smiles = _moldict['smi']
-            #     qry.std_smiles = _moldict['smi']
-            #print(f"[{_valid}] {_std_miles}")
+
+            validStatus = True
+
+            djCmpd.clean_Fields()
+            validDict = djCmpd.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+                #outDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if updated_sample or prgArgs.overwrite:
+                        outNumbers['Updated Compounds'] += 1
+                        djCmpd.save()
+
         # print(f"[CO-ADD Compound] MinSMI {minSMI}")
 
 

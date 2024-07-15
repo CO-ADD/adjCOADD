@@ -266,6 +266,16 @@ class Chem_Salt(AuditModel):
         retValue = cls.objects.filter(salt_id=SaltID).exists()
         return(retValue)
 
+    #------------------------------------------------
+    @classmethod
+    def get_Salt_DictList(cls,SaltType):
+        return(cls.objects.filter(salt_type=SaltType).values())
+
+    #------------------------------------------------
+    @classmethod
+    def get_Salt(cls,SaltID):
+        return(cls.objects.filter(salt_id=SaltID).values())
+
  
 #=================================================================================================
 class Chem_Group(AuditModel):
@@ -334,7 +344,6 @@ class Chem_Group(AuditModel):
     # Returns if an instance exists by salt_id
         retValue = cls.objects.filter(chemgroup_id=ChemGroupID).exists()
         return(retValue)
-
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
