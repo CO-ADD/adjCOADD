@@ -43,8 +43,8 @@ def main(prgArgs,djDir):
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
     from apputil.utils.data import Dict_to_StrList
-    from dsample.models import Library, Library_Compound
-    from dchem.models import Chem_Salt
+    from dsample.models import Library, Library_Compound, Sample
+    from dchem.models import Chem_Structure,Chem_Salt
     from dchem.utils.mol_std import check_structure_type, SaltDict_to_SaltCode, Smiles_to_Mol
 
     
@@ -68,7 +68,7 @@ def main(prgArgs,djDir):
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_{prgArgs.library}_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Failed SMI': 0}
+        outNumbers = {'Proc':0,'Updated Compounds':0, 'Mixture':0, 'New Samples':0, 'New ChemStructure':0, 'Metal Compounds':0, 'Failed SMI': 0}
 
         for djCmpd in tqdm(qryCmpd):
             outNumbers['Proc'] += 1
@@ -85,13 +85,40 @@ def main(prgArgs,djDir):
             if _IsMet==0:
                 _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
                 if _moldict['valid'] > 0:
-                    updated_sample = True
-                    validStatus = True
-                    djCmpd.std_status = 'Valid'
-                    djCmpd.std_process = "Std"
 
-                    
-                    outNumbers['Updated Compounds'] += 1
+                    if _moldict['nfrag'] == 1:
+                        updated_sample = True
+                        validStatus = True
+                        djCmpd.std_status = 'Valid'
+                        djCmpd.std_process = "Std"
+
+                        outNumbers['Updated Compounds'] += 1
+
+                        djChem = Chem_Structure.get_bySmiles(_moldict['smi'])
+                        if djChem is None:
+                            djChem = Chem_Structure()
+                            djChem.set_molecule(_moldict['smi'])
+                            djChem.nfrag = _moldict['nfrag']
+                            outNumbers['New ChemStructure'] += 1
+
+                        djSample = Sample.get(djCmpd.compound_id)
+                        if djSample is None:
+                            djSample = Sample()
+                            djSample.sample_id = djCmpd.compound_id
+                            djSample.sample_source = prgArgs.library
+                            djSample.structure_id = djChem
+                            new_sample = True
+                            outNumbers['New Samples'] += 1
+                        djSample.salt_code = ""
+
+                        djCmpd.sample_id = djSample
+
+                    else:
+                        djCmpd.std_status = 'Mixture'
+                        djCmpd.std_process = "Std"
+                        outNumbers['Mixture'] += 1
+
+
                 else:
                     outNumbers['Failed SMI'] += 1
                     djCmpd.std_status = 'Invalid'
