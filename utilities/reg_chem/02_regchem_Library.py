@@ -139,7 +139,7 @@ def main(prgArgs,djDir):
                             djSample.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
                             djSample.smiles_extra = _moldict['smiles_extra']
                             djSample.mw_extra = _moldict['mw_extra']
-                            djSample.full_mw = djSample.mw_extra + djChem.mw
+                            djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
 
                             djSample.clean_Fields()
                             validDict = djSample.validate()
