@@ -64,8 +64,8 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         logger.info("--> Library_Compound ---------------------------------------------------------")
-        qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library)
-        logger.info(f"[{prgArgs.library}] {len(qryCmpd)}")
+        qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library).iterator(chunk_size=1000)
+        #logger.info(f"[{prgArgs.library}] {len(qryCmpd)}")
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_{prgArgs.library}_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
