@@ -98,18 +98,20 @@ def main(prgArgs,djDir):
                     updated_sample = True
 
                 # Non Metal complex structures
-                elif djCmpd.reg_smiles and djCmpd.std_status != 'Valid':
+                elif djCmpd.reg_smiles:
  
                     _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
                     if _moldict['valid'] > 0:
                         djCmpd.std_status = 'Valid'
+                        if _moldict['nfrag'] > 1:
+                            djCmpd.std_status = 'Mixture'
+
                         djCmpd.std_process = "Std"
 
                         djCmpd.std_smiles = _moldict['smi']
                         djCmpd.std_mw = _moldict['mw']
                         djCmpd.std_nfrag = _moldict['nfrag']
-
                         djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
                         djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
                         djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
@@ -124,6 +126,9 @@ def main(prgArgs,djDir):
 
                         validStatus = True
                         updated_sample = True
+                else:
+                    djCmpd.std_status = 'Empty'
+                    djCmpd.std_process = "Std"
 
                 djCmpd.clean_Fields()
                 validDict = djCmpd.validate()
