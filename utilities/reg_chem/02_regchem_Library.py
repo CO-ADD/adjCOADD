@@ -122,7 +122,7 @@ def main(prgArgs,djDir):
                                 _StdProcess.append("ChemStructure")
                                 #djCmpd.std_process += ";ChemStructure"
                                 djChem.save()
-                                outNumbers['Updates ChemStructures'] += 1  
+                                outNumbers['Updated ChemStructures'] += 1  
 
                             #------------------------------------------------------------
                             djSample = Sample.get(djCmpd.compound_id)
@@ -138,7 +138,8 @@ def main(prgArgs,djDir):
                             djSample.structure_type = _MolType    
                             djSample.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
                             djSample.smiles_extra = _moldict['smiles_extra']
-                            djSample.full_mw = _moldict['mw_extra']
+                            djSample.mw_extra = _moldict['mw_extra']
+                            djSample.full_mw = djSample.mw_extra + djChem.mw
 
                             djSample.clean_Fields()
                             validDict = djSample.validate()
@@ -151,7 +152,7 @@ def main(prgArgs,djDir):
                                 _StdProcess.append("Sample")
                                 #djCmpd.std_process += ";Sample"
                                 djSample.save()
-                                outNumbers['Updates Samples'] += 1    
+                                outNumbers['Updated Samples'] += 1    
                             #------------------------------------------------------------
 
                             djCmpd.sample_id = djSample
@@ -182,56 +183,10 @@ def main(prgArgs,djDir):
 
             if prgArgs.upload and validStatus:
                 djCmpd.save()
-                outNumbers['Updates Compounds'] += 1    
+                outNumbers['Updated Compounds'] += 1    
 
     
-            # #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
-
-            #     # Excluded from SmiStandardizer - as molvs breaks any metal bonds
-            #     # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
-            #         validStatus = True
-            #         updated_sample = True
-
-            #     # Non Metal complex structures
-            #     elif djCmpd.reg_smiles and djCmpd.std_status != 'Valid':
  
-            #         _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
-
-            #         if _moldict['valid'] > 0:
-            #             djCmpd.std_status = 'Valid'
-            #             djCmpd.std_process = "Std"
-
-            #             djCmpd.std_smiles = _moldict['smi']
-            #             djCmpd.std_mw = _moldict['mw']
-            #             djCmpd.std_nfrag = _moldict['nfrag']
-
-            #             djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
-            #             djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
-            #             djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
-            #             djCmpd.std_smiles_extra = _moldict['smiles_extra']
-            #             djCmpd.std_mw_extra = _moldict['mw_extra']
-
-            #             validStatus = True
-            #             updated_sample = True
-            #         else:
-            #             djCmpd.std_status = 'Invalid'
-            #             djCmpd.std_process = "Std"
-
-            #             validStatus = True
-            #             updated_sample = True
-
-            #     djCmpd.clean_Fields()
-            #     validDict = djCmpd.validate()
-            #     if validDict:
-            #         validStatus = False
-            #         for k in validDict:
-            #             print('Warning',k,validDict[k],'-')
-
-            #     if validStatus and updated_sample and prgArgs.upload:
-            #         outNumbers['Updated Compounds'] += 1
-            #         djCmpd.save()
-            # else:
-            #     outNumbers['Already Done'] += 1
         print(f"[{prgArgs.table}] {outNumbers}")
 
 
