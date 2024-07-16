@@ -49,18 +49,20 @@ AtomType['Halogen']     = ['F', 'Cl','Br','I']
 AtomType['Metalloids']  = ['B','Si','As','Te','At']
 AtomType['Organic']     = ['C','N','O','P','S','Se']
 
+AtomType_Order = ['MetalTrans','MetalLanAct','Metal','Alkali','AlkaliEarth','Halogen','Metalloids','Organic']
+
 #-----------------------------------------------------------------------------
 def list_mftype(mf,unique=True):
 #-----------------------------------------------------------------------------
     qrymf = mf
     mfType = {}
     metalLst = {}
-    for atype in AtomType:
+    for atype in AtomType_Order:
         for qatm in AtomType[atype]:
             if qatm in qrymf:
                 mfType[atype] = 1
                 if 'Metal' in atype:
-                    metalLst[atype] = 1
+                    metalLst[qatm] = 1
                 qrymf = qrymf.replace(qatm,"")
     return(mfType,metalLst)
 
@@ -75,8 +77,8 @@ def list_moltype(mol,unique=True):
             for atype in AtomType:
                 if atSym in AtomType[atype]:
                     molType[atype] = 1
-                    if 'Metal' in atype or 'Alkali' in atype:
-                        metalLst[atype] = 1
+                    if 'Metal' in atype:
+                        metalLst[atSym] = 1
     return(molType,metalLst)
 
 #-----------------------------------------------------------------------------
@@ -93,17 +95,27 @@ def check_structure_type(qSmi,qMF,sep=';'):
             _mol = None
             _valid = 0
 
-    if _valid> 0:
+    if _valid>0:
         _MolType,_Metal = list_moltype(_mol)
-        retMolType = sep.join(list(_MolType))
+        if len(_MolType)>0:
+            _molList = list(_MolType)
+            _molList.sort()
+            retMolType = sep.join(_molList)
         if len(_Metal)>0:
-            retMetal = sep.join(list(_Metal))
+            _metList = list(_Metal)
+            _metList.sort()
+            retMetal = sep.join(_metList)
     else:
         if qMF:
             _MolType,_Metal = list_mftype(qMF)
-            retMolType = f"{sep.join(list(_MolType))};[mf]"
+            if len(_MolType)>0:
+                _molList = list(_MolType)
+                _molList.sort()
+                retMolType = f"{sep.join(_MolType)}; #mf"
             if len(_Metal)>0:
-                retMetal = f"{sep.join(list(_Metal))};[mf]"
+                _metList = list(_Metal)
+                _metList.sort()
+                retMetal = f"{sep.join(_metList)}; #mf"
     return(retMolType,retMetal)
 
 # ==========================================================================
@@ -165,21 +177,28 @@ def main(prgArgs,djDir):
             updated_sample = False
 
             # Check if this Standardisation has been done already 
-            if not djCmpd.std_status or prgArgs.overwrite:
+            #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
+            if djCmpd.reg_smiles or djCmpd.reg_mf:
 
                 _MolType,_Metal = check_structure_type(djCmpd.reg_smiles,djCmpd.reg_mf)
                 djCmpd.std_structure_type = _MolType
                 djCmpd.std_metal = _Metal
                 updated_sample = True
+                validStatus = True
 
+            #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
+            
                 # Excluded from SmiStandardizer - as molvs breaks any metal bonds
                 # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
                 if _Metal:
                     djCmpd.std_status = 'Metal'
                     outNumbers['Metal Compounds'] += 1
 
+                    validStatus = True
+                    updated_sample = True
+
                 # Non Metal complex structures
-                elif djCmpd.reg_smiles:
+                elif djCmpd.reg_smiles and djCmpd.std_status != 'Valid':
  
                     _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
@@ -206,16 +225,16 @@ def main(prgArgs,djDir):
                         validStatus = True
                         updated_sample = True
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
+                djCmpd.clean_Fields()
+                validDict = djCmpd.validate()
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
 
-                    if validStatus and updated_sample and prgArgs.upload:
-                        outNumbers['Updated Compounds'] += 1
-                        djCmpd.save()
+                if validStatus and updated_sample and prgArgs.upload:
+                    outNumbers['Updated Compounds'] += 1
+                    djCmpd.save()
             else:
                 outNumbers['Already Done'] += 1
         print(f"[CO-ADD Compound] {outNumbers}")

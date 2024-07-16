@@ -1,9 +1,9 @@
 import re
 from model_utils import Choices
 from sequences import Sequence
-
 from rdkit import Chem
 from django_rdkit import models
+from django_rdkit.models import MOL_TO_SMILES
 
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GistIndex
@@ -180,7 +180,45 @@ class Chem_Structure(AuditModel):
             if verbose:
                 print(f"[Invalid SMILES] {Smiles} ")
         return(xmol)
-    
+
+    #------------------------------------------------
+    @classmethod
+    def register_fromDict(cls,sDict,smiles_name='smiles',mol_name='mol',verbose=0):
+        djchem = None
+        if smiles_name in sDict:
+            djchem = cls.get_bySmiles(sDict[smiles_name])
+            if not djchem:
+                djchem = cls()
+                djchem.set_molecule(sDict[smiles_name])
+        elif mol_name in sDict:
+            djchem = cls.get_bySmiles(Chem.MolToSmiles(sDict[mol_name]))
+            if not djchem:
+                djchem = cls()
+                djchem.smol = sDict[mol_name]
+
+        if djchem:        
+            for s in ['structure_code','structure_name']:
+                if s in sDict:
+                    setattr(djchem,s,sDict[s])
+
+            validStatus = True
+            djchem.clean_Fields()
+            validDict = djchem.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('[reg Chem_Structure] Warning',k,validDict[k])
+
+            if validStatus:
+                djchem.save()
+                return(djchem)
+            else:
+                return(None)
+        else:
+            if verbose:
+                print(f"[reg Chem_Structure] no {smiles_name} or {mol_name} in {sDict}")
+            return(None)
+
     #------------------------------------------------
     def set_molecule(self,Smiles):
         self.smol = self.smiles2mol(Smiles,verbose=0) 
