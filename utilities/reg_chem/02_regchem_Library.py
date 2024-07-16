@@ -17,24 +17,25 @@ from tqdm import tqdm
 import django
 #-----------------------------------------------------------------------------
 
-# Logger ----------------------------------------------------------------
-import logging
-logTime= datetime.datetime.now()
-logName = "Upload_ConvertID"
-#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
-logLevel = logging.INFO 
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(
-    format="[%(name)-20s] %(message)s ",
-#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    handlers=[logging.StreamHandler()],
-    level=logLevel)
-#-----------------------------------------------------------------------------
 
     
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
+
+    # Logger ----------------------------------------------------------------
+    import logging
+    logTime= datetime.datetime.now()
+    logName = "regChem_02RegChem_Library"
+    logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+    logLevel = logging.INFO 
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(
+        format="[%(name)-20s] %(message)s ",
+        handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+    #    handlers=[logging.StreamHandler()],
+        level=logLevel)
+#-----------------------------------------------------------------------------
 
     sys.path.append(djDir)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
@@ -62,10 +63,10 @@ def main(prgArgs,djDir):
 
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
-        print("--> Library_Compound ---------------------------------------------------------")
+        logger.info("--> Library_Compound ---------------------------------------------------------")
         qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library)
-        print(f"[{prgArgs.table}] {len(qryCmpd)}")
-        print("-------------------------------------------------------------------------")
+        logger.info(f"[{prgArgs.library}] {len(qryCmpd)}")
+        logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_{prgArgs.library}_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
         outNumbers = {'Proc':0, 'Mixture':0, 'Metal Compounds':0, 'Failed SMI': 0,
@@ -190,7 +191,7 @@ def main(prgArgs,djDir):
 
     
  
-        print(f"[{prgArgs.table}] {outNumbers}")
+        logger.info(f"[{prgArgs.table}] {outNumbers}")
 
 
     

@@ -17,24 +17,25 @@ from tqdm import tqdm
 import django
 #-----------------------------------------------------------------------------
 
-# Logger ----------------------------------------------------------------
-import logging
-logTime= datetime.datetime.now()
-logName = "Upload_ConvertID"
-#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
-logLevel = logging.INFO 
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(
-    format="[%(name)-20s] %(message)s ",
-#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    handlers=[logging.StreamHandler()],
-    level=logLevel)
-#-----------------------------------------------------------------------------
-
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
+
+    # Logger ----------------------------------------------------------------
+    import logging
+    logTime= datetime.datetime.now()
+    logName = "regChem_01StdChem_COADD"
+    logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+    logLevel = logging.INFO 
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(
+        format="[%(name)-20s] %(message)s ",
+        handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+        #handlers=[logging.StreamHandler()],
+        level=logLevel)
+    #-----------------------------------------------------------------------------
+
 
     sys.path.append(djDir)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
@@ -63,11 +64,11 @@ def main(prgArgs,djDir):
 
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
-        print("--> COADD_Compound ---------------------------------------------------------")
+        logger.info("--> COADD_Compound ---------------------------------------------------------")
         #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
         qryCmpd = COADD_Compound.objects.all()
-        print(f"[CO-ADD Compound] {len(qryCmpd)}")
-        print("-------------------------------------------------------------------------")
+        logger.info(f"[CO-ADD Compound] {len(qryCmpd)}")
+        logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
         outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
@@ -142,7 +143,7 @@ def main(prgArgs,djDir):
                     djCmpd.save()
             else:
                 outNumbers['Already Done'] += 1
-        print(f"[CO-ADD Compound] {outNumbers}")
+        logger.info(f"[CO-ADD Compound] {outNumbers}")
 
 
     
