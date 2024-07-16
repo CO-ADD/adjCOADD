@@ -387,7 +387,7 @@ class COADD_Compound(AuditModel):
     std_smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Std Smiles Extra")
     std_mw = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "Std MW")
     std_mw_extra = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "Std MW Extra")
-    std_mf = models.CharField(max_length=100, blank=True, verbose_name = "Std MF")
+    std_mf = models.CharField(max_length=100, blank=True, verbose_name = "Std Total MF")
 
     # CO-ADD - Link to External ID's
     cpoz_sn = models.CharField(max_length=25, blank=True, verbose_name = "CpOz SN")

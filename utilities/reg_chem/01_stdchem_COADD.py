@@ -46,7 +46,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
-    from dchem.utils.mol_std import get_Structure_Type_Smiles, SaltDict_to_SaltCode
+    from dchem.utils.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -66,8 +66,11 @@ def main(prgArgs,djDir):
 
         logger.info("--> COADD_Compound ---------------------------------------------------------")
         #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
-        qryCmpd = COADD_Compound.objects.all()
-        nCmpd = qryCmpd.count()
+        if prgArgs.overwrite:
+            qryCmpd = COADD_Compound.objects.all()            
+        else:
+            qryCmpd = COADD_Compound.objects.all().exclude(std_status='Valid')            
+        nCmpd = qryCmpd.count()    
         logger.info(f"[CO-ADD Compound] {nCmpd}")
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
@@ -119,7 +122,7 @@ def main(prgArgs,djDir):
                         djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
                         djCmpd.std_smiles_extra = _moldict['smiles_extra']
                         djCmpd.std_mw_extra = _moldict['mw_extra']
-
+                        djCmpd.std_mf = get_MF_Smiles(_moldict['smi']+_moldict['smiles_extra'])
                         validStatus = True
                         updated_sample = True
                     else:
