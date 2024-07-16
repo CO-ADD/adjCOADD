@@ -186,7 +186,7 @@ def main(prgArgs,djDir):
                     if _moldict['valid'] > 0:
                         djCmpd.std_status = 'Valid'
                         djCmpd.std_process = "Std"
-                        
+
                         djCmpd.std_smiles = _moldict['smi']
                         djCmpd.std_mw = _moldict['mw']
                         djCmpd.std_nfrag = _moldict['nfrag']
@@ -198,31 +198,27 @@ def main(prgArgs,djDir):
                         djCmpd.std_mw_extra = _moldict['mw_extra']
 
                         validStatus = True
-
-                        djCmpd.clean_Fields()
-                        validDict = djCmpd.validate()
-                        if validDict:
-                            validStatus = False
-                            for k in validDict:
-                                print('Warning',k,validDict[k],'-')
-
                         updated_sample = True
                     else:
                         djCmpd.std_status = 'Invalid'
                         djCmpd.std_process = "Std"
+
                         validStatus = True
                         updated_sample = True
 
-                        #outDict.append(row)
+                    djCmpd.clean_Fields()
+                    validDict = djCmpd.validate()
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            print('Warning',k,validDict[k],'-')
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if updated_sample:
-                                outNumbers['Updated Compounds'] += 1
-                                djCmpd.save()
+                    if validStatus and updated_sample and prgArgs.upload:
+                        outNumbers['Updated Compounds'] += 1
+                        djCmpd.save()
             else:
                 outNumbers['Already Done'] += 1
-        # print(f"[CO-ADD Compound] MinSMI {minSMI}")
+        print(f"[CO-ADD Compound] {outNumbers}")
 
 
     
