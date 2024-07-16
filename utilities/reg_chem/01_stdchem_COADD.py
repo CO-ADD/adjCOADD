@@ -67,13 +67,14 @@ def main(prgArgs,djDir):
         logger.info("--> COADD_Compound ---------------------------------------------------------")
         #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
         qryCmpd = COADD_Compound.objects.all()
-        logger.info(f"[CO-ADD Compound] {len(qryCmpd)}")
+        nCmpd = qryCmpd.count()
+        logger.info(f"[CO-ADD Compound] {nCmpd}")
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
         outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
 
-        for djCmpd in tqdm(qryCmpd):
+        for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
             updated_sample = False
 

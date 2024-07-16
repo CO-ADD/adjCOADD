@@ -64,9 +64,13 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         logger.info("--> Library_Compound ---------------------------------------------------------")
-        qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library).iterator(chunk_size=1000)
-        #logger.info(f"[{prgArgs.library}] {len(qryCmpd)}")
-        logger.info("-------------------------------------------------------------------------")
+        if prgArgs.overwrite:
+            qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library)            
+        else:
+            qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library).exclude(std_status='Valid')
+        nCmpd = qryCmpd.count()    
+        logger.info(f"[{prgArgs.library}] {nCmpd}")
+        logger.info("------------------------------------------------------------------------------")
         OutFile = f"regChem_{prgArgs.library}_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
         outNumbers = {'Proc':0, 'Mixture':0, 'Metal Compounds':0, 'Failed SMI': 0,
@@ -74,7 +78,7 @@ def main(prgArgs,djDir):
                       'New Samples':0, 'Updated Samples':0,
                       'New ChemStructures':0,'Updated ChemStructures':0}
 
-        for djCmpd in tqdm(qryCmpd):
+        for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
             updated_sample = False
 
