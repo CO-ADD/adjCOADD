@@ -68,6 +68,7 @@ def main(prgArgs,djDir):
             qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library)            
         else:
             qryCmpd = Library_Compound.objects.filter(library_id=prgArgs.library).exclude(std_status='Valid')
+            
         nCmpd = qryCmpd.count()    
         logger.info(f"[{prgArgs.library}] {nCmpd}")
         logger.info("------------------------------------------------------------------------------")
