@@ -226,6 +226,8 @@ class Chem_Structure(AuditModel):
     #------------------------------------------------
     def set_properties(self):
         self.charge = Chem.GetFormalCharge(self.smol)
+        self.mw = Chem.Descriptors.MolWt(self.smol)
+        self.mf = Chem.Descriptors.CalcMolFormula(self.smol)
     
     #------------------------------------------------
     def get_smiles(self):

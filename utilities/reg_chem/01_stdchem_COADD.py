@@ -46,7 +46,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
-    from dchem.utils.mol_std import check_structure_type_smi, SaltDict_to_SaltCode
+    from dchem.utils.mol_std import get_Structure_Type_Smiles, SaltDict_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -82,7 +82,7 @@ def main(prgArgs,djDir):
             #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
             if djCmpd.reg_smiles or djCmpd.reg_mf:
 
-                _MolType,_Metal,_IsMet = check_structure_type_smi(djCmpd.reg_smiles,djCmpd.reg_mf)
+                _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.reg_smiles,djCmpd.reg_mf)
                 djCmpd.std_structure_type = _MolType
                 djCmpd.std_metal = _Metal
                 updated_sample = True

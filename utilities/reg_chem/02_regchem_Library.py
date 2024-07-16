@@ -46,7 +46,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Library, Library_Compound, Sample
     from dchem.models import Chem_Structure,Chem_Salt
-    from dchem.utils.mol_std import check_structure_type, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
+    from dchem.utils.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -91,7 +91,7 @@ def main(prgArgs,djDir):
             #print(" ",djCmpd.reg_smiles)
             if djCmpd.reg_smiles:
                 _mol,_valid = Smiles_to_Mol(djCmpd.reg_smiles)
-                _MolType,_Metal,_IsMet = check_structure_type(_mol,None)
+                _MolType,_Metal,_IsMet = get_Structure_Type(_mol,None)
                 _StdProcess = []
                 
                 if _IsMet==0:
@@ -150,7 +150,8 @@ def main(prgArgs,djDir):
                             djSample.smiles_extra = _moldict['smiles_extra']
                             djSample.mw_extra = _moldict['mw_extra']
                             djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
-
+                            djSample.full_mf = get_MF_Smiles(_moldict['smi']+djSample.smiles_extra)
+                            
                             djSample.clean_Fields()
                             validDict = djSample.validate()
                             if validDict:

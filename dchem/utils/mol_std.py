@@ -8,17 +8,17 @@ logger = logging.getLogger(__name__)
 
 #-----------------------------------------------------------------------------
 from rdkit import Chem
-from rdkit import Geometry
-from rdkit.Chem import rdinchi
-from rdkit.Chem.MolStandardize import rdMolStandardize
-from rdkit.Chem import rdMolTransforms
+# from rdkit import Geometry
+# from rdkit.Chem import rdinchi
+# from rdkit.Chem.MolStandardize import rdMolStandardize
+# from rdkit.Chem import rdMolTransforms
 
-from molvs import Standardizer
-from molvs import validate_smiles
-from molvs import standardize_smiles
+# from molvs import Standardizer
+# from molvs import validate_smiles
+# from molvs import standardize_smiles
 
-from apputil.models import ApplicationUser, Dictionary, ApplicationLog
-from dchem.models import Chem_Structure
+# from apputil.models import ApplicationUser, Dictionary, ApplicationLog
+# from dchem.models import Chem_Structure
 #-----------------------------------------------------------------------------
 
 def Smiles_to_Mol(smi):
@@ -88,7 +88,7 @@ def list_moltype(mol,unique=True):
     return(molType,metalLst,metalSMI)
 
 #-----------------------------------------------------------------------------
-def check_structure_type_smi(qSmi,qMF,sep=';'):
+def get_Structure_Type_Smiles(qSmi,qMF,sep=';'):
 #-----------------------------------------------------------------------------
     _valid = 0
     retMolType = None
@@ -126,7 +126,7 @@ def check_structure_type_smi(qSmi,qMF,sep=';'):
     return(retMolType,retMetal,IsMet)
 
 #-----------------------------------------------------------------------------
-def check_structure_type(qMol,qMF,sep=';'):
+def get_Structure_Type(qMol,qMF,sep=';'):
 #-----------------------------------------------------------------------------
     _valid = 0
     retMolType = None
@@ -187,6 +187,13 @@ def SaltDictList_to_SaltCode(saltDictList,sep=';'):
         return(sep.join(_lst))
     else:
         return(None)
+
+def get_MF_Smiles(smi):
+    _mol,_valid = Smiles_to_Mol(smi)
+    mf = ""
+    if _valid:
+        mf = Chem.rdMolDescriptors.CalcMolFormula(_mol)
+    return(mf)
 
 # def list_metalatoms(mol,unique=True,):
 #     MetalClass   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
