@@ -503,6 +503,8 @@ class Library_Compound(AuditModel):
         db_column="compound_type", related_name="%(class)s_compound_type")
     
     reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
+    std_status = models.CharField(max_length=10, blank=True, verbose_name = "Std Status")
+    std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
 
     class Meta:
         app_label = 'dsample'
@@ -513,6 +515,7 @@ class Library_Compound(AuditModel):
             models.Index(name="lcmp_type_idx", fields=['compound_type']),
             models.Index(name="lcmp_lid_idx", fields=['library_id']),
             models.Index(name="lcmp_sid_idx", fields=['sample_id']),
+            models.Index(name="lcmp_sstat_idx", fields=['std_status']),
         ]
 
     #------------------------------------------------

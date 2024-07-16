@@ -32,106 +32,106 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-# ==========================================================================
-AtomType = {}
-AtomType['MetalTrans'] = [
-        'Sc','Ti','V' ,'Cr','Mn','Fe','Co','Ni','Cu','Zn',
-        'Y' ,'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',
-        'Hf','Ta','W' ,'Re','Os','Ir','Pt','Au','Hg',
-        'Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn']
-AtomType['MetalLanAct'] = [
-        'La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu',
-        'Ac','Th','Pa','U', 'Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']    
-AtomType['Metal']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
-AtomType['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
-AtomType['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
-AtomType['Halogen']     = ['F', 'Cl','Br','I']
-AtomType['Metalloids']  = ['B','Si','As','Te','At']
-AtomType['Organic']     = ['C','N','O','P','S','Se']
+# # ==========================================================================
+# AtomType = {}
+# AtomType['MetalTrans'] = [
+#         'Sc','Ti','V' ,'Cr','Mn','Fe','Co','Ni','Cu','Zn',
+#         'Y' ,'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',
+#         'Hf','Ta','W' ,'Re','Os','Ir','Pt','Au','Hg',
+#         'Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn']
+# AtomType['MetalLanAct'] = [
+#         'La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu',
+#         'Ac','Th','Pa','U', 'Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']    
+# AtomType['Metal']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
+# AtomType['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
+# AtomType['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
+# AtomType['Halogen']     = ['F', 'Cl','Br','I']
+# AtomType['Metalloids']  = ['B','Si','As','Te','At']
+# AtomType['Organic']     = ['C','N','O','P','S','Se']
 
-AtomType_Order = ['MetalTrans','MetalLanAct','Metal','Alkali','AlkaliEarth','Halogen','Metalloids','Organic']
+# AtomType_Order = ['MetalTrans','MetalLanAct','Metal','Alkali','AlkaliEarth','Halogen','Metalloids','Organic']
 
-#-----------------------------------------------------------------------------
-def list_mftype(mf,unique=True):
-#-----------------------------------------------------------------------------
-    qrymf = mf
-    mfType = {}
-    metalLst = {}
-    for atype in AtomType_Order:
-        for qatm in AtomType[atype]:
-            if qatm in qrymf:
-                mfType[atype] = 1
-                if 'Metal' in atype:
-                    metalLst[qatm] = 1
-                qrymf = qrymf.replace(qatm,"")
-    return(mfType,metalLst)
+# #-----------------------------------------------------------------------------
+# def list_mftype(mf,unique=True):
+# #-----------------------------------------------------------------------------
+#     qrymf = mf
+#     mfType = {}
+#     metalLst = {}
+#     for atype in AtomType_Order:
+#         for qatm in AtomType[atype]:
+#             if qatm in qrymf:
+#                 mfType[atype] = 1
+#                 if 'Metal' in atype:
+#                     metalLst[qatm] = 1
+#                 qrymf = qrymf.replace(qatm,"")
+#     return(mfType,metalLst)
 
-#-----------------------------------------------------------------------------
-def list_moltype(mol,unique=True):
-#-----------------------------------------------------------------------------
-    molType = {}
-    metalLst = {}
-    if mol:
-        for atom in mol.GetAtoms():
-            atSym = atom.GetSymbol()
-            for atype in AtomType:
-                if atSym in AtomType[atype]:
-                    molType[atype] = 1
-                    if 'Metal' in atype:
-                        metalLst[atSym] = 1
-    return(molType,metalLst)
+# #-----------------------------------------------------------------------------
+# def list_moltype(mol,unique=True):
+# #-----------------------------------------------------------------------------
+#     molType = {}
+#     metalLst = {}
+#     if mol:
+#         for atom in mol.GetAtoms():
+#             atSym = atom.GetSymbol()
+#             for atype in AtomType:
+#                 if atSym in AtomType[atype]:
+#                     molType[atype] = 1
+#                     if 'Metal' in atype:
+#                         metalLst[atSym] = 1
+#     return(molType,metalLst)
 
-#-----------------------------------------------------------------------------
-def check_structure_type(qSmi,qMF,sep=';'):
-#-----------------------------------------------------------------------------
-    _valid = 0
-    retMolType = None
-    retMetal = None
-    if qSmi:
-        try:
-            _mol = Chem.MolFromSmiles(qSmi)
-            _valid = 1
-        except:
-            _mol = None
-            _valid = 0
+# #-----------------------------------------------------------------------------
+# def check_structure_type(qSmi,qMF,sep=';'):
+# #-----------------------------------------------------------------------------
+#     _valid = 0
+#     retMolType = None
+#     retMetal = None
+#     if qSmi:
+#         try:
+#             _mol = Chem.MolFromSmiles(qSmi)
+#             _valid = 1
+#         except:
+#             _mol = None
+#             _valid = 0
 
-    if _valid>0:
-        _MolType,_Metal = list_moltype(_mol)
-        if len(_MolType)>0:
-            _molList = list(_MolType)
-            _molList.sort()
-            retMolType = sep.join(_molList)
-        if len(_Metal)>0:
-            _metList = list(_Metal)
-            _metList.sort()
-            retMetal = sep.join(_metList)
-    else:
-        if qMF:
-            _MolType,_Metal = list_mftype(qMF)
-            if len(_MolType)>0:
-                _molList = list(_MolType)
-                _molList.sort()
-                retMolType = f"{sep.join(_MolType)}; #mf"
-            if len(_Metal)>0:
-                _metList = list(_Metal)
-                _metList.sort()
-                retMetal = f"{sep.join(_metList)}; #mf"
-    return(retMolType,retMetal)
+#     if _valid>0:
+#         _MolType,_Metal = list_moltype(_mol)
+#         if len(_MolType)>0:
+#             _molList = list(_MolType)
+#             _molList.sort()
+#             retMolType = sep.join(_molList)
+#         if len(_Metal)>0:
+#             _metList = list(_Metal)
+#             _metList.sort()
+#             retMetal = sep.join(_metList)
+#     else:
+#         if qMF:
+#             _MolType,_Metal = list_mftype(qMF)
+#             if len(_MolType)>0:
+#                 _molList = list(_MolType)
+#                 _molList.sort()
+#                 retMolType = f"{sep.join(_MolType)}; #mf"
+#             if len(_Metal)>0:
+#                 _metList = list(_Metal)
+#                 _metList.sort()
+#                 retMetal = f"{sep.join(_metList)}; #mf"
+#     return(retMolType,retMetal)
 
-# ==========================================================================
+# # ==========================================================================
 
 
 
-#-----------------------------------------------------------------------------
-def SaltDict_to_SaltCode(saltDict,sep=';'):
-    # sDict - > key (value); key (value)
-    if len(saltDict)>0:
-        _lst = []
-        for k,d in saltDict.items():
-            _lst.append(f"{k} ({d['n']})")
-        return(sep.join(_lst))
-    else:
-        return(None)
+# #-----------------------------------------------------------------------------
+# def SaltDict_to_SaltCode(saltDict,sep=';'):
+#     # sDict - > key (value); key (value)
+#     if len(saltDict)>0:
+#         _lst = []
+#         for k,d in saltDict.items():
+#             _lst.append(f"{k} ({d['n']})")
+#         return(sep.join(_lst))
+#     else:
+#         return(None)
     
 
 #-----------------------------------------------------------------------------
@@ -146,6 +146,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
+    from dchem.utils.mol_std import check_structure_type, SaltDict_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -187,7 +188,7 @@ def main(prgArgs,djDir):
                 validStatus = True
 
             #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
-            
+
                 # Excluded from SmiStandardizer - as molvs breaks any metal bonds
                 # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
                 if _Metal:

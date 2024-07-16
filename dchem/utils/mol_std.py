@@ -21,79 +21,180 @@ from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dchem.models import Chem_Structure
 #-----------------------------------------------------------------------------
 
-AtomClass = {}
-AtomClass['MetallTrans'] = [
+def Smiles_to_Mol(smi):
+    try:
+        _mol = Chem.MolFromSmiles(smi)
+        _valid = 1
+    except:
+        _mol = None
+        _valid = 0
+    return(_mol,_valid)
+
+
+# ==========================================================================
+AtomType = {}
+AtomType['MetalTrans'] = [
         'Sc','Ti','V' ,'Cr','Mn','Fe','Co','Ni','Cu','Zn',
         'Y' ,'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',
         'Hf','Ta','W' ,'Re','Os','Ir','Pt','Au','Hg',
         'Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn']
-AtomClass['MetalLanAct'] = [
+AtomType['MetalLanAct'] = [
         'La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu',
         'Ac','Th','Pa','U', 'Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']    
-AtomClass['Metall']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
-AtomClass['Metalloids']  = ['B','Si','As','Te','At']
-AtomClass['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
-AtomClass['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
-AtomClass['Halogen']     = ['F', 'Cl','Br','I']
-AtomClass['Organic']     = ['C','N','O','P','S','Se']
-#AtomClass['MetallAll']   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
+AtomType['Metal']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
+AtomType['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
+AtomType['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
+AtomType['Halogen']     = ['F', 'Cl','Br','I']
+AtomType['Metalloids']  = ['B','Si','As','Te','At']
+AtomType['Organic']     = ['C','N','O','P','S','Se']
 
-# ==========================================================================
-def is_atomclass(atm,aClass, lstClass = AtomClass):
-# ==========================================================================
-    if aClass in lstClass:
-        aSymbol = atm.GetSymbol()
-        return (aSymbol in lstClass[aClass])
-    return()
+AtomType_Order = ['MetalTrans','MetalLanAct','Metal','Alkali','AlkaliEarth','Halogen','Metalloids','Organic']
+Metal_SMI = ['MetalTrans','MetalLanAct','Metal']
 
-# ==========================================================================
-def list_atomclass_in_mf(mf, aClass, lstClass=AtomClass,unique=True, ):
-# ==========================================================================
-    if aClass in lstClass:
-        if mf:
-            alst = []
-            for m in lstClass[aClass]:
-                if m in mf:
-                    alst.append(m)
-            if unique:
-                alst = list(set(alst))
-            return(alst)
-    return()
+#-----------------------------------------------------------------------------
+def list_mftype(mf,unique=True):
+#-----------------------------------------------------------------------------
+    qrymf = mf
+    mfType = {}
+    metalLst = {}
+    metalSMI = 0
+    for atype in AtomType_Order:
+        for qatm in AtomType[atype]:
+            if qatm in qrymf:
+                mfType[atype] = 1
+                if 'Metal' in atype:
+                    metalLst[qatm] = 1
+                qrymf = qrymf.replace(qatm,"")
+                if atype in Metal_SMI:
+                    metalSMI = 1
+    return(mfType,metalLst,metalSMI)
 
-# ==========================================================================
-def list_atomclass_in_mol(mol, aClass, unique=True, lstClass = AtomClass):
-# ==========================================================================
-    if aClass in lstClass:
-        if mol:
-            alst = []
-            for atom in mol.GetAtoms():
-                atSym = atom.GetSymbol()
-                if atSym in lstClass[aClass]:
-                    alst.append(atSym)
-            if unique:
-                alst = list(set(alst))
-            return(alst)
-    return()
-
-def list_metalatoms(mol,unique=True,):
-    MetalClass   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
+#-----------------------------------------------------------------------------
+def list_moltype(mol,unique=True):
+#-----------------------------------------------------------------------------
+    molType = {}
+    metalLst = {}
+    metalSMI = 0
     if mol:
-        alst = []
         for atom in mol.GetAtoms():
             atSym = atom.GetSymbol()
-            if atSym in MetalClass:
-                alst.append(atSym)
-        if unique:
-            alst = list(set(alst))
-        return(alst)
+            for atype in AtomType:
+                if atSym in AtomType[atype]:
+                    molType[atype] = 1
+                    if 'Metal' in atype:
+                        metalLst[atSym] = 1
+                    if atype in Metal_SMI:
+                        metalSMI = 1
+    return(molType,metalLst,metalSMI)
+
+#-----------------------------------------------------------------------------
+def check_structure_type_smi(qSmi,qMF,sep=';'):
+#-----------------------------------------------------------------------------
+    _valid = 0
+    retMolType = None
+    retMetal = None
+    IsMet = 0
+    if qSmi:
+        try:
+            _mol = Chem.MolFromSmiles(qSmi)
+            _valid = 1
+        except:
+            _mol = None
+            _valid = 0
+
+    if _valid>0:
+        _MolType,_Metal,IsMet = list_moltype(_mol)
+        if len(_MolType)>0:
+            _molList = list(_MolType)
+            _molList.sort()
+            retMolType = sep.join(_molList)
+        if len(_Metal)>0:
+            _metList = list(_Metal)
+            _metList.sort()
+            retMetal = sep.join(_metList)
+    else:
+        if qMF:
+            _MolType,_Metal,IsMet = list_mftype(qMF)
+            if len(_MolType)>0:
+                _molList = list(_MolType)
+                _molList.sort()
+                retMolType = f"{sep.join(_MolType)}; #mf"
+            if len(_Metal)>0:
+                _metList = list(_Metal)
+                _metList.sort()
+                retMetal = f"{sep.join(_metList)}; #mf"
+    return(retMolType,retMetal,IsMet)
+
+#-----------------------------------------------------------------------------
+def check_structure_type(qMol,qMF,sep=';'):
+#-----------------------------------------------------------------------------
+    _valid = 0
+    retMolType = None
+    retMetal = None
+    IsMet = 0
+    if qMol:
+        _mol = qMol
+        _valid = 1
+    else:
+        _mol = None
+        _valid = 0
+
+    if _valid>0:
+        _MolType,_Metal,IsMet = list_moltype(_mol)
+        if len(_MolType)>0:
+            _molList = list(_MolType)
+            _molList.sort()
+            retMolType = sep.join(_molList)
+        if len(_Metal)>0:
+            _metList = list(_Metal)
+            _metList.sort()
+            retMetal = sep.join(_metList)
+    else:
+        if qMF:
+            _MolType,_Metal,IsMet = list_mftype(qMF)
+            if len(_MolType)>0:
+                _molList = list(_MolType)
+                _molList.sort()
+                retMolType = f"{sep.join(_MolType)}; #mf"
+            if len(_Metal)>0:
+                _metList = list(_Metal)
+                _metList.sort()
+                retMetal = f"{sep.join(_metList)}; #mf"
+    return(retMolType,retMetal,IsMet)
 
 # ==========================================================================
-def get_atomclass_list(mol ,lstClass = AtomClass):
-# ==========================================================================
-    aType = []
-    for l in lstClass:
-        fType=list_atomclass_in_mol(mol,l)
-        if len(fType)>0:
-            aType.append(l)
-    return(aType)
+
+#-----------------------------------------------------------------------------
+def SaltDict_to_SaltCode(saltDict,sep=';'):
+    # sDict - > key (value); key (value)
+    if len(saltDict)>0:
+        _lst = []
+        for k,d in saltDict.items():
+            _lst.append(f"{k} ({d['n']})")
+        return(sep.join(_lst))
+    else:
+        return(None)
+
+
+# def list_metalatoms(mol,unique=True,):
+#     MetalClass   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
+#     if mol:
+#         alst = []
+#         for atom in mol.GetAtoms():
+#             atSym = atom.GetSymbol()
+#             if atSym in MetalClass:
+#                 alst.append(atSym)
+#         if unique:
+#             alst = list(set(alst))
+#         return(alst)
+
+# # ==========================================================================
+# def get_atomclass_list(mol ,lstClass = AtomClass):
+# # ==========================================================================
+#     aType = []
+#     for l in lstClass:
+#         fType=list_atomclass_in_mol(mol,l)
+#         if len(fType)>0:
+#             aType.append(l)
+#     return(aType)
     
