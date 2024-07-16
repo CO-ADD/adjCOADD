@@ -191,7 +191,7 @@ def SaltDictList_to_SaltCode(saltDictList,sep=';'):
 def get_MF_Smiles(smi):
     _mol,_valid = Smiles_to_Mol(smi)
     mf = ""
-    if _valid:
+    if _mol:
         mf = Chem.rdMolDescriptors.CalcMolFormula(_mol)
     return(mf)
 
