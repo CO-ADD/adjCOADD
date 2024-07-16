@@ -9,6 +9,7 @@ import numpy as np
 import argparse
 
 from zChem.zMolStandardize import SmiStandardizer_DB
+from rdkit import Chem
 
 from tqdm import tqdm
 # from zUtils import zData
@@ -31,6 +32,85 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
+# ==========================================================================
+AtomType = {}
+AtomType['MetalTrans'] = [
+        'Sc','Ti','V' ,'Cr','Mn','Fe','Co','Ni','Cu','Zn',
+        'Y' ,'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',
+        'Hf','Ta','W' ,'Re','Os','Ir','Pt','Au','Hg',
+        'Rf','Db','Sg','Bh','Hs','Mt','Ds','Rg','Cn']
+AtomType['MetalLanAct'] = [
+        'La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu',
+        'Ac','Th','Pa','U', 'Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']    
+AtomType['Metal']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
+AtomType['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
+AtomType['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
+AtomType['Halogen']     = ['F', 'Cl','Br','I']
+AtomType['Metalloids']  = ['B','Si','As','Te','At']
+AtomType['Organic']     = ['C','N','O','P','S','Se']
+
+#-----------------------------------------------------------------------------
+def list_mftype(mf,unique=True):
+#-----------------------------------------------------------------------------
+    qrymf = mf
+    mfType = {}
+    metalLst = {}
+    for atype in AtomType:
+        for qatm in AtomType[atype]:
+            if qatm in qrymf:
+                mfType[atype] = 1
+                if 'Metal' in atype:
+                    metalLst[atype] = 1
+                qrymf = qrymf.replace(qatm,"")
+    return(mfType,metalLst)
+
+#-----------------------------------------------------------------------------
+def list_moltype(mol,unique=True):
+#-----------------------------------------------------------------------------
+    molType = {}
+    metalLst = {}
+    if mol:
+        for atom in mol.GetAtoms():
+            atSym = atom.GetSymbol()
+            for atype in AtomType:
+                if atSym in AtomType[atype]:
+                    molType[atype] = 1
+                    if 'Metal' in atype or 'Alkali' in atype:
+                        metalLst[atype] = 1
+    return(molType,metalLst)
+
+#-----------------------------------------------------------------------------
+def check_structure_type(qSmi,qMF,sep=';'):
+#-----------------------------------------------------------------------------
+    _valid = 0
+    retMolType = None
+    retMetal = None
+    if qSmi:
+        try:
+            _mol = Chem.MolFromSmiles(qSmi)
+            _valid = 1
+        except:
+            _mol = None
+            _valid = 0
+
+    if _valid> 0:
+        _MolType,_Metal = list_moltype(_mol)
+        retMolType = sep.join(list(_MolType))
+        if len(_Metal)>0:
+            retMetal = sep.join(list(_Metal))
+    else:
+        if qMF:
+            _MolType,_Metal = list_mftype(qMF)
+            retMolType = f"{sep.join(list(_MolType))};[mf]"
+            if len(_Metal)>0:
+                retMetal = f"{sep.join(list(_Metal))};[mf]"
+    return(retMolType,retMetal)
+
+# ==========================================================================
+
+
+
+#-----------------------------------------------------------------------------
 def SaltDict_to_SaltCode(saltDict,sep=';'):
     # sDict - > key (value); key (value)
     if len(saltDict)>0:
@@ -72,56 +152,75 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         print("--> COADD_Compound ---------------------------------------------------------")
-        qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
+        #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
+        qryCmpd = COADD_Compound.objects.all()
         print(f"[CO-ADD Compound] {len(qryCmpd)}")
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'New Compounds':0,'Updated Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
+        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
 
         for djCmpd in tqdm(qryCmpd):
-            #_valid = 9
-            #print(f"[{_valid}] {qry.reg_smiles}")
-            if djCmpd.std_status != 'Valid' or prgArgs.overwrite:
-                _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
+            outNumbers['Proc'] += 1
+            updated_sample = False
 
-                if _moldict['valid'] > 0:
-                    djCmpd.std_status = 'Valid'
-                    djCmpd.std_process = "Std"
-                    djCmpd.std_smiles = _moldict['smi']
-                    djCmpd.std_mw = _moldict['mw']
-                    djCmpd.std_nfrag = _moldict['nfrag']
+            # Check if this Standardisation has been done already 
+            if djCmpd.std_status != "" or prgArgs.overwrite:
 
-                    djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
-                    djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
-                    djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
-                    djCmpd.std_smiles_extra = _moldict['smiles_extra']
-                    djCmpd.std_mw_extra = _moldict['mw_extra']
+                _MolType,_Metal = check_structure_type(djCmpd.reg_smiles,djCmpd.reg_mf)
+                djCmpd.std_structure_type = _MolType
+                djCmpd.std_metal = _Metal
+                updated_sample = True
 
-                    validStatus = True
+                # Excluded from SmiStandardizer - as molvs breaks any metal bonds
+                # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
+                if _Metal:
+                    djCmpd.std_status = 'Metal'
+                    outNumbers['Metal Compounds'] += 1
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
+                # Non Metal complex structures
+                elif djCmpd.reg_smiles:
+ 
+                    _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
-                    updated_sample = True
-                else:
-                    djCmpd.std_status = 'Invalid'
-                    djCmpd.std_process = "Std"
-                    validStatus = True
-                    updated_sample = True
+                    if _moldict['valid'] > 0:
+                        djCmpd.std_status = 'Valid'
+                        djCmpd.std_process = "Std"
+                        djCmpd.std_smiles = _moldict['smi']
+                        djCmpd.std_mw = _moldict['mw']
+                        djCmpd.std_nfrag = _moldict['nfrag']
 
-                    #outDict.append(row)
+                        djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
+                        djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
+                        djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
+                        djCmpd.std_smiles_extra = _moldict['smiles_extra']
+                        djCmpd.std_mw_extra = _moldict['mw_extra']
 
-                if validStatus:
-                    if prgArgs.upload:
-                        if updated_sample:
-                            outNumbers['Updated Compounds'] += 1
-                            djCmpd.save()
+                        validStatus = True
 
+                        djCmpd.clean_Fields()
+                        validDict = djCmpd.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+
+                        updated_sample = True
+                    else:
+                        djCmpd.std_status = 'Invalid'
+                        djCmpd.std_process = "Std"
+                        validStatus = True
+                        updated_sample = True
+
+                        #outDict.append(row)
+
+                    if validStatus:
+                        if prgArgs.upload:
+                            if updated_sample:
+                                outNumbers['Updated Compounds'] += 1
+                                djCmpd.save()
+            else:
+                outNumbers['Already Done'] += 1
         # print(f"[CO-ADD Compound] MinSMI {minSMI}")
 
 

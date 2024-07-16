@@ -373,16 +373,18 @@ class COADD_Compound(AuditModel):
     std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
     std_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Std Smiles")
     std_nfrag = models.SmallIntegerField(default=0, verbose_name = "Std nFrag")
-    std_smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Std Smiles Extra")
-    std_salt = models.CharField(max_length=2048, blank=True, verbose_name = "Std Salt")
-    std_ion = models.CharField(max_length=2048, blank=True, verbose_name = "Std Ion")
-    std_solvent = models.CharField(max_length=2048, blank=True, verbose_name = "Std Solvent")
+    std_salt = models.CharField(max_length=100, blank=True, verbose_name = "Std Salt")
+    std_ion = models.CharField(max_length=100, blank=True, verbose_name = "Std Ion")
+    std_solvent = models.CharField(max_length=100, blank=True, verbose_name = "Std Solvent")
+    std_metal = models.CharField(max_length=100, blank=True, verbose_name = "Std Metal")
+    # std_structure_type = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+    #                              size=20, verbose_name = "Std Structure Type", null=True, blank=True)
+    std_structure_type = models.CharField(max_length=400, blank=True, verbose_name = "Std Type")
 
+    std_smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Std Smiles Extra")
     std_mw = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "Std MW")
     std_mw_extra = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "Std MW Extra")
     std_mf = models.CharField(max_length=100, blank=True, verbose_name = "Std MF")
-    std_structure_type = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
-                                 size=20, verbose_name = "Std Structure Type", null=True, blank=True)
 
     # CO-ADD - Link to External ID's
     cpoz_sn = models.CharField(max_length=25, blank=True, verbose_name = "CpOz SN")
@@ -407,9 +409,13 @@ class COADD_Compound(AuditModel):
             models.Index(name="coadd_sid_idx", fields=['sample_id']),
             models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
             models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
-            models.Index(name="coadd_sst_idx", fields=['std_status']),
+            models.Index(name="coadd_sstat_idx", fields=['std_status']),
             models.Index(name="coadd_snfrag_idx", fields=['std_nfrag']),
+            models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
+            models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
+            models.Index(name="coadd_smetal_idx", fields=['std_metal']),
             models.Index(name="coadd_pst_idx", fields=['pub_status']),
+            
         ]
 
     #------------------------------------------------

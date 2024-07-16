@@ -32,7 +32,7 @@ logging.basicConfig(
 
 
 AtomType = {}
-AtomType['MetallTrans'] = [
+AtomType['MetalTrans'] = [
         'Sc','Ti','V' ,'Cr','Mn','Fe','Co','Ni','Cu','Zn',
         'Y' ,'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd',
         'Hf','Ta','W' ,'Re','Os','Ir','Pt','Au','Hg',
@@ -40,72 +40,82 @@ AtomType['MetallTrans'] = [
 AtomType['MetalLanAct'] = [
         'La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu',
         'Ac','Th','Pa','U', 'Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']    
-AtomType['Metall']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
+AtomType['Metal']      = ['Al', 'Ga','Ge', 'In','Sn','Sb', 'Tl','Pb','Bi','Po']
 AtomType['Alkali']      = ['Li','Na','K','Rb','Cs','Fr']
 AtomType['AlkaliEarth'] = ['Be','Mg','Ca','Sr','Ba','Ra']
-AtomType['Metalloids']  = ['B','Si','As','Te','At']
 AtomType['Halogen']     = ['F', 'Cl','Br','I']
+AtomType['Metalloids']  = ['B','Si','As','Te','At']
 AtomType['Organic']     = ['C','N','O','P','S','Se']
 
-# ==========================================================================
-def is_atomtype(at,atype):
-# ==========================================================================
-    if atype in AtomType:
-        aSymbol = at.GetSymbol()
-        return (aSymbol in AtomType[atype])
-    return()
 
-# ==========================================================================
-def list_atomtype_in_mf(mf,atype,unique=True):
-# ==========================================================================
-    if atype in AtomType:
-        if mf:
-            alst = []
-            for m in AtomType[atype]:
-                if len(m)>1:
-                    if m in mf:
-                        alst.append(m)
-            if unique:
-                alst = list(set(alst))
-            return(alst)
-    return()
 
-# ==========================================================================
-def list_atomtype_in_mol(mol,atype,unique=True):
-# ==========================================================================
-    if atype in AtomType:
-        if mol:
-            alst = []
-            for atom in mol.GetAtoms():
-                atSym = atom.GetSymbol()
-                if atSym in AtomType[atype]:
-                    alst.append(atSym)
-            if unique:
-                alst = list(set(alst))
-            return(alst)
-    return()
+# # ==========================================================================
+# def is_atomtype(at,atype):
+# # ==========================================================================
+#     if atype in AtomType:
+#         aSymbol = at.GetSymbol()
+#         return (aSymbol in AtomType[atype])
+#     return()
+
+# # ==========================================================================
+# def list_atomtype_in_mf(mf,atype,unique=True):
+# # ==========================================================================
+#     if atype in AtomType:
+#         if mf:
+#             alst = []
+#             for m in AtomType[atype]:
+#                 if len(m)>1:
+#                     if m in mf:
+#                         alst.append(m)
+#             if unique:
+#                 alst = list(set(alst))
+#             return(alst)
+#     return()
+
+# # ==========================================================================
+# def list_atomtype_in_mol(mol,atype,unique=True):
+# # ==========================================================================
+#     if atype in AtomType:
+#         if mol:
+#             alst = []
+#             for atom in mol.GetAtoms():
+#                 atSym = atom.GetSymbol()
+#                 if atSym in AtomType[atype]:
+#                     alst.append(atSym)
+#             if unique:
+#                 alst = list(set(alst))
+#             return(alst)
+#     return()
 
 # ==========================================================================
 def list_mftype(mf,unique=True):
 # ==========================================================================
+    qrymf = mf
     mfType = {}
+    metalLst = {}
     for atype in AtomType:
         for qatm in AtomType[atype]:
-            if qatm in mf:
+            if qatm in qrymf:
                 mfType[atype] = 1
-    return(mfType)
+                if 'Metal' in atype or 'Alkali' in atype:
+                    metalLst[atype] = 1
+                qrymf = qrymf.replace(qatm,"")
+    return(mfType,metalLst)
 
 # ==========================================================================
 def list_moltype(mol,unique=True):
 # ==========================================================================
     molType = {}
+    metalLst = {}
     if mol:
         for atom in mol.GetAtoms():
             atSym = atom.GetSymbol()
             for atype in AtomType:
                 if atSym in AtomType[atype]:
                     molType[atype] = 1
-    return(molType)
+                    if 'Metal' in atype or 'Alkali' in atype:
+                        metalLst[atype] = 1
+    return(molType,metalLst)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
