@@ -44,9 +44,9 @@ class Chem_Structure(AuditModel):
                                       null=True, blank=True)
 
     smol = models.MolField(verbose_name = "MOL")	
-    tfp2 = models.BfpField(verbose_name = "Topological-Torsion FP")	
-    ffp2 = models.BfpField(verbose_name = "Feature Morgan FP (FCFP)")
-    mfp2 = models.BfpField(verbose_name = "Morgan FP (ECFP)")
+    tfp2 = models.BfpField(null=True,blank=True,verbose_name = "Topological-Torsion FP")	
+    ffp2 = models.BfpField(null=True,blank=True,verbose_name = "Feature Morgan FP (FCFP)")
+    mfp2 = models.BfpField(null=True,blank=True,verbose_name = "Morgan FP (ECFP)")
 
     nfrag = models.PositiveSmallIntegerField(default=1, blank=True, verbose_name ="nFrag")
     charge = models.DecimalField(max_digits=10, decimal_places=2,  blank=True, verbose_name ="Charge")

@@ -45,7 +45,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Library, Library_Compound, Sample
     from dchem.models import Chem_Structure,Chem_Salt
-    from dchem.utils.mol_std import check_structure_type, SaltDict_to_SaltCode, Smiles_to_Mol
+    from dchem.utils.mol_std import check_structure_type, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -68,7 +68,10 @@ def main(prgArgs,djDir):
         print("-------------------------------------------------------------------------")
         OutFile = f"regChem_{prgArgs.library}_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Mixture':0, 'New Samples':0, 'New ChemStructure':0, 'Metal Compounds':0, 'Failed SMI': 0}
+        outNumbers = {'Proc':0, 'Mixture':0, 'Metal Compounds':0, 'Failed SMI': 0,
+                      'Updated Compounds':0,
+                      'New Samples':0, 'Updated Samples':0,
+                      'New ChemStructures':0,'Updated ChemStructures':0}
 
         for djCmpd in tqdm(qryCmpd):
             outNumbers['Proc'] += 1
@@ -79,54 +82,108 @@ def main(prgArgs,djDir):
             # if djCmpd.reg_smiles or djCmpd.reg_mf:
 
             #print(" ",djCmpd.reg_smiles)
-            _mol,_valid = Smiles_to_Mol(djCmpd.reg_smiles)
-            _MolType,_Metal,_IsMet = check_structure_type(_mol,None)
+            if djCmpd.reg_smiles:
+                _mol,_valid = Smiles_to_Mol(djCmpd.reg_smiles)
+                _MolType,_Metal,_IsMet = check_structure_type(_mol,None)
+                _StdProcess = []
 
-            if _IsMet==0:
-                _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
-                if _moldict['valid'] > 0:
+                if _IsMet==0:
+                    
+                    _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
+                    if _moldict['valid'] > 0:
 
-                    if _moldict['nfrag'] == 1:
-                        updated_sample = True
-                        validStatus = True
-                        djCmpd.std_status = 'Valid'
-                        djCmpd.std_process = "Std"
+                        if _moldict['nfrag'] == 1:
+                            updated_sample = True
+                            validStatus = True
+                            
+                            djCmpd.std_status = 'Valid'
+                            _StdProcess.append("Std")
+                            #djCmpd.std_process = "Std"
 
-                        outNumbers['Updated Compounds'] += 1
+                            outNumbers['Updated Compounds'] += 1
 
-                        djChem = Chem_Structure.get_bySmiles(_moldict['smi'])
-                        if djChem is None:
-                            djChem = Chem_Structure()
-                            djChem.set_molecule(_moldict['smi'])
-                            djChem.nfrag = _moldict['nfrag']
-                            outNumbers['New ChemStructure'] += 1
+                            #------------------------------------------------------------
+                            djChem = Chem_Structure.get_bySmiles(_moldict['smi'])
+                            if djChem is None:
+                                djChem = Chem_Structure()
+                                djChem.set_molecule(_moldict['smi'])
+                                djChem.nfrag = _moldict['nfrag']
+                                outNumbers['New ChemStructures'] += 1
 
-                        djSample = Sample.get(djCmpd.compound_id)
-                        if djSample is None:
-                            djSample = Sample()
-                            djSample.sample_id = djCmpd.compound_id
-                            djSample.sample_source = prgArgs.library
-                            djSample.structure_id = djChem
-                            new_sample = True
-                            outNumbers['New Samples'] += 1
-                        djSample.salt_code = ""
+                            djChem.clean_Fields()
+                            validDict = djChem.validate()
+                            
+                            if validDict:
+                                validStatus = False
+                                for k in validDict:
+                                    print('Warning',k,validDict[k],'-')
+                                    
+                            if prgArgs.upload and validStatus:
+                                _StdProcess.append("ChemStructure")
+                                #djCmpd.std_process += ";ChemStructure"
+                                djChem.save()
+                                outNumbers['Updates ChemStructures'] += 1  
 
-                        djCmpd.sample_id = djSample
+                            #------------------------------------------------------------
+                            djSample = Sample.get(djCmpd.compound_id)
+                            if djSample is None:
+                                djSample = Sample()
+                                djSample.sample_id = djCmpd.compound_id
+                                djSample.sample_code = djCmpd.compound_code
+                                djSample.sample_source = 'LIBRARY'
+                                djSample.structure_id = djChem
+                                new_sample = True
+                                outNumbers['New Samples'] += 1
 
+                            djSample.structure_type = _MolType    
+                            djSample.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
+                            djSample.smiles_extra = _moldict['smiles_extra']
+                            djSample.full_mw = _moldict['mw_extra']
+
+                            djSample.clean_Fields()
+                            validDict = djSample.validate()
+                            if validDict:
+                                validStatus = False
+                                for k in validDict:
+                                    print('Warning',k,validDict[k],'-')
+                                    
+                            if prgArgs.upload and validStatus:
+                                _StdProcess.append("Sample")
+                                #djCmpd.std_process += ";Sample"
+                                djSample.save()
+                                outNumbers['Updates Samples'] += 1    
+                            #------------------------------------------------------------
+
+                            djCmpd.sample_id = djSample
+                            djCmpd.std_process = ";".join(_StdProcess)
+                        else:
+                            djCmpd.std_status = 'Mixture'
+                            djCmpd.std_process = "Std"
+                            outNumbers['Mixture'] += 1
                     else:
-                        djCmpd.std_status = 'Mixture'
+                        outNumbers['Failed SMI'] += 1
+                        djCmpd.std_status = 'Invalid'
                         djCmpd.std_process = "Std"
-                        outNumbers['Mixture'] += 1
-
-
                 else:
-                    outNumbers['Failed SMI'] += 1
-                    djCmpd.std_status = 'Invalid'
+                    outNumbers['Metal Compounds'] += 1
+                    djCmpd.std_status = 'Metal'
                     djCmpd.std_process = "Std"
             else:
-                outNumbers['Metal Compounds'] += 1
-                djCmpd.std_status = 'Metal'
+                outNumbers['Failed SMI'] += 1
+                djCmpd.std_status = 'Empty'
                 djCmpd.std_process = "Std"
+                
+            djCmpd.clean_Fields()
+            validDict = djCmpd.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+
+            if prgArgs.upload and validStatus:
+                djCmpd.save()
+                outNumbers['Updates Compounds'] += 1    
+
     
             # #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
 

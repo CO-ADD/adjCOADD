@@ -240,20 +240,23 @@ class Sample(AuditModel):
 #    sample_name = models.CharField(max_length=250, blank=True, verbose_name = "Sample Name")
 #    sample_desc = models.CharField(max_length=512, blank=True, verbose_name = "Sample Description")
     
-    sample_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Sample Type", on_delete=models.DO_NOTHING,
-        db_column="sample_type", related_name="%(class)s_sample_type")
+    # sample_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Sample Type", on_delete=models.DO_NOTHING,
+    #     db_column="sample_type", related_name="%(class)s_sample_type")
     
     previous_ids = models.CharField(max_length=100, blank=True, verbose_name = "Previous IDs")
     # parent_structure_ids = ArrayField(models.CharField(max_length=15, null=True, blank=True), size=4, verbose_name = "Panel", 
     #                                   null=True, blank=True)
     
+    structure_type = models.CharField(max_length=400, blank=True, verbose_name = "Type")
     structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
 
     # compound_id = models.ForeignKey(Compound, null=True, blank=True, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
     #     db_column="compound_id", related_name="%(class)s_compoundid")
     salt_code = models.CharField(max_length=120, blank=True, verbose_name = "Salts")
-#     salt = models.CharField(max_length=500, blank=True, verbose_name = "Salt")
+    smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Smiles Salt")
+    mw_extra = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "MW Salt")
+    
     full_mw = models.FloatField(default=0, blank=True, verbose_name = "Full MW")
     full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
     
@@ -264,7 +267,7 @@ class Sample(AuditModel):
         indexes = [
             models.Index(name="sample_src_idx", fields=['sample_source']),
             models.Index(name="sample_code_idx", fields=['sample_code']),
-            models.Index(name="sample_type_idx", fields=['sample_type']),
+            models.Index(name="sample_stype_idx", fields=['structure_type']),
             models.Index(name="sample_fmw_idx", fields=['full_mw']),
             models.Index(name="sample_salt_idx", fields=['salt_code']),
         ]

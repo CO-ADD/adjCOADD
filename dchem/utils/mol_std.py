@@ -175,6 +175,18 @@ def SaltDict_to_SaltCode(saltDict,sep=';'):
     else:
         return(None)
 
+#-----------------------------------------------------------------------------
+def SaltDictList_to_SaltCode(saltDictList,sep=';'):
+    # sDict - > key (value); key (value)
+    _lst = []
+    for saltDict in saltDictList:
+        if len(saltDict)>0:
+            for k,d in saltDict.items():
+                _lst.append(f"{k} ({d['n']})")
+    if len(_lst)>0:
+        return(sep.join(_lst))
+    else:
+        return(None)
 
 # def list_metalatoms(mol,unique=True,):
 #     MetalClass   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
