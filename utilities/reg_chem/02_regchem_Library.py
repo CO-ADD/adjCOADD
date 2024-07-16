@@ -123,7 +123,7 @@ def main(prgArgs,djDir):
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
-                                    logger.warning('Warning',k,validDict[k],'-')
+                                    logger.warning(k,validDict[k])
                                     
                             if prgArgs.upload and validStatus:
                                 _StdProcess.append("ChemStructure")
@@ -156,7 +156,7 @@ def main(prgArgs,djDir):
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
-                                    logger.warning('Warning',k,validDict[k],'-')
+                                    logger.warning(k,validDict[k])
                                     
                             if prgArgs.upload and validStatus:
                                 _StdProcess.append("Sample")
@@ -189,7 +189,7 @@ def main(prgArgs,djDir):
             if validDict:
                 validStatus = False
                 for k in validDict:
-                    logger.warning('Warning',k,validDict[k],'-')
+                    logger.warning(k,validDict[k])
 
             if prgArgs.upload and validStatus:
                 djCmpd.save()
