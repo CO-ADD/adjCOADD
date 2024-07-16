@@ -82,6 +82,7 @@ def main(prgArgs,djDir):
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
             updated_sample = False
+            validStatus = True
 
             # # Check if this Standardisation has been done already 
             # #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
@@ -92,7 +93,7 @@ def main(prgArgs,djDir):
                 _mol,_valid = Smiles_to_Mol(djCmpd.reg_smiles)
                 _MolType,_Metal,_IsMet = check_structure_type(_mol,None)
                 _StdProcess = []
-
+                
                 if _IsMet==0:
                     
                     _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
@@ -122,7 +123,7 @@ def main(prgArgs,djDir):
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
-                                    print('Warning',k,validDict[k],'-')
+                                    logger.warning('Warning',k,validDict[k],'-')
                                     
                             if prgArgs.upload and validStatus:
                                 _StdProcess.append("ChemStructure")
@@ -155,7 +156,7 @@ def main(prgArgs,djDir):
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
-                                    print('Warning',k,validDict[k],'-')
+                                    logger.warning('Warning',k,validDict[k],'-')
                                     
                             if prgArgs.upload and validStatus:
                                 _StdProcess.append("Sample")
@@ -188,7 +189,7 @@ def main(prgArgs,djDir):
             if validDict:
                 validStatus = False
                 for k in validDict:
-                    print('Warning',k,validDict[k],'-')
+                    logger.warning('Warning',k,validDict[k],'-')
 
             if prgArgs.upload and validStatus:
                 djCmpd.save()
