@@ -137,7 +137,7 @@ def main(prgArgs,djDir):
                 if validDict:
                     validStatus = False
                     for k in validDict:
-                        logger.warning(k,validDict[k])
+                        logger.warning(f"{k}: {validDict[k]}")
 
                 if validStatus and updated_sample and prgArgs.upload:
                     outNumbers['Updated Compounds'] += 1
