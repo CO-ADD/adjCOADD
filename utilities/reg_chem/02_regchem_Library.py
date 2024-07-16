@@ -122,7 +122,10 @@ def main(prgArgs,djDir):
                                 _StdProcess.append("ChemStructure")
                                 #djCmpd.std_process += ";ChemStructure"
                                 djChem.save()
-                                outNumbers['Updated ChemStructures'] += 1  
+                                _csid = djChem.structure_id
+                                outNumbers['Updated ChemStructures'] += 1 
+                                # Reload to get MW
+                                djChem.get(_csid) 
 
                             #------------------------------------------------------------
                             djSample = Sample.get(djCmpd.compound_id)
