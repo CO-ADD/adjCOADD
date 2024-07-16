@@ -165,7 +165,7 @@ def main(prgArgs,djDir):
             updated_sample = False
 
             # Check if this Standardisation has been done already 
-            if djCmpd.std_status != "" or prgArgs.overwrite:
+            if not djCmpd.std_status or prgArgs.overwrite:
 
                 _MolType,_Metal = check_structure_type(djCmpd.reg_smiles,djCmpd.reg_mf)
                 djCmpd.std_structure_type = _MolType
@@ -186,6 +186,7 @@ def main(prgArgs,djDir):
                     if _moldict['valid'] > 0:
                         djCmpd.std_status = 'Valid'
                         djCmpd.std_process = "Std"
+                        
                         djCmpd.std_smiles = _moldict['smi']
                         djCmpd.std_mw = _moldict['mw']
                         djCmpd.std_nfrag = _moldict['nfrag']

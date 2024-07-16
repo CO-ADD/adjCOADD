@@ -369,8 +369,8 @@ class COADD_Compound(AuditModel):
     
     # CO-ADD - Strcuture Curation 
     std_status = models.CharField(max_length=10, blank=True, verbose_name = "Std Status")
-    std_action = models.CharField(max_length=120, blank=True, verbose_name = "Std Action")
     std_process = models.CharField(max_length=120, blank=True, verbose_name = "Std Process")
+    std_issues = models.CharField(max_length=250, blank=True, verbose_name = "Std Issues")
     std_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Std Smiles")
     std_nfrag = models.SmallIntegerField(default=0, verbose_name = "Std nFrag")
     std_salt = models.CharField(max_length=100, blank=True, verbose_name = "Std Salt")
