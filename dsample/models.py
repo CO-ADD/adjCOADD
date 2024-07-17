@@ -316,7 +316,7 @@ class COADD_Compound(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
-        'compound_type':'Sample_Type',
+        'compound_type':'Compound_Type',
         'reg_amount_unit': 'Unit_Amount',
         'reg_volume_unit':'Unit_Volume',
         'reg_conc_unit':'Unit_Concentration',

@@ -24,7 +24,7 @@ def main(prgArgs,djDir):
     # Logger ----------------------------------------------------------------
     import logging
     logTime= datetime.datetime.now()
-    logName = "regChem_01bCheckChem_COADD"
+    logName = "regChem_01dStdChanges_COADD"
     logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
     logLevel = logging.INFO 
 
@@ -67,11 +67,11 @@ def main(prgArgs,djDir):
         logger.info("--> COADD_Compound ---------------------------------------------------------")
         #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
         #if prgArgs.overwrite:
-        qryCmpd = COADD_Compound.objects.all()            
+        qryCmpd = COADD_Compound.objects.filter(std_status='Changed')            
         #else:
         #    qryCmpd = COADD_Compound.objects.all().exclude(std_status='Valid')            
         nCmpd = qryCmpd.count()    
-        logger.info(f"[CO-ADD Compound] {nCmpd}")
+        logger.info(f"[CO-ADD Compound] Changed {nCmpd}")
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"chekChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
@@ -79,40 +79,71 @@ def main(prgArgs,djDir):
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Checking Compounds"):
             outNumbers['Proc'] += 1
-            validStatus = True
-            
-            if djCmpd.std_status == 'Valid':
-                _dmw = djCmpd.reg_mw - djCmpd.std_mw
-                _dmf = djCmpd.reg_mf != djCmpd.std_mf
-                
-                _has_issue = False
-                _issues = ""
-                if abs(_dmw) > 1:
-                    _has_issue = True
-                    if not (djCmpd.std_mw_extra - 1 < _dmw < djCmpd.std_mw_extra + 1):
-                       _issues = f"dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}];"
+            updated_sample = False
+
+            # Check if this Standardisation has been done already 
+            #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
+            if djCmpd.std_smiles :
+
+                _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.std_smiles,None)
+                djCmpd.std_structure_type = _MolType
+                djCmpd.std_metal = _Metal
+                updated_sample = True
+                validStatus = True
+
+            #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
+
+                # Excluded from SmiStandardizer - as molvs breaks any metal bonds
+                # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
+                if _IsMet==1:
+                    djCmpd.std_status = 'Metal'
+                    outNumbers['Metal Compounds'] += 1
+
+                    validStatus = True
+                    updated_sample = True
+
+                # Non Metal complex structures
+                else:
+ 
+                    _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.std_smiles)
+
+                    if _moldict['valid'] > 0:
+                        djCmpd.std_status = 'Valid'
+                        if _moldict['nfrag'] > 1:
+                            djCmpd.std_status = 'Mixture'
+
+                        djCmpd.std_process = djCmpd.std_process + "; Std"
+
+                        djCmpd.std_smiles = _moldict['smi']
+                        djCmpd.std_mw = _moldict['mw']
+                        djCmpd.std_nfrag = _moldict['nfrag']
+                        djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
+                        djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
+                        djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
+                        djCmpd.std_smiles_extra = _moldict['smiles_extra']
+                        djCmpd.std_mw_extra = _moldict['mw_extra']
+                        djCmpd.std_mf = get_MF_Smiles(_moldict['smi']+_moldict['smiles_extra'])
+                        validStatus = True
+                        updated_sample = True
                     else:
-                        _issues = f"Salt missing in reg_mw: {_dmw:6.1f};"
-                
-                if _dmf:
-                    _has_issue = True
-                    _issues += f" dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf};"
+                        djCmpd.std_status = 'Invalid'
+                        djCmpd.std_process = djCmpd.std_process + "; Std"
 
-                if _has_issue:
-                    djCmpd.std_issues = _issues
-                    #logger.warning(f"{djCmpd.compound_id} {_issues}")
-                    
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            logger.warning(f"{k}: {validDict[k]}")
+                        validStatus = True
+                        updated_sample = True
 
-                    if validStatus and prgArgs.upload:
-                        outNumbers['Updated Compounds'] += 1
-                        djCmpd.save()
+                djCmpd.clean_Fields()
+                validDict = djCmpd.validate()
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        logger.warning(f"{k}: {validDict[k]}")
 
+                if validStatus and updated_sample and prgArgs.upload:
+                    outNumbers['Updated Compounds'] += 1
+                    djCmpd.save()
+            else:
+                outNumbers['Already Done'] += 1
         logger.info(f"[CO-ADD Compound] {outNumbers}")
 
 

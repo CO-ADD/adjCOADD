@@ -24,7 +24,7 @@ def main(prgArgs,djDir):
     # Logger ----------------------------------------------------------------
     import logging
     logTime= datetime.datetime.now()
-    logName = "regChem_01StdChem_COADD"
+    logName = "regChem_01cUpdChem_COADD"
     logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
     logLevel = logging.INFO 
 
