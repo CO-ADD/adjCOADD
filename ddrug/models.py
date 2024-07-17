@@ -12,6 +12,7 @@ from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
 from dorganism.models import Organism, Organism_Batch
 from dscreen.models import Screen_Run
+from dchem.models import Chem_Structure
 #-------------------------------------------------------------------------------------------------
 # Drugs related Application Model
 #-------------------------------------------------------------------------------------------------
@@ -84,16 +85,21 @@ class Drug(AuditModel):
     uq_imb =    models.CharField(max_length=15, blank=True, verbose_name = "IMB")	
     vendor =    models.CharField(max_length=15, blank=True, verbose_name = "Vendor")	
     vendor_catno = models.CharField(max_length=15, blank=True, verbose_name = "CatNo")	
+
+    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+        db_column="structure_id", related_name="%(class)s_structure_id")
+    
+    structure_ids =ArrayField(models.CharField(max_length=15, blank=True),size=6, null=True, verbose_name = "Structure IDs")
+    smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
     mw = models.DecimalField(default=0, max_digits=12, decimal_places=2, blank=True, verbose_name = "MW")	
     mf = models.CharField(max_length=25, blank=True, verbose_name = "MF")	
-    smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
 
     # Require RDKit-PostgreSQL 
-    smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
-    torsionbv = models.BfpField(null=True)	
-    ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
-    mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
-    salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
+    # smol = models.MolField(blank=True, null=True, verbose_name = "MOL")	
+    # torsionbv = models.BfpField(null=True)	
+    # ffp2 = models.BfpField(null=True, verbose_name = "FFP2")
+    # mfp2 = models.BfpField(null=True, verbose_name = "MFP2")
+    # salt_form = models.CharField(blank=True, max_length=15, verbose_name = "SaltForm")	
 
     #------------------------------------------------
     class Meta:
@@ -102,6 +108,7 @@ class Drug(AuditModel):
         ordering=['drug_name']
         indexes = [
             models.Index(name="drug_dname_idx", fields=['drug_name']),
+            models.Index(name="drug_csid_idx", fields=['structure_id']),
             #GistIndex(name="drug_smol_idx",fields=['smol']),
             #GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
             #GistIndex(name="drug_mfp2_idx",fields=['mfp2'])
