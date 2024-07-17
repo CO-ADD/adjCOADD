@@ -195,6 +195,19 @@ def get_MF_Smiles(smi):
         mf = Chem.rdMolDescriptors.CalcMolFormula(_mol)
     return(mf)
 
+
+def if_SimpleName(sName):
+    numbers = sum(c.isdigit() for c in sName)
+    letters = sum(c.isalpha() for c in sName)
+    spaces  = sum(c.isspace() for c in sName)
+    hyphens = sum(c=='-' for c in sName)
+    others  = len(sName) - numbers - letters - spaces - hyphens
+    
+    if hyphens < 3 or numbers < 3 or others < 3 :
+        return(sName)
+    else:
+        return(None)
+
 # def list_metalatoms(mol,unique=True,):
 #     MetalClass   = AtomClass['Metall'] + AtomClass['MetallTrans'] + AtomClass['MetalLanAct']
 #     if mol:
