@@ -45,7 +45,7 @@ def main(prgArgs,djDir):
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
-    from dchem.models import Chem_Salt
+    from dchem.models import Chem_Structure, Chem_Salt
     from dchem.utils.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
 
     
@@ -66,16 +66,13 @@ def main(prgArgs,djDir):
 
         logger.info("--> COADD_Compound ---------------------------------------------------------")
         #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
-        if prgArgs.overwrite:
-            qryCmpd = COADD_Compound.objects.all()            
-        else:
-            qryCmpd = COADD_Compound.objects.all().exclude(std_status='Valid')            
+        qryCmpd = COADD_Compound.objects.filter(std_status='Valid')            
         nCmpd = qryCmpd.count()    
-        logger.info(f"[CO-ADD Compound] {nCmpd}")
+        logger.info(f"[CO-ADD Compound] {nCmpd} [Valid]")
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
+        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'New ChemStructures':0, 'Updated ChemStructures': 0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
@@ -83,70 +80,74 @@ def main(prgArgs,djDir):
 
             # Check if this Standardisation has been done already 
             #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
-            if djCmpd.reg_smiles or djCmpd.reg_mf:
-
-                _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.reg_smiles,djCmpd.reg_mf)
-                djCmpd.std_structure_type = _MolType
-                djCmpd.std_metal = _Metal
+            
+            if djCmpd.std_nfrag == 1:
                 updated_sample = True
                 validStatus = True
+                outNumbers['Updated Compounds'] += 1
 
-            #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
+                #------------------------------------------------------------
+                djChem = Chem_Structure.get_bySmiles(djCmpd.std_smiles)
+                if djChem is None:
+                    djChem = Chem_Structure()
+                    djChem.set_molecule(djCmpd.std_smiles)
+                    djChem.nfrag = djCmpd.std_nfrag
+                    outNumbers['New ChemStructures'] += 1
 
-                # Excluded from SmiStandardizer - as molvs breaks any metal bonds
-                # metal specific Standardizer is required, including OpenSmiles syntax for Metalcomplex
-                if _IsMet==1:
-                    djCmpd.std_status = 'Metal'
-                    outNumbers['Metal Compounds'] += 1
+                    djChem.clean_Fields()
+                    validDict = djChem.validate()
+                    
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            logger.warning(f"{k}: {validDict[k]}")
+                            
+                    if prgArgs.upload and validStatus:
+                        #djCmpd.std_process += ";ChemStructure"
+                        djChem.save()
+                        outNumbers['Updated ChemStructures'] += 1 
+            
+                #------------------------------------------------------------
+                djSample = Sample.get(djCmpd.compound_id)
+                if djSample is None:
+                    djSample = Sample()
+                    djSample.sample_id = djCmpd.compound_id
+                    djSample.sample_code = djCmpd.compound_code
+                    djSample.sample_source = 'COADD'
+                    djSample.structure_id = djChem
+                    new_sample = True
+                    outNumbers['New Samples'] += 1
 
-                    validStatus = True
-                    updated_sample = True
-
-                # Non Metal complex structures
-                elif djCmpd.reg_smiles:
- 
-                    _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
-
-                    if _moldict['valid'] > 0:
-                        djCmpd.std_status = 'Valid'
-                        if _moldict['nfrag'] > 1:
-                            djCmpd.std_status = 'Mixture'
-
-                        djCmpd.std_process = "Std"
-
-                        djCmpd.std_smiles = _moldict['smi']
-                        djCmpd.std_mw = _moldict['mw']
-                        djCmpd.std_nfrag = _moldict['nfrag']
-                        djCmpd.std_salt = SaltDict_to_SaltCode(_saltdict)
-                        djCmpd.std_ion = SaltDict_to_SaltCode(_iondict)
-                        djCmpd.std_solvent = SaltDict_to_SaltCode(_solvdict)
-                        djCmpd.std_smiles_extra = _moldict['smiles_extra']
-                        djCmpd.std_mw_extra = _moldict['mw_extra']
-                        djCmpd.std_mf = get_MF_Smiles(_moldict['smi']+_moldict['smiles_extra'])
-                        validStatus = True
-                        updated_sample = True
-                    else:
-                        djCmpd.std_status = 'Invalid'
-                        djCmpd.std_process = "Std"
-
-                        validStatus = True
-                        updated_sample = True
-                else:
-                    djCmpd.std_status = 'Empty'
-                    djCmpd.std_process = "Std"
-
-                djCmpd.clean_Fields()
-                validDict = djCmpd.validate()
+                djSample.structure_type = djCmpd.std_structure_type
+                _salt_code = []
+                if djCmpd.std_salt:
+                    _salt_code.append(djCmpd.std_salt)   
+                if djCmpd.std_ion:
+                    _salt_code.append(djCmpd.std_ion)   
+                if djCmpd.std_solvent:
+                    _salt_code.append(djCmpd.std_solvent)                            
+                djSample.salt_code = ";".join(_salt_code)
+                
+                djSample.smiles_extra = djCmpd.std_smiles_extra
+                djSample.mw_extra = djCmpd.std_mw_extra
+                djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
+                djSample.full_mf = get_MF_Smiles(djCmpd.std_smiles+djSample.smiles_extra)
+                
+                djSample.clean_Fields()
+                validDict = djSample.validate()
                 if validDict:
                     validStatus = False
                     for k in validDict:
                         logger.warning(f"{k}: {validDict[k]}")
+                            
+                if prgArgs.upload and validStatus:
+                    #_StdProcess.append("Sample")
+                    #djCmpd.std_process += ";Sample"
+                    djSample.save()
+                    outNumbers['Updated Samples'] += 1    
+                #------------------------------------------------------------
+            
 
-                if validStatus and updated_sample and prgArgs.upload:
-                    outNumbers['Updated Compounds'] += 1
-                    djCmpd.save()
-            else:
-                outNumbers['Already Done'] += 1
         logger.info(f"[CO-ADD Compound] {outNumbers}")
 
 
