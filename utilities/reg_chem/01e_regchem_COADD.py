@@ -72,7 +72,9 @@ def main(prgArgs,djDir):
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'New ChemStructures':0, 'Updated ChemStructures': 0}
+        outNumbers = {'Proc':0,'Updated Compounds':0,
+                      'New Samples':0, 'Updated Samples': 0,  
+                      'New ChemStructures':0, 'Updated ChemStructures': 0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
