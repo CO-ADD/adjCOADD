@@ -22,7 +22,7 @@ TypeConf = {
             'Antibiotic':['Small molecule','Synthetic'],
             'Extract':['Extract','Natural product'],
             'Extracts':['Extract','Natural product'],
-            'Metal complex of Small Synthetic molecule':['Transmetal complex','Synthetic'],
+            'Metal complex of Small Synthetic molecule':['Metalcomplex','Synthetic'],
             'Mixture; Peptide':['Peptide','Synthetic'],
             'Mixture; Peptide; Small Molecule':['Peptide','Synthetic'],
             'Mixture; Small Molecule':['Small molecule','Synthetic'],
@@ -51,14 +51,14 @@ TypeConf = {
             'Small synthetic molecule':['Small molecule','Synthetic'],
             'Small Synthetic molecule':['Small molecule','Synthetic'],
             'Small Synthetic Molecule':['Small molecule','Synthetic'],
-            'Solvent':['Solvent','Synthetic'],
+            'Solvent':['Solvent only','Synthetic'],
             'Synthetic':['Small molecule','Synthetic'],
             'Synthetic compound':['Small molecule','Synthetic'],
             'Synthetic Product':['Small molecule','Synthetic'],
             'Synthetic Reference product4':['Small molecule','Synthetic'],
-            'Transmetal Complex':['Transmetal complex','Synthetic'],
-            'Transmetal Complex; Peptide; Cyclic':['Transmetal complex','Synthetic'],
-            'Transmetal Complex; Polymer':['Transmetal complex','Synthetic'],
+            'Transmetal Complex':['Metalcomplex','Synthetic'],
+            'Transmetal Complex; Peptide; Cyclic':['Metalcomplex','Synthetic'],
+            'Transmetal Complex; Polymer':['Metalcomplex','Synthetic'],
             'Transmetal Salt':['Salt only','Synthetic'],
         }
 
@@ -111,7 +111,6 @@ def main(prgArgs,djDir):
         MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 
 
         logger.info("--> COADD_Compound ---------------------------------------------------------")
-        #qryCmpd = COADD_Compound.objects.exclude(reg_smiles="")
         qryCmpd = COADD_Compound.objects.all()            
         nCmpd = qryCmpd.count()    
         logger.info(f"[CO-ADD Compound] {nCmpd} [All]")
@@ -131,12 +130,12 @@ def main(prgArgs,djDir):
             #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
             
             ctype = 'None'
-            if djCmpd.compound_type:
-                _ctype = djCmpd.compound_type
+            if djCmpd.ora_compound_type:
+                _ctype = djCmpd.ora_compound_type
 
-            if djCmpd.ora_compound_type in TypeConf:
-                setattr(djCmpd,'compound_type',Dictionary.get(djCmpd.Choice_Dictionary['compound_type'],TypeConf[djCmpd.ora_compound_type][0]))
-                setattr(djCmpd,'compound_source',Dictionary.get(djCmpd.Choice_Dictionary['compound_source'],TypeConf[djCmpd.ora_compound_type][1]))
+            if _ctype in TypeConf:
+                setattr(djCmpd,'compound_type',Dictionary.get(djCmpd.Choice_Dictionary['compound_type'],TypeConf[_ctype][0]))
+                setattr(djCmpd,'compound_source',Dictionary.get(djCmpd.Choice_Dictionary['compound_source'],TypeConf[_ctype][1]))
 
                 djCmpd.clean_Fields()
                 validDict = djCmpd.validate()
