@@ -317,6 +317,7 @@ class COADD_Compound(AuditModel):
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
         'compound_type':'Compound_Type',
+        'compound_source':'Compound_Source',
         'reg_amount_unit': 'Unit_Amount',
         'reg_volume_unit':'Unit_Volume',
         'reg_conc_unit':'Unit_Concentration',
@@ -340,6 +341,9 @@ class COADD_Compound(AuditModel):
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
+
+    compound_source = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="compound_source", related_name="%(class)s_compound_source")
 
     # compound_subtypes = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
     #                                size=10, verbose_name = "Subtypes", null=True, blank=True)
