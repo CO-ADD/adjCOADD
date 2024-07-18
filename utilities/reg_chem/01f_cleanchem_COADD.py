@@ -125,7 +125,8 @@ def main(prgArgs,djDir):
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
             updated_sample = False
-
+            validStatus = True
+            
             # Check if this Standardisation has been done already 
             #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
             
