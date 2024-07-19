@@ -74,7 +74,7 @@ def main(prgArgs,djDir):
 
         outNumbers = {'Proc':0,'Updated Compounds':0,
                       'New Samples':0, 'Updated Samples': 0,  
-                      'New ChemStructures':0, 'Updated ChemStructures': 0}
+                      'New ChemStructures':0, 'Updated ChemStructures': 0, 'Existing ChemStructures':0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
@@ -110,7 +110,8 @@ def main(prgArgs,djDir):
                         #djCmpd.std_process += ";ChemStructure"
                         djChem.save()
                         outNumbers['Updated ChemStructures'] += 1
-                else: 
+                else:
+                    outNumbers['Existing ChemStructures'] += 1 
                     #logger.info(f"[CO-ADD Compound] Existing Chem_Structure {djChem}")
                 #------------------------------------------------------------
                 djSample = Sample.get(djCmpd.compound_id)
