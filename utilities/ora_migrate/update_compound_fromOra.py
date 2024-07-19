@@ -163,6 +163,11 @@ def main(prgArgs,djDir):
                 #     set_arrayFields(djPrj,row,arrayFields)
                     set_Dictionaries(djCmpd,row,dictFields)
 
+                    if djCmpd.reg_mw < 2:
+                        djCmpd.reg_mw = 0
+                    if djCmpd.reg_mf == 'CxHxNxOx':
+                        djCmpd.reg_mw = ''    
+
                     # - Sample --------------------------------------
                     djSample.sample_code = djCmpd.compound_code
 

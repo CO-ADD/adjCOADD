@@ -95,6 +95,8 @@ def main(prgArgs,djDir):
                     djChem.set_molecule(djCmpd.std_smiles)
                     djChem.nfrag = djCmpd.std_nfrag
                     outNumbers['New ChemStructures'] += 1
+                    #logger.info(f"[CO-ADD Compound] New Chem_Structure {djCmpd.std_smiles}")
+
 
                     djChem.clean_Fields()
                     validDict = djChem.validate()
@@ -107,19 +109,20 @@ def main(prgArgs,djDir):
                     if prgArgs.upload and validStatus:
                         #djCmpd.std_process += ";ChemStructure"
                         djChem.save()
-                        outNumbers['Updated ChemStructures'] += 1 
-            
+                        outNumbers['Updated ChemStructures'] += 1
+                else: 
+                    #logger.info(f"[CO-ADD Compound] Existing Chem_Structure {djChem}")
                 #------------------------------------------------------------
                 djSample = Sample.get(djCmpd.compound_id)
                 if djSample is None:
                     djSample = Sample()
                     djSample.sample_id = djCmpd.compound_id
-                    djSample.sample_code = djCmpd.compound_code
                     djSample.sample_source = 'COADD'
-                    djSample.structure_id = djChem
                     new_sample = True
                     outNumbers['New Samples'] += 1
 
+                djSample.sample_code = djCmpd.compound_code
+                djSample.structure_id = djChem
                 djSample.structure_type = djCmpd.std_structure_type
                 _salt_code = []
                 if djCmpd.std_salt:
