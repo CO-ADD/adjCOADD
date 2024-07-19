@@ -50,8 +50,8 @@ class Drug(AuditModel):
 
     drug_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Drug ID")
     drug_name = models.CharField(max_length=50, unique=True, verbose_name = "Drug Name")
-    drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True,verbose_name = "Other Names")
-    drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True)
+    drug_othernames = ArrayField(models.CharField(max_length=60, blank=True),size=30, null=True, blank=True, verbose_name = "Other Names")
+    drug_codes = ArrayField(models.CharField(max_length=10, blank=True),size=30, null=True, blank=True, verbose_name = "Drug Codes")
     drug_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Drug Type", on_delete=models.DO_NOTHING,
         db_column="drug_type", related_name="%(class)s_drugtype")
     drug_note = models.CharField(max_length=50, blank=True, verbose_name = "Drug Note")
@@ -85,11 +85,8 @@ class Drug(AuditModel):
     uq_imb =    models.CharField(max_length=15, blank=True, verbose_name = "IMB")	
     vendor =    models.CharField(max_length=15, blank=True, verbose_name = "Vendor")	
     vendor_catno = models.CharField(max_length=15, blank=True, verbose_name = "CatNo")	
-
-    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
-        db_column="structure_id", related_name="%(class)s_structure_id")
     
-    structure_ids =ArrayField(models.CharField(max_length=15, blank=True),size=6, null=True, verbose_name = "Structure IDs")
+    structure_ids =ArrayField(models.CharField(max_length=15, blank=True),size=6, null=True, blank=True, verbose_name = "Structure IDs")
     smiles = models.CharField(max_length=2048, blank=True, verbose_name = "SMILES")
     mw = models.DecimalField(default=0, max_digits=12, decimal_places=2, blank=True, verbose_name = "MW")	
     mf = models.CharField(max_length=25, blank=True, verbose_name = "MF")	
@@ -234,7 +231,6 @@ class Breakpoint(AuditModel):
         'bp_comb':'bp_comb', 
         'bp_source':'bp_source', 
         'bp_source_version':'bp_source_version',
-
     }
 
     Choice_Dictionary= {

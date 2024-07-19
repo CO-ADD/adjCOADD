@@ -1,5 +1,8 @@
 #
 import pandas as pd
+import logging
+logger = logging.getLogger(__name__)
+
 from apputil.utils.data import strList_to_List
 from apputil.models import Dictionary
 #
@@ -13,6 +16,7 @@ from apputil.models import Dictionary
 # dictFields = ['project_type','provided_container','stock_conc_unit',] # using Choice_Dictionary
 
 
+#------------------------------------------------------------------------------------
 def set_arrayFields(djModel,rowDict, arrDict):
     for f in arrDict:
         #print("arrFields",f)
@@ -27,18 +31,43 @@ def set_arrayFields(djModel,rowDict, arrDict):
                     _list.append(rowDict[l])
             setattr(djModel,f,_list)
         
+#------------------------------------------------------------------------------------
 def set_dictFields(djModel,rowDict,dictList):
     for e in dictList:
         if e in rowDict:
             if pd.notnull(rowDict[e]):
                 setattr(djModel,e,rowDict[e])
 
+#------------------------------------------------------------------------------------
 def set_Dictionaries(djModel,rowDict,dictFields):
     for d in dictFields:
         if d in rowDict:
             if pd.notnull(rowDict[d]):
                 if d in djModel.Choice_Dictionary:
-                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
+                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))
+
+#------------------------------------------------------------------------------------
+def set_arrayDictionaries(djModel,rowDict,arrDict):
+    for f in arrDict:
+        _dict_list = []
+        _ret_list  = []
+        if isinstance(arrDict[f],str):
+            if pd.notnull(rowDict[arrDict[f]]):
+                if d in djModel.Choice_Dictionary:
+                    _dict_list = strList_to_List(rowDict[arrDict[f]])
+                
+        elif isinstance(arrDict[f],list):
+            for l in arrDict[f]:
+                if pd.notnull(rowDict[l]):
+                    _dict_list.append(rowDict[l])
+        
+        for l in _dict_list:
+            _d = Dictionary.get(djModel.Choice_Dictionary[f],l)
+            if _d:
+                _ret_list.append(str(_d))
+            
+        if len(_ret_list)>0:
+            setattr(djModel,f,_ret_list)
 
 
 # if upload:
@@ -47,13 +76,16 @@ def set_Dictionaries(djModel,rowDict,dictFields):
 #    elif newentry:
 #       save
 
-def set_fields_fromrow(djModel,row,dictList=[], arrDict=[], dictFields=[],valLog=None):
-    if len(dictList)>0:
-        set_dictFields(djModel,row,dictList)
-    if len(arrDict)>0:
-        set_arrayFields(djModel,row,arrDict)     
-    if len(dictFields)>0:
-        set_Dictionaries(djModel,row,dictFields)
+#------------------------------------------------------------------------------------
+def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],valLog=None):
+    validStatus = True
+
+    if len(FieldList)>0:
+        set_dictFields(djModel,row,FieldList)
+    if len(ArrayDict)>0:
+        set_arrayFields(djModel,row,ArrayDict)     
+    if len(DictList)>0:
+        set_Dictionaries(djModel,row,DictList)
         
     djModel.clean_Fields()
     validDict = djModel.validate()
@@ -63,4 +95,5 @@ def set_fields_fromrow(djModel,row,dictList=[], arrDict=[], dictFields=[],valLog
             if valLog:    
                 valLog.add_log('Warning','',k,validDict[k],'-')
             else: 
-                print('Warning',k,validDict[k],'-')
+                logger.warning(f"{k} - {validDict[k]}")
+    return(validStatus)
