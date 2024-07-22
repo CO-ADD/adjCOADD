@@ -17,6 +17,7 @@ from apputil.utils.data_style import highlight_RSI
 
 # -----------------------------------------------------------------------------------------
 def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
+
     df = get_Antibiogram_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
@@ -44,7 +45,9 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
 def piv_Antibiogram_byOrgID(df):
     piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
                                 aggfunc= lambda x:  " ".join([str(y) for y in x]))
+    #.sort_values(by=['Drug Class'],ascending=False)
     piv_table = piv_table.fillna("-").astype(str)
+                                                                                                                                  
     return(piv_table)
     
 
@@ -55,8 +58,8 @@ def get_Antibiogram_byOrgID(OrgID):
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    showCol = ['Drug Class','Drug Name','BatchID','Source','MIC','BP Profile','BP Source']
-    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
+    # showCol = ['Drug Class','Drug Name','BatchID','Source','MIC','Profile','BP Source']
+    # grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
@@ -126,8 +129,9 @@ def get_Antibiogram_byOrgID(OrgID):
         grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
         agg_df = df[showCol].groupby(grbyCol) \
-                            .aggregate(lambda x: ", ".join(list(np.unique(x))))
+                            .aggregate(lambda x: ", ".join(list(np.unique(x)))).sort_values(by=['Drug Class'],ascending=True)
                             # .aggregate(lambda x: agg_DR(x))                 
+        print(f"Pivot {len(orgMIC)} MIC CO-ADD data for {OrgID} ")
         return(agg_df)
     else:
         print(" No MIC data found")

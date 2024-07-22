@@ -43,7 +43,6 @@ class Drug(AuditModel):
 
     }
 
-  
     ID_SEQUENCE = 'Drug'
     ID_PREFIX = 'AMD'
     ID_PAD = 5
@@ -105,7 +104,7 @@ class Drug(AuditModel):
         ordering=['drug_name']
         indexes = [
             models.Index(name="drug_dname_idx", fields=['drug_name']),
-            models.Index(name="drug_csid_idx", fields=['structure_id']),
+            #models.Index(name="drug_csid_idx", fields=['structure_id']),
             #GistIndex(name="drug_smol_idx",fields=['smol']),
             #GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
             #GistIndex(name="drug_mfp2_idx",fields=['mfp2'])

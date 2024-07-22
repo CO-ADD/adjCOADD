@@ -17,13 +17,13 @@
             <div class="modal-body m-0">
                   <!--  -->
                   <input type="text" id="mol" value="{{object_mol}}" hidden />
-                  {%include 'utils/ketcher.html'%}
+                  {% include 'utils/ketcher.html' %}
                   <hr />
 
                   <button id="close_{{object.pk}}" class="btn-close" data-bs-dismiss="modal"
                         data-name="close_{{object.pk}}"></button>
 
-                  {%load static%}
+                  {% load static %}
                   <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
                   <script>
                         //this function will be called after the JavaScriptApplet code has been loaded.

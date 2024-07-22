@@ -32,7 +32,8 @@
             <!--prettier-ignore-->
 
           </tr>
-          {%endfor%}
+          {% endfor %}
+          {% comment %} 
           <tr>
             <th scope="row" class="movable">Mol</th>
             <td class="editable" data-id="{{object.pk}}" data-type="">
@@ -49,7 +50,8 @@
               </div>
             </td>
           
-          </tr>
+          </tr> 
+          {% endcomment %}
         </tbody>
       </table>
 
@@ -61,10 +63,10 @@
           {% for field in form.group2 %}
           <tr>
             <!--prettier-ignore-->
-            {%include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+            {% include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
             <!--prettier-ignore-->
           </tr>
-          {%endfor%}
+          {% endfor %}
         </tbody>
       </table>
     </div>

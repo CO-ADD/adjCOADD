@@ -65,8 +65,8 @@ def imp_Drug_fromDict(iDict,valLog):
     djDrug.uq_imb = iDict['imb']
 
     djDrug.smiles = iDict['smiles']
-    djDrug.smol = iDict['smiles']
-    djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
+    # djDrug.smol = iDict['smiles']
+    # djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
 
     djDrug.clean_Fields()
     validStatus = True

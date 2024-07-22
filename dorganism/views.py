@@ -165,26 +165,38 @@ def Organism_DetailView(request, pk):
     # context["stock_fields"]=OrgBatch_Stock.get_fields()
 
     context["stock_count"]=Organism_Batch.objects.annotate(number_of_stocks=Count('orgbatch_id')) 
+    
     context["cultr_obj"]=Organism_Culture.objects.filter(organism_id=object_.organism_id, astatus__gte=0)
     context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
     context["cultr_fields"]=Organism_Culture.get_fields() 
     if 'organism_id' in context["cultr_fields"]:
         context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
+    
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
-    context["n_entries"] = 0
+
+    #context["antibio_entries"] = 0
+    #context["amrgene_entries"] = 0
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
-        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        print('POST')
-        _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
-        print(_pivDict['n_entries'])
-        context["table"] = _pivDict['html_table']
-        context["n_entries"] = _pivDict['n_entries']
-        context["pivottable"] = _pivDict['pivot_table']
-        return render(request, "dorganism/organism/organism_mic.html", context)
+
+        print(request.POST)
+
+        if "load_antibiogram" in request.POST:
+            displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+           
+            _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
+            #print(_pivDict['n_entries'])
+            context["antibio_table"] = _pivDict['html_table']
+            context["antibio_entries"] = _pivDict['n_entries']
+            context["antibio_pivottable"] = _pivDict['pivot_table']
+
+        return render(request, "dorganism/organism/organism_antibio.html", context)
+
+        # if "load_amrgene" in request.POST:
+        #     return render(request, "dorganism/organism/organism_amrgene.html", context)
     
     return render(request, "dorganism/organism/organism_detail.html", context)
 

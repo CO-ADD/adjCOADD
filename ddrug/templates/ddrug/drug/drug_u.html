@@ -6,8 +6,10 @@
       
       <a id="drug_detail{{object.pk}}" class="float-end" href="#drugStructureEditor" data-bs-toggle>
         {% load static %}
+        {% comment %} 
         <img src="/{{mol_img_url}}/{{object.pk}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
-          style="background-color: transparent !important" />
+          style="background-color: transparent !important" /> 
+        {% endcomment %}
       </a>
 
       <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
@@ -32,6 +34,7 @@
               <!--prettier-ignore-->
             </tr>
           {% endfor %}
+          {% comment %} 
           <tr>
             <th scope="row" class="movable">Mol</th>
             <td class="editable" data-id="{{object.pk}}" data-type="">
@@ -46,7 +49,8 @@
               </div>
             </td>
           
-          </tr>
+          </tr> 
+          {% endcomment %}
         </tbody>
       </table>
 
