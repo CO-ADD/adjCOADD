@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}COADD{% endblock %}
+{% block content %}
+
+  <div class="d-flex flex-row vh-100">
+    {% include 'utils/leftbar.html'%}
+    <!-- Sidebar View -->
+    {% include "utils/sidebar.html" %}
+     <!-- Main View -->
+    <div class="d-flex flex-column w-100">
+      {% include 'utils/main_horizalbar.html' with title='Antibiogram for {{organism_id}}' application='dorganism' %}
+        <!--  -->
+        <div class="contain-fluid data-contain">
+
+
+            <div class="d-flex align-items-start m-0 mt-2">
+                <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist"
+                    aria-orientation="vertical" style="width:fit-content">
+
+                    
+                    <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-pivot-tab" type="button" role="tab"
+                        aria-controls="v-pills-pivot-tab" aria-selected="false">
+                        <i class="bi bi-window-sidebar" data-bs-toggle="tool" data-bs-placement="left" title="Pivot Table"></i>
+                    </button>
+
+                    <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill" 
+                        data-bs-target="#v-pills-datatable-tab" type="button" role="tab"
+                        aria-controls="v-pills-datatable-tab" aria-selected="false"> 
+                        <i class="bi bi-table" data-bs-toggle="tool" data-bs-placement="left" title="Data Table"></i>
+                    </button>
+
+                </div>
+                <div class="tab-content flex-grow-1" id="v-pills-tabContent">
+                    
+                    <div class="tab-pane fade" id="v-pills-datatable-tab" role="tabpanel"
+                        aria-labelledby="v-pills-datatable-tab">
+                        {% include 'utils/data_download_form.html' with model_name='Organism' application='dorganism' related_pk=object.pk %}
+                        <div style="height: 100vh;overflow: auto;" class="w-100">
+                            {{antibio_table | safe}}
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade active show" id="v-pills-pivot-tab" role="tabpanel"
+                        aria-labelledby="v-pills-pivot-tab">
+                        <div style="height: 100vh;overflow: auto;" class="w-100">
+                            {{ antibio_pivottable | safe}}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+  </div>
+
+
+{% endblock%}

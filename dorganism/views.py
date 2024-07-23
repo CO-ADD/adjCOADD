@@ -494,3 +494,33 @@ class OrgBatchImg_CreateView(CreateFileView):
     #     organism = get_object_or_404(self.model, organism_id=kwargs['pk'])
     #     form.fields['orgbatch_id'].queryset = Organism_Batch.objects.filter(organism_id = organism.pk)
     #     return form     
+
+@login_required
+def Organism_AntBio_PivotView(request, pk): 
+    app_name = 'dorganism'
+    template_name = 'dorganism/pivotdata/org_antibio.html'
+
+    kwargs={}
+    kwargs['user']=request.user
+    
+    context={}
+    displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+    
+    _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
+    #print(_pivDict['n_entries'])
+    context["antibio_table"] = _pivDict['html_table']
+    context["antibio_entries"] = _pivDict['n_entries']
+    context["antibio_pivottable"] = _pivDict['pivot_table']
+    context["organism_id"] = pk
+    print(f"Rendering Antibiogram for {pk}")
+    return render(request, template_name, context)
+
+
+    
+@login_required
+def Organism_AMRGene_PivotView(request, pk):
+    template_name = 'dorganism/pivotdata/org_amrgene.html'
+    # filterset_class = OrgBatchStock_Filter
+    # model_fields = model.HEADER_FIELDS
+    # model_name = 'OrgBatch_Stock'
+    app_name = 'dorganism'

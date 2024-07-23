@@ -27,6 +27,8 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
         piv_table = piv_Antibiogram_byOrgID(df)
 
         # Styling pivottable
+        #print(f"HMTL {len(piv_table)} ")
+
         if with_style:       
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
             
@@ -43,11 +45,12 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
 
 # -----------------------------------------------------------------------------------------
 def piv_Antibiogram_byOrgID(df):
+    #print(f"Pivot {len(df)} ")
+
     piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
                                 aggfunc= lambda x:  " ".join([str(y) for y in x]))
     #.sort_values(by=['Drug Class'],ascending=False)
     piv_table = piv_table.fillna("-").astype(str)
-                                                                                                                                  
     return(piv_table)
     
 
@@ -121,6 +124,7 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
    
     if len(orgMIC) > 0:
+        #print(f"GroupBy {len(orgMIC)} Dataframe for {OrgID} ")
         df = pd.DataFrame(orgMIC)
         #df.to_excel(f"{OrgID}_Antibio.xlsx")
         df = df.fillna("-").astype(str)
@@ -131,7 +135,6 @@ def get_Antibiogram_byOrgID(OrgID):
         agg_df = df[showCol].groupby(grbyCol) \
                             .aggregate(lambda x: ", ".join(list(np.unique(x)))).sort_values(by=['Drug Class'],ascending=True)
                             # .aggregate(lambda x: agg_DR(x))                 
-        print(f"Pivot {len(orgMIC)} MIC CO-ADD data for {OrgID} ")
         return(agg_df)
     else:
         print(" No MIC data found")

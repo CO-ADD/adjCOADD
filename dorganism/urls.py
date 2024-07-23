@@ -7,7 +7,9 @@ from dorganism.views import  (Taxonomy_ListView,Taxonomy_CardView,Taxonomy_Detai
                      OrgBatch_ListView, OrgBatch_CreateView, OrgBatch_DeleteView, OrgBatch_UpdateView, 
                      OrgBatchStock_ListView, OrgBatchStock_CreateView, OrgBatchStock_UpdateView, OrgBatchStock_DetailView, OrgBatchStock_DeleteView,
                      OrgCulture_UpdateView, OrgCulture_CreateView, OrgCulture_DeleteView,
-                     OrgBatchImg_DeleteView,OrgBatchImg_CreateView) 
+                     OrgBatchImg_DeleteView,OrgBatchImg_CreateView,
+                     Organism_AntBio_PivotView, Organism_AMRGene_PivotView,
+                    ) 
 from dorganism.utils.utils import search_organism, search_organism_id
 
 
@@ -49,7 +51,11 @@ urlpatterns = [
     path('createCulture/<str:organism_id>/', OrgCulture_CreateView, name="culture_create"),
     path('updateCulture/<str:pk>', OrgCulture_UpdateView.as_view(), name="culture_update"),
     path('deleteCulture/<str:pk>', OrgCulture_DeleteView.as_view(), name="culture_delete"),
-  
+
+    # Organism Properties 
+    path('antibiogram/<str:pk>', Organism_AntBio_PivotView, name="org_antibio"),
+    path('amrgene/<str:pk>', Organism_AMRGene_PivotView, name="org_amrgene"),
+
     #Json search organism
     path('search_organism/', search_organism, name="search_organism"),
     path('search_organism_id/', search_organism_id, name="search_organism_id"),
