@@ -29,6 +29,7 @@ def imp_Drug_fromDict(iDict,valLog):
 
     # Find Instance if exist
     djDrug = Drug.get(iDict['drug_name'],None)
+    
     if djDrug is None:
         djDrug = Drug()
         #djDrug.drug_id = iDict['drug_id']
