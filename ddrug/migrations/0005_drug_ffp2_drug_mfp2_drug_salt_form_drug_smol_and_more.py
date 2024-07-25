@@ -11,29 +11,29 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='drug',
-        #     name='ffp2',
-        #     field=django_rdkit.models.fields.BfpField(null=True, verbose_name='FFP2'),
-        # ),
-        # migrations.AddField(
-        #     model_name='drug',
-        #     name='mfp2',
-        #     field=django_rdkit.models.fields.BfpField(null=True, verbose_name='MFP2'),
-        # ),
-        # migrations.AddField(
-        #     model_name='drug',
-        #     name='salt_form',
-        #     field=models.CharField(blank=True, max_length=15, verbose_name='SaltForm'),
-        # ),
-        # migrations.AddField(
-        #     model_name='drug',
-        #     name='smol',
-        #     field=django_rdkit.models.fields.MolField(blank=True, null=True, verbose_name='MOL'),
-        # ),
-        # migrations.AddField(
-        #     model_name='drug',
-        #     name='torsionbv',
-        #     field=django_rdkit.models.fields.BfpField(null=True),
-        # ),
+        migrations.AddField(
+            model_name='drug',
+            name='ffp2',
+            field=django_rdkit.models.fields.BfpField(null=True, verbose_name='FFP2'),
+        ),
+        migrations.AddField(
+            model_name='drug',
+            name='mfp2',
+            field=django_rdkit.models.fields.BfpField(null=True, verbose_name='MFP2'),
+        ),
+        migrations.AddField(
+            model_name='drug',
+            name='salt_form',
+            field=models.CharField(blank=True, max_length=15, verbose_name='SaltForm'),
+        ),
+        migrations.AddField(
+            model_name='drug',
+            name='smol',
+            field=django_rdkit.models.fields.MolField(blank=True, null=True, verbose_name='MOL'),
+        ),
+        migrations.AddField(
+            model_name='drug',
+            name='torsionbv',
+            field=django_rdkit.models.fields.BfpField(null=True),
+        ),
     ]
