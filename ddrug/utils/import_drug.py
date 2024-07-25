@@ -21,6 +21,7 @@ def imp_Drug_fromDict(iDict,valLog):
     # Change Key names to Lowercase
     iDict =  {k.lower(): v for k, v in iDict.items()} 
 
+
     # Remove nan
     for c in iDict:
         if iDict[c] != iDict[c]:
@@ -28,6 +29,7 @@ def imp_Drug_fromDict(iDict,valLog):
 
     # Find Instance if exist
     djDrug = Drug.get(iDict['drug_name'],None)
+    
     if djDrug is None:
         djDrug = Drug()
         #djDrug.drug_id = iDict['drug_id']
@@ -65,8 +67,8 @@ def imp_Drug_fromDict(iDict,valLog):
     djDrug.uq_imb = iDict['imb']
 
     djDrug.smiles = iDict['smiles']
-    djDrug.smol = iDict['smiles']
-    djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
+#    djDrug.smol = iDict['smiles']
+#    djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
 
     djDrug.clean_Fields()
     validStatus = True

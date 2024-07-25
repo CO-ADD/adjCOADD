@@ -4,11 +4,11 @@
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
-  {%url 'excel-import' process_name='Drug' as urlname%}
+  {% url 'excel-import' process_name='Drug' as urlname %}
   <!--prettier-ignore-->
-  {%include 'utils/leftbar.html' with import_module=urlname list_url='drug_list' card_url='drug_card' create_object='createDrug' create_objectModal='createDrugModal' %}
+  {% include 'utils/leftbar.html' with import_module=urlname list_url='drug_list' card_url='drug_card' create_object='createDrug' create_objectModal='createDrugModal' %}
   <!-- Sidebar View -->
-  {%include "utils/sidebar.html"%}
+  {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
     {% include 'utils/main_horizalbar.html' with title='Drug' model_name='Drug' application='ddrug' %}
@@ -16,7 +16,7 @@
     <!-- list View Content -->
     <div class="row d-flex flex-wrap mx-2 fixTableHead ">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with url_name='drug_detail' modelname='Drug' %}
+      {% include 'utils/datatable_general.html' with url_name='drug_detail' modelname='Drug' %}
     </div>
   </div>
   </div>

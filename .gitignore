@@ -4,6 +4,7 @@ applog/
 utilities/upload_data/*.log
 utilities/export_data/*.log
 utilities/export_data/Output/
+migrations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -25,7 +25,6 @@ class Drug_form(forms.ModelForm):
     drug_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     approval_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     drug_id=forms.CharField(widget=forms.HiddenInput(), required=False)
-    # smol=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '12'}),)
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -57,15 +56,15 @@ class Drug_form(forms.ModelForm):
        
     
 
-    def clean_smol(self):
-        data=self.cleaned_data['smol']
+    # def clean_smol(self):
+    #     data=self.cleaned_data['smol']
 
-        if data:
-            data=Chem.MolFromMolBlock('M- \n'+data)
-        else:
-            self.add_error('smol', 'Provide smol value, currently is None')
+    #     if data:
+    #         data=Chem.MolFromMolBlock('M- \n'+data)
+    #     else:
+    #         self.add_error('smol', 'Provide smol value, currently is None')
         
-        return data
+    #     return data
 
     # def clean_mfp2(self):
     #     data=self.cleaned_data['mfp2']

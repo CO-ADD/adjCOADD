@@ -19,8 +19,37 @@ def sig_round(f,n=3):
 
 
 # ==================================================================================
+# Assign values to djModel istance
+# ==================================================================================
+
+
+# ==================================================================================
 # General utilities for processing List, Dictionaries
 # ==================================================================================
+def Dict_to_StrList(sDict,sep=';'):
+    # sDict - > key (value); key (value)
+    if len(sDict)>0:
+        _lst = []
+        for key in sDict:
+            _lst.append(f"{key} ({sDict[key]})")
+        return(sep.join(_lst))
+    else:
+        return(None)
+    
+def StrList_to_Dict(strList,sep=';'):
+    #  key (value); key (value) -> sDict
+    if len(strList) >0:
+        _lst = split_StrList(strList,sep=sep)
+        _dict = {}
+        for l in _lst:
+            _s = l.split(" ")
+            _v = _s[1].replace("(","").replace(")","")
+            _dict[_s[0]] = _v
+        return(_dict)
+    else:
+        return(None)
+
+
 
 #-----------------------------------------------------------------------------------
 def split_StrList(strList,sep=";"):

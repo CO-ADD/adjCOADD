@@ -78,16 +78,16 @@ class DrugCardView(DrugListView):
             context = super().get_context_data(**kwargs)
             context['mol_img_url'] = settings.MOL_IMG_URL         
         # clearIMGfolder()
-            for object_ in context["object_list"]:
-                filepath=os.path.join(settings.MOL_IMG_DIR, f"{object_.pk}.svg")
-                if os.path.exists(filepath):
-                    continue
-                else:
-                    m=object_.smol
-                    try:
-                        molecule_to_svg(m, object_.pk, path = settings.MOL_IMG_DIR)
-                    except Exception as err:
-                        pass
+            # for object_ in context["object_list"]:
+            #     filepath=os.path.join(settings.MOL_IMG_DIR, f"{object_.pk}.svg")
+            #     if os.path.exists(filepath):
+            #         continue
+            #     else:
+            #         m=object_.smol
+            #         try:
+            #             molecule_to_svg(m, object_.pk, path = settings.MOL_IMG_DIR)
+            #         except Exception as err:
+            #             pass
                         # messages.error(self.request, f'**{object_.pk} mol may not exists**')
         except Exception as err:
             context={}
@@ -99,18 +99,21 @@ class DrugCardView(DrugListView):
 def detailDrug(req, pk):
     context={}
     object_=get_object_or_404(Drug, pk=pk)
-    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
-    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
+
+#    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
+#    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
+    form=Drug_form(instance=object_,)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
-    context['mol_img_url'] = settings.MOL_IMG_URL
-    try:
-        context["object_mol"]=Chem.MolToMolBlock(object_.smol)
-        m="\\n".join(context["object_mol"].split("\n"))
-        context["object_mol"]=m
-    except Exception as err:
-        context["object_mol"]=""
+
+    #context['mol_img_url'] = settings.MOL_IMG_URL
+    # try:
+    #     context["object_mol"]=Chem.MolToMolBlock(object_.smol)
+    #     m="\\n".join(context["object_mol"].split("\n"))
+    #     context["object_mol"]=m
+    # except Exception as err:
+    #     context["object_mol"]=""
     return render(req, "ddrug/drug/drug_detail.html", context)
 
 ##
