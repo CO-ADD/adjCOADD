@@ -421,8 +421,15 @@ class AuditModel(models.Model):
     
     # get choice from model field queryset
     @classmethod
-    def get_field_choices(cls, field_name = None):
-        choice_query = cls.objects.order_by().values_list(field_name).distinct()
+    def get_field_choices(cls, field_name = None, filter_dict = None):
+        #choice_query = cls.objects.order_by().values_list(field_name).distinct()
+        if filter_dict:
+            choice_query = cls.objects.filter(**filter_dict).distinct().order_by(field_name).values_list(field_name)            
+            #print(f"{field_name} {choice_query.count()} {filter_dict}")
+        else:
+            choice_query = cls.objects.distinct().order_by(field_name).values_list(field_name)
+            #print(f"{field_name} {choice_query.count()} ")
+            
         choices = [(i[0], i[0]) for i in choice_query]
         return choices
 

@@ -1,17 +1,18 @@
-from django.db import models
 import re
+
+#from django_rdkit import models
+from django.db import models
 from model_utils import Choices
 from sequences import Sequence
-#from django_rdkit import models
-from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from django.core.validators import RegexValidator
-from dorganism.models import Taxonomy 
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
+from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
 #-------------------------------------------------------------------------------------------------
@@ -208,14 +209,16 @@ class Cell_Batch(AuditModel):
        }
     #SEP = '_'
 
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
-
     cellbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "CellBatch ID")
     cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
         db_column="cell_id", related_name="%(class)s_cell_id")
     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous CellBatch ID")
     passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
+<<<<<<< HEAD
+    batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
+=======
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[alphanumeric], verbose_name = "Batch ID")
+>>>>>>> 222d7895f9e34af2e26dea24085e6e233074beab
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
     batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
         db_column="batch_quality", related_name="%(class)s_batchquality")
@@ -375,10 +378,64 @@ class CellBatch_Stock(AuditModel):
         ]
 
     #------------------------------------------------
-    def __str__(self) -> str:
-        return f"{self.pk} "
-    #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.cellbatch_id} {self.stock_type} {self.n_left}"
 
 # ================================================================================================
+
+#=================================================================================================
+class Cell_Culture(AuditModel):
+    """
+    Recommanded and optimised Growth/Culture conditions 
+    
+    """
+#=================================================================================================
+    HEADER_FIELDS = {
+        # "organism_id":"Organism ID",
+        "culture_type":"Type",
+        "culture_source":"Source",
+        "media":"Media",
+        "addition":"Addition",
+        "atmosphere":"Atmosphere",
+        "temperature":"Temperature",
+        "culture_notes":"Notes",
+        "biologist":"Biologist"
+    }
+
+    Choice_Dictionary = {
+        'culture_type':'Culture_Type',
+        'culture_source':'Culture_Source',
+    }
+    
+    FORM_GROUPS = {
+        'Group1': ["culture_type", "culture_source", "media", "addition", "atmosphere", "temperature", "culture_notes", "biologist"]
+    }
+
+    cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id")
+    culture_type = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Culture Type", on_delete=models.DO_NOTHING,
+        db_column="culture_type", related_name="%(class)s_culture_type")
+    culture_source = models.ForeignKey(Dictionary, null=False, blank=False, verbose_name = "Source", on_delete=models.DO_NOTHING,
+        db_column="culture_source", related_name="%(class)s_culture_source")
+    media = models.CharField(max_length=120, blank=True, verbose_name = "Media") 
+    addition = models.CharField(max_length=55, blank=True, verbose_name = "Addition") 
+    atmosphere = models.CharField(max_length=120, blank=True, verbose_name = "Atmosphere") 
+    temperature = models.CharField(max_length=25, blank=True, verbose_name = "Temperature") 
+    # labware = models.CharField(max_length=120, blank=True, verbose_name = "Labware") 
+    culture_notes = models.CharField(max_length=512,blank=True, verbose_name = "Notes") 
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_biologist")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dcell'
+        db_table = 'cell_culture'
+        ordering=['cell_id','culture_type','media']
+        indexes = [
+            models.Index(name="cellcult_media_idx",fields=['media']),
+            models.Index(name="cellcult_ctype_idx",fields=['culture_type']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.organism_id} {self.culture_type} {self.culture_source}"

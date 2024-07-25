@@ -1,4 +1,4 @@
-<!-- AST -->
+<!-- AntiBiogram -->
 {% load static %}
 
 <div class="d-flex m-0 p-0" id="add-container">
@@ -7,7 +7,7 @@
         <form hx-post="{%url 'org_detail' object.pk %}" hx-target="#add-container" hx-swap="outerHTML">
             <button id="load_antibiogram" type="submit" class="text-secondary border-0" value="Get_data" data-bs-toggle
                 style="max-height: 20px">
-                {% if pivottable %}
+                {% if antibio_pivottable %}
                     <i class="bi bi-arrow-clockwise text-success bg-light fs-5"></i>
                 {% else %}
                     {% include 'utils/miscellaneous/load_indicator.html' %}
@@ -16,19 +16,19 @@
         </form>
     </div>
 
-    <div class="accordion w-100" id="MIC_COADD">
+    <div class="accordion w-100" id="OrgAntiBio">
         <div class="accordion-item">
-            <h2 class="accordion-header d-flex" id="headingMIC_COADD">
+            <h2 class="accordion-header d-flex" id="heading_OrgAntiBio">
 
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    style="max-height: 20px" data-bs-target="#collapseMIC_COADD" aria-expanded="true"
-                    aria-controls="collapseMIC_COADD">
+                    style="max-height: 20px" data-bs-target="#collapse_OrgAntiBio" aria-expanded="true"
+                    aria-controls="collapse_OrgAntiBio" name="load_antibiogram">
                     <!-- prettier-ignore -->
                     <h5 class="fs-6 my-0">
                         Antibiogram
                     </h5>
-                    {% if n_entries %}
-                        <span class="badge text-light bg-info m-0 ms-1 p-1"> {{n_entries}} entries</span>
+                    {% if antibio_entries %}
+                        <span class="badge text-light bg-info m-0 ms-1 p-1"> {{antibio_entries}} entries</span>
                     {% else %}
                         <span class="badge text-light bg-info m-0 ms-1 p-1">Click left spinner</span>
                     {% endif %}
@@ -37,8 +37,8 @@
                 </button>
             </h2>
 
-            <div id="collapseMIC_COADD" class="accordion-collapse collapse" aria-labelledby="headingMIC_COADD"
-                data-bs-parent="#MIC_COADD">
+            <div id="collapse_OrgAntiBio" class="accordion-collapse collapse" aria-labelledby="heading_OrgAntiBio"
+                data-bs-parent="#OrgAntiBio">
                 <div class="accordion-body p-0">
                     <!-- prettier-ignore -->
 
@@ -46,34 +46,35 @@
                         <div class="nav flex-column nav-pills m-0 me-3" id="v-pills-tab" role="tablist"
                             aria-orientation="vertical" style="width:fit-content">
 
-                            <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill" 
-                                data-bs-target="#v-pills-datatable-tab" type="button" role="tab"
-                                aria-controls="v-pills-datatable-tab" aria-selected="false"> 
-                                <i class="bi bi-table" data-bs-toggle="tool" data-bs-placement="left" title="Normal view"></i>
-                            </button>
                             
                             <button class="nav-link btn-sm m-1 p-1" id="v-pills-pivot-tab-btn" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-pivot-tab" type="button" role="tab"
                                 aria-controls="v-pills-pivot-tab" aria-selected="false">
-                                <i class="bi bi-arrow-repeat" data-bs-toggle="tool" data-bs-placement="left" title="Pivottable view"></i>
+                                <i class="bi bi-window-sidebar" data-bs-toggle="tool" data-bs-placement="left" title="Pivot Table"></i>
+                            </button>
+
+                            <button class="nav-link btn-sm m-1 p-1 active" id="v-pills-datatable-tab-btn" data-bs-toggle="pill" 
+                                data-bs-target="#v-pills-datatable-tab" type="button" role="tab"
+                                aria-controls="v-pills-datatable-tab" aria-selected="false"> 
+                                <i class="bi bi-table" data-bs-toggle="tool" data-bs-placement="left" title="Data Table"></i>
                             </button>
 
                         </div>
                         <div class="tab-content flex-grow-1" id="v-pills-tabContent">
                             
-                            <div class="tab-pane fade active show" id="v-pills-datatable-tab" role="tabpanel"
+                            <div class="tab-pane fade" id="v-pills-datatable-tab" role="tabpanel"
                                 aria-labelledby="v-pills-datatable-tab">
                                 {% include 'utils/data_download_form.html' with model_name='Organism' application='dorganism' related_pk=object.pk %}
                                 <div style="height: 100vh;overflow: auto;" class="w-100">
-                                    {{table | safe}}
+                                    {{antibio_table | safe}}
                                 </div>
                                 {% comment %} {% include 'dorganism/organism/datamap.html' %} {% endcomment %}
                             </div>
                             
-                            <div class="tab-pane fade" id="v-pills-pivot-tab" role="tabpanel"
+                            <div class="tab-pane fade active show" id="v-pills-pivot-tab" role="tabpanel"
                                 aria-labelledby="v-pills-pivot-tab">
                                 <div style="height: 100vh;overflow: auto;" class="w-100">
-                                    {{ pivottable | safe}}
+                                    {{ antibio_pivottable | safe}}
                                 </div>
                             </div>
 
@@ -89,4 +90,4 @@
 
 <script>
     load_Indicator($('#load_antibiogram'), $('.beforeloadtable'), $('.loadtable'))
-</script>
+</script> 

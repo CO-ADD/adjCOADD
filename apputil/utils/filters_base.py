@@ -3,7 +3,7 @@ Used and import for all application filter views
 """
 from datetime import datetime
 import pandas as pd
-import django_filters
+
 from django import forms
 from django.views.generic import ListView
 from django.db.models import Q, CharField, TextField, ForeignKey, IntegerField, Func, Value, ManyToManyField
@@ -15,6 +15,7 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
 from django.core.validators import MinLengthValidator
 
+from django_filters import FilterSet, CharFilter, ChoiceFilter
 
 # -- create a function for search all fields--
 def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=None, submodel=False):
@@ -85,11 +86,36 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
     return q_object
 
 # -- Filterset base Class--
-from adjcoadd.constants import CharToChoice_filterList
-from django.contrib import messages
-class Filterbase_base(django_filters.FilterSet):
-    Search_all_fields = django_filters.CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', 'minlength':'3' }), validators=[MinLengthValidator(3)])
-    # bp_profile = django_filters.ChoiceFilter(field_name = 'bp_profile', choices=[], label = 'BP')
+# from adjcoadd.constants import CharToChoice_filterList
+# from django.contrib import messages
+
+#--------------------------------------------------------------------------
+class Filterbase_base(FilterSet):
+#--------------------------------------------------------------------------
+
+    Search_all_fields = CharFilter(method='filter_all_fields', 
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields', 'minlength':'3' }), 
+                                validators=[MinLengthValidator(3)])
+
+    def __init__(self, *args, **kwargs):
+        deep=kwargs.pop('deep') # switcher deep search or one-table search
+        filterset_dict=kwargs.pop('filterset_dict',None) # switcher deep search or one-table search
+        super().__init__(*args, **kwargs)
+
+        if deep == True:
+            self.filters['Search_all_fields'].method = 'filter_all_fields_deep'
+        for field in self.filters:
+            if 'CharFilter' == self.filters[field].__class__.__name__:
+                self.filters[field].lookup_expr='icontains'
+        
+        # Loop through all fields, find Charfield to Choicefield
+        # for field in self.filters:
+        #     if str(field) in CharToChoice_filterList:
+        #         self.filters[str(field)].extra["choices"] = ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
+
+    def update_choice_filters(self):
+        print(f"Filterbase_base.update_choice_filters")
+    
    
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
@@ -109,24 +135,14 @@ class Filterbase_base(django_filters.FilterSet):
             return queryset.filter(q_object)
         return queryset
     
-    def __init__(self, *args, **kwargs):
-        deep=kwargs.pop('deep') # switcher deep search or one-table search
-        super().__init__(*args, **kwargs)
-        if deep == True:
-            self.filters['Search_all_fields'].method = 'filter_all_fields_deep'
-        for field in self.filters:
-            if 'CharFilter' == self.filters[field].__class__.__name__:
-                self.filters[field].lookup_expr='icontains'
-        
-        # Loop through all fields, find Charfield to Choicefield
-        # for field in self.filters:
-        #     if str(field) in CharToChoice_filterList:
-        #         self.filters[str(field)].extra["choices"] = django_filters.ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
 
 
           
+#--------------------------------------------------------------------------
 class Filterbase(Filterbase_base):
+#--------------------------------------------------------------------------
 
+    
     @property
     def qs(self):
         parent = super().qs
@@ -145,7 +161,9 @@ def find_item_index(lst, item):
     return -1
 
 # --Filter view base class--
+#--------------------------------------------------------------------------
 class FilteredListView(ListView):
+    
     filterset_class = None #each filterset class based on class Filterbase
     paginate_by = 50
     model_fields = None
@@ -155,9 +173,11 @@ class FilteredListView(ListView):
     model_name = None
   
     def get_queryset(self):
+
         # Get the queryset however you usually would.  For example:
         queryset = super().get_queryset()
         kwargs={'deep': False}      
+
         # Check if the reset request is submitted
         # Remove the stored queryset from the session
         if self.request.GET.get('reset')=='True':
@@ -170,20 +190,33 @@ class FilteredListView(ListView):
         #     stored_queryset_pks = self.request.session['cached_queryset']
         #     stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
         # ----
+        
+        # filter_record_dict = {}
+        # _Excluded_Keys = ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]
+        # for key in self.request.GET:
+        #     if key not in _Excluded_Keys:
+        #         if self.request.GET.getlist(key)!=[""] :
+        #             filter_record_dict[key] = self.request.GET.getlist(key)
+                
+        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
+
+        
         if 'applymulti' in self.request.GET:
             kwargs={'deep': True}
-            self.filterset = self.filterset_class(self.request.GET,  queryset = queryset, **kwargs)
+            self.filterset = self.filterset_class(self.request.GET,  queryset = queryset, filterset_dict= filter_record_dict, **kwargs)
         else:
-            self.filterset = self.filterset_class(self.request.GET, queryset = queryset, **kwargs)
+            self.filterset = self.filterset_class(self.request.GET, queryset = queryset, filterset_dict= filter_record_dict, **kwargs)
+            
         # Cache the filtered queryset in the session
         filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
         self.request.session[f'{self.model}_cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None  
+
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
         # on the view instance for later.
         # Return the filtered queryset
         order=self.get_order_by()
-        self.filter_Count = self.filterset.qs.distinct().count()
+        self.filter_count = self.filterset.qs.distinct().count()
         if order:           
             order = order.replace(".", "__")
             return self.filterset.qs.distinct().order_by(order)
@@ -191,19 +224,21 @@ class FilteredListView(ListView):
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
         self.context_list = context['object_list']
         filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
-        filter_record = "Selected: "+str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+        filter_record = "Selected: "+ str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+
         # Pass the filterset to the template - it provides the form.
+        #self.filterset.update_choice_filters(filter_record_dict)
+        
         context['filter'] = self.filterset
         context['paginate_by'] = self.get_paginate_by(self, **kwargs)
         context['fields'] = self.model.get_fields(fields = self.model_fields)
         context['filterset'] = filter_record
         context['Count'] = self.model.objects.count()
-        context['querycount'] = self.filter_Count
-        
+        context['querycount'] = self.filter_count
+
         return context
 
     def get_paginate_by(self, queryset):

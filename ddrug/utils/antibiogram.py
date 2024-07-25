@@ -26,6 +26,8 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
         piv_table = piv_Antibiogram_byOrgID(df)
 
         # Styling pivottable
+        #print(f"HMTL {len(piv_table)} ")
+
         if with_style:       
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
             
@@ -42,8 +44,11 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
 
 # -----------------------------------------------------------------------------------------
 def piv_Antibiogram_byOrgID(df):
+    print(f"Pivot {len(df)} ")
+
     piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
                                 aggfunc= lambda x:  " ".join([str(y) for y in x]))
+    #.sort_values(by=['Drug Class'],ascending=False)
     piv_table = piv_table.fillna("-").astype(str)
     return(piv_table)
     
@@ -55,13 +60,13 @@ def get_Antibiogram_byOrgID(OrgID):
     """
 # -----------------------------------------------------------------------------------------
     orgMIC = []
-    showCol = ['Drug Class','Drug Name','BatchID','Source','MIC','BP Profile','BP Source']
-    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
+    # showCol = ['Drug Class','Drug Name','BatchID','Source','MIC','Profile','BP Source']
+    # grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
     vMIC = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id=OrgObj)
-    print(f"Getting {len(vMIC)} Vitek AST data for {OrgID} ")
+    #print(f"Getting {len(vMIC)} Vitek AST data for {OrgID} ")
     for m in vMIC:
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
@@ -82,7 +87,7 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
 
     pMIC = MIC_Pub.objects.filter(organism_id=OrgObj)
-    print(f"Getting {len(pMIC)} MIC Pub data for {OrgID} ")
+    #print(f"Getting {len(pMIC)} MIC Pub data for {OrgID} ")
     for m in pMIC:
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
@@ -97,7 +102,7 @@ def get_Antibiogram_byOrgID(OrgID):
         orgMIC.append(aDict)
 
     cMIC = MIC_COADD.objects.filter(orgbatch_id__organism_id=OrgObj)
-    print(f"Getting {len(cMIC)} MIC CO-ADD data for {OrgID} ")
+    #print(f"Getting {len(cMIC)} MIC CO-ADD data for {OrgID} ")
     for m in cMIC:
         aDict = {}
         aDict['Drug Name'] = m.drug_id.drug_name
@@ -116,8 +121,10 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Source'] = m.run_id
         aDict['Source'] = "CO-ADD"
         orgMIC.append(aDict)
-   
+        #print(aDict)
+        
     if len(orgMIC) > 0:
+        #print(f"GroupBy {len(orgMIC)} Dataframe for {OrgID} ")
         df = pd.DataFrame(orgMIC)
         #df.to_excel(f"{OrgID}_Antibio.xlsx")
         df = df.fillna("-").astype(str)
@@ -126,7 +133,7 @@ def get_Antibiogram_byOrgID(OrgID):
         grbyCol = ['Drug Name','Drug Class','BatchID','Source']
 
         agg_df = df[showCol].groupby(grbyCol) \
-                            .aggregate(lambda x: ", ".join(list(np.unique(x))))
+                            .aggregate(lambda x: ", ".join(list(np.unique(x)))).sort_values(by=['Drug Class'],ascending=True)
                             # .aggregate(lambda x: agg_DR(x))                 
         return(agg_df)
     else:

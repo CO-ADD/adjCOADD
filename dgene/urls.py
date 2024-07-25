@@ -41,7 +41,4 @@ urlpatterns = [
     path('createid_pub/', IDPub_CreateView.as_view(), name="id_pub_create"),
     path('updateid_pub/<str:pk>', IDPub_UpdateView.as_view(), name="id_pub_update"),
 
-
-
-
 ]
