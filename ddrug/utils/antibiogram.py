@@ -17,7 +17,6 @@ from apputil.utils.data_style import highlight_RSI
 
 # -----------------------------------------------------------------------------------------
 def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
-
     df = get_Antibiogram_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)

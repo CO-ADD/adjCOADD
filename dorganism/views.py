@@ -175,6 +175,7 @@ def Organism_DetailView(request, pk):
     context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
     context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    context["n_entries"] = 0
 
     #context["antibio_entries"] = 0
     #context["amrgene_entries"] = 0

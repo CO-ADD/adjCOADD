@@ -224,6 +224,7 @@ DATABASES = {
             # "OPTIONS":{'options': '-c search_path=dorganism,apputil,public'}     
         # },
     },
+
     'dorganism': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dorganism,apputil,ddrug,dgene,public', 
@@ -245,6 +246,7 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
+
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,apputil,public', 
@@ -252,6 +254,7 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
+
     'dgene': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dgene,dscreen,dorganism,apputil,public', 
@@ -259,6 +262,7 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
+    
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 

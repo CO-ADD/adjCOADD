@@ -72,6 +72,9 @@
    download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/ into "C:/Windows/System32/"
    set $Env:MAGIC = "C:/Windows/System32/magic.mgc"
 
+   download .dll and .mgc 3 files from https://github.com/pidydx/libmagicwin64/ into "C:/Windows/System32/"
+   set $Env:MAGIC = "C:/Windows/System32/magic.mgc"
+
 - (dj42py311) > <b>pip</b> install django-auth-ldap<br>
    installed VC Build Tools from https://visualstudio.microsoft.com/visual-cpp-build-tools/ <br>
       Visual C++ build tools <br>
