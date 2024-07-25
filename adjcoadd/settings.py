@@ -298,7 +298,12 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # Backup Database
 #--------------------------------------------------------------------
 # Requires django-dbbackup django-crontab and pg_dump/restore
-DBBACKUP_DATABASES = list(DATABASES.keys())
+DBBACKUP_DATABASES = ['default'
+                      'dorganism','dcell','ddrug','dgene',
+                      'dcollab','dscreen',
+                      'dsample','dplate']
+
+#DBBACKUP_DATABASES = list(DATABASES.keys())
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
 
