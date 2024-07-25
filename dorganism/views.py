@@ -181,17 +181,14 @@ def Organism_DetailView(request, pk):
 
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
-
-        print(request.POST)
-
-        if "load_antibiogram" in request.POST:
-            displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-           
-            _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
-            #print(_pivDict['n_entries'])
-            context["antibio_table"] = _pivDict['html_table']
-            context["antibio_entries"] = _pivDict['n_entries']
-            context["antibio_pivottable"] = _pivDict['pivot_table']
+            
+        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+        
+        _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
+        #print(_pivDict['n_entries'])
+        context["antibio_table"] = _pivDict['html_table']
+        context["antibio_entries"] = _pivDict['n_entries']
+        context["antibio_pivottable"] = _pivDict['pivot_table']
 
         return render(request, "dorganism/organism/organism_antibio.html", context)
 
