@@ -82,54 +82,57 @@ def main(prgArgs,djDir):
                         djCmpd = Library_Compound.get(None,compound_code,LibraryID)
                         if not djCmpd:
 
-                            if 'SMILES' in row:
-                                validStatus = True
+                            validStatus = True
 
-                                djCmpd = Library_Compound()
-                                djCmpd.compound_code = compound_code
-                                djCmpd.library_id = djLib
-                                #djCmpd.compound_name = row['GENERIC_NAME']
-                                _code = ""
-                                _name = ""
-                                _desc = ""
-                                if 'External ID' in row:
+                            djCmpd = Library_Compound()
+                            djCmpd.compound_code = compound_code
+                            djCmpd.library_id = djLib
+                            #djCmpd.compound_name = row['GENERIC_NAME']
+                            _code = ""
+                            _name = ""
+                            _desc = ""
+                            if 'External ID' in row:
+                                if len(row['External ID']) > 49:
+                                    _desc += f"PubMed: {row['External ID']};"
+                                else:
                                     _code += f"{row['External ID']};"
 
-                                if 'Alternate Names' in row:
-                                    _name += f"{row['Alternate Names']};"
+                            if 'Alternate Names' in row:
+                                _name += f"{row['Alternate Names']};"
 
-                                if 'PubMed ID' in row:
-                                    _desc += f"PubMed: {row['PubMed ID']};"
-                                if 'Alternate Source ID' in row:
-                                    _desc += f"{row['Alternate Source ID']};"
-                                if 'DOI' in row:
-                                    _desc += f"{row['DOI']};"
+                            if 'PubMed ID' in row:
+                                _desc += f"PubMed: {row['PubMed ID']};"
+                            if 'Alternate Source ID' in row:
+                                _desc += f"{row['Alternate Source ID']};"
+                            if 'DOI' in row:
+                                _desc += f"{row['DOI']};"
 
+                            if 'SMILES' in row:
                                 djCmpd.reg_smiles = row['SMILES']
 
-                                djCmpd.compound_code = _code
-                                djCmpd.compound_name = _name
-                                djCmpd.compound_desc = _desc
+                            djCmpd.compound_code = _code
+                            djCmpd.compound_name = _name
+                            djCmpd.compound_desc = _desc
 
-                                new_compound = True
+                            new_compound = True
 
                             #set_dictFields(djCmpd,row,['compound_name','reg_smiles',])
                             
 
-                                if validStatus:
-                                    djCmpd.clean_Fields()
-                                    validDict = djCmpd.validate()
-                                    if validDict:
-                                        validStatus = False
-                                        for k in validDict:
-                                            print('Warning',k,validDict[k],'-')
-                                        outDict.append(row)
+                            if validStatus:
+                                djCmpd.clean_Fields()
+                                validDict = djCmpd.validate()
+                                if validDict:
+                                    validStatus = False
+                                    for k in validDict:
+                                        print('Warning',k,validDict[k],'-')
+                                    outDict.append(row)
 
-                                if validStatus:
-                                    if prgArgs.upload:
-                                        if new_compound or prgArgs.overwrite:
-                                            outNumbers['Upload Compounds'] += 1
-                                            djCmpd.save()
+                            if validStatus:
+                                if prgArgs.upload:
+                                    if new_compound or prgArgs.overwrite:
+                                        outNumbers['Upload Compounds'] += 1
+                                        djCmpd.save()
                             else:
                                 row['Issue'] = 'No SMILES'
                                 outDict.append(row)
