@@ -102,8 +102,8 @@ def main(prgArgs,djDir):
                                 _name += f"{row['Alternate Names']};"
 
                             if 'PubMed ID' in row:
-                                if (len(row['PubMed ID'])+len(_desc))< 250:
-                                    _desc += f"PubMed: {row['PubMed ID']};"
+                                if (len(str(row['PubMed ID']))+len(_desc))< 250:
+                                    _desc += f"PubMed: {str(row['PubMed ID'])};"
                             if 'Alternate Source ID' in row:
                                 if (len(row['Alternate Source ID'])+len(_desc))< 250:
                                     _desc += f"{row['Alternate Source ID']};"
