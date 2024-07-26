@@ -93,7 +93,7 @@ def main(prgArgs,djDir):
                             _desc = ""
                             if 'External ID' in row:
                                 if len(row['External ID']) > 49:
-                                    _desc += f"PubMed: {row['External ID']};"
+                                    _desc += f"{row['External ID']};"
                                 else:
                                     _code += f"{row['External ID']};"
 
@@ -103,7 +103,8 @@ def main(prgArgs,djDir):
                             if 'PubMed ID' in row:
                                 _desc += f"PubMed: {row['PubMed ID']};"
                             if 'Alternate Source ID' in row:
-                                _desc += f"{row['Alternate Source ID']};"
+                                if (len(row['Alternate Source ID'])+len(_desc))< 250:
+                                    _desc += f"{row['Alternate Source ID']};"
                             # if 'DOI' in row:
                             #     _desc += f"{row['DOI']};"
 
