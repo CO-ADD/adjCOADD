@@ -104,8 +104,8 @@ def main(prgArgs,djDir):
                                 _desc += f"PubMed: {row['PubMed ID']};"
                             if 'Alternate Source ID' in row:
                                 _desc += f"{row['Alternate Source ID']};"
-                            if 'DOI' in row:
-                                _desc += f"{row['DOI']};"
+                            # if 'DOI' in row:
+                            #     _desc += f"{row['DOI']};"
 
                             if 'SMILES' in row:
                                 djCmpd.reg_smiles = row['SMILES']
