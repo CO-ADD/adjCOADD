@@ -104,20 +104,29 @@ def main(prgArgs,djDir):
                             djCmpd.compound_code = _code
                             djCmpd.compound_name = _name
                             djCmpd.compound_desc = _desc
-                            djCmpd.reg_smiles = row['SMILES']
+
+                            if 'SMILES' in row:
+                                djCmpd.reg_smiles = row['SMILES']
+                                validStatus = True
+                            else:
+                                try:
+                                    djCmpd.reg_smiles = Chem.MolToSmiles(mol)
+                                    validStatus = True
+                                except:
+                                    validStatus = False
                             new_compound = True
 
                         #set_dictFields(djCmpd,row,['compound_name','reg_smiles',])
                         
-                            validStatus = True
 
-                            djCmpd.clean_Fields()
-                            validDict = djCmpd.validate()
-                            if validDict:
-                                validStatus = False
-                                for k in validDict:
-                                    print('Warning',k,validDict[k],'-')
-                                outDict.append(row)
+                            if validStatus:
+                                djCmpd.clean_Fields()
+                                validDict = djCmpd.validate()
+                                if validDict:
+                                    validStatus = False
+                                    for k in validDict:
+                                        print('Warning',k,validDict[k],'-')
+                                    outDict.append(row)
 
                             if validStatus:
                                 if prgArgs.upload:
