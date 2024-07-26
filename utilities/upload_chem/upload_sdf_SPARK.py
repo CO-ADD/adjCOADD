@@ -54,7 +54,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
     LibraryID = 'SPARK'
-
+    OutFile = f'upload_SPARK_{logTime:%Y%m%d_%H%M%S}.xlsx'
     # Table -------------------------------------------------------------
     if prgArgs.table == "Library":
 
@@ -81,61 +81,67 @@ def main(prgArgs,djDir):
 
                         djCmpd = Library_Compound.get(None,compound_code,LibraryID)
                         if not djCmpd:
-                            djCmpd = Library_Compound()
-                            djCmpd.compound_code = compound_code
-                            djCmpd.library_id = djLib
-                            #djCmpd.compound_name = row['GENERIC_NAME']
-                            _code = ""
-                            _name = ""
-                            _desc = ""
-                            if 'External ID' in row:
-                                _code += f"{row['External ID']};"
-
-                            if 'Alternate Names' in row:
-                                _name += f"{row['Alternate Names']};"
-
-                            if 'PubMed ID' in row:
-                                _desc += f"PubMed: {row['PubMed ID']};"
-                            if 'Alternate Source ID' in row:
-                                _desc += f"{row['Alternate Source ID']};"
-                            if 'DOI' in row:
-                                _desc += f"{row['DOI']};"
-
-                            djCmpd.compound_code = _code
-                            djCmpd.compound_name = _name
-                            djCmpd.compound_desc = _desc
 
                             if 'SMILES' in row:
                                 djCmpd.reg_smiles = row['SMILES']
                                 validStatus = True
+
+                                djCmpd = Library_Compound()
+                                djCmpd.compound_code = compound_code
+                                djCmpd.library_id = djLib
+                                #djCmpd.compound_name = row['GENERIC_NAME']
+                                _code = ""
+                                _name = ""
+                                _desc = ""
+                                if 'External ID' in row:
+                                    _code += f"{row['External ID']};"
+
+                                if 'Alternate Names' in row:
+                                    _name += f"{row['Alternate Names']};"
+
+                                if 'PubMed ID' in row:
+                                    _desc += f"PubMed: {row['PubMed ID']};"
+                                if 'Alternate Source ID' in row:
+                                    _desc += f"{row['Alternate Source ID']};"
+                                if 'DOI' in row:
+                                    _desc += f"{row['DOI']};"
+
+                                djCmpd.compound_code = _code
+                                djCmpd.compound_name = _name
+                                djCmpd.compound_desc = _desc
+
+                                new_compound = True
+
+                            #set_dictFields(djCmpd,row,['compound_name','reg_smiles',])
+                            
+
+                                if validStatus:
+                                    djCmpd.clean_Fields()
+                                    validDict = djCmpd.validate()
+                                    if validDict:
+                                        validStatus = False
+                                        for k in validDict:
+                                            print('Warning',k,validDict[k],'-')
+                                        outDict.append(row)
+
+                                if validStatus:
+                                    if prgArgs.upload:
+                                        if new_compound or prgArgs.overwrite:
+                                            outNumbers['Upload Compounds'] += 1
+                                            djCmpd.save()
                             else:
-                                try:
-                                    djCmpd.reg_smiles = Chem.MolToSmiles(mol)
-                                    validStatus = True
-                                except:
-                                    validStatus = False
-                            new_compound = True
-
-                        #set_dictFields(djCmpd,row,['compound_name','reg_smiles',])
-                        
-
-                            if validStatus:
-                                djCmpd.clean_Fields()
-                                validDict = djCmpd.validate()
-                                if validDict:
-                                    validStatus = False
-                                    for k in validDict:
-                                        print('Warning',k,validDict[k],'-')
-                                    outDict.append(row)
-
-                            if validStatus:
-                                if prgArgs.upload:
-                                    if new_compound or prgArgs.overwrite:
-                                        outNumbers['Upload Compounds'] += 1
-                                        djCmpd.save()
+                                row['Issue'] = 'No SMILES'
+                                outDict.append(row)
                     else:
+                        row['Issue'] = 'No MOL'
+                        outDict.append(row)
                         outNumbers['Failed'] += 1
             print(f"[LibCompounds] :{outNumbers}")
+
+            if len(outDict) > 0:
+                print(f"Writing Issues: {OutFile}")
+                outDF = pd.DataFrame(outDict)
+                outDF.to_excel(OutFile)
 
 #==============================================================================
 if __name__ == "__main__":
