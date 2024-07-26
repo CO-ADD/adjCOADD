@@ -83,7 +83,6 @@ def main(prgArgs,djDir):
                         if not djCmpd:
 
                             if 'SMILES' in row:
-                                djCmpd.reg_smiles = row['SMILES']
                                 validStatus = True
 
                                 djCmpd = Library_Compound()
@@ -105,6 +104,8 @@ def main(prgArgs,djDir):
                                     _desc += f"{row['Alternate Source ID']};"
                                 if 'DOI' in row:
                                     _desc += f"{row['DOI']};"
+
+                                djCmpd.reg_smiles = row['SMILES']
 
                                 djCmpd.compound_code = _code
                                 djCmpd.compound_name = _name
