@@ -53,6 +53,7 @@ def get_all_fields_q_object(model, search_value, exclude_fields=None, prefix=Non
 
     return q_object
 
+
 def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefix=None):
 
     q_object = Q()
