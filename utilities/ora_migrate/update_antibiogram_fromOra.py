@@ -45,6 +45,16 @@ def get_MIC_COADD(test=0):
       'reg_conc_unit':{'ug/ul':'mg/mL','mg/ml':'mg/mL'},
     }
 
+    lstRunID =['AntiBio_R001','AntiBio_R002','AntiBio_R003',
+               'AntiBio_R004','AntiBio_R005','AntiBio_R006',
+               'AntiBio_R007','AntiBio_R008','AntiBio_R009',
+               'HCR00132', 
+               'HVR00049','HVR00051','HVR00052','HVR00057',
+               'PMC043_R02','PMC043_R03',
+               'PMC045_FDB1',
+               'PMC045_R01','PMC045_R02','PMC045_R03',
+               'PMC045_R04','PMC045_R05','PMC045_R06']
+
     micSQL = """
             Select mic.TestPlate_ID, mic.TestWell_ID, 
                 mic.Compound1_ID, mic.Compound2_ID, mic.Compound3_ID, mic.Compound4_ID,
@@ -63,6 +73,12 @@ def get_MIC_COADD(test=0):
             Where c1.project_id in ('PC001','PC002') and mic.n_compounds < 3
                 """
     
+    _sqlRun = ""            
+    for r in lstRunID:
+        _sqlRun += f"'{r}',"
+    micSQL += f" and mic.Run_ID in ({_sqlRun[:-1]})"
+
+
     if test>0:
         micSQL += f" Fetch First {test} Rows Only "
 
@@ -260,11 +276,11 @@ def main(prgArgs,djDir):
                                 outNumbers['Upload'] += 1
                                 djMIC.save()
                 else:
-                    outNumbers['Invalid Data'] += 1
-                 
+                    outNumbers['Missing Data'] += 1
+                    print(f" [Antibiogram] invalid {drugName} {orgbatchid} {runid}")
             else:
-                outNumbers['Missing Data'] += 1
-                print(f" [Antibiogram] missing {drugName} {orgbatchid} {runid}")
+                outNumbers['Invalid Data'] += 1
+                 
         print(f"[Antibiogram] : {outNumbers}")
 
 
