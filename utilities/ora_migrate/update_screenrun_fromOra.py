@@ -131,7 +131,7 @@ def main(prgArgs,djDir):
 
             # if cvPrj:
                 #print(f"{row['ora_project_id']} {cvPrj.project_id}")
-            djRun = Screen_Run.get(cvPrj.project_id)
+            djRun = Screen_Run.get(row['run_id'])
             if djRun is None:
                 djRun = Screen_Run()
                 djRun.run_id = row['run_id']
