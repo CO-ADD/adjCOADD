@@ -118,3 +118,12 @@ class Screen_Run(AuditModel):
         # self.screen_date = 
            
 
+#
+# Assay (?)
+# AssayData_MIC
+# AssayData_CC50
+# AssayData_HC50
+# AssayData_SynMIC
+# AssayData_SynIsobol
+#
+#
