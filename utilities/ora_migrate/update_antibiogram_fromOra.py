@@ -35,12 +35,10 @@ logging.basicConfig(
 def get_MIC_COADD(test=0):
     
     renameCol = {
-        "compound_id":      "ora_compound_id",
-        "project_id":       "ora_project_id",
-        "compound_type":    "ora_compound_type",
-        "link_spark":       "spark_id",
-        "link_chembl":      "chembl_id",
-        "reg_solubility":   "reg_solvent",
+        "test_dye":      "dye",
+        "test_additive":      "additive",
+        "media_id":       "media",
+        "material":    "plate_material",
     }
 
     replaceValues = {
@@ -62,7 +60,7 @@ def get_MIC_COADD(test=0):
             Left Join Compound c4 on c4.Compound_ID = mic.Compound4_ID
             Left Join Testplate tp on tp.Plate_id = mic.Testplate_ID
             Left Join Labware lw on lw.Labware_id = tp.Labware_id
-            Where c1.project_id in ('PC001','PC002','PC003') and mic.n_compounds < 3
+            Where c1.project_id in ('PC001','PC002') and mic.n_compounds < 3
                 """
     
     if test>0:
@@ -78,7 +76,7 @@ def get_MIC_COADD(test=0):
 
 
     logger.info(f"DF - Rename Columns {len(renameCol)}")
-    #micDF.rename(columns=renameCol, inplace=True)
+    micDF.rename(columns=renameCol, inplace=True)
 
     # logger.info(f"DF - Replace Values {len(replaceValues)}")
     # for k in replaceValues:
@@ -86,72 +84,72 @@ def get_MIC_COADD(test=0):
 
     return(micDF)
 
-#-----------------------------------------------------------------------------------
-def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
-#-----------------------------------------------------------------------------------
-    if nTotal>0:
-        vLog = validation_log.Validation_Log('MIC-Pub')
-        nTime  = zData.Timer(nTotal)
-        nProcessed = 0
+# #-----------------------------------------------------------------------------------
+# def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
+# #-----------------------------------------------------------------------------------
+#     if nTotal>0:
+#         vLog = validation_log.Validation_Log('MIC-Pub')
+#         nTime  = zData.Timer(nTotal)
+#         nProcessed = 0
 
-        # check user
-        appuser = None
-        if uploaduser:
-            appuser = ApplicationUser.get(uploaduser)
+#         # check user
+#         appuser = None
+#         if uploaduser:
+#             appuser = ApplicationUser.get(uploaduser)
 
-        nProc = {}
-        nProc['Saved'] = 0
-        nProc['notValid'] = 0
+#         nProc = {}
+#         nProc['Saved'] = 0
+#         nProc['notValid'] = 0
 
-        for mic in micLst:
-            mic['ORGBATCH_ID'] = reformat_OrgBatchID(mic['TEST_STRAIN'])
-            if mic['COMPOUND2_NAME']:
-                mic['DRUG_NAME'] = mic['COMPOUND_NAME'] +'|'+ mic['COMPOUND2_NAME']
-                if mic['DR2_VALUE']:
-                    mic['MIC'] = mic['DR'] +'|'+ str(mic['DR2_VALUE'])
-                else:
-                    mic['MIC'] = mic['DR'] 
-                if mic['DR2_UNIT']:
-                    mic['MIC_UNIT'] = mic['DR_UNIT'] +'|'+ mic['DR2_UNIT']
-                else:
-                    mic['MIC_UNIT'] = mic['DR_UNIT']
-            else:
-                mic['DRUG_NAME'] = mic['COMPOUND_NAME']
-                mic['MIC'] = mic['DR']
-                mic['MIC_UNIT'] = mic['DR_UNIT']
+#         for mic in micLst:
+#             mic['ORGBATCH_ID'] = reformat_OrgBatchID(mic['TEST_STRAIN'])
+#             if mic['COMPOUND2_NAME']:
+#                 mic['DRUG_NAME'] = mic['COMPOUND_NAME'] +'|'+ mic['COMPOUND2_NAME']
+#                 if mic['DR2_VALUE']:
+#                     mic['MIC'] = mic['DR'] +'|'+ str(mic['DR2_VALUE'])
+#                 else:
+#                     mic['MIC'] = mic['DR'] 
+#                 if mic['DR2_UNIT']:
+#                     mic['MIC_UNIT'] = mic['DR_UNIT'] +'|'+ mic['DR2_UNIT']
+#                 else:
+#                     mic['MIC_UNIT'] = mic['DR_UNIT']
+#             else:
+#                 mic['DRUG_NAME'] = mic['COMPOUND_NAME']
+#                 mic['MIC'] = mic['DR']
+#                 mic['MIC_UNIT'] = mic['DR_UNIT']
             
-            mic['MEDIA'] = None
-            mic['PLATE_SIZE'] = mic['PLATE_SIZE'].replace('w','')
-            mic['PLATE_MATERIAL'] = mic['MATERIAL']
-            mic['DYE'] = mic['TEST_DYE']
-            mic['ADDITIVE'] = mic['TEST_ADDITIVE']
+#             mic['MEDIA'] = None
+#             mic['PLATE_SIZE'] = mic['PLATE_SIZE'].replace('w','')
+#             mic['PLATE_MATERIAL'] = mic['MATERIAL']
+#             mic['DYE'] = mic['TEST_DYE']
+#             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
-            djMIC = imp_MICCOADD_fromDict(mic,vLog)
-            djMIC.clean_Fields()
-            validDict = djMIC.validate()
+#             djMIC = imp_MICCOADD_fromDict(mic,vLog)
+#             djMIC.clean_Fields()
+#             validDict = djMIC.validate()
 
-            if validDict:
-                logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")
+#             if validDict:
+#                 logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")
 
-            # --- Upload ---------------------------------------------------------
-            nProcessed = nProcessed + 1
-            if djMIC.VALID_STATUS:
-                if upload:
-                    if nProcessed%OutputN == 0:
-                        eTime,sTime = nTime.remains(nProcessed)
-                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
-                    djMIC.save(user=appuser)
-                    nProc['Saved'] = nProc['Saved'] + 1
-                else:
-                    if nProcessed%OutputN == 0:
-                        eTime,sTime = nTime.remains(nProcessed)
-                        logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {djMIC} ")
-            else:
-                nProc['notValid'] = nProc['notValid'] + 1
-        eTime,sTime = nTime.remains(nProcessed)
-        logger.info(f"[MIC-COADD] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
-    else:
-        logger.info(f"[MIC-COADD] [0 No records found]")
+#             # --- Upload ---------------------------------------------------------
+#             nProcessed = nProcessed + 1
+#             if djMIC.VALID_STATUS:
+#                 if upload:
+#                     if nProcessed%OutputN == 0:
+#                         eTime,sTime = nTime.remains(nProcessed)
+#                         logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} -> {djMIC} ")
+#                     djMIC.save(user=appuser)
+#                     nProc['Saved'] = nProc['Saved'] + 1
+#                 else:
+#                     if nProcessed%OutputN == 0:
+#                         eTime,sTime = nTime.remains(nProcessed)
+#                         logger.info(f"[{nProcessed:8d} / {nTotal:8d}] {eTime} >r {djMIC} ")
+#             else:
+#                 nProc['notValid'] = nProc['notValid'] + 1
+#         eTime,sTime = nTime.remains(nProcessed)
+#         logger.info(f"[MIC-COADD] [{nTotal-(nProc['Saved']+nProc['notValid'])}] {nTotal} {nProc}")
+#     else:
+#         logger.info(f"[MIC-COADD] [0 No records found]")
 
 
 #-----------------------------------------------------------------------------
@@ -177,12 +175,13 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
     from apputil.utils.data import join_lst
-    from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
-    from ddrug.models import Drug
-    from dchem.utils.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
+    from apputil.utils.set_data import set_Fields_fromDict
+    from dorganism.utils.utils import reformat_OrgBatchID
 
+    from ddrug.models import Drug, MIC_COADD
+    from dorganism.models import Organism_Batch
+    from dscreen.models import Screen_Run
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
@@ -204,18 +203,69 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateMIC_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
 
-        outNumbers = {'Proc':0,'New Data':0,'Uploaded Data':0, }
+        outNumbers = {'Proc':0,'New Data':0,'Invalid Data':0,'Missing Data':0}
         outDict = []    
         for idx,row in tqdm(micDF.iterrows(), total=micDF.shape[0]):
-            new_data = False
             outNumbers['Proc'] += 1
-            drugName = join_lst([row['compound1_name'],row['compound2_name'],row['compound3_name'],row['compound4_name']],sep='|')
-            
-            djDrug = Drug.get(drugName,None)
-            if djDrug:
-                outNumbers['New Data'] += 1
+            if 'Valid' in row['data_quality'] or 'Retest' in row['data_quality']:
+                new_data = False
+                
+
+                drugName = join_lst([row['compound1_name'],row['compound2_name'],row['compound3_name'],row['compound4_name']],sep='|')
+                orgbatchid = reformat_OrgBatchID(row['test_strain'])
+                runid = row['run_id']
+                
+                validStatus = True
+                djDrug = Drug.get(drugName)
+                if djDrug is None:
+                    validStatus = False
+                    print(f" [Drug] not found '{drugName}'")
+
+                djOrgBatch = Organism_Batch.get(orgbatchid) 
+                if djOrgBatch is None:
+                    validStatus = False
+                    print(f" [OrgBatchID] not found '{orgbatchid}'")
+
+                djRun = Screen_Run.get(runid)
+                if djRun is None:
+                    validStatus = False
+                    print(f" [RunID] not found '{runid}'")
+
+                if validStatus:
+                    # 
+                    # get(cls,OrgBatchID,DrugID,TestPlateID,TestWellID,verbose=0)
+                    
+                    djMIC = MIC_COADD.get(orgbatchid,str(djDrug),row['testplate_id'],row['testwell_id'])
+                    if djMIC is None:
+                        djMIC = MIC_COADD()
+                        djMIC.testplate_id = row['testplate_id']
+                        djMIC.testwell_id = row['testwell_id']
+                        new_data = True
+                        outNumbers['New Data'] += 1
+                        #print(f" [MIC] new '{row['testplate_id']}:{row['testwell_id']}'")
+                    djMIC.run_id = djRun
+                    djMIC.orgbatch_id = djOrgBatch
+                    djMIC.drug_id = djDrug
+                    row['plate_size'] = row['plate_size'].replace('w','')
+                    row['mic_type'] = 'BMD'
+                    
+                    validStatus = set_Fields_fromDict(djMIC,row,
+                                                    FieldList=['mic','mic_unit','media','dye','additive','test_date'], 
+                                                    ArrayDict={}, 
+                                                    DictList=['plate_size','plate_material','mic_type'])
+
+                    if validStatus:
+                        if prgArgs.upload:
+                            if new_data or prgArgs.overwrite:
+                                outNumbers['Upload'] += 1
+                                djRun.save()
+                else:
+                    outNumbers['Invalid Data'] += 1
+                 
             else:
-                print(f"[Drug] not found '{drugName}'")
+                outNumbers['Missing Data'] += 1
+                print(f" [Antibiogram] missing {drugName} {orgbatchid} {runid}")
+        print(f"[Antibiogram] : {outNumbers}")
 
 
 

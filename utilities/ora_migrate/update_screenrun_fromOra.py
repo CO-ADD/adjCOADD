@@ -37,7 +37,8 @@ def get_oraScreenRun():
     from oraCastDB.oraCastDB import openCastDB
 
     renameCol = {
-        "run_type":   "run_project",
+        "screen_type":   "run_type",
+#        "run_type":   "run_project",
     }
 
     replaceValues = {
@@ -49,7 +50,7 @@ def get_oraScreenRun():
                     'Scheduled':'Planned', 
                     'Ongoing':'Ongoing'
                     },
-      'screen_type':{'PS':'PSR', 
+      'run_type':{'PS':'PSR', 
                      'HC':'HCR',
                      'HV':'HVR',
                      'SYN':'SYN',
@@ -64,7 +65,7 @@ def get_oraScreenRun():
 
     prjSQL = """
      Select run_id, run_name, run_conditions, run_issues, 
-            run_type, screen_type, run_status, 
+            run_type run_project, screen_type, run_status, 
             project_lst, stock_format, cpoz_id, pub_status
      From ScreenRun
     """
@@ -116,7 +117,7 @@ def main(prgArgs,djDir):
                     #'project_lst', 'stock_format', 'cpoz_id', 'pub_status',
                     ]
         arrayFields = {}
-        dictFields = ['run_status','screen_type',]
+        dictFields = ['run_status','run_type',]
 
 
         outNumbers = {'Proc':0,'New':0,'Upload':0}
@@ -150,6 +151,12 @@ def main(prgArgs,djDir):
                                               FieldList=cpyFields, 
                                               ArrayDict=arrayFields, 
                                               DictList=dictFields)
+
+            # validStatus = set_Fields_fromDict(djRun,row,
+            #                                   FieldList=[], 
+            #                                   ArrayDict={}, 
+            #                                   DictList=['run_type'])
+
             # djPrj.clean_Fields()
             # validDict = djPrj.validate()
 

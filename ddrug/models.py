@@ -576,6 +576,7 @@ class MIC_COADD(AuditModel):
     # run_id = models.CharField(max_length=25, blank=True, verbose_name = "RunID")
     testplate_id = models.CharField(max_length=25, blank=True, verbose_name = "PlateID")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
+    test_date = models.DateField(null=True, blank=True, verbose_name = "Date")
 
     plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
         db_column="plate_size", related_name="%(class)s_platesize")
@@ -587,6 +588,7 @@ class MIC_COADD(AuditModel):
     #    db_column="media", related_name="%(class)s_Media+")
     media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
     dye = models.CharField(max_length=40, blank=True, verbose_name = "Dye")
+    additive = models.CharField(max_length=80, blank=True, verbose_name = "Additive")
 
     #------------------------------------------------
     class Meta:
