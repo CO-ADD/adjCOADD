@@ -81,28 +81,32 @@ def main(prgArgs,djDir):
                     djCmpd.compound_code = row['Compound Name']
                     djCmpd.library_id = djLib
 
-                _code = ""
                 _name = ""
                 _desc = ""
                 if 'External ID' in row:
-                    if len(str(row['External ID'])) > 49:
-                        if (len(str(row['External ID'])))< 250:
-                            _desc += f"{row['External ID']};"
-                    else:
-                        _code += f"{row['External ID']};"
+                    if pd.notnull(row['External ID']):
+                        if len(str(row['External ID'])) > 49:
+                            if (len(str(row['External ID'])))< 250:
+                                _desc += f"{row['External ID']};"
+                        else:
+                            _name += f"{row['External ID']};"
 
                 if 'Alternate Names' in row:
-                    _name += f"{row['Alternate Names']};"
+                    if pd.notnull(row['Alternate Names']):
+                        _name += f"{row['Alternate Names']};"
 
                 if 'PubMed ID' in row:
-                    if (len(str(row['PubMed ID']))+len(_desc))< 250:
-                        _desc += f"PubMed: {str(row['PubMed ID'])};"
+                    if pd.notnull(row['PubMed ID']):
+                        if (len(str(row['PubMed ID']))+len(_desc))< 250:
+                            _desc += f"PubMed: {str(row['PubMed ID'])};"
                 if 'Alternate Source ID' in row:
-                    if (len(str(row['Alternate Source ID']))+len(_desc))< 250:
-                        _desc += f"{row['Alternate Source ID']};"
+                    if pd.notnull(row['Alternate Source ID']):
+                        if (len(str(row['Alternate Source ID']))+len(_desc))< 250:
+                            _desc += f"{row['Alternate Source ID']};"
                 if 'DOI' in row:
-                    if (len(str(row['DOI']))+len(_desc))< 250:
-                        _desc += f"{row['DOI']};"
+                    if pd.notnull(row['DOI']):
+                        if (len(str(row['DOI']))+len(_desc))< 250:
+                            _desc += f"{row['DOI']};"
 
                 if 'SMILES' in row:
                     djCmpd.reg_smiles = row['SMILES']
@@ -111,7 +115,6 @@ def main(prgArgs,djDir):
                 #     if row['Batch Salt'] != 'No Salt, free base or acid':
                 #         salt_code = row['Batch Salt']
 
-                djCmpd.compound_code = _code
                 djCmpd.compound_name = _name
                 djCmpd.compound_desc = _desc
 
