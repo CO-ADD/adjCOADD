@@ -103,13 +103,23 @@ def main(prgArgs,djDir):
                     if pd.notnull(row['Alternate Source ID']):
                         if (len(str(row['Alternate Source ID']))+len(_desc))< 250:
                             _desc += f"{row['Alternate Source ID']};"
-                if 'DOI' in row:
-                    if pd.notnull(row['DOI']):
-                        if (len(str(row['DOI']))+len(_desc))< 250:
-                            _desc += f"{row['DOI']};"
+                # if 'DOI' in row:
+                #     if pd.notnull(row['DOI']):
+                #         if (len(str(row['DOI']))+len(_desc))< 250:
+                #             _desc += f"{row['DOI']};"
+                if 'Batch Salt' in row:
+                    if pd.notnull(row['Batch Salt']):
+                        if row['Batch Salt'] != 'No Salt, free base or acid':
+                            if row['Batch Salt'] != 'Unknown Salt':
+                                _salt = row['Batch Salt']
+                                if 'No Salt' in _salt:
+                                    _salt = _salt.replace('No Salt, free base or acid / ','')
+                                if (len(_salt)+len(_desc))< 250:
+                                    _desc += f"{_salt};"
 
                 if 'SMILES' in row:
-                    djCmpd.reg_smiles = row['SMILES']
+                    if pd.notnull(row['SMILES']):
+                        djCmpd.reg_smiles = row['SMILES']
 
                 # if 'Batch Salt' in row:
                 #     if row['Batch Salt'] != 'No Salt, free base or acid':
