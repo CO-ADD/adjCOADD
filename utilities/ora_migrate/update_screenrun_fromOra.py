@@ -66,7 +66,7 @@ def get_oraScreenRun():
      Select run_id, run_name, run_conditions, run_issues, 
             run_type, screen_type, run_status, 
             project_lst, stock_format, cpoz_id, pub_status
-     From Project
+     From ScreenRun
     """
     CastDB = openCastDB()
     logger.info(f"[ScreenRuns] ... ")

@@ -39,11 +39,11 @@ class Screen_Run(AuditModel):
 
     Choice_Dictionary = {
         'run_type':'Run_Type',
-        'run_status':'Run_Status',
+        'run_status':'Process_Status',
     }
 
     run_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Run ID")
-    run_name = models.CharField(max_length=500, verbose_name = "Run Name")
+    run_name = models.CharField(max_length=500, blank=True, verbose_name = "Run Name")
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
     assay_note = models.CharField(max_length=250, blank=True, verbose_name = "Assay Note")
