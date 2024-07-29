@@ -203,7 +203,7 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateMIC_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
 
-        outNumbers = {'Proc':0,'New Data':0,'Invalid Data':0,'Missing Data':0}
+        outNumbers = {'Proc':0,'Upload':0, 'New Data':0,'Invalid Data':0,'Missing Data':0}
         outDict = []    
         for idx,row in tqdm(micDF.iterrows(), total=micDF.shape[0]):
             outNumbers['Proc'] += 1
@@ -258,7 +258,7 @@ def main(prgArgs,djDir):
                         if prgArgs.upload:
                             if new_data or prgArgs.overwrite:
                                 outNumbers['Upload'] += 1
-                                djRun.save()
+                                djMIC.save()
                 else:
                     outNumbers['Invalid Data'] += 1
                  
