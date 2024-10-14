@@ -117,6 +117,7 @@ class Gene_ListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Gene_Filter
     model_fields=model.HEADER_FIELDS
 
+
 ##
 class Gene_CardView(Gene_ListView):
     template_name = 'dgene/gene/gene_card.html'

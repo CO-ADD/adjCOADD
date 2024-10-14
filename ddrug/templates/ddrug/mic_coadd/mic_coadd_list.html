@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 <!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title%} COADD {% endblock %}
 <!--prettier-ignore-->
 {% block content%}
 <div class="d-flex flex-row vh-100">
@@ -16,7 +16,7 @@
     <!-- list View Content -->
     <div class="contain-fluid data-contain">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_general.html' with modelname='MIC_COADD' %}
+      {% include 'utils/datatable_filter.html' with modelname='MIC_COADD' %}
       
     </div>
   </div>

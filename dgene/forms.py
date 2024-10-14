@@ -20,11 +20,30 @@ from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_C
 #=================================================================================================
 class GenomeSeq_Filter(Filterbase):
 
+
+    ChoiceFilter_Dict = {
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName= ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
 
     def __init__(self, *args, **kwargs):
+
+        # Extract Filter Dictionary --> Should be put into class:Filterbase
+        # _filter_dict = {}
+        # if 'filterset_dict' in kwargs:
+        #     for _key, _item in self.ChoiceFilter_Dict.items():
+        #         if _key in kwargs['filterset_dict']:
+        #             _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
+        #     kwargs.pop('filterset_dict')
+        
         super().__init__(*args, **kwargs)
+
+        # Initialise FilterSet and Choices --> Should be put into class:Filterbase
+        for _key, _item in self.ChoiceFilter_Dict.items():
+            #self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model=Genome_Sequence
@@ -84,14 +103,21 @@ class IDPub_Filter(Filterbase):
 # ID_Seq - Identification from Sequence
 #=================================================================================================
 class IDSeq_Filter(Filterbase):
+
+    ChoiceFilter_Dict = {
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
     kraken_organisms = CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 
     #id_organisms=MultipleChoiceFilter(method='multichoices_filter', choices=[] )
     
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs) 
+        for _key, _item in self.ChoiceFilter_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model = ID_Sequence
@@ -100,6 +126,8 @@ class IDSeq_Filter(Filterbase):
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
                    ]
+
+
 
 class IDSeq_Form(ModelForm):
 
@@ -130,11 +158,17 @@ class IDSeq_Form(ModelForm):
 # WGS_FastQC - FastQ QC
 #=================================================================================================
 class WGS_FastQC_Filter(Filterbase):
+    ChoiceFilter_Dict = {
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for _key, _item in self.ChoiceFilter_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model=WGS_FastQC
@@ -148,12 +182,18 @@ class WGS_FastQC_Filter(Filterbase):
 # WGS_CheckM - FastA CheckM
 #=================================================================================================
 class WGS_CheckM_Filter(Filterbase):
+    ChoiceFilter_Dict = {
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
   
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+        for _key, _item in self.ChoiceFilter_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
+
     def create_field_groups(self):
         self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
         print(self.group1[0].label)
