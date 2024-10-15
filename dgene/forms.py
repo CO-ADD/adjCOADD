@@ -258,6 +258,7 @@ class AMRGenotype_Filter(Filterbase):
         'f_GeneType':   {'label':"Gene Type",       'field_name':'gene_id__gene_type__dict_value'},
         'f_GeneClass':  {'label':"AMR Class",       'field_name':'gene_id__amr_class'},
         'f_GeneSClass': {'label':"AMR SubClass",    'field_name':'gene_id__amr_subclass'},
+        'f_RunID':      {'label':"Run ID",    'field_name':'seq_id__run_id'},
     }
     
     f_OrgName=ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
@@ -265,6 +266,7 @@ class AMRGenotype_Filter(Filterbase):
     f_GeneType = ChoiceFilter(field_name='gene_id__gene_type__dict_value', choices=[],label="Gene Type")
     f_GeneClass = ChoiceFilter(field_name='gene_id__amr_class', choices=[],label="AMR Class")
     f_GeneSClass = ChoiceFilter(field_name='gene_id__amr_subclass', choices=[],label="AMR SubClass")
+    f_RunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     
     #gene_type=ChoiceFilter(choices=[])
     def __init__(self, *args, **kwargs):
@@ -305,5 +307,6 @@ class AMRGenotype_Filter(Filterbase):
                     "gene_id.gene_type",
                     "gene_id.amr_class",
                     "gene_id.amr_subclass",
+                    'seq_id.run_id',
                    ]
         

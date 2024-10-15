@@ -176,7 +176,7 @@ class AuditModel(models.Model):
                 errMsgList = e.message_dict[key]
                 retMsg = []
                 for errMsg in errMsgList:
-                    #print(f"{key} -- {errMsg}")
+                    #print(f"[Validate] {key} -- {errMsg}")
         
                     if not _field.primary_key:
                         if 'This field cannot be null.' == errMsg: 

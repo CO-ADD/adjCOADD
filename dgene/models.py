@@ -595,7 +595,7 @@ class AMR_Genotype(AuditModel):
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
-        #"seq_id.run_id":'Run ID',
+        "seq_id.run_id":'Run ID',
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
         "gene_id.gene_code":"Gene Code",
         "gene_id.gene_type":"Gene Type",
@@ -628,7 +628,7 @@ class AMR_Genotype(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'amr_genotype'
-        ordering=['gene_id','amr_method','seq_id','orgbatch_id',]
+        ordering=['gene_id','amr_method','seq_id','orgbatch_id']
         indexes = [
              models.Index(name="amrgt_am_idx",fields=['amr_method']),
              models.Index(name="amrgt_gid_idx",fields=['gene_id']),

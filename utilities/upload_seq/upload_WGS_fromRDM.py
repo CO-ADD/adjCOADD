@@ -104,7 +104,7 @@ def main(prgArgs,djDir):
                         fProcess = True
                     
                     if fProcess:
-                        print(f"[WGS-FastA] {OrgBatchID} {RunID} {dirFA} ")                       
+                        print(f"[WGS-FastA] {OrgBatchID} {RunID} ")                       
                         upload_FastA(OrgBatchID, RunID, dirFA, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser) 
                         upload_AMR(OrgBatchID, RunID, dirFA, vLog, Methods, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
                                            
