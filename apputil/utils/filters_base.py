@@ -101,6 +101,7 @@ class Filterbase_base(FilterSet):
     def __init__(self, *args, **kwargs):
         deep=kwargs.pop('deep') # switcher deep search or one-table search
         filterset_dict=kwargs.pop('filterset_dict',None) # switcher deep search or one-table search
+        
         super().__init__(*args, **kwargs)
 
         if deep == True:
@@ -117,7 +118,6 @@ class Filterbase_base(FilterSet):
     def update_choice_filters(self):
         print(f"Filterbase_base.update_choice_filters")
     
-   
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
         return queryset.filter(**{lookup: value})
@@ -143,13 +143,15 @@ class Filterbase_base(FilterSet):
 class Filterbase(Filterbase_base):
 #--------------------------------------------------------------------------
 
-    
+    # Filter primary queryset for valid (not deleted) entries with aStatus >= 0 
     @property
     def qs(self):
         parent = super().qs
         return parent.filter(astatus__gte=0)
+
+
     
- # utils for filteredListView method def ordered_by
+# utils for filteredListView method def ordered_by
 def find_item_index(lst, item):
 
     for i, element in enumerate(lst):

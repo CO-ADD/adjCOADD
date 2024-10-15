@@ -248,7 +248,7 @@ def upload_FastA(OrgBatchID, RunID, FastaDir, vLog, upload=False,uploaduser=None
             SeqDict['gtdbtk_class'] = lGT[0]['gtdbtk_class']
             SeqDict['gtdbtk_fastani'] = f"{lGT[0]['gtdbtk_fastani_ref']} ({lGT[0]['gtdbtk_fastani_ani']})"
 
-        #print(seqDict)
+        #print(SeqDict)
         djIDSeq = imp_IDSeq_fromDict(SeqDict, vLog, objSeq = SeqDict['seq_id'])
         if djIDSeq.VALID_STATUS:
             #print(djIDSeq.VALID_STATUS)

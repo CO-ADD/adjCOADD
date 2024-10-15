@@ -117,7 +117,6 @@ class Gene_ListView(LoginRequiredMixin, FilteredListView):
     filterset_class=Gene_Filter
     model_fields=model.HEADER_FIELDS
 
-
 ##
 class Gene_CardView(Gene_ListView):
     template_name = 'dgene/gene/gene_card.html'
@@ -136,7 +135,6 @@ def detailGene(req, pk):
     context["form"]=form
  
     return render(req, "dgene/gene/gene_detail.html", context)
-
 
 class Gene_UpdateView(SimpleupdateView):
     form_class=Gene_Form

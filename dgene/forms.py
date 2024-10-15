@@ -20,37 +20,39 @@ from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_C
 #=================================================================================================
 class GenomeSeq_Filter(Filterbase):
 
-
     ChoiceFilter_Dict = {
-        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_OrgName':  {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_RunID':    {'label':"Run ID",   'field_name':'run_id'},
     }
 
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName= ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_RunID= ChoiceFilter(field_name='run_id', choices=[], label="Run ID")
 
     def __init__(self, *args, **kwargs):
-
-        # Extract Filter Dictionary --> Should be put into class:Filterbase
-        # _filter_dict = {}
-        # if 'filterset_dict' in kwargs:
-        #     for _key, _item in self.ChoiceFilter_Dict.items():
-        #         if _key in kwargs['filterset_dict']:
-        #             _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
-        #     kwargs.pop('filterset_dict')
         
+        # Extract Filter Dictionary --> Should be put into class:Filterbase
+        _filter_dict = {}
+        if 'filterset_dict' in kwargs:
+            for _key, _item in self.ChoiceFilter_Dict.items():
+                if _key in kwargs['filterset_dict']:
+                    _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
+            kwargs.pop('filterset_dict')
+            
         super().__init__(*args, **kwargs)
 
         # Initialise FilterSet and Choices --> Should be put into class:Filterbase
         for _key, _item in self.ChoiceFilter_Dict.items():
-            #self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
-            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
+            #self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model=Genome_Sequence
-        fields = ['f_OrgBatchID','f_OrgName']
+        fields = ['f_OrgBatchID','f_OrgName','f_RunID']
         fields += list(model.HEADER_FIELDS.keys())
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
+                   'run_id',
                    ]
 
 class GenomeSeq_Form(ModelForm):
@@ -106,10 +108,12 @@ class IDSeq_Filter(Filterbase):
 
     ChoiceFilter_Dict = {
         'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_SeqRunID':   {'label':"Run ID",          'field_name':'seq_id__run_id'},
     }
 
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_SeqRunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     kraken_organisms = CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 
     #id_organisms=MultipleChoiceFilter(method='multichoices_filter', choices=[] )
@@ -121,10 +125,11 @@ class IDSeq_Filter(Filterbase):
 
     class Meta:
         model = ID_Sequence
-        fields = ['f_OrgBatchID','f_OrgName']
+        fields = ['f_OrgBatchID','f_OrgName','f_SeqRunID']
         fields += list(model.HEADER_FIELDS.keys())
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
+                   'seq_id.run_id'
                    ]
 
 
