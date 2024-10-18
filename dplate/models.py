@@ -1,3 +1,5 @@
+import re, math
+
 from django.db import models
 from model_utils import Choices
 from sequences import Sequence
@@ -10,6 +12,8 @@ from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from dscreen.models import Screen_Run
+from dorganism.models import Organism_Batch
+from dcell.models import Cell_Batch
 from adjcoadd.constants import *
 
 
@@ -64,12 +68,201 @@ class Labware(AuditModel):
         ordering=['labware_id']
 
 #=================================================================================================
-class TestPlate(AuditModel):
+class Well(AuditModel):
+    """
+    An abstract Well class model that provides general Well properties/method 
+    """
+    PLATE_CLASS = Plate
+
+    #------------------------------------------------
+    plate_id = models.ForeignKey(PLATE_CLASS,  verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
+        db_column="plate_id", related_name="%(class)s_plateid")
+    well_id = models.CharField(max_length=6, verbose_name = "Well ID")
+
+    class Meta:
+        abstract = True
+        ordering=['plate_id','well_id']
+        indexes = [
+            models.Index(fields=['plate_id']),
+            models.Index(fields=['well_id']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.plate_id} {self.well_id}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        # return f"{self.__name__}: {self.pk}"
+        return f"{self.plate_id} {self.well_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID, WellID, verbose=0):
+        try:
+            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+        except:
+            if verbose:
+                print(f"[Well Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,PlateID,WellID,verbose=0):
+        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+
+
+#=================================================================================================
+
+
+#=================================================================================================
+class Plate(AuditModel):
+    """
+    An abstract Plate class model that provides general Plate properties/method 
+    """
+#=================================================================================================
+
+    WELL_CLASS = Well
+    
+    PLATE_SIZES = {24:(4,6), 48:(6,8), 96:(8,12), 384:(16,24), 1536:(32,48)}
+    ROW_LABELS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+                 'Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF']
+    MAP_POSITIONS = {'wellID':0,'pos2D':1,'pos1D':2}
+
+    Choice_Dictionary = {
+        'plate_type':'Plate_Type',
+    }
+
+    plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
+    plate_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Type", on_delete=models.DO_NOTHING,
+        db_column="plate_type", related_name="%(class)s_platetype")
+    labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
+        db_column="labware_id", related_name="%(class)s_labwareid")
+    rows =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "Rows") 
+    cols =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "Cols") 
+    n_wells =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "nWells")
+
+    wells = {}
+
+    #------------------------------------------------
+    class Meta:
+        abstract = True
+        ordering=['plate_id']
+        indexes = [
+            models.Index(fields=['plate_id']),
+        ]
+
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.plate_id}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        # return f"{self.__name__}: {self.pk}"
+        return f"{self.plate_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID,WellData=True,verbose=0):
+        try:
+            retInstance = cls.objects.get(plate_id=PlateID)
+            if WellData:
+                retInstance.n_wells = retInstance.get_wells()
+        except:
+            if verbose:
+                print(f"[Plate Not Found] {PlateID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,PlateID,verbose=0):
+        return cls.objects.filter(plate_id=PlateID).exists()
+
+    #------------------------------------------------
+    def set_platesize(self,PlateSize):
+        # -- Set Plate Size
+        if isinstance(PlateSize,int):
+            if PlateSize in self.PLATE_SIZES:
+                self.rows = self.PLATE_SIZES[PlateSize][0]
+                self.cols = self.PLATE_SIZES[PlateSize][1]
+            else:
+                raise KeyError(f"Undefined PlateSize {PlateSize}")
+        elif isinstance(PlateSize,tuple):
+            self.rows = PlateSize[0]
+            self.cols = PlateSize[1]
+        else:
+            self.rows = 0
+            self.cols = 0
+            raise KeyError(f"Undefined PlateSize parameters {PlateSize}")
+        self.plate_size = self.rows * self.cols
+
+    #------------------------------------------------
+    @classmethod
+    def create(cls,PlateID,PlateSize,PlateType,WellData=True):
+        _plate = cls()
+        _plate.set_platesize(PlateSize)
+        _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
+        _plate.create_wells()
+        return(_plate)
+    
+    #------------------------------------------------
+    def get_wells(self) -> int:
+        pass
+
+    #------------------------------------------------
+    def save_wells(self) :
+        pass
+
+    #------------------------------------------------
+    def map_well(self,loc,check=True):
+        if isinstance(loc,int) :
+            if check:
+                if not loc in self.validate['pos1D']:
+                    raise Exception(f"Invalid 1D Plate Position: {loc}")
+            row = int(math.ceil(float(loc)/float(self.cols))) - 1
+            col = loc - (row * self.cols) - 1
+        elif isinstance(loc,tuple):
+            if check:
+                if not loc in self.validate['pos2D']:
+                    raise Exception(f"Invalid 2D Plate Position: {loc}")
+            row = loc[0] - 1
+            col = loc[1] - 1
+        elif isinstance(loc,str) :
+            res = re.findall('([A-Za-z]+|\d+)',loc)
+            loc = f"{res[0]}{int(res[1]):02d}"
+            if check:
+                if not loc in self.validate['wellID']:
+                    raise Exception(f"Invalid Well ID: {loc}")
+            row = self.ROW_LABELS.index(loc[0])
+            col = int(loc[1:]) - 1
+        else:
+            raise  Exception(f"Unrecognized Plate Location Type: {loc}")
+
+        pos = self.cols * row + col +1
+        id = f"{self.ROW_LABELS[row]:s}{(col+1):02d}"
+        return(id,(row+1,col+1),pos)
+
+    def well_pos(self,loc):
+        m = self.map_wellmap(loc)
+        return(m[3])
+
+    def well_rowcol(self,loc):
+        m = self.map_well(loc)
+        return(m[1])
+
+    def well_id(self,loc):
+        m = self.map_well(loc)
+        return(m[0])
+
+#=================================================================================================
+class TestPlate(Plate):
     """
 
     """
 #=================================================================================================
 
+    WELL_CLASS = TestWell
     RESULT_TYPES = Choices('MIC','CC50','HC50','SYN-MIC')
 
     Choice_Dictionary = {
@@ -77,9 +270,9 @@ class TestPlate(AuditModel):
         'plate_quality':'Plate_Quality',
     }
 
-    plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
-    labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
-        db_column="labware_id", related_name="%(class)s_labwareid")
+    # plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
+    # labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
+    #     db_column="labware_id", related_name="%(class)s_labwareid")
     
     motherplate_ids = ArrayField(models.CharField(max_length=25, null=True, blank=True), size=2, verbose_name = "Mother Plates", null=True, blank=True)
                                 
@@ -95,7 +288,13 @@ class TestPlate(AuditModel):
     assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
     test_date = models.DateField(null=True, blank=True, verbose_name = "Test Date")
     test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
-    test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
+    #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
+
+    test_strain = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "Strain", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
+    test_cell = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "Cell", on_delete=models.DO_NOTHING,
+        db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
+    
     test_dye = models.CharField(max_length=25, blank=True, verbose_name = "Dye")
     test_addition = models.CharField(max_length=25, blank=True, verbose_name = "Addition")
     test_volume = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "Volume (uL)")

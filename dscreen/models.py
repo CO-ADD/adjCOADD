@@ -117,7 +117,76 @@ class Screen_Run(AuditModel):
         # self.n_synmic = 
         # self.screen_date = 
            
+#-------------------------------------------------------------------------------------------------
+class Assays_MIC(AuditModel):
+    """
+    List of MIC Values
+    """
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        "run_id":"Run ID",
+        "run_type":"Run Type",
+        "assay_note":"Assay",
+        "run_status":"Status",
+        "run_project":"Project",
+        "run_name":"Name",
+        "run_date":"Run Date",
+        "run_conditions":"Conditions",
+        "run_issues":"Issues",
+    }
 
+    Choice_Dictionary = {
+        'run_type':'Run_Type',
+        'run_status':'Process_Status',
+    }
+
+    n_samples = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "#Samples")    
+    samplebatch_id = ArrayField(models.CharField(max_length=25),size=4)
+
+
+#   TestPlate_ID            Varchar2(25),
+#   TestWell_ID             Varchar2(5),
+#   AssayType_ID            Varchar2(25),
+#   Test_Strain             Varchar2(25),
+#   Test_Dye                Varchar2(25),
+#   Test_Additive           Varchar2(25),
+#   Test_Date               Date,
+#   Run_ID                  Varchar2(25),
+#   Analysis                Varchar2(10),
+#   MIC                     Varchar2(50),
+#   MIC_Unit                Varchar2(40),
+#   MIC_Value               Number,
+#   MIC_Prefix              Varchar2(2),
+#   MIC_Cmpd1               Number,
+#   MIC_Cmpd1_Unit          Varchar2(10),
+#   MIC_Cmpd2               Number,
+#   MIC_Cmpd2_Unit          Varchar2(10),
+#   MIC_Cmpd3               Number,
+#   MIC_Cmpd3_Unit          Varchar2(10),
+#   MIC_Cmpd4               Number,
+#   MIC_Cmpd4_Unit          Varchar2(10),
+#   DMax                    Number(12,1),
+#   DMin                    Number(12,1),
+#   MIC_at50                Varchar2(20),
+#   MIC_Skips               Number(3,0),
+#   Data_Quality            Varchar2(20),
+#   pScore                  Number(8,2),
+#   Hit                     Varchar2(4),
+#   Active                  Varchar2(4),
+#   IC50                    Varchar2(20),
+#   IC50_Prefix             Varchar2(2),
+#   IC50_Value              Number,
+#   IC50_Unit               Varchar2(10),
+#   IC50_fSlope             Number,
+#   IC50_fXC50              Number,
+#   IC50_fR2                Number,
+#   IC50_pScore             Number(8,2),
+#   IC50_Quality            Varchar2(20),
+#   Pub_Status              Varchar2(20),
+#   Status                  Number(5),
+#   aCreatedBy		      Varchar2(20),
+#   aCreatedDate            Date,
+#   aModifiedBy		      Varchar2(20),
 #
 # Assay (?)
 # AssayData_MIC
