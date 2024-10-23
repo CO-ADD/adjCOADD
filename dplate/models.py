@@ -68,51 +68,7 @@ class Labware(AuditModel):
         ordering=['labware_id']
 
 #=================================================================================================
-class Well(AuditModel):
-    """
-    An abstract Well class model that provides general Well properties/method 
-    """
-    PLATE_CLASS = Plate
 
-    #------------------------------------------------
-    plate_id = models.ForeignKey(PLATE_CLASS,  verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
-        db_column="plate_id", related_name="%(class)s_plateid")
-    well_id = models.CharField(max_length=6, verbose_name = "Well ID")
-
-    class Meta:
-        abstract = True
-        ordering=['plate_id','well_id']
-        indexes = [
-            models.Index(fields=['plate_id']),
-            models.Index(fields=['well_id']),
-        ]
-
-    #------------------------------------------------
-    def __str__(self) -> str:
-        return f"{self.plate_id} {self.well_id}"
-    #------------------------------------------------
-    def __repr__(self) -> str:
-        # return f"{self.__name__}: {self.pk}"
-        return f"{self.plate_id} {self.well_id}"
-
-    #------------------------------------------------
-    @classmethod
-    def get(cls,PlateID, WellID, verbose=0):
-        try:
-            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
-        except:
-            if verbose:
-                print(f"[Well Not Found] {PlateID} {WellID}")
-            retInstance = None
-        return(retInstance)
-
-    #------------------------------------------------
-    @classmethod
-    def exists(cls,PlateID,WellID,verbose=0):
-        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
-
-
-#=================================================================================================
 
 
 #=================================================================================================
@@ -122,7 +78,7 @@ class Plate(AuditModel):
     """
 #=================================================================================================
 
-    WELL_CLASS = Well
+    #WELL_CLASS = Well
     
     PLATE_SIZES = {24:(4,6), 48:(6,8), 96:(8,12), 384:(16,24), 1536:(32,48)}
     ROW_LABELS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
@@ -255,14 +211,58 @@ class Plate(AuditModel):
         m = self.map_well(loc)
         return(m[0])
 
-#=================================================================================================
+class Well(AuditModel):
+    """
+    An abstract Well class model that provides general Well properties/method 
+    """
+    #PLATE_CLASS = Plate
+
+    #------------------------------------------------
+    plate_id = models.ForeignKey(Plate,  verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
+        db_column="plate_id", related_name="%(class)s_plateid")
+    well_id = models.CharField(max_length=6, verbose_name = "Well ID")
+
+    class Meta:
+        abstract = True
+        ordering=['plate_id','well_id']
+        indexes = [
+            models.Index(fields=['plate_id']),
+            models.Index(fields=['well_id']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.plate_id} {self.well_id}"
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        # return f"{self.__name__}: {self.pk}"
+        return f"{self.plate_id} {self.well_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID, WellID, verbose=0):
+        try:
+            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+        except:
+            if verbose:
+                print(f"[Well Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,PlateID,WellID,verbose=0):
+        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+
+
+#=================================================================================================#=================================================================================================
 class TestPlate(Plate):
     """
 
     """
 #=================================================================================================
 
-    WELL_CLASS = TestWell
+    #WELL_CLASS = TestWell
     RESULT_TYPES = Choices('MIC','CC50','HC50','SYN-MIC')
 
     Choice_Dictionary = {

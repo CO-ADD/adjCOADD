@@ -47,13 +47,15 @@ def get_MIC_COADD(test=0):
 
     lstRunID =['AntiBio_R001','AntiBio_R002','AntiBio_R003',
                'AntiBio_R004','AntiBio_R005','AntiBio_R006',
-               'AntiBio_R007','AntiBio_R008','AntiBio_R009',
+               'AntiBio_R007','AntiBio_R008','AntiBio_R009','AntiBio_R010',
                'HCR00132', 
                'HVR00049','HVR00051','HVR00052','HVR00057',
                'PMC043_R02','PMC043_R03',
                'PMC045_FDB1',
                'PMC045_R01','PMC045_R02','PMC045_R03',
                'PMC045_R04','PMC045_R05','PMC045_R06']
+
+    #lstRunID =['AntiBio_R010',]
 
     micSQL = """
             Select mic.TestPlate_ID, mic.TestWell_ID, 
