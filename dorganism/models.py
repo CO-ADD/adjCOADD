@@ -537,6 +537,33 @@ class OrgBatch_Stock(AuditModel):
     def __repr__(self) -> str:
         return f"{self.orgbatch_id} {self.stock_type} {self.n_left}"
 
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ID, OrgBatchID=None,StockDate=None,StockType=None, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            if ID is not None:
+                retInstance = cls.objects.get(pk=ID)
+            else:
+                retInstance = cls.objects.get(orgbatch_id=OrgBatchID,stock_date=StockDate,stock_type=StockType)
+        except:
+            if verbose:
+                print(f"[OrgBatch Image Not Found] {ID} {OrgBatchID} {StockDate} {StockType} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ID, OrgBatchID=None,StockDate=None,StockType=None, verbose=0):
+    # Returns if instance exists
+        if ID is not None:
+            return cls.objects.filter(pk=ID).exists()
+
+        else:
+            return cls.objects.filter(orgbatch_id=OrgBatchID,stock_date=StockDate,stock_type=StockType).exists()
+
+
 #    #------------------------------------------------
 #     @classmethod
 #     def get(cls,pkID,verbose=0):
