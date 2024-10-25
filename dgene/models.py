@@ -26,13 +26,14 @@ class Genome_Sequence(AuditModel):
         #'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
         'seq_id':"Seq ID", 
         'seq_type':'Type',  
+        'seq_method':'Method',  
         'seq_name':'SeqName',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         'source':'Source',
-        'source_code':'Source Code',
+    #    'source_code':'Source Code',
         'source_link':'Link',
-        'reference':'Reference',
+    #    'reference':'Reference',
         'run_id':'Run ID',
         'seq_date':'Seq Date'
     }

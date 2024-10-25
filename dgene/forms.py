@@ -239,15 +239,23 @@ class Gene_Form(ModelForm):
         exclude = ['gene_id']
  
 class Gene_Filter(Filterbase):
-   
-    gene_type=ChoiceFilter(choices=[])
+
+    ChoiceFilter_Dict = {
+        'f_GeneType':    {'label':"Gene Type",   'field_name':'gene_type'},
+    }
+
+    #f_GeneType = ChoiceFilter(field_name='gene_type', choices=[], label="Gene Type")
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["gene_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
+        #self.filters["gene_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
         
     class Meta:
         model=Gene
-        fields=list(model.HEADER_FIELDS.keys())
+        fields = list(model.HEADER_FIELDS.keys())
+        exclude = ['gene_id',
+                   ]
 
 #=================================================================================================
 class AMRGenotype_Filter(Filterbase):

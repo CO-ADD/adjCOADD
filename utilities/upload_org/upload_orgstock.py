@@ -56,21 +56,59 @@ def main(prgArgs,djDir):
 
         stock_df = pd.read_excel(ExcelFile,sheet_name = ExcelSheet)
 
+        rmColumns = ['OrganismID','BatchID','ID','X','Passages']
+
+        appuser = ApplicationUser.get(prgArgs.appuser)
+        empty_date = datetime.date(2009, 1, 1)
 
         for idx,row in tqdm(stock_df.iterrows(),total=len(stock_df)):
 
-            Biologist = ApplicationUser.get(row['Biologist'])
-            orgBatch = Organism_Batch.get(row['OrgBatchID'])
+            if row['n_left'] > 0:
 
-            if orgBatch is not None:
-                Stock =  OrgBatch_Stock.get(None,OrgBatchID=orgBatch,StockDate=row['Date'],StockType=row['Type'])
-                if Stock is None:
-                    pass
-                    # print(f" [Stock] not found  {orgBatch} {row['Date']} {row['Type']}")
+                #print(row)
+                for rmCol in rmColumns:
+                    if rmCol in row:
+                        del row[rmCol]
+
+                djBiologist = ApplicationUser.get(row['biologist'])
+                djOrgBatch = Organism_Batch.get(row['orgbatch_id'])
+
+                if djOrgBatch is not None:
+                    djStock =  OrgBatch_Stock.get(None,OrgBatchID=djOrgBatch,StockDate=row['stock_date'],StockType=row['stock_type'])
+                    if djStock is None:
+                        djStock = OrgBatch_Stock()
+                        djStock.orgbatch_id = djOrgBatch
+                    row.pop('orgbatch_id')
+ 
+                    djStock.stock_type = Dictionary.get(djStock.Choice_Dictionary["stock_type"],row['stock_type'])
+                    row.pop('stock_type')
+
+                    djStock.biologist = djBiologist
+                    row.pop('biologist')
+
+                    #print(djStock.stock_date)
+                    #print(f" {djOrgBatch} {row['stock_date']} {row['stock_note']}")
+                    if row['stock_date'] is pd.NaT:
+                        row['stock_date'] = empty_date
+
+                    # location_rack, location_column, location_slot => str(int())  
+
+                    # set values in instance
+                    for e in row.to_dict():
+                        setattr(djStock,e,row[e])
+
+
+                    djStock.clean_Fields()
+                    validDict = djStock.validate()
+
+                    if validDict:
+                        logger.info(f" XX {djStock} {validDict} ")
+                    else:
+                        # --- Upload ---------------------------------------------------------
+                        if prgArgs.upload:
+                            djStock.save(user=appuser)
                 else:
-                    print(f" [Stock] {orgBatch} {row['Date']} {row['Type']}")
-            else:
-                print(f" [OrgBatchID] {row['OrgBatchID']} not found {Biologist}")
+                    print(f" [OrgBatchID] {row['orgbatch_id']} not found {djBiologist}")
 
 #==============================================================================
 if __name__ == "__main__":

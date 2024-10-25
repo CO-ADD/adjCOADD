@@ -148,7 +148,7 @@ class Gene_UpdateView(SimpleupdateView):
 class AMRGenotype_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= AMR_Genotype
-    template_name = 'dgene/gene/amrfinder_list.html' 
+    template_name = 'dgene/gene/amrgene_list.html' 
     filterset_class=AMRGenotype_Filter
     model_fields=model.HEADER_FIELDS
     ordering = ['orgbatch_id']

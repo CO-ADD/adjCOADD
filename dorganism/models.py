@@ -1,4 +1,6 @@
 import re
+from datetime import datetime, timedelta
+
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
@@ -507,7 +509,7 @@ class OrgBatch_Stock(AuditModel):
     n_created = models.IntegerField(default=0, verbose_name = "#Created")
     n_left = models.IntegerField(default=0, verbose_name = "#Left")
     stock_date = models.DateField(null=True, blank = True, verbose_name = "Stock Date")
-    stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
+    stock_note = models.CharField(max_length=80, blank=True, verbose_name = "Stock Note")
     # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
@@ -546,7 +548,9 @@ class OrgBatch_Stock(AuditModel):
             if ID is not None:
                 retInstance = cls.objects.get(pk=ID)
             else:
-                retInstance = cls.objects.get(orgbatch_id=OrgBatchID,stock_date=StockDate,stock_type=StockType)
+                startdate = StockDate + timedelta(days=-11)
+                enddate = StockDate + timedelta(days=1)
+                retInstance = cls.objects.get(orgbatch_id=OrgBatchID,stock_date__range=[startdate,enddate],stock_type=StockType)
         except:
             if verbose:
                 print(f"[OrgBatch Image Not Found] {ID} {OrgBatchID} {StockDate} {StockType} ")
