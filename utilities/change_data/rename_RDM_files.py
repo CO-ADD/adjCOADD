@@ -249,6 +249,8 @@ def rename_Work(oldSeqName,newSeqName,MicroOrgDB):
 def main():
 # -----------------------------------------------------------------
     MicroOrgDB = 'I:\MICROORGDB-Q5308'
+    #rename_SeqName('GN_1318_01_AGRF_R005','GN_1396_01_AGRF_R005',MicroOrgDB)
+
     # rename_SeqName('GN_0696_00_AGRF_R001','GP_0313_00_AGRF_R001',MicroOrgDB)
     # rename_SeqName('GN_0697_01_AGRF_R001','GP_0314_01_AGRF_R001',MicroOrgDB)
     # rename_SeqName('GN_1110_02_AGRF_R003','GP_0331_02_AGRF_R003',MicroOrgDB)

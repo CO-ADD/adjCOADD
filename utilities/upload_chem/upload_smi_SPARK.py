@@ -7,7 +7,7 @@ import csv
 import pandas as pd
 import numpy as np
 import argparse
-
+from rdkit import Chem 
 from tqdm import tqdm
 # from zUtils import zData
 
@@ -31,6 +31,7 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
+
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
@@ -52,40 +53,85 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-
+    LibraryID = 'SPARK'
+    OutFile = f'upload_SPARK_{logTime:%Y%m%d_%H%M%S}.xlsx'
     # Table -------------------------------------------------------------
-    if prgArgs.table == "Library" and prgArgs.library:
+    if prgArgs.table == "SPARK":
 
-        cpyFields = ['compound_name','compound_desc'
-                    'reg_smiles',
-                    ]
         
         appuser = ApplicationUser.get(prgArgs.appuser)
-        djLib = Library.get(prgArgs.library)
+        djLib = Library.get(LibraryID)
         if djLib:
-            with open(prgArgs.file, mode='r') as csv_file:
-                lines = len(csv_file.readlines())
+            # with Chem.ForwardSDMolSupplier(prgArgs.file) as sdSupl:
+            #     lines = 0
+            #     for mol in sdSupl:
+            #         lines += 1
 
+            outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
+            outDict = []
+            print(f"[SPARK] : Reading {prgArgs.file}")
+            dfSMI = pd.read_excel(prgArgs.file)
+            for idx,row in tqdm(dfSMI.iterrows(),total=len(dfSMI)):
+                djCmpd = Library_Compound.get(None,row['Compound Name'],LibraryID)
+                if not djCmpd:
 
-            outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
-            outDict = []    
-            with open(prgArgs.file, mode='r') as infile:
-                reader = csv.DictReader(infile)
-                
-                for row in tqdm(reader,total=lines, desc="Reading Library"):
-                    new_compound = False
-
-                    djCmpd = Library_Compound.get(None,row['compound_code'],prgArgs.library)
-                    if not djCmpd:
-                        djCmpd = Library_Compound()
-                        djCmpd.compound_code = row['compound_code']
-                        djCmpd.library_id = djLib
-                        new_compound = True
-
-                    set_dictFields(djCmpd,row,cpyFields)
-                    
                     validStatus = True
 
+                    djCmpd = Library_Compound()
+                    djCmpd.compound_code = row['Compound Name']
+                    djCmpd.library_id = djLib
+
+                _name = ""
+                _desc = ""
+                if 'External ID' in row:
+                    if pd.notnull(row['External ID']):
+                        if len(str(row['External ID'])) > 49:
+                            if (len(str(row['External ID'])))< 250:
+                                _desc += f"{row['External ID']};"
+                        else:
+                            _name += f"{row['External ID']};"
+
+                if 'Alternate Names' in row:
+                    if pd.notnull(row['Alternate Names']):
+                        _name += f"{row['Alternate Names']};"
+
+                if 'PubMed ID' in row:
+                    if pd.notnull(row['PubMed ID']):
+                        if (len(str(row['PubMed ID']))+len(_desc))< 250:
+                            _desc += f"PubMed: {str(row['PubMed ID'])};"
+                if 'Alternate Source ID' in row:
+                    if pd.notnull(row['Alternate Source ID']):
+                        if (len(str(row['Alternate Source ID']))+len(_desc))< 250:
+                            _desc += f"{row['Alternate Source ID']};"
+                # if 'DOI' in row:
+                #     if pd.notnull(row['DOI']):
+                #         if (len(str(row['DOI']))+len(_desc))< 250:
+                #             _desc += f"{row['DOI']};"
+                if 'Batch Salt' in row:
+                    if pd.notnull(row['Batch Salt']):
+                        if row['Batch Salt'] != 'No Salt, free base or acid':
+                            if row['Batch Salt'] != 'Unknown Salt':
+                                _salt = row['Batch Salt']
+                                if 'No Salt' in _salt:
+                                    _salt = _salt.replace('No Salt, free base or acid / ','')
+                                if (len(_salt)+len(_desc))< 250:
+                                    _desc += f"{_salt};"
+
+                if 'SMILES' in row:
+                    if pd.notnull(row['SMILES']):
+                        djCmpd.reg_smiles = row['SMILES']
+
+                # if 'Batch Salt' in row:
+                #     if row['Batch Salt'] != 'No Salt, free base or acid':
+                #         salt_code = row['Batch Salt']
+
+                djCmpd.compound_name = _name
+                djCmpd.compound_desc = _desc
+
+                new_compound = True
+
+
+                if validStatus:
                     djCmpd.clean_Fields()
                     validDict = djCmpd.validate()
                     if validDict:
@@ -94,12 +140,22 @@ def main(prgArgs,djDir):
                             print('Warning',k,validDict[k],'-')
                         outDict.append(row)
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_compound or prgArgs.overwrite:
-                                outNumbers['Upload Compounds'] += 1
-                                djCmpd.save()
-            print(f"[LibCompounds] :{outNumbers}")
+                if validStatus:
+                    if prgArgs.upload:
+                        if new_compound or prgArgs.overwrite:
+                            outNumbers['Upload Compounds'] += 1
+                            djCmpd.save()
+                else:
+                    row['Issue'] = 'No SMILES'
+                    outDict.append(row)
+                    
+
+            print(f"[SPARK] :{outNumbers}")
+
+            if len(outDict) > 0:
+                print(f"Writing Issues: {OutFile}")
+                outDF = pd.DataFrame(outDict)
+                outDF.to_excel(OutFile)
 
 #==============================================================================
 if __name__ == "__main__":
@@ -113,7 +169,6 @@ if __name__ == "__main__":
     prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("-l",default=None,required=True, dest="library", action='store', help="Library")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")

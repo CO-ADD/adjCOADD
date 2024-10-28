@@ -20,21 +20,51 @@ from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_C
 #=================================================================================================
 class GenomeSeq_Filter(Filterbase):
 
+    FilterSet_Dict = {
+        'f_OrgBatchID':   {'lookup':'contains','field_name':'orgbatch_id__orgbatch_id'},
+        'f_OrgName':      {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+        # 'f_GeneCode':     {'lookup':'choice','field_name':'gene_id__gene_code'},
+        # 'f_GeneType':     {'lookup':'choice','field_name':'gene_id__gene_type__dict_value'},
+        # 'f_GeneClass':    {'lookup':'choice','field_name':'gene_id__amr_class'},
+        # 'f_GeneSClass':   {'lookup':'choice','field_name':'gene_id__amr_subclass'},
+        'f_RunID':        {'lookup':'choice','field_name':'run_id'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName= ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_RunID= ChoiceFilter(field_name='run_id', choices=[], label="Run ID")
 
     def __init__(self, *args, **kwargs):
+        
+        # Extract Filter Dictionary
+        _filter_dict = {}
+        if 'filterset_dict' in kwargs:
+            print(kwargs['filterset_dict'])
+            for _key, _item in self.FilterSet_Dict.items():
+                if _key in kwargs['filterset_dict']:
+                    _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
+            kwargs.pop('filterset_dict')
+            
+        # Initialise FilterSet and Choices
         super().__init__(*args, **kwargs)
+        for _key, _item in self.FilterSet_Dict.items():
+            if _item['lookup'] == 'choice':
+                self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
 
     class Meta:
         model=Genome_Sequence
-        fields = ['f_OrgBatchID','f_OrgName']
+        fields = ['f_OrgBatchID','f_OrgName','f_RunID']
         fields += list(model.HEADER_FIELDS.keys())
+        #exclude = []
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
+                   'run_id',
                    ]
 
+
+#----------------------------------------
 class GenomeSeq_Form(ModelForm):
+#----------------------------------------
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
 
@@ -84,22 +114,34 @@ class IDPub_Filter(Filterbase):
 # ID_Seq - Identification from Sequence
 #=================================================================================================
 class IDSeq_Filter(Filterbase):
+
+    ChoiceFilter_Dict = {
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_SeqRunID':   {'label':"Run ID",          'field_name':'seq_id__run_id'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_SeqRunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     kraken_organisms = CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 
     #id_organisms=MultipleChoiceFilter(method='multichoices_filter', choices=[] )
     
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs) 
+        for _key, _item in self.ChoiceFilter_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model = ID_Sequence
-        fields = ['f_OrgBatchID','f_OrgName']
+        fields = ['f_OrgBatchID','f_OrgName','f_SeqRunID']
         fields += list(model.HEADER_FIELDS.keys())
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
+                   'seq_id.run_id'
                    ]
+
+
 
 class IDSeq_Form(ModelForm):
 
@@ -130,11 +172,17 @@ class IDSeq_Form(ModelForm):
 # WGS_FastQC - FastQ QC
 #=================================================================================================
 class WGS_FastQC_Filter(Filterbase):
+    FilterSet_Dict = {
+        'f_OrgName':    {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for _key, _item in self.FilterSet_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     class Meta:
         model=WGS_FastQC
@@ -148,12 +196,18 @@ class WGS_FastQC_Filter(Filterbase):
 # WGS_CheckM - FastA CheckM
 #=================================================================================================
 class WGS_CheckM_Filter(Filterbase):
+    FilterSet_Dict = {
+        'f_OrgName':    {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+    }
+
     f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = CharFilter(field_name='orgbatch_id__organism_id__organism_name', lookup_expr='icontains',label="Organism")
+    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
   
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+        for _key, _item in self.FilterSet_Dict.items():
+            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
+
     def create_field_groups(self):
         self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
         print(self.group1[0].label)
@@ -169,8 +223,50 @@ class WGS_CheckM_Filter(Filterbase):
 #=================================================================================================
 # List of Genes
 #=================================================================================================
-## 
+#
+class Gene_Filter(Filterbase):
+
+    FilterSet_Dict = {
+        'gene_type':    {'lookup':'choice','field_name':'gene_type'},
+        'gene_subtype':    {'lookup':'choice','field_name':'gene_subtype'},
+        'amr_class':    {'lookup':'choice','field_name':'amr_class'},
+        'amr_subclass':    {'lookup':'choice','field_name':'amr_subclass'},
+        'source':    {'lookup':'choice','field_name':'source'},
+    }
+
+    gene_type = ChoiceFilter(field_name='gene_type', choices=[], label="Gene Type")
+    gene_subtype = ChoiceFilter(field_name='gene_subtype', choices=[], label="Gene SubType")
+    amr_class = ChoiceFilter(field_name='amr_class', choices=[], label="AMR Class")
+    amr_subclass = ChoiceFilter(field_name='amr_subclass', choices=[], label="AMR SubClass")
+    source = ChoiceFilter(field_name='source', choices=[], label="Source")
+
+    def __init__(self, *args, **kwargs):
+        
+        # Extract Filter Dictionary
+        _filter_dict = {}
+        if 'filterset_dict' in kwargs:
+            print(kwargs['filterset_dict'])
+            for _key, _item in self.FilterSet_Dict.items():
+                if _key in kwargs['filterset_dict']:
+                    _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
+            kwargs.pop('filterset_dict')
+            
+        # Initialise FilterSet and Choices
+        super().__init__(*args, **kwargs)
+        for _key, _item in self.FilterSet_Dict.items():
+            if _item['lookup'] == 'choice':
+                self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
+        
+    class Meta:
+        model=Gene
+        #fields = ['f_GeneType']
+        fields = list(model.HEADER_FIELDS.keys())
+        # exclude = ['gene_type',
+        #            ]
+
+#----------------------------------------
 class Gene_Form(ModelForm):
+#----------------------------------------
     gene_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="gene_type"), required=False)
    
     def __init__(self, *args, **kwargs):    
@@ -188,38 +284,31 @@ class Gene_Form(ModelForm):
         self.group1 = [self[name] for name in Gene.FORM_GROUPS['Group_gene']]
         self.group2 = [self[name] for name in Gene.FORM_GROUPS['Group_protein']]
  
-    
     class Meta:
         model=Gene
         exclude = ['gene_id']
  
-class Gene_Filter(Filterbase):
-   
-    gene_type=ChoiceFilter(choices=[])
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.filters["gene_type"].extra['choices']=[(obj.dict_value, obj) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
-        
-    class Meta:
-        model=Gene
-        fields=list(model.HEADER_FIELDS.keys())
 
 #=================================================================================================
 class AMRGenotype_Filter(Filterbase):
     
     FilterSet_Dict = {
-        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
-        'f_GeneCode':   {'label':"Gene Code",       'field_name':'gene_id__gene_code'},
-        'f_GeneType':   {'label':"Gene Type",       'field_name':'gene_id__gene_type__dict_value'},
-        'f_GeneClass':  {'label':"AMR Class",       'field_name':'gene_id__amr_class'},
-        'f_GeneSClass': {'label':"AMR SubClass",    'field_name':'gene_id__amr_subclass'},
+        #'f_OrgBatchID':   {'lookup':'contains','field_name':'orgbatch_id__orgbatch_id'},
+        'f_OrgName':      {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_GeneCode':     {'lookup':'choice','field_name':'gene_id__gene_code'},
+        'f_GeneType':     {'lookup':'choice','field_name':'gene_id__gene_type__dict_value'},
+        'f_GeneClass':    {'lookup':'choice','field_name':'gene_id__amr_class'},
+        'f_GeneSClass':   {'lookup':'choice','field_name':'gene_id__amr_subclass'},
+        'f_RunID':        {'lookup':'choice','field_name':'seq_id__run_id'},
     }
     
+    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName=ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
     f_GeneCode = ChoiceFilter(field_name='gene_id__gene_code', choices=[],label="Gene Code")
     f_GeneType = ChoiceFilter(field_name='gene_id__gene_type__dict_value', choices=[],label="Gene Type")
     f_GeneClass = ChoiceFilter(field_name='gene_id__amr_class', choices=[],label="AMR Class")
     f_GeneSClass = ChoiceFilter(field_name='gene_id__amr_subclass', choices=[],label="AMR SubClass")
+    f_RunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     
     #gene_type=ChoiceFilter(choices=[])
     def __init__(self, *args, **kwargs):
@@ -227,38 +316,31 @@ class AMRGenotype_Filter(Filterbase):
         # Extract Filter Dictionary
         _filter_dict = {}
         if 'filterset_dict' in kwargs:
+            print(kwargs['filterset_dict'])
             for _key, _item in self.FilterSet_Dict.items():
                 if _key in kwargs['filterset_dict']:
                     _filter_dict[_item['field_name']] = kwargs['filterset_dict'][_key][0]
             kwargs.pop('filterset_dict')
             
         # Initialise FilterSet and Choices
-        super().__init__(*args, **kwargs)        
+        super().__init__(*args, **kwargs)
         for _key, _item in self.FilterSet_Dict.items():
-            self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
-        
-    # def update_choice_filters(self,filterset_dict):
-    #     _filter_dict = {}
-    #     if filterset_dict:
-    #         # Not working properly
-    #         for _key, _item in self.FilterSet_Dict.items():
-    #             if _key in filterset_dict:
-    #                 _filter_dict[_item['field_name']] = filterset_dict[_key][0]
-                    
-    #     for _key, _item in self.FilterSet_Dict.items():
-    #         self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
-   
-        
+            if _item['lookup'] == 'choice':
+                self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'],filter_dict=_filter_dict)
         
     class Meta:
         model=AMR_Genotype
-        fields = ['f_OrgName','f_GeneCode','f_GeneType','f_GeneClass','f_GeneSClass']
+        fields = [
+            'f_OrgBatchID',
+            'f_OrgName','f_GeneCode','f_GeneType','f_GeneClass','f_GeneSClass'
+            ]
         fields += list(model.HEADER_FIELDS.keys())
-        exclude = ['orgbatch_id.orgbatch_id',
+        exclude = [ 'orgbatch_id.orgbatch_id',
                     'orgbatch_id.organism_id.organism_name',
                     'gene_id.gene_code',
                     "gene_id.gene_type",
                     "gene_id.amr_class",
                     "gene_id.amr_subclass",
+                    'seq_id.run_id',
                    ]
         

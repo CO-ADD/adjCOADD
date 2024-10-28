@@ -363,6 +363,12 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
     # Find Instance if exist
 
     validStatus = True
+
+    Seq = Genome_Sequence.get(iDict['seq_id'],None)
+    if Seq is None:
+        valLog.add_log('Error','Sequence does not Exists',iDict['seq_id'],'Use existing Sequence')
+        validStatus = False
+
     djAMRGt = AMR_Genotype.get(iDict['gene_id'],iDict['amr_method'],iDict['seq_id'],None)
     if djAMRGt is None:
         djAMRGt = AMR_Genotype()

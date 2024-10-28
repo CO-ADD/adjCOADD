@@ -1,4 +1,6 @@
 import re
+from datetime import datetime, timedelta
+
 from model_utils import Choices
 from sequences import Sequence
 from django_rdkit import models
@@ -106,17 +108,17 @@ class Organism(AuditModel):
         'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
         'organism_name':'Organism Name',
         'strain_ids':'Strain IDs',
-        'sero_clone': 'Clone',
-        'strain_type':'Strain Type',
-        'strain_panel':'Panel',
-        'strain_notes':'Notes',
-        'res_property':'Phenotype',  
-        'gen_property':'Genotype', 
-        'strain_origin':'Origin',
         'source':"Source",
         'source_code':"Source Code",
+        'strain_notes':'Notes',
+        'strain_type':'Strain Type',
+        'strain_panel':'Panel',
+        'sero_clone': 'Clone',
+        'res_property':'Phenotype',  
+        'gen_property':'Genotype', 
+#        'strain_origin':'Origin',
         'reference': "Reference",
-        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
+#        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
     }
 
     CARDS_FIELDS= {
@@ -507,7 +509,7 @@ class OrgBatch_Stock(AuditModel):
     n_created = models.IntegerField(default=0, verbose_name = "#Created")
     n_left = models.IntegerField(default=0, verbose_name = "#Left")
     stock_date = models.DateField(null=True, blank = True, verbose_name = "Stock Date")
-    stock_note = models.CharField(max_length=10, blank=True, verbose_name = "Stock Note")
+    stock_note = models.CharField(max_length=80, blank=True, verbose_name = "Stock Note")
     # passage_notes = models.CharField(max_length=30, blank=True, verbose_name = "Passage Notes")
     location_freezer = models.CharField(max_length=80, blank=True, verbose_name = "Freezer")
     location_rack = models.CharField(max_length=10, blank=True, verbose_name = "Rack")
@@ -536,6 +538,35 @@ class OrgBatch_Stock(AuditModel):
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.orgbatch_id} {self.stock_type} {self.n_left}"
+
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,ID, OrgBatchID=None,StockDate=None,StockType=None, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            if ID is not None:
+                retInstance = cls.objects.get(pk=ID)
+            else:
+                startdate = StockDate + timedelta(days=-11)
+                enddate = StockDate + timedelta(days=1)
+                retInstance = cls.objects.get(orgbatch_id=OrgBatchID,stock_date__range=[startdate,enddate],stock_type=StockType)
+        except:
+            if verbose:
+                print(f"[OrgBatch Image Not Found] {ID} {OrgBatchID} {StockDate} {StockType} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,ID, OrgBatchID=None,StockDate=None,StockType=None, verbose=0):
+    # Returns if instance exists
+        if ID is not None:
+            return cls.objects.filter(pk=ID).exists()
+
+        else:
+            return cls.objects.filter(orgbatch_id=OrgBatchID,stock_date=StockDate,stock_type=StockType).exists()
+
 
 #    #------------------------------------------------
 #     @classmethod

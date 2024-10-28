@@ -163,7 +163,7 @@ def get_CheckM_Info(AssemblyFolder,OrgBID,RunID, Assemblies = ['spades','shovill
 def get_Kraken_Info(FastAFolder,OrgBID,RunID, inType = 'fasta',outType="S",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     KrakenDir = os.path.join(FastAFolder,"kraken")
-    KrakenF = os.path.join(KrakenDir,f"{OrgBID}_{inType}.report")
+    KrakenF = os.path.join(KrakenDir,f"{OrgBID}_{RunID}_{inType}.report")
     outLst = []
     if os.path.exists(KrakenF):
         with open(KrakenF) as file:
@@ -200,7 +200,7 @@ def get_Kraken_Info(FastAFolder,OrgBID,RunID, inType = 'fasta',outType="S",pctCu
 def get_MLST_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     MlstDir = os.path.join(FastAFolder,"mlst")
-    MlstF = os.path.join(MlstDir,f"{OrgBID}_{inType}_mlst.tsv")
+    MlstF = os.path.join(MlstDir,f"{OrgBID}_{RunID}_{inType}_mlst.tsv")
     outLst = []
     if os.path.exists(MlstF):
         with open(MlstF) as file:
@@ -213,7 +213,7 @@ def get_MLST_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 def get_GTDBTK_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     GTDir = os.path.join(FastAFolder,"gtdbtk")
-    GTF = os.path.join(GTDir,f"{OrgBID}_{inType}_gtdbtk.tsv")
+    GTF = os.path.join(GTDir,f"{OrgBID}_{RunID}_{inType}_gtdbtk.tsv")
     outLst = []
     if os.path.exists(GTF):
         with open(GTF) as file:
@@ -233,7 +233,7 @@ def get_GTDBTK_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 def get_AMRFinder_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     AmrFinderDir = os.path.join(FastAFolder,"amrfinder")
-    AmrFinderF = os.path.join(AmrFinderDir,f"{OrgBID}_{inType}_amrfinder.tsv")
+    AmrFinderF = os.path.join(AmrFinderDir,f"{OrgBID}_{RunID}_{inType}_amrfinder.tsv")
     outLst = []
     if os.path.exists(AmrFinderF):
         with open(AmrFinderF) as file:
@@ -259,7 +259,7 @@ def get_AMRFinder_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 def get_Abricate_Info(FastAFolder,OrgBID,RunID,inType="fasta",DB='card',pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     AbricateFinderDir = os.path.join(FastAFolder,"abricate")
-    AbricateFinderF = os.path.join(AbricateFinderDir,f"{OrgBID}_{inType}_{DB}.tsv")
+    AbricateFinderF = os.path.join(AbricateFinderDir,f"{OrgBID}_{RunID}_{inType}_{DB}.tsv")
 
     AbricateType = {
         'card':{'amr_class':'AMR'}

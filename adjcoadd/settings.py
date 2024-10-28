@@ -36,7 +36,7 @@ DEVELOPMENT=None
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = '1.3.0263 Development'
+    VERSION = '1.3.0265 Development'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
@@ -298,7 +298,12 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # Backup Database
 #--------------------------------------------------------------------
 # Requires django-dbbackup django-crontab and pg_dump/restore
-DBBACKUP_DATABASES = list(DATABASES.keys())
+DBBACKUP_DATABASES = ['default'
+                      'dorganism','dcell','ddrug','dgene',
+                      'dcollab','dscreen',
+                      'dsample','dplate']
+
+#DBBACKUP_DATABASES = list(DATABASES.keys())
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
 

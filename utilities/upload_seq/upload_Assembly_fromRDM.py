@@ -19,7 +19,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Upload_SMIcsv"
+logName = "Upload_Assembly"
 #logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -31,7 +31,6 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
     sys.path.append(djDir)
@@ -40,9 +39,14 @@ def main(prgArgs,djDir):
 
     from apputil.models import ApplicationUser, Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dchem.models import Chem_Structure, Chem_Salt
-    from dsample.models import Library, Library_Compound
-
+    from apputil.utils.data import listFolders
+    from apputil.utils import validation_log
+    
+    from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
+    from dgene.utils.upload_gene import (get_RDM, split_BatchID_RunID, get_subdir,
+                                        upload_Trim, upload_CheckM, upload_FastA, upload_AMR)
+    #from dgene.utils.import_gene import (imp_Sequence_fromDict)
+    #from dgene.utils.parse_wgs import ()
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
@@ -52,54 +56,48 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
+    # Assembly -------------------------------------------------------------
+    nProc = {}
+    nProc['Processed'] = 0
+    nProc['Assembly'] = 0
+    nProc['FastA'] = 0
 
-    # Table -------------------------------------------------------------
-    if prgArgs.table == "Library" and prgArgs.library:
+    if prgArgs.directory:
+        RDM = get_RDM(prgArgs.directory)
+        RDM['base'] = prgArgs.directory
+        AssemblyBase = os.path.join(RDM['base'],RDM['assembly'])
 
-        cpyFields = ['compound_name','compound_desc'
-                    'reg_smiles',
-                    ]
+        vLog = validation_log.Validation_Log('WGS-Assembly')
         
-        appuser = ApplicationUser.get(prgArgs.appuser)
-        djLib = Library.get(prgArgs.library)
-        if djLib:
-            with open(prgArgs.file, mode='r') as csv_file:
-                lines = len(csv_file.readlines())
+        for subDir in listFolders(AssemblyBase):
+            zAssemblyFolder = os.path.join(AssemblyBase,subDir)
+            for BatchRunID in listFolders(zAssemblyFolder):
+                dirAss = os.path.join(zAssemblyFolder,f"{BatchRunID}")
+                if os.path.exists(dirAss):
 
-
-            outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
-            outDict = []    
-            with open(prgArgs.file, mode='r') as infile:
-                reader = csv.DictReader(infile)
-                
-                for row in tqdm(reader,total=lines, desc="Reading Library"):
-                    new_compound = False
-
-                    djCmpd = Library_Compound.get(None,row['compound_code'],prgArgs.library)
-                    if not djCmpd:
-                        djCmpd = Library_Compound()
-                        djCmpd.compound_code = row['compound_code']
-                        djCmpd.library_id = djLib
-                        new_compound = True
-
-                    set_dictFields(djCmpd,row,cpyFields)
+                    OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
+                    if prgArgs.runid:
+                        fProcess = prgArgs.runid == RunID
+                    else:
+                        fProcess = True
                     
-                    validStatus = True
+                    if fProcess:
+                        print(f"[WGS-Assembly] {OrgBatchID} {RunID}")
+                        upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_compound or prgArgs.overwrite:
-                                outNumbers['Upload Compounds'] += 1
-                                djCmpd.save()
-            print(f"[LibCompounds] :{outNumbers}")
+                        
+    print(f"[WGS-Assembly] {nProc} ")
+
+    # if prgArgs.orgbatch and prgArgs.runid:
+    #     dGene.update_WGSCOADD_Assembly_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    # else:   
+    #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from 02_Assembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
+    #     #dGene.update_WGSCOADD_Trim(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+    #     dGene.update_WGSCOADD_Assembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+
+
 
 #==============================================================================
 if __name__ == "__main__":
@@ -111,18 +109,18 @@ if __name__ == "__main__":
 
     # ArgParser -------------------------------------------------------------
     prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
-                                description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("-l",default=None,required=True, dest="library", action='store', help="Library")
+                                description="Uploading WGS Assembly to adjCOADD from RDM")
+    #prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    #prgParser.add_argument("-l",default=None,required=True, dest="library", action='store', help="Library")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
 #    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
-#    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
+    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+#    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
     prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-#    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------

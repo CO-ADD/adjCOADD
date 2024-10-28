@@ -1,6 +1,3 @@
-#
-#
-#
 import os, sys
 import datetime
 import csv
@@ -29,7 +26,6 @@ logging.basicConfig(
 #    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
     handlers=[logging.StreamHandler()],
     level=logLevel)
-#-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -40,8 +36,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import ApplicationUser, Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dchem.models import Chem_Structure, Chem_Salt
-    from dsample.models import Library, Library_Compound
+    from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock, OrgBatch_Image
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -52,54 +47,68 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-
     # Table -------------------------------------------------------------
-    if prgArgs.table == "Library" and prgArgs.library:
+    if prgArgs.table == "Stock":
 
-        cpyFields = ['compound_name','compound_desc'
-                    'reg_smiles',
-                    ]
-        
+
+        ExcelFile = "C:\Data\LMIC\OrgDB_Curation.xlsx"
+        ExcelSheet = "Stock_24Oct2024"
+
+        stock_df = pd.read_excel(ExcelFile,sheet_name = ExcelSheet)
+
+        rmColumns = ['OrganismID','BatchID','ID','X','Passages']
+
         appuser = ApplicationUser.get(prgArgs.appuser)
-        djLib = Library.get(prgArgs.library)
-        if djLib:
-            with open(prgArgs.file, mode='r') as csv_file:
-                lines = len(csv_file.readlines())
+        empty_date = datetime.date(2009, 1, 1)
+
+        for idx,row in tqdm(stock_df.iterrows(),total=len(stock_df)):
+
+            if row['n_left'] > 0:
+
+                #print(row)
+                for rmCol in rmColumns:
+                    if rmCol in row:
+                        del row[rmCol]
+
+                djBiologist = ApplicationUser.get(row['biologist'])
+                djOrgBatch = Organism_Batch.get(row['orgbatch_id'])
+
+                if djOrgBatch is not None:
+                    djStock =  OrgBatch_Stock.get(None,OrgBatchID=djOrgBatch,StockDate=row['stock_date'],StockType=row['stock_type'])
+                    if djStock is None:
+                        djStock = OrgBatch_Stock()
+                        djStock.orgbatch_id = djOrgBatch
+                    row.pop('orgbatch_id')
+ 
+                    djStock.stock_type = Dictionary.get(djStock.Choice_Dictionary["stock_type"],row['stock_type'])
+                    row.pop('stock_type')
+
+                    djStock.biologist = djBiologist
+                    row.pop('biologist')
+
+                    #print(djStock.stock_date)
+                    #print(f" {djOrgBatch} {row['stock_date']} {row['stock_note']}")
+                    if row['stock_date'] is pd.NaT:
+                        row['stock_date'] = empty_date
+
+                    # location_rack, location_column, location_slot => str(int())  
+
+                    # set values in instance
+                    for e in row.to_dict():
+                        setattr(djStock,e,row[e])
 
 
-            outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
-            outDict = []    
-            with open(prgArgs.file, mode='r') as infile:
-                reader = csv.DictReader(infile)
-                
-                for row in tqdm(reader,total=lines, desc="Reading Library"):
-                    new_compound = False
+                    djStock.clean_Fields()
+                    validDict = djStock.validate()
 
-                    djCmpd = Library_Compound.get(None,row['compound_code'],prgArgs.library)
-                    if not djCmpd:
-                        djCmpd = Library_Compound()
-                        djCmpd.compound_code = row['compound_code']
-                        djCmpd.library_id = djLib
-                        new_compound = True
-
-                    set_dictFields(djCmpd,row,cpyFields)
-                    
-                    validStatus = True
-
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
                     if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
-
-                    if validStatus:
+                        logger.info(f" XX {djStock} {validDict} ")
+                    else:
+                        # --- Upload ---------------------------------------------------------
                         if prgArgs.upload:
-                            if new_compound or prgArgs.overwrite:
-                                outNumbers['Upload Compounds'] += 1
-                                djCmpd.save()
-            print(f"[LibCompounds] :{outNumbers}")
+                            djStock.save(user=appuser)
+                else:
+                    print(f" [OrgBatchID] {row['orgbatch_id']} not found {djBiologist}")
 
 #==============================================================================
 if __name__ == "__main__":
@@ -113,7 +122,6 @@ if __name__ == "__main__":
     prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("-l",default=None,required=True, dest="library", action='store', help="Library")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")

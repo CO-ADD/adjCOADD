@@ -197,7 +197,7 @@ class OrgBatch_UpdateForm(forms.ModelForm):
     batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     orgbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
-    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False,)
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
     stock_level = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),required=False,)#SimpleArrayField(forms.IntegerField(), delimiter=';', disabled=True)

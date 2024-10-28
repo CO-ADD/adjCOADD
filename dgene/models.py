@@ -26,16 +26,17 @@ class Genome_Sequence(AuditModel):
         #'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
         'seq_id':"Seq ID", 
         'seq_type':'Type',  
+        'seq_method':'Method',  
         'seq_name':'SeqName',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         'source':'Source',
-        'source_code':'Source Code',
+    #    'source_code':'Source Code',
         'source_link':'Link',
-        'reference':'Reference',
+    #    'reference':'Reference',
         'run_id':'Run ID',
-        'seq_date':'Seq Date'
-    }
+    #     'seq_date':'Seq Date'
+     }
 
     Choice_Dictionary = {
         'seq_type':'Seq_Type',      # WGS, 16S, ..
@@ -134,7 +135,6 @@ class ID_Pub(AuditModel):
     HEADER_FIELDS   = {
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
-        #"organism_id":{'Organism ID': {'organism_id.organism_id':LinkList["organism_id"]}},
         "id_type":"ID Type",
         "id_method":"ID Method",
         "id_organisms":"Organisms",
@@ -207,6 +207,7 @@ class ID_Sequence(AuditModel):
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
+        "seq_id.run_id":'Run ID',
         "seq_file":"Seq File", 
         "kraken_organisms":"Kraken2 Organisms",
         "mlst_scheme": "MLST Scheme",
@@ -291,6 +292,7 @@ class WGS_FastQC(AuditModel):
         "orgbatch_id.organism_id.organism_name":"Organism",
         "seq":"Seq",
         "seq_id":"SeqID",
+        #"seq_id.run_id":'Run ID',
         "base_stat" :"Statistics",
         "base_sequal" :"Per base sequence quality",
         "tile_sequal" :"Per tile sequence quality",
@@ -373,6 +375,7 @@ class WGS_CheckM(AuditModel):
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
+        #"seq_id.run_id":'Run ID',
         "assembly":"Assembly",
         "assembly_qc":"QC",
         "marker_lineage" :"Marker lineage",
@@ -470,6 +473,7 @@ class Gene(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
+        "gene_id":"Gene ID",
         "gene_code":"Gene Code",
         "gene_note":"Gene Note",
         "gene_type":"Gene Type",
@@ -581,7 +585,6 @@ class Gene(AuditModel):
         else:
             super(Gene, self).save(*args, **kwargs) 
 
-
 #=================================================================================================
 class AMR_Genotype(AuditModel):
     """
@@ -592,6 +595,8 @@ class AMR_Genotype(AuditModel):
     HEADER_FIELDS = {
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
+        "seq_id":"SeqID",
+        "seq_id.run_id":'Run ID',
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
         "gene_id.gene_code":"Gene Code",
         "gene_id.gene_type":"Gene Type",
@@ -624,7 +629,7 @@ class AMR_Genotype(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'amr_genotype'
-        ordering=['gene_id','amr_method','seq_id','orgbatch_id',]
+        ordering=['gene_id','amr_method','seq_id','orgbatch_id']
         indexes = [
              models.Index(name="amrgt_am_idx",fields=['amr_method']),
              models.Index(name="amrgt_gid_idx",fields=['gene_id']),

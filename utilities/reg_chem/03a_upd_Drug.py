@@ -79,7 +79,7 @@ def main(prgArgs,djDir):
 
         outNumbers = {'Proc':0,'Updated Drugs':0,
                       'New Compounds':0, 'Updated Compounds': 0,  
-                      'New ChemStructures':0, 'Updated ChemStructures': 0}
+                      'New Drugs':0, 'Updated Drugs': 0}
         
         if prgArgs.file:
             dfDrug = pd.read_excel(prgArgs.file)
@@ -103,23 +103,29 @@ def main(prgArgs,djDir):
                         logger.info(f"New AntiMicro Compound {row['drug_name']}")
 
                         if prgArgs.upload and validStatus:
-                                    #djCmpd.std_process += ";ChemStructure"
-                                    djCmpd.save()
-                                    outNumbers['New Compounds'] += 1
+                            #djCmpd.std_process += ";ChemStructure"
+                            djCmpd.save()
+                            outNumbers['New Compounds'] += 1
                     
-                    djDrug = Drug.get(row['drug_name'],DrugID=None,verbose=1)
-                    
-                    print(djDrug)
+                    djDrug = Drug.get(row['drug_name'],DrugID=None)
+                    new_drug = False
                     if djDrug is None:
                         djDrug = Drug()
                         djDrug.drug_name = row['drug_name']
                         logger.info(f"New Drug [{row['drug_name']}]")
+                        new_drug = True
                     else:
                         logger.info(f"Exists {row['drug_name']}")
 
                     validStatus = set_Fields_fromDict(djDrug,row,['antimicro','drug_target','durg_subtarget','drug_class','durg_subclass','antimicro_class'],
                                                                 {'drug_othernames':'drug_othernames'}, 
                                                                 ['drug_type'],valLog=None)
+                    
+                    if prgArgs.upload and validStatus:
+                         if new_drug or prgArgs.overwrite:
+                              djDrug.save()
+                              outNumbers['New Drugs'] += 1
+                         
 
         # for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
         #     outNumbers['Proc'] += 1

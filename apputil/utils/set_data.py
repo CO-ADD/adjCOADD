@@ -22,7 +22,7 @@ def set_arrayFields(djModel,rowDict, arrDict):
         #print("arrFields",f)
         if isinstance(arrDict[f],str):
             if pd.notnull(rowDict[arrDict[f]]):
-                setattr(djModel,f,strList_to_List(rowDict[arrDict[f]]))
+                setattr(djModel,f,strList_to_List(str(rowDict[arrDict[f]])) )
                 
         elif isinstance(arrDict[f],list):
             _list = []
