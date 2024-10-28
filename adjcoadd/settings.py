@@ -55,7 +55,7 @@ if DEVELOPMENT:
 
 else:
     # Production ----------------------------------------------------------------------
-    VERSION = '1.3.1'
+    VERSION = '1.3.2'
     DEBUG = False
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
