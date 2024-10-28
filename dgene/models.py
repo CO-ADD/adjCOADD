@@ -35,8 +35,8 @@ class Genome_Sequence(AuditModel):
         'source_link':'Link',
     #    'reference':'Reference',
         'run_id':'Run ID',
-        'seq_date':'Seq Date'
-    }
+    #     'seq_date':'Seq Date'
+     }
 
     Choice_Dictionary = {
         'seq_type':'Seq_Type',      # WGS, 16S, ..
@@ -473,6 +473,7 @@ class Gene(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
+        "gene_id":"Gene ID",
         "gene_code":"Gene Code",
         "gene_note":"Gene Note",
         "gene_type":"Gene Type",
@@ -583,7 +584,6 @@ class Gene(AuditModel):
                 super(Gene, self).save(*args, **kwargs)
         else:
             super(Gene, self).save(*args, **kwargs) 
-
 
 #=================================================================================================
 class AMR_Genotype(AuditModel):

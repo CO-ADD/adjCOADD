@@ -12,11 +12,6 @@ from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_Upda
                      
 urlpatterns = [
 
-    # Gene
-    path('gene_list', Gene_ListView.as_view(), name="gene_list"),
-    path('gene/<str:pk>', detailGene, name="gene_detail"),
-    path('createGene/', Gene_CreateView.as_view(), name="gene_create"),
-    #path('updateGene/<str:pk>', GeneUpdateView.as_view(), name="gene_update"),
 
     # Genome_Sequence
     path('sequence_list', GenomeSeq_ListView.as_view(), name="genomeseq_list"),
@@ -33,13 +28,20 @@ urlpatterns = [
     #path('createSequence/', SequenceCreateView.as_view(), name="sequence_create"),
     #path('updateSequence/<str:pk>', SequenceUpdateView.as_view(), name="sequence_update"),
 
-    # AMR_Genotype
-    path('amrgene_list', AMRGenotype_ListView.as_view(), name="amrgene_list"),
-
     # ID_Pub
     path('idpub_list', IDPub_ListView.as_view(), name="id_pub_list"),
     # path('id_pub/<str:pk>', detailGene, name="id_pub_detail"),
     path('createid_pub/', IDPub_CreateView.as_view(), name="id_pub_create"),
     path('updateid_pub/<str:pk>', IDPub_UpdateView.as_view(), name="id_pub_update"),
+
+    # Gene
+    path('gene_list', Gene_ListView.as_view(), name="gene_list"),
+    path('gene/<str:pk>', detailGene, name="gene_detail"),
+    path('createGene/', Gene_CreateView.as_view(), name="gene_create"),
+    #path('updateGene/<str:pk>', GeneUpdateView.as_view(), name="gene_update"),
+
+    # AMR_Genotype
+    path('amrgene_list', AMRGenotype_ListView.as_view(), name="amrgene_list"),
+
 
 ]

@@ -35,6 +35,7 @@ class GenomeSeq_ListView(LoginRequiredMixin, FilteredListView):
     template_name = 'dgene/genomeseq/genomeseq_list.html' 
     filterset_class=GenomeSeq_Filter
     model_fields=model.HEADER_FIELDS
+    ordering = ['seq_id']
 
 ##
 class GenomeSeq_CardView(GenomeSeq_ListView):
@@ -64,22 +65,25 @@ class IDSeq_ListView(LoginRequiredMixin, FilteredListView):
     filterset_class=IDSeq_Filter
     model_fields=model.HEADER_FIELDS
 
+#=================================================================================================
+# ID Public
+#=================================================================================================
 class IDPub_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= ID_Pub
-    template_name = 'dgene/idseq/idpub_list.html' 
+    template_name = 'dgene/idpub/idpub_list.html' 
     filterset_class=IDPub_Filter
     model_fields=model.HEADER_FIELDS
 
 ##
 class IDPub_CreateView(SimplecreateView):
     form_class=IDPub_Form
-    template_name='dgene/idseq/idpub_c.html'
+    template_name='dgene/idpub/idpub_c.html'
 
 ##
 class IDPub_UpdateView(SimpleupdateView):
     form_class=IDPub_Form
-    template_name='dgene/idseq/idpub_u.html'
+    template_name='dgene/idpub/idpub_u.html'
     model=ID_Pub
     
 
@@ -121,7 +125,6 @@ class Gene_ListView(LoginRequiredMixin, FilteredListView):
 class Gene_CardView(Gene_ListView):
     template_name = 'dgene/gene/gene_card.html'
 
-
 class Gene_CreateView(SimplecreateView):
     form_class=Gene_Form
     template_name='dgene/gene/gene_c.html'
@@ -148,7 +151,7 @@ class Gene_UpdateView(SimpleupdateView):
 class AMRGenotype_ListView(LoginRequiredMixin, FilteredListView):
     login_url = '/'
     model= AMR_Genotype
-    template_name = 'dgene/gene/amrgene_list.html' 
+    template_name = 'dgene/amrgenotype/amrgenotype_list.html' 
     filterset_class=AMRGenotype_Filter
     model_fields=model.HEADER_FIELDS
     ordering = ['orgbatch_id']

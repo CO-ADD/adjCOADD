@@ -88,7 +88,6 @@ class ApplicationUser(AbstractUser):
             return(False)
 
     # --------------------------------------------------------------------------
-    
     # get field names in postgres in the order provided by constants.py
     @classmethod
     def get_databasefields(self, fields=None):
@@ -421,7 +420,8 @@ class AuditModel(models.Model):
     
     # get choice from model field queryset
     @classmethod
-    def get_field_choices(cls, field_name = None, filter_dict = None):
+    def get_field_choices(cls, field_name = None, filter_dict = None, **kargs):
+#    def get_field_choices(cls, field_name = None, filter_dict = None):
         #choice_query = cls.objects.order_by().values_list(field_name).distinct()
         if filter_dict:
             choice_query = cls.objects.filter(**filter_dict).distinct().order_by(field_name).values_list(field_name)            
