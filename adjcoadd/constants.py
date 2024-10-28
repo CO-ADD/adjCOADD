@@ -10,6 +10,14 @@ from django.core.validators import RegexValidator
 # Concentrations:  models.DecimalField(max_digits=12, decimal_places=4)
 #
 
+#
+# Use models.DecimalField(max_digits=x, decimal_places=x) for Floats
+#
+# Concentrations:  models.DecimalField(max_digits=12, decimal_places=4)
+#
+
+
+
 # -dOrganism Settings ---------------------------------------------------
 ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGANSIM_SEP = "_"

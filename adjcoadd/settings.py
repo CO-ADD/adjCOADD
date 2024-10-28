@@ -33,7 +33,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEVELOPMENT=None
 #DEVELOPMENT='Work'
 
-
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------

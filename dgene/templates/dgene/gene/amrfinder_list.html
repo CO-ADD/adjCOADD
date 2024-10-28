@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% block title%}COADD{% endblock %}
+{% block content%}
+
+<div class="d-flex flex-row vh-100">
+  {% url 'excel-import' process_name='Genotype' as urlname %}
+  <!--prettier-ignore-->
+  {% include 'utils/leftbar.html' with list_url='gene_list' create_object='createGene' create_objectModal='createGeneModal' %}
+  <!-- Sidebar View -->
+  {% include "utils/sidebar.html" %}
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'utils/main_horizalbar.html' with title='Gene' model_name='Gene' application='dgene'%}
+    <!-- list View Content -->
+    <div class="contain-fluid data-contain">
+      <h5 class="fw-bold text-center text-info view-title">AMR Finder</h5>
+    <div class="fixTableHead">
+      <!--prettier-ignore-->
+      {% include 'utils/datatable_general.html' with modelname='Gene' url_name='gene_detail' %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}

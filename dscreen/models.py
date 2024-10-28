@@ -2,6 +2,10 @@ import re
 
 #from django_rdkit import models
 from django.db import models
+import re
+
+#from django_rdkit import models
+from django.db import models
 from model_utils import Choices
 from sequences import Sequence
 from django.core.validators import RegexValidator
