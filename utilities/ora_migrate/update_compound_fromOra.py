@@ -148,64 +148,67 @@ def main(prgArgs,djDir):
                     else:
                         row['Issue'] = f"Exists"
 
-                    djPrj= Project.get(cvPrj.project_id)
-                    djCmpd.project_id = djPrj
-                    
-                    new_sample = False
-                    djSample = Sample.get(djCmpd.compound_id)
-                    if djSample is None:
-                        djSample = Sample()
-                        djSample.sample_id = cvCmpd.compound_id
-                        djSample.sample_source = 'COADD'
-                        new_sample = True
-                        outNumbers['New Samples'] += 1
+                    # Only process new ones of to overwrite
+                    if new_compound or prgArgs.overwrite:
 
-                    set_dictFields(djCmpd,row,cpyFields)
-                #     set_arrayFields(djPrj,row,arrayFields)
-                    set_Dictionaries(djCmpd,row,dictFields)
+                        djPrj= Project.get(cvPrj.project_id)
+                        djCmpd.project_id = djPrj
+                        
+                        new_sample = False
+                        djSample = Sample.get(djCmpd.compound_id)
+                        if djSample is None:
+                            djSample = Sample()
+                            djSample.sample_id = cvCmpd.compound_id
+                            djSample.sample_source = 'COADD'
+                            new_sample = True
+                            outNumbers['New Samples'] += 1
 
-                    if djCmpd.reg_mw < 2:
-                        djCmpd.reg_mw = 0
-                    if djCmpd.reg_mf == 'CxHxNxOx':
-                        djCmpd.reg_mf = ''    
+                        set_dictFields(djCmpd,row,cpyFields)
+                    #     set_arrayFields(djPrj,row,arrayFields)
+                        set_Dictionaries(djCmpd,row,dictFields)
 
-                    # - Sample --------------------------------------
-                    djSample.sample_code = djCmpd.compound_code
+                        if djCmpd.reg_mw < 2:
+                            djCmpd.reg_mw = 0
+                        if djCmpd.reg_mf == 'CxHxNxOx':
+                            djCmpd.reg_mf = ''    
 
-                    validStatus = True
+                        # - Sample --------------------------------------
+                        djSample.sample_code = djCmpd.compound_code
 
-                    djSample.clean_Fields()
-                    validDict = djSample.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
+                        validStatus = True
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_sample or prgArgs.overwrite:
-                                outNumbers['Upload Samples'] += 1
-                                djSample.save()
+                        djSample.clean_Fields()
+                        validDict = djSample.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+                            outDict.append(row)
 
-                    # - Compound --------------------------------------
+                        if validStatus:
+                            if prgArgs.upload:
+                                if new_sample or prgArgs.overwrite:
+                                    outNumbers['Upload Samples'] += 1
+                                    djSample.save()
 
-                    djCmpd.sample_id = djSample
-                    validStatus = True
+                        # - Compound --------------------------------------
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
+                        djCmpd.sample_id = djSample
+                        validStatus = True
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_compound or prgArgs.overwrite:
-                                outNumbers['Upload Compounds'] += 1
-                                djCmpd.save()
+                        djCmpd.clean_Fields()
+                        validDict = djCmpd.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+                            outDict.append(row)
+
+                        if validStatus:
+                            if prgArgs.upload:
+                                if new_compound or prgArgs.overwrite:
+                                    outNumbers['Upload Compounds'] += 1
+                                    djCmpd.save()
                             
                 else:
                     row['Issue'] = f"ConvCompound not found"
@@ -239,7 +242,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
-    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
+    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
 #    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
