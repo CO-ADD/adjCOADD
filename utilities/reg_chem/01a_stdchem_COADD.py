@@ -75,7 +75,7 @@ def main(prgArgs,djDir):
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
+        outNumbers = {'Proc':0,'To Standard':0,'Std Failed':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
@@ -83,7 +83,7 @@ def main(prgArgs,djDir):
 
             # Check if this Standardisation has been done already 
             #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
-            if djCmpd.reg_smiles or djCmpd.reg_mf:
+            if djCmpd.std_smiles or djCmpd.std_mf:
 
                 _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.reg_smiles,djCmpd.reg_mf)
                 djCmpd.std_structure_type = _MolType
@@ -104,7 +104,7 @@ def main(prgArgs,djDir):
 
                 # Non Metal complex structures
                 elif djCmpd.reg_smiles:
- 
+                    outNumbers['To Standard'] += 1
                     _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
                     if _moldict['valid'] > 0:
@@ -126,6 +126,7 @@ def main(prgArgs,djDir):
                         validStatus = True
                         updated_sample = True
                     else:
+                        outNumbers['Std Failed'] += 1
                         djCmpd.std_status = 'Invalid'
                         djCmpd.std_process = "Std"
 
