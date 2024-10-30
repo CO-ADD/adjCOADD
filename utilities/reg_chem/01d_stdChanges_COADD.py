@@ -1,4 +1,10 @@
 #
+"""
+    Standardize SMILES in COADD_Compound -- for std_status = 'Changed'
+        Input: reg_smiles, reg_mf
+        Output: std_status, std_smiles, std_mf, std_mf, std_...
+         
+"""
 #
 #
 import os, sys
