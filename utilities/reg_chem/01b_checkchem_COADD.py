@@ -90,7 +90,7 @@ def main(prgArgs,djDir):
             
             if djCmpd.std_status == 'Valid':
                 _dmw = djCmpd.reg_mw - djCmpd.std_mw
-                _dmf = djCmpd.reg_mf != djCmpd.std_mf
+                _dmf = djCmpd.reg_mf.replace(' ','') != djCmpd.std_mf.replace(' ','')
                 
                 _has_issue = False
                 _issues = []
@@ -98,15 +98,23 @@ def main(prgArgs,djDir):
                     _has_issue = True
                     if not (djCmpd.std_mw_extra - 1 < _dmw < djCmpd.std_mw_extra + 1):
                         outNumbers['Issues MW'] += 1
-                        _issues.append(f"dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
+                        if djCmpd.reg_mw < 0.5:
+                            _issues.append(f"[I] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}] {djCmpd.reg_mw}")
+                        if abs(_dmw) >= 2:
+                            _issues.append(f"[E] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
+                        else:
+                            _issues.append(f"[W] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
                     else:
                         outNumbers['Issues Salt'] += 1
-                        _issues.append(f"Salt missing in reg_mw: {_dmw:6.1f}")
+                        _issues.append(f"[w] Salt missing in reg_mw: {_dmw:6.1f}")
                 
                 if _dmf:
                     _has_issue = True
                     outNumbers['Issues MF'] += 1
-                    _issues.append(f"dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf}")
+                    if not djCmpd.reg_mf:
+                        _issues.append(f"[I] dMF: CxHxNxOx <-> {djCmpd.std_mf}")
+                    else:
+                        _issues.append(f"[W] dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf}")
 
                 if _has_issue:
                     djCmpd.std_issues = "; ".join(_issues)
