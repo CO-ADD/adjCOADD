@@ -1,4 +1,9 @@
 #
+"""
+    Register ChemStructures for COADD_Compound in Sample - for COADD_Compound.std_status = 'Valid'
+    Input: std_smiles
+    Output: structure_id, structure_type, full_mw ...
+"""
 #
 #
 import os, sys
