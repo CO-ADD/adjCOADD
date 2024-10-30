@@ -1,4 +1,11 @@
 #
+"""
+    Checks COADD_Compounds for discrepancies between reg_ vs std_  for MF and MW
+    Input: reg_mf, reg_mf, std_mf, std_mw, std_mw_extra
+    Output: std_issues
+
+
+"""
 #
 #
 import os, sys

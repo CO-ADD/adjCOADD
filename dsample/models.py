@@ -456,7 +456,7 @@ class COADD_Compound(AuditModel):
                 _sample = Sample()
             _sample.sample_id = self.compound_id 
             _sample.sample_code = self.compound_code 
-            _sample.sample_type = self.compound_type
+            #_sample.sample_type = self.compound_type
             
             # mw,mf, salt and structure_id
             _sample.save()
@@ -472,6 +472,7 @@ class COADD_Compound(AuditModel):
                 super(COADD_Compound, self).save(*args, **kwargs)
         else:
             self.save_sample()
+            #print(f" [Save COADD Compound] {self} {self.std_status}")
             super(COADD_Compound, self).save(*args, **kwargs) 
 
 
