@@ -93,23 +93,23 @@ def main(prgArgs,djDir):
                 _dmf = djCmpd.reg_mf != djCmpd.std_mf
                 
                 _has_issue = False
-                _issues = ""
+                _issues = []
                 if abs(_dmw) > 1:
                     _has_issue = True
                     if not (djCmpd.std_mw_extra - 1 < _dmw < djCmpd.std_mw_extra + 1):
-                        _issues = f"dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}];"
                         outNumbers['Issues MW'] += 1
+                        _issues.append(f"dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
                     else:
                         outNumbers['Issues Salt'] += 1
-                        _issues = f"Salt missing in reg_mw: {_dmw:6.1f};"
+                        _issues.append(f"Salt missing in reg_mw: {_dmw:6.1f}")
                 
                 if _dmf:
-                    outNumbers['Issues MF'] += 1
                     _has_issue = True
-                    _issues += f" dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf};"
+                    outNumbers['Issues MF'] += 1
+                    _issues.append(f"dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf}")
 
                 if _has_issue:
-                    djCmpd.std_issues = _issues
+                    djCmpd.std_issues = "; ".join(_issues)
                     #logger.warning(f"{djCmpd.compound_id} {_issues}")
                     
                     djCmpd.clean_Fields()
