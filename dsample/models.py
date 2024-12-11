@@ -19,6 +19,11 @@ SAMPLE_SOURCES = Choices( ('COADD','COADD Sample'),
                           ('ABASE','ResearchGrp Sample'),
                           ('LIBRARY','Library Sample'),
                         )
+CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
+                          ('ABASE','ResearchGrp CmpBatch'),
+                          ('LIBRARY','Library CmpBatch'),
+                        )
+
 #=================================================================================================
 class Project(AuditModel):
     """
@@ -230,6 +235,10 @@ class Sample(AuditModel):
     ID_SEQUENCE = 'Sample'
     ID_PREFIX = 'S'
     ID_PAD = 9
+
+    # ID_SEQUENCE = 'CmpBatch'
+    # ID_PREFIX = 'CB'
+    # ID_PAD = 9
     
     sample_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Sample ID")
     batch_id  = models.CharField(default= '00',max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
@@ -237,11 +246,13 @@ class Sample(AuditModel):
 
     sample_source = models.CharField(max_length=25, choices=SAMPLE_SOURCES, blank=False, verbose_name = "Sample Source")
     sample_code = models.CharField(max_length=150, blank=True, verbose_name = "Sample Code")
-#    sample_name = models.CharField(max_length=250, blank=True, verbose_name = "Sample Name")
-#    sample_desc = models.CharField(max_length=512, blank=True, verbose_name = "Sample Description")
+    # batch_source = models.CharField(max_length=25, choices=CMPBATCH_SOURCES, blank=False, verbose_name = "Batch Source")
+    # batch_code = models.CharField(max_length=150, blank=True, verbose_name = "Batch Code")
+#    batch_name = models.CharField(max_length=250, blank=True, verbose_name = "Batch Name")
+#    batch_desc = models.CharField(max_length=512, blank=True, verbose_name = "Batch Description")
     
-    # sample_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Sample Type", on_delete=models.DO_NOTHING,
-    #     db_column="sample_type", related_name="%(class)s_sample_type")
+#    batch_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Batch Type", on_delete=models.DO_NOTHING,
+#    db_column="sample_type", related_name="%(class)s_sample_type")
     
     previous_ids = models.CharField(max_length=100, blank=True, verbose_name = "Previous IDs")
     # parent_structure_ids = ArrayField(models.CharField(max_length=15, null=True, blank=True), size=4, verbose_name = "Panel", 
@@ -338,6 +349,8 @@ class COADD_Compound(AuditModel):
 
     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
         db_column="sample_id", related_name="%(class)s_sample_id")
+    # cmpbatch_id = models.ForeignKey(CmpBatch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
@@ -506,6 +519,8 @@ class Library_Compound(AuditModel):
 
     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
         db_column="sample_id", related_name="%(class)s_sample_id")
+    # cmpbatch_id = models.ForeignKey(CmpBatch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
