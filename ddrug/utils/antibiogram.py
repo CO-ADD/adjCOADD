@@ -46,7 +46,9 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
 def piv_Antibiogram_byOrgID(df):
     print(f"Pivot {len(df)} ")
 
-    piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
+    # piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
+    #                             aggfunc= lambda x:  " ".join([str(y) for y in x]))
+    piv_table = df.pivot_table(index=['Drug Class', 'Drug Name'], columns=['BatchID','Source'], values=['MIC'],  
                                 aggfunc= lambda x:  " ".join([str(y) for y in x]))
     #.sort_values(by=['Drug Class'],ascending=False)
     piv_table = piv_table.fillna("-").astype(str)
