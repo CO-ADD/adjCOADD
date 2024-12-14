@@ -142,7 +142,7 @@ def rename_OrgID_xls(XlsFile, XlsSheet=0, lower=False, OutputN=20,**kwargs):
         #rename_OrgID_sngBatches('GN_0952_02','Acinetobacter baumannii',None,{},**kwargs)
         #rename_OrgID_sngBatches('GN_0981_01','Serratia marcescens',None,{},**kwargs)
         #rename_OrgID_sngBatches('GN_1149_02','Escherichia coli',None,{},**kwargs)
-        rename_OrgID_sngBatches('GN_1115_03','Enterococcus faecalis',None,{},**kwargs)
+        #rename_OrgID_sngBatches('GN_1115_03','Enterococcus faecalis',None,{},**kwargs)
 
         # for org in orgLst:
         #     if 'strain_code' not in org:
@@ -268,7 +268,8 @@ def rename_OrgBatchID(OrgBatch, newOrgBatchID=None, newOrg=None, updateDict = No
 
         # Find all Models with FK to OrgBatch
         batch_fk_models = get_Models_byForeignKey('Organism_Batch')
-        for fk in batch_fk_models:                
+        for fk in batch_fk_models:
+            logger.info(f"[ oo- Model {fk}]")                
             qryInst = fk.objects.filter(orgbatch_id=oldOrgBatchID)
             for q in qryInst:
                 logger.info(f"[  +- Change {fk.__name__}] {str(q)} with {OrgBatch}")
