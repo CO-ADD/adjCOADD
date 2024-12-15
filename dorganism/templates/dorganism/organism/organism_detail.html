@@ -97,35 +97,35 @@
       </div>
     </div>
 
-     <!-- Vitek ID -->
+     <!-- Organism Identification -->
      <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
 
       {% include 'utils/lefticons.html' with title="" modal="" %}
       <!-- change id to new model name -->
-      <div class="accordion w-100" id="vitek_id-detail">
+      <div class="accordion w-100" id="organism-identification-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingFour"> <!-- change id to number+1 -->
             <!-- change data-bs-target to collapse<NewmodelName> change aria-controls to collapseFour-->
             <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-              data-bs-target="#collapseVitekID" aria-expanded="true" aria-controls="collapseFour">
+              data-bs-target="#collapseOrgID" aria-expanded="true" aria-controls="collapseFour">
               <h5 class="fs-6 my-0">
-               Vitek ID
+               Identification
               </h5>
               <!-- prettier-ignore -->
               <!-- change cultr_obj_count to newmodel_obj_count based on views.py-->
-              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=vitek_id_obj_count %}
+              {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=org_id_obj_count %}
             </button>
           </h2>
-          <!-- change id to collapseVitekID This is where button data-bs-target targets-->
-          <!-- change data-bs-parent to div accordion id #vitek_id-detail -->
-          <div id="collapseVitekID" class="accordion-collapse collapse show" aria-labelledby="headingFour"
-            data-bs-parent="#vitek_id-detail">
+          <!-- change id to collapseOrgID This is where button data-bs-target targets-->
+          <!-- change data-bs-parent to div accordion id #organism-identification-detail -->
+          <div id="collapseOrgID" class="accordion-collapse collapse show" aria-labelledby="headingFour"
+            data-bs-parent="#organism-identification-detail">
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                <!-- change parameter cultre to vitek_id based on views.py -->
-                {% include 'utils/datatable_sm.html' with table_id='datatable_vitek_id' objects=vitek_id_obj data_fields=vitek_id_fields%}
+                <!-- change parameter cultre to org_id based on views.py -->
+                {% include 'utils/datatable_df.html' with table_id='datatable_org_id' data_df=org_id_obj data_df_fields=org_id_fields %}
               </div>
             </div>
           </div>

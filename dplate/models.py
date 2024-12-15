@@ -359,7 +359,7 @@ class TestPlate(Plate):
             models.Index(name="testplate_qc_idx",fields=['plate_qc']),
             models.Index(name="testplate_pq_idx",fields=['plate_quality']),
             models.Index(name="testplate_has_idx",fields=['has_readout', 'has_sample', 'has_layout', 'has_inhibition', 'has_doseresponse']),
-            models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
+        #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
         
 #=================================================================================================

@@ -31,6 +31,7 @@ from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
                             OrgBatchImg_Form,)
 from ddrug.models import VITEK_AST, MIC_COADD
 from ddrug.utils.antibiogram import get_Antibiogram_byOrgID_Html
+from dorganism.utils.orgid_table import get_org_identification_summary
 #from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 #=================================================================================================
@@ -172,9 +173,21 @@ def Organism_DetailView(request, pk):
     if 'organism_id' in context["cultr_fields"]:
         context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
     
-    context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
-    context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    id_data_df = get_org_identification_summary(object_.organism_id)
+    context["org_id_obj_count"] = len(id_data_df)
+    context["org_id_obj"] = id_data_df.values.tolist()
+    #context["org_id_df"] = id_data_df.to_dict('records')
+    context["org_id_fields"] = list(id_data_df.columns)
+    # if 'Index' in context["org_id_fields"]:
+    #     context["org_id_fields"].remove('Index')    # customize HEADER_FIELDS
+
+    print(context["org_id_obj"])
+    #print(context["org_id_fields"])
+
+    # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
+    # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+
     context["n_entries"] = 0
 
     #context["antibio_entries"] = 0

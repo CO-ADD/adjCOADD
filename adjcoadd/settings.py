@@ -56,7 +56,8 @@ if DEVELOPMENT:
 else:
     # Production ----------------------------------------------------------------------
     VERSION = '1.3.2'
-    DEBUG = False
+    DEBUG = True
+
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
     UPLOAD_DIR = '/opt/django/var/uploads/'
@@ -72,6 +73,7 @@ else:
     MOL_IMG_URL = 'static/images/mol'
     MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
 
+print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
 
 # Static files (CSS, JavaScript, Images)
@@ -119,6 +121,7 @@ INSTALLED_APPS = [
     'dchem.apps.dChemConfig',
     'dsample.apps.dSampleConfig',
     'dplate.apps.dPlateConfig',
+
     #'rest_framework',
     #'rest_framework.authtoken',
     'formtools',
@@ -284,13 +287,13 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-    'dplate': {
-        "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dplate,dsample,apputil,public', 
-                   'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-        'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
-        'HOST': HOST_NAME, 'PORT': '5432',
-    }
+    # 'dplate': {
+    #     "ENGINE": PG_ENGINE,
+    #     'OPTIONS':{'options': '-c search_path=dplate,dsample,apputil,public', 
+    #                'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+    #     'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
+    #     'HOST': HOST_NAME, 'PORT': '5432',
+    # }
 }
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
