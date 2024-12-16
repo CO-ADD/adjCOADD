@@ -2,29 +2,26 @@
   hx-trigger="cancel"
   class="editing"
   hx-get="{%url 'org_detail' object.organism_id.pk %}"
+  x-data="{ state: '' }"   
+  @htmx:send-error="state = 'send error'" 
+  @htmx:response-error="state = 'response error'" 
+  @htmx:after-swap="state = 'success'"
 >
 <td>
-  <button
-    class="border border-0 bg-transparent"
-    type="submit"
-    value="update"
-    hx-put="{%url 'culture_update' pk=object.pk%}"
-    hx-include="closest tr"
-    hx-trigger="click"
-  >
-  <i class="fa-regular fa-floppy-disk text-success m-auto"></i>
-  </button>
+    <button class="btn-active-small" type="submit" value="update"
+      hx-put="{%url 'culture_update' pk=object.pk%}" hx-include="closest tr" hx-trigger="click" onclick="window.location.reload(true);"> 
+      Save
+    </button>
   {{form.errors}}
   {% url 'culture_update' pk=object.pk as my_url %}
   {% with urlname=my_url|add:'?_value=cancel' %}
-  {% include 'utils/miscellaneous/cancel_btn_htmx.html'%}
+    {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
   {% endwith %}
 </td>
+
 {% for field in form.group1%}
   <td>
-    {{field}} 
-    <!--  -->
-    {{field.errors}}
+    {{field}} <br>
   </td>
 {% endfor %}
 </tr>
