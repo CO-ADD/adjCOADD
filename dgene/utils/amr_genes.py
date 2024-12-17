@@ -13,14 +13,14 @@ def get_AMRGenes_byOrgID_Html(pk, with_style = False):
 
     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
 
-    print(f"[get_AMRGenes_byOrgID] {pk}")
+    #print(f"[get_AMRGenes_byOrgID] {pk}")
     df = get_AMRGenes_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
         #df = df[displaycols]
         df_entries=len(df)
 
-        print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} ")
+        #print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_AMRGenes_byOrgID(df)
         print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
 
@@ -41,14 +41,14 @@ def Export_AMRGenes_byOrgID_byOrgID(request, pk):
     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
     xlsx_name = f"AMRGenes_{str(pk)}.xlsx"
 
-    print(f"[get_AMRGenes_byOrgID] {pk}")
+    #print(f"[get_AMRGenes_byOrgID] {pk}")
     df = get_AMRGenes_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
         df = df[displaycols]
         df_entries=len(df)
         
-        print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} ")
+        #print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_AMRGenes_byOrgID(df)
         print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} -> {len(piv_table)} -> {xlsx_name}")
 

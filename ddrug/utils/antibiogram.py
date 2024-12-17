@@ -21,14 +21,14 @@ def get_Antibiogram_byOrgID_Html(pk, with_style = False):
 
     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
 
-    print(f"[get_Antibiogram_byOrgID] {pk}")
+    #print(f"[get_Antibiogram_byOrgID] {pk}")
     df = get_Antibiogram_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
         df = df[displaycols]
         df_entries=len(df)
         
-        print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
+        #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_Antibiogram_byOrgID(df)
         print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
 
@@ -38,26 +38,7 @@ def get_Antibiogram_byOrgID_Html(pk, with_style = False):
 
         if with_style:
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
-
-
-            headers = {
-                'selector': 'th.col_heading',
-                'props': 'background-color: #5E17EB; color: white;'
-            }
-
-            index_style = {
-                'selector': 'th.index_name',
-                'props': 'background-color: #5E17EB; color: white;'
-            }
-
-            print("[Style] 01")
-            html_pivtable = (
-                piv_table.style
-            #    .set_table_styles([headers,index_style])
-                .set_properties(**{'background-color': '#ECE3FF','color': 'black'})
-                .render() 
-            )
-            print("[Style] 02")
+            html_pivtable = piv_table.to_html()
 
         else:
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
@@ -76,14 +57,14 @@ def Export_Antibiogram_byOrgID(request, pk):
     displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
     xlsx_name = f"Antibiogram_{str(pk)}.xlsx"
 
-    print(f"[get_Antibiogram_byOrgID] {pk}")
+    #print(f"[get_Antibiogram_byOrgID] {pk}")
     df = get_Antibiogram_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
         df = df[displaycols]
         df_entries=len(df)
         
-        print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
+        #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_Antibiogram_byOrgID(df)
         print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)} -> {xlsx_name}")
 
