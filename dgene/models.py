@@ -222,9 +222,6 @@ class ID_Sequence(AuditModel):
         'seq_file':'Seq_File', # Trimmed, Contigs
     }
 
-    #TO REMOVE
-    # orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid") 
     seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
@@ -398,9 +395,6 @@ class WGS_CheckM(AuditModel):
     Choice_Dictionary = {
     }
 
-    #TO REMOVE
-    # orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
     assembly = models.CharField(max_length=25, blank=True, verbose_name = "Assembly")
@@ -615,9 +609,6 @@ class AMR_Genotype(AuditModel):
         "closest_name": "Closest Name",
     }
 
-    #TO REMOVE
-    # orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=True, blank=True, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
     gene_id = models.ForeignKey(Gene, null=False, blank=False, verbose_name = "Gene ID", on_delete=models.DO_NOTHING,
