@@ -10,13 +10,8 @@
                 {% if antibio_pivottable %}
                     <i class="fa-solid fa-dharmachakra fs-5"></i>
                 {% else %}
-                    <div class="beforeloadtable " role="status" style="max-height: 15px; max-width: 15px;">
-                        <i class="fa-solid fa-arrows-rotate fs-5"></i>
-                    </div>
-                    <div class="loadtable spinner-grow not-visible" role="status" style="max-height: 15px; max-width: 15px;">
-                        <i class="fa-solid fa-arrows-rotate fs-5 fa-spin"></i>
-                    </div>                
-                {% endif %}
+                    {% include 'utils/miscellaneous/load_indicator.html' %}
+                 {% endif %}
             </button>
         </form>
     </div>
