@@ -162,7 +162,7 @@ class ID_Pub(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'id_pub'
-        #ordering=['organism_id','id_type']
+        ordering=['orgbatch_id','id_type']
         indexes = [
              models.Index(name="idp_org_idx",fields=['id_organisms']),
              models.Index(name="idp_idtype_idx",fields=['id_type']),
@@ -204,8 +204,8 @@ class ID_Sequence(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
-        "orgbatch_id.organism_id.organism_name":"Organism",
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "seq_id.run_id":'Run ID',
         "seq_file":"Seq File", 
@@ -222,8 +222,9 @@ class ID_Sequence(AuditModel):
         'seq_file':'Seq_File', # Trimmed, Contigs
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    #TO REMOVE
+    # orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid") 
     seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
@@ -242,9 +243,9 @@ class ID_Sequence(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'id_seq'
-        ordering=['orgbatch_id','seq_id']
+        ordering=['seq_id__orgbatch_id','seq_id']
         indexes = [
-             models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
+#             models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
              models.Index(name="idseq_seqfile_idx",fields=['seq_file']),
              models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),
@@ -252,12 +253,12 @@ class ID_Sequence(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
+        retStr = f"{self.seq_id.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
+        retStr = f"{self.seq_id.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
         return(retStr)
 
 
@@ -266,7 +267,7 @@ class ID_Sequence(AuditModel):
     def get(cls,OrgBatchID,SeqFile,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID)
+            retInstance = cls.objects.get(seq_id__orgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {OrgBatchID} {SeqFile}")
@@ -277,7 +278,7 @@ class ID_Sequence(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,SeqFile,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID).exists()
+        return cls.objects.filter(seq_id__orgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID).exists()
 
 #=================================================================================================
 # Analysis of Whole Genome Sequence data
@@ -288,8 +289,8 @@ class WGS_FastQC(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
-        "orgbatch_id.organism_id.organism_name":"Organism",
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq":"Seq",
         "seq_id":"SeqID",
         #"seq_id.run_id":'Run ID',
@@ -308,8 +309,6 @@ class WGS_FastQC(AuditModel):
     Choice_Dictionary = {
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq = models.CharField(max_length=5, blank=True, verbose_name = "Seq")
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid") 
@@ -329,21 +328,21 @@ class WGS_FastQC(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'wgs_fastqc'
-        ordering=['orgbatch_id','seq','seq_id']
+        ordering=['seq_id__orgbatch_id','seq','seq_id']
         indexes = [
-             models.Index(name="fastqc_orgbid_idx",fields=['orgbatch_id']),
+        #     models.Index(name="fastqc_orgbid_idx",fields=['orgbatch_id']),
              models.Index(name="fastqc_seq_idx",fields=['seq']),
              models.Index(name="fastqc_seqid_idx",fields=['seq_id']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {str(self.seq_id)}"
+        retStr = f"{self.seq_id__orgbatch_id} {self.seq} {str(self.seq_id)}"
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {self.seq} {str(self.seq_id)}"
+        retStr = f"{self.seq_id__orgbatch_id} {self.seq} {str(self.seq_id)}"
         return(retStr)
 
 
@@ -352,7 +351,7 @@ class WGS_FastQC(AuditModel):
     def get(cls,OrgBatchID,Seq,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID)
+            retInstance = cls.objects.get(seq_id__orgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {OrgBatchID} {Seq} {SeqID}")
@@ -363,7 +362,7 @@ class WGS_FastQC(AuditModel):
     @classmethod
     def exists(cls,OrgBatchID,Seq,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID,Seq,RunID]
-        return cls.objects.filter(rgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID).exists()
+        return cls.objects.filter(seq_id__orgbatch_id=OrgBatchID,seq=Seq,seq_id=SeqID).exists()
     
 #=================================================================================================
 class WGS_CheckM(AuditModel):
@@ -372,8 +371,8 @@ class WGS_CheckM(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
-        "orgbatch_id.organism_id.organism_name":"Organism",
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         #"seq_id.run_id":'Run ID',
         "assembly":"Assembly",
@@ -399,8 +398,9 @@ class WGS_CheckM(AuditModel):
     Choice_Dictionary = {
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    #TO REMOVE
+    # orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
     assembly = models.CharField(max_length=25, blank=True, verbose_name = "Assembly")
@@ -428,10 +428,15 @@ class WGS_CheckM(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'wgs_checkm'
-        ordering=['orgbatch_id','seq_id']
+        ordering=['seq_id__orgbatch_id','seq_id']
         indexes = [
-             models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
+        #     models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
              models.Index(name="checkqc_seqid_idx",fields=['seq_id']),
+             models.Index(name="checkqc_comp_idx",fields=['completeness']),
+             models.Index(name="checkqc_cont_idx",fields=['contamination']),
+             models.Index(name="checkqc_ass_idx",fields=['assembly']),
+             models.Index(name="checkqc_qc_idx",fields=['assembly_qc']),
+             models.Index(name="checkqc_ml_idx",fields=['marker_lineage']),
         ]
 
     #------------------------------------------------
@@ -593,8 +598,8 @@ class AMR_Genotype(AuditModel):
 #=================================================================================================
 
     HEADER_FIELDS = {
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
-        "orgbatch_id.organism_id.organism_name":"Organism",
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "seq_id.run_id":'Run ID',
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
@@ -610,8 +615,9 @@ class AMR_Genotype(AuditModel):
         "closest_name": "Closest Name",
     }
 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    #TO REMOVE
+    # orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
     seq_id = models.ForeignKey(Genome_Sequence, null=True, blank=True, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
     gene_id = models.ForeignKey(Gene, null=False, blank=False, verbose_name = "Gene ID", on_delete=models.DO_NOTHING,
@@ -629,17 +635,17 @@ class AMR_Genotype(AuditModel):
     class Meta:
         app_label = 'dgene'
         db_table = 'amr_genotype'
-        ordering=['gene_id','amr_method','seq_id','orgbatch_id']
+        ordering=['gene_id','amr_method','seq_id']
         indexes = [
              models.Index(name="amrgt_am_idx",fields=['amr_method']),
              models.Index(name="amrgt_gid_idx",fields=['gene_id']),
              models.Index(name="amrgt_sid_idx",fields=['seq_id']),
-             models.Index(name="amrgt_obid_idx",fields=['orgbatch_id']),
+        #     models.Index(name="amrgt_obid_idx",fields=['orgbatch_id']),
         ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.pk} {self.gene_id.gene_code} {self.orgbatch_id} {self.seq_id}"
+        retStr = f"{self.pk} {self.gene_id.gene_code} {self.seq_id.orgbatch_id} {self.seq_id}"
         return(retStr)
 
    #------------------------------------------------
@@ -655,7 +661,7 @@ class AMR_Genotype(AuditModel):
                 retInstance = None
         elif OrgBatchID:
             try:
-                retInstance = cls.objects.get(gene_id=GeneID,orgbatch_id=OrgBatchID,amr_method=Method)
+                retInstance = cls.objects.get(gene_id=GeneID,seq_id__orgbatch_id=OrgBatchID,amr_method=Method)
             except:
                 if verbose:
                     print(f"[AMR_Genotype Not Found] {GeneID} {OrgBatchID} {Method} ")
@@ -671,7 +677,7 @@ class AMR_Genotype(AuditModel):
         if GeneID:
             retValue = cls.objects.filter(gene_id=GeneID,seq_id=SeqID,amr_method=Method).exists()
         elif OrgBatchID:
-            retValue = cls.objects.filter(gene_id=GeneID,orgbatch_id=OrgBatchID,amr_method=Method).exists()
+            retValue = cls.objects.filter(gene_id=GeneID,seq_id__orgbatch_id=OrgBatchID,amr_method=Method).exists()
         else:
             retValue = False
         return(retValue)
