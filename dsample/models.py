@@ -30,6 +30,7 @@ class Project(AuditModel):
         'project_status':'Project_Status',
         'provided_container':'Container_Type',
         'stock_conc_unit':'Unit_Concentration',
+        'pub_status':'Pub_Status',
     }
     
     ID_SEQUENCE = 'Project'
@@ -98,8 +99,11 @@ class Project(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
     pub_name = models.CharField(max_length=150, blank=True, verbose_name = "Public Name")
-    pub_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
-                                 size=20, verbose_name = "Public Status", null=True, blank=True)
+    oldpub_status = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Pub Status")
+    # oldpub_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
+    #                               size=20, verbose_name = "Public Status", null=True, blank=True)
+    pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
+        db_column="pub_status", related_name="%(class)s_pub_statust")
     pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
 
     class Meta:
