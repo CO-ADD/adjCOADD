@@ -14,11 +14,6 @@ from dchem.models import Chem_Structure
 from adjcoadd.constants import *
 
 
-
-SAMPLE_SOURCES = Choices( ('COADD','COADD Sample'),
-                          ('ABASE','ResearchGrp Sample'),
-                          ('LIBRARY','Library Sample'),
-                        )
 CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
                           ('ABASE','ResearchGrp CmpBatch'),
                           ('LIBRARY','Library CmpBatch'),
@@ -223,36 +218,31 @@ class Library(AuditModel):
         return(retValue)
 
 #-------------------------------------------------------------------------------------------------
-class Sample(AuditModel):
+class Compound_Batch(AuditModel):
     """
-    List of Samples and Compound Batches
+    List of Compound Batches 
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
-        'sample_type':'Sample_Type',
+        'batch_type':'CmpBatch_Type',
     }
 
-    ID_SEQUENCE = 'Sample'
-    ID_PREFIX = 'S'
+    ID_SEQUENCE = 'CmpBatch'
+    ID_PREFIX = 'CB'
     ID_PAD = 9
-
-    # ID_SEQUENCE = 'CmpBatch'
-    # ID_PREFIX = 'CB'
-    # ID_PAD = 9
     
-    sample_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Sample ID")
+    cmpbatch_id = models.CharField(max_length=15, primary_key=True, verbose_name = "CmpBatch ID")
+
     batch_id  = models.CharField(default= '00',max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
 
-    sample_source = models.CharField(max_length=25, choices=SAMPLE_SOURCES, blank=False, verbose_name = "Sample Source")
-    sample_code = models.CharField(max_length=150, blank=True, verbose_name = "Sample Code")
-    # batch_source = models.CharField(max_length=25, choices=CMPBATCH_SOURCES, blank=False, verbose_name = "Batch Source")
-    # batch_code = models.CharField(max_length=150, blank=True, verbose_name = "Batch Code")
+    batch_source = models.CharField(max_length=25, choices=CMPBATCH_SOURCES, blank=False, verbose_name = "Batch Source")
+    batch_code = models.CharField(max_length=150, blank=True, verbose_name = "Batch Code")
 #    batch_name = models.CharField(max_length=250, blank=True, verbose_name = "Batch Name")
 #    batch_desc = models.CharField(max_length=512, blank=True, verbose_name = "Batch Description")
     
 #    batch_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Batch Type", on_delete=models.DO_NOTHING,
-#    db_column="sample_type", related_name="%(class)s_sample_type")
+#    db_column="batch_type", related_name="%(class)s_batch_type")
     
     previous_ids = models.CharField(max_length=100, blank=True, verbose_name = "Previous IDs")
     # parent_structure_ids = ArrayField(models.CharField(max_length=15, null=True, blank=True), size=4, verbose_name = "Panel", 
@@ -273,57 +263,54 @@ class Sample(AuditModel):
     
     class Meta:
         app_label = 'dsample'
-        db_table = 'sample'
-        ordering=['sample_id']
+        db_table = 'cmpbatch'
+        ordering=['cmpbatch_id']
         indexes = [
-            models.Index(name="sample_src_idx", fields=['sample_source']),
-            models.Index(name="sample_code_idx", fields=['sample_code']),
-            models.Index(name="sample_stype_idx", fields=['structure_type']),
-            models.Index(name="sample_fmw_idx", fields=['full_mw']),
-            models.Index(name="sample_salt_idx", fields=['salt_code']),
+            models.Index(name="cmpbatch_src_idx", fields=['batch_source']),
+            models.Index(name="cmpbatch_code_idx", fields=['batch_code']),
+            models.Index(name="cmpbatch_stype_idx", fields=['structure_type']),
+            models.Index(name="cmpbatch_fmw_idx", fields=['full_mw']),
+            models.Index(name="cmpbatch_salt_idx", fields=['salt_code']),
         ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.sample_id}  {self.sample_code}"
+        return f"{self.cmpbatch_id}  {self.batch_code}"
 
     #------------------------------------------------
     @classmethod
-    def get(cls,SampleID,verbose=0):
-    # Returns an instance by sample_id
+    def get(cls,CmpBatchID,verbose=0):
+    # Returns an instance by cmpbatch_id
         try:
-            retInstance = cls.objects.get(sample_id=SampleID)
+            retInstance = cls.objects.get(cmpbatch_id=CmpBatchID)
         except:
             retInstance = None
             if verbose:
-                print(f"[Sample Not Found] {SampleID} ")
+                print(f"[CmpBatch Not Found] {CmpBatchID} ")
         return(retInstance)
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,SampleID,verbose=0):
-    # Returns if an instance exists by sample_id
-        retValue = cls.objects.filter(sample_id=SampleID).exists()
+    def exists(cls,CmpBatchID,verbose=0):
+    # Returns if an instance exists by cmpbatch_id
+        retValue = cls.objects.filter(cmpbatch_id=CmpBatchID).exists()
         return(retValue)
 
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.sample_id:
-            self.sample_id = self.next_id()
-            if self.sample_id: 
-                super(Sample, self).save(*args, **kwargs)
+        if not self.cmpbatch_id:
+            self.cmpbatch_id = self.next_id()
+            if self.cmpbatch_id: 
+                super(Compound_Batch, self).save(*args, **kwargs)
         else:
-            super(Sample, self).save(*args, **kwargs) 
-
-
-
+            super(Compound_Batch, self).save(*args, **kwargs) 
 
 
 #-------------------------------------------------------------------------------------------------
 class COADD_Compound(AuditModel):
     """
-    List of CO-ADD Samples as per Registration
+    List of CO-ADD Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
@@ -347,10 +334,9 @@ class COADD_Compound(AuditModel):
     project_id = models.ForeignKey(Project, null=True, blank=True, verbose_name = "Project ID", on_delete=models.DO_NOTHING,
         db_column="project_id", related_name="%(class)s_project_id")
 
-    sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
-        db_column="sample_id", related_name="%(class)s_sample_id")
-    # cmpbatch_id = models.ForeignKey(CmpBatch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
-    #     db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+    #cmpbatch_id = models.CharField(max_length=15, null=True, blank=True, verbose_name = "CmpBatch ID")
+    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
@@ -426,7 +412,7 @@ class COADD_Compound(AuditModel):
             models.Index(name="coadd_code_idx", fields=['compound_code']),
             models.Index(name="coadd_type_idx", fields=['compound_type']),
             models.Index(name="coadd_pid_idx", fields=['project_id']),
-            models.Index(name="coadd_sid_idx", fields=['sample_id']),
+            models.Index(name="coadd_cbid_idx", fields=['cmpbatch_id']),
             models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
             models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
             models.Index(name="coadd_sstat_idx", fields=['std_status']),
@@ -451,7 +437,7 @@ class COADD_Compound(AuditModel):
         except:
             retInstance = None
             if verbose:
-                print(f"[Sample Not Found] {CompoundID} ")
+                print(f"[Compound Not Found] {CompoundID} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -462,18 +448,18 @@ class COADD_Compound(AuditModel):
         return(retValue)
 
     #------------------------------------------------
-    def save_sample(self, *args, **kwargs):
-        if not self.sample_id:
-            _sample = Sample.get(self.compound_id)
-            if not _sample:
-                _sample = Sample()
-            _sample.sample_id = self.compound_id 
-            _sample.sample_code = self.compound_code 
-            #_sample.sample_type = self.compound_type
+    def save_batch(self, *args, **kwargs):
+        if not self.cmpbatch_id:
+            _batch = Compound_Batch.get(self.compound_id)
+            if not _batch:
+                _batch = Compound_Batch()
+            _batch.cmpbatch_id= self.compound_id 
+            _batch.batch_code = self.compound_code 
+            #_batch.batch_type = self.compound_type
             
             # mw,mf, salt and structure_id
-            _sample.save()
-            self.sample_id = _sample
+            _batch.save()
+            self.cmpbatch_id = _batch
                 
 
     #------------------------------------------------
@@ -481,10 +467,10 @@ class COADD_Compound(AuditModel):
         if not self.compound_id:
             self.compound_id = self.next_id()
             if self.compound_id:
-                self.save_sample() 
+                self.save_batch() 
                 super(COADD_Compound, self).save(*args, **kwargs)
         else:
-            self.save_sample()
+            self.save_batch()
             #print(f" [Save COADD Compound] {self} {self.std_status}")
             super(COADD_Compound, self).save(*args, **kwargs) 
 
@@ -493,7 +479,7 @@ class COADD_Compound(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):
     """
-    List of CO-ADD Samples as per Registration
+    List of Library Compounds
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
@@ -517,10 +503,9 @@ class Library_Compound(AuditModel):
     library_id = models.ForeignKey(Library, null=True, blank=True, verbose_name = "Library ID", on_delete=models.DO_NOTHING,
         db_column="library_id", related_name="%(class)s_library_id")
 
-    sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
-        db_column="sample_id", related_name="%(class)s_sample_id")
-    # cmpbatch_id = models.ForeignKey(CmpBatch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
-    #     db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+    # cmpbatch_id = models.CharField(max_length=15, null=True, blank=True, verbose_name = "CmpBatch ID")
+    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
 
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
@@ -537,7 +522,7 @@ class Library_Compound(AuditModel):
             models.Index(name="lcmp_code_idx", fields=['compound_code']),
             models.Index(name="lcmp_type_idx", fields=['compound_type']),
             models.Index(name="lcmp_lid_idx", fields=['library_id']),
-            models.Index(name="lcmp_sid_idx", fields=['sample_id']),
+            models.Index(name="lcmp_cbid_idx", fields=['cmpbatch_id']),
             models.Index(name="lcmp_sstat_idx", fields=['std_status']),
         ]
 
@@ -578,130 +563,12 @@ class Library_Compound(AuditModel):
         if not self.compound_id:
             self.compound_id = self.next_id()
             if self.compound_id:
-                #self.save_sample() 
+                #self.save_batch() 
                 super(Library_Compound, self).save(*args, **kwargs)
         else:
-            #self.save_sample()
+            #self.save_batch()
             super(Library_Compound, self).save(*args, **kwargs) 
 
-
-
-# #=================================================================================================
-# class Sample_Batch(AuditModel):
-#     """
-#     List of Sample Batches 
-#     """
-# #=================================================================================================
-#     ID_SEQUENCE = 'Sample'
-#     ID_PREFIX = 'SB'
-#     ID_PAD = 9
-
-#     samplebatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "SampleBatch ID")
-#     sample_id = models.ForeignKey(Sample, null=True, blank=True, verbose_name = "Sample ID", on_delete=models.DO_NOTHING,
-#         db_column="sample_id", related_name="%(class)s_sample_id")
-#     previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous SampleBatch ID")
-#     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
-#     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
-
-    # structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
-    #     db_column="structure_id", related_name="%(class)s_structureid")
-
-#     salt = models.CharField(max_length=500, blank=True, verbose_name = "Salt")
-#     mf = models.CharField(max_length=500, blank=True, verbose_name = "MF")
-#     mw = models.FloatField(default=0, blank=True, verbose_name ="MW")
-
-#     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
-#     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
-#         db_column="qc_status", related_name="%(class)s_qc")
-#     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
-#     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
-#     stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels") 
-#     chemist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Chemist", on_delete=models.DO_NOTHING, 
-#         db_column="chemist", related_name="%(class)s_chemist")
-
-#     #------------------------------------------------
-#     class Meta:
-#         app_label = 'dsample'
-#         db_table = 'samplebatch'
-#         ordering=['samplebatch_id']
-#         indexes = [
-#             models.Index(name="smpbatch_samplebatch_idx",fields=['sample_id','batch_id']),
-#             models.Index(name="smpbatch_qc_idx",fields=['qc_status']),
-#             models.Index(name="smpbatch_sdate_idx",fields=['stock_date']),
-#             models.Index(name="smpbatch_slevel_idx",fields=['stock_level']),
-#         ]
-
-#     #------------------------------------------------
-#     def __str__(self) -> str:
-#         return f"{self.samplebatch_id}"
-
-#     #------------------------------------------------
-#     @classmethod
-#     # Formats BatchNo:int -> BatchID:str 
-#     def str_BatchID(self,BatchNo:int) -> str:
-#         return(f"{BatchNo:02d}")
-#     #------------------------------------------------
-#     @classmethod
-#     def str_SampleBatchID(self,SampleID:str,BatchID:str) -> str:
-#         return(f"{SampleID}{SAMPLEBATCH_SEP}{BatchID}")
-
-#     #------------------------------------------------
-#     def find_Next_BatchID(self, SampleID:str, BatchID:str=None) -> str:
-#         # Check for given BatchID    
-#         if BatchID:
-#             # Clean up BatchID - remove non alphanumeric character and make uppercase
-#             BatchID = re.sub(r'[^a-zA-Z0-9]', '', BatchID).upper()
-
-#             # Clean up BatchID - reformat numbers
-#             if BatchID.isnumeric():
-#                 BatchID = self.str_BatchID(int(BatchID))
-
-#             next_SampleBatch = self.str_SampleBatchID(SampleID,BatchID)
-#             if not self.exists(next_SampleBatch):
-#                 return(BatchID)
-
-#         # Find new BatchID    
-#         next_BatchNo = 1
-#         next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
-#         while self.exists(next_SampleBatch):
-#             next_BatchNo = next_BatchNo + 1
-#             next_SampleBatch = self.str_SampleBatchID(SampleID,self.str_BatchID(next_BatchNo))
-#         return(self.str_BatchID(next_BatchNo))    
-
-#     #------------------------------------------------
-#     @classmethod
-#     def get(cls,SampleBatchID,verbose=0):
-#     # Returns an instance if found by samplebatch_id
-#         try:
-#             retInstance = cls.objects.get(samplebatch_id=SampleBatchID)
-#         except:
-#             if verbose:
-#                 print(f"[SampleBatch Not Found] {SampleBatchID} ")
-#             retInstance = None
-#         return(retInstance)
-
-#     #------------------------------------------------
-#     @classmethod
-#     def exists(cls,SampleBatchID,verbose=0):
-#     # Returns if instance exists
-#         return cls.objects.filter(samplebatch_id=SampleBatchID).exists()
-
-#     #------------------------------------------------
-#     def save(self, *args, **kwargs):
-#         if not self.samplebatch_id: 
-#             # creates new SampleBatchID
-#             SampleID = self.sample_id.sample_id
-#             BatchID = self.find_Next_BatchID(SampleID,self.batch_id)
-#             if BatchID:
-#                 self.batch_id = BatchID
-#                 self.samplebatch_id = self.str_SampleBatchID(SampleID,BatchID)
-#                 super(Sample_Batch,self).save(*args, **kwargs)
-#         else:
-#             # confirms Batch_ID from SampleBatchID
-#             self.batch_id = str(self.samplebatch_id).replace(str(self.sample_id.sample_id),"").split(SAMPLEBATCH_SEP)[1]
-#             super(Sample_Batch,self).save(*args, **kwargs)
-#             #print(f"[SampleBatch.save]: {self.samplebatch_id}")
-    
 #=================================================================================================
 class Convert_ProjectID(AuditModel):
     """
