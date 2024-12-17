@@ -122,6 +122,7 @@ class IDSeq_Filter(Filterbase):
 
     f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName = ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+
     f_SeqRunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     kraken_organisms = CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 

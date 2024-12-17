@@ -215,6 +215,7 @@ if __name__ == "__main__":
         djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
     #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     elif prgArgs.django == 'Laptop':
+
         djDir = "C:/Code/zdjCode/adjCOADD"
     #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
     else:
