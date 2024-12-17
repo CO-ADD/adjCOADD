@@ -31,6 +31,8 @@ from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
                             OrgBatchImg_Form,)
 from ddrug.models import VITEK_AST, MIC_COADD
 from ddrug.utils.antibiogram import get_Antibiogram_byOrgID_Html
+from dgene.utils.amr_genes import get_AMRGenes_byOrgID_Html
+from dorganism.utils.orgid_table import get_org_identification_summary
 #from dorganism.utils.data_visual import data_frame_style, pivottable_style
     
 #=================================================================================================
@@ -172,9 +174,24 @@ def Organism_DetailView(request, pk):
     if 'organism_id' in context["cultr_fields"]:
         context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
     
-    context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
-    context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    id_data_df = get_org_identification_summary(object_.organism_id)
+    context["org_id_obj_count"] = len(id_data_df)
+    context["org_id_obj"] = id_data_df.values.tolist()
+    context["org_id_fields"] = list(id_data_df.columns)
+
+
+    amrDict = get_AMRGenes_byOrgID_Html(object_.organism_id)
+    context["org_amr_entries"] = amrDict['n_entries']
+    context["org_amr_pivtable"] = amrDict['pivot_table']
+
+    # if 'Index' in context["org_id_fields"]:
+    #     context["org_id_fields"].remove('Index')    # customize HEADER_FIELDS
+
+
+    # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
+    # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+
     context["n_entries"] = 0
 
     #context["antibio_entries"] = 0
@@ -183,10 +200,7 @@ def Organism_DetailView(request, pk):
     # data in pivotted and highlighted Tables
     if request.method == 'POST':
             
-        displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
-        
-        _pivDict = get_Antibiogram_byOrgID_Html(pk, displaycols)
-        #print(_pivDict['n_entries'])
+        _pivDict = get_Antibiogram_byOrgID_Html(pk, with_style=False)
         context["antibio_table"] = _pivDict['html_table']
         context["antibio_entries"] = _pivDict['n_entries']
         context["antibio_pivottable"] = _pivDict['pivot_table']
@@ -447,7 +461,7 @@ def OrgCulture_CreateView(req, organism_id):
 class OrgCulture_UpdateView(HtmxupdateView):
     form_class=OrgCulture_UpdateForm
     template_name="dorganism/orgculture/orgculture_u.html"
-    template_partial="dorganism/orgculture/orgculture_tr.html"
+    #template_partial="dorganism/orgculture/orgculture_tr.html"
     model=Organism_Culture
     transaction_use = 'dorganism'
 

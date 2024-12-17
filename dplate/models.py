@@ -290,8 +290,8 @@ class TestPlate(Plate):
     test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
     #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
 
-    test_strain = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "Strain", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
+    # test_strain = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "Strain", on_delete=models.DO_NOTHING,
+    #     db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
     test_cell = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "Cell", on_delete=models.DO_NOTHING,
         db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
     
@@ -359,7 +359,7 @@ class TestPlate(Plate):
             models.Index(name="testplate_qc_idx",fields=['plate_qc']),
             models.Index(name="testplate_pq_idx",fields=['plate_quality']),
             models.Index(name="testplate_has_idx",fields=['has_readout', 'has_sample', 'has_layout', 'has_inhibition', 'has_doseresponse']),
-            models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
+        #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
         
 #=================================================================================================

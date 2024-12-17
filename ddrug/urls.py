@@ -9,6 +9,7 @@ from ddrug.views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView,
     smartsQuery, 
     ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, API_Drug_Detail, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView, BreakpointListView)
+from ddrug.utils.antibiogram import Export_Antibiogram_byOrgID
 from ddrug.upload_views import Import_VitekView, Import_DrugView
 
 
@@ -39,6 +40,7 @@ urlpatterns = [
     path('mic-pub_card', MIC_PubCardView.as_view(), name="mic_pub_card"),
     path('breakpoint', BreakpointListView.as_view(), name="breakpoint_list"),
      
+    path('export/antibiogram/<str:pk>',Export_Antibiogram_byOrgID, name="export_antiobiogram"),
 
     # path("import/<str:process_name>/", Importhandler_VITEK.as_view(), name="import-VITEK"),
     path("ketcher_test/", ketcher_test, name="ketcher_test"),

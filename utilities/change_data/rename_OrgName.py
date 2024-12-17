@@ -35,15 +35,15 @@ def main():
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    djDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD"
-    uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    if prgArgs.database == 'Work':
-        djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
-        uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.database == 'WorkLinux':
-        djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
-        uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
+    djDir = "C:/Code/zdjCode/adjCOADD"
+    # uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    # orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
+    # if prgArgs.database == 'Work':
+    #     djDir = "I:/DEEPMICROB-Q3967/Code/Python/Django/adjCOADD"
+    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
+    # elif prgArgs.database == 'WorkLinux':
+    #     djDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD"
+    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
 
     xlFiles = {
         'Application': "ApplicationData_v05.xlsx",
@@ -99,6 +99,7 @@ def main():
                                     upload=prgArgs.upload,uploaduser=appuser)
         
         if prgArgs.table == 'Manual':
+            print('Manual')
             # dOrg.rename_OrgID_allBatches('GN_0696','Bacillus velezensis',None,{'strain_code':'Ba.ve BRf 79136'},uploaduser=appuser)
             # dOrg.rename_OrgID_allBatches('GN_0697','Bacillus safensis',None,{'strain_code':'Ba.sa BRf 79197'},uploaduser=appuser)
             # dOrg.rename_OrgID_allBatches('GN_1034','Enterococcus faecium',None,{'strain_code':'En.fam PK 38'},uploaduser=appuser)
@@ -127,7 +128,11 @@ def main():
             # dOrg.rename_OrgID_allBatches('GN_1204','Staphylococcus gallinarum',None,{'strain_code':'St.ga NG 761830041'},uploaduser=appuser)
             # dOrg.rename_OrgID_allBatches('GN_1178','Bacillus sp.',None,{'strain_code':'Ba.sp NG 761831767'},uploaduser=appuser)
             # dOrg.rename_OrgID_allBatches('GN_1192','Staphylococcus haemolyticus',None,{'strain_code':'St.ha NG 761832918'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1129','Enterococcus faecalis',None,{},uploaduser=appuser)
 
+            # dOrg.rename_OrgID_allBatches('GN_1118','Enterococcus faecalis',None,{'strain_code':'En.fas NP U8834'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1121','Leuconostoc mesenteroides',None,{'strain_code':'Le.me NP U435'},uploaduser=appuser)
+            # dOrg.rename_OrgID_allBatches('GN_1039','Enterococcus faecium',None,{'strain_code':'En.fam PK 43'},uploaduser=appuser)
 
             # dOrg.rename_OrgID_sngBatches('GN_0952_02','Acinetobacter baumannii',None,{'strain_code':'Ab IHMA 2007771'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_0981_01','Serratia marcescens',None,{'strain_code':''},uploaduser=appuser)
@@ -138,25 +143,24 @@ def main():
             # dOrg.rename_OrgID_sngBatches('GN_1270_03','Escherichia coli',None,{'strain_code':'Ec ZM 2315NKU'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1274_02','Acinetobacter baumannii',None,{'strain_code':'Ab ZM 217NK-1'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1275_02','Escherichia coli',None,{'strain_code':'Ec ZM 2118N-1'},uploaduser=appuser)
-
             # dOrg.rename_OrgID_sngBatches('GN_1282_02','Enterobacter cloacae',None,{'strain_code':'En.cl ZM 2491BL83A'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1285_02','Acinetobacter junii',None,{'strain_code':'Ac.ju ZM 2917BL93'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1308_01','Achromobacter xylosoxidans',None,{'strain_code':''},uploaduser=appuser)
-
             # dOrg.rename_OrgID_sngBatches('GN_1307_01','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1316_02','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1318_01','Pseudomonas aeruginosa',None,{'strain_code':''},uploaduser=appuser)
-
             # dOrg.rename_OrgID_sngBatches('GN_1323_02','Pseudomonas putida',None,{'strain_code':''},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1334_02','Pseudomonas aeruginosa',None,{'strain_code':''},uploaduser=appuser)
-
             # dOrg.rename_OrgID_sngBatches('GN_1115_03','Enterococcus faecalis',None,{'strain_code':'En.fas NP P5010'},uploaduser=appuser)
-
             # dOrg.rename_OrgID_sngBatches('GN_1207_02','Staphylococcus gallinarum',None,{'strain_code':'St.ga NG 761831834'},uploaduser=appuser)
             # dOrg.rename_OrgID_sngBatches('GN_1270_02','Enterococcus faecalis',None,{'strain_code':'En.fas ZM 2315NKU'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_1062_01','Enterococcus faecalis',None,{'strain_code':'En.fas PK 67'},uploaduser=appuser)
 
-            #dOrg.rename_OrgID_sngBatches('GN_1062_01','Enterococcus faecalis',None,{'strain_code':'En.fas PK 67'},uploaduser=appuser)
-            dOrg.rename_OrgID_allBatches('GN_1129','Enterococcus faecalis',None,{},uploaduser=appuser)
+
+            # dOrg.rename_OrgID_sngBatches('GN_1008_02','Enterobacter cloacae',None,{'strain_code':'En.cl IHMA 2007771'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_0635_02','Klebsiella pneumoniae',None,{'strain_code':'Kp 75925'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_0640_01','Pseudomonas stutzeri',None,{'strain_code':'Ps.st 77578'},uploaduser=appuser)
+            # dOrg.rename_OrgID_sngBatches('GN_0670_02','Bacillus safensis',None,{'strain_code':'Ba.sa 76529'},uploaduser=appuser)
 
 #==============================================================================
 if __name__ == "__main__":

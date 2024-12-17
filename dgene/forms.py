@@ -98,7 +98,7 @@ class IDPub_Form(ModelForm):
         model=ID_Pub
         fields= ['id_type']
  
-## fitler forms
+## filter forms
 class IDPub_Filter(Filterbase):
     #id_organisms=CharFilter(method='filter_arrayfields')
 
@@ -116,12 +116,13 @@ class IDPub_Filter(Filterbase):
 class IDSeq_Filter(Filterbase):
 
     ChoiceFilter_Dict = {
-        'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_OrgName':    {'label':"Organism Name",   'field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
         'f_SeqRunID':   {'label':"Run ID",          'field_name':'seq_id__run_id'},
     }
 
-    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+
     f_SeqRunID = ChoiceFilter(field_name='seq_id__run_id', choices=[],label="Run ID")
     kraken_organisms = CharFilter(field_name='kraken_organisms', lookup_expr='icontains',label="Kraken2 Organisms")
 
@@ -136,8 +137,8 @@ class IDSeq_Filter(Filterbase):
         model = ID_Sequence
         fields = ['f_OrgBatchID','f_OrgName','f_SeqRunID']
         fields += list(model.HEADER_FIELDS.keys())
-        exclude = ['orgbatch_id.orgbatch_id',
-                   'orgbatch_id.organism_id.organism_name',
+        exclude = ['seq_id.orgbatch_id.orgbatch_id',
+                   'seq_id.orgbatch_id.organism_id.organism_name',
                    'seq_id.run_id'
                    ]
 
@@ -173,11 +174,11 @@ class IDSeq_Form(ModelForm):
 #=================================================================================================
 class WGS_FastQC_Filter(Filterbase):
     FilterSet_Dict = {
-        'f_OrgName':    {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_OrgName':    {'lookup':'choice','field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
     }
 
-    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -188,8 +189,8 @@ class WGS_FastQC_Filter(Filterbase):
         model=WGS_FastQC
         fields = ['f_OrgBatchID','f_OrgName']
         fields += list(model.HEADER_FIELDS.keys())
-        exclude = ['orgbatch_id.orgbatch_id',
-                   'orgbatch_id.organism_id.organism_name',
+        exclude = ['seq_id.orgbatch_id.orgbatch_id',
+                   'seq_id.orgbatch_id.organism_id.organism_name',
                    ]
  
 #=================================================================================================
@@ -197,11 +198,11 @@ class WGS_FastQC_Filter(Filterbase):
 #=================================================================================================
 class WGS_CheckM_Filter(Filterbase):
     FilterSet_Dict = {
-        'f_OrgName':    {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_OrgName':    {'lookup':'choice','field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
     }
 
-    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName = ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName = ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
   
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -216,8 +217,8 @@ class WGS_CheckM_Filter(Filterbase):
         model = WGS_CheckM
         fields = ['f_OrgBatchID','f_OrgName']
         fields += list(model.HEADER_FIELDS.keys())
-        exclude = ['orgbatch_id.orgbatch_id',
-                   'orgbatch_id.organism_id.organism_name',
+        exclude = ['seq_id.orgbatch_id.orgbatch_id',
+                   'seq_id.orgbatch_id.organism_id.organism_name',
                    ]
 
 #=================================================================================================
@@ -294,7 +295,7 @@ class AMRGenotype_Filter(Filterbase):
     
     FilterSet_Dict = {
         #'f_OrgBatchID':   {'lookup':'contains','field_name':'orgbatch_id__orgbatch_id'},
-        'f_OrgName':      {'lookup':'choice','field_name':'orgbatch_id__organism_id__organism_name'},
+        'f_OrgName':      {'lookup':'choice','field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
         'f_GeneCode':     {'lookup':'choice','field_name':'gene_id__gene_code'},
         'f_GeneType':     {'lookup':'choice','field_name':'gene_id__gene_type__dict_value'},
         'f_GeneClass':    {'lookup':'choice','field_name':'gene_id__amr_class'},
@@ -302,8 +303,8 @@ class AMRGenotype_Filter(Filterbase):
         'f_RunID':        {'lookup':'choice','field_name':'seq_id__run_id'},
     }
     
-    f_OrgBatchID = CharFilter(field_name='orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
-    f_OrgName=ChoiceFilter(field_name='orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
+    f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
+    f_OrgName=ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
     f_GeneCode = ChoiceFilter(field_name='gene_id__gene_code', choices=[],label="Gene Code")
     f_GeneType = ChoiceFilter(field_name='gene_id__gene_type__dict_value', choices=[],label="Gene Type")
     f_GeneClass = ChoiceFilter(field_name='gene_id__amr_class', choices=[],label="AMR Class")
@@ -335,8 +336,8 @@ class AMRGenotype_Filter(Filterbase):
             'f_OrgName','f_GeneCode','f_GeneType','f_GeneClass','f_GeneSClass'
             ]
         fields += list(model.HEADER_FIELDS.keys())
-        exclude = [ 'orgbatch_id.orgbatch_id',
-                    'orgbatch_id.organism_id.organism_name',
+        exclude = [ 'seq_id.orgbatch_id.orgbatch_id',
+                    'seq_id.orgbatch_id.organism_id.organism_name',
                     'gene_id.gene_code',
                     "gene_id.gene_type",
                     "gene_id.amr_class",

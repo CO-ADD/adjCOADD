@@ -237,6 +237,9 @@ def rename_Work(oldSeqName,newSeqName,MicroOrgDB):
     wDir = os.path.join(RDM['base'],RDM['work'],oldSeq['seq_name'])
     new_wDir = os.path.join(RDM['base'],RDM['work'],newSeq['seq_name'])
 
+    print(f"{wDir}")
+    print(f"{new_wDir}")
+
     if os.path.isdir(wDir):
         print(RDM['work'])
         for wFiles in listFiles(wDir):
@@ -249,6 +252,7 @@ def rename_Work(oldSeqName,newSeqName,MicroOrgDB):
 def main():
 # -----------------------------------------------------------------
     MicroOrgDB = 'I:\MICROORGDB-Q5308'
+    print(MicroOrgDB)
     #rename_SeqName('GN_1318_01_AGRF_R005','GN_1396_01_AGRF_R005',MicroOrgDB)
 
     # rename_SeqName('GN_0696_00_AGRF_R001','GP_0313_00_AGRF_R001',MicroOrgDB)
@@ -308,6 +312,16 @@ def main():
     # rename_Work('GN_1323_02_AGRF_R004','GN_1397_02_AGRF_R004',MicroOrgDB)
     # rename_Work('GN_1334_02_AGRF_R004','GN_1398_02_AGRF_R004',MicroOrgDB)
 
+    # rename_SeqName('GN_1118_01_AGRF_R005','GP_0358_01_AGRF_R005',MicroOrgDB)
+    # rename_SeqName('GN_1121_01_AGRF_R005','GP_0359_01_AGRF_R005',MicroOrgDB)
+    # rename_SeqName('GN_1039_00_AGRF_R003','GP_0360_00_AGRF_R003',MicroOrgDB)
+
+    # rename_SeqName('GN_1008_02_AGRF_R004','GN_1529_02_AGRF_R004',MicroOrgDB)
+    # rename_SeqName('GN_1008_01_AGRF_R003','GN_1529_02_AGRF_R003',MicroOrgDB)
+
+    # rename_SeqName('GN_0635_02_AGRF_R004','GN_1530_02_AGRF_R004',MicroOrgDB)
+    # rename_SeqName('GN_0640_01_AGRF_R002','GN_1531_01_AGRF_R002',MicroOrgDB)
+    # rename_SeqName('GN_0670_02_AGRF_R005','GP_0361_02_AGRF_R005',MicroOrgDB)
 
 #==============================================================================
 if __name__ == "__main__":

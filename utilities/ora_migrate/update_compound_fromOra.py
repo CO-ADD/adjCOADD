@@ -6,20 +6,21 @@ import datetime
 import csv
 import pandas as pd
 import numpy as np
-import argparse
+import configargparse
+from pathlib import Path
 
 from tqdm import tqdm
 # from zUtils import zData
 
 import django
 #from djCOADD import djOrgDB
-# from oraCastDB import oraCastDB
+from oraCastDB import oraCastDB
 #-----------------------------------------------------------------------------
 
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Upload_ConvertID"
+logName = "Upload_CompoundID"
 #logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -94,9 +95,8 @@ def main(prgArgs,djDir):
 
     if prgArgs.table == "CompoundID" :
 
-        cmpDF = get_oraCompound(int(prgArgs.test))
         print("--> oraCompound ---------------------------------------------------------")
-
+        cmpDF = get_oraCompound(int(prgArgs.test))
         print(cmpDF.columns)
         print("-------------------------------------------------------------------------")
         OutFile = f"UpdateCompound_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
@@ -125,6 +125,7 @@ def main(prgArgs,djDir):
         outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
         outDict = []    
         for idx,row in tqdm(cmpDF.iterrows(), total=cmpDF.shape[0]):
+            #print(row)
             new_compound = False
             outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
@@ -147,64 +148,67 @@ def main(prgArgs,djDir):
                     else:
                         row['Issue'] = f"Exists"
 
-                    djPrj= Project.get(cvPrj.project_id)
-                    djCmpd.project_id = djPrj
-                    
-                    new_sample = False
-                    djSample = Sample.get(djCmpd.compound_id)
-                    if djSample is None:
-                        djSample = Sample()
-                        djSample.sample_id = cvCmpd.compound_id
-                        djSample.sample_source = 'COADD'
-                        new_sample = True
-                        outNumbers['New Samples'] += 1
+                    # Only process new ones of to overwrite
+                    if new_compound or prgArgs.overwrite:
 
-                    set_dictFields(djCmpd,row,cpyFields)
-                #     set_arrayFields(djPrj,row,arrayFields)
-                    set_Dictionaries(djCmpd,row,dictFields)
+                        djPrj= Project.get(cvPrj.project_id)
+                        djCmpd.project_id = djPrj
+                        
+                        new_sample = False
+                        djSample = Sample.get(djCmpd.compound_id)
+                        if djSample is None:
+                            djSample = Sample()
+                            djSample.sample_id = cvCmpd.compound_id
+                            djSample.sample_source = 'COADD'
+                            new_sample = True
+                            outNumbers['New Samples'] += 1
 
-                    if djCmpd.reg_mw < 2:
-                        djCmpd.reg_mw = 0
-                    if djCmpd.reg_mf == 'CxHxNxOx':
-                        djCmpd.reg_mw = ''    
+                        set_dictFields(djCmpd,row,cpyFields)
+                    #     set_arrayFields(djPrj,row,arrayFields)
+                        set_Dictionaries(djCmpd,row,dictFields)
 
-                    # - Sample --------------------------------------
-                    djSample.sample_code = djCmpd.compound_code
+                        if djCmpd.reg_mw < 2:
+                            djCmpd.reg_mw = 0
+                        if djCmpd.reg_mf == 'CxHxNxOx':
+                            djCmpd.reg_mf = ''    
 
-                    validStatus = True
+                        # - Sample --------------------------------------
+                        djSample.sample_code = djCmpd.compound_code
 
-                    djSample.clean_Fields()
-                    validDict = djSample.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
+                        validStatus = True
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_sample or prgArgs.overwrite:
-                                outNumbers['Upload Samples'] += 1
-                                djSample.save()
+                        djSample.clean_Fields()
+                        validDict = djSample.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+                            outDict.append(row)
 
-                    # - Compound --------------------------------------
+                        if validStatus:
+                            if prgArgs.upload:
+                                if new_sample or prgArgs.overwrite:
+                                    outNumbers['Upload Samples'] += 1
+                                    djSample.save()
 
-                    djCmpd.sample_id = djSample
-                    validStatus = True
+                        # - Compound --------------------------------------
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
-                    if validDict:
-                        validStatus = False
-                        for k in validDict:
-                            print('Warning',k,validDict[k],'-')
-                        outDict.append(row)
+                        djCmpd.sample_id = djSample
+                        validStatus = True
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if new_compound or prgArgs.overwrite:
-                                outNumbers['Upload Compounds'] += 1
-                                djCmpd.save()
+                        djCmpd.clean_Fields()
+                        validDict = djCmpd.validate()
+                        if validDict:
+                            validStatus = False
+                            for k in validDict:
+                                print('Warning',k,validDict[k],'-')
+                            outDict.append(row)
+
+                        if validStatus:
+                            if prgArgs.upload:
+                                if new_compound or prgArgs.overwrite:
+                                    outNumbers['Upload Compounds'] += 1
+                                    djCmpd.save()
                             
                 else:
                     row['Issue'] = f"ConvCompound not found"
@@ -232,29 +236,33 @@ if __name__ == "__main__":
 
 
     # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+    prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [CompoundID]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
-    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
+    prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
+
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
+#    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+
+    prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
+
     prgArgs = prgParser.parse_args()
 
     # Django -------------------------------------------------------------
-    if prgArgs.config == 'Meran':
+    if prgArgs.django == 'Meran':
         djDir = "D:/Code/zdjCode/adjCOADD"
     #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.config == 'Work':
+    elif prgArgs.django == 'Work':
         djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
     #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.config == 'Laptop':
+    elif prgArgs.django == 'Laptop':
         djDir = "C:/Code/zdjCode/adjCOADD"
     #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
     else:

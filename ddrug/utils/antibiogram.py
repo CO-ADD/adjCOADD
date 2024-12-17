@@ -3,9 +3,10 @@ import pandas as pd
 import numpy as np
 
 from pathlib import Path
-from django_rdkit.models import *
-from django_rdkit.config import config
-from django.conf import settings
+# from django_rdkit.models import *
+# from django_rdkit.config import config
+# from django.conf import settings
+from django.http import HttpResponse
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub
@@ -16,26 +17,35 @@ from ddrug.utils.bio_data import agg_DR
 from apputil.utils.data_style import highlight_RSI
 
 # -----------------------------------------------------------------------------------------
-def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
+def get_Antibiogram_byOrgID_Html(pk, with_style = False):
+
+    displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+
+    #print(f"[get_Antibiogram_byOrgID] {pk}")
     df = get_Antibiogram_byOrgID(str(pk))
     if df is not None:
         df.reset_index(inplace=True)
         df = df[displaycols]
         df_entries=len(df)
         
+        #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_Antibiogram_byOrgID(df)
+        print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
 
         # Styling pivottable
         #print(f"HMTL {len(piv_table)} ")
 
-        if with_style:       
+
+        if with_style:
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
-            
-            html_pivtable = piv_table.style.applymap(highlight_RSI)
-            html_pivtable = html_pivtable.set_table_attributes('class="table table-bordered fixTableHead"').to_html()
-        else:
-            html_table    = df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
             html_pivtable = piv_table.to_html()
+
+        else:
+            html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
+            html_pivtable = piv_table.to_html()
+
+        
+            
 
         table={'n_entries':df_entries, 'html_table': html_table, 'pivot_table': html_pivtable} 
     else:
@@ -43,10 +53,34 @@ def get_Antibiogram_byOrgID_Html(pk, displaycols, with_style = False):
     return table 
 
 # -----------------------------------------------------------------------------------------
-def piv_Antibiogram_byOrgID(df):
-    print(f"Pivot {len(df)} ")
+def Export_Antibiogram_byOrgID(request, pk):
+    displaycols = ['Drug Class', 'Drug Name', 'MIC', 'BP Profile', 'BatchID', 'Source', 'BP Source']
+    xlsx_name = f"Antibiogram_{str(pk)}.xlsx"
 
-    piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
+    #print(f"[get_Antibiogram_byOrgID] {pk}")
+    df = get_Antibiogram_byOrgID(str(pk))
+    if df is not None:
+        df.reset_index(inplace=True)
+        df = df[displaycols]
+        df_entries=len(df)
+        
+        #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
+        piv_table = piv_Antibiogram_byOrgID(df)
+        print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)} -> {xlsx_name}")
+
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename={xlsx_name}'
+
+        with pd.ExcelWriter(response) as writer:
+            df.to_excel(writer, sheet_name='Data')
+            piv_table.to_excel(writer, sheet_name='Pivot')
+
+    return response
+# -----------------------------------------------------------------------------------------
+def piv_Antibiogram_byOrgID(df):
+    # piv_table = df.pivot_table(columns='BatchID',index=['Drug Class', 'Drug Name', ], values=['BP Profile', 'MIC'],  
+    #                             aggfunc= lambda x:  " ".join([str(y) for y in x]))
+    piv_table = df.pivot_table(index=['Drug Class', 'Drug Name'], columns=['BatchID','Source'], values=['BP Profile','MIC'],  
                                 aggfunc= lambda x:  " ".join([str(y) for y in x]))
     #.sort_values(by=['Drug Class'],ascending=False)
     piv_table = piv_table.fillna("-").astype(str)
@@ -139,31 +173,3 @@ def get_Antibiogram_byOrgID(OrgID):
     else:
         print(" No MIC data found")
         return(None)
-
-
-# -----------------------------------------------------------------------------------------
-def get_Identification_byOrgID(OrgID):
-    """
-    get Identification values for Organism ID and prepare aggregate table as Dataframe 
-    """
-# -----------------------------------------------------------------------------------------
-    orgMIC = []
-    showCol = ['BatchID','Source','Organism Name','Method','Date']
-    grbyCol = ['BatchID','Source']
-
-    OrgObj = Organism.objects.get(organism_id=OrgID)
-
-    #vMIC = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id=OrgObj)
-
-# -----------------------------------------------------------------------------------------
-def get_Genes_byOrgID(OrgID):
-    """
-    get MIC values for Organism ID and prepare aggregate table as Dataframe 
-    """
-# -----------------------------------------------------------------------------------------
-    orgMIC = []
-    showCol = ['Gene Name','Gene Class','BatchID','Source','MIC','BP Profile','BP Source']
-    grbyCol = ['Drug Name','Drug Class','BatchID','Source']
-
-    OrgObj = Organism.objects.get(organism_id=OrgID)
-

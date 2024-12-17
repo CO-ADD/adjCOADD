@@ -1,0 +1,24 @@
+<div class="accordion bg-transparent w-100 m-auto" id="accordion_orgbatchid">
+    <div class="accordion-item">
+    </div>
+    <h2 class="accordion-header d-flex align-items-baseline" id="heading_orgbatchid">
+        <button class="accordion-button collapsed" style="max-height: 20px" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse_orgbatchid" aria-expanded="true" aria-controls="collapse_image">
+            <h5 class="fs-6 my-0">
+                Identification {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=org_id_obj_count title='Identifications Data' %}
+            </h5>
+        </button>
+    </h2>
+
+    <div id="collapse_orgbatchid" class="accordion-collapse collapse bg-transparent"
+        aria-labelledby="heading_image" data-bs-parent="#accordion_orgbatchid">
+
+        <div class="accordion-body ">
+            <div class="table-responsive">
+                {% include 'utils/datatable_list.html' with table_id='datatable_org_id' data_df=org_id_obj data_df_fields=org_id_fields %}    
+            </div>
+        </div>
+        
+    </div>
+
+</div>

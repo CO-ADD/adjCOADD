@@ -239,7 +239,7 @@ class OrgBatchStock_CreateForm(forms.ModelForm):
 
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     n_created=forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
-    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0))#widget=forms.HiddenInput()
+    orgbatch_id=forms.ModelChoiceField(queryset=Organism_Batch.objects.filter(astatus__gte=0)) #widget=forms.HiddenInput()
     stock_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'readonly':False}),queryset=Dictionary.objects.all(),)
     # passage_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     stock_note=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -299,8 +299,8 @@ class OrgCulture_Form(forms.ModelForm):
 # -----------------------------------------------------------------------------------    
 class OrgCulture_UpdateForm(forms.ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
-    culture_type= forms.ModelChoiceField(widget=forms.Select(attrs={'class':'', 'width':'fit-content','disabled': 'disabled'}), required=False,queryset=Dictionary.objects.all(),)
-    culture_source= forms.ModelChoiceField(widget=forms.Select(attrs={'class':'',  'width':'fit-content','disabled': 'disabled'}), required=False,queryset=Dictionary.objects.all(),)
+    culture_type = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
+    culture_source = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -311,11 +311,11 @@ class OrgCulture_UpdateForm(forms.ModelForm):
     def create_field_groups(self):
         self.group1 = [self[name] for name in Organism_Culture.FORM_GROUPS['Group1']]
 
-        
     class Meta:
         model =Organism_Culture
         fields=list(model.HEADER_FIELDS.keys()) 
-        exclude=['culture_type', 'culture_source',]
+        #exclude=['culture_type', 'culture_source',]
+        exclude=[]
 
 #=================================================================================================
 # OrganismBatch Image

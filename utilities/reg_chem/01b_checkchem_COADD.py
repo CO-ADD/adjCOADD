@@ -1,4 +1,11 @@
 #
+"""
+    Checks COADD_Compounds for discrepancies between reg_ vs std_  for MF and MW
+    Input: reg_mf, reg_mf, std_mf, std_mw, std_mw_extra
+    Output: std_issues
+
+
+"""
 #
 #
 import os, sys
@@ -75,7 +82,7 @@ def main(prgArgs,djDir):
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"chekChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
+        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Has Issues':0,'Issues MW':0, 'Issues MF':0, 'Issues Salt':0,'Already Done': 0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Checking Compounds"):
             outNumbers['Proc'] += 1
@@ -83,23 +90,34 @@ def main(prgArgs,djDir):
             
             if djCmpd.std_status == 'Valid':
                 _dmw = djCmpd.reg_mw - djCmpd.std_mw
-                _dmf = djCmpd.reg_mf != djCmpd.std_mf
+                _dmf = djCmpd.reg_mf.replace(' ','') != djCmpd.std_mf.replace(' ','')
                 
                 _has_issue = False
-                _issues = ""
+                _issues = []
                 if abs(_dmw) > 1:
                     _has_issue = True
                     if not (djCmpd.std_mw_extra - 1 < _dmw < djCmpd.std_mw_extra + 1):
-                       _issues = f"dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}];"
+                        outNumbers['Issues MW'] += 1
+                        if djCmpd.reg_mw < 0.5:
+                            _issues.append(f"[I] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}] {djCmpd.reg_mw}")
+                        if abs(_dmw) >= 2:
+                            _issues.append(f"[E] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
+                        else:
+                            _issues.append(f"[W] dMW: {_dmw:6.1f} [{djCmpd.std_mw_extra:6.1f}]")
                     else:
-                        _issues = f"Salt missing in reg_mw: {_dmw:6.1f};"
+                        outNumbers['Issues Salt'] += 1
+                        _issues.append(f"[w] Salt missing in reg_mw: {_dmw:6.1f}")
                 
                 if _dmf:
                     _has_issue = True
-                    _issues += f" dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf};"
+                    outNumbers['Issues MF'] += 1
+                    if not djCmpd.reg_mf:
+                        _issues.append(f"[I] dMF: CxHxNxOx <-> {djCmpd.std_mf}")
+                    else:
+                        _issues.append(f"[W] dMF: {djCmpd.reg_mf} <-> {djCmpd.std_mf}")
 
                 if _has_issue:
-                    djCmpd.std_issues = _issues
+                    djCmpd.std_issues = "; ".join(_issues)
                     #logger.warning(f"{djCmpd.compound_id} {_issues}")
                     
                     djCmpd.clean_Fields()

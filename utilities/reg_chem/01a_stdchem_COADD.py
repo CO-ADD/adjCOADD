@@ -1,5 +1,10 @@
 #
-#
+"""
+    Standardize SMILES in COADD_Compound -- for std_status is not 'Valid'
+        Input: reg_smiles, reg_mf
+        Output: std_status, std_smiles, std_mf, std_mf, std_...
+
+"""
 #
 import os, sys
 import datetime
@@ -75,21 +80,22 @@ def main(prgArgs,djDir):
         logger.info("-------------------------------------------------------------------------")
         OutFile = f"regChem_COADD_{logTime:%Y%m%d_%H%M%S}.xlsx"
 
-        outNumbers = {'Proc':0,'Updated Compounds':0, 'Metal Compounds':0, 'Already Done': 0}
+        outNumbers = {'Proc':0,'To Standard':0,'Std Failed':0,'Updated Compounds':0, 'Metal Compounds':0, 'Mixture':0, 'Already Done': 0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
             updated_sample = False
 
             # Check if this Standardisation has been done already 
-            #if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
-            if djCmpd.reg_smiles or djCmpd.reg_mf:
+            if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or prgArgs.overwrite:
+                _IsMet = 0
+                if djCmpd.reg_smiles or djCmpd.reg_mf:
 
-                _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.reg_smiles,djCmpd.reg_mf)
-                djCmpd.std_structure_type = _MolType
-                djCmpd.std_metal = _Metal
-                updated_sample = True
-                validStatus = True
+                    _MolType,_Metal,_IsMet = get_Structure_Type_Smiles(djCmpd.reg_smiles,djCmpd.reg_mf)
+                    djCmpd.std_structure_type = _MolType
+                    djCmpd.std_metal = _Metal
+                    updated_sample = True
+                    validStatus = True
 
             #if not djCmpd.std_status or djCmpd.std_status != 'Valid' or prgArgs.overwrite:
 
@@ -104,13 +110,14 @@ def main(prgArgs,djDir):
 
                 # Non Metal complex structures
                 elif djCmpd.reg_smiles:
- 
+                    outNumbers['To Standard'] += 1
                     _moldict, _saltdict, _iondict, _solvdict = MolStd.run_single(djCmpd.reg_smiles)
 
                     if _moldict['valid'] > 0:
                         djCmpd.std_status = 'Valid'
                         if _moldict['nfrag'] > 1:
                             djCmpd.std_status = 'Mixture'
+                            outNumbers['Mixture'] += 1
 
                         djCmpd.std_process = "Std"
 
@@ -126,6 +133,7 @@ def main(prgArgs,djDir):
                         validStatus = True
                         updated_sample = True
                     else:
+                        outNumbers['Std Failed'] += 1
                         djCmpd.std_status = 'Invalid'
                         djCmpd.std_process = "Std"
 
@@ -137,10 +145,13 @@ def main(prgArgs,djDir):
 
                 djCmpd.clean_Fields()
                 validDict = djCmpd.validate()
+
                 if validDict:
                     validStatus = False
                     for k in validDict:
                         logger.warning(f"{k}: {validDict[k]}")
+
+                #print(f" [Cmpd] {djCmpd} {djCmpd.std_status} {validStatus}")
 
                 if validStatus and updated_sample and prgArgs.upload:
                     outNumbers['Updated Compounds'] += 1

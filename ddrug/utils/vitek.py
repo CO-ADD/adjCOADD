@@ -191,7 +191,7 @@ def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
 
         if 'ID' in k :
             if pv['ID']:
-                logger.info(f"[Vitek-ID ]  {pv['OrgBatchID']} - {pv['ID_Card']:10s} ({pv['ID_Card_Barcode']}) - {pv['Organism']} ")
+                logger.info(f"[Vitek-ID ] {pv['OrgBatchID']} [{pv['ID_Card']:10s}] ({pv['ID_Card_Barcode']}) -> {pv['Organism']} ")
                 xCard = dict_Vitek_Card(pv,'ID')
                 for x in xCard:
                     lstCards.append(x)
@@ -201,14 +201,14 @@ def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
 
         if 'AST' in k :
             if pv['AST']:
-                logger.info(f"[Vitek-AST]  {pv['OrgBatchID']} - {pv['AST_Card']:10s} ({pv['AST_Card_Barcode']}) - {pv['Organism']} ")
+                logger.info(f"[Vitek-AST] {pv['OrgBatchID']} [{pv['AST_Card']:10s}] ({pv['AST_Card_Barcode']}) -> {pv['Organism']} ")
                 xCard = dict_Vitek_Card(pv,'AST')
                 for x in xCard:
                     lstCards.append(x)
                 xAST = dict_Vitek_AST(pv)
                 for x in xAST:
                     lstAST.append(x)
-    logger.info(f"[Vitek    ] Cards: {len(lstCards):4d} - ID: {len(lstID):4d} - AST: {len(lstAST):4d} ")
+    logger.info(f"[Vitek    ] {len(lstCards):4d} Cards - {len(lstID):4d} ID - {len(lstAST):4d} AST  ")
     return(lstCards,lstID,lstAST)
 
 #-----------------------------------------------------------------------------
@@ -347,8 +347,9 @@ def parse_VitekPDF(DirName,PdfName,OrgBatchID=None):
                             lowLst =[]
                             for r in row[0].split('\n'):
                                 lowLst.append(" ".join(r.split(',')[0].split(' ')[:2]))
-                            # if len(lowLst)>1:
-                            #     df['ID']['Organism'] = ", ".join(lowLst[1:])
+                            if len(lowLst)>1 and  'Low Discrimination' in df['Organism']:
+                                df['ID']['Organism'] = ", ".join(lowLst[1:])
+                                df['Organism'] = df['ID']['Organism']
                             #print(f" {row} {lowLst} {_biop}")
 
 
