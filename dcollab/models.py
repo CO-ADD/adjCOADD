@@ -23,7 +23,7 @@ class Organisation(AuditModel):
     }
 
     ID_SEQUENCE = 'Organisation'
-    ID_PREFIC = 'ORG'
+    ID_PREFIC = 'CORG'
     ID_PAD = 5
 
     org_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Organisation ID")
