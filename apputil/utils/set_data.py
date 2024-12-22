@@ -53,7 +53,7 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
         _ret_list  = []
         if isinstance(arrDict[f],str):
             if pd.notnull(rowDict[arrDict[f]]):
-                if d in djModel.Choice_Dictionary:
+                if f in djModel.Choice_Dictionary:
                     _dict_list = strList_to_List(rowDict[arrDict[f]])
                 
         elif isinstance(arrDict[f],list):

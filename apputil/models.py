@@ -13,8 +13,6 @@ from django.utils import timezone
 import logging
 
 from adjcoadd.constants import *
-# Create your models here.
-
 
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
@@ -31,15 +29,15 @@ class ApplicationUser(AbstractUser):
         'is_active':'Active', 
         }
 
-    username = models.CharField(unique=True, max_length=55, verbose_name='uq user')       # uqjzuegg 
-    name = models.CharField(primary_key=True,  max_length=50, verbose_name='user name')          # J.Zuegg
-    initials = models.CharField(max_length=5, null=True, blank=True)           # JZG
-    organisation = models.CharField(max_length=250, null=True, blank=True)     # University of Queensland
-    department = models.CharField(max_length=250, null=True, blank=True)       # Institute for Molecular Bioscience
-    group = models.CharField(max_length=50, null=True, blank=True)             # Blaskovich
-    phone = models.CharField(max_length=25, null=True, blank=True)             # +61 7 344 62994
-    permission = models.CharField(max_length=10, default = 'No', null=False)      # application permissions .. Read, Write, Delete, Admin ..
-    is_appuser=models.BooleanField(default=True)
+    username = models.CharField(unique=True, max_length=55, verbose_name='UQ Username')                    # uqjzuegg 
+    name = models.CharField(primary_key=True,  max_length=50, verbose_name='Name')                      # J.Zuegg
+    initials = models.CharField(max_length=5, null=True, blank=True, verbose_name='Initials')           # JZG
+    organisation = models.CharField(max_length=250, null=True, blank=True, verbose_name='Organisation') # University of Queensland
+    department = models.CharField(max_length=250, null=True, blank=True, verbose_name='Department')     # Institute for Molecular Bioscience
+    group = models.CharField(max_length=50, null=True, blank=True, verbose_name='Group')                # Blaskovich
+    phone = models.CharField(max_length=25, null=True, blank=True, verbose_name='Name')                 # +61 7 344 62994
+    permission = models.CharField(max_length=10, default = 'No', null=False, verbose_name='Permission') # application permissions .. Read, Write, Delete, Admin ..
+    is_appuser=models.BooleanField(default=True,verbose_name='IsAppUser')
 
     #------------------------------------------------
     class Meta:

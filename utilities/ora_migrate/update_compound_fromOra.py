@@ -79,7 +79,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dsample.models import Project, COADD_Compound, Sample
+    from dsample.models import Project, COADD_Compound, Compound_Batch
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
     
@@ -122,7 +122,7 @@ def main(prgArgs,djDir):
                       ]
 
 
-        outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0}
+        outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Batches': 0, 'Upload Batches': 0}
         outDict = []    
         for idx,row in tqdm(cmpDF.iterrows(), total=cmpDF.shape[0]):
             #print(row)
@@ -154,14 +154,14 @@ def main(prgArgs,djDir):
                         djPrj= Project.get(cvPrj.project_id)
                         djCmpd.project_id = djPrj
                         
-                        new_sample = False
-                        djSample = Sample.get(djCmpd.compound_id)
-                        if djSample is None:
-                            djSample = Sample()
-                            djSample.sample_id = cvCmpd.compound_id
-                            djSample.sample_source = 'COADD'
-                            new_sample = True
-                            outNumbers['New Samples'] += 1
+                        new_batch = False
+                        djBatch = Compound_Batch.get(djCmpd.compound_id)
+                        if djBatch is None:
+                            djBatch = Compound_Batch()
+                            djBatch.cmpbatch_id = cvCmpd.compound_id
+                            djBatch.batch_source = 'COADD'
+                            new_batch = True
+                            outNumbers['New Batches'] += 1
 
                         set_dictFields(djCmpd,row,cpyFields)
                     #     set_arrayFields(djPrj,row,arrayFields)
@@ -172,13 +172,13 @@ def main(prgArgs,djDir):
                         if djCmpd.reg_mf == 'CxHxNxOx':
                             djCmpd.reg_mf = ''    
 
-                        # - Sample --------------------------------------
-                        djSample.sample_code = djCmpd.compound_code
+                        # - CmpBatch --------------------------------------
+                        djBatch.batch_code = djCmpd.compound_code
 
                         validStatus = True
 
-                        djSample.clean_Fields()
-                        validDict = djSample.validate()
+                        djBatch.clean_Fields()
+                        validDict = djBatch.validate()
                         if validDict:
                             validStatus = False
                             for k in validDict:
@@ -187,13 +187,12 @@ def main(prgArgs,djDir):
 
                         if validStatus:
                             if prgArgs.upload:
-                                if new_sample or prgArgs.overwrite:
-                                    outNumbers['Upload Samples'] += 1
-                                    djSample.save()
+                                if new_batch or prgArgs.overwrite:
+                                    outNumbers['Upload Batches'] += 1
+                                    djBatch.save()
 
                         # - Compound --------------------------------------
-
-                        djCmpd.sample_id = djSample
+                        djCmpd.cmpbatch_id = djBatch
                         validStatus = True
 
                         djCmpd.clean_Fields()

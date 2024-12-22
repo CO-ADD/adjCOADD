@@ -7,8 +7,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
+from django.contrib.auth.models import AbstractUser
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from apputil.utils.data import strList_to_List
 from dcollab.models import Collab_Group, Collab_User
 from dchem.models import Chem_Structure
 from adjcoadd.constants import *
@@ -18,6 +20,86 @@ CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
                           ('ABASE','ResearchGrp CmpBatch'),
                           ('LIBRARY','Library CmpBatch'),
                         )
+
+#-------------------------------------------------------------------------------------------------
+class Sample_Base(AbstractUser):    
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'conc_unit_lst':'Unit_Concentration',
+    }
+
+    MAX_CMPBATCHES = 4
+
+    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
+                                 size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
+    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=2, default=0), 
+                                 size=MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
+    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
+                                 size=MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
+    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
+                                 size=MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
+    n_cmpbatches=models.SmallIntegerField(default=0, verbose_name = "N CmpBatches")
+
+
+    cmpbatches = ""
+    concs = ""
+    conc_units = ""
+    conc_types = ""
+
+    class Meta:
+        db_table = 'sample'
+        ordering=['cmpbatch_lst']
+        indexes = [
+            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
+            models.Index(name="conc_idx", fields=['conc_lst']),
+            models.Index(name="concuni_idx", fields=['conc_unit_lst']),
+            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
+        ]
+
+    #------------------------------------------------  
+    def lst_to_string(self):
+        _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
+        self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
+        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
+        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
+        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
+        self.n_cmpbatches = len(_CmpLst)
+
+    #------------------------------------------------  
+    def string_to_lst(self):
+        self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
+        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------  
+    def check_conc_unit_dictionary(self):
+        _missing_conc_unit =[]
+        for u in [x for x in self.conc_unit_lst if x != ""]:
+            _d = Dictionary.get(self.Choice_Dictionary['conc_unit_lst'],u)
+            if not _d:
+                _missing_conc_unit.append(u)
+        return(_missing_conc_unit)
+
+    #------------------------------------------------  
+    def __str__(self) -> str:
+        return f"{self.cmpbatches}" 
+
+    #------------------------------------------------  
+    def __repr__(self) -> str:
+        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def get(cls,CmpBatchLst):
+        pass
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,CmpBatchLst):
+        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
 
 #=================================================================================================
 class Project(AuditModel):
