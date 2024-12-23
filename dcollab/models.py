@@ -10,6 +10,7 @@ from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
+from django_countries.fields import CountryField
 
 #=================================================================================================
 class Organisation(AuditModel):
@@ -19,18 +20,20 @@ class Organisation(AuditModel):
 #=================================================================================================
     HEADER_FIELDS   = {}
     Choice_Dictionary = {
-        'org_type':'Organisation_Type',
+        'organisation_type':'Organisation_Type',
     }
 
     ID_SEQUENCE = 'Organisation'
-    ID_PREFIC = 'CORG'
+    ID_PREFIX = 'CORG'
     ID_PAD = 5
 
-    org_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Organisation ID")
-    org_name = models.CharField(max_length=250, blank=True, verbose_name = "Organisation")
-    org_code = models.CharField(max_length=10, blank=True, verbose_name = "Organisation Code")
-    org_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
-        db_column="org_type", related_name="%(class)s_OrgType+")
+    organisation_id = models.CharField(max_length=10, primary_key=True, verbose_name = "Organisation ID")
+    organisation_code = models.CharField(max_length=20, blank=False, unique=True, verbose_name = "Organisation Code")
+    organisation_name = models.CharField(max_length=250, blank=False, unique=True, verbose_name = "Organisation")
+    organisation_type = models.ForeignKey(Dictionary, blank=False, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
+        db_column="organisation_type", related_name="%(class)s_organisation_type")
+    country = CountryField()
+
     #------------------------------------------------
     class Meta:
         app_label = 'dcollab'
@@ -38,13 +41,43 @@ class Organisation(AuditModel):
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.org_id} {self.org_name}"
+        return f"{self.organisation_id} {self.organisation_name}"
 
     #------------------------------------------------
+    @classmethod
+    def get(cls, ID, OrganisationName=None, Code=None, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            if ID is not None:
+                retInstance = cls.objects.get(organisation_id=ID)
+            elif OrganisationName is not None:
+                retInstance = cls.objects.get(organisation_name=OrganisationName)
+            elif Code is not None:
+                retInstance = cls.objects.get(organisation_code=Code)
+        except:
+            if verbose:
+                print(f"[Organisation Not Found] {ID} {OrganisationName} {Code} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, ID, OrganisationName=None, Code=None, verbose=0):
+    # Returns if instance exists
+        if ID is not None:
+            return cls.objects.filter(organisation_id=ID).exists()
+        elif OrganisationName is not None:
+            return cls.objects.filter(organisation_name=OrganisationName).exists()
+        elif Code is not None:
+            return cls.objects.filter(organisation_code=Code).exists()
+        else:
+            return None
+        
+    # #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.org_id:
-            self.org_id = self.next_id()
-            if self.org_id: 
+        if not self.organisation_id:
+            self.organisation_id = self.next_id()
+            if self.organisation_id: 
                 super(Organisation, self).save(*args, **kwargs)
         else:
             super(Organisation, self).save(*args, **kwargs) 
@@ -59,7 +92,7 @@ class Collab_User(AuditModel):
     Choice_Dictionary = {}
 
     ID_SEQUENCE = 'Collab_User'
-    ID_PREFIC = 'CUSR'
+    ID_PREFIX = 'CUSR'
     ID_PAD = 5
 
     user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "User ID")
@@ -67,19 +100,30 @@ class Collab_User(AuditModel):
     first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Code")
     last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Code")
     position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
-    email = models.CharField(max_length=50, blank=True, verbose_name = "EMail")
+
+    email1 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 1")
+    email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2")
+    active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
+
     phone = models.CharField(max_length=50, blank=True, verbose_name = "Phone")
     subscribed = models.BooleanField(default=False, blank=True, verbose_name = "Newsletter")
-    portal_userid = models.CharField(max_length=50, blank=True, verbose_name = "UserID")
-    portal_pw = models.CharField(max_length=50, blank=True, verbose_name = "Password")
-    organisation = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation", on_delete=models.DO_NOTHING,
-        db_column="organisation", related_name="%(class)s_Organisation+")    
+    portal_userid = models.CharField(max_length=50, blank=True, verbose_name = "Portal UserID")
+    portal_pw = models.CharField(max_length=50, blank=True, verbose_name = "Portal Password")
+
+    organisation_id = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation ID", on_delete=models.DO_NOTHING,
+        db_column="organisation_id", related_name="%(class)s_organisation_id")
+        
     department = models.CharField(max_length=250, blank=True, verbose_name = "Department")
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
-    country = models.CharField(max_length=250, blank=True, verbose_name = "Country")
-    group = models.ForeignKey("Collab_Group", null=True, blank=True, verbose_name = "Group Membership", on_delete=models.DO_NOTHING,
-        db_column="group", related_name="%(class)s_Group+")
+    country = CountryField()
+
+    # group_id = models.ForeignKey("Collab_Group", null=True, blank=True, verbose_name = "Group Membership", on_delete=models.DO_NOTHING,
+    #     db_column="group_id", related_name="%(class)s_group_id")
+    pi = models.BooleanField(default=False, verbose_name = "PI")
+
+    ora_user_id = models.CharField(max_length=15, blank=True, verbose_name = "Old User ID")
+    ora_group_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Group ID")
     
     #------------------------------------------------
     class Meta:
@@ -88,9 +132,26 @@ class Collab_User(AuditModel):
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.first_name} {self.last_name} {self.organisation.org_code}"
+        return f"{self.first_name} {self.last_name} {self.organisation_id.organisation_code}"
 
     #------------------------------------------------
+    @classmethod
+    def get(cls, ID, EMail=None, FirstName=None, LastName=None, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            if ID is not None:
+                retInstance = cls.objects.get(user_id=ID)
+            elif EMail is not None:
+                retInstance = cls.objects.get(email1=EMail)
+            elif LastName is not None:
+                retInstance = cls.objects.get(first_name=FirstName, last_name=LastName)
+        except:
+            if verbose:
+                print(f"[User Not Found] {ID} {EMail} {LastName} ")
+            retInstance = None
+        return(retInstance)
+
+    # #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.user_id:
             self.user_id = self.next_id()
@@ -111,22 +172,28 @@ class Collab_Group(AuditModel):
     }
 
     ID_SEQUENCE = 'Collab_Group'
-    ID_PREFIC = 'CGRP'
+    ID_PREFIX = 'CGRP'
     ID_PAD = 5
 
     group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
-    group_code = models.CharField(max_length=10, unique=True, verbose_name = "Group Code")
-    organisation = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation", on_delete=models.DO_NOTHING,
-        db_column="organisation", related_name="%(class)s_Organisation+")
+    group_code = models.CharField(max_length=50, unique=True, verbose_name = "Group Code")
+    organisation_id = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation ID", on_delete=models.DO_NOTHING,
+        db_column="organisation_id", related_name="%(class)s_organisation_id")    
+    email = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
     department = models.CharField(max_length=250, blank=True, verbose_name = "Department")
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
-    country = models.CharField(max_length=250, blank=True, verbose_name = "Country")
-    pi = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Principal Investigator", on_delete=models.DO_NOTHING,
-        db_column="pi", related_name="%(class)s_PI+")
+    country = CountryField()
+    pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
+    # pi = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Principal Investigator", on_delete=models.DO_NOTHING,
+    #     db_column="pi", related_name="%(class)s_pi")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
-        db_column="mta_status", related_name="%(class)s_MTA+")
+        db_column="mta_status", related_name="%(class)s_mta_status")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
+
+    ora_group_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Group ID")
+    ora_pi_id = models.CharField(max_length=15, blank=True, verbose_name = "Old PI ID")
+
     #------------------------------------------------
     class Meta:
         app_label = 'dcollab'
@@ -134,9 +201,27 @@ class Collab_Group(AuditModel):
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.group_code}"
+        return f"{self.group_id} {self.group_code}"
+
 
     #------------------------------------------------
+    @classmethod
+    def get(cls, ID, Code=None, PI_ID=None, Organisation_ID=None, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            if ID is not None:
+                retInstance = cls.objects.get(group_id=ID)
+            elif Code is not None:
+                retInstance = cls.objects.get(group_code=Code)
+            elif PI_ID is not None:
+                retInstance = cls.objects.get(pi_user_id=PI_ID, organisation_id=Organisation_ID)
+        except:
+            if verbose:
+                print(f"[Group Not Found] {ID} {Code} {Organisation_ID} {PI_ID}")
+            retInstance = None
+        return(retInstance)
+
+    # #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.group_id:
             self.group_id = self.next_id()
@@ -159,7 +244,7 @@ class Data_Source(AuditModel):
     }
 
     ID_SEQUENCE = 'Data_Source'
-    ID_PREFIC = 'DSR'
+    ID_PREFIX = 'DSR'
     ID_PAD = 5
 
     data_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Data ID")
@@ -179,8 +264,8 @@ class Data_Source(AuditModel):
     url = models.CharField(max_length=100, blank=True, verbose_name = "URL")
     authors = models.CharField(max_length=1000, blank=True, verbose_name = "Authors")
     patent_id = models.CharField(max_length=500, blank=True, verbose_name = "Patent IDs")
-    collab_group = models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group", on_delete=models.DO_NOTHING,
-        db_column="collab_group", related_name="%(class)s_CollabGroup+")
+    group_id = models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group ID", on_delete=models.DO_NOTHING,
+        db_column="group_id", related_name="%(class)s_group_id")
 
     #------------------------------------------------
     class Meta:
@@ -207,11 +292,51 @@ class Data_Source(AuditModel):
             retInstance = None
         return(retInstance)
 
-    #------------------------------------------------
-    def save(self, *args, **kwargs):
-        if not self.data_id:
-            self.data_id = self.next_id()
-            if self.data_id: 
-                super(Data_Source, self).save(*args, **kwargs)
-        else:
-            super(Data_Source, self).save(*args, **kwargs) 
+    # #------------------------------------------------
+    # def save(self, *args, **kwargs):
+    #     if not self.data_id:
+    #         self.data_id = self.next_id()
+    #         if self.data_id: 
+    #             super(Data_Source, self).save(*args, **kwargs)
+    #     else:
+    #         super(Data_Source, self).save(*args, **kwargs) 
+
+
+#=================================================================================================
+# class Convert_UserID(AuditModel):
+#     """
+#     List of oraUserID -> djUserID
+#     """
+# #=================================================================================================
+
+#     ora_user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Old User ID")
+#     user_id = models.CharField(max_length=15,null=False, verbose_name = "User ID")
+#     project_name = models.CharField(max_length=50, blank=True, verbose_name = "Project Name")
+
+#     class Meta:
+#         app_label = 'dcollab'
+#         db_table = 'convert_userid'
+#         ordering=['ora_user_id']
+#         indexes = [
+#             models.Index(name="wusr_pid_idx", fields=['user_id']),
+#             models.Index(name="wusr_pname_idx", fields=['project_name']),
+# #            models.Index(name="wusr_opid_idx", fields=['old_user_id']),
+#         ]
+
+
+    # @classmethod
+    # def new_COADD_User_ID(cls,OldUserID,verbose=0):
+
+    #     if 'P' in OldUserID:
+    #         try:
+    #             _cno = int(OldProjectID[1:])
+    #         except:
+    #             _cno = 0
+    #             return(Project.str_id(_cno))
+    #         if _cno > 0 :
+    #             _newID = Project.str_id(_cno)
+    #             newEntry = cls()
+    #             newEntry.ora_project_id = OldProjectID
+    #             newEntry.project_id = _newID
+    #             newEntry.save()
+    #         return(newEntry)

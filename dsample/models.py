@@ -22,13 +22,14 @@ CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
                         )
 
 #-------------------------------------------------------------------------------------------------
-class Sample_Base(AbstractUser):    
+class Sample_Base(AuditModel):    
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
         'conc_unit_lst':'Unit_Concentration',
     }
 
     MAX_CMPBATCHES = 4
+
 
     cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
                                  size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
