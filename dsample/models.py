@@ -48,7 +48,7 @@ class Sample_Base(AuditModel):
     conc_types = ""
 
     class Meta:
-        db_table = 'sample'
+        abstract = True
         ordering=['cmpbatch_lst']
         indexes = [
             models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
@@ -162,10 +162,10 @@ class Project(AuditModel):
     report_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
                                  size=20, verbose_name = "Report Status", null=True, blank=True)
 
-    owner_group =  models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Group", on_delete=models.DO_NOTHING,
-        db_column="owner_group", related_name="%(class)s_owner_group")
-    owner_user =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
-                             verbose_name = "User", null=True, blank=True)
+    group_id =  models.ForeignKey(Collab_Group, null=True, blank=True, verbose_name = "Project Owner", on_delete=models.DO_NOTHING,
+        db_column="group_id", related_name="%(class)s_group_id")
+    project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
+                             verbose_name = "Project Contacts", null=True, blank=True)
     #owner_users = models.ManyToManyField(Collab_User)
 
     ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
