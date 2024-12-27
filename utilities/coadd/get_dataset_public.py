@@ -88,7 +88,7 @@ def get_Compounds(prj_df, dataset = 'Public', test=0):
 
     pgDB = openCoaddDB(verbose=0)
     cmp_lst = []
-    for prjid in tqdm(prjid_lst):
+    for prjid in tqdm(prjid_lst,desc="Cmpds: "):
         _sql = f"{cmpSQL} Where project_id = '{prjid}'"
         if test>0:
             _sql += f" Fetch First {test} Rows Only "
@@ -108,7 +108,7 @@ def get_Inhibition_ora(cmp_df, dataset = 'Public', test=0):
 
     inhibSQL = """
         Select tw.compound_id, 
-            tp.Readout_ID, 
+            tp.Readout_ID, tp.Plate_ID TestPlate_ID, tw.Well_ID TestWell_ID,
             tp.AssayType_ID, a.AssayType_Code, a.AssayType_Class, a.Organism, a.Strain,
             tp.Run_ID, tp.Plate_Quality,
             tw.Conc, tw.Conc_Unit,
@@ -145,7 +145,7 @@ def get_Inhibition_ora(cmp_df, dataset = 'Public', test=0):
 
     cmpid_lst = cmp_df['ora_compound_id'].to_list()
     inhib_lst = []
-    for cmpid in tqdm(cmpid_lst):
+    for cmpid in tqdm(cmpid_lst,desc="Inhib: "):
         _sql = f"{inhibSQL} And tw.compound_id = '{cmpid}'"
         if test>0:
             _sql += f" Fetch First {test} Rows Only "
@@ -163,7 +163,7 @@ def get_DoseResponse_ora(cmp_df, dataset = 'Public', test=0):
 
     micSQL = """
         Select dr.compound1_id compound_id,
-            tp.Readout_ID, 
+            tp.Readout_ID, dr.TestPlate_ID, dr.TestWell_ID,
             tp.AssayType_ID, a.AssayType_Code, a.AssayType_Class, a.Organism, a.Strain,
             tp.Run_ID, tp.Plate_Quality,
             'MIC' Result_Type, 
@@ -181,7 +181,7 @@ def get_DoseResponse_ora(cmp_df, dataset = 'Public', test=0):
 
     cc50SQL = """
         Select dr.compound1_id compound_id,
-            tp.Readout_ID, 
+            tp.Readout_ID, dr.TestPlate_ID, dr.TestWell_ID,
             tp.AssayType_ID, a.AssayType_Code, a.AssayType_Class, a.Organism, a.Strain,
             tp.Run_ID, tp.Plate_Quality,
             'CC50' Result_Type, 
@@ -199,7 +199,7 @@ def get_DoseResponse_ora(cmp_df, dataset = 'Public', test=0):
 
     hc50SQL = """
         Select dr.compound1_id compound_id,
-            tp.Readout_ID, 
+            tp.Readout_ID, dr.TestPlate_ID, dr.TestWell_ID,
             tp.AssayType_ID, a.AssayType_Code, a.AssayType_Class, a.Organism, a.Strain,
             tp.Run_ID, tp.Plate_Quality,
             'HC50' Result_Type, 
@@ -219,7 +219,7 @@ def get_DoseResponse_ora(cmp_df, dataset = 'Public', test=0):
 
     cmpid_lst = cmp_df['ora_compound_id'].to_list()
     dr_lst = []
-    for cmpid in tqdm(cmpid_lst):
+    for cmpid in tqdm(cmpid_lst,desc="DoseResp: "):
         # MIC
         _sql = f"{micSQL} And compound1_id = '{cmpid}'"
         if test>0:
@@ -283,7 +283,19 @@ def main(prgArgs):
         CmpDF.to_csv(os.path.join(PubDir,csvFile),index=False,compression='gzip')
 
 
-    # Activity - Inhibition
+     # Activity - DoseResponse
+    DRDF = get_DoseResponse_ora(CmpDF,dataset = 'Public',test=int(prgArgs.test))
+
+    if 'Excel' in OutPut or prgArgs.to_excel:
+        xlFile = "COADD_Public_DoseResponse.xlsx"
+        logger.info(f"[DoseResponse] {len(CmpDF)} -> {xlFile}")
+        DRDF.to_excel(os.path.join(PubDir,xlFile),sheet_name='DoseResponse')
+    if 'CSV' in OutPut:
+        csvFile = "COADD_Public_DoseResponse.csv.gz"
+        logger.info(f"[DoseResponse] {len(CmpDF)} -> {csvFile}")
+        DRDF.to_csv(os.path.join(PubDir,csvFile),index=False,compression='gzip')
+
+   # Activity - Inhibition
     InhibDF = get_Inhibition_ora(CmpDF,dataset = 'Public',test=int(prgArgs.test))
 
     if 'Excel' in OutPut or prgArgs.to_excel:
@@ -296,17 +308,6 @@ def main(prgArgs):
         InhibDF.to_csv(os.path.join(PubDir,csvFile),index=False,compression='gzip')
 
 
-    # Activity - DoseResponse
-    DRDF = get_DoseResponse_ora(CmpDF,dataset = 'Public',test=int(prgArgs.test))
-
-    if 'Excel' in OutPut or prgArgs.to_excel:
-        xlFile = "COADD_Public_DoseResponse.xlsx"
-        logger.info(f"[DoseResponse] {len(CmpDF)} -> {xlFile}")
-        DRDF.to_excel(os.path.join(PubDir,xlFile),sheet_name='DoseResponse')
-    if 'CSV' in OutPut:
-        csvFile = "COADD_Public_DoseResponse.csv.gz"
-        logger.info(f"[DoseResponse] {len(CmpDF)} -> {csvFile}")
-        DRDF.to_csv(os.path.join(PubDir,csvFile),index=False,compression='gzip')
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
