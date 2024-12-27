@@ -110,7 +110,7 @@ def get_Inhibition_ora(cmp_df, dataset = 'Public', test=0):
         Select tw.compound_id, 
             tp.Readout_ID, tp.Plate_ID TestPlate_ID, tw.Well_ID TestWell_ID,
             tp.AssayType_ID, a.AssayType_Code, a.AssayType_Class, a.Organism, a.Strain,
-            tp.Run_ID, tp.Plate_Quality,
+            tp.Run_ID, tp.Plate_Quality, 
             tw.Conc, tw.Conc_Unit,
             tw.Inhibition, tw.MScore, tw.Active, 
             tw.Data_Status
