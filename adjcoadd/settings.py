@@ -287,13 +287,13 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-    # 'dplate': {
-    #     "ENGINE": PG_ENGINE,
-    #     'OPTIONS':{'options': '-c search_path=dplate,dsample,apputil,public', 
-    #                'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
-    #     'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
-    #     'HOST': HOST_NAME, 'PORT': '5432',
-    # }
+    'dplate': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dplate,dscreen,dsample,dcell,dorganism,apputil,public', 
+                   'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME, 'PORT': '5432',
+    }
 }
 
 DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]

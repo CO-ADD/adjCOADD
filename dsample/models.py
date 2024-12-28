@@ -1,3 +1,4 @@
+#
 from django.db import models
 from model_utils import Choices
 from sequences import Sequence
@@ -14,7 +15,7 @@ from apputil.utils.data import strList_to_List
 from dcollab.models import Collab_Group, Collab_User
 from dchem.models import Chem_Structure
 from adjcoadd.constants import *
-
+#
 
 CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
                           ('ABASE','ResearchGrp CmpBatch'),

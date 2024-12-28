@@ -29,7 +29,88 @@ logging.basicConfig(
 #    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
     handlers=[logging.StreamHandler()],
     level=logLevel)
+
 #-----------------------------------------------------------------------------
+def get_oraLabware(test=0):
+    from oraCastDB.oraCastDB import openCastDB
+
+    renameCol = {
+        "labware_addon":  "labware_notes",
+        "material":       "plate_material",
+        "work_volume" :   "working_volume",
+    }
+
+    replaceValues = {
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    lwSQL = "Select * From Labware "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        lwSQL += f" Fetch First {test} Rows Only "
+
+    CastDB = openCastDB()
+    logger.info(f"[Labware] ... ")
+    lwDF = pd.DataFrame(CastDB.get_dict_list(lwSQL))
+    nTotal = len(lwDF)
+    logger.info(f"[Labware] {nTotal} ")
+    CastDB.close()
+
+    logger.info(f"DF - Rename Columns {len(renameCol)}")
+    lwDF.rename(columns=renameCol, inplace=True)
+
+    logger.info(f"DF - Replace Values {len(replaceValues)}")
+    for k in replaceValues:
+        lwDF[k].replace(replaceValues[k],inplace=True)
+
+    return(lwDF)
+
+#-----------------------------------------------------------------------------
+def get_oraTestPlates(test=0):
+    from oraCastDB.oraCastDB import openCastDB
+
+    renameCol = {
+        "media_id":  "test_media",
+        "issues":    "test_issues",
+        "volume":    "test_volume",
+        "processing":       "test_processing",
+        "n_dr":      "n_doseresponse",
+        "n_syn":   "n_synergies",
+        "has_readout":   "n_reads",
+        "has_compound":   "n_sample",
+        "has_layout":   "n_layout",
+        "nreads":   "n_readouts",
+        "readout_id" : "readout_type",
+        "layout_control" : "control_layout" 
+    }
+
+    replaceValues = {
+      'result_type':{'HC10':'HC50'},
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    tpSQL = "Select * From TestPlate "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        tpSQL += f" Fetch First {test} Rows Only "
+
+    CastDB = openCastDB()
+    logger.info(f"[TestPlates] ... ")
+    tpDF = pd.DataFrame(CastDB.get_dict_list(tpSQL))
+    nTotal = len(tpDF)
+    logger.info(f"[TestPlates] {nTotal} ")
+    CastDB.close()
+
+    logger.info(f"DF - Rename Columns {len(renameCol)}")
+    tpDF.rename(columns=renameCol, inplace=True)
+
+    logger.info(f"DF - Replace Values {len(replaceValues)}")
+    for k in replaceValues:
+        tpDF[k].replace(replaceValues[k],inplace=True)
+
+    return(tpDF)
 
 
 #-----------------------------------------------------------------------------
@@ -40,9 +121,10 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
-    from dsample.models import Project, COADD_Compound, Sample
+    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields
+    from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
+    from dscreen.models import Screen_Run
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -54,16 +136,141 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # Table -------------------------------------------------------------
+    if prgArgs.table == "TestPlates" :
 
-    if prgArgs.table == "CompoundID" :
+        OutName = "[TestPlates]"
+        OutDict = []
+        OutFile = f"UpdateTestPlates_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
-        print("--> oraCompound ---------------------------------------------------------")
-        cmpDF = get_oraCompound(int(prgArgs.test))
-        print(cmpDF.columns)
-        print("-------------------------------------------------------------------------")
-        OutFile = f"UpdateCompound_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        print(f"{OutName} ---------------------------------------------------------")
+        tpDF = get_oraTestPlates(int(prgArgs.test))
+        print("--------------------------------------------------------------------")
+        print(f"{OutName} {tpDF.columns} ")
+
+# 'plate_set', 
+# 'n_wells', 'prep_date', 
+# 'project_id', 
+# 'assaytype_id', 
+#        'test_name', 
+# , 'has_readout',
+#        'has_compound', ,
+#        '',  , ,
+#        'test_operator', 'control_id', 'control_count', ,
+#        'layout_dilution', ,  , 'test_dye_conc',
+#        'test_dye_conc_unit',  'signal_window'
+#       'volume_unit', ,
+#        'test_strain', 'n_inhibition', 'plate_desc', 'n_dr', 'n_syn',
+
+        arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
+                       'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
+                       'poscontrol_stats':['poscontrol_median','poscontrol_mad','poscontrol_ave','poscontrol_stdev'], 
+                       'negcontrol_stats':['negcontrol_median','negcontrol_mad','negcontrol_ave','negcontrol_stdev'], 
+                       'sample_stats':['sample_median','sample_mad','sample_ave','sample_stdev'], 
+                       'edge_stats':['edge_median','nonedge_median'], 
+                       }
+        copyFields = ['plating','process_status',
+                      'test_date','test_media','test_dye','test_additive','test_issues','test_volume',
+                      'reader','experiment', 'protocol', 'inputfile','test_processing',
+                      'control_layout','readout_type',
+                      'plate_qc', 'zfactor','analysis_parameter',
+                      'n_inhibition','n_doseresponse','n_synergies','n_readouts',
+                      'n_reads', 'n_sample', 'n_layout',
+                      ]
+        dictFields = ['result_type','plate_quality','plate_type']
+        fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run}
+
+        for idx,row in tqdm(tpDF.iterrows(), total=tpDF.shape[0], desc=OutName):
+            #print(row)
+            OutNumbers['Processed'] += 1
+            NewEntry = False
+            validStatus = True
+
+            row['plate_type'] = 'Test'
+
+            djObj = TestPlate.get(row['plate_id'])
+            if djObj is None:
+                djObj = TestPlate()
+                djObj.plate_id = row['plate_id']
+                
+                NewEntry = True
+                OutNumbers['New Entry'] += 1
+
+            set_dictFields(djObj,row,copyFields)
+            set_arrayFields(djObj,row,arrayFields)
+            set_Dictionaries(djObj,row,dictFields)
+            set_fkeyFields(djObj,row,fkeyFields)
+
+            djObj.set_platesize(row['plate_size'])
+
+            djObj.clean_Fields()
+            validDict = djObj.validate(exclude=list(arrayFields.keys()))
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+                OutDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if NewEntry or prgArgs.overwrite:
+                        OutNumbers['Upload Entries'] += 1
+                        djObj.save(user=prgArgs.appuser)
+        print(f"{OutName} {OutNumbers}")
+        print(OutDict)
+
+   # Labware -------------------------------------------------------------
+    elif prgArgs.table == "Labware" :
+
+        OutName = "[Labware]"
+        OutDict = []
+        OutFile = f"UpdateLabware_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
+        print(f"{OutName} ---------------------------------------------------------")
+        lwDF = get_oraLabware(int(prgArgs.test))
+        print("--------------------------------------------------------------------")
+        print(f"{OutName} {lwDF.columns} ")
 
 
+        arrayFields = {}
+        copyFields = ['labware_name', 'labware_type', 'labware_notes',
+                'plate_size', 'brand', 'model', 
+                'well_type', 'well_size', 'well_shape', 'well_bottom', 
+                'working_volume','plate_color']
+        dictFields = ['plate_material']
+
+        for idx,row in tqdm(lwDF.iterrows(), total=lwDF.shape[0], desc=OutName):
+            #print(row)
+            OutNumbers['Processed'] += 1
+            NewEntry = False
+            validStatus = True
+
+            djObj = Labware.get(row['labware_id'])
+            if djObj is None:
+                djObj = Labware()
+                djObj.labware_id = row['labware_id']
+                NewEntry = True
+                OutNumbers['New Entry'] += 1
+
+            set_dictFields(djObj,row,copyFields)
+            set_arrayFields(djObj,row,arrayFields)
+            set_Dictionaries(djObj,row,dictFields)
+
+            djObj.clean_Fields()
+            validDict = djObj.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+                OutDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if NewEntry or prgArgs.overwrite:
+                        OutNumbers['Upload Entries'] += 1
+                        djObj.save(user=prgArgs.appuser)
+        print(f"{OutName} {OutNumbers}")
 #==============================================================================
 if __name__ == "__main__":
 

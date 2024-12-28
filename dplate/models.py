@@ -14,8 +14,8 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from dscreen.models import Screen_Run
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
+from dsample.models import Sample_Base
 from adjcoadd.constants import *
-
 
 
 #-------------------------------------------------------------------------------------------------
@@ -36,10 +36,12 @@ class Labware(AuditModel):
     PLATE_TYPES = Choices( ('Plate','Plate with Wells'),
                             ('Rack','Rack with Tubes')
                         )
-    PLATE_MATERIAL = Choices('PP','PS','TC-PS','NBS-PS')
+    #PLATE_MATERIAL = Choices('PP','PS','TC-PS','NBS-PS')
     PLATE_COLORS = Choices('Clear', 'Black', 'White')
     WELL_BOTTOMS = Choices('Clear', 'Black', 'White','Barcode')
     WELL_SHAPES = Choices('Flat','Round','U-Shape','V-Shape')
+    WELL_TYPE = Choices('Well','Tube')
+    WELL_SIZE = Choices('Shallow','Deep','Storage')
     
     
     Choice_Dictionary = {
@@ -48,15 +50,18 @@ class Labware(AuditModel):
 
     labware_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Labware ID") 
     labware_name= models.CharField(max_length=50, blank=True, verbose_name = "Labware Name") 
+    labware_type= models.CharField(max_length=15, blank=True, verbose_name = "Labware Type") 
+    labware_notes= models.CharField(max_length=50, blank=True, verbose_name = "Labware Type") 
     plate_size= models.PositiveSmallIntegerField(default=0, choices=PLATE_SIZES, blank=True, verbose_name = "Plate Size") 
     plate_type= models.CharField(max_length=10, choices=PLATE_TYPES, blank=True, verbose_name = "Plate Type") 
     plate_color = models.CharField(max_length=10, choices=PLATE_COLORS, blank=True, verbose_name = "Plate Type")
      
-    #plate_material= models.CharField(max_length=8, choices=PLATE_MATERIAL, blank=True, verbose_name = "Material") 
     plate_material= models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Material", on_delete=models.DO_NOTHING,
         db_column="material", related_name="%(class)s_material")
-    well_shape= models.CharField(max_length=10, choices=WELL_SHAPES, verbose_name = "Shape") 
-    well_bottom= models.CharField(max_length=10, choices=WELL_BOTTOMS, blank=True, verbose_name = "Bottom") 
+    well_shape= models.CharField(max_length=20, choices=WELL_SHAPES, verbose_name = "Shape") 
+    well_bottom= models.CharField(max_length=20, choices=WELL_BOTTOMS, blank=True, verbose_name = "Bottom") 
+    well_type= models.CharField(max_length=20, choices=WELL_TYPE, verbose_name = "Type") 
+    well_size= models.CharField(max_length=20, choices=WELL_SIZE, blank=True, verbose_name = "Size") 
     working_volume = models.DecimalField(max_digits=9, decimal_places=1, default=0, blank=True, verbose_name = "Working volume (uL)")
     
     brand= models.CharField(max_length=25, blank=True, verbose_name = "Brand") 
@@ -142,6 +147,7 @@ class Plate(AuditModel):
             if PlateSize in self.PLATE_SIZES:
                 self.rows = self.PLATE_SIZES[PlateSize][0]
                 self.cols = self.PLATE_SIZES[PlateSize][1]
+                self.n_wells = PlateSize
             else:
                 raise KeyError(f"Undefined PlateSize {PlateSize}")
         elif isinstance(PlateSize,tuple):
@@ -211,48 +217,48 @@ class Plate(AuditModel):
         m = self.map_well(loc)
         return(m[0])
 
-class Well(AuditModel):
-    """
-    An abstract Well class model that provides general Well properties/method 
-    """
-    #PLATE_CLASS = Plate
+# class Well(AuditModel):
+#     """
+#     An abstract Well class model that provides general Well properties/method 
+#     """
+#     #PLATE_CLASS = Plate
 
-    #------------------------------------------------
-    plate_id = models.ForeignKey(Plate,  verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
-        db_column="plate_id", related_name="%(class)s_plateid")
-    well_id = models.CharField(max_length=6, verbose_name = "Well ID")
+#     #------------------------------------------------
+#     plate_id = models.ForeignKey(Plate,  verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
+#         db_column="plate_id", related_name="%(class)s_plateid")
+#     well_id = models.CharField(max_length=6, verbose_name = "Well ID")
 
-    class Meta:
-        abstract = True
-        ordering=['plate_id','well_id']
-        indexes = [
-            models.Index(fields=['plate_id']),
-            models.Index(fields=['well_id']),
-        ]
+#     class Meta:
+#         abstract = True
+#         ordering=['plate_id','well_id']
+#         indexes = [
+#             models.Index(fields=['plate_id']),
+#             models.Index(fields=['well_id']),
+#         ]
 
-    #------------------------------------------------
-    def __str__(self) -> str:
-        return f"{self.plate_id} {self.well_id}"
-    #------------------------------------------------
-    def __repr__(self) -> str:
-        # return f"{self.__name__}: {self.pk}"
-        return f"{self.plate_id} {self.well_id}"
+#     #------------------------------------------------
+#     def __str__(self) -> str:
+#         return f"{self.plate_id} {self.well_id}"
+#     #------------------------------------------------
+#     def __repr__(self) -> str:
+#         # return f"{self.__name__}: {self.pk}"
+#         return f"{self.plate_id} {self.well_id}"
 
-    #------------------------------------------------
-    @classmethod
-    def get(cls,PlateID, WellID, verbose=0):
-        try:
-            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
-        except:
-            if verbose:
-                print(f"[Well Not Found] {PlateID} {WellID}")
-            retInstance = None
-        return(retInstance)
+#     #------------------------------------------------
+#     @classmethod
+#     def get(cls,PlateID, WellID, verbose=0):
+#         try:
+#             retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+#         except:
+#             if verbose:
+#                 print(f"[Well Not Found] {PlateID} {WellID}")
+#             retInstance = None
+#         return(retInstance)
 
-    #------------------------------------------------
-    @classmethod
-    def exists(cls,PlateID,WellID,verbose=0):
-        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+#     #------------------------------------------------
+#     @classmethod
+#     def exists(cls,PlateID,WellID,verbose=0):
+#         return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
 
 
 #=================================================================================================#=================================================================================================
@@ -267,7 +273,8 @@ class TestPlate(Plate):
 
     Choice_Dictionary = {
         'result_type':'Result_Type',
-        'plate_quality':'Plate_Quality',
+        'plate_quality':'Data_Quality',
+        'plate_type':'Plate_Type',
     }
 
     # plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
@@ -278,7 +285,8 @@ class TestPlate(Plate):
                                 
     # Plate_Size = models.CharField(max_length=10)
     # N_Wells = models.PositiveIntegerField()
-    prep_date = models.DateField(null=True, blank=True, verbose_name = "Prep Date")
+    # prep_date = models.DateField(null=True, blank=True, verbose_name = "Prep Date")
+
     plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
     run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_runid")    
@@ -290,9 +298,9 @@ class TestPlate(Plate):
     test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
     #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
 
-    # test_strain = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "Strain", on_delete=models.DO_NOTHING,
-    #     db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
-    test_cell = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "Cell", on_delete=models.DO_NOTHING,
+    test_orgbatch = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
+    test_cellbatch = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "CellBatch", on_delete=models.DO_NOTHING,
         db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
     
     test_dye = models.CharField(max_length=25, blank=True, verbose_name = "Dye")
@@ -302,33 +310,35 @@ class TestPlate(Plate):
     test_issues = models.CharField(max_length=100, blank=True, verbose_name = "Issue")
 
     reader = models.CharField(max_length=50, blank=True, verbose_name = "Reader")
-    n_reads = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "#Reads")
+    n_readouts = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Readouts")
     readout_type = models.CharField(max_length=25, blank=True, verbose_name = "Readout Type")
     experiment = models.CharField(max_length=80, blank=True, verbose_name = "Experiment")
     protocol = models.CharField(max_length=80, blank=True, verbose_name = "Protocol")
     input_file = models.CharField(max_length=80, blank=True, verbose_name = "Input File")
     test_operator = models.CharField(max_length=100, blank=True, verbose_name = "Operator")
     
-    has_readout = models.BooleanField(default=False, verbose_name = "Has Readout")
-    has_sample = models.BooleanField(default=False, verbose_name = "Has Sample")
-    has_layout = models.BooleanField(default=False, verbose_name = "Has Layout")
-    has_inhibition = models.BooleanField(default=False, verbose_name = "Has Inhibition")
-    has_doseresponse = models.BooleanField(default=False, verbose_name = "Has Doseresponse")
-    process_status = models.PositiveSmallIntegerField(default=0, verbose_name = "Process Status")
+    n_reads = models.SmallIntegerField(default=-1,verbose_name = "#Reads")
+    n_sample = models.SmallIntegerField(default=-1, verbose_name = "#Samples")
+    n_layout = models.SmallIntegerField(default=-1, verbose_name = "#Layouts")
+    n_inhibition = models.SmallIntegerField(default=-1, verbose_name = "#Inhibition")
+    n_doseresponse = models.SmallIntegerField(default=-1, verbose_name = "#Doseresponse")
+    n_synergies = models.SmallIntegerField(default=-1, verbose_name = "#Synergies")
+    process_status = models.SmallIntegerField(default=-1, verbose_name = "Process Status")
 
-    control_layout = models.CharField(max_length=25, blank=True, verbose_name = "Layout")
-    synergy_samples =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=2, verbose_name = "Synergy Samples", null=True, blank=True)
+    control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Layout")
+    synergy_cmpbatches =ArrayField(models.CharField(max_length=100, null=True, blank=True), 
+                                   size=2, verbose_name = "Synergy CmpBatches", null=True, blank=True)
 
     # Control_Count = models.PositiveIntegerField()
     # Layout_Dilution = models.CharField(max_length=25)
 
-    positive_control = ArrayField(models.DecimalField(max_digits=7, decimal_places=2),size=4)
-    negative_control = ArrayField(models.DecimalField(max_digits=7, decimal_places=2),size=4)
-    sample_stats = ArrayField(models.DecimalField(max_digits=7, decimal_places=2),size=4)
-    edge_stats = ArrayField(models.DecimalField(max_digits=7, decimal_places=2),size=2)
+    poscontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
+    negcontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
+    sample_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
+    edge_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=2)
     analysis_parameter = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
-    zfactor = models.DecimalField(max_digits=7, decimal_places=2)
-    plate_qc = models.DecimalField(max_digits=7, decimal_places=2)
+    zfactor = models.DecimalField(max_digits=12, decimal_places=3)
+    plate_qc = models.DecimalField(max_digits=12, decimal_places=3)
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
     
@@ -358,37 +368,26 @@ class TestPlate(Plate):
             models.Index(name="testplate_proc_idx",fields=['process_status']),
             models.Index(name="testplate_qc_idx",fields=['plate_qc']),
             models.Index(name="testplate_pq_idx",fields=['plate_quality']),
-            models.Index(name="testplate_has_idx",fields=['has_readout', 'has_sample', 'has_layout', 'has_inhibition', 'has_doseresponse']),
+            models.Index(name="testplate_nnn_idx",fields=['n_reads', 'n_sample', 'n_layout', 'n_inhibition', 'n_doseresponse','n_synergies']),
         #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
         
 #=================================================================================================
-class TestWell(AuditModel):
+class TestWell(Sample_Base):
     """
 
     """
 #=================================================================================================
 
-    RESULT_TYPES = Choices('MIC','CC50','HC50','SYN-MIC')
-
-    Choice_Dictionary = {
-        'solvent_conc_unit':'Conc_Unit'
-    }
 
     plate_id = models.ForeignKey(TestPlate, null=True, blank=True, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
         db_column="plate_id", related_name="%(class)s_plateid")
     well_id = models.CharField(max_length=5, blank=False, verbose_name = "Well ID")
 
-    n_samples = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "#Samples")    
-    samplebatch_id = ArrayField(models.CharField(max_length=25),size=4)
-    analysis_set = ArrayField(models.CharField(max_length=5),size=4)
-    sample_concs = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
-    conc_units = ArrayField(models.CharField(max_length=5),size=4)
-    conc_types = ArrayField(models.CharField(max_length=5),size=4)
-    solvent = models.CharField(max_length=25)
-    solvent_conc = models.DecimalField(max_digits=12, decimal_places=4)
-    solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Conc Unit", on_delete=models.DO_NOTHING,
-         db_column="solvent_conc_unit", related_name="%(class)s_solvconcunit")
+    # solvent = models.CharField(max_length=25)
+    # solvent_conc = models.DecimalField(max_digits=12, decimal_places=4)
+    # solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Conc Unit", on_delete=models.DO_NOTHING,
+    #      db_column="solvent_conc_unit", related_name="%(class)s_solvconcunit")
 
     is_control = models.BooleanField(default=False, verbose_name = "is Control")
     is_poscontrol = models.BooleanField(default=False, verbose_name = "is PosCtrl")
@@ -411,8 +410,6 @@ class TestWell(AuditModel):
         ordering=['plate_id','well_id']
         indexes = [
             models.Index(name="testwell_tptw_idx",fields=['plate_id','well_id']),
-            models.Index(name="testwell_smpid_idx",fields=['samplebatch_id']),
-            models.Index(name="testwell_nsmp_idx",fields=['n_samples']),
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
         ]

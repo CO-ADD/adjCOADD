@@ -235,7 +235,7 @@ class Breakpoint(AuditModel):
     Choice_Dictionary= {
         'org_rank':'Tax_Rank',
         'notorg_rank':'Tax_Rank',
-        'bp_type':'BP_Type',
+        'bp_type':'Result_Type',
     }
 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
