@@ -163,7 +163,6 @@ def main(prgArgs,djDir):
                         if 'MCC_' in _old:
                             _new = _old.replace('MCC_','MCC')
                         else:
-                            print(_old)
                             _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
                     else:
                         _new = None
