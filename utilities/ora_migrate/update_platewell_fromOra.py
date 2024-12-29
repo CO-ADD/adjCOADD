@@ -128,7 +128,8 @@ def main(prgArgs,djDir):
             for k_old in renameCol:
                 row[renameCol[k_old]] = row.pop(k_old)
             if 'solvent_conc_unit' in row:
-                row['solvent_conc_unit'] = row['solvent_conc_unit'].lower()
+                if row['solvent_conc_unit'] is not None:
+                    row['solvent_conc_unit'] = row['solvent_conc_unit'].lower()
 
 
             NewEntry = False
