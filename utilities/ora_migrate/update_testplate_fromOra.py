@@ -114,7 +114,7 @@ def get_oraTestPlates(test=0):
     return(tpDF)
 
 #-----------------------------------------------------------------------------
-def get_oraTestPlates(test=0):
+def get_oraTestWells(test=0):
     from oraCastDB.oraCastDB import openCastDB
 
     renameCol = {
