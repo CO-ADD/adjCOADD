@@ -138,7 +138,7 @@ def get_oraTestWells(test=0):
       'plate_size':{'384w':384,'96w':96,},
     }
 
-    twSQL = "Select * From TestPlate "
+    twSQL = "Select * From TestWell "
     # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
 
     if test>0:
@@ -243,7 +243,7 @@ def main(prgArgs,djDir):
                 OutNumbers['New Entry'] += 1
 
             djObj.set_platesize(row['plate_size'])
-            if 'assay_id' in row:
+            if row['assay_id'] is not None:
                 if 'MA_' in row['assay_id'] or 'HA' in row['assay_id']:
                     djObj.assay_id = CL_replaceAssayID[row['assay_id']][0]
                     row['test_orgbatch'] = None
@@ -291,7 +291,7 @@ def main(prgArgs,djDir):
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
         print(f"{OutName} ---------------------------------------------------------")
-        tpDF = get_oraTestPlates(int(prgArgs.test))
+        tpDF = get_oraTestWells(int(prgArgs.test))
         print("--------------------------------------------------------------------")
         print(f"{OutName} {tpDF.columns} ")
 
