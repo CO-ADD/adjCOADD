@@ -185,10 +185,10 @@ def main(prgArgs,djDir):
         fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run, 'test_orgbatch':Organism_Batch, 'test_cellbatch':Cell_Batch}
 
         CL_replaceAssayID  = {'MA_007':['CL_0031','CL_0031_03'],   
-                             'MA_008':['CL_0037','CL_0037_04'],   
-                             'MA_014':['CL_0038','CL_0038_01'],   
-                             'MA_021':['CL_0040','CL_0040_01'],
-                             'HA_150':['CL_0078','CL_0078_01'],
+                              'MA_008':['CL_0037','CL_0037_04'],   
+                              'MA_014':['CL_0038','CL_0038_01'],   
+                              'MA_021':['CL_0040','CL_0040_01'],
+                              'HA_150':['CL_0078','CL_0078_01'],
                     }
         No_replaceAssayID = ['QC_LCMS','CMC_01']
 
@@ -210,7 +210,7 @@ def main(prgArgs,djDir):
                 OutNumbers['New Entry'] += 1
 
             djObj.set_platesize(row['plate_size'])
-            if 'CL_' in row['assay_id']:
+            if 'MA_' in row['assay_id'] or 'HA' in row['assay_id']:
                 djObj.assay_id = CL_replaceAssayID[row['assay_id']][0]
                 row['test_orgbatch'] = None
                 row['test_cellbatch'] = CL_replaceAssayID[row['assay_id']][1]
