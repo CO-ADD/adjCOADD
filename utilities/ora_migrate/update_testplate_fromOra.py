@@ -82,7 +82,8 @@ def get_oraTestPlates(test=0):
         "has_layout":   "n_layout",
         "nreads":   "n_readouts",
         "readout_id" : "readout_type",
-        "layout_control" : "control_layout" 
+        "layout_control" : "control_layout",
+        "assaytype_id" : "assay_id" 
     }
 
     replaceValues = {
@@ -125,6 +126,9 @@ def main(prgArgs,djDir):
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
+    from dorganism.models import Organism_Batch
+    from dcell.models import Cell_Batch
+    from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -178,7 +182,16 @@ def main(prgArgs,djDir):
                       'n_reads', 'n_sample', 'n_layout',
                       ]
         dictFields = ['result_type','plate_quality','plate_type']
-        fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run}
+        fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run, 'test_orgbatch':Organism_Batch, 'test_cellbatch':Cell_Batch}
+
+        CL_replaceAssayID  = {'MA_007':['CL_0031','CL_0031_03'],   
+                             'MA_008':['CL_0037','CL_0037_04'],   
+                             'MA_014':['CL_0038','CL_0038_01'],   
+                             'MA_021':['CL_0040','CL_0040_01'],
+                             'HA_150':['CL_0078','CL_0078_01'],
+                    }
+        No_replaceAssayID = ['QC_LCMS','CMC_01']
+
 
         for idx,row in tqdm(tpDF.iterrows(), total=tpDF.shape[0], desc=OutName):
             #print(row)
@@ -196,12 +209,24 @@ def main(prgArgs,djDir):
                 NewEntry = True
                 OutNumbers['New Entry'] += 1
 
+            djObj.set_platesize(row['plate_size'])
+            if 'CL_' in row['assay_id']:
+                djObj.assay_id = CL_replaceAssayID[row['assay_id']][0]
+                row['test_orgbatch'] = None
+                row['test_cellbatch'] = CL_replaceAssayID[row['assay_id']][1]
+            elif row['assay_id'] in No_replaceAssayID :
+                djObj.assay_id = row['assay_id']
+                row['test_orgbatch'] = None
+                row['test_cellbatch'] = None
+            else:
+                djObj.assay_id = reformat_OrganismID(row['assay_id'])
+                row['test_orgbatch'] = reformat_OrgBatchID(row['test_strain'])
+                row['test_cellbatch'] = None
+
             set_dictFields(djObj,row,copyFields)
             set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
-
-            djObj.set_platesize(row['plate_size'])
 
             djObj.clean_Fields()
             validDict = djObj.validate(exclude=list(arrayFields.keys()))

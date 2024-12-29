@@ -7,7 +7,6 @@ def reformat_OrganismID(OrgID):
     """
     Reformat Organism ID from old GN_001 (3 digits) to new GN_0001 (3 digits) 
     """
-#-----------------------------------------------------------------------------------
     xStr = OrgID.split("_")
     return(f"{xStr[0]}_{int(xStr[1]):04d}")
 
@@ -16,11 +15,9 @@ def reformat_OrgBatchID(OrgBatchID):
     """
     Reformat OrganismBatch ID from old GN_001:02 (3 digits,':') to new GN_0001_02 (3 digits,'_') 
     """
-#-----------------------------------------------------------------------------------
     xStr = OrgBatchID.split(":")
     #print(xStr)
     return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
-
 
 #-----------------------------------------------------------------------------------
 def get_subdir(OrgBatchID,binsize=100):
@@ -28,7 +25,6 @@ def get_subdir(OrgBatchID,binsize=100):
      Gets the SubFolder name based on the XX_NNNN with splits into 200
       GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
     """
-#-----------------------------------------------------------------------------------
     _org = OrgBatchID.split('_')
     return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
 
