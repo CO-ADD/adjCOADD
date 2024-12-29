@@ -19,7 +19,7 @@ from oraCastDB import oraCastDB
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Upload_TestPlate"
+logName = "Upload_Plate"
 #logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -186,7 +186,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-   # Table -------------------------------------------------------------
+   # TestPlate -------------------------------------------------------------
     if prgArgs.table == "TestPlates" :
 
         OutName = "[TestPlates]"
@@ -281,19 +281,6 @@ def main(prgArgs,djDir):
                         djObj.save(user=prgArgs.appuser)
         print(f"{OutName} {OutNumbers}")
         print(OutDict)
-
-   # Wells -------------------------------------------------------------
-    if prgArgs.table == "TestWells" :
-
-        OutName = "[TestWells]"
-        OutDict = []
-        OutFile = f"UpdateTestWells_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
-        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
-
-        print(f"{OutName} ---------------------------------------------------------")
-        tpDF = get_oraTestWells(int(prgArgs.test))
-        print("--------------------------------------------------------------------")
-        print(f"{OutName} {tpDF.columns} ")
 
 
    # Labware -------------------------------------------------------------
