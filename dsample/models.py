@@ -88,8 +88,9 @@ class Sample_Base(AuditModel):
     def check_cmpbatch_id(self):
         _missing_cmpbatch =[]
         for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-            _e = Compound_Batch.get(cmpbatch_id)
-            if not _e:
+            try:
+                _e = Compound_Batch.get(cmpbatch_id)
+            except:
                 _missing_cmpbatch.append(cmpbatch_id)
         return(_missing_cmpbatch)
 

@@ -193,10 +193,20 @@ def main(prgArgs,djDir):
                         if NewEntry or prgArgs.overwrite:
                             OutNumbers['Upload Entries'] += 1
                             djWell.save(user=prgArgs.appuser)
+                else:
+                    OutDict.append(row)
             else:
                 print(f"{OutName} Plate {row['plate_id']} not found")
+                OutDict.append(row)
 
             #print(f"{row['plate_id']} {row['well_id']}")
+        if len(OutDict) > 0:
+            print(f"Writing Issues: {OutFile}")
+            outDF = pd.DataFrame(OutDict)
+            outDF.to_excel(OutFile)
+        else:
+            print(f"No Issues")
+
         print(f"{OutName} {OutNumbers}")
         #print(OutDict)
         CastDB.close()
