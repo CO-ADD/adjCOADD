@@ -113,6 +113,53 @@ def get_oraTestPlates(test=0):
 
     return(tpDF)
 
+#-----------------------------------------------------------------------------
+def get_oraTestPlates(test=0):
+    from oraCastDB.oraCastDB import openCastDB
+
+    renameCol = {
+        "media_id":  "test_media",
+        "issues":    "test_issues",
+        "volume":    "test_volume",
+        "processing":       "test_processing",
+        "n_dr":      "n_doseresponse",
+        "n_syn":   "n_synergies",
+        "has_readout":   "n_reads",
+        "has_compound":   "n_sample",
+        "has_layout":   "n_layout",
+        "nreads":   "n_readouts",
+        "readout_id" : "readout_type",
+        "layout_control" : "control_layout",
+        "assaytype_id" : "assay_id" 
+    }
+
+    replaceValues = {
+      'result_type':{'HC10':'HC50'},
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    twSQL = "Select * From TestPlate "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        twSQL += f" Fetch First {test} Rows Only "
+
+    CastDB = openCastDB()
+    logger.info(f"[TestWells] ... ")
+    twDF = pd.DataFrame(CastDB.get_dict_list(twSQL))
+    nTotal = len(twDF)
+    logger.info(f"[TestWells] {nTotal} ")
+    CastDB.close()
+
+    # logger.info(f"DF - Rename Columns {len(renameCol)}")
+    # twDF.rename(columns=renameCol, inplace=True)
+
+    # logger.info(f"DF - Replace Values {len(replaceValues)}")
+    # for k in replaceValues:
+    #     twDF[k].replace(replaceValues[k],inplace=True)
+
+    return(twDF)
+
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -151,20 +198,6 @@ def main(prgArgs,djDir):
         tpDF = get_oraTestPlates(int(prgArgs.test))
         print("--------------------------------------------------------------------")
         print(f"{OutName} {tpDF.columns} ")
-
-# 'plate_set', 
-# 'n_wells', 'prep_date', 
-# 'project_id', 
-# 'assaytype_id', 
-#        'test_name', 
-# , 'has_readout',
-#        'has_compound', ,
-#        '',  , ,
-#        'test_operator', 'control_id', 'control_count', ,
-#        'layout_dilution', ,  , 'test_dye_conc',
-#        'test_dye_conc_unit',  'signal_window'
-#       'volume_unit', ,
-#        'test_strain', 'n_inhibition', 'plate_desc', 'n_dr', 'n_syn',
 
         arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
                        'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
@@ -210,17 +243,22 @@ def main(prgArgs,djDir):
                 OutNumbers['New Entry'] += 1
 
             djObj.set_platesize(row['plate_size'])
-            if 'MA_' in row['assay_id'] or 'HA' in row['assay_id']:
-                djObj.assay_id = CL_replaceAssayID[row['assay_id']][0]
-                row['test_orgbatch'] = None
-                row['test_cellbatch'] = CL_replaceAssayID[row['assay_id']][1]
-            elif row['assay_id'] in No_replaceAssayID :
-                djObj.assay_id = row['assay_id']
-                row['test_orgbatch'] = None
-                row['test_cellbatch'] = None
+            if 'assay_id' in row:
+                if 'MA_' in row['assay_id'] or 'HA' in row['assay_id']:
+                    djObj.assay_id = CL_replaceAssayID[row['assay_id']][0]
+                    row['test_orgbatch'] = None
+                    row['test_cellbatch'] = CL_replaceAssayID[row['assay_id']][1]
+                elif row['assay_id'] in No_replaceAssayID :
+                    djObj.assay_id = row['assay_id']
+                    row['test_orgbatch'] = None
+                    row['test_cellbatch'] = None
+                else:
+                    djObj.assay_id = reformat_OrganismID(row['assay_id'])
+                    row['test_orgbatch'] = reformat_OrgBatchID(row['test_strain'])
+                    row['test_cellbatch'] = None
             else:
-                djObj.assay_id = reformat_OrganismID(row['assay_id'])
-                row['test_orgbatch'] = reformat_OrgBatchID(row['test_strain'])
+                djObj.assay_id = ''
+                row['test_orgbatch'] = None
                 row['test_cellbatch'] = None
 
             set_dictFields(djObj,row,copyFields)
@@ -243,6 +281,20 @@ def main(prgArgs,djDir):
                         djObj.save(user=prgArgs.appuser)
         print(f"{OutName} {OutNumbers}")
         print(OutDict)
+
+   # Wells -------------------------------------------------------------
+    if prgArgs.table == "TestWells" :
+
+        OutName = "[TestWells]"
+        OutDict = []
+        OutFile = f"UpdateTestWells_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
+        print(f"{OutName} ---------------------------------------------------------")
+        tpDF = get_oraTestPlates(int(prgArgs.test))
+        print("--------------------------------------------------------------------")
+        print(f"{OutName} {tpDF.columns} ")
+
 
    # Labware -------------------------------------------------------------
     elif prgArgs.table == "Labware" :
