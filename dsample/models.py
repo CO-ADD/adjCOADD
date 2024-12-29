@@ -27,6 +27,7 @@ class Sample_Base(AuditModel):
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
         'conc_unit_lst':'Unit_Concentration',
+        'conc_type_lst':'Concentration_Type',
     }
 
     MAX_CMPBATCHES = 4
@@ -34,7 +35,7 @@ class Sample_Base(AuditModel):
 
     cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
                                  size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
-    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=2, default=0), 
+    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
                                  size=MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
     conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
                                  size=MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
@@ -82,6 +83,15 @@ class Sample_Base(AuditModel):
             if not _d:
                 _missing_conc_unit.append(u)
         return(_missing_conc_unit)
+
+    #------------------------------------------------  
+    def check_cmpbatch_id(self):
+        _missing_cmpbatch =[]
+        for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
+            _e = Compound_Batch.get(cmpbatch_id)
+            if not _e:
+                _missing_cmpbatch.append(cmpbatch_id)
+        return(_missing_cmpbatch)
 
     #------------------------------------------------  
     def __str__(self) -> str:
@@ -563,6 +573,27 @@ class COADD_Compound(AuditModel):
             super(COADD_Compound, self).save(*args, **kwargs) 
 
 
+class ABase_Compound(AuditModel):
+    """
+    List of Abase Compounds as per Registration
+    """
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'compound_type':'Compound_Type',
+        'compound_source':'Compound_Source',
+        'reg_amount_unit': 'Unit_Amount',
+        'reg_volume_unit':'Unit_Volume',
+        'reg_conc_unit':'Unit_Concentration',
+    #    'stock_volume_unit':'Unit_Volume',
+    }
+
+    ID_SEQUENCE = 'ABase_Compound'
+    ID_PREFIX = 'MCC'
+    ID_PAD = 6
+
+    @classmethod
+    def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
+        return(OldABaseID.replace('MCC_','MCC'))
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):

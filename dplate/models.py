@@ -11,6 +11,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from apputil.utils.data import strList_to_List
 from dscreen.models import Screen_Run
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
@@ -345,14 +346,6 @@ class TestPlate(Plate):
     # Test_Dye_Conc = models.DecimalField(max_digits=10, decimal_places=2)
     # Test_Dye_Conc_Unit = models.CharField(max_length=10)
     # Signal_Window = models.DecimalField(max_digits=7, decimal_places=2)
-    # NegControl_Median = models.DecimalField(max_digits=10, decimal_places=2)
-    # NegControl_MAD = models.DecimalField(max_digits=10, decimal_places=2)
-    # PosControl_Median = models.DecimalField(max_digits=10, decimal_places=2)
-    # PosControl_MAD = models.DecimalField(max_digits=10, decimal_places=2)
-    # Sample_Median = models.DecimalField(max_digits=10, decimal_places=2)
-    # Sample_MAD = models.DecimalField(max_digits=10, decimal_places=2)
-    # Edge_Median = models.DecimalField(max_digits=7, decimal_places=2)
-    # NonEdge_Median = models.DecimalField(max_digits=7, decimal_places=2)
 
     class Meta:
         app_label = 'dplate'
@@ -379,15 +372,27 @@ class TestWell(Sample_Base):
     """
 #=================================================================================================
 
+    Choice_Dictionary = {
+        'conc_unit_lst':'Unit_Concentration',
+        'conc_type_lst':'Concentration_Type',
+        'solvent_conc_unit':'Unit_Concentration',
+    }
 
     plate_id = models.ForeignKey(TestPlate, null=True, blank=True, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
         db_column="plate_id", related_name="%(class)s_plateid")
     well_id = models.CharField(max_length=5, blank=False, verbose_name = "Well ID")
 
-    # solvent = models.CharField(max_length=25)
-    # solvent_conc = models.DecimalField(max_digits=12, decimal_places=4)
-    # solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Conc Unit", on_delete=models.DO_NOTHING,
-    #      db_column="solvent_conc_unit", related_name="%(class)s_solvconcunit")
+    set_lst = ArrayField(models.CharField(max_length=5, blank=True),
+                                 size=Sample_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
+
+    volume = models.DecimalField(default=0, max_digits=12, decimal_places=4, verbose_name = "Volume [uL]")
+    # volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Volume Unit", on_delete=models.DO_NOTHING,
+    #      db_column="volume_unit", related_name="%(class)s_volume_unit")
+
+    solvent = models.CharField(max_length=25, blank=True, verbose_name = "Solvent" )
+    solvent_conc = models.DecimalField(default=0, max_digits=12, decimal_places=4, verbose_name = "SolvConc")
+    solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "SolvConc Unit", on_delete=models.DO_NOTHING,
+         db_column="solvent_conc_unit", related_name="%(class)s_solvent_conc_unit")
 
     is_control = models.BooleanField(default=False, verbose_name = "is Control")
     is_poscontrol = models.BooleanField(default=False, verbose_name = "is PosCtrl")
@@ -396,14 +401,21 @@ class TestWell(Sample_Base):
     is_skip = models.BooleanField(default=False, verbose_name = "is Skip")
     is_valid = models.BooleanField(default=False, verbose_name = "is Valid")
     
-    readouts = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
-    readout_types = ArrayField(models.CharField(max_length=5),size=4)
+    readouts = ArrayField(models.DecimalField(max_digits=12, decimal_places=5),size=4)
+    readout_types = ArrayField(models.CharField(max_length=15),size=4)
     
-    inhibition = models.DecimalField(max_digits=7, decimal_places=2)
-    zscore = models.DecimalField(max_digits=7, decimal_places=2)
-    mscore = models.DecimalField(max_digits=7, decimal_places=2)
-    bscore = models.DecimalField(max_digits=7, decimal_places=2)
-    
+    inhibition = models.DecimalField(max_digits=9, decimal_places=3)
+    zscore = models.DecimalField(max_digits=9, decimal_places=3)
+    mscore = models.DecimalField(max_digits=9, decimal_places=3)
+#    bscore = models.DecimalField(max_digits=9, decimal_places=3)
+
+    #-------------------------------------------------------------------------------
+    def __init__(self, PlateID = None, WellID = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.plate_id = PlateID
+        self.well_id = WellID
+
+    #-------------------------------------------------------------------------------
     class Meta:
         app_label = 'dplate'
         db_table = 'testwell'
@@ -413,3 +425,36 @@ class TestWell(Sample_Base):
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
         ]
+
+    #-------------------------------------------------------------------------------
+    def __str__(self):
+        return f"{self.plate_id} {self.well_id}"
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def get(cls,PlateID,WellID, verbose=0):
+        try:
+            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+        except:
+            if verbose:
+                print(f"[Well Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID):
+        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+    
+    #------------------------------------------------  
+    def lst_to_string(self):
+        super().lst_to_string()
+        self.sets        = COMPOUND_SEP.join([str(x) for x in self.set_lst if x > 0])
+
+    #------------------------------------------------  
+    def string_to_lst(self):
+        super().string_to_lst()
+        self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
+

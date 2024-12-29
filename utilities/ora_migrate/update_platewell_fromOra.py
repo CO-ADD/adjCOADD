@@ -32,6 +32,8 @@ logging.basicConfig(
 
 #-----------------------------------------------------------------------------
 
+#def convert_oraCmpBatch_djCmpBatch(CmpLst):
+
 def main(prgArgs,djDir):
 
     sys.path.append(djDir)
@@ -39,7 +41,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields
+    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
@@ -78,19 +80,12 @@ def main(prgArgs,djDir):
 
         # Settings
         renameCol = {
-            "media_id":  "test_media",
-            "issues":    "test_issues",
-            "volume":    "test_volume",
-            "processing":       "test_processing",
-            "n_dr":      "n_doseresponse",
-            "n_syn":   "n_synergies",
-            "has_readout":   "n_reads",
-            "has_compound":   "n_sample",
-            "has_layout":   "n_layout",
-            "nreads":   "n_readouts",
-            "readout_id" : "readout_type",
-            "layout_control" : "control_layout",
-            "assaytype_id" : "assay_id" 
+            "iscontrol":  "is_control",
+            "isposcontrol":    "is_poscontrol",
+            "isnegcontrol":    "is_negcontrol",
+            "issample":       "is_sample",
+            "isvalid":      "is_valid",
+            "isskip":   "is_skip",
         }
 
         replaceValues = {
@@ -98,38 +93,112 @@ def main(prgArgs,djDir):
             'plate_size':{'384w':384,'96w':96,},
         }
 
-        arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
-                       'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
-                       'poscontrol_stats':['poscontrol_median','poscontrol_mad','poscontrol_ave','poscontrol_stdev'], 
-                       'negcontrol_stats':['negcontrol_median','negcontrol_mad','negcontrol_ave','negcontrol_stdev'], 
-                       'sample_stats':['sample_median','sample_mad','sample_ave','sample_stdev'], 
-                       'edge_stats':['edge_median','nonedge_median'], 
+        arrayFields = {'cmpbatch_lst':['compound_id','compound2_id','compound3_id','compound4_id'],
+                       'conc_lst':['conc','conc2','conc3','conc4',],
+                       'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
+                       'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
+                       'set_lst':['set_id','set2_id','set3_id','set4_id'], 
+                       'readouts':['readout','readouta','readoutb'], 
                        }
-        copyFields = ['plating','process_status',
-                      'test_date','test_media','test_dye','test_additive','test_issues','test_volume',
-                      'reader','experiment', 'protocol', 'inputfile','test_processing',
-                      'control_layout','readout_type',
-                      'plate_qc', 'zfactor','analysis_parameter',
-                      'n_inhibition','n_doseresponse','n_synergies','n_readouts',
-                      'n_reads', 'n_sample', 'n_layout',
+        
+        copyFields = ['zscore','mscore',
+                      'inhibition','active','pscore',
+                      'is_skip','is_sample', 'is_negcontrol', 'is_poscontrol','is_control','is_valid',
+                      'volume',
+                      'solvent', 'solvent_conc',
                       ]
-        dictFields = ['result_type','plate_quality','plate_type']
+        dictFields = ['solvent_conc_unit']
         fkeyFields = {'plate_id':TestPlate}
 
 
         CastDB.exec(twSQL)  
-        sql_columns = [i[0] for i in CastDB.cursor.description]
+        sql_columns = [i[0].lower() for i in CastDB.cursor.description]
+        print(sql_columns)
 
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
-            # gen Dict
+
+            OutNumbers['Processed'] += 1
+            NewEntry = False
+            validStatus = True
+
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
 
-            # for k_old in renameCol:
-            #     row[renameCol[k_old]] = row.pop(k_old)
+            for k_old in renameCol:
+                row[renameCol[k_old]] = row.pop(k_old)
+            if 'solvent_conc_unit' in row:
+                row['solvent_conc_unit'] = row['solvent_conc_unit'].lower()
+
+
+            NewEntry = False
+            djPlate = TestPlate.get(row['plate_id'])
+            if djPlate:
+                djWell = TestWell.get(row['plate_id'],row['well_id'])
+                if djWell is None:
+                    djWell = TestWell(djPlate,row['well_id'])
+                    NewEntry = True
+                    OutNumbers['New Entry'] += 1
+                #print(f" {OutName} {djWell} ")
+
+                set_dictFields(djWell,row,copyFields)
+                set_arrayFields(djWell,row,arrayFields)
+                set_Dictionaries(djWell,row,dictFields)
+
+                # Fix Readout_types
+                _readout = []
+                if len(djWell.readouts) == 1:
+                    _readout.append(djPlate.readout_type)
+                elif len(djWell.readouts) > 1:
+                    if djPlate.readout_type == 'OD570-600':
+                        _readout.append('OD570-600')
+                        _readout.append('OD570')
+                        _readout.append('OD600')
+                djWell.readout_types = _readout
+
+                # Fix CmpBatch ID's
+                for _old in djWell.cmpbatch_lst:
+                    _new_lst = []
+                    if _old is not None:
+                        if 'MCC_' in _old:
+                            _new = _old.replace('MCC_','MCC')
+                        else:
+                            print(_old)
+                            _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
+                    else:
+                        _new = None
+                    _new_lst.append(_new)
+
+                djWell.cmpbatch_lst = _new_lst
+                validDict = djWell.check_cmpbatch_id()
+                if validDict:
+                    validStatus = False    
+                    print(validDict)
+
+                validDict = djWell.check_conc_unit_dictionary()
+                if validDict:
+                    validStatus = False    
+                    print(validDict)
+
+                djWell.clean_Fields()
+                validDict = djWell.validate(exclude=list(arrayFields.keys()))
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        print('Warning',k,validDict[k],'-')
+                    OutDict.append(row)
+
+                if validStatus:
+                    if prgArgs.upload:
+                        if NewEntry or prgArgs.overwrite:
+                            OutNumbers['Upload Entries'] += 1
+                            djWell.save(user=prgArgs.appuser)
+            else:
+                print(f"{OutName} Plate {row['plate_id']} not found")
 
             #print(f"{row['plate_id']} {row['well_id']}")
+        print(f"{OutName} {OutNumbers}")
+        #print(OutDict)
         CastDB.close()
 
         # tpDF = get_oraTestWells(int(prgArgs.test))

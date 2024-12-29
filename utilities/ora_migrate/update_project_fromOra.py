@@ -135,7 +135,6 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # Table -------------------------------------------------------------
-
     if prgArgs.table == "ProjectID" :
 
         prjDF = get_oraProject()

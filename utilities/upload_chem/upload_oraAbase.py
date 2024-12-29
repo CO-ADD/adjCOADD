@@ -3,17 +3,17 @@ import datetime
 import csv
 import pandas as pd
 import numpy as np
-import argparse
-
-from zSql import zSqlConnector
-from rdkit import Chem 
+import configargparse
+from pathlib import Path
 
 from tqdm import tqdm
 # from zUtils import zData
 
 import django
-#from djCOADD import djOrgDB
-from oraAbase import oraABase
+
+# from zUtils import zData
+from oraABase.oraABase import openABase, get_CompoundBatch
+#from rdkit import Chem 
 #-----------------------------------------------------------------------------
 
 # Logger ----------------------------------------------------------------
@@ -31,11 +31,42 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-def openABase(User='chemdb', Passwd='CHEMDB'):
-    db = zSqlConnector.Oracle()
-    logger.info("[ChemDB] Connecting to oraChem ")
-    db.open(User,Passwd,"imb-coadd-db.imb.uq.edu.au","1521","coadb")
-    return(db)
+
+#-----------------------------------------------------------------------------
+def get_AbaseRegView(test=0):
+
+    renameCol = {
+        "labware_addon":  "labware_notes",
+        "material":       "plate_material",
+        "work_volume" :   "working_volume",
+    }
+
+    replaceValues = {
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    _SQL = "Select * from ObjdRgst_View "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        _SQL += f" Fetch First {test} Rows Only "
+
+    ABaseDB = openABase()
+    logger.info(f"[RegView] ... ")
+    _DF = pd.DataFrame(ABaseDB.get_dict_list(_SQL))
+    nTotal = len(_DF)
+    logger.info(f"[RegView] {nTotal} ")
+    ABaseDB.close()
+
+    # logger.info(f"DF - Rename Columns {len(renameCol)}")
+    # _DF.rename(columns=renameCol, inplace=True)
+
+    # logger.info(f"DF - Replace Values {len(replaceValues)}")
+    # for k in replaceValues:
+    #     _DF[k].replace(replaceValues[k],inplace=True)
+
+    return(_DF)
+
 
 def main(prgArgs,djDir):
 
@@ -56,8 +87,62 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
  
-   # TestWells -------------------------------------------------------------
+   # ABase -------------------------------------------------------------
+    if prgArgs.table == "RegView" :
 
+        OutName = "[RegView]"
+        OutDict = []
+        OutFile = f"UpdateRegView_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
+        print(f"{OutName} ---------------------------------------------------------")
+        regDF = get_AbaseRegView(int(prgArgs.test))
+        print("--------------------------------------------------------------------")
+        print(f"{OutName} {regDF.columns} ")
+
+        
+        for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc=OutName):
+            #print(row)
+            OutNumbers['Processed'] += 1
+            NewEntry = False
+            validStatus = True
+            _batch_id = f"{row['objdid'].replace('_','')}_{row['objdbatchref']}"
+
+            djObj = Compound_Batch.get(_batch_id)
+            if djObj is None:
+                NewEntry = True
+                djObj = Compound_Batch()
+                djObj.cmpbatch_id = _batch_id
+                djObj.batch_id = row['objdbatchref']
+
+            djObj.full_mf = row['rgstfullmolformula']
+            djObj.full_mw = row['rgstfullmolmassvalue']
+            djObj.batch_source = 'ABASE'
+            djObj.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
+            if 'rgstdrugname' in row:
+                djObj.batch_notes = row['rgstdrugname']
+
+            djObj.clean_Fields()
+            validDict = djObj.validate()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    print('Warning',k,validDict[k],'-')
+                OutDict.append(row)
+            #print(f" {validStatus} {prgArgs.upload}")
+            if validStatus:
+                if prgArgs.upload:
+                    if NewEntry or prgArgs.overwrite:
+                        OutNumbers['Upload Entries'] += 1
+                        djObj.save(user=prgArgs.appuser)
+
+        print(f"{OutName} {OutNumbers}")
+        print(OutDict)
+
+ 
+
+
+        #get_CompoundBatch 
 
 #==============================================================================
 if __name__ == "__main__":
