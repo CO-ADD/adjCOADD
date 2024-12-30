@@ -58,7 +58,11 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
- 
+    # For Testing
+    # D000092208 (AntiBio_R009) - DR compound_id is null
+    # E00095668 (OPXP_R25) - synMIC set_id/conc_type not null
+    # HC162-09-21 
+    # E00092682 - SC
    # TestWells -------------------------------------------------------------
     if prgArgs.table == "TestWells" :
 
@@ -71,7 +75,10 @@ def main(prgArgs,djDir):
         CastDB = openCastDB()
 
         twSQL = "Select * From TestWell "
-        if int(prgArgs.test) > 0:
+        if prgArgs.plateid:
+            twSQL = f"Select * From TestWell Where plate_id = '{prgArgs.plateid}'"
+            nWells = CastDB.nCount(f"Select count(1) From TestWell Where plate_id = '{prgArgs.plateid}'" )
+        elif int(prgArgs.test) > 0:
             twSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
             nWells = int(prgArgs.test)
         else:
@@ -116,6 +123,7 @@ def main(prgArgs,djDir):
         print(sql_columns)
 
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
+#        for crow in CastDB.cursor:
 
             OutNumbers['Processed'] += 1
             NewEntry = False
@@ -131,13 +139,19 @@ def main(prgArgs,djDir):
                 if row['solvent_conc_unit'] is not None:
                     row['solvent_conc_unit'] = row['solvent_conc_unit'].lower()
 
+            debugWells = ['A18','A17']
+            # if row['well_id'] in debugWells:
+            #     print(" [D]---------------------------------------------------------------------------------")
+            # print(f" [D] {row}")
 
             NewEntry = False
             djPlate = TestPlate.get(row['plate_id'])
             if djPlate:
-                djWell = TestWell.get(row['plate_id'],row['well_id'])
+                djWell = TestWell.get(djPlate,row['well_id'])
                 if djWell is None:
-                    djWell = TestWell(djPlate,row['well_id'])
+                    djWell = TestWell()
+                    djWell.plate_id = djPlate
+                    djWell.well_id = row['well_id']
                     NewEntry = True
                     OutNumbers['New Entry'] += 1
                 #print(f" {OutName} {djWell} ")
@@ -145,6 +159,9 @@ def main(prgArgs,djDir):
                 set_dictFields(djWell,row,copyFields)
                 set_arrayFields(djWell,row,arrayFields)
                 set_Dictionaries(djWell,row,dictFields)
+
+                # if djWell.well_id in debugWells:
+                #     print(f" [D00] {djWell.well_id} {djWell.n_cmpbatches}")
 
                 # Fix Readout_types
                 _readout = []
@@ -158,11 +175,12 @@ def main(prgArgs,djDir):
                 djWell.readout_types = _readout
 
                 # Fix CmpBatch ID's
+                _new_lst = []
                 for _old in djWell.cmpbatch_lst:
-                    _new_lst = []
                     if _old is not None:
                         if 'MCC_' in _old:
-                            _new = _old.replace('MCC_','MCC')
+                            _new = _old.replace('MCC_','MCC').replace(":","_")
+#                            _new = _old.replace('MCC_','MCC')
                         else:
                             _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
                     else:
@@ -170,30 +188,43 @@ def main(prgArgs,djDir):
                     _new_lst.append(_new)
 
                 djWell.cmpbatch_lst = _new_lst
+                djWell.n_cmpbatches = len(_new_lst)
+
+                # if djWell.well_id in debugWells:
+                #     print(f" [D10] {djWell.well_id} {djWell.n_cmpbatches}")
+
                 validDict = djWell.check_cmpbatch_id()
                 if validDict:
                     validStatus = False    
-                    print(validDict)
+                    #print(validDict)
+                    row.update(validDict)
 
                 validDict = djWell.check_conc_unit_dictionary()
                 if validDict:
                     validStatus = False    
-                    print(validDict)
+                    #print(validDict)
+                    row.update(validDict)
 
                 djWell.clean_Fields()
                 validDict = djWell.validate(exclude=list(arrayFields.keys()))
                 if validDict:
                     validStatus = False
-                    for k in validDict:
-                        print('Warning',k,validDict[k],'-')
-                    OutDict.append(row)
+                    # for k in validDict:
+                    #     print('Warning',k,validDict[k],'-')
+                    row.update(validDict)
+
+                # if djWell.well_id in debugWells:
+                #     print(f" [D99] {djWell.well_id} {djWell.cmpbatch_lst}")
 
                 if validStatus:
                     if prgArgs.upload:
                         if NewEntry or prgArgs.overwrite:
                             OutNumbers['Upload Entries'] += 1
                             djWell.save(user=prgArgs.appuser)
+                            # if djWell.well_id in debugWells:
+                            #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
                 else:
+                    print(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
                     OutDict.append(row)
             else:
                 print(f"{OutName} Plate {row['plate_id']} not found")
@@ -234,7 +265,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-#    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
+    prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
 

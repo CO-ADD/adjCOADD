@@ -77,22 +77,25 @@ class Sample_Base(AuditModel):
 
     #------------------------------------------------  
     def check_conc_unit_dictionary(self):
-        _missing_conc_unit =[]
-        for u in [x for x in self.conc_unit_lst if x != ""]:
-            _d = Dictionary.get(self.Choice_Dictionary['conc_unit_lst'],u)
-            if not _d:
-                _missing_conc_unit.append(u)
-        return(_missing_conc_unit)
+        _missing = []
+        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
+            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
+                _missing.append(conc_unit)
+        if len(_missing) > 0:
+            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
+        else:
+            return(None)
 
     #------------------------------------------------  
     def check_cmpbatch_id(self):
-        _missing_cmpbatch =[]
+        _missing =[]
         for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-            try:
-                _e = Compound_Batch.get(cmpbatch_id)
-            except:
-                _missing_cmpbatch.append(cmpbatch_id)
-        return(_missing_cmpbatch)
+            if not Compound_Batch.exists(cmpbatch_id):
+                _missing.append(cmpbatch_id)
+        if len(_missing) > 0:
+            return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
+        else:
+            return(None)
 
     #------------------------------------------------  
     def __str__(self) -> str:

@@ -378,7 +378,7 @@ class TestWell(Sample_Base):
         'solvent_conc_unit':'Unit_Concentration',
     }
 
-    plate_id = models.ForeignKey(TestPlate, null=True, blank=True, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
+    plate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
         db_column="plate_id", related_name="%(class)s_plateid")
     well_id = models.CharField(max_length=5, blank=False, verbose_name = "Well ID")
 
@@ -402,7 +402,8 @@ class TestWell(Sample_Base):
     is_valid = models.BooleanField(default=False, verbose_name = "is Valid")
     
     readouts = ArrayField(models.DecimalField(max_digits=12, decimal_places=5),size=4)
-    readout_types = ArrayField(models.CharField(max_length=15),size=4)
+    readout_types = ArrayField(models.CharField(max_length=15, blank=True),
+                               size=4, verbose_name = "Readout types", null=True, blank=True)
     
     inhibition = models.DecimalField(max_digits=9, decimal_places=3)
     zscore = models.DecimalField(max_digits=9, decimal_places=3)
@@ -410,18 +411,15 @@ class TestWell(Sample_Base):
 #    bscore = models.DecimalField(max_digits=9, decimal_places=3)
 
     #-------------------------------------------------------------------------------
-    def __init__(self, PlateID = None, WellID = None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.plate_id = PlateID
-        self.well_id = WellID
-
-    #-------------------------------------------------------------------------------
     class Meta:
         app_label = 'dplate'
         db_table = 'testwell'
         ordering=['plate_id','well_id']
+        constraints = [
+            models.UniqueConstraint(name='testwell_loc_cst', fields=['plate_id', 'well_id'], )
+        ]        
         indexes = [
-            models.Index(name="testwell_tptw_idx",fields=['plate_id','well_id']),
+            models.Index(name="testwell_wid_idx",fields=['well_id']),
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
         ]
@@ -431,9 +429,9 @@ class TestWell(Sample_Base):
         return f"{self.plate_id} {self.well_id}"
 
     #------------------------------------------------
-    # Returns an User instance if found by name
+    # Returns an TestWell instance if found by plate_id and well_id
     @classmethod
-    def get(cls,PlateID,WellID, verbose=0):
+    def get(cls,PlateID,WellID,verbose=0):
         try:
             retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
         except:
@@ -447,7 +445,11 @@ class TestWell(Sample_Base):
     @classmethod
     def exists(cls,PlateID,WellID):
         return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
-    
+
+    # #------------------------------------------------
+    # def save(self, *args, **kwargs):
+    #         super(TestWell, self).save(*args, **kwargs) 
+
     #------------------------------------------------  
     def lst_to_string(self):
         super().lst_to_string()
