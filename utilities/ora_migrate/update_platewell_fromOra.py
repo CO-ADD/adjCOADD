@@ -154,7 +154,8 @@ def main(prgArgs,djDir):
                     djWell.well_id = row['well_id']
                     NewEntry = True
                     OutNumbers['New Entry'] += 1
-                #print(f" {OutName} {djWell} ")
+
+                    #print(f" {OutName} {djWell} ")
 
                 set_dictFields(djWell,row,copyFields)
                 set_arrayFields(djWell,row,arrayFields)
@@ -182,49 +183,58 @@ def main(prgArgs,djDir):
                             _new = _old.replace('MCC_','MCC').replace(":","_")
 #                            _new = _old.replace('MCC_','MCC')
                         else:
-                            _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
+                            try:
+                                _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
+                            except:
+                                _new = None
+                                validStatus = False
                     else:
                         _new = None
                     _new_lst.append(_new)
 
-                djWell.cmpbatch_lst = _new_lst
-                djWell.n_cmpbatches = len(_new_lst)
-
-                # if djWell.well_id in debugWells:
-                #     print(f" [D10] {djWell.well_id} {djWell.n_cmpbatches}")
-
-                validDict = djWell.check_cmpbatch_id()
-                if validDict:
-                    validStatus = False    
-                    #print(validDict)
-                    row.update(validDict)
-
-                validDict = djWell.check_conc_unit_dictionary()
-                if validDict:
-                    validStatus = False    
-                    #print(validDict)
-                    row.update(validDict)
-
-                djWell.clean_Fields()
-                validDict = djWell.validate(exclude=list(arrayFields.keys()))
-                if validDict:
-                    validStatus = False
-                    # for k in validDict:
-                    #     print('Warning',k,validDict[k],'-')
-                    row.update(validDict)
-
-                # if djWell.well_id in debugWells:
-                #     print(f" [D99] {djWell.well_id} {djWell.cmpbatch_lst}")
-
                 if validStatus:
-                    if prgArgs.upload:
-                        if NewEntry or prgArgs.overwrite:
-                            OutNumbers['Upload Entries'] += 1
-                            djWell.save(user=prgArgs.appuser)
-                            # if djWell.well_id in debugWells:
-                            #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
+
+                    djWell.cmpbatch_lst = _new_lst
+                    djWell.n_cmpbatches = len(_new_lst)
+
+                    # if djWell.well_id in debugWells:
+                    #     print(f" [D10] {djWell.well_id} {djWell.n_cmpbatches}")
+
+                    validDict = djWell.check_cmpbatch_id()
+                    if validDict:
+                        validStatus = False    
+                        #print(validDict)
+                        row.update(validDict)
+
+                    validDict = djWell.check_conc_unit_dictionary()
+                    if validDict:
+                        validStatus = False    
+                        #print(validDict)
+                        row.update(validDict)
+
+                    djWell.clean_Fields()
+                    validDict = djWell.validate(exclude=list(arrayFields.keys()))
+                    if validDict:
+                        validStatus = False
+                        # for k in validDict:
+                        #     print('Warning',k,validDict[k],'-')
+                        row.update(validDict)
+
+                    # if djWell.well_id in debugWells:
+                    #     print(f" [D99] {djWell.well_id} {djWell.cmpbatch_lst}")
+
+                    if validStatus:
+                        if prgArgs.upload:
+                            if NewEntry or prgArgs.overwrite:
+                                OutNumbers['Upload Entries'] += 1
+                                djWell.save(user=prgArgs.appuser)
+                                # if djWell.well_id in debugWells:
+                                #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
+                    else:
+                        print(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
+                        OutDict.append(row)
                 else:
-                    print(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
+                    row.update({'Error': ' Old Compound_ID not found'})
                     OutDict.append(row)
             else:
                 print(f"{OutName} Plate {row['plate_id']} not found")
