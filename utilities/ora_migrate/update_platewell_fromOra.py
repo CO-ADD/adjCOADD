@@ -280,7 +280,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
-    prgParser.add_argument("--new",default=0,required=False, dest="new", action='store', help="Not migrated entries only")
+    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
