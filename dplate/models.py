@@ -18,6 +18,8 @@ from dcell.models import Cell_Batch
 from dsample.models import Sample_Base
 from adjcoadd.constants import *
 
+import logging
+logger = logging.getLogger(__name__)
 
 #-------------------------------------------------------------------------------------------------
 # Plate Information - Test/Master Plates/Wells, and Labware
@@ -132,7 +134,7 @@ class Plate(AuditModel):
                 retInstance.n_wells = retInstance.get_wells()
         except:
             if verbose:
-                print(f"[Plate Not Found] {PlateID} ")
+                logger.warning(f"[Plate Not Found] {PlateID} ")
             retInstance = None
         return(retInstance)
 
@@ -436,7 +438,7 @@ class TestWell(Sample_Base):
             retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
         except:
             if verbose:
-                print(f"[Well Not Found] {PlateID} {WellID}")
+                logger.warning(f"[Well Not Found] {PlateID} {WellID}")
             retInstance = None
         return(retInstance)
 

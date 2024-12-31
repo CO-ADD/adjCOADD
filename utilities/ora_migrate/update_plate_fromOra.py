@@ -20,14 +20,14 @@ from oraCastDB import oraCastDB
 import logging
 logTime= datetime.datetime.now()
 logName = "Upload_Plate"
-#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format="[%(name)-20s] %(message)s ",
-#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    handlers=[logging.StreamHandler()],
+    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+#    handlers=[logging.StreamHandler()],
     level=logLevel)
 
 #-----------------------------------------------------------------------------
@@ -194,10 +194,10 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateTestPlates_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
-        print(f"{OutName} ---------------------------------------------------------")
+        logger.info(f"{OutName} ---------------------------------------------------------")
         tpDF = get_oraTestPlates(int(prgArgs.test))
-        print("--------------------------------------------------------------------")
-        print(f"{OutName} {tpDF.columns} ")
+        logger.info("--------------------------------------------------------------------")
+        logger.info(f"{OutName} {tpDF.columns} ")
 
         arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
                        'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
@@ -271,7 +271,7 @@ def main(prgArgs,djDir):
             if validDict:
                 validStatus = False
                 for k in validDict:
-                    print('Warning',k,validDict[k],'-')
+                    logger.warning('Warning',k,validDict[k],'-')
                 OutDict.append(row)
 
             if validStatus:
@@ -279,8 +279,8 @@ def main(prgArgs,djDir):
                     if NewEntry or prgArgs.overwrite:
                         OutNumbers['Upload Entries'] += 1
                         djObj.save(user=prgArgs.appuser)
-        print(f"{OutName} {OutNumbers}")
-        print(OutDict)
+        logger.info(f"{OutName} {OutNumbers}")
+        logger.info(OutDict)
 
 
    # Labware -------------------------------------------------------------
@@ -291,10 +291,10 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateLabware_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
-        print(f"{OutName} ---------------------------------------------------------")
+        logger.info(f"{OutName} ---------------------------------------------------------")
         lwDF = get_oraLabware(int(prgArgs.test))
-        print("--------------------------------------------------------------------")
-        print(f"{OutName} {lwDF.columns} ")
+        logger.info("--------------------------------------------------------------------")
+        logger.info(f"{OutName} {lwDF.columns} ")
 
 
         arrayFields = {}
@@ -326,7 +326,7 @@ def main(prgArgs,djDir):
             if validDict:
                 validStatus = False
                 for k in validDict:
-                    print('Warning',k,validDict[k],'-')
+                    logger.warning('Warning',k,validDict[k],'-')
                 OutDict.append(row)
 
             if validStatus:
@@ -334,7 +334,7 @@ def main(prgArgs,djDir):
                     if NewEntry or prgArgs.overwrite:
                         OutNumbers['Upload Entries'] += 1
                         djObj.save(user=prgArgs.appuser)
-        print(f"{OutName} {OutNumbers}")
+        logger.info(f"{OutName} {OutNumbers}")
 #==============================================================================
 if __name__ == "__main__":
 

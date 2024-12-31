@@ -21,6 +21,8 @@ CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
                           ('ABASE','ResearchGrp CmpBatch'),
                           ('LIBRARY','Library CmpBatch'),
                         )
+import logging
+logger = logging.getLogger(__name__)
 
 #-------------------------------------------------------------------------------------------------
 class Sample_Base(AuditModel):    
@@ -226,7 +228,7 @@ class Project(AuditModel):
         except:
             retInstance = None
             if verbose:
-                print(f"[Project Not Found] {ProjectID} ")
+                logger.warning(f"[Project Not Found] {ProjectID} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -302,9 +304,9 @@ class Library(AuditModel):
             retInstance = None
             if verbose:
                 if LibraryID:
-                    print(f"[Library Not Found] {LibraryID} ")
+                    logger.warning(f"[Library Not Found] {LibraryID} ")
                 elif LibraryName:
-                    print(f"[Library Not Found] {LibraryName} ")
+                    logger.warning(f"[Library Not Found] {LibraryName} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -388,7 +390,7 @@ class Compound_Batch(AuditModel):
         except:
             retInstance = None
             if verbose:
-                print(f"[CmpBatch Not Found] {CmpBatchID} ")
+                logger.warning(f"[CmpBatch Not Found] {CmpBatchID} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -539,7 +541,7 @@ class COADD_Compound(AuditModel):
         except:
             retInstance = None
             if verbose:
-                print(f"[Compound Not Found] {CompoundID} ")
+                logger.warning(f"[Compound Not Found] {CompoundID} ")
         return(retInstance)
 
     #------------------------------------------------
@@ -573,7 +575,7 @@ class COADD_Compound(AuditModel):
                 super(COADD_Compound, self).save(*args, **kwargs)
         else:
             self.save_batch()
-            #print(f" [Save COADD Compound] {self} {self.std_status}")
+            #logger.info(f" [Save COADD Compound] {self} {self.std_status}")
             super(COADD_Compound, self).save(*args, **kwargs) 
 
 
@@ -664,9 +666,9 @@ class Library_Compound(AuditModel):
             retInstance = None
             if verbose:
                 if CompoundID:
-                    print(f"[Compound Not Found] {CompoundID} ")
+                    logger.warning(f"[Compound Not Found] {CompoundID} ")
                 elif CompoundCode and LibraryID:
-                    print(f"[Compound Not Found] {CompoundCode} in {LibraryID} ")
+                    logger.warning(f"[Compound Not Found] {CompoundCode} in {LibraryID} ")
         return(retInstance)
 
     #------------------------------------------------

@@ -20,14 +20,14 @@ from oraCastDB.oraCastDB import openCastDB
 import logging
 logTime= datetime.datetime.now()
 logName = "Upload_Well"
-#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format="[%(name)-20s] %(message)s ",
-#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    handlers=[logging.StreamHandler()],
+    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+#    handlers=[logging.StreamHandler()],
     level=logLevel)
 
 #-----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateTestWells_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
-        print(f"{OutName} ---------------------------------------------------------")
+        logger.info(f"{OutName} ---------------------------------------------------------")
         CastDB = openCastDB()
 
         twSQL = "Select * From TestWell "
@@ -83,7 +83,7 @@ def main(prgArgs,djDir):
             nWells = int(prgArgs.test)
         else:
             nWells = CastDB.nCount("Select count(1) From TestWell" )
-        print(f"{OutName} {nWells} ")
+        logger.info(f"{OutName} {nWells} ")
 
         # Settings
         renameCol = {
@@ -120,7 +120,7 @@ def main(prgArgs,djDir):
 
         CastDB.exec(twSQL)  
         sql_columns = [i[0].lower() for i in CastDB.cursor.description]
-        print(sql_columns)
+        logger.info(sql_columns)
 
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
 #        for crow in CastDB.cursor:
@@ -231,29 +231,29 @@ def main(prgArgs,djDir):
                                 # if djWell.well_id in debugWells:
                                 #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
                     else:
-                        print(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
+                        logger.info(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
                         OutDict.append(row)
                 else:
                     row.update({'Error': ' Old Compound_ID not found'})
                     OutDict.append(row)
             else:
-                print(f"{OutName} Plate {row['plate_id']} not found")
+                logger.info(f"{OutName} Plate {row['plate_id']} not found")
                 OutDict.append(row)
 
             #print(f"{row['plate_id']} {row['well_id']}")
         if len(OutDict) > 0:
-            print(f"Writing Issues: {OutFile}")
+            logger.info(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(OutDict)
             outDF.to_excel(OutFile)
         else:
-            print(f"No Issues")
+            logger.info(f"No Issues")
 
-        print(f"{OutName} {OutNumbers}")
+        logger.info(f"{OutName} {OutNumbers}")
         #print(OutDict)
         CastDB.close()
 
         # tpDF = get_oraTestWells(int(prgArgs.test))
-        print("--------------------------------------------------------------------")
+        logger.info("--------------------------------------------------------------------")
 #        print(f"{OutName} {tpDF.columns} ")
 
 

@@ -10,9 +10,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django import forms
 from django.utils import timezone
-import logging
-
 from adjcoadd.constants import *
+
+import logging
+logger = logging.getLogger(__name__)
 
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
@@ -257,7 +258,7 @@ class AuditModel(models.Model):
             retInstance = cls.objects.get(pk=pkID)
         except:
             if verbose:
-                print(f"[{cls.__name__} Not Found] {pkID} ")
+                logger.warning(f"[{cls.__name__} Not Found] {pkID} ")
             retInstance = None
         return(retInstance)
     #------------------------------------------------
@@ -484,14 +485,14 @@ class Dictionary(AuditModel):
                 retDict = cls.objects.get(dict_value=DictValue, dict_class=DictClass)
             except:
                 if verbose:
-                    print(f"[Dict Value Not Found] {DictValue} {DictClass}")
+                    logger.warning(f"[Dict Value Not Found] {DictValue} {DictClass}")
                 retDict = None
         elif DictDesc:
             try:
                 retDict = cls.objects.get(dict_desc=DictDesc, dict_class=DictClass)
             except:
                 if verbose:
-                    print(f"[Dict Desc Not Found] {DictDesc} {DictClass}")
+                    logger.warning(f"[Dict Desc Not Found] {DictDesc} {DictClass}")
                 retDict = None
         else:
             retDict = None
