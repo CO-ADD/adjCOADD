@@ -412,6 +412,7 @@ class TestWell(Sample_Base):
     mscore = models.DecimalField(max_digits=9, decimal_places=3)
 #    bscore = models.DecimalField(max_digits=9, decimal_places=3)
 
+    chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
     #-------------------------------------------------------------------------------
     class Meta:
         app_label = 'dplate'
@@ -424,6 +425,7 @@ class TestWell(Sample_Base):
             models.Index(name="testwell_wid_idx",fields=['well_id']),
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
+            models.Index(name="testwell_chkm_idx",fields=['chk_migration']),
         ]
 
     #-------------------------------------------------------------------------------

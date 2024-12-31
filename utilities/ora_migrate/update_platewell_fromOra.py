@@ -74,17 +74,23 @@ def main(prgArgs,djDir):
         logger.info(f"{OutName} ---------------------------------------------------------")
         CastDB = openCastDB()
 
-        twSQL = "Select * From TestWell "
+        twSQL = ""
         if prgArgs.plateid:
             twSQL = f"Select * From TestWell Where plate_id = '{prgArgs.plateid}'"
             nWells = CastDB.nCount(f"Select count(1) From TestWell Where plate_id = '{prgArgs.plateid}'" )
+        elif prgArgs.new:
+            twSQL = "Select * From TestWell Where is_migrated < 1"
+            nWells = CastDB.nCount("Select count(1) From TestWell here is_migrated < 1" )
+
         elif int(prgArgs.test) > 0:
             twSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
             nWells = int(prgArgs.test)
         else:
+            twSQL = "Select * From TestWell "
             nWells = CastDB.nCount("Select count(1) From TestWell" )
         logger.info(f"{OutName} {nWells} ")
 
+        # ---------------------------------------------------------------------------------
         # Settings
         renameCol = {
             "iscontrol":  "is_control",
@@ -226,6 +232,7 @@ def main(prgArgs,djDir):
                     if validStatus:
                         if prgArgs.upload:
                             if NewEntry or prgArgs.overwrite:
+                                djWell.chk_migration = 0
                                 OutNumbers['Upload Entries'] += 1
                                 djWell.save(user=prgArgs.appuser)
                                 # if djWell.well_id in debugWells:
@@ -273,6 +280,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
+    prgParser.add_argument("--new",default=0,required=False, dest="new", action='store', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
