@@ -80,7 +80,7 @@ def main(prgArgs,djDir):
             nWells = CastDB.nCount(f"Select count(1) From TestWell Where plate_id = '{prgArgs.plateid}'" )
         elif prgArgs.new:
             twSQL = "Select * From TestWell Where is_migrated < 1"
-            nWells = CastDB.nCount("Select count(1) From TestWell here is_migrated < 1" )
+            nWells = CastDB.nCount("Select count(1) From TestWell Where is_migrated < 1" )
 
         elif int(prgArgs.test) > 0:
             twSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
