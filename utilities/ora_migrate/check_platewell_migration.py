@@ -64,7 +64,7 @@ def main(prgArgs):
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
             updSQL = f"Update TestWell Set is_migrated = 1 Where Plate_ID = '{row['plate_id']}' and Well_ID = '{row['well_id']}' "
-            oraDB.exec(updSQL)
+            oraDB.exec(updSQL,commit=True)
 
         oraDB.close()
         djDB.close()
