@@ -62,7 +62,7 @@ class Sample_Base(AuditModel):
         ]
 
     #------------------------------------------------  
-    def lst_to_string(self):
+    def conv_list_to_string(self):
         _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
         self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
         self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
@@ -71,7 +71,7 @@ class Sample_Base(AuditModel):
         self.n_cmpbatches = len(_CmpLst)
 
     #------------------------------------------------  
-    def string_to_lst(self):
+    def conv_string_to_list(self):
         self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
         self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
         self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")

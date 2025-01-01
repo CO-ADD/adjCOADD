@@ -455,12 +455,12 @@ class TestWell(Sample_Base):
     #         super(TestWell, self).save(*args, **kwargs) 
 
     #------------------------------------------------  
-    def lst_to_string(self):
-        super().lst_to_string()
+    def conv_list_to_string(self):
+        super().conv_list_to_string()
         self.sets        = COMPOUND_SEP.join([str(x) for x in self.set_lst if x > 0])
 
     #------------------------------------------------  
-    def string_to_lst(self):
-        super().string_to_lst()
+    def conv_string_to_lst(self):
+        super().conv_string_to_lst()
         self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
 
