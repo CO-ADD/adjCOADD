@@ -179,7 +179,7 @@ class AssayData_MIC(Sample_Base):
     mic = models.CharField(max_length=50, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     mic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
-    active = models.CharField(max_length=5, verbose_name = "Active")
+    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
@@ -195,10 +195,10 @@ class AssayData_MIC(Sample_Base):
 
     ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
     ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
-    ic50 = models.CharField(max_length=50, verbose_name = "IC50")
-    ic50_unit = models.CharField(max_length=20, verbose_name = "IC50 Unit")
+    ic50 = models.CharField(max_length=50, blank=True, verbose_name = "IC50")
+    ic50_unit = models.CharField(max_length=20, blank=True, verbose_name = "IC50 Unit")
     ic50_pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "IC50 pScore")
-    ic50_quality = models.CharField(max_length=20, verbose_name = "IC50 Quality")
+    ic50_quality = models.CharField(max_length=20, blank=True, verbose_name = "IC50 Quality")
     ic50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "IC50 r2")
     ic50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "IC50 Slope")
 
