@@ -133,33 +133,31 @@ class AssayData_MIC(Sample_Base):
     """
 #-------------------------------------------------------------------------------------------------
     from dplate.models import TestPlate
-    from dorganism.models import Organism, Organism_Batch
+#    from dorganism.models import Organism, Organism_Batch
 
 
     HEADER_FIELDS = {
-        "run_id":"Run ID",
-        "run_type":"Run Type",
-        "assay_note":"Assay",
-        "run_status":"Status",
-        "run_project":"Project",
-        "run_name":"Name",
-        "run_date":"Run Date",
-        "run_conditions":"Conditions",
-        "run_issues":"Issues",
+        # "run_id":"Run ID",
+        # "run_type":"Run Type",
+        # "assay_note":"Assay",
+        # "run_status":"Status",
+        # "run_project":"Project",
+        # "run_name":"Name",
+        # "run_date":"Run Date",
+        # "run_conditions":"Conditions",
+        # "run_issues":"Issues",
     }
 
     Choice_Dictionary = {
-        'run_type':'Run_Type',
-        'run_status':'Process_Status',
+        'pub_status':'Pub_Status',
     }
     
     # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")
-    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
 
     assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
-
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
@@ -256,12 +254,213 @@ class AssayData_MIC(Sample_Base):
         self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
         self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 
+#-------------------------------------------------------------------------------------------------
+class AssayData_CC50(Sample_Base):
+    """
+    List of Cytotoxicty Values
+    """
+#-------------------------------------------------------------------------------------------------
+    from dplate.models import TestPlate
 
+    HEADER_FIELDS = {
+        # "run_id":"Run ID",
+    }
+
+    Choice_Dictionary = {
+        'pub_status':'Pub_Status',
+    }
+    
+    # Primary Contraint
+    testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
+        db_column="testplate_id", related_name="%(class)s_testplateid")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
+
+    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)s_run_id") 
+
+    cc50 = models.CharField(max_length=50, blank=True, verbose_name = "CC50")
+    cc50_unit = models.CharField(max_length=20, blank=True, verbose_name = "CC50 Unit")
+    cc50_pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "CC50 pScore")
+    cc50_quality = models.CharField(max_length=20, blank=True, verbose_name = "CC50 Quality")
+    cc50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "CC50 r2")
+    cc50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CC50 Slope")
+    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
+    act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
+    pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
+
+    analysis = models.CharField(max_length=15, verbose_name = "Analysis")
+
+    inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
+    inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
+    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
+    data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+    valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
+
+    ref_cc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
+    ref_cc50_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
+
+    pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
+        db_column="pub_status", related_name="%(class)s_pub_statust")
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
+    chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
+
+    class Meta:
+        app_label = 'dscreen'
+        db_table = 'assaydata_cc50'
+        ordering=['assay_id','testplate_id','testwell_id']
+        constraints = [
+            models.UniqueConstraint(name='asscc50_loc_cst', fields=['testplate_id', 'testwell_id'], )
+        ]        
+        indexes = [
+            models.Index(name="asscc50_rid_idx",fields=['run_id']),
+            models.Index(name="asscc50_sid_idx",fields=['assay_id']),
+            models.Index(name="asscc50_asc_idx",fields=['act_score']),
+            models.Index(name="asscc50_ana_idx",fields=['analysis']),
+        #    models.Index(name="asscc50_rot_idx",fields=['readout_type']),
+            models.Index(name="asscc50_act_idx",fields=['active']),
+            models.Index(name="asscc50_psc_idx",fields=['pscore']),
+            models.Index(name="asscc50_val_idx",fields=['valid']),
+            models.Index(name="asscc50_dqy_idx",fields=['data_quality']),
+            models.Index(name="asscc50_chkm_idx",fields=['chk_migration']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID,WellID,verbose=0):
+        try:
+            retInstance = cls.objects.get(testplate_id=PlateID, testwell_id=WellID)
+        except:
+            if verbose:
+                logger.warning(f"[AssayData Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID):
+        return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
+
+    #------------------------------------------------  
+    # def conv_list_to_string(self):
+    #     super().conv_list_to_string()
+    #     self.mic_lst        = COMPOUND_SEP.join([str(x) for x in self.mic if x > 0])
+    #     self.mic_unit_lst   = COMPOUND_SEP.join([str(x) for x in self.mic_unit if x > 0])
+
+    #------------------------------------------------  
+    # def conv_string_to_lst(self):
+    #     super().conv_string_to_list()
+    #     self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
+    #     self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
+
+#-------------------------------------------------------------------------------------------------
+class AssayData_HC50(Sample_Base):
+    """
+    List of Haemolysis Values
+    """
+#-------------------------------------------------------------------------------------------------
+    from dplate.models import TestPlate
+
+    HEADER_FIELDS = {
+        # "run_id":"Run ID",
+    }
+
+    Choice_Dictionary = {
+        'pub_status':'Pub_Status',
+    }
+    
+    # Primary Contraint
+    testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
+        db_column="testplate_id", related_name="%(class)s_testplateid")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
+
+    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)s_run_id") 
+
+    hc50 = models.CharField(max_length=50, blank=True, verbose_name = "HC50")
+    hc50_unit = models.CharField(max_length=20, blank=True, verbose_name = "HC50 Unit")
+    hc50_pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "HC50 pScore")
+    hc50_quality = models.CharField(max_length=20, blank=True, verbose_name = "HC50 Quality")
+    hc50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "HC50 r2")
+    hc50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "HC50 Slope")
+    hc10 = models.CharField(max_length=50, blank=True, verbose_name = "HC10")
+
+    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
+    act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
+    pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
+
+    analysis = models.CharField(max_length=15, verbose_name = "Analysis")
+
+    inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
+    inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
+    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
+    data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+    valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
+
+    ref_hc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
+    ref_hc50_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
+
+    pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
+        db_column="pub_status", related_name="%(class)s_pub_statust")
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
+    chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
+
+    class Meta:
+        app_label = 'dscreen'
+        db_table = 'assaydata_hc50'
+        ordering=['assay_id','testplate_id','testwell_id']
+        constraints = [
+            models.UniqueConstraint(name='asshc50_loc_cst', fields=['testplate_id', 'testwell_id'], )
+        ]        
+        indexes = [
+            models.Index(name="asshc50_rid_idx",fields=['run_id']),
+            models.Index(name="asshc50_sid_idx",fields=['assay_id']),
+            models.Index(name="asshc50_asc_idx",fields=['act_score']),
+            models.Index(name="asshc50_ana_idx",fields=['analysis']),
+        #    models.Index(name="asshc50_rot_idx",fields=['readout_type']),
+            models.Index(name="asshc50_act_idx",fields=['active']),
+            models.Index(name="asshc50_psc_idx",fields=['pscore']),
+            models.Index(name="asshc50_val_idx",fields=['valid']),
+            models.Index(name="asshc50_dqy_idx",fields=['data_quality']),
+            models.Index(name="asshc50_chkm_idx",fields=['chk_migration']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID,WellID,verbose=0):
+        try:
+            retInstance = cls.objects.get(testplate_id=PlateID, testwell_id=WellID)
+        except:
+            if verbose:
+                logger.warning(f"[AssayData Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID):
+        return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
+
+    #------------------------------------------------  
+    # def conv_list_to_string(self):
+    #     super().conv_list_to_string()
+    #     self.mic_lst        = COMPOUND_SEP.join([str(x) for x in self.mic if x > 0])
+    #     self.mic_unit_lst   = COMPOUND_SEP.join([str(x) for x in self.mic_unit if x > 0])
+
+    #------------------------------------------------  
+    # def conv_string_to_lst(self):
+    #     super().conv_string_to_list()
+    #     self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
+    #     self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 #
 # Assay (?)
-# AssayData_MIC
-# AssayData_CC50
-# AssayData_HC50
 # AssayData_SynMIC
 # AssayData_SynIsobol
 #

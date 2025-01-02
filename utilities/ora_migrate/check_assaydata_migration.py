@@ -40,19 +40,25 @@ def main(prgArgs):
 
     if 'AssayData' in prgArgs.table :
 
-        OutName = f"[{prgArgs.table}]"
-        OutDict = []
-        OutFile = f"checkAssayData_inORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
-        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
         oraDB = openCastDB()
         djDB = openCoaddDB()
 
         AssayTable = {
-            "AssayData_MIC": ['assaydata_mic','dscreen.assaydata_mic']
+            "AssayData_MIC":    ['assaydata_mic','dscreen.assaydata_mic'],
+            "AssayData_CC50":   ['assaydata_cc50','dscreen.assaydata_cc50'],
+            "AssayData_HC50":   ['assaydata_hc50','dscreen.assaydata_hc50'],
+            "AssayData_SynMIC": ['assaydata_synmic','dscreen.assaydata_synmic'],
+            "AssayData_SynISO": ['assaydata_synisobol','dscreen.assaydata_syniso'],
         }
 
         if prgArgs.table in AssayTable:
+
+            OutName = f"[{prgArgs.table}]"
+            OutDict = []
+            OutFile = f"check{prgArgs.table}_inORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+            OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
         # by oraCastDB
             oraSQL = f"Select testplate_id, testwell_id From {AssayTable[prgArgs.table][0]} where is_migrated < 1"
             nEntries = oraDB.nCount(f"Select count(1) From {AssayTable[prgArgs.table][0]} where is_migrated < 1" )
