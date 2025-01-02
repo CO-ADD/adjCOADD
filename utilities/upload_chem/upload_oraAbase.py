@@ -106,13 +106,15 @@ def main(prgArgs,djDir):
             OutNumbers['Processed'] += 1
             NewEntry = False
             validStatus = True
-            _batch_id = f"{row['objdid'].replace('_','')}_{row['objdbatchref']}"
+            oraBatch_id = f"{row['objdid']}:{row['objdbatchref']}"
+            djBatch_id = f"{row['objdid'].replace('_','')}_{row['objdbatchref']}"
 
-            djObj = Compound_Batch.get(_batch_id)
+
+            djObj = Compound_Batch.get(djBatch_id)
             if djObj is None:
                 NewEntry = True
                 djObj = Compound_Batch()
-                djObj.cmpbatch_id = _batch_id
+                djObj.cmpbatch_id = djBatch_id
                 djObj.batch_id = row['objdbatchref']
 
             djObj.full_mf = row['rgstfullmolformula']
