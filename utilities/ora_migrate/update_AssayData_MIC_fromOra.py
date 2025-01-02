@@ -192,6 +192,14 @@ def main(prgArgs,djDir):
 
         logger.info(f"{OutName} {OutNumbers}")
         CastDB.close()
+
+        if len(OutDict) > 0:
+            logger.info(f"Writing Issues: {OutFile}")
+            outDF = pd.DataFrame(OutDict)
+            
+            with pd.ExcelWriter(OutFile) as writer:
+                outDF.to_excel(writer, sheet_name='Issues')
+
         # for e in OutDict
         #     logger.info(e)
         logger.info("--------------------------------------------------------------------")

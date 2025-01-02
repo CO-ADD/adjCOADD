@@ -770,3 +770,14 @@ class Convert_CompoundID(AuditModel):
             newEntry.compound_id = _newID
             newEntry.save()
             return(newEntry)
+        elif 'CM' in OldCompoundID:
+            _cno = int(OldCompoundID[2:])+400000
+            _newID = COADD_Compound.str_id(_cno)
+
+            newEntry = cls()
+            newEntry.ora_compound_id = OldCompoundID
+            newEntry.compound_id = _newID
+            newEntry.save()
+            return(newEntry)
+        
+
