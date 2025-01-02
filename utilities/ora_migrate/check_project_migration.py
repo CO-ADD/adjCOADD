@@ -20,7 +20,7 @@ from pgCastDB.pgCastDB import openCoaddDB
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Check_Compounds"
+logName = "Check_Projects"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -38,19 +38,19 @@ logging.basicConfig(
 
 def main(prgArgs):
 
-    if prgArgs.table == "Compounds" :
+    if prgArgs.table == "Projects" :
 
-        OutName = "[Compounds]"
+        OutName = "[Projects]"
         OutDict = []
-        OutFile = f"checkCompounds_inORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutFile = f"checkProjects_inORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
         oraDB = openCastDB()
         djDB = openCoaddDB()
 
         # by oraCastDB
-        oraSQL = "Select compound_id From Compound where is_migrated < 1"
-        nWells = oraDB.nCount("Select count(1) From Compound where is_migrated < 1" )
+        oraSQL = "Select project_id From Project where is_migrated < 1"
+        nWells = oraDB.nCount("Select count(1) From Project where is_migrated < 1" )
         logger.info(f"{OutName} {nWells} ")
 
         oraDB.exec(oraSQL)  
@@ -58,47 +58,30 @@ def main(prgArgs):
         logger.info(sql_columns)
 
         updList = []
-        for crow in tqdm(oraDB.cursor, total=nWells, desc="[Check Compounds]"):
+        for crow in tqdm(oraDB.cursor, total=nWells, desc="[Check Projects]"):
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
-            oraCID = crow[0]
+            oraPID = crow[0]
 
             updVal = -1
 
-            djDB.exec(f"Select compound_id From dsample.convert_compoundid where ora_compound_id = '{oraCID}' ")
-            entry = djDB.cursor.fetchone()
-            if entry:
-                convID = entry[0]
-            else:
-                convID = None
+            djDB.exec(f"Select project_id From dsample.convert_projectid where ora_project_id = '{oraPID}' ")
+            convID = djDB.cursor.fetchone()[0]
 
             if convID:
-                djDB.exec(f"Select compound_id From dsample.coadd_compound where compound_id = '{convID}' ")
-                entry = djDB.cursor.fetchone()
-                if entry:
-                    coaddID = entry[0]
-                else:
-                    coaddID = None
+                djDB.exec(f"Select project_id From dsample.projectd where project_id = '{convID}' ")
+                coaddID = djDB.cursor.fetchone()[0]
 
-                djDB.exec(f"Select cmpbatch_id From dsample.cmpbatch where cmpbatch_id = '{convID}' ")
-                entry = djDB.cursor.fetchone()
-                if entry:
-                    cmpbatchID = entry[0]
-                else:
-                    cmpbatchID = None
-
-                if cmpbatchID:
-                    updVal = 0
-                    if coaddID:
-                        updVal = 1
+                if coaddID:
+                    updVal = 1
 
             if updVal > -1:
-                updList.append((oraCID,updVal))
+                updList.append((oraPID,updVal))
 
-        if len(updList)>0:
-            for row in tqdm(updList, desc="[Update oraCompounds]"):
-                oraDB.exec(f"Update Compound Set is_migrated = {row[1]} Where Compound_ID = '{row[0]}' ",commit=True)     
+        # if len(updList)>0:
+        #     for row in tqdm(updList, desc="[Update oraCompounds]"):
+        #         oraDB.exec(f"Update Project Set is_migrated = {row[1]} Where Project_ID = '{row[0]}' ",commit=True)     
 #            print(f" {oraCID} {convID} {coaddID} {cmpbatchID}") 
 
 
