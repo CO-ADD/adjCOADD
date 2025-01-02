@@ -78,7 +78,7 @@ def main(prgArgs):
             logger.info(f"{OutName} {nEntries} -> {len(updList)}")
             if len(updList)>0 and prgArgs.upload:
                 for row in tqdm(updList, desc="[Update oraProjects]"):
-                    oraDB.exec(f"Update {AssayTable[prgArgs.table][1]} Set is_migrated = {row[0]} Where testplate_id = '{row[1]}' and testwell_id = '{row[2]}'",commit=True)     
+                    oraDB.exec(f"Update {AssayTable[prgArgs.table][0]} Set is_migrated = {row[0]} Where testplate_id = '{row[1]}' and testwell_id = '{row[2]}'",commit=True)     
 
         oraDB.close()
         djDB.close()

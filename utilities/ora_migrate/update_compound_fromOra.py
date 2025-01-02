@@ -48,7 +48,7 @@ def get_oraCompound(test=0):
       'reg_conc_unit':{'ug/ul':'mg/mL','mg/ml':'mg/mL'},
     }
 
-    cmpSQL = "Select * From Compound Where Substr(Compound_ID,0,2) in ('C0','CX') "
+    cmpSQL = "Select * From Compound Where Substr(Compound_ID,0,2) in ('C0','CX','CM') And is_migrated < 1"
     # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
 
     if test>0:
