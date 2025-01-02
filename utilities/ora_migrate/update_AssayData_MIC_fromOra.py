@@ -200,6 +200,7 @@ def main(prgArgs,djDir):
             with pd.ExcelWriter(OutFile) as writer:
                 outDF.to_excel(writer, sheet_name='Issues')
 
+
         # for e in OutDict
         #     logger.info(e)
         logger.info("--------------------------------------------------------------------")
