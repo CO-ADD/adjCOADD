@@ -7,6 +7,7 @@ from dsample.models import Convert_ProjectID, Convert_CompoundID
 def convert_castdb_compoundid_from_dj(djID):
     validStatus = True
     if djID is not None:
+        djID = djID.strip()
         if 'MCC' in djID:
             djID = djID.replace('MCC','MCC_').replace("_",":")
         else:
@@ -24,6 +25,7 @@ def convert_castdb_compoundid_from_dj(djID):
 def convert_castdb_compoundid_from_ora(oraID):
     validStatus = True
     if oraID is not None:
+        oraID = oraID.strip()
         if 'MCC_' in oraID:
             djID = oraID.replace('MCC_','MCC').replace(":","_")
         else:
