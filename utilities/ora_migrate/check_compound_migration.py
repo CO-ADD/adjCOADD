@@ -58,7 +58,7 @@ def main(prgArgs):
         logger.info(sql_columns)
 
         updList = []
-        for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+        for crow in tqdm(oraDB.cursor, total=nWells, desc="[Check Compounds]"):
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
@@ -82,7 +82,11 @@ def main(prgArgs):
                         updVal = 1
 
             if updVal > -1:
-                updList.append((oraCID,updVal))    
+                updList.append((oraCID,updVal))
+
+        if len(updList)>0:
+            for row in tqdm(updList, desc="[Update oraCompounds]"):
+                oraDB.exec(f"Update Compound Set is_migrated = {row[1]} Where Compound_ID = '{row[0]}' ",commit=True)     
 #            print(f" {oraCID} {convID} {coaddID} {cmpbatchID}") 
 
 
