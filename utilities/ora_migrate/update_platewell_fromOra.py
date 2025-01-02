@@ -48,6 +48,7 @@ def main(prgArgs,djDir):
     from dorganism.models import Organism_Batch
     from dcell.models import Cell_Batch
     from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
+    from update_utils import convert_castdb_compoundid_from_ora
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -182,21 +183,26 @@ def main(prgArgs,djDir):
                 djWell.readout_types = _readout
 
                 # Fix CmpBatch ID's
+#                 for _old in djWell.cmpbatch_lst:
+#                     if _old is not None:
+#                         if 'MCC_' in _old:
+#                             _new = _old.replace('MCC_','MCC').replace(":","_")
+# #                            _new = _old.replace('MCC_','MCC')
+#                         else:
+#                             try:
+#                                 _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
+#                             except:
+#                                 _new = None
+#                                 validStatus = False
+#                     else:
+#                         _new = None
+#                     _new_lst.append(_new)
                 _new_lst = []
                 for _old in djWell.cmpbatch_lst:
-                    if _old is not None:
-                        if 'MCC_' in _old:
-                            _new = _old.replace('MCC_','MCC').replace(":","_")
-#                            _new = _old.replace('MCC_','MCC')
-                        else:
-                            try:
-                                _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
-                            except:
-                                _new = None
-                                validStatus = False
-                    else:
-                        _new = None
+                    _new,_valstatus = convert_castdb_compoundid_from_ora(_old)
                     _new_lst.append(_new)
+                    if not _valstatus:
+                        validStatus = False
 
                 if validStatus:
 
