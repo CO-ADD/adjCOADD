@@ -67,17 +67,29 @@ def main(prgArgs):
             updVal = -1
 
             djDB.exec(f"Select project_id From dsample.convert_projectid where ora_project_id = '{oraPID}' ")
-            convID = djDB.cursor.fetchone()[0]
+            entry = djDB.cursor.fetchone()
+            if entry:
+                convID = entry[0]
+            else:
+                convID = None
 
             if convID:
-                djDB.exec(f"Select project_id From dsample.projectd where project_id = '{convID}' ")
-                coaddID = djDB.cursor.fetchone()[0]
+                djDB.exec(f"Select project_id From dsample.project where project_id = '{convID}' ")
+                entry = djDB.cursor.fetchone()
+                if entry:
+                    coaddID = entry[0]
+                else:
+                    coaddID = None
 
                 if coaddID:
                     updVal = 1
 
             if updVal > -1:
                 updList.append((oraPID,updVal))
+
+        if len(updList)>0:
+            for row in tqdm(updList, desc="[Update oraProjects]"):
+                oraDB.exec(f"Update Project Set is_migrated = {row[1]} Where Project_ID = '{row[0]}' ",commit=True)     
 
         # if len(updList)>0:
         #     for row in tqdm(updList, desc="[Update oraCompounds]"):

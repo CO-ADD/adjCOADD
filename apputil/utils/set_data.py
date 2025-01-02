@@ -18,12 +18,15 @@ from apputil.models import Dictionary
 
 #------------------------------------------------------------------------------------
 def set_fkeyFields(djModel,rowDict, arrDict):
+    valid = True
     for f in arrDict:
         if f in rowDict:
             _obj = arrDict[f].get(rowDict[f])
             if _obj is not None:
                 setattr(djModel,f,_obj)
-                
+            else:
+                valid = False
+    return valid           
 #------------------------------------------------------------------------------------
 def set_arrayFields(djModel,rowDict, arrDict):
     for f in arrDict:

@@ -153,29 +153,28 @@ class AssayData_MIC(Sample_Base):
         'run_status':'Process_Status',
     }
     
+    # Primary Contraint
+    testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
+        db_column="testplate_id", related_name="%(class)s_testplateid")
+    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
+
     assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
 
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
-    testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
-        db_column="plate_id", related_name="%(class)s_plateid")
-    testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "WellID")
-    test_date = models.DateField(null=True, blank=True, verbose_name = "Date")
-
-    plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
-        db_column="plate_size", related_name="%(class)s_platesize")
-    plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
-        db_column="plate_material", related_name="%(class)s_material")
-
-    # Possible update to ForeignKey (JZG) 
-    #media = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Media", on_delete=models.DO_NOTHING,
-    #    db_column="media", related_name="%(class)s_Media+")
-    media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
-    dye = models.CharField(max_length=40, blank=True, verbose_name = "Dye")
-    additive = models.CharField(max_length=80, blank=True, verbose_name = "Additive")
+    # Plate Information ----------------------------------------------------------------------------
+    # test_date = models.DateField(null=True, blank=True, verbose_name = "Date")
+    # plate_size = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Size", on_delete=models.DO_NOTHING,
+    #     db_column="plate_size", related_name="%(class)s_platesize")
+    # plate_material = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Material", on_delete=models.DO_NOTHING,
+    #     db_column="plate_material", related_name="%(class)s_material")
+    # orgbatch_id = models.ForeignKey(Organism_Batch, null=False, blank=False, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    # test_media = models.CharField(max_length=40, blank=True, verbose_name = "Media")
+    # test_dye = models.CharField(max_length=40, blank=True, verbose_name = "Dye")
+    # test_additive = models.CharField(max_length=80, blank=True, verbose_name = "Additive")
+    # readout_type = models.CharField(max_length=25, blank=True, verbose_name = "Readout Type")
 
     mic = models.CharField(max_length=50, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, verbose_name = "Unit")
@@ -185,7 +184,6 @@ class AssayData_MIC(Sample_Base):
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
     analysis = models.CharField(max_length=15, verbose_name = "Analysis")
-    readout_type = models.CharField(max_length=25, blank=True, verbose_name = "Readout Type")
 
     inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
     inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
@@ -195,7 +193,7 @@ class AssayData_MIC(Sample_Base):
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
-    ref_mic = models.CharField(max_length=150, verbose_name = "Ref MIC")
+    ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
     ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
     ic50 = models.CharField(max_length=50, verbose_name = "IC50")
     ic50_unit = models.CharField(max_length=20, verbose_name = "IC50 Unit")
@@ -212,7 +210,7 @@ class AssayData_MIC(Sample_Base):
     class Meta:
         app_label = 'dscreen'
         db_table = 'assaydata_mic'
-        ordering=['testplate_id','testwell_id']
+        ordering=['assay_id','testplate_id','testwell_id']
         constraints = [
             models.UniqueConstraint(name='assmic_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
@@ -221,7 +219,7 @@ class AssayData_MIC(Sample_Base):
             models.Index(name="assmic_sid_idx",fields=['assay_id']),
             models.Index(name="assmic_asc_idx",fields=['act_score']),
             models.Index(name="assmic_ana_idx",fields=['analysis']),
-            models.Index(name="assmic_rot_idx",fields=['readout_type']),
+        #    models.Index(name="assmic_rot_idx",fields=['readout_type']),
             models.Index(name="assmic_act_idx",fields=['active']),
             models.Index(name="assmic_psc_idx",fields=['pscore']),
             models.Index(name="assmic_val_idx",fields=['valid']),
@@ -233,10 +231,10 @@ class AssayData_MIC(Sample_Base):
     @classmethod
     def get(cls,PlateID,WellID,verbose=0):
         try:
-            retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+            retInstance = cls.objects.get(testplate_id=PlateID, testwell_id=WellID)
         except:
             if verbose:
-                logger.warning(f"[Well Not Found] {PlateID} {WellID}")
+                logger.warning(f"[AssayData Not Found] {PlateID} {WellID}")
             retInstance = None
         return(retInstance)
 
@@ -244,7 +242,7 @@ class AssayData_MIC(Sample_Base):
     # Returns an User instance if found by name
     @classmethod
     def exists(cls,PlateID,WellID):
-        return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+        return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
 
     #------------------------------------------------  
     def conv_list_to_string(self):

@@ -99,27 +99,6 @@ def main(prgArgs):
         if len(updList)>0:
             for row in tqdm(updList, desc="[Update oraCompounds]"):
                 oraDB.exec(f"Update Compound Set is_migrated = {row[1]} Where Compound_ID = '{row[0]}' ",commit=True)     
-#            print(f" {oraCID} {convID} {coaddID} {cmpbatchID}") 
-
-
-        # by djCastdb
-        # djSQL = "Select plate_id, well_id from dplate.testwell "
-        # nWells = djDB.nCount("Select count(1) From dplate.testwell" )
-        # logger.info(f"{OutName} {nWells} ")
-
-
-        # djDB.exec(djSQL)  
-        # sql_columns = [i[0].lower() for i in djDB.cursor.description]
-        # logger.info(sql_columns)
-
-
-        
-        # for crow in tqdm(djDB.cursor, total=nWells, desc=OutName):
-        #     row = dict()
-        #     for col in sql_columns:
-        #         row[col.lower()] = crow[sql_columns.index(col)]
-        #     updSQL = f"Update Compound Set is_migrated = 1 Where Compound_ID = '{row['compound_id']}'  "
-        #     oraDB.exec(updSQL,commit=True)
 
         oraDB.close()
         djDB.close()
