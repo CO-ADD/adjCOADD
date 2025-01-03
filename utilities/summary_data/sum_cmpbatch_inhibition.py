@@ -88,59 +88,61 @@ def main(prgArgs,djDir):
                                                'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
                                                'inhibition','mscore','act_type'
                                                  )
-            dfSC = pd.DataFrame(qryTW).assign(cmpbatch_id=CmpBatchID)
-            dfSC.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
+            if qryTW.exists():
+                dfSC = pd.DataFrame(qryTW).assign(cmpbatch_id=CmpBatchID)
+                dfSC.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
 
-            #print(dfSC)
+                #print(dfSC)
 
-            # pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-            #                                     'mscore': ['mean','size'],
-            #                                     'act_type': [lambda x: ";".join(x), lambda x: len(x) if (x == "A").any() else 0 ],
-            #                                      })
-            pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-                                                'mscore': ['mean','size'],
-                                                'act_type': [get_strList, get_nAct ],
-                                                 })
-            
-            #print( pivDF.columns)
-            for idx,row in pivDF.iterrows():
-                OutNumbers['Processed'] += 1
-                #print(idx," --> ", row.to_dict())
-                NewEntry = False
-                djSum = Summary_CmpBatch_Inhib.get(qryCmpBatchID,idx,Exact=True,verbose=0)
-                if djSum is None:
-                    djSum = Summary_CmpBatch_Inhib()
-                    djSum.cmpbatch_lst = qryCmpBatchID
-                    djSum.n_cmpbatches = len(qryCmpBatchID)
-                    djSum.assay_id = idx
-                    NewEntry = True
-                djSum.act_types = row[ ('act_type','get_strList')]
+                # pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
+                #                                     'mscore': ['mean','size'],
+                #                                     'act_type': [lambda x: ";".join(x), lambda x: len(x) if (x == "A").any() else 0 ],
+                #                                      })
+                pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
+                                                    'mscore': ['mean','size'],
+                                                    'act_type': [get_strList, get_nAct ],
+                                                    })
+                
+                #print( pivDF.columns)
+                for idx,row in pivDF.iterrows():
+                    OutNumbers['Processed'] += 1
+                    #print(idx," --> ", row.to_dict())
+                    NewEntry = False
+                    djSum = Summary_CmpBatch_Inhib.get(qryCmpBatchID,idx,Exact=True,verbose=0)
+                    if djSum is None:
+                        djSum = Summary_CmpBatch_Inhib()
+                        djSum.cmpbatch_lst = qryCmpBatchID
+                        djSum.n_cmpbatches = len(qryCmpBatchID)
+                        djSum.assay_id = idx
+                        NewEntry = True
+                    djSum.act_types = row[ ('act_type','get_strList')]
 
-                djSum.n_assays = row[('mscore','size')]
-                djSum.n_actives = row[ ('act_type','get_nAct')]
-                #djSum.act_score_ave =
+                    djSum.n_assays = row[('mscore','size')]
+                    djSum.n_actives = row[ ('act_type','get_nAct')]
+                    #djSum.act_score_ave =
 
-                djSum.inhibition_ave = row[('inhibition','mean')]
-                djSum.inhibition_std = row[('inhibition','std')]
-                djSum.inhibition_min = row[('inhibition','min')]
-                djSum.inhibition_max = row[('inhibition','max')]
-                djSum.mscore_ave = row[('mscore','mean')]
+                    djSum.inhibition_ave = row[('inhibition','mean')]
+                    djSum.inhibition_std = row[('inhibition','std')]
+                    djSum.inhibition_min = row[('inhibition','min')]
+                    djSum.inhibition_max = row[('inhibition','max')]
+                    djSum.mscore_ave = row[('mscore','mean')]
 
 
-                djSum.clean_Fields()
-                validDict = djSum.validate()
-                if validDict:
-                    validStatus = False
-                    # for k in validDict:
-                    #     print('Warning',k,validDict[k],'-')
-                    row.update(validDict)
+                    djSum.clean_Fields()
+                    validDict = djSum.validate()
+                    if validDict:
+                        validStatus = False
+                        # for k in validDict:
+                        #     print('Warning',k,validDict[k],'-')
+                        row.update(validDict)
 
-                if validStatus:
-                    if prgArgs.upload:
-                        if NewEntry or prgArgs.overwrite:
-                            #djSum.chk_migration = 0
-                            OutNumbers['Upload Entries'] += 1
-                            djSum.save(user=prgArgs.appuser)
+                    if validStatus:
+                        if prgArgs.upload:
+                            if NewEntry or prgArgs.overwrite:
+                                #djSum.chk_migration = 0
+                                OutNumbers['Upload Entries'] += 1
+                                djSum.save(user=prgArgs.appuser)
+                                
         if len(OutDict) > 0:
             logger.info(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(OutDict)
