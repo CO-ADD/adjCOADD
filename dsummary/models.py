@@ -40,7 +40,7 @@ class Summary_CmpBatch_Inhib(Sample_Base):
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
-    actives = models.CharField(max_length=25, blank=True, verbose_name = "Actives")
+    act_types = models.CharField(max_length=25, blank=True, verbose_name = "Active Tupes")
     # active_lst
     n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
     act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
@@ -74,3 +74,29 @@ class Summary_CmpBatch_Inhib(Sample_Base):
             models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
             models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
         ]
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    #------------------------------------------------
+    @classmethod
+    def get(cls,CmpBatchLst,AssayID, Exact=True, verbose=0):
+        try:
+            if Exact:
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), assay_id=AssayID)
+            else:
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID)
+        except:
+            if verbose:
+                logger.warning(f"[Summary CmpBatch Inhibition Not Found] {CmpBatchLst} {AssayID}")
+            retInstance = None
+        return(retInstance)
+
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,CmpBatchLst,AssayID, Exact=True, verbose=0):
+        if Exact:
+            return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), assay_id=AssayID).exists()
+        else:
+            return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID).exists()
