@@ -100,6 +100,7 @@ def main(prgArgs,djDir):
             "issample":       "is_sample",
             "isvalid":      "is_valid",
             "isskip":   "is_skip",
+            "active":   "act_type",
         }
 
         replaceValues = {
@@ -115,7 +116,7 @@ def main(prgArgs,djDir):
                        'readouts':['readout','readouta','readoutb'], 
                        }
         
-        copyFields = ['zscore','mscore',
+        copyFields = ['zscore','mscore','act_type',
                       'inhibition','active','pscore',
                       'is_skip','is_sample', 'is_negcontrol', 'is_poscontrol','is_control','is_valid',
                       'volume',

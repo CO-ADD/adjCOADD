@@ -9,6 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.indexes import GinIndex
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
@@ -34,16 +35,15 @@ class Sample_Base(AuditModel):
 
     MAX_CMPBATCHES = 4
 
-
     cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-                                 size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
+                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
     conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
                                  size=MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
     conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
                                  size=MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
     conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
                                  size=MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
-    n_cmpbatches=models.SmallIntegerField(default=0, verbose_name = "N CmpBatches")
+    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
 
 
     cmpbatches = ""
@@ -54,11 +54,13 @@ class Sample_Base(AuditModel):
     class Meta:
         abstract = True
         ordering=['cmpbatch_lst']
+        # To include in Child Models
         indexes = [
-            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
-            models.Index(name="conc_idx", fields=['conc_lst']),
-            models.Index(name="concuni_idx", fields=['conc_unit_lst']),
-            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
+            GinIndex(name="cmp_idx",fields=['cmpbatch_lst']),
+            # models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
+            # models.Index(name="conc_idx", fields=['conc_lst']),
+            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
+            # models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
         ]
 
     #------------------------------------------------  

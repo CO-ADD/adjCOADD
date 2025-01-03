@@ -6,6 +6,7 @@ from sequences import Sequence
 from django.core.validators import RegexValidator
 
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
@@ -410,6 +411,7 @@ class TestWell(Sample_Base):
     inhibition = models.DecimalField(max_digits=9, decimal_places=3)
     zscore = models.DecimalField(max_digits=9, decimal_places=3)
     mscore = models.DecimalField(max_digits=9, decimal_places=3)
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Active Type")
 #    bscore = models.DecimalField(max_digits=9, decimal_places=3)
 
     chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
@@ -422,9 +424,11 @@ class TestWell(Sample_Base):
             models.UniqueConstraint(name='testwell_loc_cst', fields=['plate_id', 'well_id'], )
         ]        
         indexes = [
+            GinIndex(name="testwell_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="testwell_wid_idx",fields=['well_id']),
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
+            models.Index(name="testwell_act_idx",fields=['act_type']),
             models.Index(name="testwell_chkm_idx",fields=['chk_migration']),
         ]
 

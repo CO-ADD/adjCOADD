@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     'dchem.apps.dChemConfig',
     'dsample.apps.dSampleConfig',
     'dplate.apps.dPlateConfig',
+    'dsummary.apps.dSummaryConfig',
 
     #'rest_framework',
     #'rest_framework.authtoken',
@@ -249,7 +250,6 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-
     'dscreen': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dscreen,dsample,dorganism,dplate,apputil,public', 
@@ -257,7 +257,6 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-
     'dgene': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dgene,dscreen,dorganism,apputil,public', 
@@ -265,7 +264,6 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-    
     'dcollab': {
         "ENGINE": PG_ENGINE,
         'OPTIONS':{'options': '-c search_path=dcollab,apputil,public', 
@@ -293,6 +291,13 @@ DATABASES = {
                    'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
+    },
+    'dsummary': {
+        "ENGINE": PG_ENGINE,
+        'OPTIONS':{'options': '-c search_path=dsummary,dplate,dscreen,dsample,dcell,dorganism,apputil,public', 
+                   'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
+        'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
+        'HOST': HOST_NAME, 'PORT': '5432',
     }
 }
 
@@ -303,8 +308,8 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 # Requires django-dbbackup django-crontab and pg_dump/restore
 DBBACKUP_DATABASES = ['default'
                       'dorganism','dcell','ddrug','dgene',
-                      'dcollab','dscreen',
-                      'dsample','dplate']
+                      'dplate','dcollab','dsample','dscreen',
+                      'dchem','dsummary']
 
 #DBBACKUP_DATABASES = list(DATABASES.keys())
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'

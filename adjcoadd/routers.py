@@ -28,6 +28,7 @@ class DatabaseRouter(object):
         'dsample': {'dsample'},
         'dplate': {'dplate'},
         'dscreen': {'dscreen'},
+        'dsummary': {'dsummary'},
         }
 
     def db_for_read(self, model, **hints):

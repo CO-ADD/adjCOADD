@@ -1,4 +1,3 @@
-import re
 
 #from django_rdkit import models
 from django.db import models
@@ -11,6 +10,7 @@ from sequences import Sequence
 from django.core.validators import RegexValidator
 
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
@@ -213,6 +213,7 @@ class AssayData_MIC(Sample_Base):
             models.UniqueConstraint(name='assmic_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
+            GinIndex(name="assmic_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="assmic_rid_idx",fields=['run_id']),
             models.Index(name="assmic_sid_idx",fields=['assay_id']),
             models.Index(name="assmic_asc_idx",fields=['act_score']),
@@ -315,6 +316,7 @@ class AssayData_CC50(Sample_Base):
             models.UniqueConstraint(name='asscc50_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
+            GinIndex(name="asscc50_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="asscc50_rid_idx",fields=['run_id']),
             models.Index(name="asscc50_sid_idx",fields=['assay_id']),
             models.Index(name="asscc50_asc_idx",fields=['act_score']),
@@ -419,6 +421,7 @@ class AssayData_HC50(Sample_Base):
             models.UniqueConstraint(name='asshc50_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
+            GinIndex(name="asshc50_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="asshc50_rid_idx",fields=['run_id']),
             models.Index(name="asshc50_sid_idx",fields=['assay_id']),
             models.Index(name="asshc50_asc_idx",fields=['act_score']),
