@@ -40,6 +40,7 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    from django.db.models import Q
     from apputil.models import Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell
@@ -59,7 +60,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
     
    # AssayData MIC -------------------------------------------------------------
-    if prgArgs.table == 'Summary_CmpBatch_Inhib':
+    if prgArgs.table == 'Summary_CmpBatch_DoseResponse':
 
         OutName = f"[{prgArgs.table}]"
         OutDict = []
@@ -79,24 +80,21 @@ def main(prgArgs,djDir):
             qryCmpBatchID = [CmpBatchID]
             qryNCmpBatches = len(qryCmpBatchID)
 
-            qryTW = TestWell.objects.filter(cmpbatch_lst__contains = [CmpBatchID], 
+            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality_contains = 'Retest'),
+                                            cmpbatch_lst__contains = [CmpBatchID], 
                                             n_cmpbatches = qryNCmpBatches, 
-                                            plate_id__result_type = 'Inhibition',
-                                            is_valid = True,
-                                            plate_id__plate_quality = 'Valid'
+                                            testplate_id__result_type = 'MIC',
+                                            testplate_id__plate_quality = 'Valid'                                            
                                            ).values(
-                                               'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
-                                               'inhibition','mscore','act_type'
+                                               'testplate_id','testwell_id','testplate_id__result_type','testplate_id__assay_id',
+                                               'mic','mic_unit','act_type','act_score','pscore',
+                                               'inhibit_max'
                                                  )
-            dfSC = pd.DataFrame(qryTW).assign(cmpbatch_id=CmpBatchID)
-            dfSC.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
+            dfDR = pd.DataFrame(qryMIC).assign(cmpbatch_id=CmpBatchID)
+            dfDR.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
 
             #print(dfSC)
 
-            # pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-            #                                     'mscore': ['mean','size'],
-            #                                     'act_type': [lambda x: ";".join(x), lambda x: len(x) if (x == "A").any() else 0 ],
-            #                                      })
             pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
                                                 'mscore': ['mean','size'],
                                                 'act_type': [get_strList, get_nAct ],

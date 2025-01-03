@@ -98,12 +98,13 @@ def main(prgArgs,djDir):
 
             # Settings -------------------------------------------------------------------
             renameCol = {
-                "dmax":  "inhibit_max",
-                "dmin":    "inhibit_min",
-                "cmax":    "conc_max",
-                "cmin":       "conc_min",
+                "dmax":         "inhibit_max",
+                "dmin":         "inhibit_min",
+                "cmax":         "conc_max",
+                "cmin":         "conc_min",
                 "chk_mic":      "ref_mic_check",
-                "assaytype_id":   "assay_id",
+                "assaytype_id": "assay_id",
+                "actscore":     "act_score"
             }
 
             replaceValues = {
@@ -119,7 +120,7 @@ def main(prgArgs,djDir):
                         'ic50','ic50_unit','ic50_pscore','ic50_quality','ic50_r2','ic50_slope',
                         'cc50','cc50_unit','cc50_r2','cc50_slope',
                         'hc50','hc50_unit','hc50_r2','hc50_slope','hc10',
-                        'active','act_score','pscore','data_quality','valid',
+                        'act_type','act_score','pscore','data_quality','valid',
                         'inhibit_max','inhibit_min','conc_max','conc_min',
         #                  'media','dye', 'additive', 
                         'ref_mic','ref_mic_check',
@@ -213,10 +214,12 @@ def main(prgArgs,djDir):
                             logger.info(f" [Error] Issues with {djAssay.testplate_id} {djAssay.testwell_id}")
                             OutDict.append(row)
                     else:
-                        row.update({'Error': ' Old Compound_ID not found'})
+                        logger.info(f"{OutName} Old Compound_ID {djAssay.cmpbatch_lst} not found")
+                        row.update({'Error': f"Old Compound_ID not found {djAssay.cmpbatch_lst}"})
                         OutDict.append(row)
                 else:
                     logger.info(f"{OutName} Plate {row['testplate_id']} not found")
+                    row.update({'Error': f"Plate_ID not found {row['testplate_id']}"})
                     OutDict.append(row)
 
             # Wrap Up ---------------------------------------------------------------------------

@@ -177,7 +177,8 @@ class AssayData_MIC(Sample_Base):
     mic = models.CharField(max_length=50, verbose_name = "MIC")
     mic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     mic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
-    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
+
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
@@ -219,7 +220,7 @@ class AssayData_MIC(Sample_Base):
             models.Index(name="assmic_asc_idx",fields=['act_score']),
             models.Index(name="assmic_ana_idx",fields=['analysis']),
         #    models.Index(name="assmic_rot_idx",fields=['readout_type']),
-            models.Index(name="assmic_act_idx",fields=['active']),
+            models.Index(name="assmic_act_idx",fields=['act_type']),
             models.Index(name="assmic_psc_idx",fields=['pscore']),
             models.Index(name="assmic_val_idx",fields=['valid']),
             models.Index(name="assmic_dqy_idx",fields=['data_quality']),
@@ -286,7 +287,8 @@ class AssayData_CC50(Sample_Base):
     cc50_quality = models.CharField(max_length=20, blank=True, verbose_name = "CC50 Quality")
     cc50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "CC50 r2")
     cc50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CC50 Slope")
-    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
+
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
@@ -322,7 +324,7 @@ class AssayData_CC50(Sample_Base):
             models.Index(name="asscc50_asc_idx",fields=['act_score']),
             models.Index(name="asscc50_ana_idx",fields=['analysis']),
         #    models.Index(name="asscc50_rot_idx",fields=['readout_type']),
-            models.Index(name="asscc50_act_idx",fields=['active']),
+            models.Index(name="asscc50_act_idx",fields=['act_type']),
             models.Index(name="asscc50_psc_idx",fields=['pscore']),
             models.Index(name="asscc50_val_idx",fields=['valid']),
             models.Index(name="asscc50_dqy_idx",fields=['data_quality']),
@@ -391,7 +393,7 @@ class AssayData_HC50(Sample_Base):
     hc50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "HC50 Slope")
     hc10 = models.CharField(max_length=50, blank=True, verbose_name = "HC10")
 
-    active = models.CharField(max_length=5, blank=True, verbose_name = "Active")
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
@@ -427,7 +429,7 @@ class AssayData_HC50(Sample_Base):
             models.Index(name="asshc50_asc_idx",fields=['act_score']),
             models.Index(name="asshc50_ana_idx",fields=['analysis']),
         #    models.Index(name="asshc50_rot_idx",fields=['readout_type']),
-            models.Index(name="asshc50_act_idx",fields=['active']),
+            models.Index(name="asshc50_act_idx",fields=['act_type']),
             models.Index(name="asshc50_psc_idx",fields=['pscore']),
             models.Index(name="asshc50_val_idx",fields=['valid']),
             models.Index(name="asshc50_dqy_idx",fields=['data_quality']),
