@@ -16,7 +16,7 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
 #from dchem.models import Chem_Structure
-from dsample.models import Sample_Base
+from dsample.models import CmpBatchList_Base
 from dchem.models import Chem_Structure
 
 from adjcoadd.constants import *
@@ -30,7 +30,60 @@ logger = logging.getLogger(__name__)
 
 
 #-------------------------------------------------------------------------------------------------
-class Summary_CmpBatch_Inhib(Sample_Base):
+class Summary_CmpBatch(CmpBatchList_Base):
+    """
+    List of Summary Activity for each CmpBatch
+    """
+    ASSAY_CLASSES = ['GP','GN','GNMemb','FG','CC','HC']
+
+    sc_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #AssayIDs")
+    sc_n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #Actives")
+
+    sc_assayid_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "SC AssayID List")
+    sc_actives_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "SC Actives List")
+
+    dr_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#AssayIDs")
+    dr_n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
+    dr_assayid_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "DR AssayID List")
+    dr_actives_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "DR Actives List")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dsummary'
+        db_table = 'sum_cmpbatch'
+        indexes = [
+            GinIndex(name="scmp_cmp_idx",fields=['cmpbatch_lst']),
+            models.Index(name="scmp_scassid_idx", fields=['sc_n_assayids']),
+            models.Index(name="scmp_scnact_idx", fields=['sc_n_actives']),
+            models.Index(name="scmp_drassid_idx", fields=['dr_n_assayids']),
+            models.Index(name="scmp_drnact_idx", fields=['dr_n_actives']),
+            # models.Index(name="scmpsc_ascr_idx", fields=['act_score_ave']),
+            # models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
+            # models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
+        ]
+
+    # #------------------------------------------------
+    # @classmethod
+    # def get(cls,CmpBatchLst, Exact=True, verbose=0):
+    #     try:
+    #         if Exact:
+    #             retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
+    #         else:
+    #             retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst)
+    #     except:
+    #         if verbose:
+    #             logger.warning(f"[Summary CmpBatch Not Found] {CmpBatchLst} {len(CmpBatchLst)}")
+    #         retInstance = None
+    #     return(retInstance)
+
+#-------------------------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------------------------
+class Summary_CmpBatch_Inhib(CmpBatchList_Base):
     """
     List of Summary Activity for each CmpBatch
     """
@@ -55,7 +108,7 @@ class Summary_CmpBatch_Inhib(Sample_Base):
     # inhibition_range = models.CharField(max_length=50, blank=True, verbose_name = "Inhibition Range")
     mscore_ave = models.DecimalField(max_digits=9, decimal_places=3, verbose_name = "MScore Max")
 
-    # conc_lst
+    concs_lst = models.CharField(max_length=250, blank=True, verbose_name = "Concs")
     # conc_unit_lst
 
     # Summary Meta data
@@ -104,7 +157,7 @@ class Summary_CmpBatch_Inhib(Sample_Base):
             return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID).exists()
 
 #-------------------------------------------------------------------------------------------------
-class Summary_CmpBatch_Doseresp(Sample_Base):
+class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     """
     List of Summary Activity for each CmpBatch
     """
@@ -129,7 +182,7 @@ class Summary_CmpBatch_Doseresp(Sample_Base):
     drval_min    = models.CharField(max_length=20, blank=False, verbose_name = "DR Min")
     drval_median = models.CharField(max_length=20, blank=False, verbose_name = "DR Median")
     drval_unit   = models.CharField(max_length=25, blank=False, verbose_name = "DR Unit")
-    drval_type   = models.CharField(max_length=20, blank=False, verbose_name = "DR High")
+    #drval_type   = models.CharField(max_length=20, blank=False, verbose_name = "DR High")
     #drvals       = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
  
     # Summary Meta data
@@ -163,7 +216,7 @@ class Summary_CmpBatch_Doseresp(Sample_Base):
                 retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID)
         except:
             if verbose:
-                logger.warning(f"[Summary CmpBatch Inhibition Not Found] {CmpBatchLst} {AssayID}")
+                logger.warning(f"[Summary CmpBatch DoseResp Not Found] {CmpBatchLst} {AssayID}")
             retInstance = None
         return(retInstance)
 

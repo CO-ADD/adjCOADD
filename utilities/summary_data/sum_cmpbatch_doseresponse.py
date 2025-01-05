@@ -15,7 +15,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Sum_CmpBatch_Inhib"
+logName = "Sum_CmpBatch_DoseResp"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -28,12 +28,6 @@ logging.basicConfig(
 
 #-----------------------------------------------------------------------------
 
-def get_strList(x): 
-    return ";".join(x) 
-
-def get_nAct(x):
-    return len([a for a in x if a == 'A']) 
-
 def main(prgArgs,djDir):
 
     sys.path.append(djDir)
@@ -45,12 +39,15 @@ def main(prgArgs,djDir):
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import COADD_Compound, Compound_Batch
+    from dsummary.utils.upd_sum_cmpbatch import sum_cmpbatch_doseresponse
+    from ddrug.utils.bio_data import DR_Range
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
     from dorganism.models import Organism_Batch
-    from dsummary.models import Summary_CmpBatch_Inhib
+    from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
 #    from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
 #    from update_utils import convert_castdb_compoundid_from_ora
-    
+    from adjcoadd.constants import COMPOUND_SEP
+
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
     #logger.info(f"LogFile        : {logFileName}")
@@ -58,6 +55,25 @@ def main(prgArgs,djDir):
     logger.info(f"Django         : {django.__version__}")
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
+
+   # Agg Funvtions  -------------------------------------------------------------
+    def get_strList(x, maxN = 10):
+        if len(x) > maxN:
+            _v, _c = np.unique(x, return_counts=True)
+            _a = []
+            for _i in range(len(_v)):
+                _a.append(f"{_v[_i]} ({_c[_i]})")
+            return "; ".join(_a)     
+        return "; ".join(x) 
+
+    def get_strList_unique(x):
+        return ";".join(set(x)) 
+
+    def get_nAct(x):
+        return len([a for a in x if a == 'A']) 
+
+    def get_DR_Range(x):
+        return DR_Range(x)
     
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'Summary_CmpBatch_DoseResponse':
@@ -71,75 +87,112 @@ def main(prgArgs,djDir):
 
         if int(prgArgs.test) > 0:
             qryCmp = Compound_Batch.objects.filter(batch_source__in=qrySources).values_list('cmpbatch_id')[:int(prgArgs.test)]
+            qryCmpBatch = AssayData_MIC.objects.order_by().values_list('cmpbatch_lst').distinct()[:int(prgArgs.test)]
         else:
-            qryCmp = Compound_Batch.objects.filter(batch_source__in=qrySources).values_list('cmpbatch_id')
+            #qryCmp = Compound_Batch.objects.filter(batch_source__in=qrySources).values_list('cmpbatch_id')
+            qryCmpBatch = AssayData_MIC.objects.order_by().values_list('cmpbatch_lst').distinct()
         
-        for cmp in tqdm(qryCmp, desc='[Compounds]'):
+        for cmp in tqdm(qryCmpBatch, desc='[Compounds]'):
             validStatus = True
-            CmpBatchID = cmp[0]
-            qryCmpBatchID = [CmpBatchID]
-            qryNCmpBatches = len(qryCmpBatchID)
+            qryCmpBatchLst = cmp[0]
 
-            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality_contains = 'Retest'),
-                                            cmpbatch_lst__contains = [CmpBatchID], 
-                                            n_cmpbatches = qryNCmpBatches, 
-                                            testplate_id__result_type = 'MIC',
-                                            testplate_id__plate_quality = 'Valid'                                            
-                                           ).values(
-                                               'testplate_id','testwell_id','testplate_id__result_type','testplate_id__assay_id',
-                                               'mic','mic_unit','act_type','act_score','pscore',
-                                               'inhibit_max'
-                                                 )
-            if dfDR.exists():
-                dfDR = pd.DataFrame(qryMIC).assign(cmpbatch_id=CmpBatchID)
-                dfDR.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
+            _numbers,_outdict  = sum_cmpbatch_doseresponse(cmp[0],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
 
-                #print(dfSC)
+            OutDict = OutDict + _outdict
+            for k in OutNumbers.keys():
+                OutNumbers[k] += _numbers[k]
 
-                pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-                                                    'mscore': ['mean','size'],
-                                                    'act_type': [get_strList, get_nAct ],
-                                                    })
-                
-                #print( pivDF.columns)
-                for idx,row in pivDF.iterrows():
-                    OutNumbers['Processed'] += 1
-                    #print(idx," --> ", row.to_dict())
-                    NewEntry = False
-                    djSum = Summary_CmpBatch_Inhib.get(qryCmpBatchID,idx,Exact=True,verbose=0)
-                    if djSum is None:
-                        djSum = Summary_CmpBatch_Inhib()
-                        djSum.cmpbatch_lst = qryCmpBatchID
-                        djSum.n_cmpbatches = len(qryCmpBatchID)
-                        djSum.assay_id = idx
-                        NewEntry = True
-                    djSum.act_types = row[ ('act_type','get_strList')]
+            # CmpBatchs = COMPOUND_SEP.join(qryCmpBatchLst)
+            # qryNCmpBatches = len(qryCmpBatchLst)
 
-                    djSum.n_assays = row[('mscore','size')]
-                    djSum.n_actives = row[ ('act_type','get_nAct')]
-                    #djSum.act_score_ave =
+            # # Sum_Cmpd ---------------------------------------------------------------
+            # djCmpd = Summary_CmpBatch.get(qryCmpBatchLst,verbose=0)
+            # if djCmpd is None:
+            #     djCmpd = Summary_CmpBatch()
+            #     djCmpd.cmpbatch_lst = qryCmpBatchLst
+            #     djCmpd.n_cmpbatches = len(qryCmpBatchLst)
 
-                    djSum.inhibition_ave = row[('inhibition','mean')]
-                    djSum.inhibition_std = row[('inhibition','std')]
-                    djSum.inhibition_min = row[('inhibition','min')]
-                    djSum.inhibition_max = row[('inhibition','max')]
-                    djSum.mscore_ave = row[('mscore','mean')]
+            # djCmpd.dr_n_assayids = 0
+            # djCmpd.dr_n_actives = 0
 
+            # # AssayData  ---------------------------------------------------------------
+            # qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+            #                                 cmpbatch_lst__contains = qryCmpBatchLst, 
+            #                                 n_cmpbatches = qryNCmpBatches, 
+            #                                 testplate_id__result_type = 'MIC',
+            #                                 testplate_id__plate_quality = 'Valid'                                            
+            #                                ).values(
+            #                                    'testplate_id','testwell_id','testplate_id__result_type','testplate_id__assay_id',
+            #                                    'mic','mic_unit','act_type','act_score','pscore',
+            #                                    'inhibit_max'
+            #                                      )
+            # if qryMIC.exists():
+            #     dfDR = pd.DataFrame(qryMIC).assign(cmpbatchs=CmpBatchs)
+            #     dfDR.columns = ['plate_id','well_id','result_type','assay_id',
+            #                     'mic','mic_unit','act_type','act_score','pscore',
+            #                     'inhibit_max',
+            #                     'cmpbatchs']
 
-                    djSum.clean_Fields()
-                    validDict = djSum.validate()
-                    if validDict:
-                        validStatus = False
-                        # for k in validDict:
-                        #     print('Warning',k,validDict[k],'-')
-                        row.update(validDict)
+            #     #print(dfDR)
+            #     pivDF = dfDR.groupby(['assay_id']).agg({'mic': [DR_Range],
+            #                                         'inhibit_max': ['mean'],
+            #                                         'pscore': ['mean'],
+            #                                         'act_score': ['mean'],
+            #                                         'act_type': [get_strList, get_nAct ],
+            #                                         'mic_unit': [get_strList, get_strList_unique ],
+            #                                         })
+            #     #print( pivDF.columns)
+            #     for idx,row in pivDF.iterrows():
+            #         OutNumbers['Processed'] += 1
+            #         djCmpd.dr_n_assayids += 1
 
-                    if validStatus:
-                        if prgArgs.upload:
-                            if NewEntry or prgArgs.overwrite:
-                                #djSum.chk_migration = 0
-                                OutNumbers['Upload Entries'] += 1
-                                djSum.save(user=prgArgs.appuser)
+            #         NewEntry = False
+            #         djSum = Summary_CmpBatch_Doseresp.get(qryCmpBatchLst,idx,Exact=True,verbose=0)
+            #         if djSum is None:
+            #             djSum = Summary_CmpBatch_Doseresp()
+            #             djSum.cmpbatch_lst = qryCmpBatchLst
+            #             djSum.n_cmpbatches = len(qryCmpBatchLst)
+            #             djSum.assay_id = idx
+            #             NewEntry = True
+            #         djSum.act_types = row[('act_type','get_strList')]
+            #         djSum.n_actives = row[('act_type','get_nAct')]
+            #         djSum.act_score_ave = row[('act_score','mean')]
+            #         djSum.inhibit_max_ave = row[('inhibit_max','mean')]
+            #         djSum.pscore = row[('pscore','mean')]
+            #         djSum.drval_type = 'MIC'
+
+            #         if djSum.n_actives > 0:
+            #             djCmpd.dr_n_actives += 1
+            #         #print(f" {row[('mic','DR_Range')]}")
+
+            #         djSum.drval_max    = row[('mic','DR_Range')]['Max']
+            #         djSum.drval_min    = row[('mic','DR_Range')]['Min']
+            #         djSum.drval_median = row[('mic','DR_Range')]['Median']
+            #         djSum.n_assays = row[('mic','DR_Range')]['nDR']
+            #         djSum.drval_unit   = row[('mic_unit','get_strList_unique')]
+
+            #         djSum.clean_Fields()
+            #         validDict = djSum.validate()
+            #         if validDict:
+            #             validStatus = False
+            #             # for k in validDict:
+            #             #     print('Warning',k,validDict[k],'-')
+            #             row.update(validDict)
+            #             OutDict.append(row)
+
+            #         if validStatus:
+            #             if prgArgs.upload:
+            #                 if NewEntry or prgArgs.overwrite:
+            #                     #djSum.chk_migration = 0
+            #                     OutNumbers['Upload Entries'] += 1
+            #                     djSum.save(user=prgArgs.appuser)
+
+            # # Sum_Cmpd ---------------------------------------------------------------
+            # # djCmpd.dr_assayid_lst  = 
+            # # djCmpd.dr_actives_lst  = 
+            # if prgArgs.upload:
+            #     djCmpd.save()
+
         if len(OutDict) > 0:
             logger.info(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(OutDict)

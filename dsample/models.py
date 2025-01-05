@@ -26,30 +26,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 #-------------------------------------------------------------------------------------------------
-class Sample_Base(AuditModel):    
+class CmpBatchList_Base(AuditModel):    
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
-        'conc_unit_lst':'Unit_Concentration',
-        'conc_type_lst':'Concentration_Type',
-    }
-
     MAX_CMPBATCHES = 4
 
-    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
-    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
-                                 size=MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
-    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
-                                 size=MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
-    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
-                                 size=MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
-    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
-
-
     cmpbatches = ""
-    concs = ""
-    conc_units = ""
-    conc_types = ""
+    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
+                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index=True, verbose_name = "CmpBatch List")
+    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
 
     class Meta:
         abstract = True
@@ -57,38 +41,19 @@ class Sample_Base(AuditModel):
         # To include in Child Models
         indexes = [
             GinIndex(name="cmp_idx",fields=['cmpbatch_lst']),
-            # models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
-            # models.Index(name="conc_idx", fields=['conc_lst']),
-            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
-            # models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
+            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
+            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
         ]
 
     #------------------------------------------------  
     def conv_list_to_string(self):
         _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
         self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
-        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
-        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
         self.n_cmpbatches = len(_CmpLst)
 
     #------------------------------------------------  
     def conv_string_to_list(self):
         self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
-        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
-
-    #------------------------------------------------  
-    def check_conc_unit_dictionary(self):
-        _missing = []
-        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
-            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
-                _missing.append(conc_unit)
-        if len(_missing) > 0:
-            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
-        else:
-            return(None)
 
     #------------------------------------------------  
     def check_cmpbatch_id(self):
@@ -107,19 +72,138 @@ class Sample_Base(AuditModel):
 
     #------------------------------------------------  
     def __repr__(self) -> str:
-        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def get(cls,CmpBatchLst):
-        pass
+        return f"{self.cmpbatches} " 
 
     #------------------------------------------------
     # Returns an User instance if found by name
     @classmethod
     def exists(cls,CmpBatchLst):
-        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def get(cls,CmpBatchLst,verbose=0):
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        _qry = cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
+        _cnt = _qry.count()
+        if _cnt == 1:
+            return(_qry[0])
+        elif _cnt == 0:
+            if verbose:
+                logger.warning(f"[CmpBatchList Not Found] {CmpBatchLst} ")
+            return(None)
+        elif _cnt > 1:
+            if verbose:
+                logger.warning(f"[CmpBatchList Multiple Exist] {CmpBatchLst} : {_cnt}")
+            return(None)
+        return(None)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,CmpBatchLst):
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
+    
+    
+#-------------------------------------------------------------------------------------------------
+class Sample_Base(CmpBatchList_Base):    
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'conc_unit_lst':'Unit_Concentration',
+        'conc_type_lst':'Concentration_Type',
+    }
+
+    # MAX_CMPBATCHES = 4
+
+    # cmpbatches = ""
+    # cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
+    #                              size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
+    # n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
+
+    concs = ""
+    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
+    conc_units = ""
+    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
+    conc_types = ""
+    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
+
+    class Meta:
+        abstract = True
+        # ordering=['cmpbatch_lst']
+        # # To include in Child Models
+        # indexes = [
+            # models.Index(name="conc_idx", fields=['conc_lst']),
+            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
+        # ]
+
+    #------------------------------------------------  
+    def conv_list_to_string(self):
+        CmpBatchList_Base.conv_list_to_string()
+        # _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
+        # self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
+        #self.n_cmpbatches = len(_CmpLst)
+        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
+        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
+        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
+
+    #------------------------------------------------  
+    def conv_string_to_list(self):
+        CmpBatchList_Base.conv_string_to_list()
+        #self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
+        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------  
+    def check_conc_unit_dictionary(self):
+        _missing = []
+        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
+            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
+                _missing.append(conc_unit)
+        if len(_missing) > 0:
+            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
+        else:
+            return(None)
+
+    # #------------------------------------------------  
+    # def check_cmpbatch_id(self):
+    #     _missing =[]
+    #     for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
+    #         if not Compound_Batch.exists(cmpbatch_id):
+    #             _missing.append(cmpbatch_id)
+    #     if len(_missing) > 0:
+    #         return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
+    #     else:
+    #         return(None)
+
+    # #------------------------------------------------  
+    # def __str__(self) -> str:
+    #     return f"{self.cmpbatches}" 
+
+    #------------------------------------------------  
+    def __repr__(self) -> str:
+        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
+
+    # #------------------------------------------------
+    # # Returns an User instance if found by name
+    # @classmethod
+    # def get(cls,CmpBatchLst):
+    #     pass
+
+    # #------------------------------------------------
+    # # Returns an User instance if found by name
+    # @classmethod
+    # def exists(cls,CmpBatchLst):
+    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
 
 #=================================================================================================
 class Project(AuditModel):
@@ -526,8 +610,7 @@ class COADD_Compound(AuditModel):
             models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
             models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
             models.Index(name="coadd_smetal_idx", fields=['std_metal']),
-            models.Index(name="coadd_pst_idx", fields=['pub_status']),
-            
+            models.Index(name="coadd_pst_idx", fields=['pub_status']),   
         ]
 
     #------------------------------------------------
@@ -581,7 +664,7 @@ class COADD_Compound(AuditModel):
             super(COADD_Compound, self).save(*args, **kwargs) 
 
 
-class ABase_Compound(AuditModel):
+class Group_Compound(AuditModel):
     """
     List of Abase Compounds as per Registration
     """
@@ -599,9 +682,97 @@ class ABase_Compound(AuditModel):
     ID_PREFIX = 'MCC'
     ID_PAD = 6
 
+    compound_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Compound ID")
+    compound_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
+    
+    compound_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
+    compound_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+
+    study_id = models.CharField(max_length=15, blank=True, verbose_name = "Study ID")
+
+    structure_type = models.CharField(max_length=400, blank=True, verbose_name = "Type")
+    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+        db_column="structure_id", related_name="%(class)s_structure_id")
+
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'group_compound'
+        ordering=['compound_id']
+        indexes = [
+            models.Index(name="grpc_name_idx", fields=['compound_name']),
+            models.Index(name="grpc_code_idx", fields=['compound_code']),
+            # models.Index(name="grpc_type_idx", fields=['compound_type']),
+            models.Index(name="grpc_pid_idx", fields=['study_id']),
+            # models.Index(name="coadd_cbid_idx", fields=['cmpbatch_id']),
+            # models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
+            # models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
+            # models.Index(name="coadd_sstat_idx", fields=['std_status']),
+            # models.Index(name="coadd_snfrag_idx", fields=['std_nfrag']),
+            # models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
+            # models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
+            # models.Index(name="coadd_smetal_idx", fields=['std_metal']),
+            # models.Index(name="coadd_pst_idx", fields=['pub_status']),   
+        ]
+
     @classmethod
     def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
         return(OldABaseID.replace('MCC_','MCC'))
+
+class GroupCompBatchAuditModel(AuditModel):
+    """
+    List of Abase Compounds as per Registration
+    """
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'compound_type':'Compound_Type',
+        'compound_source':'Compound_Source',
+        'reg_amount_unit': 'Unit_Amount',
+        'reg_volume_unit':'Unit_Volume',
+        'reg_conc_unit':'Unit_Concentration',
+    #    'stock_volume_unit':'Unit_Volume',
+    }
+
+
+    #cmpbatch_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Co ID")
+    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+    
+    compound_id = models.ForeignKey(Group_Compound, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
+        db_column="compound_id", related_name="%(class)s_compound_id")
+    cmpbatch_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
+    
+    cmpbatch_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
+    cmpbatch_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+
+    study_id = models.CharField(max_length=15, blank=True, verbose_name = "Study ID")
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'group_cmpbatch'
+        ordering=['cmpbatch_id']
+        constraints = [
+            models.UniqueConstraint(name='grpcb_id_cst', fields=['cmpbatch_id'], )
+        ]
+        indexes = [
+            models.Index(name="grpcb_name_idx", fields=['cmpbatch_name']),
+            models.Index(name="grpcb_code_idx", fields=['cmpbatch_code']),
+            # models.Index(name="grpcb_type_idx", fields=['compound_type']),
+            # models.Index(name="grpcb_pid_idx", fields=['study_id']),
+            # models.Index(name="coadd_cbid_idx", fields=['cmpbatch_id']),
+            # models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
+            # models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
+            # models.Index(name="coadd_sstat_idx", fields=['std_status']),
+            # models.Index(name="coadd_snfrag_idx", fields=['std_nfrag']),
+            # models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
+            # models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
+            # models.Index(name="coadd_smetal_idx", fields=['std_metal']),
+            # models.Index(name="coadd_pst_idx", fields=['pub_status']),   
+        ]
+
+    @classmethod
+    def new_ABase_CmpBatch_ID(cls,OldABaseID,verbose=0):
+        return(OldABaseID.replace(':','_'))
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):

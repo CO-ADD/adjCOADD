@@ -18,7 +18,7 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
 #from dchem.models import Chem_Structure
-from dsample.models import Sample_Base
+from dsample.models import CmpBatchList_Base
 from adjcoadd.constants import *
 
 import logging
@@ -127,7 +127,7 @@ class Screen_Run(AuditModel):
         # self.screen_date = 
            
 #-------------------------------------------------------------------------------------------------
-class AssayData_MIC(Sample_Base):
+class AssayData_MIC(CmpBatchList_Base):
     """
     List of MIC Values
     """
@@ -257,7 +257,7 @@ class AssayData_MIC(Sample_Base):
         self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 
 #-------------------------------------------------------------------------------------------------
-class AssayData_CC50(Sample_Base):
+class AssayData_CC50(CmpBatchList_Base):
     """
     List of Cytotoxicty Values
     """
@@ -361,7 +361,7 @@ class AssayData_CC50(Sample_Base):
     #     self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 
 #-------------------------------------------------------------------------------------------------
-class AssayData_HC50(Sample_Base):
+class AssayData_HC50(CmpBatchList_Base):
     """
     List of Haemolysis Values
     """
