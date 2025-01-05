@@ -17,8 +17,7 @@ from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
-#from dchem.models import Chem_Structure
-from dsample.models import CmpBatchList_Base
+from dsample.models import CmpBatchList_Base, Compound_Batch
 from adjcoadd.constants import *
 
 import logging
@@ -271,7 +270,7 @@ class AssayData_CC50(CmpBatchList_Base):
     Choice_Dictionary = {
         'pub_status':'Pub_Status',
     }
-    
+        
     # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")
@@ -375,7 +374,7 @@ class AssayData_HC50(CmpBatchList_Base):
     Choice_Dictionary = {
         'pub_status':'Pub_Status',
     }
-    
+        
     # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")

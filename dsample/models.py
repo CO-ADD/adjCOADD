@@ -25,185 +25,6 @@ CMPBATCH_SOURCES = Choices( ('COADD','COADD CmpBatch'),
 import logging
 logger = logging.getLogger(__name__)
 
-#-------------------------------------------------------------------------------------------------
-class CmpBatchList_Base(AuditModel):    
-#-------------------------------------------------------------------------------------------------
-    MAX_CMPBATCHES = 4
-
-    cmpbatches = ""
-    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index=True, verbose_name = "CmpBatch List")
-    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
-
-    class Meta:
-        abstract = True
-        ordering=['cmpbatch_lst']
-        # To include in Child Models
-        indexes = [
-            GinIndex(name="cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
-            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
-        ]
-
-    #------------------------------------------------  
-    def conv_list_to_string(self):
-        _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
-        self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-        self.n_cmpbatches = len(_CmpLst)
-
-    #------------------------------------------------  
-    def conv_string_to_list(self):
-        self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
-
-    #------------------------------------------------  
-    def check_cmpbatch_id(self):
-        _missing =[]
-        for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-            if not Compound_Batch.exists(cmpbatch_id):
-                _missing.append(cmpbatch_id)
-        if len(_missing) > 0:
-            return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
-        else:
-            return(None)
-
-    #------------------------------------------------  
-    def __str__(self) -> str:
-        return f"{self.cmpbatches}" 
-
-    #------------------------------------------------  
-    def __repr__(self) -> str:
-        return f"{self.cmpbatches} " 
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def exists(cls,CmpBatchLst):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def get(cls,CmpBatchLst,verbose=0):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        _qry = cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
-        _cnt = _qry.count()
-        if _cnt == 1:
-            return(_qry[0])
-        elif _cnt == 0:
-            if verbose:
-                logger.warning(f"[CmpBatchList Not Found] {CmpBatchLst} ")
-            return(None)
-        elif _cnt > 1:
-            if verbose:
-                logger.warning(f"[CmpBatchList Multiple Exist] {CmpBatchLst} : {_cnt}")
-            return(None)
-        return(None)
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def exists(cls,CmpBatchLst):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
-    
-    
-#-------------------------------------------------------------------------------------------------
-class Sample_Base(CmpBatchList_Base):    
-#-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
-        'conc_unit_lst':'Unit_Concentration',
-        'conc_type_lst':'Concentration_Type',
-    }
-
-    # MAX_CMPBATCHES = 4
-
-    # cmpbatches = ""
-    # cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-    #                              size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
-    # n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
-
-    concs = ""
-    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
-    conc_units = ""
-    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
-    conc_types = ""
-    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
-
-    class Meta:
-        abstract = True
-        # ordering=['cmpbatch_lst']
-        # # To include in Child Models
-        # indexes = [
-            # models.Index(name="conc_idx", fields=['conc_lst']),
-            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
-        # ]
-
-    #------------------------------------------------  
-    def conv_list_to_string(self):
-        CmpBatchList_Base.conv_list_to_string()
-        # _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
-        # self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-        #self.n_cmpbatches = len(_CmpLst)
-        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
-        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
-        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
-
-    #------------------------------------------------  
-    def conv_string_to_list(self):
-        CmpBatchList_Base.conv_string_to_list()
-        #self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
-        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
-
-    #------------------------------------------------  
-    def check_conc_unit_dictionary(self):
-        _missing = []
-        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
-            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
-                _missing.append(conc_unit)
-        if len(_missing) > 0:
-            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
-        else:
-            return(None)
-
-    # #------------------------------------------------  
-    # def check_cmpbatch_id(self):
-    #     _missing =[]
-    #     for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-    #         if not Compound_Batch.exists(cmpbatch_id):
-    #             _missing.append(cmpbatch_id)
-    #     if len(_missing) > 0:
-    #         return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
-    #     else:
-    #         return(None)
-
-    # #------------------------------------------------  
-    # def __str__(self) -> str:
-    #     return f"{self.cmpbatches}" 
-
-    #------------------------------------------------  
-    def __repr__(self) -> str:
-        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
-
-    # #------------------------------------------------
-    # # Returns an User instance if found by name
-    # @classmethod
-    # def get(cls,CmpBatchLst):
-    #     pass
-
-    # #------------------------------------------------
-    # # Returns an User instance if found by name
-    # @classmethod
-    # def exists(cls,CmpBatchLst):
-    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
 
 #=================================================================================================
 class Project(AuditModel):
@@ -953,4 +774,186 @@ class Convert_CompoundID(AuditModel):
             newEntry.save()
             return(newEntry)
         
+#-------------------------------------------------------------------------------------------------
+class CmpBatchList_Base(AuditModel):    
+#-------------------------------------------------------------------------------------------------
+    MAX_CMPBATCHES = 4
+
+    cmpbatches = ""
+    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
+                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index=True, verbose_name = "CmpBatch List")
+    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
+
+    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+
+    class Meta:
+        abstract = True
+        ordering=['cmpbatch_lst']
+        # To include in Child Models
+        indexes = [
+            GinIndex(name="cmp_idx",fields=['cmpbatch_lst']),
+            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
+            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
+        ]
+
+    #------------------------------------------------  
+    def conv_list_to_string(self):
+        _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
+        self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
+        self.n_cmpbatches = len(_CmpLst)
+
+    #------------------------------------------------  
+    def conv_string_to_list(self):
+        self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------  
+    def check_cmpbatch_id(self):
+        _missing =[]
+        for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
+            if not Compound_Batch.exists(cmpbatch_id):
+                _missing.append(cmpbatch_id)
+        if len(_missing) > 0:
+            return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
+        else:
+            return(None)
+
+    #------------------------------------------------  
+    def __str__(self) -> str:
+        return f"{self.cmpbatches}" 
+
+    #------------------------------------------------  
+    def __repr__(self) -> str:
+        return f"{self.cmpbatches} " 
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,CmpBatchLst):
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def get(cls,CmpBatchLst,verbose=0):
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        _qry = cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
+        _cnt = _qry.count()
+        if _cnt == 1:
+            return(_qry[0])
+        elif _cnt == 0:
+            if verbose:
+                logger.warning(f"[CmpBatchList Not Found] {CmpBatchLst} ")
+            return(None)
+        elif _cnt > 1:
+            if verbose:
+                logger.warning(f"[CmpBatchList Multiple Exist] {CmpBatchLst} : {_cnt}")
+            return(None)
+        return(None)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,CmpBatchLst):
+        if isinstance(CmpBatchLst,str):
+            CmpBatchLst = [CmpBatchLst]
+        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
+    
+    
+#-------------------------------------------------------------------------------------------------
+class Sample_Base(CmpBatchList_Base):    
+#-------------------------------------------------------------------------------------------------
+    Choice_Dictionary = {
+        'conc_unit_lst':'Unit_Concentration',
+        'conc_type_lst':'Concentration_Type',
+    }
+
+    # MAX_CMPBATCHES = 4
+
+    # cmpbatches = ""
+    # cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
+    #                              size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
+    # n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
+
+    concs = ""
+    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
+    conc_units = ""
+    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
+    conc_types = ""
+    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
+
+    class Meta:
+        abstract = True
+        # ordering=['cmpbatch_lst']
+        # # To include in Child Models
+        # indexes = [
+            # models.Index(name="conc_idx", fields=['conc_lst']),
+            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
+        # ]
+
+    #------------------------------------------------  
+    def conv_list_to_string(self):
+        CmpBatchList_Base.conv_list_to_string()
+        # _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
+        # self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
+        #self.n_cmpbatches = len(_CmpLst)
+        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
+        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
+        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
+
+    #------------------------------------------------  
+    def conv_string_to_list(self):
+        CmpBatchList_Base.conv_string_to_list()
+        #self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
+        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
+        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------  
+    def check_conc_unit_dictionary(self):
+        _missing = []
+        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
+            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
+                _missing.append(conc_unit)
+        if len(_missing) > 0:
+            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
+        else:
+            return(None)
+
+    # #------------------------------------------------  
+    # def check_cmpbatch_id(self):
+    #     _missing =[]
+    #     for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
+    #         if not Compound_Batch.exists(cmpbatch_id):
+    #             _missing.append(cmpbatch_id)
+    #     if len(_missing) > 0:
+    #         return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
+    #     else:
+    #         return(None)
+
+    # #------------------------------------------------  
+    # def __str__(self) -> str:
+    #     return f"{self.cmpbatches}" 
+
+    #------------------------------------------------  
+    def __repr__(self) -> str:
+        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
+
+    # #------------------------------------------------
+    # # Returns an User instance if found by name
+    # @classmethod
+    # def get(cls,CmpBatchLst):
+    #     pass
+
+    # #------------------------------------------------
+    # # Returns an User instance if found by name
+    # @classmethod
+    # def exists(cls,CmpBatchLst):
+    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
 

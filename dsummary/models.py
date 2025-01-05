@@ -66,19 +66,6 @@ class Summary_CmpBatch(CmpBatchList_Base):
             # models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
         ]
 
-    # #------------------------------------------------
-    # @classmethod
-    # def get(cls,CmpBatchLst, Exact=True, verbose=0):
-    #     try:
-    #         if Exact:
-    #             retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
-    #         else:
-    #             retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst)
-    #     except:
-    #         if verbose:
-    #             logger.warning(f"[Summary CmpBatch Not Found] {CmpBatchLst} {len(CmpBatchLst)}")
-    #         retInstance = None
-    #     return(retInstance)
 
 #-------------------------------------------------------------------------------------------------
 
@@ -232,6 +219,57 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
 
 
 #-------------------------------------------------------------------------------------------------
+class Summary_Structure(AuditModel):
+    """
+    List of Summary Activity for each CmpBatch
+    """
+    ASSAY_CLASSES = ['GP','GN','GNMemb','FG','CC','HC']
+
+    structure_id = models.OneToOneField(Chem_Structure, primary_key=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+                                        db_column="structure_id", related_name="%(class)s_structure_id")
+    sc_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #AssayIDs")
+    sc_n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #Actives")
+
+    sc_assayid_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "SC AssayID List")
+    sc_actives_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "SC Actives List")
+
+    dr_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#AssayIDs")
+    dr_n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
+    dr_assayid_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "DR AssayID List")
+    dr_actives_lst  = ArrayField(models.SmallIntegerField(default=-1, blank=True),
+                                size=len(ASSAY_CLASSES), null=True, blank=True, db_index=True, verbose_name = "DR Actives List")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dsummary'
+        db_table = 'sum_structure'
+        indexes = [
+            models.Index(name="sstr_scassid_idx", fields=['sc_n_assayids']),
+            models.Index(name="sstr_scnact_idx", fields=['sc_n_actives']),
+            models.Index(name="sstr_drassid_idx", fields=['dr_n_assayids']),
+            models.Index(name="sstr_drnact_idx", fields=['dr_n_actives']),
+            # models.Index(name="scmpsc_ascr_idx", fields=['act_score_ave']),
+            # models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
+            # models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
+        ]
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    #------------------------------------------------
+    @classmethod
+    def get(cls,StructureID, verbose=0):
+        try:
+            retInstance = cls.objects.get(structure_id=StructureID, assay_id=AssayID)
+        except:
+            if verbose:
+                logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")
+            retInstance = None
+        return(retInstance)
+
+#-------------------------------------------------------------------------------------------------
 class Summary_Structure_Inhib(AuditModel):
     """
     List of Summary Activity for each Structure
@@ -240,8 +278,8 @@ class Summary_Structure_Inhib(AuditModel):
     #from dplate.models import TestPlate
 
     # Assay Conditions
-    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
-        db_column="structure_id", related_name="%(class)s_structure_id")
+    structure_id = models.OneToOneField(Chem_Structure, primary_key=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+                                        db_column="structure_id", related_name="%(class)s_structure_id")
     assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
@@ -279,6 +317,73 @@ class Summary_Structure_Inhib(AuditModel):
             models.Index(name="sstrsc_ascr_idx", fields=['act_score_ave']),
             models.Index(name="sstrsc_inhin_idx", fields=['inhibition_ave']),
             models.Index(name="sstrsc_mscr_idx", fields=['mscore_ave']),
+        ]
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    #------------------------------------------------
+    @classmethod
+    def get(cls,StructureID,AssayID, verbose=0):
+        try:
+            retInstance = cls.objects.get(structure_id=StructureID, assay_id=AssayID)
+        except:
+            if verbose:
+                logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,StructureID,AssayID, verbose=0):
+        return cls.objects.filter(structure_id=StructureID, assay_id=AssayID).exists()
+
+#-------------------------------------------------------------------------------------------------
+class Summary_Structure_Doseresp(AuditModel):
+    """
+    List of Summary Activity for each Structure
+    """
+#-------------------------------------------------------------------------------------------------
+    #from dplate.models import TestPlate
+
+    # Assay Conditions
+    structure_id = models.OneToOneField(Chem_Structure, primary_key=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
+                                        db_column="structure_id", related_name="%(class)s_structure_id")
+    # Assay Conditions
+    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
+
+    # Activity Summary
+    act_types = models.CharField(max_length=25, blank=True, verbose_name = "Active Types")
+    # active_lst
+    n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
+    act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
+    pscore_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore Ave")
+
+    inhibit_max_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Max Ave")
+    #inhibit_maxs  = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
+    drval_type    = models.CharField(max_length=15, blank=False, verbose_name = "DR Type")
+    drval_max    = models.CharField(max_length=20, blank=False, verbose_name = "DR Max")
+    drval_min    = models.CharField(max_length=20, blank=False, verbose_name = "DR Min")
+    drval_median = models.CharField(max_length=20, blank=False, verbose_name = "DR Median")
+    drval_unit   = models.CharField(max_length=25, blank=False, verbose_name = "DR Unit")
+
+    # Summary Meta data
+    # run_id_lst ArrayField(models.CharField(max_length=15, default="", db_index = True), 
+    #                             size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
+    # run_id_date = models.DateField(null=True, blank=True, verbose_name = "Date")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dsummary'
+        db_table = 'sum_structure_dr'
+        ordering=['assay_id','structure_id']
+        indexes = [
+#            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
+            models.Index(name="sstrdr_assid_idx", fields=['assay_id']),
+            models.Index(name="sstrdr_nact_idx", fields=['n_actives']),
+            models.Index(name="sstrdr_ascr_idx", fields=['act_score_ave']),
+            models.Index(name="sstrdr_drt_idx", fields=['drval_type']),
         ]
 
     #------------------------------------------------
