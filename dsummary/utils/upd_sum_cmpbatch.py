@@ -276,8 +276,48 @@ def sum_structure_dr(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'
         djStr.dr_n_assayids += _cmpdict['dr_n_assayids']
         djStr.dr_n_actives += _cmpdict['dr_n_actives']
 
-        # print(f" {_cmpdict}")
-        # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
+        for _a in ['gp','gn','fg','gnm']:
+            djStr.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
+            djStr.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+
+    # - CC50 ----------------------------------------------------------
+    qryMIC = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_id__structure_id = StructureID, 
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values('testplate_id__assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
+                                             'testplate_id','testwell_id','testplate_id__result_type',)
+
+    if qryMIC.exists():
+        dfDR = pd.DataFrame(qryMIC)
+        dfDR.rename(columns={'testplate_id__assay_id':'assay_id','cc50':'dr','cc50_unit': 'dr_unit',
+                             'testplate_id__result_type':'result_type',}, inplace=True)
+        _cmpdict, _outdict = pivot_sum_dr('Structure','CC50',dfDR,None,StructureID,OutNumbers,
+                                            upload=upload,overwrite=overwrite,appuser=appuser )
+        
+        djStr.dr_n_assayids += _cmpdict['dr_n_assayids']
+        djStr.dr_n_actives += _cmpdict['dr_n_actives']
+
+        for _a in ['gp','gn','fg','gnm']:
+            djStr.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
+            djStr.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+
+    # - CC50 ----------------------------------------------------------
+    qryMIC = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_id__structure_id = StructureID, 
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values('testplate_id__assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
+                                             'testplate_id','testwell_id','testplate_id__result_type',)
+
+    if qryMIC.exists():
+        dfDR = pd.DataFrame(qryMIC)
+        dfDR.rename(columns={'testplate_id__assay_id':'assay_id','hc50':'dr','hc50_unit': 'dr_unit',
+                             'testplate_id__result_type':'result_type',}, inplace=True)
+        _cmpdict, _outdict = pivot_sum_dr('Structure','HC50',dfDR,None,StructureID,OutNumbers,
+                                            upload=upload,overwrite=overwrite,appuser=appuser )
+        
+        djStr.dr_n_assayids += _cmpdict['dr_n_assayids']
+        djStr.dr_n_actives += _cmpdict['dr_n_actives']
+
         for _a in ['gp','gn','fg','gnm']:
             djStr.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
             djStr.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
