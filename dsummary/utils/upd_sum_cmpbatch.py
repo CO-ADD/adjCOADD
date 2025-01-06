@@ -209,7 +209,7 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
 
     if qryHC50.exists():
         dfDR = pd.DataFrame(qryHC50)
-        dfDR.rename(columns={'testplate_id__assay_id':'assay_id','cc50':'dr','cc50_unit': 'dr_unit',
+        dfDR.rename(columns={'testplate_id__assay_id':'assay_id','hc50':'dr','hc50_unit': 'dr_unit',
                              'testplate_id__result_type':'result_type',}, inplace=True)
         _cmpdict, _outdict = pivot_sum_cmpbatch_dr('HC50',dfDR,CmpBatchLst,NCmpBatches,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser )
