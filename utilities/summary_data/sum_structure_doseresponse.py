@@ -64,26 +64,6 @@ def main(prgArgs,djDir):
                 strDict[s[0]] = s[0]
         print(f" Structures: {len(strDict)} ")
 
-        micCmp = AssayData_MIC.objects.all().values_list('cmpbatch_lst').distinct()
-        cc50Cmp = AssayData_CC50.objects.all().values_list('cmpbatch_lst').distinct()
-        hc50Cmp = AssayData_HC50.objects.all().values_list('cmpbatch_lst').distinct()
-
-        print(f" MIC: {micCmp.count()} + CC50: {cc50Cmp.count()} + HC50: {hc50Cmp.count()} ")
-
-        cmpDict = {}
-        for c in micCmp:
-            cc = COMPOUND_SEP.join([str(x) for x in c[0] if x != ""])
-            if cc not in cmpDict:
-                cmpDict[cc] = c[0]
-        for c in cc50Cmp:
-            cc = COMPOUND_SEP.join([str(x) for x in c[0] if x != ""])
-            if cc not in cmpDict:
-                cmpDict[cc] = c[0]
-        for s in hc50Cmp:
-            cc = COMPOUND_SEP.join([str(x) for x in c[0] if x != ""])
-            if cc not in cmpDict:
-                cmpDict[cc] = c[0]
-        print(f" CmpBatches: {len(cmpDict)} ")
 
 
 

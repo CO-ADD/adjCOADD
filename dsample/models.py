@@ -819,6 +819,14 @@ class CmpBatchList_Base(AuditModel):
             return(None)
 
     #------------------------------------------------  
+    def set_cmpbatch_id(self,CmpBatchLst):
+        _CmpLst = [str(x) for x in CmpBatchLst if x != ""]
+        self.cmpbatch_lst  = _CmpLst
+        self.n_cmpbatches = len(_CmpLst)
+        if self.n_cmpbatches == 1:
+            self.cmpbatch_id = Compound_Batch.get(_CmpLst[0])
+
+    #------------------------------------------------  
     def __str__(self) -> str:
         return f"{self.cmpbatches}" 
 
@@ -828,11 +836,11 @@ class CmpBatchList_Base(AuditModel):
 
     #------------------------------------------------
     # Returns an User instance if found by name
-    @classmethod
-    def exists(cls,CmpBatchLst):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
+    # @classmethod
+    # def exists(cls,CmpBatchLst):
+    #     if isinstance(CmpBatchLst,str):
+    #         CmpBatchLst = [CmpBatchLst]
+    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
 
     #------------------------------------------------
     # Returns an User instance if found by name

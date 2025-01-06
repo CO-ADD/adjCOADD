@@ -34,7 +34,9 @@ class Summary_CmpBatch(CmpBatchList_Base):
     """
     List of Summary Activity for each CmpBatch
     """
-    ASSAY_CLASSES = ['GP','GN','GNMemb','FG','CC','HC']
+    ASSAY_CLASSES = {'gp':0,'gn':1,'fg':2,'cc':3,'hc':4,'gnm':5}
+
+    GNM_ASSAYS = ['GN_0046','GN_0048','GN_0049','GN_0211']
 
     sc_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #AssayIDs")
     sc_n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #Actives")
