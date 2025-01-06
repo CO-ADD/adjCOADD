@@ -34,18 +34,11 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
-    from django.db.models import Q
-    from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import COADD_Compound, Compound_Batch
     from dsummary.utils.upd_sum_cmpbatch import sum_cmpbatch_dr
-    from ddrug.utils.bio_data import DR_Range
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
-    from dorganism.models import Organism_Batch
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
-#    from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
-#    from update_utils import convert_castdb_compoundid_from_ora
     from adjcoadd.constants import COMPOUND_SEP
 
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -55,25 +48,6 @@ def main(prgArgs,djDir):
     logger.info(f"Django         : {django.__version__}")
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
-
-   # Agg Funvtions  -------------------------------------------------------------
-    def get_strList(x, maxN = 10):
-        if len(x) > maxN:
-            _v, _c = np.unique(x, return_counts=True)
-            _a = []
-            for _i in range(len(_v)):
-                _a.append(f"{_v[_i]} ({_c[_i]})")
-            return "; ".join(_a)     
-        return "; ".join(x) 
-
-    def get_strList_unique(x):
-        return ";".join(set(x)) 
-
-    def get_nAct(x):
-        return len([a for a in x if a == 'A']) 
-
-    def get_DR_Range(x):
-        return DR_Range(x)
     
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'Sum_CmpBatch_DR':

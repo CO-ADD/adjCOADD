@@ -34,23 +34,39 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    from dplate.models import Labware, TestPlate, TestWell
+    from dsample.models import COADD_Compound, Compound_Batch
+    from dsummary.utils.upd_sum_cmpbatch import sum_structure_dr
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
+    from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
 
    # AssayData MIC -------------------------------------------------------------
-    if prgArgs.table == 'Summary_Structure_DoseResponse':
+    if prgArgs.table == 'Sum_Structure_DR':
+
 
         OutName = f"[{prgArgs.table}]"
         OutDict = []
         OutFile = f"{prgArgs.table}_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
+        # Get all Distinct CmpBatch_Lst
+        if int(prgArgs.test) > 0:
+            micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
+                                                     cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+            cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
+                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+            hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
+                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+        else:
+            micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
+                                                     cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
+            cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
+                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
+            hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
+                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
 
-        micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
-        cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
-        hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
-
-        print(f" MIC: {micStruct.count()} + CC50: {cc50Struct.count()} + HC50: {hc50Struct.count()} ")
+        logger.info(f" [Sum Structure DR] MIC: {micStruct.count()} + CC50: {cc50Struct.count()} + HC50: {hc50Struct.count()} ")
 
         strDict = {}
         for s in micStruct:
@@ -62,9 +78,25 @@ def main(prgArgs,djDir):
         for s in hc50Struct:
             if s[0] not in strDict:
                 strDict[s[0]] = s[0]
-        print(f" Structures: {len(strDict)} ")
+        logger.info(f" [Sum Structure DR] Structures: {len(strDict)} ")
 
+        for sid in tqdm(strDict.keys(), desc='[CmpBatcheLsts]'):
+            #print(cmpDict[cmps])
+            _numbers,_outdict  = sum_structure_dr(sid,upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
 
+            if _outdict:
+                OutDict = OutDict + _outdict
+            for k in OutNumbers.keys():
+                OutNumbers[k] += _numbers[k]
+
+        if len(OutDict) > 0:
+            logger.info(f"Writing Issues: {OutFile}")
+            outDF = pd.DataFrame(OutDict)
+            outDF.to_excel(OutFile)
+        else:
+            logger.info(f"No Issues")
+
+        logger.info(f"{OutName} {OutNumbers}")
 
 
         #print(f" MIC: {len(list(micStruct))} + CC50: {len(list(cc50Struct))} + HC50: {len(list(hc50Struct))}")
@@ -93,8 +125,6 @@ def main(prgArgs,djDir):
 
         # for row in qryStruct:
         #     print(row.cmpbatch_lst)
-
-        logger.info(f"{OutName} {OutNumbers}")
 
 #==============================================================================
 if __name__ == "__main__":
