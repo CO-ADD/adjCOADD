@@ -83,19 +83,6 @@ def main(prgArgs,djDir):
             for k in OutNumbers.keys():
                 OutNumbers[k] += _numbers[k]
 
-        #         if _outdict:
-        #             OutDict = OutDict + _outdict
-        #         for k in OutNumbers.keys():
-        #             OutNumbers[k] += _numbers[k]
-
-        #     if len(OutDict) > 0:
-        #         logger.info(f"Writing Issues: {OutFile}")
-        #         outDF = pd.DataFrame(OutDict)
-        #         outDF.to_excel(OutFile)
-        #     else:
-        #         logger.info(f"No Issues")
-
-
         if len(OutDict) > 0:
             logger.info(f"Writing Issues: {OutFile}")
             outDF = pd.DataFrame(OutDict)
