@@ -69,7 +69,7 @@ def main(prgArgs,djDir):
             twStr = TestWell.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False, 
                                             plate_id__result_type = 'Inhibition').values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
         else:
-            twStr = TestWell.objects.filter(n_cmpbatches = 1, mpbatch_id__structure_id__isnull = False, 
+            twStr = TestWell.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False, 
                                             plate_id__result_type = 'Inhibition').values_list('cmpbatch_id__structure_id').distinct()
 
         logger.info(f" [Sum Structure SC] TestWell: {twStr.count()}  ")
@@ -92,80 +92,7 @@ def main(prgArgs,djDir):
 
         logger.info(f"{OutName} {OutNumbers}")
 
-
-        # for cmp in tqdm(qryCmp, desc='[Compounds]'):
-        #     validStatus = True
-        #     CmpBatchID = cmp[0]
-        #     qryCmpBatchID = [CmpBatchID]
-        #     qryNCmpBatches = len(qryCmpBatchID)
-
-        #     qryTW = TestWell.objects.filter(cmpbatch_lst__contains = [CmpBatchID], 
-        #                                     n_cmpbatches = qryNCmpBatches, 
-        #                                     plate_id__result_type = 'Inhibition',
-        #                                     is_valid = True,
-        #                                     plate_id__plate_quality = 'Valid'
-        #                                    ).values(
-        #                                        'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
-        #                                        'inhibition','mscore','act_type'
-        #                                          )
-        #     if qryTW.exists():
-        #         dfSC = pd.DataFrame(qryTW).assign(cmpbatch_id=CmpBatchID)
-        #         dfSC.columns = ['plate_id','well_id','result_type','assay_id','inhibition','mscore','act_type','cmpbatch_id']
-
-                #print(dfSC)
-
-                # pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-                #                                     'mscore': ['mean','size'],
-                #                                     'act_type': [lambda x: ";".join(x), lambda x: len(x) if (x == "A").any() else 0 ],
-                #                                      })
-                # pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
-                #                                     'mscore': ['mean','size'],
-                #                                     'act_type': [get_strList, get_nAct ],
-                #                                     })
-                
-                # #print( pivDF.columns)
-
-
-                # for idx,row in pivDF.iterrows():
-                #     OutNumbers['Processed'] += 1
-                #     #print(idx," --> ", row.to_dict())
-                #     NewEntry = False
-                #     djSum = Summary_CmpBatch_Inhib.get(qryCmpBatchID,idx,Exact=True,verbose=0)
-                #     if djSum is None:
-                #         djSum = Summary_CmpBatch_Inhib()
-                #         djSum.cmpbatch_lst = qryCmpBatchID
-                #         djSum.n_cmpbatches = len(qryCmpBatchID)
-                #         djSum.assay_id = idx
-                #         NewEntry = True
-                #     djSum.act_types = row[ ('act_type','get_strList')]
-
-                #     djSum.n_assays = row[('mscore','size')]
-                #     djSum.n_actives = row[ ('act_type','get_nAct')]
-                #     #djSum.act_score_ave =
-
-                #     djSum.inhibition_ave = row[('inhibition','mean')]
-                #     djSum.inhibition_std = row[('inhibition','std')]
-                #     djSum.inhibition_min = row[('inhibition','min')]
-                #     djSum.inhibition_max = row[('inhibition','max')]
-                #     djSum.mscore_ave = row[('mscore','mean')]
-
-
-                #     djSum.clean_Fields()
-                #     validDict = djSum.validate()
-                #     if validDict:
-                #         validStatus = False
-                #         # for k in validDict:
-                #         #     print('Warning',k,validDict[k],'-')
-                #         row.update(validDict)
-
-                #     if validStatus:
-                #         if prgArgs.upload:
-                #             if NewEntry or prgArgs.overwrite:
-                #                 #djSum.chk_migration = 0
-                #                 OutNumbers['Upload Entries'] += 1
-                #                 djSum.save(user=prgArgs.appuser)
                                 
-
 #==============================================================================
 if __name__ == "__main__":
 
