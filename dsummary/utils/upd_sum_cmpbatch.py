@@ -51,11 +51,12 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                'cc_n_assayids' : 0, 'cc_n_actives' :0,
                'hc_n_assayids' : 0, 'hc_n_actives' :0,
                'gnm_n_assayids' : 0, 'gnm_n_actives' :0,}
-
+    
     # Group By
     pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
                                         'mscore': ['mean','size'],
                                         'act_type': [get_strList, get_nAct ],
+                                        'act_score': ['mean' ],
                                         })
     #print( pivDF.columns)
     for AssayID,row in pivDF.iterrows():
@@ -71,6 +72,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                 djSum.set_cmpbatch_id(CmpBatchLst)
                 djSum.assay_id = AssayID
                 NewEntry = True
+                OutNumbers['New Entry'] += 1
         elif SumType == 'Structure':
             djSum = Summary_Structure_Inhib.get(StructureID,AssayID,verbose=0)
             if djSum is None:
@@ -78,11 +80,12 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                 djSum.structure_id = Chem_Structure.get(StructureID)
                 djSum.assay_id = AssayID
                 NewEntry = True
+                OutNumbers['New Entry'] += 1
 
         djSum.act_types = row[ ('act_type','get_strList')]
         djSum.n_actives = row[ ('act_type','get_nAct')]
         djSum.n_assays = row[('mscore','size')]
-        #djSum.act_score_ave = row[('act_score','mean')]
+        djSum.act_score_ave = row[('act_score','mean')]
 
         djSum.inhibition_ave = row[('inhibition','mean')]
         djSum.inhibition_std = row[('inhibition','std')]
@@ -139,12 +142,12 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                     OutNumbers['Upload Entries'] += 1
                     djSum.save(user=appuser)
 
-    return(CmpDict,OutDict)   
+    return(CmpDict,OutDict,OutNumbers)   
 
 # --------------------------------------------------------------------------------------
 def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0,'Empty Entries':0}
     OutDict = []
 
     NCmpBatches = len(CmpBatchLst)
@@ -174,17 +177,17 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
         dfInhib = pd.DataFrame(qryInhib)
         dfInhib.rename(columns={'plate_id__assay_id':'assay_id',
                              'plate_id__result_type':'result_type',}, inplace=True)
-        _cmpdict, _outdict = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
+        _cmpdict, _outdict, OutNumbers = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser)
         
         djCmpd.sc_n_assayids += _cmpdict['sc_n_assayids']
         djCmpd.sc_n_actives += _cmpdict['sc_n_actives']
 
-        # print(f" {_cmpdict}")
-        # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
         for _a in ['gp','gn','fg','gnm']:
             djCmpd.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
             djCmpd.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+    else:
+        OutNumbers['Empty Entries'] += 1
 
     # Sum_Cmpd ---------------------------------------------------------------
     if upload:
@@ -195,7 +198,7 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
 # --------------------------------------------------------------------------------------
 def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0,'Empty Entries':0}
     OutDict = []
 
     #NCmpBatches = len(CmpBatchLst)
@@ -213,20 +216,21 @@ def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'
 
 
 
-    qryInhib = TestWell.objects.filter(cmpbatch_id__structure_id = StructureID, 
+    qryInhib = TestWell.objects.filter(cmpbatch_id__structure_id = StructureID,
+                                    n_cmpbatches = 1, 
                                     plate_id__result_type = 'Inhibition',
                                     is_valid = True,
                                     plate_id__plate_quality = 'Valid'
                                     ).values(
                                         'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
-                                        'inhibition','mscore','act_type'
+                                        'inhibition','mscore','act_type','act_score'
                                             )
 
     if qryInhib.exists():
         dfInhib = pd.DataFrame(qryInhib)
         dfInhib.rename(columns={'plate_id__assay_id':'assay_id',
                              'plate_id__result_type':'result_type',}, inplace=True)
-        _cmpdict, _outdict = pivot_sum_sc('Structure',dfInhib,None,StructureID,OutNumbers,
+        _cmpdict, _outdict, OutNumbers = pivot_sum_sc('Structure',dfInhib,None,StructureID,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser)
         
         djStr.sc_n_assayids += _cmpdict['sc_n_assayids']
@@ -237,7 +241,8 @@ def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'
         for _a in ['gp','gn','fg','gnm']:
             djStr.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
             djStr.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
-
+    else:
+        OutNumbers['Empty Entries'] += 1
     # Sum_Cmpd ---------------------------------------------------------------
     if upload:
         djStr.save(user=appuser)
