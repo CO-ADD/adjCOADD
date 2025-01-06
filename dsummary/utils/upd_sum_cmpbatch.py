@@ -38,6 +38,211 @@ def get_DR_Range(x):
     return DR_Range(x)
 
 
+# Summary SC Function  =======================================================================
+# --------------------------------------------------------------------------------------
+def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
+                        upload=False,overwrite=False,appuser='J.Zuegg' ):
+# --------------------------------------------------------------------------------------
+    OutDict = []
+    CmpDict = {'sc_n_assayids' : 0, 'sc_n_actives' :0,
+               'gp_n_assayids' : 0, 'gp_n_actives' :0,
+               'gn_n_assayids' : 0, 'gn_n_actives' :0,
+               'fg_n_assayids' : 0, 'fg_n_actives' :0,
+               'cc_n_assayids' : 0, 'cc_n_actives' :0,
+               'hc_n_assayids' : 0, 'hc_n_actives' :0,
+               'gnm_n_assayids' : 0, 'gnm_n_actives' :0,}
+
+    # Group By
+    pivDF = dfSC.groupby(['assay_id']).agg({'inhibition': ['mean','max','min','std'],
+                                        'mscore': ['mean','size'],
+                                        'act_type': [get_strList, get_nAct ],
+                                        })
+    #print( pivDF.columns)
+    for AssayID,row in pivDF.iterrows():
+        validStatus = True
+        NewEntry = False
+
+        OutNumbers['Processed'] += 1
+
+        if SumType == 'CmpBatch':
+            djSum = Summary_CmpBatch_Inhib.get(CmpBatchLst,AssayID,Exact=True,verbose=0)
+            if djSum is None:
+                djSum = Summary_CmpBatch_Inhib()
+                djSum.set_cmpbatch_id(CmpBatchLst)
+                djSum.assay_id = AssayID
+                NewEntry = True
+        elif SumType == 'Structure':
+            djSum = Summary_Structure_Inhib.get(StructureID,AssayID,verbose=0)
+            if djSum is None:
+                djSum = Summary_Structure_Inhib()
+                djSum.structure_id = Chem_Structure.get(StructureID)
+                djSum.assay_id = AssayID
+                NewEntry = True
+
+        djSum.act_types = row[ ('act_type','get_strList')]
+        djSum.n_actives = row[ ('act_type','get_nAct')]
+        djSum.n_assays = row[('mscore','size')]
+        #djSum.act_score_ave = row[('act_score','mean')]
+
+        djSum.inhibition_ave = row[('inhibition','mean')]
+        djSum.inhibition_std = row[('inhibition','std')]
+        djSum.inhibition_min = row[('inhibition','min')]
+        djSum.inhibition_max = row[('inhibition','max')]
+        djSum.mscore_ave = row[('mscore','mean')]
+
+        # n_assayids and n_actives
+        CmpDict['sc_n_assayids'] += 1
+        if djSum.n_actives > 0:
+            CmpDict['sc_n_actives'] += 1
+
+        if 'GP' in AssayID:
+            CmpDict['gp_n_assayids'] += 1
+            if djSum.n_actives > 0:
+                CmpDict['gp_n_actives'] += 1
+        elif 'FG' in AssayID:
+            CmpDict['fg_n_assayids'] += 1
+            if djSum.n_actives > 0:
+                CmpDict['fg_n_actives'] += 1
+        elif 'GN' in AssayID:
+            if AssayID in Summary_CmpBatch.GNM_ASSAYS:
+                CmpDict['gnm_n_assayids'] += 1
+                if djSum.n_actives > 0:
+                    CmpDict['gnm_n_actives'] += 1
+            else:
+                CmpDict['gn_n_assayids'] += 1
+                if djSum.n_actives > 0:
+                    CmpDict['gn_n_actives'] += 1
+        elif 'CL' in AssayID:
+            if 'CC50' in row[('result_type','get_strList_unique')]:
+                CmpDict['cc_n_assayids'] += 1
+                if djSum.n_actives > 0:
+                    CmpDict['cc_n_actives'] += 1
+            if 'HC50' in row[('result_type','get_strList_unique')]:
+                CmpDict['hc_n_assayids'] += 1
+                if djSum.n_actives > 0:
+                    CmpDict['hc_n_actives'] += 1
+
+        # Vakidate and Save
+        djSum.clean_Fields()
+        validDict = djSum.validate()
+        if validDict:
+            validStatus = False
+            # for k in validDict:
+            #     print('Warning',k,validDict[k],'-')
+            row.update(validDict)
+            OutDict.append(row)
+
+        if validStatus:
+            if upload:
+                if NewEntry or overwrite:
+                    #djSum.chk_migration = 0
+                    OutNumbers['Upload Entries'] += 1
+                    djSum.save(user=appuser)
+
+    return(CmpDict,OutDict)   
+
+# --------------------------------------------------------------------------------------
+def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg'):
+# --------------------------------------------------------------------------------------
+    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutDict = []
+
+    NCmpBatches = len(CmpBatchLst)
+
+    # Sum_Cmpd ---------------------------------------------------------------
+    djCmpd = Summary_CmpBatch.get(CmpBatchLst,verbose=0)
+    if djCmpd is None:
+        djCmpd = Summary_CmpBatch()
+        djCmpd.set_cmpbatch_id(CmpBatchLst)
+
+    djCmpd.sc_n_assayids = 0
+    djCmpd.sc_n_actives = 0
+    djCmpd.sc_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+    djCmpd.sc_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+
+    qryInhib = TestWell.objects.filter(cmpbatch_lst__contains = CmpBatchLst, 
+                                    n_cmpbatches = NCmpBatches, 
+                                    plate_id__result_type = 'Inhibition',
+                                    is_valid = True,
+                                    plate_id__plate_quality = 'Valid'
+                                    ).values(
+                                        'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
+                                        'inhibition','mscore','act_type'
+                                            )
+
+    if qryInhib.exists():
+        dfInhib = pd.DataFrame(qryInhib)
+        dfInhib.rename(columns={'plate_id__assay_id':'assay_id',
+                             'plate_id__result_type':'result_type',}, inplace=True)
+        _cmpdict, _outdict = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
+                                            upload=upload,overwrite=overwrite,appuser=appuser)
+        
+        djCmpd.sc_n_assayids += _cmpdict['sc_n_assayids']
+        djCmpd.sc_n_actives += _cmpdict['sc_n_actives']
+
+        # print(f" {_cmpdict}")
+        # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
+        for _a in ['gp','gn','fg','gnm']:
+            djCmpd.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
+            djCmpd.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+
+    # Sum_Cmpd ---------------------------------------------------------------
+    if upload:
+        djCmpd.save(user=appuser)
+
+    return(OutNumbers,OutDict)
+
+# --------------------------------------------------------------------------------------
+def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'):
+# --------------------------------------------------------------------------------------
+    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutDict = []
+
+    #NCmpBatches = len(CmpBatchLst)
+
+    # Sum_Cmpd ---------------------------------------------------------------
+    djStr = Summary_Structure.get(StructureID,verbose=0)
+    if djStr is None:
+        djStr = Summary_Structure()
+        djStr.structure_id = Chem_Structure.get(StructureID)
+
+    djStr.sc_n_assayids = 0
+    djStr.sc_n_actives = 0
+    djStr.sc_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+    djStr.sc_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+
+
+
+    qryInhib = TestWell.objects.filter(cmpbatch_id__structure_id = StructureID, 
+                                    plate_id__result_type = 'Inhibition',
+                                    is_valid = True,
+                                    plate_id__plate_quality = 'Valid'
+                                    ).values(
+                                        'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
+                                        'inhibition','mscore','act_type'
+                                            )
+
+    if qryInhib.exists():
+        dfInhib = pd.DataFrame(qryInhib)
+        dfInhib.rename(columns={'plate_id__assay_id':'assay_id',
+                             'plate_id__result_type':'result_type',}, inplace=True)
+        _cmpdict, _outdict = pivot_sum_sc('Structure',dfInhib,None,StructureID,OutNumbers,
+                                            upload=upload,overwrite=overwrite,appuser=appuser)
+        
+        djStr.sc_n_assayids += _cmpdict['sc_n_assayids']
+        djStr.sc_n_actives += _cmpdict['sc_n_actives']
+
+        # print(f" {_cmpdict}")
+        # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
+        for _a in ['gp','gn','fg','gnm']:
+            djStr.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
+            djStr.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+
+    # Sum_Cmpd ---------------------------------------------------------------
+    if upload:
+        djStr.save(user=appuser)
+
+    return(OutNumbers,OutDict)
 
 # Summary DR Function  =======================================================================
 
@@ -154,7 +359,6 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
     OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
     OutDict = []
 
-    CmpBatchs = COMPOUND_SEP.join(CmpBatchLst)
     NCmpBatches = len(CmpBatchLst)
 
     # Sum_Cmpd ---------------------------------------------------------------

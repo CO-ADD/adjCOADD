@@ -411,8 +411,16 @@ class TestWell(Sample_Base):
     inhibition = models.DecimalField(max_digits=9, decimal_places=3)
     zscore = models.DecimalField(max_digits=9, decimal_places=3)
     mscore = models.DecimalField(max_digits=9, decimal_places=3)
-    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Active Type")
-#    bscore = models.DecimalField(max_digits=9, decimal_places=3)
+
+    # I - Inactive, 
+    # P - Partial (Inhib>=50 & MScore >= 2.5), 
+    # A - Active  (Inhib>=80 & MScore >= 3.5)
+    # S - Not Significant (Inhib>=80 & MScore <= 3.5)
+
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
+
+    # 0 - Inactive (I), 1 - Partial (P), 3 - Active (A) 
+    act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
 
     chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
     #-------------------------------------------------------------------------------
@@ -428,7 +436,10 @@ class TestWell(Sample_Base):
             models.Index(name="testwell_wid_idx",fields=['well_id']),
             models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
             models.Index(name="testwell_skip_idx",fields=['is_skip', 'is_valid']),
-            models.Index(name="testwell_act_idx",fields=['act_type']),
+            models.Index(name="testwell_atyp_idx",fields=['act_type']),
+            models.Index(name="testwell_ascr_idx",fields=['act_score']),
+            models.Index(name="testwell_inhib_idx",fields=['inhibition']),
+            models.Index(name="testwell_mscr_idx",fields=['mscore']),
             models.Index(name="testwell_chkm_idx",fields=['chk_migration']),
         ]
 

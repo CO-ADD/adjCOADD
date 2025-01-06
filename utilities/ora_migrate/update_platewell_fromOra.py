@@ -169,9 +169,6 @@ def main(prgArgs,djDir):
                 set_arrayFields(djWell,row,arrayFields)
                 set_Dictionaries(djWell,row,dictFields)
 
-                # if djWell.well_id in debugWells:
-                #     print(f" [D00] {djWell.well_id} {djWell.n_cmpbatches}")
-
                 # Fix Readout_types
                 _readout = []
                 if len(djWell.readouts) == 1:
@@ -183,21 +180,6 @@ def main(prgArgs,djDir):
                         _readout.append('OD600')
                 djWell.readout_types = _readout
 
-                # Fix CmpBatch ID's
-#                 for _old in djWell.cmpbatch_lst:
-#                     if _old is not None:
-#                         if 'MCC_' in _old:
-#                             _new = _old.replace('MCC_','MCC').replace(":","_")
-# #                            _new = _old.replace('MCC_','MCC')
-#                         else:
-#                             try:
-#                                 _new = Convert_CompoundID.objects.get(ora_compound_id = _old).compound_id
-#                             except:
-#                                 _new = None
-#                                 validStatus = False
-#                     else:
-#                         _new = None
-#                     _new_lst.append(_new)
                 _new_lst = []
                 for _old in djWell.cmpbatch_lst:
                     _new,_valstatus = convert_castdb_compoundid_from_ora(_old)
@@ -206,12 +188,7 @@ def main(prgArgs,djDir):
                         validStatus = False
 
                 if validStatus:
-
-                    djWell.cmpbatch_lst = _new_lst
-                    djWell.n_cmpbatches = len(_new_lst)
-
-                    # if djWell.well_id in debugWells:
-                    #     print(f" [D10] {djWell.well_id} {djWell.n_cmpbatches}")
+                    djWell.set_cmpbatch_id(_new_lst) 
 
                     validDict = djWell.check_cmpbatch_id()
                     if validDict:

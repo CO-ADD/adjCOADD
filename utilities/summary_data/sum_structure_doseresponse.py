@@ -99,33 +99,6 @@ def main(prgArgs,djDir):
         logger.info(f"{OutName} {OutNumbers}")
 
 
-        #print(f" MIC: {len(list(micStruct))} + CC50: {len(list(cc50Struct))} + HC50: {len(list(hc50Struct))}")
-
-
-        # if int(prgArgs.test) > 0:
-        #     qryCmp = Compound_Batch.objects.filter(batch_source__in=qrySources).values_list('cmpbatch_id')[:int(prgArgs.test)]
-        #     qryCmpBatch = AssayData_MIC.objects.order_by().values_list('cmpbatch_lst').distinct()[:int(prgArgs.test)]
-        # else:
-        #     #qryCmp = Compound_Batch.objects.filter(batch_source__in=qrySources).values_list('cmpbatch_id')
-        #     qryCmpBatch = AssayData_MIC.objects.order_by().values_list('cmpbatch_lst').distinct()
-
-        # for sid in tqdm(qryStruct, desc='[Structures]'):
-
-        #     qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-        #                                     cmpbatch_id__structure_id = sid, 
-        #                                     n_cmpbatches = 1, 
-        #                                     testplate_id__result_type = 'MIC',
-        #                                     testplate_id__plate_quality = 'Valid'                                            
-        #                                     ).values(
-        #                                         'testplate_id','testwell_id','testplate_id__result_type','testplate_id__assay_id',
-        #                                         'mic','mic_unit','act_type','act_score','pscore',
-        #                                         'inhibit_max'
-        #                                             )
-
-
-        # for row in qryStruct:
-        #     print(row.cmpbatch_lst)
-
 #==============================================================================
 if __name__ == "__main__":
 

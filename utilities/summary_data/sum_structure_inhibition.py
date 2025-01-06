@@ -42,7 +42,7 @@ def main(prgArgs,djDir):
 
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import COADD_Compound, Compound_Batch
-    from dsummary.utils.upd_sum_cmpbatch import sum_cmpbatch_sc
+    from dsummary.utils.upd_sum_cmpbatch import sum_structure_sc
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
@@ -56,7 +56,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # AssayData MIC -------------------------------------------------------------
-    if prgArgs.table == 'Sum_CmpBatch_SC':
+    if prgArgs.table == 'Sum_Structure_SC':
 
         OutName = f"[{prgArgs.table}]"
         OutDict = []
@@ -66,15 +66,17 @@ def main(prgArgs,djDir):
         qrySources = ['COADD']
 
         if int(prgArgs.test) > 0:
-            twCmp = TestWell.objects.filter(plate_id__result_type = 'Inhibition').values_list('cmpbatch_lst').distinct()[:int(prgArgs.test)]
+            twStr = TestWell.objects.filter(n_cmpbatches = 1, mpbatch_id__structure_id__isnull = False, 
+                                            plate_id__result_type = 'Inhibition').values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
         else:
-            twCmp = TestWell.objects.filter(plate_id__result_type = 'Inhibition').values_list('cmpbatch_lst').distinct()
+            twStr = TestWell.objects.filter(n_cmpbatches = 1, mpbatch_id__structure_id__isnull = False, 
+                                            plate_id__result_type = 'Inhibition').values_list('cmpbatch_id__structure_id').distinct()
 
-        logger.info(f" [Sum CmpBatch SC] TestWell: {twCmp.count()}  ")
+        logger.info(f" [Sum Structure SC] TestWell: {twStr.count()}  ")
 
-        for cmps in tqdm(twCmp, desc='[CmpBatcheLsts]'):
+        for sid in tqdm(twStr, desc='[Structures]'):
             #print(cmps)
-            _numbers,_outdict  = sum_cmpbatch_sc(cmps[0],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
+            _numbers,_outdict  = sum_structure_sc(sid[0],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
 
             if _outdict:
                 OutDict = OutDict + _outdict

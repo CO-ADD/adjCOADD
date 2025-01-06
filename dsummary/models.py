@@ -108,7 +108,7 @@ class Summary_CmpBatch_Inhib(CmpBatchList_Base):
     #------------------------------------------------
     class Meta:
         app_label = 'dsummary'
-        db_table = 'sum_cmpbatch_inhib'
+        db_table = 'sum_cmpbatch_sc'
         ordering=['assay_id']
         indexes = [
             GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
@@ -310,7 +310,7 @@ class Summary_Structure_Inhib(AuditModel):
     #------------------------------------------------
     class Meta:
         app_label = 'dsummary'
-        db_table = 'sum_structure_inhib'
+        db_table = 'sum_struture_sc'
         ordering=['assay_id','structure_id']
         indexes = [
 #            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
