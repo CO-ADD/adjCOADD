@@ -66,7 +66,7 @@ def main(prgArgs,djDir):
         qrySources = ['COADD']
 
         if int(prgArgs.test) > 0:
-            twStr = TestWell.objects.filter(n_cmpbatches = 1, mpbatch_id__structure_id__isnull = False, 
+            twStr = TestWell.objects.filter(n_cmpbatches = 1, cmpbatch_id__structure_id__isnull = False, 
                                             plate_id__result_type = 'Inhibition').values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
         else:
             twStr = TestWell.objects.filter(n_cmpbatches = 1, mpbatch_id__structure_id__isnull = False, 
