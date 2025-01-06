@@ -168,7 +168,7 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                                     plate_id__result_type = 'Inhibition',
                                     is_valid = True,
                                     plate_id__plate_quality = 'Valid'
-                                    ).values(
+                                    ).exclude(plate_id__readout_type = 'Visual').values(
                                         'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
                                         'inhibition','mscore','act_type'
                                             )
@@ -221,7 +221,7 @@ def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'
                                     plate_id__result_type = 'Inhibition',
                                     is_valid = True,
                                     plate_id__plate_quality = 'Valid'
-                                    ).values(
+                                    ).exclude(plate_id__readout_type = 'Visual').values(
                                         'plate_id','well_id','plate_id__result_type','plate_id__assay_id',
                                         'inhibition','mscore','act_type','act_score'
                                             )

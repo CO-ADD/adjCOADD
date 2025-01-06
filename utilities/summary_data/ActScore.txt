@@ -1,0 +1,24 @@
+--select act_type, act_score, count(*)
+--from dplate.testwell
+--where inhibition >= 80 and MScore >= 3.5 
+--group by act_type, act_score
+
+--update dplate.testwell
+--set act_score = 0, act_type ='I'
+--where inhibition < 50 or abs(mscore) < 2.5
+
+--update dplate.testwell
+--set act_score = 3, act_type ='A'
+--where inhibition >= 80 and abs(mscore) >= 3.5
+
+--update dplate.testwell
+--set act_score = 0, act_type ='S'
+--where inhibition >= 80 and abs(mscore) <3.5
+
+--update dplate.testwell
+--set act_score = 1, act_type ='P'
+--where inhibition >= 50 and inhibition < 80 and abs(mscore) >=2.5
+
+update dplate.testwell
+set act_score = 0, act_type ='I'
+where abs(mscore) < 2.5
