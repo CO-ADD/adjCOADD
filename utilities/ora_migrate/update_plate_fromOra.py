@@ -130,7 +130,7 @@ def get_oraTestWells(test=0):
         "nreads":   "n_readouts",
         "readout_id" : "readout_type",
         "layout_control" : "control_layout",
-        "assaytype_id" : "assay_id" 
+        "assaytype_id" : "assay_id",
     }
 
     replaceValues = {

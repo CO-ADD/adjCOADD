@@ -51,34 +51,37 @@ def main(prgArgs,djDir):
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
         # Get all Distinct CmpBatch_Lst
-        if int(prgArgs.test) > 0:
-            micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
-                                                     cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
-            cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
-                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
-            hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
-                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+        if prgArgs.structureid:
+            strDict = {prgArgs.structureid:prgArgs.structureid}
         else:
-            micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
-                                                     cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
-            cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
-                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
-            hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
-                                                       cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
+            if int(prgArgs.test) > 0:
+                micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+                cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+                hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()[:int(prgArgs.test)]
+            else:
+                micStruct = AssayData_MIC.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
+                cc50Struct = AssayData_CC50.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
+                hc50Struct = AssayData_HC50.objects.filter(n_cmpbatches = 1, 
+                                                        cmpbatch_id__structure_id__isnull = False ).values_list('cmpbatch_id__structure_id').distinct()
 
-        logger.info(f" [Sum Structure DR] MIC: {micStruct.count()} + CC50: {cc50Struct.count()} + HC50: {hc50Struct.count()} ")
+            logger.info(f" [Sum Structure DR] MIC: {micStruct.count()} + CC50: {cc50Struct.count()} + HC50: {hc50Struct.count()} ")
 
-        strDict = {}
-        for s in micStruct:
-            if s[0] not in strDict:
-                strDict[s[0]] = s[0]
-        for s in cc50Struct:
-            if s[0] not in strDict:
-                strDict[s[0]] = s[0]
-        for s in hc50Struct:
-            if s[0] not in strDict:
-                strDict[s[0]] = s[0]
-        logger.info(f" [Sum Structure DR] Structures: {len(strDict)} ")
+            strDict = {}
+            for s in micStruct:
+                if s[0] not in strDict:
+                    strDict[s[0]] = s[0]
+            for s in cc50Struct:
+                if s[0] not in strDict:
+                    strDict[s[0]] = s[0]
+            for s in hc50Struct:
+                if s[0] not in strDict:
+                    strDict[s[0]] = s[0]
+            logger.info(f" [Sum Structure DR] Structures: {len(strDict)} ")
 
         for sid in tqdm(strDict.keys(), desc='[CmpBatcheLsts]'):
             #print(cmpDict[cmps])
@@ -121,6 +124,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgParser.add_argument("-s",default=None,required=False, dest="structureid", action='store', help="Single File to parse")
 
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)

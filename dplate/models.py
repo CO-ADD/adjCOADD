@@ -308,7 +308,7 @@ class TestPlate(Plate):
         db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
     
     test_dye = models.CharField(max_length=25, blank=True, verbose_name = "Dye")
-    test_addition = models.CharField(max_length=25, blank=True, verbose_name = "Addition")
+    test_additive = models.CharField(max_length=25, blank=True, verbose_name = "Additive")
     test_volume = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "Volume (uL)")
     test_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
     test_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")

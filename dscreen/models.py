@@ -18,6 +18,8 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
 from dsample.models import CmpBatchList_Base, Compound_Batch
+from dcell.models import Cell
+from dorganism.models import Organism
 from adjcoadd.constants import *
 
 import logging
@@ -124,7 +126,79 @@ class Screen_Run(AuditModel):
         # self.n_hc50 = 
         # self.n_synmic = 
         # self.screen_date = 
-           
+
+#-------------------------------------------------------------------------------------------------
+class Assay(AuditModel):
+    """
+    List of Assays
+    """
+#-------------------------------------------------------------------------------------------------
+    HEADER_FIELDS = {
+        # "run_id":"Run ID",
+        # "run_type":"Run Type",
+        # "assay_note":"Assay",
+        # "run_status":"Status",
+        # "run_project":"Project",
+        # "run_name":"Name",
+        # "run_date":"Run Date",
+        # "run_conditions":"Conditions",
+        # "run_issues":"Issues",
+    }
+
+    Choice_Dictionary = {
+        # 'run_type':'Run_Type',
+        # 'run_status':'Process_Status',
+    }
+
+    assay_id = models.CharField(max_length=100,primary_key=True, verbose_name = "Assay ID")
+    ora_assay_id = models.CharField(max_length=100,blank=True, verbose_name = "Ora Assay ID")
+    assaytype_id = models.CharField(max_length=15, verbose_name = "AssayType ID")
+    sum_assay_id  = models.CharField(max_length=500, blank=True, verbose_name = "Assay ID for Summary")
+    assay_note = models.CharField(max_length=250, blank=True, verbose_name = "Assay Note")
+    assay_code = models.CharField(max_length=15, blank=True, verbose_name = "Assay Code")
+    test_media = models.CharField(max_length=250, blank=True, verbose_name = "Media")
+    test_dye = models.CharField(max_length=250, blank=True, verbose_name = "Dye/Kit")
+    test_additive = models.CharField(max_length=250, blank=True, verbose_name = "Additive")
+    organism_id = models.ForeignKey(Organism, null=True, blank=True, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
+        db_column="organism_id", related_name="%(class)s_organism_id")
+    cell_id = models.ForeignKey(Cell, null=True, blank=True, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
+        db_column="cell_id", related_name="%(class)s_cellid")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dscreen'
+        db_table = 'assay'
+        ordering=['assay_id']
+        indexes = [
+            models.Index(name="ass_aid_idx", fields=['assay_id']),
+            models.Index(name="ass_aty_idx", fields=['assaytype_id']),
+            models.Index(name="ass_sid_idx", fields=['sum_assay_id']),
+        ]
+
+    # #------------------------------------------------
+    # def __str__(self) -> str:
+    #     return f"{self.run_id}"
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.run_id} [{self.run_type}]"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,AssayID,verbose=0):
+        try:
+            retInstance = cls.objects.get(assay_id=AssayID)
+        except:
+            if verbose:
+                print(f"[Assay_ID Not Found] {AssayID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,AssayID,verbose=0):
+        return cls.objects.filter(assay_id=AssayID).exists()
+    
 #-------------------------------------------------------------------------------------------------
 class AssayData_MIC(CmpBatchList_Base):
     """
