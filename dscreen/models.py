@@ -152,17 +152,22 @@ class Assay(AuditModel):
 
     assay_id = models.CharField(max_length=100,primary_key=True, verbose_name = "Assay ID")
     ora_assay_id = models.CharField(max_length=100,blank=True, verbose_name = "Ora Assay ID")
-    assaytype_id = models.CharField(max_length=15, verbose_name = "AssayType ID")
-    sum_assay_id  = models.CharField(max_length=500, blank=True, verbose_name = "Assay ID for Summary")
-    assay_note = models.CharField(max_length=250, blank=True, verbose_name = "Assay Note")
-    assay_code = models.CharField(max_length=15, blank=True, verbose_name = "Assay Code")
-    test_media = models.CharField(max_length=250, blank=True, verbose_name = "Media")
-    test_dye = models.CharField(max_length=250, blank=True, verbose_name = "Dye/Kit")
-    test_additive = models.CharField(max_length=250, blank=True, verbose_name = "Additive")
+    assay_type = models.CharField(max_length=30, verbose_name = "AssayType" )
+    assay_subtype = models.CharField(max_length=50, verbose_name = "AssaySubType" )
+    sum_assay_id  = models.CharField(max_length=100, blank=True, verbose_name = "Assay ID for Summary")
+    assay_note = models.CharField(max_length=150, blank=True, verbose_name = "Assay Note")
+    assay_code = models.CharField(max_length=20, blank=True, verbose_name = "Assay Code")
+    test_media = models.CharField(max_length=150, blank=True, verbose_name = "Media")
+    test_dye = models.CharField(max_length=150, blank=True, verbose_name = "Dye/Kit")
+    test_additive = models.CharField(max_length=150, blank=True, verbose_name = "Additive")
     organism_id = models.ForeignKey(Organism, null=True, blank=True, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
     cell_id = models.ForeignKey(Cell, null=True, blank=True, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
         db_column="cell_id", related_name="%(class)s_cellid")
+    
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
     #------------------------------------------------
     class Meta:
@@ -171,7 +176,7 @@ class Assay(AuditModel):
         ordering=['assay_id']
         indexes = [
             models.Index(name="ass_aid_idx", fields=['assay_id']),
-            models.Index(name="ass_aty_idx", fields=['assaytype_id']),
+            models.Index(name="ass_aty_idx", fields=['assay_type']),
             models.Index(name="ass_sid_idx", fields=['sum_assay_id']),
         ]
 

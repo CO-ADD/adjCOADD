@@ -342,7 +342,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
                 if djSum.n_actives > 0:
                     CmpDict['hc_n_actives'] += 1
 
-        # Vakidate and Save
+        # Validate and Save
         djSum.clean_Fields()
         validDict = djSum.validate()
         if validDict:
