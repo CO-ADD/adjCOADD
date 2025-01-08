@@ -77,10 +77,9 @@ class Summary_CmpBatch_Inhib(CmpBatchList_Base):
     List of Summary Activity for each CmpBatch
     """
 #-------------------------------------------------------------------------------------------------
-    #from dplate.models import TestPlate
-
+ 
     # Assay Conditions
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
@@ -109,10 +108,10 @@ class Summary_CmpBatch_Inhib(CmpBatchList_Base):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_cmpbatch_sc'
-        ordering=['assay_id']
+        ordering=['sum_assay_id']
         indexes = [
             GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="scmpsc_assid_idx", fields=['assay_id']),
+            models.Index(name="scmpsc_assid_idx", fields=['sum_assay_id']),
             models.Index(name="scmpsc_nact_idx", fields=['n_actives']),
             models.Index(name="scmpsc_ascr_idx", fields=['act_score_ave']),
             models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
@@ -151,10 +150,9 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     List of Summary Activity for each CmpBatch
     """
 #-------------------------------------------------------------------------------------------------
-    #from dplate.models import TestPlate
 
     # Assay Conditions
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
@@ -183,10 +181,10 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_cmpbatch_dr'
-        ordering=['assay_id']
+        ordering=['sum_assay_id']
         indexes = [
             GinIndex(name="scmpdr_cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="scmpdr_assid_idx", fields=['assay_id']),
+            models.Index(name="scmpdr_assid_idx", fields=['sum_assay_id']),
             models.Index(name="scmpdr_nact_idx", fields=['n_actives']),
             models.Index(name="scmpdr_ascr_idx", fields=['act_score_ave']),
             models.Index(name="scmpdr_drt_idx", fields=['drval_type']),
@@ -225,8 +223,10 @@ class Summary_Structure(AuditModel):
     """
     List of Summary Activity for each CmpBatch
     """
+
     ASSAY_CLASSES = ['GP','GN','GNMemb','FG','CC','HC']
 
+    #---------------------------------------------------------------------------------------------
     structure_id = models.OneToOneField(Chem_Structure, primary_key=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
                                         db_column="structure_id", related_name="%(class)s_structure_id")
     sc_n_assayids = models.SmallIntegerField(default=-1, blank=True, verbose_name = "SC #AssayIDs")
@@ -248,6 +248,7 @@ class Summary_Structure(AuditModel):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_structure'
+        ordering=['structure_id']
         indexes = [
             models.Index(name="sstr_scassid_idx", fields=['sc_n_assayids']),
             models.Index(name="sstr_scnact_idx", fields=['sc_n_actives']),
@@ -279,11 +280,12 @@ class Summary_Structure_Inhib(AuditModel):
 #-------------------------------------------------------------------------------------------------
     #from dplate.models import TestPlate
 
-    # Assay Conditions
+    # Structure ID
     structure_id= models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
 
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    # Assay Conditions
+    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
@@ -312,11 +314,11 @@ class Summary_Structure_Inhib(AuditModel):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_structure_sc'
-        ordering=['assay_id','structure_id']
+        ordering=['sum_assay_id','structure_id']
         indexes = [
 #            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="sstrsc_sid_idx", fields=['structure_id']),
-            models.Index(name="sstrsc_assid_idx", fields=['assay_id']),
+            models.Index(name="sstrsc_assid_idx", fields=['sum_assay_id']),
             models.Index(name="sstrsc_nact_idx", fields=['n_actives']),
             models.Index(name="sstrsc_ascr_idx", fields=['act_score_ave']),
             models.Index(name="sstrsc_inhin_idx", fields=['inhibition_ave']),
@@ -348,13 +350,13 @@ class Summary_Structure_Doseresp(AuditModel):
     List of Summary Activity for each Structure
     """
 #-------------------------------------------------------------------------------------------------
-    #from dplate.models import TestPlate
 
-    # Assay Conditions
+    # Structure ID
     structure_id= models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
+
     # Assay Conditions
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
@@ -381,11 +383,11 @@ class Summary_Structure_Doseresp(AuditModel):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_structure_dr'
-        ordering=['assay_id','structure_id']
+        ordering=['sum_assay_id','structure_id']
         indexes = [
 #            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="sstrdr_sid_idx", fields=['structure_id']),
-            models.Index(name="sstrdr_assid_idx", fields=['assay_id']),
+            models.Index(name="sstrdr_assid_idx", fields=['sum_assay_id']),
             models.Index(name="sstrdr_nact_idx", fields=['n_actives']),
             models.Index(name="sstrdr_ascr_idx", fields=['act_score_ave']),
             models.Index(name="sstrdr_drt_idx", fields=['drval_type']),

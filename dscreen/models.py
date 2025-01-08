@@ -235,7 +235,10 @@ class AssayData_MIC(CmpBatchList_Base):
         db_column="testplate_id", related_name="%(class)s_testplateid")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
 
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
+        db_column="assay_id", related_name="%(class)s_assay_id")
+    ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
+
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
@@ -355,7 +358,10 @@ class AssayData_CC50(CmpBatchList_Base):
         db_column="testplate_id", related_name="%(class)s_testplateid")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
 
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
+        db_column="assay_id", related_name="%(class)s_assay_id")
+    ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
+
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
@@ -459,7 +465,10 @@ class AssayData_HC50(CmpBatchList_Base):
         db_column="testplate_id", related_name="%(class)s_testplateid")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
 
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
+        db_column="assay_id", related_name="%(class)s_assay_id")
+    ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
+
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 

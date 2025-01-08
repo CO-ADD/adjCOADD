@@ -13,7 +13,7 @@ from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
-from dscreen.models import Screen_Run
+from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
 from dsample.models import Sample_Base
@@ -297,7 +297,10 @@ class TestPlate(Plate):
     result_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Result Type", on_delete=models.DO_NOTHING,
         db_column="result_type", related_name="%(class)s_resulttype")
     
-    assay_id = models.CharField(max_length=25, blank=True, verbose_name = "Assay ID")
+    assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
+        db_column="assay_id", related_name="%(class)s_assay_id")
+        
+    ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
     test_date = models.DateField(null=True, blank=True, verbose_name = "Test Date")
     test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
     #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
@@ -358,7 +361,7 @@ class TestPlate(Plate):
             models.Index(name="testplate_labw_idx",fields=['labware_id']),
             # models.Index(fields=['MotherPlate_ID']),
             models.Index(name="testplate_rest_idx",fields=['result_type']),
-            models.Index(name="testplate_ass_idx",fields=['assay_id']),
+            models.Index(name="testplate_oass_idx",fields=['ora_assay_id']),
             models.Index(name="testplate_run_idx",fields=['run_id']),
             models.Index(name="testplate_read_idx",fields=['readout_type']),
             models.Index(name="testplate_proc_idx",fields=['process_status']),
