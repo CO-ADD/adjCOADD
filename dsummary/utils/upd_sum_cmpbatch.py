@@ -100,15 +100,15 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
         if djSum.n_actives > 0:
             CmpDict['sc_n_actives'] += 1
 
-        if 'GP_' in SumAssayID:
+        if 'GP' in SumAssayID:
             CmpDict['gp_n_assayids'] += 1
             if djSum.n_actives > 0:
                 CmpDict['gp_n_actives'] += 1
-        elif 'FG_' in SumAssayID:
+        elif 'FG' in SumAssayID:
             CmpDict['fg_n_assayids'] += 1
             if djSum.n_actives > 0:
                 CmpDict['fg_n_actives'] += 1
-        elif 'GN_' in SumAssayID:
+        elif 'GN' in SumAssayID:
             if SumAssayID in Summary_CmpBatch.GNM_ASSAYS:
                 CmpDict['gnm_n_assayids'] += 1
                 if djSum.n_actives > 0:
@@ -135,6 +135,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
             # for k in validDict:
             #     print('Warning',k,validDict[k],'-')
             row.update(validDict)
+            logger.warning(f" {validDict}")
             OutDict.append(row)
 
         if validStatus:
