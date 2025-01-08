@@ -174,11 +174,11 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                                         'plate_id','well_id','plate_id__result_type','plate_id__assay_id__sum_assay_id',
                                         'inhibition','mscore','act_type'
                                             )
-
     if qryInhib.exists():
         dfInhib = pd.DataFrame(qryInhib)
         dfInhib.rename(columns={'plate_id__assay_id__sum_assay_id':'sum_assay_id',
                              'plate_id__result_type':'result_type',}, inplace=True)
+
         _cmpdict, _outdict, OutNumbers = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser)
         
@@ -390,8 +390,10 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
 
     if qryMIC.exists():
         dfDR = pd.DataFrame(qryMIC)
-        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'assay_id','mic':'dr','mic_unit': 'dr_unit',
+
+        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','mic':'dr','mic_unit': 'dr_unit',
                              'testplate_id__result_type':'result_type',}, inplace=True)
+
         _cmpdict, _outdict = pivot_sum_dr('CmpBatch','MIC',dfDR,CmpBatchLst,None,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser )
         
@@ -435,7 +437,7 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
 
     if qryHC50.exists():
         dfDR = pd.DataFrame(qryHC50)
-        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'assay_id','hc50':'dr','hc50_unit': 'dr_unit',
+        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','hc50':'dr','hc50_unit': 'dr_unit',
                              'testplate_id__result_type':'result_type',}, inplace=True)
         _cmpdict, _outdict = pivot_sum_dr('CmpBatch','HC50',dfDR,CmpBatchLst,None,OutNumbers,
                                             upload=upload,overwrite=overwrite,appuser=appuser )
