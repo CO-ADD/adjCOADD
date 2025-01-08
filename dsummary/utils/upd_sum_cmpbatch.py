@@ -89,6 +89,9 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
         djSum.n_assays = row[('mscore','size')]
         djSum.act_score_ave = row[('act_score','mean')]
 
+        # print(" ")
+        # print(f"{djSum.n_assays} {djSum.n_actives} {djSum.act_types}")
+
         djSum.inhibition_ave = row[('inhibition','mean')]
         if np.isnan(row[('inhibition','std')]):
             djSum.inhibition_std = 0
@@ -157,48 +160,50 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
     OutDict = []
 
     NCmpBatches = len(CmpBatchLst)
+    if NCmpBatches > 0:
+        # Sum_Cmpd ---------------------------------------------------------------
+        djCmpd = Summary_CmpBatch.get(CmpBatchLst,verbose=0)
+        if djCmpd is None:
+            djCmpd = Summary_CmpBatch()
+            djCmpd.set_cmpbatch_id(CmpBatchLst)
 
-    # Sum_Cmpd ---------------------------------------------------------------
-    djCmpd = Summary_CmpBatch.get(CmpBatchLst,verbose=0)
-    if djCmpd is None:
-        djCmpd = Summary_CmpBatch()
-        djCmpd.set_cmpbatch_id(CmpBatchLst)
+        djCmpd.sc_n_assayids = 0
+        djCmpd.sc_n_actives = 0
+        djCmpd.sc_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+        djCmpd.sc_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
 
-    djCmpd.sc_n_assayids = 0
-    djCmpd.sc_n_actives = 0
-    djCmpd.sc_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
-    djCmpd.sc_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+        qryInhib = TestWell.objects.filter(cmpbatch_lst__contains = CmpBatchLst, 
+                                        n_cmpbatches = NCmpBatches, 
+                                        plate_id__result_type = 'Inhibition',
+                                        is_valid = True,
+                                        plate_id__plate_quality = 'Valid'
+                                        ).exclude(plate_id__readout_type = 'Visual').values(
+                                            'plate_id','well_id','plate_id__result_type','plate_id__assay_id__sum_assay_id',
+                                            'inhibition','mscore','act_type','act_score'
+                                                )
 
-    qryInhib = TestWell.objects.filter(cmpbatch_lst__contains = CmpBatchLst, 
-                                    n_cmpbatches = NCmpBatches, 
-                                    plate_id__result_type = 'Inhibition',
-                                    is_valid = True,
-                                    plate_id__plate_quality = 'Valid'
-                                    ).exclude(plate_id__readout_type = 'Visual').values(
-                                        'plate_id','well_id','plate_id__result_type','plate_id__assay_id__sum_assay_id',
-                                        'inhibition','mscore','act_type'
-                                            )
-    if qryInhib.exists():
-        dfInhib = pd.DataFrame(qryInhib)
-        dfInhib.rename(columns={'plate_id__assay_id__sum_assay_id':'sum_assay_id',
-                             'plate_id__result_type':'result_type',}, inplace=True)
+        if qryInhib.exists():
+            dfInhib = pd.DataFrame(qryInhib)
+            dfInhib.rename(columns={'plate_id__assay_id__sum_assay_id':'sum_assay_id',
+                                'plate_id__result_type':'result_type',}, inplace=True)
 
-        _cmpdict, _outdict, OutNumbers = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
-                                            upload=upload,overwrite=overwrite,appuser=appuser)
-        
-        djCmpd.sc_n_assayids += _cmpdict['sc_n_assayids']
-        djCmpd.sc_n_actives += _cmpdict['sc_n_actives']
+            _cmpdict, _outdict, OutNumbers = pivot_sum_sc('CmpBatch',dfInhib,CmpBatchLst,None,OutNumbers,
+                                                upload=upload,overwrite=overwrite,appuser=appuser)
+            
+            djCmpd.sc_n_assayids += _cmpdict['sc_n_assayids']
+            djCmpd.sc_n_actives += _cmpdict['sc_n_actives']
 
-        for _a in ['gp','gn','fg','gnm']:
-            djCmpd.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
-            djCmpd.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+            for _a in ['gp','gn','fg','gnm']:
+                djCmpd.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
+                djCmpd.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
+        else:
+            OutNumbers['Empty Entries'] += 1
+
+        # Sum_Cmpd ---------------------------------------------------------------
+        if upload:
+            djCmpd.save(user=appuser)
     else:
         OutNumbers['Empty Entries'] += 1
-
-    # Sum_Cmpd ---------------------------------------------------------------
-    if upload:
-        djCmpd.save(user=appuser)
-
     return(OutNumbers,OutDict)
 
 # --------------------------------------------------------------------------------------
@@ -374,88 +379,97 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
 
     NCmpBatches = len(CmpBatchLst)
 
-    # Sum_Cmpd ---------------------------------------------------------------
-    djCmpd = Summary_CmpBatch.get(CmpBatchLst,verbose=0)
-    if djCmpd is None:
-        djCmpd = Summary_CmpBatch()
-        djCmpd.set_cmpbatch_id(CmpBatchLst)
+    if NCmpBatches > 0:
+        # Sum_Cmpd ---------------------------------------------------------------
+        djCmpd = Summary_CmpBatch.get(CmpBatchLst,verbose=0)
+        if djCmpd is None:
+            djCmpd = Summary_CmpBatch()
+            djCmpd.set_cmpbatch_id(CmpBatchLst)
 
-    djCmpd.dr_n_assayids = 0
-    djCmpd.dr_n_actives = 0
-    djCmpd.dr_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
-    djCmpd.dr_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
-    # - MIC ----------------------------------------------------------
-    qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__contains = CmpBatchLst, 
-                                    n_cmpbatches = NCmpBatches, 
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values('testplate_id__assay_id__sum_assay_id','mic','mic_unit','act_type','act_score','pscore','inhibit_max',
-                                             'testplate_id','testwell_id','testplate_id__result_type',)
+        djCmpd.dr_n_assayids = 0
+        djCmpd.dr_n_actives = 0
+        djCmpd.dr_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+        djCmpd.dr_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+        # - MIC ----------------------------------------------------------
+        qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__contains = CmpBatchLst, 
+                                        n_cmpbatches = NCmpBatches, 
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values('testplate_id__assay_id__sum_assay_id','mic','mic_unit','act_type','act_score','pscore','inhibit_max',
+                                                'testplate_id','testwell_id','testplate_id__result_type',)
+        EmptyEntry = True
+        if qryMIC.exists():
+            EmptyEntry = False
+            dfDR = pd.DataFrame(qryMIC)
 
-    if qryMIC.exists():
-        dfDR = pd.DataFrame(qryMIC)
+            dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','mic':'dr','mic_unit': 'dr_unit',
+                                'testplate_id__result_type':'result_type',}, inplace=True)
 
-        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','mic':'dr','mic_unit': 'dr_unit',
-                             'testplate_id__result_type':'result_type',}, inplace=True)
+            _cmpdict, _outdict = pivot_sum_dr('CmpBatch','MIC',dfDR,CmpBatchLst,None,OutNumbers,
+                                                upload=upload,overwrite=overwrite,appuser=appuser )
+            
+            djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
+            djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
 
-        _cmpdict, _outdict = pivot_sum_dr('CmpBatch','MIC',dfDR,CmpBatchLst,None,OutNumbers,
-                                            upload=upload,overwrite=overwrite,appuser=appuser )
+            # print(f" {_cmpdict}")
+            # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
+            for _a in ['gp','gn','fg','gnm']:
+                djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
+                djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
+
+        # - CC50 ----------------------------------------------------------
+        qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__contains = CmpBatchLst, 
+                                        n_cmpbatches = NCmpBatches, 
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values('testplate_id__assay_id__sum_assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
+                                                'testplate_id','testwell_id','testplate_id__result_type',)
+
+        if qryCC50.exists():
+            EmptyEntry = False
+            dfDR = pd.DataFrame(qryCC50)
+            dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','cc50':'dr','cc50_unit': 'dr_unit',
+                                'testplate_id__result_type':'result_type',}, inplace=True)
+            _cmpdict, _outdict = pivot_sum_dr('CmpBatch','CC50',dfDR,CmpBatchLst,None,OutNumbers,
+                                                upload=upload,overwrite=overwrite,appuser=appuser )
+            
+            djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
+            djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
+            for _a in ['cc']:
+                djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
+                djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
+
+        # - HC50 ----------------------------------------------------------
+        qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__contains = CmpBatchLst, 
+                                        n_cmpbatches = NCmpBatches, 
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values('testplate_id__assay_id__sum_assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
+                                                'testplate_id','testwell_id','testplate_id__result_type',)
+
+        if qryHC50.exists():
+            EmptyEntry = False
+            dfDR = pd.DataFrame(qryHC50)
+            dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','hc50':'dr','hc50_unit': 'dr_unit',
+                                'testplate_id__result_type':'result_type',}, inplace=True)
+            _cmpdict, _outdict = pivot_sum_dr('CmpBatch','HC50',dfDR,CmpBatchLst,None,OutNumbers,
+                                                upload=upload,overwrite=overwrite,appuser=appuser )
+            
+            djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
+            djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
+            for _a in ['hc']:
+                djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
+                djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
+
+        # Sum_Cmpd ---------------------------------------------------------------
+        if upload:
+            djCmpd.save(user=appuser)
         
-        djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
-        djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
+        if EmptyEntry:
+            OutNumbers['Empty Entries'] += 1
 
-        # print(f" {_cmpdict}")
-        # print(f" {Summary_CmpBatch.ASSAY_CLASSES}")
-        for _a in ['gp','gn','fg','gnm']:
-            djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
-            djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
-
-   # - CC50 ----------------------------------------------------------
-    qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__contains = CmpBatchLst, 
-                                    n_cmpbatches = NCmpBatches, 
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values('testplate_id__assay_id__sum_assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
-                                             'testplate_id','testwell_id','testplate_id__result_type',)
-
-    if qryCC50.exists():
-        dfDR = pd.DataFrame(qryCC50)
-        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','cc50':'dr','cc50_unit': 'dr_unit',
-                             'testplate_id__result_type':'result_type',}, inplace=True)
-        _cmpdict, _outdict = pivot_sum_dr('CmpBatch','CC50',dfDR,CmpBatchLst,None,OutNumbers,
-                                            upload=upload,overwrite=overwrite,appuser=appuser )
-        
-        djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
-        djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
-        for _a in ['cc']:
-            djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
-            djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
-
-   # - HC50 ----------------------------------------------------------
-    qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__contains = CmpBatchLst, 
-                                    n_cmpbatches = NCmpBatches, 
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values('testplate_id__assay_id__sum_assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
-                                             'testplate_id','testwell_id','testplate_id__result_type',)
-
-    if qryHC50.exists():
-        dfDR = pd.DataFrame(qryHC50)
-        dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','hc50':'dr','hc50_unit': 'dr_unit',
-                             'testplate_id__result_type':'result_type',}, inplace=True)
-        _cmpdict, _outdict = pivot_sum_dr('CmpBatch','HC50',dfDR,CmpBatchLst,None,OutNumbers,
-                                            upload=upload,overwrite=overwrite,appuser=appuser )
-        
-        djCmpd.dr_n_assayids += _cmpdict['dr_n_assayids']
-        djCmpd.dr_n_actives += _cmpdict['dr_n_actives']
-        for _a in ['hc']:
-            djCmpd.dr_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_assayids']
-            djCmpd.dr_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] += _cmpdict[f'{_a}_n_actives']
-
-    # Sum_Cmpd ---------------------------------------------------------------
-    if upload:
-        djCmpd.save(user=appuser)
-
+    else:
+        OutNumbers['Empty Entries'] += 1
     return(OutNumbers,OutDict)
 
 # --------------------------------------------------------------------------------------

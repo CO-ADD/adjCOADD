@@ -79,13 +79,13 @@ class Summary_CmpBatch_Inhib(CmpBatchList_Base):
 #-------------------------------------------------------------------------------------------------
  
     # Assay Conditions
-    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
-    n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
+    sum_assay_id = models.CharField(max_length=100, blank=True, verbose_name = "SumAssay ID")
+    n_assays = models.IntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
-    act_types = models.CharField(max_length=25, blank=True, verbose_name = "Active Tupes")
+    act_types = models.CharField(max_length=250, blank=True, verbose_name = "Active Tupes")
     # active_lst
-    n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
+    n_actives = models.IntegerField(default=-1, blank=True, verbose_name = "#Actives")
     act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
 
     inhibition_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Ave")
@@ -152,11 +152,11 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
 #-------------------------------------------------------------------------------------------------
 
     # Assay Conditions
-    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
+    sum_assay_id = models.CharField(max_length=100, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
-    act_types = models.CharField(max_length=25, blank=True, verbose_name = "Active Types")
+    act_types = models.CharField(max_length=250, blank=True, verbose_name = "Active Types")
     # active_lst
     n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
     act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
@@ -356,7 +356,7 @@ class Summary_Structure_Doseresp(AuditModel):
         db_column="structure_id", related_name="%(class)s_structure_id")
 
     # Assay Conditions
-    sum_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "SumAssay ID")
+    sum_assay_id = models.CharField(max_length=100, blank=True, verbose_name = "SumAssay ID")
     n_assays = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Assay")
 
     # Activity Summary
