@@ -72,10 +72,17 @@ def main(prgArgs,djDir):
 
         logger.info(f" [Sum CmpBatch SC] TestWell: {twCmp.count()}  ")
 
-        for cmps in tqdm(twCmp, desc='[CmpBatchLst]'):
-            # print(f" {cmps[0]}")
+        # Distinct CmpBatch_Lst
+        cmpDict = {}
+        for c in twCmp:
+            if len(c[0]) >0:
+                cc = COMPOUND_SEP.join([str(x) for x in c[0] if x != ""])
+                if cc not in cmpDict:
+                    cmpDict[cc] = c[0]
 
-            _numbers,_outdict  = sum_cmpbatch_sc(cmps[0],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
+        for cmps in tqdm(cmpDict.keys(), desc='[CmpBatchLst]'):
+            #print(cmpDict[cmps])
+            _numbers,_outdict  = sum_cmpbatch_sc(cmpDict[cmps],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
 
             if _outdict:
                 OutDict = OutDict + _outdict
