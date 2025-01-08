@@ -71,6 +71,7 @@ def main(prgArgs,djDir):
 
             logger.info(f" [Sum Structure DR] MIC: {micStruct.count()} + CC50: {cc50Struct.count()} + HC50: {hc50Struct.count()} ")
 
+            # Get unique ID
             strDict = {}
             for s in micStruct:
                 if s[0] not in strDict:

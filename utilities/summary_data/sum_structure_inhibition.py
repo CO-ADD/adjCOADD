@@ -74,9 +74,15 @@ def main(prgArgs,djDir):
 
         logger.info(f" [Sum Structure SC] TestWell: {twStr.count()}  ")
 
-        for sid in tqdm(twStr, desc='[Structures]'):
-            #print(cmps)
-            _numbers,_outdict  = sum_structure_sc(sid[0],upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
+        # Get unique ID
+        strDict = {}
+        for s in twStr:
+            if s[0] not in strDict:
+                strDict[s[0]] = s[0]
+
+        for sid in tqdm(strDict.keys(), desc='[CmpBatcheLsts]'):
+            #print(cmpDict[cmps])
+            _numbers,_outdict  = sum_structure_sc(sid,upload=prgArgs.upload,overwrite=prgArgs.overwrite,appuser=prgArgs.appuser)
 
             if _outdict:
                 OutDict = OutDict + _outdict
