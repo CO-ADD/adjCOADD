@@ -90,7 +90,10 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
         djSum.act_score_ave = row[('act_score','mean')]
 
         djSum.inhibition_ave = row[('inhibition','mean')]
-        djSum.inhibition_std = row[('inhibition','std')]
+        if np.isnan(row[('inhibition','std')]):
+            djSum.inhibition_std = 0
+        else:
+            djSum.inhibition_std = row[('inhibition','std')]
         djSum.inhibition_min = row[('inhibition','min')]
         djSum.inhibition_max = row[('inhibition','max')]
         djSum.mscore_ave = row[('mscore','mean')]

@@ -77,9 +77,9 @@ class Organism_Filter(Filterbase):
     Notes = CharFilter(field_name='strain_notes', lookup_expr='icontains')
     Type = MultipleChoiceFilter(field_name='strain_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
     Panel = MultipleChoiceFilter(field_name='strain_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
+    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
