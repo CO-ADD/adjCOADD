@@ -155,6 +155,7 @@ class Assay(AuditModel):
     assay_type = models.CharField(max_length=30, verbose_name = "AssayType" )
     assay_subtype = models.CharField(max_length=50, verbose_name = "AssaySubType" )
     sum_assay_id  = models.CharField(max_length=100, blank=True, verbose_name = "Assay ID for Summary")
+    coadd_assay_id  = models.CharField(max_length=15, blank=True, verbose_name = "COADD Assay ID")
     assay_note = models.CharField(max_length=150, blank=True, verbose_name = "Assay Note")
     assay_code = models.CharField(max_length=20, blank=True, verbose_name = "Assay Code")
     test_media = models.CharField(max_length=150, blank=True, verbose_name = "Media")
