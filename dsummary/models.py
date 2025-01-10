@@ -125,9 +125,9 @@ class Summary_CmpBatch_Inhib(CmpBatchList_Base):
     def get(cls,CmpBatchLst,AssayID, Exact=True, verbose=0):
         try:
             if Exact:
-                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), assay_id=AssayID)
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), sum_assay_id=AssayID)
             else:
-                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID)
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, sum_assay_id=AssayID)
         except:
             if verbose:
                 logger.warning(f"[Summary CmpBatch Inhibition Not Found] {CmpBatchLst} {AssayID}")
