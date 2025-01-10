@@ -324,7 +324,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
                 NewEntry = True
         elif SumType == 'Structure':
             djStructure = Chem_Structure.get(StructureID)
-            djSum = Summary_Structure_Doseresp.get(djStructure,SumAssayID,verbose=1)
+            djSum = Summary_Structure_Doseresp.get(djStructure,SumAssayID,verbose=0)
             if djSum is None:
                 djSum = Summary_Structure_Doseresp()
                 djSum.sum_assay_id = SumAssayID

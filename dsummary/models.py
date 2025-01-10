@@ -412,7 +412,7 @@ class Summary_Structure_Doseresp(AuditModel):
             retInstance = cls.objects.get(structure_id=StructureID, sum_assay_id=AssayID)
         except:
             if verbose:
-                logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")
+                logger.warning(f"[Summary Structure DoseResponse Not Found] {StructureID} {AssayID}")
             retInstance = None
         return(retInstance)
 
