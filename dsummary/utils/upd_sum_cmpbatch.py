@@ -316,7 +316,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
 
         OutNumbers['Processed'] += 1
         if SumType == 'CmpBatch':            
-            djSum = Summary_CmpBatch_Doseresp.get(CmpBatchLst,SumAssayID,Exact=True,verbose=1)
+            djSum = Summary_CmpBatch_Doseresp.get(CmpBatchLst,SumAssayID,Exact=True,verbose=0)
             if djSum is None:
                 djSum = Summary_CmpBatch_Doseresp()
                 djSum.set_cmpbatch_id(CmpBatchLst)
@@ -428,14 +428,15 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                                         n_cmpbatches = NCmpBatches, 
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values('testplate_id__assay_id__sum_assay_id','mic','mic_unit','act_type','act_score','pscore','inhibit_max',
-                                                'testplate_id','testwell_id','testplate_id__result_type',)
+                                                'testplate_id','testwell_id','testplate_id__result_type',
+                                                'cmpbatch_id__full_mw')
         EmptyEntry = True
         if qryMIC.exists():
             EmptyEntry = False
             dfDR = pd.DataFrame(qryMIC)
 
             dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','mic':'dr','mic_unit': 'dr_unit',
-                                'testplate_id__result_type':'result_type',}, inplace=True)
+                                'testplate_id__result_type':'result_type','cmpbatch_id__full_mw':'full_mw'}, inplace=True)
 
             _cmpdict, _outdict = pivot_sum_dr('CmpBatch','MIC',dfDR,CmpBatchLst,None,OutNumbers,
                                                 upload=upload,overwrite=overwrite,appuser=appuser )
@@ -455,13 +456,14 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                                         n_cmpbatches = NCmpBatches, 
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values('testplate_id__assay_id__sum_assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
-                                                'testplate_id','testwell_id','testplate_id__result_type',)
+                                                'testplate_id','testwell_id','testplate_id__result_type',
+                                                'cmpbatch_id__full_mw')
 
         if qryCC50.exists():
             EmptyEntry = False
             dfDR = pd.DataFrame(qryCC50)
             dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','cc50':'dr','cc50_unit': 'dr_unit',
-                                'testplate_id__result_type':'result_type',}, inplace=True)
+                                'testplate_id__result_type':'result_type','cmpbatch_id__full_mw':'full_mw'}, inplace=True)
             _cmpdict, _outdict = pivot_sum_dr('CmpBatch','CC50',dfDR,CmpBatchLst,None,OutNumbers,
                                                 upload=upload,overwrite=overwrite,appuser=appuser )
             
@@ -477,13 +479,14 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                                         n_cmpbatches = NCmpBatches, 
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values('testplate_id__assay_id__sum_assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
-                                                'testplate_id','testwell_id','testplate_id__result_type',)
+                                                'testplate_id','testwell_id','testplate_id__result_type',
+                                                'cmpbatch_id__full_mw')
 
         if qryHC50.exists():
             EmptyEntry = False
             dfDR = pd.DataFrame(qryHC50)
             dfDR.rename(columns={'testplate_id__assay_id__sum_assay_id':'sum_assay_id','hc50':'dr','hc50_unit': 'dr_unit',
-                                'testplate_id__result_type':'result_type',}, inplace=True)
+                                'testplate_id__result_type':'result_type','cmpbatch_id__full_mw':'full_mw'}, inplace=True)
             _cmpdict, _outdict = pivot_sum_dr('CmpBatch','HC50',dfDR,CmpBatchLst,None,OutNumbers,
                                                 upload=upload,overwrite=overwrite,appuser=appuser )
             
