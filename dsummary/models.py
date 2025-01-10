@@ -195,12 +195,12 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     # Returns an User instance if found by name
     #------------------------------------------------
     @classmethod
-    def get(cls,CmpBatchLst,AssayID, Exact=True, verbose=0):
+    def get(cls,CmpBatchLst, AssayID, Exact=True, verbose=0):
         try:
             if Exact:
-                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), assay_id=AssayID)
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst), sum_assay_id=AssayID)
             else:
-                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID)
+                retInstance = cls.objects.get(cmpbatch_lst__contains=CmpBatchLst, sum_assay_id=AssayID)
         except:
             if verbose:
                 logger.warning(f"[Summary CmpBatch DoseResp Not Found] {CmpBatchLst} {AssayID}")
@@ -334,7 +334,7 @@ class Summary_Structure_Inhib(AuditModel):
     @classmethod
     def get(cls,StructureID,AssayID, verbose=0):
         try:
-            retInstance = cls.objects.get(structure_id=StructureID, assay_id=AssayID)
+            retInstance = cls.objects.get(structure_id=StructureID, sum_assay_id=AssayID)
         except:
             if verbose:
                 logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")

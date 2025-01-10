@@ -92,7 +92,8 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                 NewEntry = True
                 OutNumbers['New Entry'] += 1
         elif SumType == 'Structure':
-            djSum = Summary_Structure_Inhib.get(StructureID,SumAssayID,verbose=0)
+            djStructure = Chem_Structure.get(StructureID)
+            djSum = Summary_Structure_Inhib.get(djStructure,SumAssayID,verbose=0)
             if djSum is None:
                 djSum = Summary_Structure_Inhib()
                 djSum.structure_id = Chem_Structure.get(StructureID)
@@ -314,9 +315,8 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
         NewEntry = False
 
         OutNumbers['Processed'] += 1
-
-        if SumType == 'CmpBatch':
-            djSum = Summary_CmpBatch_Doseresp.get(CmpBatchLst,SumAssayID,Exact=True,verbose=0)
+        if SumType == 'CmpBatch':            
+            djSum = Summary_CmpBatch_Doseresp.get(CmpBatchLst,SumAssayID,Exact=True,verbose=1)
             if djSum is None:
                 djSum = Summary_CmpBatch_Doseresp()
                 djSum.set_cmpbatch_id(CmpBatchLst)
@@ -328,7 +328,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
             if djSum is None:
                 djSum = Summary_Structure_Doseresp()
                 djSum.sum_assay_id = SumAssayID
-                djSum.structure_id = Chem_Structure.get(StructureID)
+                djSum.structure_id = djStructure
                 NewEntry = True
 
 
