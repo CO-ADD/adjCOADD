@@ -369,10 +369,14 @@ class Summary_Structure_Doseresp(AuditModel):
     inhibit_max_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Max Ave")
     #inhibit_maxs  = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
     drval_type    = models.CharField(max_length=15, blank=False, verbose_name = "DR Type")
+
     drval_max    = models.CharField(max_length=20, blank=False, verbose_name = "DR Max")
     drval_min    = models.CharField(max_length=20, blank=False, verbose_name = "DR Min")
     drval_median = models.CharField(max_length=20, blank=False, verbose_name = "DR Median")
     drval_unit   = models.CharField(max_length=25, blank=False, verbose_name = "DR Unit")
+
+    drval_std_geomean = models.CharField(max_length=20, blank=False, verbose_name = "DR Std Geomean")
+    drval_std_unit    = models.CharField(max_length=25, blank=False, verbose_name = "DR Std Unit")
 
     # Summary Meta data
     # run_id_lst ArrayField(models.CharField(max_length=15, default="", db_index = True), 

@@ -1,12 +1,17 @@
 import os
 from pathlib import Path
 import numpy as np
+from statistics import geometric_mean
 from django_rdkit.models import *
 from django_rdkit.config import config
 from django.conf import settings
 
 from adjcoadd.constants import COMPOUND_SEP
 import apputil.utils.data as djdata
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 # ==================================================================================
 # Aggregation function
@@ -96,6 +101,19 @@ def DR_Range(lstDR,maxLst=10):
         df['ValueList'] = []
         df['Range'] = '-'
     return(df)
+
+#-----------------------------------------------------------------------------
+# Doseresponse Geometric Mean
+#-----------------------------------------------------------------------------
+def DR_GeoMean(lstDR):
+    dr_val = []
+    for dr in lstDR:
+        dr_val.append(split_XC50(dr)[1])
+    try:
+        _gm = geometric_mean(dr_val)
+    except:
+        _gm = -1
+    return(_gm)
 
 #-----------------------------------------------------------------------------
 # Doseresponse Sorting Functions 
@@ -234,3 +252,37 @@ def format_DR(p,v):
     elif p == '<=' or p == '>':
         strVal = p + strVal
     return(strVal)
+
+# ==================================================================================
+# Converting concentration molar <-> g/mL
+# ==================================================================================
+def conv_Conc(conc,fromunit,tounit,mw=0):
+    unitMolar = {'M':0, 'mM':-3, 'uM':-6, 'µM': -6, 'nM':-9,'pM':-12}
+    unitGramLiter = {'mg/mL':0, 'ug/mL':-3, 'µg/mL':-3, 'ng/mL':-6, 'pg/mL':-9}
+
+    mw = float(mw)
+
+    if tounit in unitMolar:
+        if fromunit in unitMolar:
+            nconc = conc * 10**(unitMolar[fromunit]-unitMolar[tounit])
+        elif fromunit in unitGramLiter:
+            if mw > 0:
+                nconc = 10**(unitGramLiter[fromunit]-unitMolar[tounit]) * conc / mw
+            else:
+                raise Exception(f'Requires a molecular weight {mw:.2f}')
+        else:
+            raise Exception(f'Wrong unit to convert from {fromunit}')
+
+    elif tounit in unitGramLiter:
+        if fromunit in unitGramLiter:
+            nconc = conc * 10**(unitGramLiter[fromunit]-unitGramLiter[tounit])
+        elif fromunit in unitMolar:
+            if mw > 0:
+                nconc = 10**(unitMolar[fromunit]-unitGramLiter[tounit]) * conc * mw
+            else:
+                raise Exception(f'Requires a molecular weight {mw:.2f}')
+        else:
+            raise Exception(f'Wrong unit to convert from {fromunit}')
+    else:
+        raise Exception(f'Wrong unit to convert to {tounit}')
+    return(nconc,tounit)
