@@ -315,6 +315,9 @@ class Summary_Structure_Inhib(AuditModel):
         app_label = 'dsummary'
         db_table = 'sum_structure_sc'
         ordering=['sum_assay_id','structure_id']
+        constraints = [
+            models.UniqueConstraint(name='sstrsc_cst', fields=['structure_id', 'sum_assay_id'], )
+        ]        
         indexes = [
 #            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="sstrsc_sid_idx", fields=['structure_id']),
@@ -388,6 +391,9 @@ class Summary_Structure_Doseresp(AuditModel):
         app_label = 'dsummary'
         db_table = 'sum_structure_dr'
         ordering=['sum_assay_id','structure_id']
+        constraints = [
+            models.UniqueConstraint(name='sstrdr_cst', fields=['structure_id', 'sum_assay_id'], )
+        ]        
         indexes = [
 #            GinIndex(name="scmpsc_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="sstrdr_sid_idx", fields=['structure_id']),
@@ -403,7 +409,7 @@ class Summary_Structure_Doseresp(AuditModel):
     @classmethod
     def get(cls,StructureID,AssayID, verbose=0):
         try:
-            retInstance = cls.objects.get(structure_id=StructureID, assay_id=AssayID)
+            retInstance = cls.objects.get(structure_id=StructureID, sum_assay_id=AssayID)
         except:
             if verbose:
                 logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")

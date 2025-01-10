@@ -8,7 +8,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
                              Summary_Structure, Summary_Structure_Doseresp, Summary_Structure_Inhib,)
 from dchem.models import Chem_Structure
 from dplate.models import TestWell
-from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
+from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from ddrug.utils.bio_data import DR_Range, conv_Conc, split_XC50, format_DR, DR_GeoMean
 from adjcoadd.constants import COMPOUND_SEP
 
@@ -295,6 +295,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
     
     # Add dr_std [uM]
     dfDR = dfDR.apply(apply_DR_Std,axis=1)
+
     # Group By
     pivDF = dfDR.groupby(['sum_assay_id']).agg({'inhibit_max': ['mean'],
                                         'dr_ug': [DR_Range],
@@ -322,7 +323,8 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
                 djSum.sum_assay_id = SumAssayID
                 NewEntry = True
         elif SumType == 'Structure':
-            djSum = Summary_Structure_Doseresp.get(StructureID,SumAssayID,verbose=0)
+            djStructure = Chem_Structure.get(StructureID)
+            djSum = Summary_Structure_Doseresp.get(djStructure,SumAssayID,verbose=1)
             if djSum is None:
                 djSum = Summary_Structure_Doseresp()
                 djSum.sum_assay_id = SumAssayID
@@ -340,13 +342,15 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
         djSum.drval_max    = row[('dr_ug','DR_Range')]['Max']
         djSum.drval_min    = row[('dr_ug','DR_Range')]['Min']
         djSum.drval_median = row[('dr_ug','DR_Range')]['Median']
-        djSum.n_assays = row[('dr_ug','DR_Range')]['nDR']
         djSum.drval_unit   = row[('dr_ug_unit','get_strList_unique')]
+        djSum.n_assays = row[('dr_ug','DR_Range')]['nDR']
 
         djSum.drval_std_geomean = format_DR(split_XC50(djSum.drval_median)[0],
                                             row[('dr_uM','DR_GeoMean')])
         djSum.drval_std_unit   = row[('dr_uM_unit','get_strList_unique')]
 
+
+        #print(f" {djSum.structure_id} {djSum.drval_std_geomean} {djSum.drval_std_unit} ")
         # n_assayids and n_actives
         CmpDict['dr_n_assayids'] += 1
         if djSum.n_actives > 0:

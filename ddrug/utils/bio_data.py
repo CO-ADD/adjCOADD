@@ -77,7 +77,9 @@ def DR_Range(lstDR,maxLst=10):
     sortLst = DR2Sort_lst(lstDR)
     if len(sortLst) > 0:
         sortLst.sort()
+
         sortDR = Sort2DR_lst(sortLst)
+
         df['Min'] = sortDR[0]
         df['Max'] = sortDR[-1]
         df['Median'] =sortDR[(int((len(sortLst)-1)/2))]
@@ -269,9 +271,9 @@ def conv_Conc(conc,fromunit,tounit,mw=0):
             if mw > 0:
                 nconc = 10**(unitGramLiter[fromunit]-unitMolar[tounit]) * conc / mw
             else:
-                raise Exception(f'Requires a molecular weight {mw:.2f}')
+                logger.error(f'Requires a molecular weight {mw:.2f}')
         else:
-            raise Exception(f'Wrong unit to convert from {fromunit}')
+            logger.error(f'Wrong unit to convert from {fromunit}')
 
     elif tounit in unitGramLiter:
         if fromunit in unitGramLiter:
@@ -280,9 +282,9 @@ def conv_Conc(conc,fromunit,tounit,mw=0):
             if mw > 0:
                 nconc = 10**(unitMolar[fromunit]-unitGramLiter[tounit]) * conc * mw
             else:
-                raise Exception(f'Requires a molecular weight {mw:.2f}')
+                logger.error(f'Requires a molecular weight {mw:.2f}')
         else:
-            raise Exception(f'Wrong unit to convert from {fromunit}')
+            logger.error(f'Wrong unit to convert from {fromunit}')
     else:
-        raise Exception(f'Wrong unit to convert to {tounit}')
+        logger.error(f'Wrong unit to convert to {tounit}')
     return(nconc,tounit)

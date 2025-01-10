@@ -44,7 +44,6 @@ def main(prgArgs,djDir):
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'Sum_Structure_DR':
 
-
         OutName = f"[{prgArgs.table}]"
         OutDict = []
         OutFile = f"{prgArgs.table}_{logTime:%Y%m%d_%H%M%S}.xlsx"
