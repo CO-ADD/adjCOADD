@@ -54,6 +54,12 @@ def apply_DR_Std(s):
         _val_ug,_unit_ug =conv_Conc(_val,s['dr_unit'],'ug/mL',mw=s['full_mw'])
         s['dr_ug'] = format_DR(_prefix,_val_ug)
         s['dr_ug_unit'] = _unit_ug
+    else:
+        s['dr_uM'] = ''
+        s['dr_uM_unit'] = ''
+        s['dr_ug'] = s['dr']
+        s['dr_ug_unit'] = s['dr_unit']
+
     return(s)
 
 # Summary SC Function  =======================================================================
