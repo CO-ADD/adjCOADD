@@ -6,10 +6,13 @@ import datetime
 # General Number Functions
 # ==================================================================================
 def to_num(s):
-    try:
-        return int(s)
-    except ValueError:
-        return float(s)
+    if s:
+        try:
+            return int(s)
+        except ValueError:
+            return float(s)
+    else:
+        return(None)
 
 def sig_round(f,n=3):
     if int(f) == f:
