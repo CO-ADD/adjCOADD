@@ -61,12 +61,14 @@ def main(prgArgs,djDir):
     # ---------------------------------------------------------------------
         if int(prgArgs.test)>0:
             qryStr = TableDict[prgArgs.table].objects.all()[:int(prgArgs.test)]
-        else:    
+            nEntries = qryStr.count()
+        else:
+            cntStr = TableDict[prgArgs.table].objects.all()
+            nEntries = cntStr.count()    
             qryStr = TableDict[prgArgs.table].objects.all().iterator(chunk_size=1000)
+        logger.info(f" [{prgArgs.table}] Entries: {nEntries}")
 
         # ------------------------------------------------------------------
-        nEntries = qryStr.count()
-        logger.info(f" [{prgArgs.table}] Entries: {nEntries}")
 
         OutNumbers = {'Processed':0, 'Empty':0, 'Failed':0, 'New':0, 'Uploaded':0,}
         for djObj in tqdm(qryStr, desc=f'[{prgArgs.table}]'):
