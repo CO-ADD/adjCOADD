@@ -8,7 +8,7 @@ from django_rdkit.config import config
 from django.conf import settings
 
 from adjcoadd.constants import COMPOUND_SEP
-import apputil.utils.data as djdata
+from apputil.utils.data import join_lst, limit_lst, to_num, strList_to_List, split_StrList
 
 import logging
 logger = logging.getLogger(__name__)
@@ -108,25 +108,38 @@ def ActScore_DR(DR,DR_Unit,DMax=0, cutoffDR=ActScoreDR_Cutoff,cutoff_inhib=50):
 # pScore -log DR
 #-----------------------------------------------------------------------------
 def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
+    pScore = -1
+
     prefix = '-'
     log_uM = 6
 
-    pScore = -1
-    prefix, val, _ = split_DR(DR)
-    val,_ = conv_Conc(val,Unit,'uM',MW)
-    if val:
-        if val <= 0:
-            pScore = -9
-        else:    
-            if (prefix == '=') or (prefix == '<'):
-                pScore = log_uM - math.log10(val)
-            elif (prefix == '>'):
-                if DMax is not None:
-                    if DMax >= drMax2:
-                        gtShift = 2
-                pScore = log_uM - math.log10(gtShift*val)
-            else:
-                pScore = 0
+
+    _dr_unit = split_StrList(Unit,sep=COMPOUND_SEP)[0]
+    if _dr_unit in ['uM','mM','pM','M'] or MW > 0:
+        _dr = split_StrList(DR,sep=COMPOUND_SEP)[0]
+
+        prefix, val, _ = split_DR(_dr)
+        val,_ = conv_Conc(val,_dr_unit,'uM',MW)
+        if val:
+            if val > 0:
+                if (prefix == '=') or (prefix == '<'):
+                    pScore = log_uM - math.log10(val)
+                elif (prefix == '>'):
+                    if DMax is not None:
+                        if DMax >= drMax2:
+                            gtShift = 2
+                    pScore = log_uM - math.log10(gtShift*val)
+                else:
+                    pScore = 0
+            else:    
+               pScore = -9
+        else:
+            pScore = -3 
+    else:
+        pScore = -2
+
+
+
 
     return(round(pScore,2))
 
@@ -179,7 +192,7 @@ def conv_Conc(fromConc,fromUnit,toUnit,mw=0):
 
 # --------------------------------------------------------------------
 def agg_Lst(x,sep=";"):
-    return(djdata.join_lst(x,sep=sep))
+    return(join_lst(x,sep=sep))
 
 # --------------------------------------------------------------------
 def agg_DR(x):
@@ -202,7 +215,7 @@ def Value_Range(lstValue,aggType='Mean',floatPrec=2,maxLst=10):
         df['Median'] = f"{np.median(npArr):.{floatPrec}f}"
         df['Mean']   = f"{np.mean(npArr):.{floatPrec}f}"
         df['StDev']  = f"{np.std(npArr):.{floatPrec}f}"
-        df['ValueList'] = djdata.limit_lst([round(x,floatPrec) for x in npArr],maxLst)
+        df['ValueList'] = limit_lst([round(x,floatPrec) for x in npArr],maxLst)
         df['StrList'] = "; ".join(f"{x:.{floatPrec}f}" for x in df['ValueList'])
         df['nValues'] = len(npArr)
         if len(npArr) == 1:
@@ -245,7 +258,7 @@ def DR_Range(lstDR,maxLst=10):
         df['Median'] =sortDR[(int((len(sortLst)-1)/2))]
         df['nDR'] = len(sortDR)
         df['nValues'] = len(sortDR)
-        df['ValueList'] = djdata.limit_lst(sortDR,maxLst)
+        df['ValueList'] = limit_lst(sortDR,maxLst)
         df['DRList'] = "; ".join(df['ValueList'])
 
         if len(sortLst) == 1:
@@ -311,7 +324,7 @@ def DR2Sort_lst(lstDR,zLength=4):
     for i in lstDR:
         try:
             if COMPOUND_SEP in i:
-                v = djdata.split_StrList(i,sep=COMPOUND_SEP) #split_lst
+                v = split_StrList(i,sep=COMPOUND_SEP) #split_lst
                 v[0] = DR2Sort(str(v[0]),zLength=zLength)
                 lstSort.append(COMPOUND_SEP.join(v))
                 # print("okDR2Sort_lst")
@@ -328,7 +341,7 @@ def Sort2DR_lst(lstSort,zLength=4):
     for i in lstSort:
         try:
             if COMPOUND_SEP in i:
-                v = djdata.split_StrList(i,sep=COMPOUND_SEP) #split_lst
+                v = split_StrList(i,sep=COMPOUND_SEP) #split_lst
                 v[0] = Sort2DR(v[0],zLength=zLength)
                 lstDR.append(COMPOUND_SEP.join(v))
                 # print("okSort2DR_lst")
@@ -366,16 +379,16 @@ def split_DR(strDR):
         # Separate mixture -> 1st val into fval
         if isinstance(sval,str):
             if COMPOUND_SEP in sval:
-                lval = djdata.split_StrList(sval,sep=COMPOUND_SEP)
-                fval = djdata.to_num(lval[0])
+                lval = split_StrList(sval,sep=COMPOUND_SEP)
+                fval = to_num(lval[0])
             else:
-                fval = djdata.to_num(sval)
+                fval = to_num(sval)
         else:
             fval = sval
 
     if isinstance(strDR,float) or isinstance(strDR,int) :
             sval = strDR
-            fval = djdata.to_num(strDR)
+            fval = to_num(strDR)
             prefix = '='
 
     return(prefix,fval,sval)
