@@ -342,7 +342,7 @@ class AssayData_MIC(CmpBatchList_Base):
    #------------------------------------------------
     def set_actscores(self,verbose=0):
         self.act_score = ActScore_DR(self.mic,self.mic_unit,DMax=self.inhibit_max)
-        self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+        self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)    
 
 #-------------------------------------------------------------------------------------------------
 class AssayData_CC50(CmpBatchList_Base):
