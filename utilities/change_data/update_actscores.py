@@ -42,6 +42,38 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
+    from dscreen.models import (AssayData_MIC)
+
+    # ---------------------------------------------------------------------
+    if prgArgs.table == "AssayData_MIC" :
+    # ---------------------------------------------------------------------
+
+        if int(prgArgs.test)>0:
+            qryStr = AssayData_MIC.objects.all()[:int(prgArgs.test)]
+        else:    
+            qryStr = AssayData_MIC.objects.all()
+        nEntries = qryStr.count()
+        logger.info(f" [{prgArgs.table}] Entries: {nEntries}")
+
+        OutNumbers = {'Processed':0, 'Empty':0, 'Failed':0, 'New':0, 'Uploaded':0,}
+        for djObj in tqdm(qryStr, desc='[ActStructDR]'):
+            OutNumbers['Processed'] += 1
+
+            djObj.set_actscores()
+
+            validStatus = True
+            validDict = djObj.validate_fields()
+            if validDict:
+                validStatus = False
+                OutNumbers['Failed'] += 1
+                logger.warning(f"{djObj} {validDict} ")
+
+            if validStatus:
+                if prgArgs.upload:
+                    OutNumbers['Uploaded'] += 1
+                    djObj.save(user=prgArgs.appuser)
+
+
 
 #==============================================================================
 if __name__ == "__main__":

@@ -67,8 +67,8 @@ def rename_OrgName(OrgID, newOrgName, newOrgCode = None, uploaduser=None, upload
         oldOrgName = djOrg.organism_name
         djOrg.organism_name = djTax
 
-        djOrg.clean_Fields()
-        validDict = djOrg.validate()
+        djOrg.init_fields()
+        validDict = djOrg.validate_fields()
         if validDict:
             logger.info(f" XX {djOrg} {validDict} ")
         else:

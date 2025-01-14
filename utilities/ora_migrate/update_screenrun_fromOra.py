@@ -159,8 +159,8 @@ def main(prgArgs,djDir):
             #                                   ArrayDict={}, 
             #                                   DictList=['run_type'])
 
-            # djPrj.clean_Fields()
-            # validDict = djPrj.validate()
+            # djPrj.init_fields()
+            # validDict = djPrj.validate_fields()
 
             # if validDict:
             #     validStatus = False

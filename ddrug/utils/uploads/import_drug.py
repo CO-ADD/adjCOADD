@@ -73,9 +73,9 @@ def imp_Drug_fromDict(iDict,valLog):
     djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
 >>>>>>> 222d7895f9e34af2e26dea24085e6e233074beab
 
-    djDrug.clean_Fields()
+    djDrug.init_fields()
     validStatus = True
-    validDict = djDrug.validate()
+    validDict = djDrug.validate_fields()
     if validDict:
         validStatus = False
         for k in validDict:

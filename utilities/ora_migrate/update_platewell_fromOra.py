@@ -202,8 +202,8 @@ def main(prgArgs,djDir):
                         #print(validDict)
                         row.update(validDict)
 
-                    djWell.clean_Fields()
-                    validDict = djWell.validate(exclude=list(arrayFields.keys()))
+                    djWell.init_fields()
+                    validDict = djWell.validate_fields(exclude=list(arrayFields.keys()))
                     if validDict:
                         validStatus = False
                         # for k in validDict:

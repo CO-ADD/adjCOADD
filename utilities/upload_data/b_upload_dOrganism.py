@@ -76,8 +76,8 @@ def update_OrgBatchImg(JpegFolder,upload=False,uploaduser=None):
                 djImg.orgbatch_id = Organism_Batch.get(JpegFiles[i].replace(".jpeg",""))
                 djImg.image_file = f"images/orgbatch/{get_subdir(JpegFiles[i])}/{JpegFiles[i]}"
 
-            djImg.clean_Fields()
-            validDict = djImg.validate()
+            djImg.init_fields()
+            validDict = djImg.validate_fields()
 
             if validDict:
                 logger.info(f" XX {djImg} {validDict} ")
@@ -160,8 +160,8 @@ def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lowe
                     setattr(djCult,e,cult[e])
 
 
-                djCult.clean_Fields()
-                validDict = djCult.validate()
+                djCult.init_fields()
+                validDict = djCult.validate_fields()
 
                 if validDict:
                     logger.info(f" XX {djCult} {validDict} ")
@@ -257,8 +257,8 @@ def update_OrgBatchStock_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, l
                     setattr(djStock,e,stock[e])
 
 
-                djStock.clean_Fields()
-                validDict = djStock.validate()
+                djStock.init_fields()
+                validDict = djStock.validate_fields()
 
                 if validDict:
                     logger.info(f" XX {djStock} {validDict} ")
@@ -368,8 +368,8 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
                     djStock.n_left = batch['STOCK_NLEFT']
                     djStock.biologist = ApplicationUser.get(batch['BIOLOGIST'])
 
-                    djStock.clean_Fields()
-                    validDict = djStock.validate()
+                    djStock.init_fields()
+                    validDict = djStock.validate_fields()
                     if validDict:
                         logger.info(f"{djStock} {validDict} ")
                     # --- Upload ---------------------------------------------------------
@@ -461,8 +461,8 @@ def update_OrgBatch_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
                     setattr(djBatch,e,batch[e])
 
 
-                djBatch.clean_Fields()
-                validDict = djBatch.validate()
+                djBatch.init_fields()
+                validDict = djBatch.validate_fields()
                 if validDict:
                     logger.info(f" XX {djBatch} {validDict} ")
                     nProc['notValid'] = nProc['notValid'] + 1
@@ -543,8 +543,8 @@ def update_OrgBatch_ora(upload=False,uploaduser=None,OutputN=1000):
                 djBatch.stock_level = [batch['MASTER_LEVEL'] ,batch['STOCK_LEVEL'] ,batch['HIGHUSE_LEVEL'] ]
                 djBatch.biologist = ApplicationUser.get(batch['BIOLOGIST'])
 
-                djBatch.clean_Fields()
-                validDict = djBatch.validate()
+                djBatch.init_fields()
+                validDict = djBatch.validate_fields()
                 if validDict:
                     logger.info(f"{djBatch} {validDict} ")
 
@@ -647,8 +647,8 @@ def update_Organism_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
                     setattr(djOrg,e,org[e])
 
 
-                djOrg.clean_Fields()
-                validDict = djOrg.validate()
+                djOrg.init_fields()
+                validDict = djOrg.validate_fields()
                 if validDict:
                     logger.info(f" XX {djOrg} {validDict} ")
                 else:
@@ -741,8 +741,8 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
                 djOrg.oxygen_pref = Dictionary.get(djOrg.Choice_Dictionary["oxygen_pref"],org['OXYGEN_PREF'],None)
                 djOrg.biologist = ApplicationUser.get(org['BIOLOGIST'])
 
-                djOrg.clean_Fields()
-                validDict = djOrg.validate()
+                djOrg.init_fields()
+                validDict = djOrg.validate_fields()
                 if validDict:
                     logger.info(f" XX {djOrg} {validDict} ")
                 else:
@@ -805,8 +805,8 @@ def update_Taxonomy_ora(upload=False,uploaduser=None,OutputN=1000):
         #djTax.urlname = slugify(tax['ORGANISM_NAME'],lower=False,allow_unicode=False)
         djTax.urlname = slugify(tax['ORGANISM_NAME'],allow_unicode=False)
         
-        djTax.clean_Fields()
-        validDict = djTax.validate()
+        djTax.init_fields()
+        validDict = djTax.validate_fields()
         if validDict:
             logger.info(f" XX {djTax} {validDict} ")
         else:

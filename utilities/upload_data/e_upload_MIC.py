@@ -75,8 +75,8 @@ def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
     for mic in micLst:
         mic['ORGANISM_ID'] = reformat_OrganismID(mic['ORGANISM_ID'])
         djMIC = imp_MICPub_fromDict(mic,vLog)
-        djMIC.clean_Fields()
-        validDict = djMIC.validate()
+        djMIC.init_fields()
+        validDict = djMIC.validate_fields()
 
         if validDict:
             logger.info(f"{mic['ORGANISM_ID']} {mic['DRUG_NAME']} {mic['SOURCE']} {validDict} ")
@@ -131,8 +131,8 @@ def update_MICPub_xls(XlsFile, XlsSheet=0, upload=False,uploaduser=None,OutputN=
             mic['organism_id'] = reformat_OrganismID(mic['organism_id'])
             mic['mic_unit'] = "ug/mL"
             djMIC = imp_MICPub_fromDict(mic,vLog)
-            djMIC.clean_Fields()
-            validDict = djMIC.validate()
+            djMIC.init_fields()
+            validDict = djMIC.validate_fields()
 
             if validDict:
                 logger.info(f"{mic['organism_id']} {mic['drug_name']} {mic['source']} {validDict} ")
@@ -214,8 +214,8 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
             djMIC = imp_MICCOADD_fromDict(mic,vLog)
-            djMIC.clean_Fields()
-            validDict = djMIC.validate()
+            djMIC.init_fields()
+            validDict = djMIC.validate_fields()
 
             if validDict:
                 logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")

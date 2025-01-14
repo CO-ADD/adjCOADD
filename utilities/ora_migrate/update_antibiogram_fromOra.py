@@ -145,8 +145,8 @@ def get_MIC_COADD(test=0):
 #             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
 #             djMIC = imp_MICCOADD_fromDict(mic,vLog)
-#             djMIC.clean_Fields()
-#             validDict = djMIC.validate()
+#             djMIC.init_fields()
+#             validDict = djMIC.validate_fields()
 
 #             if validDict:
 #                 logger.info(f"{mic['ORGBATCH_ID']} {mic['DRUG_NAME']} {mic['RUN_ID']} {validDict} ")

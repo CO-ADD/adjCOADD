@@ -112,8 +112,8 @@ def main(prgArgs,djDir):
                 #     djAss.cell_id = None
 
                 # Validate and Save
-                djAss.clean_Fields()
-                validDict = djAss.validate()
+                djAss.init_fields()
+                validDict = djAss.validate_fields()
                 if validDict:
                     validStatus = False
                     # for k in validDict:

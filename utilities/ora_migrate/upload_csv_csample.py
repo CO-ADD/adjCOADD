@@ -162,8 +162,8 @@ def main():
                         set_DictFields(djPrj,row,dictFields)
                         if prgArgs.upload:
                             validStatus = True
-                            djPrj.clean_Fields()
-                            validDict = djPrj.validate()
+                            djPrj.init_fields()
+                            validDict = djPrj.validate_fields()
                             if validDict:
                                 validStatus = False
                                 for k in validDict:

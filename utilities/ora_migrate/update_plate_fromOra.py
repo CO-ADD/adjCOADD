@@ -266,8 +266,8 @@ def main(prgArgs,djDir):
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
 
-            djObj.clean_Fields()
-            validDict = djObj.validate(exclude=list(arrayFields.keys()))
+            djObj.init_fields()
+            validDict = djObj.validate_fields(exclude=list(arrayFields.keys()))
             if validDict:
                 validStatus = False
                 for k in validDict:
@@ -321,8 +321,8 @@ def main(prgArgs,djDir):
             set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
 
-            djObj.clean_Fields()
-            validDict = djObj.validate()
+            djObj.init_fields()
+            validDict = djObj.validate_fields()
             if validDict:
                 validStatus = False
                 for k in validDict:

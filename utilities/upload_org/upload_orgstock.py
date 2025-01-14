@@ -98,8 +98,8 @@ def main(prgArgs,djDir):
                         setattr(djStock,e,row[e])
 
 
-                    djStock.clean_Fields()
-                    validDict = djStock.validate()
+                    djStock.init_fields()
+                    validDict = djStock.validate_fields()
 
                     if validDict:
                         logger.info(f" XX {djStock} {validDict} ")

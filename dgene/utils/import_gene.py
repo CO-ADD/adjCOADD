@@ -65,8 +65,8 @@ def imp_Sequence_fromDict(iDict,valLog):
     djSeq.source_link = iDict['source_link']
     djSeq.reference = iDict['reference']
 
-    djSeq.clean_Fields()
-    validDict = djSeq.validate()
+    djSeq.init_fields()
+    validDict = djSeq.validate_fields()
     if validDict:
         #validStatus = False
         for k in validDict:
@@ -125,8 +125,8 @@ def imp_FastQC_fromDict(iDict, valLog, objSeq = None):
     djInst.overrep = iDict['overrepresented sequences']
     djInst.adap_cont = iDict['adapter content']
 
-    djInst.clean_Fields()
-    validDict = djInst.validate()
+    djInst.init_fields()
+    validDict = djInst.validate_fields()
     if validDict:
         validStatus = False
         for k in validDict:
@@ -194,9 +194,9 @@ def imp_CheckM_fromDict(iDict,valLog, objSeq = None):
     djInst.n50_contigs = int(iDict['n50_contigs'])
 
     if validStatus:
-        djInst.clean_Fields()
+        djInst.init_fields()
         validStatus = True
-        validDict = djInst.validate()
+        validDict = djInst.validate_fields()
         if validDict:
             #validStatus = False
             for k in validDict:
@@ -264,9 +264,9 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
         djInst.source = iDict['source']
 
     if validStatus:
-        djInst.clean_Fields()
+        djInst.init_fields()
         validStatus = True
-        validDict = djInst.validate()
+        validDict = djInst.validate_fields()
         if validDict:
             #validStatus = False
             for k in validDict:
@@ -342,8 +342,8 @@ def imp_Gene_fromDict(iDict,valLog):
     if 'gene_modification' not in iDict:
         djGene.gene_modification = '-'
 
-    djGene.clean_Fields()
-    validDict = djGene.validate()
+    djGene.init_fields()
+    validDict = djGene.validate_fields()
     if validDict:
         #validStatus = False
         for k in validDict:
@@ -386,8 +386,8 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
         djAMRGt.closest_name = iDict['closestname']
     #djAMRGt.contig = iDict['contigid']
 
-    djAMRGt.clean_Fields()
-    validDict = djAMRGt.validate()
+    djAMRGt.init_fields()
+    validDict = djAMRGt.validate_fields()
     if validDict:
         #validStatus = False
         for k in validDict:

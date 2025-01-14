@@ -17,6 +17,7 @@ from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import strList_to_List
+from ddrug.utils.bio_data import pScore, ActScore_DR, ActScore_SC
 from dsample.models import CmpBatchList_Base, Compound_Batch
 from dcell.models import Cell
 from dorganism.models import Organism
@@ -337,6 +338,12 @@ class AssayData_MIC(CmpBatchList_Base):
         super().conv_string_to_list()
         self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
         self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
+
+   #------------------------------------------------
+    def set_actscores(self,verbose=0):
+        self.act_score = ActScore_DR(self.mic,self.mic_unit,DMax=self.inhibit_max)
+        #self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=0,gtShift=3,drMax2=40)
+    
 
 #-------------------------------------------------------------------------------------------------
 class AssayData_CC50(CmpBatchList_Base):

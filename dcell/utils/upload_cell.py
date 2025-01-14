@@ -211,9 +211,9 @@ def Cell_fromDict(iDict,valLog,for_upload=True):
             setattr(djCell, _field, iDict[_field])
 
     # -- Clean and Validate Entry
-    djCell.clean_Fields()
+    djCell.init_fields()
     validStatus = True
-    validDict = djCell.validate()
+    validDict = djCell.validate_fields()
     #print(f"{djCell}")
     #print(f"{validDict}")
 
@@ -315,9 +315,9 @@ def CellBatch_fromDict(iDict,valLog,for_upload=True):
             setattr(djCellBatch, _field, iDict[_field])
 
     # -- Clean and Validate Entry
-    djCellBatch.clean_Fields()
+    djCellBatch.init_fields()
     validStatus = True
-    validDict = djCellBatch.validate()
+    validDict = djCellBatch.validate_fields()
     if validDict:
         validStatus = False
         for k in validDict:

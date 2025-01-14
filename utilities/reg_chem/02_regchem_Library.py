@@ -117,8 +117,8 @@ def main(prgArgs,djDir):
                                 djChem.nfrag = _moldict['nfrag']
                                 outNumbers['New ChemStructures'] += 1
 
-                            djChem.clean_Fields()
-                            validDict = djChem.validate()
+                            djChem.init_fields()
+                            validDict = djChem.validate_fields()
                             
                             if validDict:
                                 validStatus = False
@@ -152,8 +152,8 @@ def main(prgArgs,djDir):
                             djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
                             djSample.full_mf = get_MF_Smiles(_moldict['smi']+djSample.smiles_extra)
                             
-                            djSample.clean_Fields()
-                            validDict = djSample.validate()
+                            djSample.init_fields()
+                            validDict = djSample.validate_fields()
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
@@ -185,8 +185,8 @@ def main(prgArgs,djDir):
                 djCmpd.std_status = 'Empty'
                 djCmpd.std_process = "Std"
                 
-            djCmpd.clean_Fields()
-            validDict = djCmpd.validate()
+            djCmpd.init_fields()
+            validDict = djCmpd.validate_fields()
             if validDict:
                 validStatus = False
                 for k in validDict:

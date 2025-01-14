@@ -86,8 +86,8 @@ def main(prgArgs,djDir):
                     
                     validStatus = True
 
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
+                    djCmpd.init_fields()
+                    validDict = djCmpd.validate_fields()
                     if validDict:
                         validStatus = False
                         for k in validDict:

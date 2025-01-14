@@ -120,8 +120,8 @@ def main(prgArgs,djDir):
                     djCmpd.std_issues = "; ".join(_issues)
                     #logger.warning(f"{djCmpd.compound_id} {_issues}")
                     
-                    djCmpd.clean_Fields()
-                    validDict = djCmpd.validate()
+                    djCmpd.init_fields()
+                    validDict = djCmpd.validate_fields()
                     if validDict:
                         validStatus = False
                         for k in validDict:

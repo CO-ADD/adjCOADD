@@ -89,8 +89,8 @@ def main(prgArgs,djDir):
                 # set_arrayFields(djCmpd,row,arrayFields)
                 set_Dictionaries(djCmpd,row,updDict)
                 
-                djCmpd.clean_Fields()
-                validDict = djCmpd.validate()
+                djCmpd.init_fields()
+                validDict = djCmpd.validate_fields()
                 if validDict:
                     validStatus = False
                     for k in validDict:

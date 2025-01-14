@@ -132,8 +132,8 @@ def main(prgArgs,djDir):
 
             validStatus = True
 
-            djSalt.clean_Fields()
-            validDict = djSalt.validate()
+            djSalt.init_fields()
+            validDict = djSalt.validate_fields()
             if validDict:
                 validStatus = False
                 for k in validDict:
@@ -172,8 +172,8 @@ def main(prgArgs,djDir):
 
             validStatus = True
 
-            djGroup.clean_Fields()
-            validDict = djGroup.validate()
+            djGroup.init_fields()
+            validDict = djGroup.validate_fields()
             if validDict:
                 validStatus = False
                 for k in validDict:

@@ -160,7 +160,7 @@ class AuditModel(models.Model):
         ordering=['-acreated_at']
     
     #------------------------------------------------
-    def validate(self,**kwargs):
+    def validate_fields(self,**kwargs):
     #
     # Validates the instance using full_clean
     # 
@@ -204,7 +204,7 @@ class AuditModel(models.Model):
 
 
     #-------------------------------------------------------------------
-    def clean_Fields(self, default_Char="", default_Integer=0, default_Decimal=0.0):
+    def init_field(self, default_Char="", default_Integer=0, default_Decimal=0.0):
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #   sets CharField    to "" (empty) or 'default' 

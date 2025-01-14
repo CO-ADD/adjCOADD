@@ -183,8 +183,8 @@ def main(prgArgs,djDir):
                 set_Dictionaries(djPrj,row,dictFields)
 
                 validStatus = True
-                djPrj.clean_Fields()
-                validDict = djPrj.validate()
+                djPrj.init_fields()
+                validDict = djPrj.validate_fields()
 
                 if validDict:
                     validStatus = False

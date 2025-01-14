@@ -143,8 +143,8 @@ def main(prgArgs,djDir):
         #         setattr(djCmpd,'compound_type',Dictionary.get(djCmpd.Choice_Dictionary['compound_type'],TypeConf[_ctype][0]))
         #         setattr(djCmpd,'compound_source',Dictionary.get(djCmpd.Choice_Dictionary['compound_source'],TypeConf[_ctype][1]))
 
-        #         djCmpd.clean_Fields()
-        #         validDict = djCmpd.validate()
+        #         djCmpd.init_fields()
+        #         validDict = djCmpd.validate_fields()
         #         if validDict:
         #             validStatus = False
         #             for k in validDict:

@@ -165,9 +165,9 @@ def main(prgArgs,djDir):
                         validStatus = False    
                         row.update(validDict)
 
-                    djAssay.clean_Fields()
-                    #validDict = djAssay.validate()
-                    validDict = djAssay.validate(exclude=list(arrayFields.keys()))
+                    djAssay.init_fields()
+                    #validDict = djAssay.validate_fields()
+                    validDict = djAssay.validate_fields(exclude=list(arrayFields.keys()))
                     if validDict:
                         validStatus = False
                         # for k in validDict:

@@ -98,8 +98,8 @@ def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],valL
     if len(DictList)>0:
         set_Dictionaries(djModel,row,DictList)
         
-    djModel.clean_Fields()
-    validDict = djModel.validate()
+    djModel.init_fields()
+    validDict = djModel.validate_fields()
     if validDict:
         validStatus = False
         for k in validDict:
