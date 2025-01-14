@@ -42,10 +42,12 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-    from dscreen.models import (AssayData_MIC,AssayData_CC50,AssayData_HC50)
+    from dscreen.models import AssayData_MIC,AssayData_CC50,AssayData_HC50
+    from dsummary.models import Summary_Structure_Doseresp, Summary_Structure_Inhib, Summary_CmpBatch_Doseresp, Summary_CmpBatch_Inhib
 
     # ---------------------------------------------------------------------
-    if prgArgs.table in ["AssayData_MIC","AssayData_CC50","AssayData_HC50"] :
+    if prgArgs.table in ["AssayData_MIC","AssayData_CC50","AssayData_HC50",
+                        "SumStructureDR"] :
     # ---------------------------------------------------------------------
         if prgArgs.table == "AssayData_MIC":
             if int(prgArgs.test)>0:
@@ -64,6 +66,13 @@ def main(prgArgs,djDir):
             else:    
                 qryStr = AssayData_HC50.objects.all()
 
+        elif prgArgs.table == "SumStructureDR":
+            if int(prgArgs.test)>0:
+                qryStr = Summary_Structure_Doseresp.objects.all()[:int(prgArgs.test)]
+            else:    
+                qryStr = Summary_Structure_Doseresp.objects.all()
+
+        # ------------------------------------------------------------------
         nEntries = qryStr.count()
         logger.info(f" [{prgArgs.table}] Entries: {nEntries}")
 

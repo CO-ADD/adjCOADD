@@ -18,6 +18,7 @@ from apputil.utils.data import strList_to_List
 #from dchem.models import Chem_Structure
 from dsample.models import CmpBatchList_Base
 from dchem.models import Chem_Structure
+from ddrug.utils.bio_data import pScore, ActScore_DR, ActScore_SC
 
 from adjcoadd.constants import *
 
@@ -366,8 +367,8 @@ class Summary_Structure_Doseresp(AuditModel):
     act_types = models.CharField(max_length=250, blank=True, verbose_name = "Active Types")
     # active_lst
     n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
-    act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
-    pscore_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore Ave")
+    act_score = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score")
+    pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
 
     inhibit_max_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Max Ave")
     #inhibit_maxs  = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
@@ -399,7 +400,8 @@ class Summary_Structure_Doseresp(AuditModel):
             models.Index(name="sstrdr_sid_idx", fields=['structure_id']),
             models.Index(name="sstrdr_assid_idx", fields=['sum_assay_id']),
             models.Index(name="sstrdr_nact_idx", fields=['n_actives']),
-            models.Index(name="sstrdr_ascr_idx", fields=['act_score_ave']),
+            models.Index(name="sstrdr_ascr_idx", fields=['act_score']),
+            models.Index(name="sstrdr_pscr_idx", fields=['pscore']),
             models.Index(name="sstrdr_drt_idx", fields=['drval_type']),
         ]
 
@@ -421,3 +423,18 @@ class Summary_Structure_Doseresp(AuditModel):
     @classmethod
     def exists(cls,StructureID,AssayID, verbose=0):
         return cls.objects.filter(structure_id=StructureID, assay_id=AssayID).exists()
+
+   #------------------------------------------------
+    def set_actscores(self,verbose=0):
+        if self.drval_type == 'HC50':
+            self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave,cutoff_inhib=10)
+        else:
+            self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave)
+
+        self.pscore = pScore(self.drval_std_geomean,self.drval_std_unit,self.inhibit_max_ave,MW=self.structure_id.mw,gtShift=3,drMax2=40)
+
+        # _mw = self.structure_id.full_mw
+        # _drval_unit = split_StrList(self.drval_unit,sep=COMPOUND_SEP)
+        # if _drval_unit in ['uM','mM','pM','M'] or _mw > 0:
+        #     _drval = split_StrList(self.drval_std_geomean,sep=COMPOUND_SEP)
+        #     self.pscore = pScore(_drval[0],_drval_unit[0],self.inhibit_max_ave,MW=_mw,gtShift=3,drMax2=40)
