@@ -149,10 +149,10 @@ def conv_Conc(fromConc,fromUnit,toUnit,mw=0):
             if mw > 0:
                 toConc = 10**(unitGramLiter[fromUnit]-unitMolar[toUnit]) * fromConc / mw
             else:
-                logger.error(f' [conv_Conc] Requires a molecular weight [{mw:.2f}]')
+                logger.error(f' [conv_Conc] Requires MW [{mw:.2f}]')
                 toConc = None
         else:
-            logger.error(f' [conv_Conc] Wrong unit to convert from [{fromUnit}]')
+            logger.error(f' [conv_Conc] Wrong from Unit [{fromUnit}] ')
             toConc = None
 
     elif toUnit in unitGramLiter:
@@ -162,13 +162,13 @@ def conv_Conc(fromConc,fromUnit,toUnit,mw=0):
             if mw > 0:
                 toConc = 10**(unitMolar[fromUnit]-unitGramLiter[toUnit]) * fromConc * mw
             else:
-                logger.error(f' [conv_Conc] Requires a molecular weight [{mw:.2f}]')
+                logger.error(f' [conv_Conc] Requires MW [{mw:.2f}]')
                 toConc = None
         else:
-            logger.error(f' [conv_Conc] Wrong unit to convert from [{fromUnit}]')
+            logger.error(f' [conv_Conc] Wrong from Unit [{fromUnit}]')
             toConc = None
     else:
-        logger.error(f' [conv_Conc] Wrong unit to convert to [{toUnit}]')
+        logger.error(f' [conv_Conc] Wrong to Unit [{toUnit}]')
         toConc = None
 
     return(toConc,toUnit)
