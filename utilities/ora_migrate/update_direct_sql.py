@@ -76,13 +76,16 @@ def main(prgArgs):
         logger.info(sql_columns)
 
         for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+            UploadEntry = True
 
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
 
+            if row['n_conc'] is None:
+                UploadEntry = False
             djSQL = f"Update dscreen.assaydata_mic Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
-            if prgArgs.upload:
+            if prgArgs.upload and UploadEntry:
                 djDB.exec(djSQL,commit=True) 
 
     elif prgArgs.table == "AssayData_CC50" :
@@ -103,13 +106,16 @@ def main(prgArgs):
         logger.info(sql_columns)
 
         for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+            UploadEntry = True
 
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
 
+            if row['n_conc'] is None:
+                UploadEntry = False
             djSQL = f"Update dscreen.assaydata_cc50 Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
-            if prgArgs.upload:
+            if prgArgs.upload and UploadEntry:
                 djDB.exec(djSQL,commit=True) 
 
 
@@ -131,13 +137,15 @@ def main(prgArgs):
         logger.info(sql_columns)
 
         for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
-
+            UploadEntry = True
             row = dict()
             for col in sql_columns:
                 row[col.lower()] = crow[sql_columns.index(col)]
 
+            if row['n_conc'] is None:
+                UploadEntry = False
             djSQL = f"Update dscreen.assaydata_hc50 Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
-            if prgArgs.upload:
+            if prgArgs.upload and UploadEntry:
                 djDB.exec(djSQL,commit=True) 
 
 
