@@ -71,7 +71,7 @@ def main(prgArgs,djDir):
         # ------------------------------------------------------------------
 
         OutNumbers = {'Processed':0, 'Empty':0, 'Failed':0, 'New':0, 'Uploaded':0,}
-        for djObj in tqdm(qryStr, desc=f'[{prgArgs.table}]'):
+        for djObj in tqdm(qryStr, total= nEntries, desc=f'[{prgArgs.table}]'):
             OutNumbers['Processed'] += 1
 
             djObj.set_actscores()
