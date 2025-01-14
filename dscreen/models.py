@@ -347,7 +347,7 @@ class AssayData_MIC(CmpBatchList_Base):
         _mic_unit = split_StrList(self.mic_unit,sep=COMPOUND_SEP)
         if _mic_unit in ['uM','mM','pM','M'] or _mw > 0:
             _mic = split_StrList(self.mic,sep=COMPOUND_SEP)
-            self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+            self.pscore = pScore(_mic[0],_mic_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
     
 
 #-------------------------------------------------------------------------------------------------
@@ -457,6 +457,16 @@ class AssayData_CC50(CmpBatchList_Base):
     #     self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
     #     self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 
+   #------------------------------------------------
+    def set_actscores(self,verbose=0):
+        self.act_score = ActScore_DR(self.cc50,self.cc50_unit,DMax=self.inhibit_max)
+
+        _mw = self.cmpbatch_id.full_mw
+        _cc50_unit = split_StrList(self.cc50_unit,sep=COMPOUND_SEP)
+        if _cc50_unit in ['uM','mM','pM','M'] or _mw > 0:
+            _cc50 = split_StrList(self.cc50,sep=COMPOUND_SEP)
+            self.pscore = pScore(_cc50[0],_cc50_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+
 #-------------------------------------------------------------------------------------------------
 class AssayData_HC50(CmpBatchList_Base):
     """
@@ -564,6 +574,17 @@ class AssayData_HC50(CmpBatchList_Base):
     #     super().conv_string_to_list()
     #     self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
     #     self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
+
+   #------------------------------------------------
+    def set_actscores(self,verbose=0):
+        self.act_score = ActScore_DR(self.hc50,self.hc50_unit,DMax=self.inhibit_max,cutoff_inhib=10)
+
+
+        _mw = self.cmpbatch_id.full_mw
+        _hc50_unit = split_StrList(self.hc50_unit,sep=COMPOUND_SEP)
+        if _hc50_unit in ['uM','mM','pM','M'] or _mw > 0:
+            _hc50 = split_StrList(self.hc50,sep=COMPOUND_SEP)
+            self.pscore = pScore(_hc50[0],_hc50_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
 #
 # Assay (?)
 # AssayData_SynMIC
