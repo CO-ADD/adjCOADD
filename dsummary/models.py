@@ -160,8 +160,8 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     act_types = models.CharField(max_length=250, blank=True, verbose_name = "Active Types")
     # active_lst
     n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
-    act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
-    pscore_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore Ave")
+    act_score = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
+    pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore Ave")
 
     inhibit_max_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Max Ave")
     #inhibit_maxs  = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
@@ -170,9 +170,10 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
     drval_min    = models.CharField(max_length=20, blank=False, verbose_name = "DR Min")
     drval_median = models.CharField(max_length=20, blank=False, verbose_name = "DR Median")
     drval_unit   = models.CharField(max_length=25, blank=False, verbose_name = "DR Unit")
-    #drval_type   = models.CharField(max_length=20, blank=False, verbose_name = "DR High")
-    #drvals       = models.CharField(max_length=1024, blank=False, verbose_name = "DRs")
- 
+
+    drval_std_geomean = models.CharField(max_length=20, blank=False, verbose_name = "DR Std Geomean")
+    drval_std_unit    = models.CharField(max_length=25, blank=False, verbose_name = "DR Std Unit")
+
     # Summary Meta data
     # run_id_lst ArrayField(models.CharField(max_length=15, default="", db_index = True), 
     #                             size=MAX_CMPBATCHES, verbose_name = "CmpBatch List", null=True, blank=True)
@@ -187,10 +188,16 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
             GinIndex(name="scmpdr_cmp_idx",fields=['cmpbatch_lst']),
             models.Index(name="scmpdr_assid_idx", fields=['sum_assay_id']),
             models.Index(name="scmpdr_nact_idx", fields=['n_actives']),
-            models.Index(name="scmpdr_ascr_idx", fields=['act_score_ave']),
+            models.Index(name="scmpdr_ascr_idx", fields=['act_score']),
+            models.Index(name="scmpdr_pscr_idx", fields=['pscore']),
             models.Index(name="scmpdr_drt_idx", fields=['drval_type']),
             # models.Index(name="scmpdr_mscr_idx", fields=['mscore_ave']),
         ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.id}"
+        
 
     #------------------------------------------------
     # Returns an User instance if found by name
@@ -218,6 +225,14 @@ class Summary_CmpBatch_Doseresp(CmpBatchList_Base):
         else:
             return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, assay_id=AssayID).exists()
 
+    #------------------------------------------------
+    # Sets the Act_Score and pScores
+    def set_actscores(self,verbose=0):
+        if self.drval_type == 'HC50':
+            self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave,cutoff_inhib=10)
+        else:
+            self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave)
+        self.pscore = pScore(self.drval_std_geomean,self.drval_std_unit,self.inhibit_max_ave,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)
 
 #-------------------------------------------------------------------------------------------------
 class Summary_Structure(AuditModel):

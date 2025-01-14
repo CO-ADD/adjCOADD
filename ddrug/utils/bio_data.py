@@ -1,4 +1,5 @@
 import os
+import math
 from pathlib import Path
 import numpy as np
 from statistics import geometric_mean
@@ -109,10 +110,11 @@ def ActScore_DR(DR,DR_Unit,DMax=0, cutoffDR=ActScoreDR_Cutoff,cutoff_inhib=50):
 def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
     prefix = '-'
     log_uM = 6
-    prefix,val,_ = split_DR(DR)
 
-    try:
-        val = conv_Conc(val,Unit,'uM',MW)[0]
+    pScore = -1
+    prefix, val, _ = split_DR(DR)
+    val,_ = conv_Conc(val,Unit,'uM',MW)
+    if val:
         if (prefix == '=') or (prefix == '<'):
             pScore = log_uM - math.log10(val)
         elif (prefix == '>'):
@@ -122,43 +124,51 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
             pScore = log_uM - math.log10(gtShift*val)
         else:
             pScore = 0
-    except:
-        pScore = -1
+
     return(round(pScore,2))
 
 # ==================================================================================
 # Converting concentration molar <-> g/mL
 # ==================================================================================
-def conv_Conc(conc,fromunit,tounit,mw=0):
+def conv_Conc(fromConc,fromUnit,toUnit,mw=0):
     unitMolar = {'M':0, 'mM':-3, 'uM':-6, 'µM': -6, 'nM':-9,'pM':-12}
     unitGramLiter = {'mg/mL':0, 'ug/mL':-3, 'µg/mL':-3, 'ng/mL':-6, 'pg/mL':-9}
 
     mw = float(mw)
 
-    if tounit in unitMolar:
-        if fromunit in unitMolar:
-            nconc = conc * 10**(unitMolar[fromunit]-unitMolar[tounit])
-        elif fromunit in unitGramLiter:
-            if mw > 0:
-                nconc = 10**(unitGramLiter[fromunit]-unitMolar[tounit]) * conc / mw
-            else:
-                logger.error(f'Requires a molecular weight {mw:.2f}')
-        else:
-            logger.error(f'Wrong unit to convert from {fromunit}')
+    if fromUnit == toUnit:
+        toConc = fromConc
 
-    elif tounit in unitGramLiter:
-        if fromunit in unitGramLiter:
-            nconc = conc * 10**(unitGramLiter[fromunit]-unitGramLiter[tounit])
-        elif fromunit in unitMolar:
+    elif toUnit in unitMolar:
+        if fromUnit in unitMolar:
+            toConc = fromConc * 10**(unitMolar[fromUnit]-unitMolar[toUnit])
+        elif fromUnit in unitGramLiter:
             if mw > 0:
-                nconc = 10**(unitMolar[fromunit]-unitGramLiter[tounit]) * conc * mw
+                toConc = 10**(unitGramLiter[fromUnit]-unitMolar[toUnit]) * fromConc / mw
             else:
                 logger.error(f'Requires a molecular weight {mw:.2f}')
+                toConc = None
         else:
-            logger.error(f'Wrong unit to convert from {fromunit}')
+            logger.error(f'Wrong unit to convert from {fromUnit}')
+            toConc = None
+
+    elif toUnit in unitGramLiter:
+        if fromUnit in unitGramLiter:
+            toConc = fromConc * 10**(unitGramLiter[fromUnit]-unitGramLiter[toUnit])
+        elif fromUnit in unitMolar:
+            if mw > 0:
+                toConc = 10**(unitMolar[fromUnit]-unitGramLiter[toUnit]) * fromConc * mw
+            else:
+                logger.error(f'Requires a molecular weight {mw:.2f}')
+                toConc = None
+        else:
+            logger.error(f'Wrong unit to convert from {fromUnit}')
+            toConc = None
     else:
-        logger.error(f'Wrong unit to convert to {tounit}')
-    return(nconc,tounit)
+        logger.error(f'Wrong unit to convert to {toUnit}')
+        toConc = None
+
+    return(toConc,toUnit)
 
 # ==================================================================================
 # Aggregation function

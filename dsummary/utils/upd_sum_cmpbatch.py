@@ -9,7 +9,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
 from dchem.models import Chem_Structure
 from dplate.models import TestWell
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
-from ddrug.utils.bio_data import DR_Range, conv_Conc, split_XC50, format_DR, DR_GeoMean
+from ddrug.utils.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging
@@ -45,7 +45,7 @@ def get_DR_GeoMean(x):
 # --------------------------------------------------------------------------------------
 def apply_DR_Std(s):
     if s['full_mw'] > 0:
-        _prefix, _val, _ = split_XC50(s['dr'])
+        _prefix, _val, _ = split_DR(s['dr'])
 
         _val_uM,_unit_uM =conv_Conc(_val,s['dr_unit'],'uM',mw=s['full_mw'])
         s['dr_uM'] = format_DR(_prefix,_val_uM)
@@ -300,7 +300,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
                'hc_n_assayids' : 0, 'hc_n_actives' :0,
                'gnm_n_assayids' : 0, 'gnm_n_actives' :0,}
     
-    # Add dr_std [uM]
+    # Add dr_std [uM] - dr_ug, dr_ug_unit, dr_uM, dr_uM_unit
     dfDR = dfDR.apply(apply_DR_Std,axis=1)
 
     # Group By
@@ -341,9 +341,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
         djSum.drval_type = drType
         djSum.act_types = row[('act_type','get_strList')]
         djSum.n_actives = row[('act_type','get_nAct')]
-        djSum.act_score_ave = row[('act_score','mean')]
         djSum.inhibit_max_ave = row[('inhibit_max','mean')]
-        djSum.pscore_ave = row[('pscore','mean')]
 
         djSum.drval_max    = row[('dr_ug','DR_Range')]['Max']
         djSum.drval_min    = row[('dr_ug','DR_Range')]['Min']
@@ -351,10 +349,10 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
         djSum.drval_unit   = row[('dr_ug_unit','get_strList_unique')]
         djSum.n_assays = row[('dr_ug','DR_Range')]['nDR']
 
-        djSum.drval_std_geomean = format_DR(split_XC50(djSum.drval_median)[0],
-                                            row[('dr_uM','DR_GeoMean')])
         djSum.drval_std_unit   = row[('dr_uM_unit','get_strList_unique')]
-
+        djSum.drval_std_geomean = format_DR(split_DR(djSum.drval_median)[0],
+                                            row[('dr_uM','DR_GeoMean')])
+        djSum.set_actscores()
 
         #print(f" {djSum.structure_id} {djSum.drval_std_geomean} {djSum.drval_std_unit} ")
         # n_assayids and n_actives
@@ -428,6 +426,7 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
         djSumCmpd.dr_n_actives = 0
         djSumCmpd.dr_assayid_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
         djSumCmpd.dr_actives_lst = [0] * len(Summary_CmpBatch.ASSAY_CLASSES)
+
         # - MIC ----------------------------------------------------------
         qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
                                         cmpbatch_lst__contains = CmpBatchLst, 

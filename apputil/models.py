@@ -204,7 +204,7 @@ class AuditModel(models.Model):
 
 
     #-------------------------------------------------------------------
-    def init_field(self, default_Char="", default_Integer=0, default_Decimal=0.0):
+    def init_fields(self, default_Char="", default_Integer=0, default_Decimal=0.0):
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #   sets CharField    to "" (empty) or 'default' 
