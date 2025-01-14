@@ -348,6 +348,8 @@ class AssayData_MIC(CmpBatchList_Base):
         if _mic_unit in ['uM','mM','pM','M'] or _mw > 0:
             _mic = split_StrList(self.mic,sep=COMPOUND_SEP)
             self.pscore = pScore(_mic[0],_mic_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+        else:
+            self.pscore = -2
     
 
 #-------------------------------------------------------------------------------------------------
@@ -466,6 +468,8 @@ class AssayData_CC50(CmpBatchList_Base):
         if _cc50_unit in ['uM','mM','pM','M'] or _mw > 0:
             _cc50 = split_StrList(self.cc50,sep=COMPOUND_SEP)
             self.pscore = pScore(_cc50[0],_cc50_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+        else:
+            self.pscore = -2
 
 #-------------------------------------------------------------------------------------------------
 class AssayData_HC50(CmpBatchList_Base):
@@ -585,6 +589,8 @@ class AssayData_HC50(CmpBatchList_Base):
         if _hc50_unit in ['uM','mM','pM','M'] or _mw > 0:
             _hc50 = split_StrList(self.hc50,sep=COMPOUND_SEP)
             self.pscore = pScore(_hc50[0],_hc50_unit[0],self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
+        else:
+            self.pscore = -2
 #
 # Assay (?)
 # AssayData_SynMIC
