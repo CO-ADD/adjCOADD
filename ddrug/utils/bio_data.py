@@ -115,15 +115,18 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
     prefix, val, _ = split_DR(DR)
     val,_ = conv_Conc(val,Unit,'uM',MW)
     if val:
-        if (prefix == '=') or (prefix == '<'):
-            pScore = log_uM - math.log10(val)
-        elif (prefix == '>'):
-            if DMax is not None:
-                if DMax >= drMax2:
-                    gtShift = 2
-            pScore = log_uM - math.log10(gtShift*val)
-        else:
-            pScore = 0
+        if val <= 0:
+            pScore = -9
+        else:    
+            if (prefix == '=') or (prefix == '<'):
+                pScore = log_uM - math.log10(val)
+            elif (prefix == '>'):
+                if DMax is not None:
+                    if DMax >= drMax2:
+                        gtShift = 2
+                pScore = log_uM - math.log10(gtShift*val)
+            else:
+                pScore = 0
 
     return(round(pScore,2))
 
