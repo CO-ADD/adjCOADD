@@ -62,7 +62,7 @@ def main(prgArgs,djDir):
         if int(prgArgs.test)>0:
             qryStr = TableDict[prgArgs.table].objects.all()[:int(prgArgs.test)]
         else:    
-            qryStr = TableDict[prgArgs.table].objects.all()
+            qryStr = TableDict[prgArgs.table].objects.all().iterator(chunk_size=1000)
 
         # ------------------------------------------------------------------
         nEntries = qryStr.count()
