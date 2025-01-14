@@ -31,7 +31,10 @@ logging.basicConfig(
 def main(prgArgs):
     oraDB = openCastDB()
     djDB = openCoaddDB()
+
+    # ---------------------------------------------------------------------
     if prgArgs.table == "TestWells" :
+    # ---------------------------------------------------------------------
 
         OutName = "[TestWells]"
         oraSQL = "Select plate_id, well_id, active From TestWell "
@@ -58,7 +61,9 @@ def main(prgArgs):
             if prgArgs.upload:
                 djDB.exec(djSQL,commit=True) 
 
+    # ---------------------------------------------------------------------
     elif prgArgs.table == "AssayData_MIC" :
+    # ---------------------------------------------------------------------
 
         OutName = "[AssayData_MIC]"
         oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_MIC "
@@ -84,11 +89,14 @@ def main(prgArgs):
 
             if row['n_conc'] is None:
                 UploadEntry = False
+
             djSQL = f"Update dscreen.assaydata_mic Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
             if prgArgs.upload and UploadEntry:
                 djDB.exec(djSQL,commit=True) 
 
+    # ---------------------------------------------------------------------
     elif prgArgs.table == "AssayData_CC50" :
+    # ---------------------------------------------------------------------
 
         OutName = "[AssayData_CC50]"
         oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_CC50 "
@@ -119,7 +127,9 @@ def main(prgArgs):
                 djDB.exec(djSQL,commit=True) 
 
 
+    # ---------------------------------------------------------------------
     elif prgArgs.table == "AssayData_HC50" :
+    # ---------------------------------------------------------------------
 
         OutName = "[AssayData_HC50]"
         oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_HC50 "
