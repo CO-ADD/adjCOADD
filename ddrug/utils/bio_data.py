@@ -110,7 +110,7 @@ def DR_Range(lstDR,maxLst=10):
 def DR_GeoMean(lstDR):
     dr_val = []
     for dr in lstDR:
-        dr_val.append(split_XC50(dr)[1])
+        dr_val.append(split_DR(dr)[1])
     try:
         _gm = geometric_mean(dr_val)
     except:

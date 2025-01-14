@@ -58,6 +58,89 @@ def main(prgArgs):
             if prgArgs.upload:
                 djDB.exec(djSQL,commit=True) 
 
+    elif prgArgs.table == "AssayData_MIC" :
+
+        OutName = "[AssayData_MIC]"
+        oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_MIC "
+
+        if int(prgArgs.test) > 0:
+            oraSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+            nWells = int(prgArgs.test)
+        else:
+            nWells = oraDB.nCount(f"Select count(1) From AssayData_MIC " )
+        logger.info(f"{OutName} {nWells} ")
+
+
+        oraDB.exec(oraSQL)  
+        sql_columns = [i[0].lower() for i in oraDB.cursor.description]
+        logger.info(sql_columns)
+
+        for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+
+            row = dict()
+            for col in sql_columns:
+                row[col.lower()] = crow[sql_columns.index(col)]
+
+            djSQL = f"Update dscreen.assaydata_mic Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
+            if prgArgs.upload:
+                djDB.exec(djSQL,commit=True) 
+
+    elif prgArgs.table == "AssayData_CC50" :
+
+        OutName = "[AssayData_CC50]"
+        oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_CC50 "
+
+        if int(prgArgs.test) > 0:
+            oraSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+            nWells = int(prgArgs.test)
+        else:
+            nWells = oraDB.nCount(f"Select count(1) From AssayData_CC50 " )
+        logger.info(f"{OutName} {nWells} ")
+
+
+        oraDB.exec(oraSQL)  
+        sql_columns = [i[0].lower() for i in oraDB.cursor.description]
+        logger.info(sql_columns)
+
+        for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+
+            row = dict()
+            for col in sql_columns:
+                row[col.lower()] = crow[sql_columns.index(col)]
+
+            djSQL = f"Update dscreen.assaydata_cc50 Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
+            if prgArgs.upload:
+                djDB.exec(djSQL,commit=True) 
+
+
+    elif prgArgs.table == "AssayData_HC50" :
+
+        OutName = "[AssayData_HC50]"
+        oraSQL = "Select testplate_id, testwell_id, n_conc From AssayData_HC50 "
+
+        if int(prgArgs.test) > 0:
+            oraSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+            nWells = int(prgArgs.test)
+        else:
+            nWells = oraDB.nCount(f"Select count(1) From AssayData_HC50 " )
+        logger.info(f"{OutName} {nWells} ")
+
+
+        oraDB.exec(oraSQL)  
+        sql_columns = [i[0].lower() for i in oraDB.cursor.description]
+        logger.info(sql_columns)
+
+        for crow in tqdm(oraDB.cursor, total=nWells, desc=OutName):
+
+            row = dict()
+            for col in sql_columns:
+                row[col.lower()] = crow[sql_columns.index(col)]
+
+            djSQL = f"Update dscreen.assaydata_hc50 Set n_conc = '{row['n_conc']}' Where testplate_id = '{row['testplate_id']}' and testwell_id = '{row['testwell_id']}' "
+            if prgArgs.upload:
+                djDB.exec(djSQL,commit=True) 
+
+
     djDB.close()
     oraDB.close()
 

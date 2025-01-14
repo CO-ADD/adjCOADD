@@ -121,7 +121,7 @@ def main(prgArgs,djDir):
                         'cc50','cc50_unit','cc50_r2','cc50_slope',
                         'hc50','hc50_unit','hc50_r2','hc50_slope','hc10',
                         'act_type','act_score','pscore','data_quality','valid',
-                        'inhibit_max','inhibit_min','conc_max','conc_min',
+                        'inhibit_max','inhibit_min','conc_max','conc_min','n_conc',
         #                  'media','dye', 'additive', 
                         'ref_mic','ref_mic_check',
                         'pub_status','pub_date',

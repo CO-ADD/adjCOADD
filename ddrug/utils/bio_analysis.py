@@ -12,7 +12,7 @@ from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
 from ddrug.models import Drug, MIC_COADD, MIC_Pub, Breakpoint
-from ddrug.utils.bio_data import split_XC50
+from ddrug.utils.bio_data import split_DR
 
 
 #-------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ def calc_bp(valAct,objBP):
 #-----------------------------------------------------------------------------
     if objBP:
         _bpType = str(objBP.bp_type)
-        _prefix,_val,_sval = split_XC50(valAct)
+        _prefix,_val,_sval = split_DR(valAct)
         if _bpType == 'MIC':
             _bp = 'I'
             if _val <= objBP.bp_sens_le :
