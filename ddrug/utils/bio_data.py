@@ -108,11 +108,18 @@ def ActScore_DR(DR,DR_Unit,DMax=0, cutoffDR=ActScoreDR_Cutoff,cutoff_inhib=50):
 # pScore -log DR
 #-----------------------------------------------------------------------------
 def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
+    """
+        pScore as 
+             0    Unknown Prefix (<0)
+            -1    Not Processed
+            -2    No MW or Unit not in Molar (no conversion needed)
+            -3    Unknown Unit
+            -9    Unknown Concentration (<0)
+            f.dd -log(DR in [M]) with 2 decimal points
+    """    
     pScore = -1
-
     prefix = '-'
     log_uM = 6
-
 
     _dr_unit = split_StrList(Unit,sep=COMPOUND_SEP)[0]
     if _dr_unit in ['uM','mM','pM','M'] or MW > 0:
@@ -134,13 +141,10 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
             else:    
                pScore = -9
         else:
+            # 
             pScore = -3 
     else:
         pScore = -2
-
-
-
-
     return(round(pScore,2))
 
 # ==================================================================================
