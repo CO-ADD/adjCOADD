@@ -45,11 +45,11 @@ def ActType_SC(Inhib,ZScore=None,cutoff_Inhib={'A':80,'P':50},cutoff_Zscore={'A'
         if isinstance(ZScore,str):
             ZScore = float(ZScore)
         actType = 'Inactive'
-        if Inhib >= cutoff_Inhib['P'] and ZScore >= cutoff_Zscore['P']:
+        if Inhib >= cutoff_Inhib['P'] and abs(ZScore) >= cutoff_Zscore['P']:
             actType = 'Partial'
-        if Inhib >= cutoff_Inhib['A'] and ZScore >= cutoff_Zscore['A']:
+        if Inhib >= cutoff_Inhib['A'] and abs(ZScore) >= cutoff_Zscore['A']:
             actType = 'Active'
-        if Inhib >= cutoff_Inhib['A'] and ZScore < cutoff_Zscore['P']:
+        if Inhib >= cutoff_Inhib['A'] and abs(ZScore) < cutoff_Zscore['P']:
             actType = 'Unknown'
 
     else: # Without ZSCore as per DoseResponse

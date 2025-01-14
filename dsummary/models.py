@@ -293,7 +293,7 @@ class Summary_Structure_Inhib(AuditModel):
     act_types = models.CharField(max_length=250, blank=True, verbose_name = "Active Tupes")
     # active_lst
     n_actives = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Actives")
-    act_score_ave = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score Ave")
+    act_score = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "Act Score")
 
     inhibition_ave = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Ave")
     inhibition_std = models.DecimalField(default=-1, max_digits=9, decimal_places=3, verbose_name = "Inhibition Std")
@@ -324,7 +324,7 @@ class Summary_Structure_Inhib(AuditModel):
             models.Index(name="sstrsc_sid_idx", fields=['structure_id']),
             models.Index(name="sstrsc_assid_idx", fields=['sum_assay_id']),
             models.Index(name="sstrsc_nact_idx", fields=['n_actives']),
-            models.Index(name="sstrsc_ascr_idx", fields=['act_score_ave']),
+            models.Index(name="sstrsc_ascr_idx", fields=['act_score']),
             models.Index(name="sstrsc_inhin_idx", fields=['inhibition_ave']),
             models.Index(name="sstrsc_mscr_idx", fields=['mscore_ave']),
         ]
@@ -347,6 +347,12 @@ class Summary_Structure_Inhib(AuditModel):
     @classmethod
     def exists(cls,StructureID,AssayID, verbose=0):
         return cls.objects.filter(structure_id=StructureID, assay_id=AssayID).exists()
+
+    #------------------------------------------------
+    # Sets the Act_Score
+    def set_actscores(self,verbose=0):
+        self.act_score = ActScore_SC(self.inhibition_ave,ZScore=self.mscore_ave)
+
 
 #-------------------------------------------------------------------------------------------------
 class Summary_Structure_Doseresp(AuditModel):
@@ -424,13 +430,13 @@ class Summary_Structure_Doseresp(AuditModel):
     def exists(cls,StructureID,AssayID, verbose=0):
         return cls.objects.filter(structure_id=StructureID, assay_id=AssayID).exists()
 
-   #------------------------------------------------
+    #------------------------------------------------
+    # Sets the Act_Score and pScores
     def set_actscores(self,verbose=0):
         if self.drval_type == 'HC50':
             self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave,cutoff_inhib=10)
         else:
             self.act_score = ActScore_DR(self.drval_median,self.drval_unit,DMax=self.inhibit_max_ave)
-
         self.pscore = pScore(self.drval_std_geomean,self.drval_std_unit,self.inhibit_max_ave,MW=self.structure_id.mw,gtShift=3,drMax2=40)
 
         # _mw = self.structure_id.full_mw

@@ -45,32 +45,24 @@ def main(prgArgs,djDir):
     from dscreen.models import AssayData_MIC,AssayData_CC50,AssayData_HC50
     from dsummary.models import Summary_Structure_Doseresp, Summary_Structure_Inhib, Summary_CmpBatch_Doseresp, Summary_CmpBatch_Inhib
 
-    # ---------------------------------------------------------------------
-    if prgArgs.table in ["AssayData_MIC","AssayData_CC50","AssayData_HC50",
-                        "SumStructureDR"] :
-    # ---------------------------------------------------------------------
-        if prgArgs.table == "AssayData_MIC":
-            if int(prgArgs.test)>0:
-                qryStr = AssayData_MIC.objects.all()[:int(prgArgs.test)]
-            else:    
-                qryStr = AssayData_MIC.objects.all()
-        elif prgArgs.table == "AssayData_CC50":
-            if int(prgArgs.test)>0:
-                qryStr = AssayData_CC50.objects.all()[:int(prgArgs.test)]
-            else:    
-                qryStr = AssayData_CC50.objects.all()
+    TableDict = {"AssayData_MIC" : AssayData_MIC,
+                 "AssayData_CC50": AssayData_CC50,
+                 "AssayData_HC50": AssayData_HC50,
+                 "SumStructureDR": Summary_Structure_Doseresp,
+                 "SumStructureSC": Summary_Structure_Inhib,
+                 "SumCmpBatchDR" : Summary_CmpBatch_Doseresp,
+                 "SumCmpBatchSC" : Summary_CmpBatch_Inhib,
+                }
 
-        elif prgArgs.table == "AssayData_HC50":
-            if int(prgArgs.test)>0:
-                qryStr = AssayData_HC50.objects.all()[:int(prgArgs.test)]
-            else:    
-                qryStr = AssayData_HC50.objects.all()
-
-        elif prgArgs.table == "SumStructureDR":
-            if int(prgArgs.test)>0:
-                qryStr = Summary_Structure_Doseresp.objects.all()[:int(prgArgs.test)]
-            else:    
-                qryStr = Summary_Structure_Doseresp.objects.all()
+    # ---------------------------------------------------------------------
+    # if prgArgs.table in ["AssayData_MIC","AssayData_CC50","AssayData_HC50",
+    #                     "SumStructureDR","SumStructureSC"] :
+    if prgArgs.table in TableDict :
+    # ---------------------------------------------------------------------
+        if int(prgArgs.test)>0:
+            qryStr = TableDict[prgArgs.table].objects.all()[:int(prgArgs.test)]
+        else:    
+            qryStr = TableDict[prgArgs.table].objects.all()
 
         # ------------------------------------------------------------------
         nEntries = qryStr.count()
