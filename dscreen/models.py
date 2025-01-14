@@ -16,7 +16,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from apputil.utils.data import strList_to_List
+from apputil.utils.data import strList_to_List, split_StrList
 from ddrug.utils.bio_data import pScore, ActScore_DR, ActScore_SC
 from dsample.models import CmpBatchList_Base, Compound_Batch
 from dcell.models import Cell
@@ -342,7 +342,12 @@ class AssayData_MIC(CmpBatchList_Base):
    #------------------------------------------------
     def set_actscores(self,verbose=0):
         self.act_score = ActScore_DR(self.mic,self.mic_unit,DMax=self.inhibit_max)
-        #self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=0,gtShift=3,drMax2=40)
+
+        _mw = self.cmpbatch_id.full_mw
+        _mic_unit = split_StrList(self.mic_unit,sep=COMPOUND_SEP)
+        if _mic_unit in ['uM','mM','pM','M'] or _mw > 0:
+            _mic = split_StrList(self.mic,sep=COMPOUND_SEP)
+            self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=_mw,gtShift=3,drMax2=40)
     
 
 #-------------------------------------------------------------------------------------------------
