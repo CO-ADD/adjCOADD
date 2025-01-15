@@ -412,7 +412,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
 # --------------------------------------------------------------------------------------
 def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0, 'Empty Entries':0}
     OutDict = []
 
     NCmpBatches = len(CmpBatchLst)

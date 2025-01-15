@@ -485,18 +485,12 @@ class COADD_Compound(AuditModel):
             super(COADD_Compound, self).save(*args, **kwargs) 
 
 
-class Group_Compound(AuditModel):
+class ABase_Compound(AuditModel):
     """
     List of Abase Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
     Choice_Dictionary = {
-        'compound_type':'Compound_Type',
-        'compound_source':'Compound_Source',
-        'reg_amount_unit': 'Unit_Amount',
-        'reg_volume_unit':'Unit_Volume',
-        'reg_conc_unit':'Unit_Concentration',
-    #    'stock_volume_unit':'Unit_Volume',
     }
 
     ID_SEQUENCE = 'ABase_Compound'
@@ -505,95 +499,32 @@ class Group_Compound(AuditModel):
 
     compound_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Compound ID")
     compound_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
-    
     compound_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
     compound_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
 
-    study_id = models.CharField(max_length=15, blank=True, verbose_name = "Study ID")
-
+    reg_molfile = models.TextField(max_length=15, blank=True, verbose_name = "Reg Molfile")
+    reg_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Reg MW")
+    reg_mf = models.CharField(max_length=100, blank=True, verbose_name = "Reg MF")
+    
     structure_type = models.CharField(max_length=400, blank=True, verbose_name = "Type")
+    structure_metal = models.CharField(max_length=100, blank=True, verbose_name = "Std Metal")
     structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
 
 
     class Meta:
         app_label = 'dsample'
-        db_table = 'group_compound'
+        db_table = 'abase_compound'
         ordering=['compound_id']
         indexes = [
-            models.Index(name="grpc_name_idx", fields=['compound_name']),
-            models.Index(name="grpc_code_idx", fields=['compound_code']),
-            # models.Index(name="grpc_type_idx", fields=['compound_type']),
-            models.Index(name="grpc_pid_idx", fields=['study_id']),
-            # models.Index(name="coadd_cbid_idx", fields=['cmpbatch_id']),
-            # models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
-            # models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
-            # models.Index(name="coadd_sstat_idx", fields=['std_status']),
-            # models.Index(name="coadd_snfrag_idx", fields=['std_nfrag']),
-            # models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
-            # models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
-            # models.Index(name="coadd_smetal_idx", fields=['std_metal']),
-            # models.Index(name="coadd_pst_idx", fields=['pub_status']),   
+            models.Index(name="abcmp_name_idx", fields=['compound_name']),
+            models.Index(name="abcmp_code_idx", fields=['compound_code']),
+            models.Index(name="abcmp_sid_idx", fields=['structure_id']),
         ]
 
     @classmethod
     def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
         return(OldABaseID.replace('MCC_','MCC'))
-
-class GroupCompBatchAuditModel(AuditModel):
-    """
-    List of Abase Compounds as per Registration
-    """
-#-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
-        'compound_type':'Compound_Type',
-        'compound_source':'Compound_Source',
-        'reg_amount_unit': 'Unit_Amount',
-        'reg_volume_unit':'Unit_Volume',
-        'reg_conc_unit':'Unit_Concentration',
-    #    'stock_volume_unit':'Unit_Volume',
-    }
-
-
-    #cmpbatch_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Co ID")
-    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
-        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
-    
-    compound_id = models.ForeignKey(Group_Compound, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
-        db_column="compound_id", related_name="%(class)s_compound_id")
-    cmpbatch_code = models.CharField(max_length=50, blank=True, verbose_name = "Code")
-    
-    cmpbatch_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
-    cmpbatch_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
-
-    study_id = models.CharField(max_length=15, blank=True, verbose_name = "Study ID")
-
-    class Meta:
-        app_label = 'dsample'
-        db_table = 'group_cmpbatch'
-        ordering=['cmpbatch_id']
-        constraints = [
-            models.UniqueConstraint(name='grpcb_id_cst', fields=['cmpbatch_id'], )
-        ]
-        indexes = [
-            models.Index(name="grpcb_name_idx", fields=['cmpbatch_name']),
-            models.Index(name="grpcb_code_idx", fields=['cmpbatch_code']),
-            # models.Index(name="grpcb_type_idx", fields=['compound_type']),
-            # models.Index(name="grpcb_pid_idx", fields=['study_id']),
-            # models.Index(name="coadd_cbid_idx", fields=['cmpbatch_id']),
-            # models.Index(name="coadd_ocid_idx", fields=['ora_compound_id']),
-            # models.Index(name="coadd_opid_idx", fields=['ora_project_id']),
-            # models.Index(name="coadd_sstat_idx", fields=['std_status']),
-            # models.Index(name="coadd_snfrag_idx", fields=['std_nfrag']),
-            # models.Index(name="coadd_sstyp_idx", fields=['std_structure_type']),
-            # models.Index(name="coadd_ssalt_idx", fields=['std_salt']),
-            # models.Index(name="coadd_smetal_idx", fields=['std_metal']),
-            # models.Index(name="coadd_pst_idx", fields=['pub_status']),   
-        ]
-
-    @classmethod
-    def new_ABase_CmpBatch_ID(cls,OldABaseID,verbose=0):
-        return(OldABaseID.replace(':','_'))
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):

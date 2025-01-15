@@ -73,6 +73,7 @@ def main(prgArgs,djDir):
     from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
     from dchem.utils.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
+    from dsample.models import ABase_Compound
     from adjcoadd.constants import COMPOUND_SEP
 
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -84,14 +85,12 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
     
    # ABase ChemStructure -------------------------------------------------------------
-    if prgArgs.table == "ChemStructure" :
+    if prgArgs.table == "Update_ChemStructure" :
 
-        OutName = "[ChemStructure]"
+        OutName = "[Update_ChemStructure]"
         OutDict = []
         OutFile = f"UpdateABaseStruct_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
-        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
-
-
+        OutNumbers = {'Processed':0,'New':0, 'Uploaded':0, 'Failed':0}
 
         strSQL = "Select ObjdID, ObjsMolFormula, ObjsMolMassValue, ObjsMolFile  from ChemStruct "
         if int(prgArgs.test)>0:
@@ -100,28 +99,138 @@ def main(prgArgs,djDir):
         ABaseDB = openABase()
 
         print(f"{OutName} ---------------------------------------------------------")
-        logger.info(f"[ChemStructure] ... ")
+        logger.info(f"[ChemStructureReg] ... ")
         strDF = pd.DataFrame(ABaseDB.get_dict_list(strSQL))
         nTotal = len(strDF)
-        logger.info(f"[ChemStructure] {nTotal} ")
+        logger.info(f"[ChemStructureReg] {nTotal} ")
         print("--------------------------------------------------------------------")
         print(f"{OutName} {strDF.columns} ")
 
         for idx,row in tqdm(strDF.iterrows(),  total=len(strDF), desc="ABase Structure"):
+            NewEntry = False
+            validStatus = True
             OutNumbers['Processed'] += 1
+            djCmp =  ABase_Compound.get(row['objdid'])
+            if djCmp is None:
+                NewEntry = True
+                djCmp = ABase_Compound()
+                djCmp.compound_id = ABase_Compound.new_ABase_Compound_ID(row['objdid'])
+                OutNumbers['New'] += 1
+            
             if row['objsmolfile']:
                 _molblock = row['objsmolfile'].read()
-                smol = Chem.MolFromMolBlock(_molblock)
-                if smol:
-                    smol = Chem.MolFromMolBlock(_molblock,sanitize=False)
-                    i = 1
-                    #print(f" [{row['objdid']}] {Chem.Descriptors.MolWt(smol)} {row['objsmolmassvalue']}")
-                if not smol:
-                    print(f" [{row['objdid']}]  Unable to convert Structure ")
-            # else:
-            #     print(f" [{row['objdid']}]  No Structure ")
+                djCmp.reg_molfile = _molblock
+                djCmp.reg_mw = row['objsmolmassvalue']
+                djCmp.reg_mf = row['objsmolformula']
 
+            djCmp.init_fields()
+            validDict = djCmp.validate_fields()
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    logger.warning('Warning',k,validDict[k],'-')
+                OutDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if NewEntry or prgArgs.overwrite:
+                        OutNumbers['Uploaded'] += 1
+                        djCmp.save(user=prgArgs.appuser)
         ABaseDB.close()
+    
+    elif prgArgs.table == "Reg_ChemStructure":
+
+
+        OutName = "[Reg_ChemStructure]"
+        OutDict = []
+        OutFile = f"RegABaseStruct_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New':0, 'Uploaded':0, 'Failed':0,'Empty':0, 'not STD':0}
+
+
+        print(f" {OutName} ---------------------------------------------------------")
+        logger.info(f"[Reg_ChemStructure] ... ")
+        if int(prgArgs.test)>0:
+            qryStr = ABase_Compound.objects.all()[:int(prgArgs.test)]
+            nEntry = int(prgArgs.test)
+        else:
+            qryStr = ABase_Compound.objects.all()
+            nEntry = qryStr.count()
+        logger.info(f" {OutName}: {nEntry} ")
+
+        for djMCC in tqdm(qryStr, total=nEntry, desc='[CmpBatcheLsts]'):
+            OutNumbers['Processed'] += 1
+
+            if djMCC.reg_molfile:
+                _mol = Chem.MolFromMolBlock(djMCC.reg_molfile)
+                if _mol:
+                    validStatus = True
+                    Chem.Kekulize(_mol)
+                    _MolType,_Metal,_IsMet = get_Structure_Type(_mol,None)
+                    djMCC.structure_type = _MolType
+                    djMCC.structure_metal = _Metal
+
+                    _smi = Chem.MolToSmiles(_mol, canonical=True, isomericSmiles=True, kekuleSmiles=True)
+
+                    djChem = Chem_Structure.get_exact(_mol)
+                    if djChem is None:
+                        djChem = Chem_Structure()
+                        djChem.smol = _mol
+                        OutNumbers['New'] += 1
+
+                    djChem.init_fields()
+                    validDict = djChem.validate_fields()
+                    
+                    if validDict:
+                        validStatus = False
+                        for k in validDict:
+                            logger.warning(f"{k}: {validDict[k]}")
+                            
+                    if prgArgs.upload and validStatus:
+                        djChem.save()
+                        _csid = djChem.structure_id
+                        OutNumbers['Uploaded'] += 1 
+                        # Reload to get MW
+                        djChem.get(_csid)
+                        djMCC.structure_id = djChem
+
+                    
+                else:
+                    _mol = Chem.MolFromMolBlock(djMCC.reg_molfile, sanitize=False)
+                    if _mol:
+                        OutNumbers['not STD'] += 1
+                        _MolType,_Metal,_IsMet = get_Structure_Type(_mol,None)
+                        djMCC.structure_type = _MolType
+                        djMCC.structure_metal = _Metal
+                    else:    
+                        OutNumbers['Failed'] += 1
+
+                validStatus = True
+                validDict = djMCC.validate_fields()
+                djMCC.init_fields()
+                validDict = djMCC.validate_fields()
+                
+                if validDict:
+                    validStatus = False
+                    for k in validDict:
+                        logger.warning(f"{k}: {validDict[k]}")
+
+                if prgArgs.upload and validStatus:
+                    djMCC.save()
+
+            else:
+                OutNumbers['Empty'] += 1
+        logger.info(f"[{prgArgs.table}] {OutNumbers}")
+
+# In [14]: m = Chem.MolFromSmiles('F[P-](F)(F)(F)(F)F.CN
+# (C)C(F)=[N+](C)C',sanitize=False)
+
+# In [15]: m.UpdatePropertyCache(strict=False)
+
+# In [16]:
+# Chem.SanitizeMol(m,Chem.SanitizeFlags.SANITIZE_FINDRADICALS|Chem.SanitizeFlags.SANITIZE_KEKULIZE|Chem.SanitizeFlags.SANITIZE_SETAROMATICITY|Chem.SanitizeFlags.SANITIZE_SETCONJUGATION|Chem.SanitizeFlags.SANITIZE_SETHYBRIDIZATION|Chem.SanitizeFlags.SANITIZE_SYMMRINGS,catchErrors=True)
+# Out[16]: rdkit.Chem.rdmolops.SanitizeFlags.SANITIZE_NONE
+
+
 
 #==============================================================================
 if __name__ == "__main__":

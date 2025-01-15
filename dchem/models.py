@@ -151,6 +151,39 @@ class Chem_Structure(AuditModel):
                 print(f"[Structure Not Found] {Smiles} ")
         return(retInstance)
 
+    @classmethod
+    def get_exact(cls,MolSmi,verbose=0):
+    # Returns an instance by smiles exact search
+        try:
+            retInstance = cls.objects.filter(smol__exact=MolSmi).first()
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Structure Not Found] {MolSmi} ")
+        return(retInstance)
+
+    @classmethod
+    def get_hassubstruct(cls,MolSmi,verbose=0):
+    # Returns an instance by smiles exact search
+        try:
+            retInstance = cls.objects.filter(smol__hassubstruct=MolSmi).first()
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Has SubStructure Not Found] {MolSmi} ")
+        return(retInstance)
+
+    @classmethod
+    def get_issubstruct(cls,MolSmi,verbose=0):
+    # Returns an instance by smiles exact search
+        try:
+            retInstance = cls.objects.filter(smol__issubstruct=MolSmi).first()
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Is SubStructure Not Found] {MolSmi} ")
+        return(retInstance)
+
     #------------------------------------------------
     @classmethod
     def exists(cls,StructureID=None,StructureName=None,verbose=0):
