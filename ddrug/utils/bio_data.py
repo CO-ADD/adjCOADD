@@ -140,9 +140,8 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
                     else:
                         pScore = 0
                 else:    
-                pScore = -9
+                    pScore = -9
             else:
-                # 
                 pScore = -3 
         else:
             pScore = -2
