@@ -111,7 +111,7 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
     """
         pScore as 
              0    Unknown Prefix (<0)
-            -1    Not Processed
+            -1    Not Processed or no DR
             -2    No MW or Unit not in Molar (no conversion needed)
             -3    Unknown Unit
             -9    Unknown Concentration (<0)
@@ -121,31 +121,32 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
     prefix = '-'
     log_uM = 6
 
-    _dr_unit = split_StrList(Unit,sep=COMPOUND_SEP)[0]
-    if _dr_unit in ['uM','mM','pM','M'] or MW > 0:
-        _dr = split_StrList(DR,sep=COMPOUND_SEP)[0]
+    if DR:
+        _dr_unit = split_StrList(Unit,sep=COMPOUND_SEP)[0]
+        if _dr_unit in ['uM','mM','pM','M'] or MW > 0:
+            _dr = split_StrList(DR,sep=COMPOUND_SEP)[0]
 
-        prefix, val, _ = split_DR(_dr)
-        val,_ = conv_Conc(val,_dr_unit,'uM',MW)
-        if val:
-            if val > 0:
-                if (prefix == '=') or (prefix == '<'):
-                    pScore = log_uM - math.log10(val)
-                elif (prefix == '>'):
-                    if DMax is not None:
-                        if DMax >= drMax2:
-                            gtShift = 2
-                    pScore = log_uM - math.log10(gtShift*val)
-                else:
-                    pScore = 0
-            else:    
-               pScore = -9
+            prefix, val, _ = split_DR(_dr)
+            val,_ = conv_Conc(val,_dr_unit,'uM',MW)
+            if val:
+                if val > 0:
+                    if (prefix == '=') or (prefix == '<'):
+                        pScore = round(log_uM - math.log10(val),2)
+                    elif (prefix == '>'):
+                        if DMax is not None:
+                            if DMax >= drMax2:
+                                gtShift = 2
+                        pScore = round(log_uM - math.log10(gtShift*val),2)
+                    else:
+                        pScore = 0
+                else:    
+                pScore = -9
+            else:
+                # 
+                pScore = -3 
         else:
-            # 
-            pScore = -3 
-    else:
-        pScore = -2
-    return(round(pScore,2))
+            pScore = -2
+    return(pScore)
 
 # ==================================================================================
 # Converting concentration molar <-> g/mL
