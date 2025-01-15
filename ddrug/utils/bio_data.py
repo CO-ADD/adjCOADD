@@ -121,7 +121,7 @@ def pScore(DR,Unit,DMax,MW=0,gtShift=3,drMax2=40):
     prefix = '-'
     log_uM = 6
 
-    if DR:
+    if DR and Unit :
         _dr_unit = split_StrList(Unit,sep=COMPOUND_SEP)[0]
         if _dr_unit in ['uM','mM','pM','M'] or MW > 0:
             _dr = split_StrList(DR,sep=COMPOUND_SEP)[0]
