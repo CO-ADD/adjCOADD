@@ -400,23 +400,25 @@ def split_DR(strDR):
 
 # --------------------------------------------------------------------
 def format_DR(p,v):
-    if isinstance(v,str):
-        strVal = v
-    else:
-        if int(v) == v:
-            strVal = f"{v}"
-        elif v > 1000:
-                strVal = f"{v:.0f}"
-        elif v > 100:
-                strVal = f"{v:.1f}"
-        elif v > 10:
-                strVal = f"{v:.2f}"
+    strVal = ''
+    if v:
+        if isinstance(v,str):
+            strVal = v
         else:
-            strVal = f"{v:.3f}"
+            if int(v) == v:
+                strVal = f"{v}"
+            elif v > 1000:
+                    strVal = f"{v:.0f}"
+            elif v > 100:
+                    strVal = f"{v:.1f}"
+            elif v > 10:
+                    strVal = f"{v:.2f}"
+            else:
+                strVal = f"{v:.3f}"
 
-    if p == 'X':
-        strVal = 'nf'
-    elif p == '<=' or p == '>':
-        strVal = p + strVal
+        if p == 'X':
+            strVal = 'nf'
+        elif p == '<=' or p == '>':
+            strVal = p + strVal
     return(strVal)
 
