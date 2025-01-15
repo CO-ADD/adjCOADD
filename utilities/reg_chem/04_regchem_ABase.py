@@ -91,15 +91,37 @@ def main(prgArgs,djDir):
         OutFile = f"UpdateABaseStruct_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
+
+
+        strSQL = "Select ObjdID, ObjsMolFormula, ObjsMolMassValue, ObjsMolFile  from ChemStruct "
+        if int(prgArgs.test)>0:
+            strSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+
+        ABaseDB = openABase()
+
         print(f"{OutName} ---------------------------------------------------------")
-        strDF = get_AbaseStructures(int(prgArgs.test))
+        logger.info(f"[ChemStructure] ... ")
+        strDF = pd.DataFrame(ABaseDB.get_dict_list(strSQL))
+        nTotal = len(strDF)
+        logger.info(f"[ChemStructure] {nTotal} ")
         print("--------------------------------------------------------------------")
         print(f"{OutName} {strDF.columns} ")
 
-        for djCmpd in tqdm(strDF.iterrows(),  desc="ABase Structure"):
+        for idx,row in tqdm(strDF.iterrows(),  total=len(strDF), desc="ABase Structure"):
             OutNumbers['Processed'] += 1
+            if row['objsmolfile']:
+                _molblock = row['objsmolfile'].read()
+                smol = Chem.MolFromMolBlock(_molblock)
+                if smol:
+                    smol = Chem.MolFromMolBlock(_molblock,sanitize=False)
+                    i = 1
+                    #print(f" [{row['objdid']}] {Chem.Descriptors.MolWt(smol)} {row['objsmolmassvalue']}")
+                if not smol:
+                    print(f" [{row['objdid']}]  Unable to convert Structure ")
+            # else:
+            #     print(f" [{row['objdid']}]  No Structure ")
 
-
+        ABaseDB.close()
 
 #==============================================================================
 if __name__ == "__main__":

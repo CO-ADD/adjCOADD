@@ -373,7 +373,7 @@ def split_DR(strDR):
         elif '<' in strDR:
             sval = strDR[1:]
             prefix = '<'
-        elif 'nf' in strDR:
+        elif 'nf' in strDR or '-' == strDR :
             sval = 0
             prefix = 'x'
         else:
