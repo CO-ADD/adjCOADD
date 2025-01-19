@@ -91,7 +91,7 @@ def main(prgArgs,djDir):
     elif prgArgs.table in 'TestWell':
         qry = TestWell.objects.all()
         nEntries = qry.count()
-        qry = TestWell.objects.all().iterator(chunk_size=100)
+        qry = TestWell.objects.all().iterator(chunk_size=1000)
     elif prgArgs.table in 'Summary_CmpBatch':
         qry = Summary_CmpBatch.objects.all()
         nEntries = qry.count()
