@@ -81,7 +81,7 @@ def main(prgArgs,djDir):
     if prgArgs.table in 'AssayData_MIC':
         qry = AssayData_MIC.objects.all()
         nEntries = qry.count()
-        qry = AssayData_MIC.objects.all().iterator(chunk_size=1000)
+        qry = AssayData_MIC.objects.all().iterator(chunk_size=100)
 
     logger.info(f" [{prgArgs.table}] : {nEntries}")
     # ----------------------------------------------------------------------------------
