@@ -71,6 +71,8 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
     from dscreen.models import AssayData_CC50,AssayData_HC50,AssayData_MIC
+    from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Inhib, Summary_CmpBatch_Doseresp
+    from dplate.models import TestWell
 
     OutNumbers = {'Processed':0, 'Empty':0, 'Failed':0, 'New':0, 'Uploaded':0,}
     nEntries = 0
@@ -78,10 +80,30 @@ def main(prgArgs,djDir):
     if prgArgs.table in 'AssayData_HC50':
         qry = AssayData_HC50.objects.all()
         nEntries = qry.count()
-    if prgArgs.table in 'AssayData_MIC':
+    elif prgArgs.table in 'AssayData_CC50':
+        qry = AssayData_CC50.objects.all()
+        nEntries = qry.count()
+        qry = AssayData_CC50.objects.all().iterator(chunk_size=100)
+    elif prgArgs.table in 'AssayData_MIC':
         qry = AssayData_MIC.objects.all()
         nEntries = qry.count()
         qry = AssayData_MIC.objects.all().iterator(chunk_size=100)
+    elif prgArgs.table in 'TestWell':
+        qry = TestWell.objects.all()
+        nEntries = qry.count()
+        qry = TestWell.objects.all().iterator(chunk_size=100)
+    elif prgArgs.table in 'Summary_CmpBatch':
+        qry = Summary_CmpBatch.objects.all()
+        nEntries = qry.count()
+        qry = Summary_CmpBatch.objects.all().iterator(chunk_size=100)
+    elif prgArgs.table in 'Summary_CmpBatch_Inhib':
+        qry = Summary_CmpBatch_Inhib.objects.all()
+        nEntries = qry.count()
+        qry = Summary_CmpBatch_Inhib.objects.all().iterator(chunk_size=100)
+    elif prgArgs.table in 'Summary_CmpBatch_Doseresp':
+        qry = Summary_CmpBatch_Doseresp.objects.all()
+        nEntries = qry.count()
+        qry = Summary_CmpBatch_Doseresp.objects.all().iterator(chunk_size=100)
 
     logger.info(f" [{prgArgs.table}] : {nEntries}")
     # ----------------------------------------------------------------------------------
