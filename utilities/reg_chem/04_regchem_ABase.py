@@ -114,7 +114,7 @@ def main(prgArgs,djDir):
             if djCmp is None:
                 NewEntry = True
                 djCmp = ABase_Compound()
-                djCmp.compound_id = ABase_Compound.new_ABase_Compound_ID(row['objdid'])
+                djCmp.compound_id = row['objdid']
                 OutNumbers['New'] += 1
             
             if row['objsmolfile']:

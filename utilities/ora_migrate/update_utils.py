@@ -9,7 +9,7 @@ def convert_castdb_compoundid_from_dj(djID):
     if djID is not None:
         djID = djID.strip()
         if 'MCC' in djID:
-            djID = djID.replace('MCC','MCC_').replace("_",":")
+            djID = djID.replace("_",":")
         else:
             try:
                 oraID = Convert_CompoundID.objects.get(compound_id = oraID).ora_compound_id
@@ -27,7 +27,7 @@ def convert_castdb_compoundid_from_ora(oraID):
     if oraID is not None:
         oraID = oraID.strip()
         if 'MCC_' in oraID:
-            djID = oraID.replace('MCC_','MCC').replace(":","_")
+            djID = oraID.replace(":","_")
         else:
             try:
                 djID = Convert_CompoundID.objects.get(ora_compound_id = oraID).compound_id

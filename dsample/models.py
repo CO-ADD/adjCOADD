@@ -522,9 +522,9 @@ class ABase_Compound(AuditModel):
             models.Index(name="abcmp_sid_idx", fields=['structure_id']),
         ]
 
-    @classmethod
-    def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
-        return(OldABaseID.replace('MCC_','MCC'))
+    # @classmethod
+    # def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
+    #     return(OldABaseID.replace('MCC_','MCC'))
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):
