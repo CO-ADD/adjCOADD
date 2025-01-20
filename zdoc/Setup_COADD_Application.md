@@ -10,7 +10,7 @@
 
 - (base) django> conda update -n base -c defaults conda
 
-- (base) django> conda create -n dj42py311 django django-rdkit <br>
+- (base) django> conda create -n dj42py311 django=4.2 django-rdkit python=3.11<br>
    creates base enviroment with django 4.2.2, python 3.11.3
 
 - (base) django> conda activate <b>dj42py311</b>
@@ -21,12 +21,13 @@
       rdkit -c rdkit<br>
       gunicorn<br>
       postgresql<br>
+      configargparse tqdm<br>
 
    [win] django-filter django-pandas psycopg2 requests djangorestframework django-dbbackup <br>
    [win] openpyxl ipython CairoSVG<br>
    [win] rdkit -c rdkit  <br>
     conda install libpython m2w64-toolchain <br>
-   [win for import data] cx_oracle mysql-connector-python scipy [for zLib]<br>
+   [win for import data] oracledb mysql-connector-python scipy [for zLib]<br>
 
 - (dj42py311) django> <b>pip</b> install ..<br>
    django-model-utils django-sequences django-formtools<br>
