@@ -96,7 +96,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                 djSum.set_cmpbatch_id(CmpBatchLst)
                 djSum.sum_assay_id = SumAssayID
                 NewEntry = True
-                OutNumbers['New Entry'] += 1
+                OutNumbers['New'] += 1
         elif SumType == 'Structure':
             djStructure = Chem_Structure.get(StructureID)
             djSum = Summary_Structure_Inhib.get(djStructure,SumAssayID,verbose=0)
@@ -105,7 +105,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                 djSum.structure_id = Chem_Structure.get(StructureID)
                 djSum.sum_assay_id = SumAssayID
                 NewEntry = True
-                OutNumbers['New Entry'] += 1
+                OutNumbers['New'] += 1
 
         djSum.act_types = row[ ('act_type','get_strList')]
         djSum.n_actives = row[ ('act_type','get_nAct')]
@@ -173,7 +173,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
             if upload:
                 if NewEntry or overwrite:
                     #djSum.chk_migration = 0
-                    OutNumbers['Upload Entries'] += 1
+                    OutNumbers['Uploaded'] += 1
                     djSum.save(user=appuser)
 
     return(CmpDict,OutDict,OutNumbers)   
@@ -181,7 +181,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
 # --------------------------------------------------------------------------------------
 def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0,'Empty Entries':0}
+    OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
     OutDict = []
 
     NCmpBatches = len(CmpBatchLst)
@@ -222,19 +222,19 @@ def sum_cmpbatch_sc(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
                 djSumCmpd.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
                 djSumCmpd.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
         else:
-            OutNumbers['Empty Entries'] += 1
+            OutNumbers['Empty'] += 1
 
         # Sum_Cmpd ---------------------------------------------------------------
         if upload:
             djSumCmpd.save(user=appuser)
     else:
-        OutNumbers['Empty Entries'] += 1
+        OutNumbers['Empty'] += 1
     return(OutNumbers,OutDict)
 
 # --------------------------------------------------------------------------------------
 def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0,'Empty Entries':0}
+    OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
     OutDict = []
 
     #NCmpBatches = len(CmpBatchLst)
@@ -278,7 +278,7 @@ def sum_structure_sc(StructureID,upload=False,overwrite=False, appuser='J.Zuegg'
             djSumStr.sc_assayid_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_assayids']
             djSumStr.sc_actives_lst[Summary_CmpBatch.ASSAY_CLASSES[_a]] = _cmpdict[f'{_a}_n_actives']
     else:
-        OutNumbers['Empty Entries'] += 1
+        OutNumbers['Empty'] += 1
     # Sum_Cmpd ---------------------------------------------------------------
     if upload:
         djSumStr.save(user=appuser)
@@ -404,7 +404,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
             if upload:
                 if NewEntry or overwrite:
                     #djSum.chk_migration = 0
-                    OutNumbers['Upload Entries'] += 1
+                    OutNumbers['Uploaded'] += 1
                     djSum.save(user=appuser)
 
     return(CmpDict,OutDict)   
@@ -412,7 +412,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
 # --------------------------------------------------------------------------------------
 def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg'):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0, 'Empty Entries':0}
+    OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
     OutDict = []
 
     NCmpBatches = len(CmpBatchLst)
@@ -508,16 +508,16 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
             djSumCmpd.save(user=appuser)
         
         if EmptyEntry:
-            OutNumbers['Empty Entries'] += 1
+            OutNumbers['Empty'] += 1
 
     else:
-        OutNumbers['Empty Entries'] += 1
+        OutNumbers['Empty'] += 1
     return(OutNumbers,OutDict)
 
 # --------------------------------------------------------------------------------------
 def sum_structure_dr(StructureID,upload=False,overwrite=False, appuser='J.Zuegg',AssayData=['MIC','CC50','HC50']):
 # --------------------------------------------------------------------------------------
-    OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+    OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
     OutDict = []
 
     # CmpBatchs = COMPOUND_SEP.join(CmpBatchLst)
