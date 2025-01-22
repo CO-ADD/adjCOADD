@@ -93,6 +93,7 @@ class Plate(AuditModel):
     ROW_LABELS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
                  'Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF']
     MAP_POSITIONS = {'wellID':0,'pos2D':1,'pos1D':2}
+    WELL_POS = MAP_POSITIONS['wellID']
 
     Choice_Dictionary = {
         'plate_type':'Plate_Type',
@@ -108,6 +109,7 @@ class Plate(AuditModel):
     n_wells =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "nWells")
 
     wells = {}
+    well_check = {}
 
     #------------------------------------------------
     class Meta:
@@ -131,12 +133,14 @@ class Plate(AuditModel):
     def get(cls,PlateID,WellData=True,verbose=0):
         try:
             retInstance = cls.objects.get(plate_id=PlateID)
-            if WellData:
-                retInstance.n_wells = retInstance.get_wells()
         except:
             if verbose:
                 logger.warning(f"[Plate Not Found] {PlateID} ")
             retInstance = None
+
+        if retInstance and WellData:
+            retInstance.n_wells = retInstance.get_wells()
+
         return(retInstance)
 
     #------------------------------------------------
@@ -169,37 +173,72 @@ class Plate(AuditModel):
         _plate = cls()
         _plate.set_platesize(PlateSize)
         _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
-        _plate.create_wells()
+        _plate.init_wells()
         return(_plate)
     
     #------------------------------------------------
     def get_wells(self) -> int:
-        pass
+        self.init_wells()
 
     #------------------------------------------------
     def save_wells(self) :
-        pass
+        if self.wells:
+            for w in self.wells:
+                if self.wells[w] is not None:
+                    self.wells[w].save()
+        
+
+    #--------------------------------------------------------------
+    def init_wells(self, WellModel=None,reset=False) -> int:
+        if not self.wells or reset:
+
+            # Well Check Arrays
+            self.well_check = {}
+            for key in self.MAP_POSITIONS:
+                self.well_check[key] = []
+
+            # Create Dict of Wells and Well_Check
+            for n in range(1,self.n_wells+1):
+                m = self.map_well(n,check=False)
+                if WellModel:
+                    self.wells[m[self.WELL_POS]] = WellModel()
+                    self.wells[m[self.WELL_POS]].well_id = m[0]
+                    self.wells[m[self.WELL_POS]].plate_id = self.plate_id
+                else:
+                    self.wells[m[self.WELL_POS]] = None
+
+                for key in self.MAP_POSITIONS:
+                    self.well_check[key].append(m[self.MAP_POSITIONS[key]])
+    
+    #------------------------------------------------
+    def fill_wells(self, WellModel=None):
+        if self.wells:
+            for w in self.wells:
+                if self.wells[w] is None:
+                    self.wells[w] = WellModel()
+                    self.wells[w].well_id = w
+                    self.wells[w].plate_id = self.plate_id
 
     #------------------------------------------------
     def map_well(self,loc,check=True):
         if isinstance(loc,int) :
             if check:
-                if not loc in self.validate['pos1D']:
-                    raise Exception(f"Invalid 1D Plate Position: {loc}")
+                if not loc in self.well_check['pos1D']:
+                    raise Exception(f"{self.plate_id} Invalid 1D Plate Position: {loc}")
             row = int(math.ceil(float(loc)/float(self.cols))) - 1
             col = loc - (row * self.cols) - 1
         elif isinstance(loc,tuple):
             if check:
-                if not loc in self.validate['pos2D']:
-                    raise Exception(f"Invalid 2D Plate Position: {loc}")
+                if not loc in self.well_check['pos2D']:
+                    raise Exception(f"{self.plate_id} Invalid 2D Plate Position: {loc}")
             row = loc[0] - 1
             col = loc[1] - 1
         elif isinstance(loc,str) :
             res = re.findall('([A-Za-z]+|\d+)',loc)
             loc = f"{res[0]}{int(res[1]):02d}"
             if check:
-                if not loc in self.validate['wellID']:
-                    raise Exception(f"Invalid Well ID: {loc}")
+                if not loc in self.well_check['wellID']:
+                    raise Exception(f"{self.plate_id} Invalid Well ID: {loc}")
             row = self.ROW_LABELS.index(loc[0])
             col = int(loc[1:]) - 1
         else:
@@ -209,17 +248,20 @@ class Plate(AuditModel):
         id = f"{self.ROW_LABELS[row]:s}{(col+1):02d}"
         return(id,(row+1,col+1),pos)
 
+    #------------------------------------------------
     def well_pos(self,loc):
         m = self.map_wellmap(loc)
-        return(m[3])
+        return(m[self.MAP_POSITIONS['pos1D']])
 
+    #------------------------------------------------
     def well_rowcol(self,loc):
         m = self.map_well(loc)
-        return(m[1])
+        return(m[self.MAP_POSITIONS['pos2D']])
 
+    #------------------------------------------------
     def well_id(self,loc):
         m = self.map_well(loc)
-        return(m[0])
+        return(m[self.MAP_POSITIONS['wellID']])
 
 # class Well(AuditModel):
 #     """
@@ -370,7 +412,31 @@ class TestPlate(Plate):
             models.Index(name="testplate_nnn_idx",fields=['n_reads', 'n_sample', 'n_layout', 'n_inhibition', 'n_doseresponse','n_synergies']),
         #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
-        
+
+    #--------------------------------------------------------------
+    def get_wells(self) -> int:
+        self.init_wells()
+
+        qryTW = TestWell.objects.filter(plate_id=self)
+        lWells = qryTW.count()
+        for w in qryTW:
+            m = self.map_well(w.well_id)
+            self.wells[m[0]] = w
+        # print(f" [TestPlate] {self.plate_id} {nWells}")
+        return(lWells)
+
+    #------------------------------------------------
+    @classmethod
+    def create(cls,PlateID,PlateSize,PlateType,WellData=True):
+        _plate = cls()
+        _plate.set_platesize(PlateSize)
+        _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
+        if WellData:
+            _plate.init_wells(WellModel=TestWell)
+        else:
+            _plate.init_wells(WellModel=None)
+        return(_plate)
+
 #=================================================================================================
 class TestWell(Sample_Base):
     """

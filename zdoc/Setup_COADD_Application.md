@@ -31,11 +31,10 @@
 
 - (dj42py311) django> <b>pip</b> install ..<br>
    django-model-utils django-sequences django-formtools<br>
+   django-dbbackup django-crontab django-pgtrigger<br>
    django-auth-ldap <br>
    djangorestframework-simplejwt<br>
    clamd<br>
-   django-dbbackup<br>
-   django-crontab <br>
 
    [win] django-model-utils django-sequences django-formtools
    [win] djangorestframework-simplejwt
