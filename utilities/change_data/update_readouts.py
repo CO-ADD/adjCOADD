@@ -81,6 +81,8 @@ def main(prgArgs,djDir):
                             OutNumbers['New'] += 1
                             djTP.wells[w].readouts[0] = _new_readout
                             #print(f" [{djTP.plate_id} {w}] : {djTP.wells[w].readouts[0]} {toSave}")
+                    elif len(djTP.wells[w].readout_types) == len(djTP.wells[w].readouts):
+                        OutNumbers['Empty'] += 1
                     else:
                         OutNumbers['Failed'] += 1
                         logger.warning(f"[{djTP.plate_id} {w}] {djTP.wells[w].readout_types} <-!=-> {djTP.wells[w].readouts}")
