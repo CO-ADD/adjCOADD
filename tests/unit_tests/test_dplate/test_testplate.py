@@ -49,9 +49,23 @@ def main(prgArgs,djDir):
 
     tp = TestPlate.get('TP00360-04C', WellData=True, verbose=1)
     
-    for w in tp.wells:
-        print(f"{tp.wells[w]} {tp.wells[w].inhibition}")
+    nWellData = tp.get_welldata()
+    # for w in tp.wells:
+    #     print(f"{tp.wells[w]} {tp.wells[w].inhibition}")
+    print(tp.well_data[tp.well_data['is_poscontrol']])
 
+    print("----------------------------")
+    print(tp.poscontrol_stats)
+    print(tp.negcontrol_stats),
+    print(tp.sample_stats)
+    print(tp.zfactor)
+
+    tp.calc_inhibition(verbose=1)
+    print("----------------------------")
+    print(tp.poscontrol_stats)
+    print(tp.negcontrol_stats),
+    print(tp.sample_stats)
+    print(tp.zfactor)
 
 #==============================================================================
 if __name__ == "__main__":
@@ -76,7 +90,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
 
-    prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("--django",default='Local',required=True, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
     prgArgs = prgParser.parse_args()
@@ -84,6 +98,7 @@ if __name__ == "__main__":
     # Django -------------------------------------------------------------
     djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
         print("-------------------------------------------------------------------")
 

@@ -131,7 +131,7 @@ class AuditModel(models.Model):
     CONFIRMED =  2
 
     OWNER           = "orgdb" # Defaut username
-    
+    AUDIT_FIELDS = ['acreated_at','aupdated_at','adeleted_at','acreated','aupdated','adeleted']    
 
     # VALID_STATUS 0: Valid (New or Update) to save, -1: Invalid unable to save, 1: Valid no update required 
 
@@ -204,43 +204,109 @@ class AuditModel(models.Model):
 
 
     #-------------------------------------------------------------------
-    def init_fields(self, default_Char="", default_Integer=0, default_Decimal=0.0):
+    def init_field(self, Field, Reset=False, 
+                   default_Char="", default_Integer=0, default_Decimal=0.0):
+    #
+    # Inititalises empty fields
+    #   1) by default settings in field definition
+    #   2) or if no default, by given default Char, Integer, Decimal 
+    #
+    #   sets CharField    to 'default' or "" (empty) 
+    #   sets IntegerField to 'default' or 0 or 
+    #   sets DecimalField to 'default' or 0.0 or 
+    #
+
+        _Defaults = {
+            "IntegerField":default_Integer,
+            "DecimalField":default_Decimal,
+            "CharField":default_Char,
+        }
+
+        if isinstance(Field,str):
+            _field = self._meta.get_field(Field)
+        else:
+            _field = Field
+
+        _defValue = None
+        _fieldType = _field.get_internal_type()
+        if _fieldType in _Defaults:
+            if hasattr(self,_field.name):
+                if getattr(self,_field.name) is None or Reset:
+                    _fieldDict = _field.deconstruct()[3]
+                    if 'default' in _fieldDict:
+                        _defValue = _fieldDict['default']
+                    else:
+                        _defValue = _Defaults[_fieldType]
+                    setattr(self,_field.name,_defValue)
+
+        # if fType == "IntegerField":
+        #     if hasattr(self,_field.name):
+        #         if getattr(self,_field.name) is None or Reset:
+        #             fDict = _field.deconstruct()[3]
+        #             if 'default' in fDict:
+        #                 defValue = fDict['default']
+        #             else:
+        #                 defValue = default_Integer
+        #             setattr(self,_field.name,defValue)
+        # if fType == "DecimalField":
+        #     if hasattr(self,_field.name):
+        #         if getattr(self,_field.name) is None or Reset:
+        #             fDict = _field.deconstruct()[3]
+        #             if 'default' in fDict:
+        #                 defValue = fDict['default']
+        #             else:
+        #                 defValue = default_Decimal
+        #             setattr(self,_field.name,defValue)
+        # elif fType == "CharField":
+        #     if hasattr(self,_field.name):
+        #         if getattr(self,_field.name) is None or Reset:
+        #             fDict = _field.deconstruct()[3]
+        #             if 'default' in fDict:
+        #                 defValue = fDict['default']
+        #             else:
+        #                 defValue = default_Char
+        #             setattr(self,_field.name,defValue)
+        return(_defValue)
+
+    #-------------------------------------------------------------------
+    def init_fields(self, Reset=False, 
+                    default_Char="", default_Integer=0, default_Decimal=0.0):
     #
     # Sets 'None' fields in the instance according to Django guidelines 
-    #   sets CharField    to "" (empty) or 'default' 
-    #   sets IntegerField to 0 or 'default'
-    #   sets DecimalField to 0.0 or 'default'
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
-            fType = field.get_internal_type()
-            if fType == "IntegerField":
-                if hasattr(self,field.name):
-                    if getattr(self,field.name) is None:
-                        defValue = default_Integer
-                        fDict = field.deconstruct()[3]
-                        if 'default' in fDict:
-                            defValue = fDict['default']
-                        setattr(self,field.name,defValue)
-                        clFields[field.name]=defValue
-            if fType == "DecimalField":
-                if hasattr(self,field.name):
-                    if getattr(self,field.name) is None:
-                        defValue = default_Decimal
-                        fDict = field.deconstruct()[3]
-                        if 'default' in fDict:
-                            defValue = fDict['default']
-                        setattr(self,field.name,defValue)
-                        clFields[field.name]=defValue
-            elif fType == "CharField":
-                if hasattr(self,field.name):
-                    if getattr(self,field.name) is None:
-                        defValue = default_Char
-                        fDict = field.deconstruct()[3]
-                        if 'default' in fDict:
-                            defValue = fDict['default']
-                        setattr(self,field.name,defValue)
-                        clFields[field.name]=defValue
+            _defval = self.init_field(self, field, Reset=Reset,
+                                    default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
+            clFields[field.name]=_defval
+            # fType = field.get_internal_type()
+            # if fType == "IntegerField":
+            #     if hasattr(self,field.name):
+            #         if getattr(self,field.name) is None:
+            #             defValue = default_Integer
+            #             fDict = field.deconstruct()[3]
+            #             if 'default' in fDict:
+            #                 defValue = fDict['default']
+            #             setattr(self,field.name,defValue)
+            #             clFields[field.name]=defValue
+            # if fType == "DecimalField":
+            #     if hasattr(self,field.name):
+            #         if getattr(self,field.name) is None:
+            #             defValue = default_Decimal
+            #             fDict = field.deconstruct()[3]
+            #             if 'default' in fDict:
+            #                 defValue = fDict['default']
+            #             setattr(self,field.name,defValue)
+            #             clFields[field.name]=defValue
+            # elif fType == "CharField":
+            #     if hasattr(self,field.name):
+            #         if getattr(self,field.name) is None:
+            #             defValue = default_Char
+            #             fDict = field.deconstruct()[3]
+            #             if 'default' in fDict:
+            #                 defValue = fDict['default']
+            #             setattr(self,field.name,defValue)
+            #             clFields[field.name]=defValue
         return(clFields)
 
     #------------------------------------------------
