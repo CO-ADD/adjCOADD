@@ -368,10 +368,10 @@ class TestPlate(Plate):
     test_operator = models.CharField(max_length=100, blank=True, verbose_name = "Operator")
     
     n_reads = models.SmallIntegerField(default=-1,verbose_name = "#Reads")
-    n_sample = models.SmallIntegerField(default=-1, verbose_name = "#Samples")
-    n_layout = models.SmallIntegerField(default=-1, verbose_name = "#Layouts")
-    n_inhibition = models.SmallIntegerField(default=-1, verbose_name = "#Inhibition")
-    n_doseresponse = models.SmallIntegerField(default=-1, verbose_name = "#Doseresponse")
+    n_samples = models.SmallIntegerField(default=-1, verbose_name = "#Samples")
+    n_layout = models.SmallIntegerField(default=-1, verbose_name = "Layout")
+    n_inhibitions = models.SmallIntegerField(default=-1, verbose_name = "#Inhibition")
+    n_doseresponses = models.SmallIntegerField(default=-1, verbose_name = "#Doseresponse")
     n_synergies = models.SmallIntegerField(default=-1, verbose_name = "#Synergies")
     process_status = models.SmallIntegerField(default=-1, verbose_name = "Process Status")
 
@@ -391,7 +391,7 @@ class TestPlate(Plate):
     edge_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),
                             size=2, null=True, blank=True, verbose_name = "Edge")
     
-    analysis_parameter = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
+    analysis = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
     zfactor = models.DecimalField(max_digits=12, decimal_places=3)
     plate_qc = models.DecimalField(max_digits=12, decimal_places=3)
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
@@ -415,15 +415,15 @@ class TestPlate(Plate):
             models.Index(name="testplate_proc_idx",fields=['process_status']),
             models.Index(name="testplate_qc_idx",fields=['plate_qc']),
             models.Index(name="testplate_pq_idx",fields=['plate_quality']),
-            models.Index(name="testplate_nnn_idx",fields=['n_reads', 'n_sample', 'n_layout', 'n_inhibition', 'n_doseresponse','n_synergies']),
+            models.Index(name="testplate_nnn_idx",fields=['n_reads', 'n_samples', 'n_layout', 'n_inhibitions', 'n_doseresponses','n_synergies']),
         #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
 
     #--------------------------------------------------------------
     def __repr__(self):
         _str  = f" [Testplate] {self.plate_id} Size:{self.n_wells} "
-        _str += f"[R:{self.n_reads} S:{self.n_sample} L:{self.n_layout}"
-        _str += f"I:{self.n_inhibition} DR:{self.n_doseresponse} SYN:{self.n_synergies}]"
+        _str += f"[R:{self.n_reads} S:{self.n_samples} L:{self.n_layout}"
+        _str += f"I:{self.n_inhibitions} DR:{self.n_doseresponses} SYN:{self.n_synergies}]"
         if hasattr(self,'wells'):
             _wellid = list(self.wells.keys())
             _str += f" Wells:{len(self.wells)} [{_wellid[0]}..{_wellid[-1]}]"
@@ -571,14 +571,16 @@ class TestPlate(Plate):
             self.sample_stats     = [round(smp_median,4), round(smp_mad,4),round(smp_mean,4), round(smp_std,4)]
             self.edge_stats       = [np.median(edgeReadOuts), np.median(nonedgeReadOuts)]
 
+            if verbose > 0:
+                logger.info(f" {self.plate_id} Neg:{self.negcontrol_stats[0]} Pos:{self.poscontrol_stats[0]} Smp:{self.sample_stats[0]}")
+                
             self.zfactor = round(1 - 3 * (pos_mad + neg_mad)/abs(pos_median - neg_median), 3)
             self.analysis_parameter = "Std pyAnalysis (dj)"
 
             _n_inhibition = 0
             for w in self.wells:
-                self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats)
+                self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats,verbose=verbose)
                 _n_inhibition += 1
-                #print(f"{w} {self.wells[w].inhibition} {self.wells[w].zscore} {self.wells[w].mscore} {self.wells[w].readouts[0]} {self.wells[w].act_type}")
 
             self.n_inhibition = _n_inhibition
             self.plate_qc = self.zfactor
@@ -761,13 +763,17 @@ class TestWell(Sample_Base):
         self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
 
     #------------------------------------------------  
-    def calc_inhibition(self,POS_Stats,NEG_Stats):
+    def calc_inhibition(self,POS_Stats,NEG_Stats, verbose=0):
         _readout = float(self.readouts[0])
-        _inhibition = 100 * (1- (_readout - NEG_Stats[TestPlate.STATS_MEDIAN]) / (POS_Stats[TestPlate.STATS_MEDIAN] - NEG_Stats[TestPlate.STATS_MEDIAN]))
+        _inhibition = 100 * (1 - (_readout - NEG_Stats[TestPlate.STATS_MEDIAN]) / (POS_Stats[TestPlate.STATS_MEDIAN] - NEG_Stats[TestPlate.STATS_MEDIAN]))
         # _zscore = (_readout - smp_mean) / smp_std
         # _mscore = 0.6745 * (_readout - smp_median) / smp_mad
         _zscore = (_readout - POS_Stats[TestPlate.STATS_MEAN]) / POS_Stats[TestPlate.STATS_STD]
         _mscore = 0.6745 * (_readout - POS_Stats[TestPlate.STATS_MEDIAN]) / POS_Stats[TestPlate.STATS_MAD]
+
+        if verbose > 0:
+            logger.info(f" {self.well_id} R:{_readout} N:{NEG_Stats} P:{POS_Stats} I:{_inhibition}")
+
         self.inhibition = round(_inhibition,2)
         self.zscore = round(_zscore,3)
         self.mscore = round(_mscore,3)
