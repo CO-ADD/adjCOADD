@@ -202,6 +202,17 @@ class AuditModel(models.Model):
                 #     retValid[key] = ", ".join(e.message_dict[key])
         return(retValid)
 
+    #-------------------------------------------------------------------
+    def validate_model(self, verbose = 0):
+        validDict = []
+
+        self.init_fields()
+        _valDict = self.validate_fields()
+        if _valDict:
+            validDict.append(_valDict)
+            if verbose > 0:
+                logger.warning(f" [{self._meta.model_name}] {validDict} ")
+        return(validDict)
 
     #-------------------------------------------------------------------
     def init_field(self, Field, Reset=False, 
@@ -276,7 +287,7 @@ class AuditModel(models.Model):
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
-            _defval = self.init_field(self, field, Reset=Reset,
+            _defval = self.init_field(field, Reset=Reset,
                                     default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
             clFields[field.name]=_defval
             # fType = field.get_internal_type()

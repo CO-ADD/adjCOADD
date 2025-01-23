@@ -108,13 +108,9 @@ class Plate(AuditModel):
         db_column="plate_type", related_name="%(class)s_platetype")
     labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
         db_column="labware_id", related_name="%(class)s_labwareid")
-    rows =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "Rows") 
-    cols =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "Cols") 
+    n_rows =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "nRows") 
+    n_cols =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "nCols") 
     n_wells =  models.PositiveSmallIntegerField(default=0, blank=True, verbose_name = "nWells")
-
-    wells = {}
-    well_check = {}
-    well_data = None
 
     #------------------------------------------------
     class Meta:
@@ -158,24 +154,27 @@ class Plate(AuditModel):
         # -- Set Plate Size
         if isinstance(PlateSize,int):
             if PlateSize in self.PLATE_SIZES:
-                self.rows = self.PLATE_SIZES[PlateSize][0]
-                self.cols = self.PLATE_SIZES[PlateSize][1]
+                self.n_rows = self.PLATE_SIZES[PlateSize][0]
+                self.n_cols = self.PLATE_SIZES[PlateSize][1]
                 self.n_wells = PlateSize
             else:
                 raise KeyError(f"Undefined PlateSize {PlateSize}")
         elif isinstance(PlateSize,tuple):
-            self.rows = PlateSize[0]
-            self.cols = PlateSize[1]
+            self.n_rows = PlateSize[0]
+            self.n_cols = PlateSize[1]
+            self.n_wells = self.n_rows * self.n_cols
         else:
-            self.rows = 0
-            self.cols = 0
+            self.n_rows = 0
+            self.n_cols = 0
+            self.n_wells = 0
             raise KeyError(f"Undefined PlateSize parameters {PlateSize}")
-        self.plate_size = self.rows * self.cols
 
     #------------------------------------------------
     @classmethod
-    def create(cls,PlateID,PlateSize,PlateType,WellData=True):
+    def new(cls,PlateID,PlateSize,PlateType,WellData=True):
+        #print(f"[Plate.new] {PlateID} {PlateSize} {PlateType}")
         _plate = cls()
+        _plate.plate_id = PlateID.upper()
         _plate.set_platesize(PlateSize)
         _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
         _plate.init_wells()
@@ -189,8 +188,8 @@ class Plate(AuditModel):
             if check:
                 if not loc in self.well_check['pos1D']:
                     raise Exception(f"{self.plate_id} Invalid 1D Plate Position: {loc}")
-            row = int(math.ceil(float(loc)/float(self.cols))) - 1
-            col = loc - (row * self.cols) - 1
+            row = int(math.ceil(float(loc)/float(self.n_cols))) - 1
+            col = loc - (row * self.n_cols) - 1
         elif isinstance(loc,tuple):
             if check:
                 if not loc in self.well_check['pos2D']:
@@ -208,7 +207,7 @@ class Plate(AuditModel):
         else:
             raise  Exception(f"Unrecognized Plate Location Type: {loc}")
 
-        pos = self.cols * row + col +1
+        pos = self.n_cols * row + col +1
         id = f"{self.ROW_LABELS[row]:s}{(col+1):02d}"
         return(id,(row+1,col+1),pos)
 
@@ -246,27 +245,32 @@ class Plate(AuditModel):
     #------------------------------------------------
     def is_edgewell(self,well_id):
         (r,c) = self.well_rowcol(well_id)
-        return(r == 1 or r == self.rows or c == 1 or c == self.rows)
+        return(r == 1 or r == self.n_rows or c == 1 or c == self.n_cols)
 
     #--------------------------------------------------------------
-    def init_wells(self, WellModel=None,reset=False) -> int:
+    def init_wells(self, WellModel=None, PlateInstance = None, reset=False) -> int:
     #
     # Initalise with Empty Wells, or with New WellModels() 
     #
-        if not self.wells or reset:
+        #print(f"[Plate.init_wells] {WellModel} {reset}")
+        if not hasattr(self,'wells') or reset:
 
             # Well Check Arrays
             self.well_check = {}
+            self.wells = {}
+
             for key in self.MAP_POSITIONS:
                 self.well_check[key] = []
 
             # Create Dict of Wells and Well_Check
             for n in range(1,self.n_wells+1):
                 m = self.map_well(n,check=False)
-                if WellModel:
+                if WellModel is not None and PlateInstance is not None:
+                    #print(f"[Plate.init_wells] {m} with {WellModel} for {PlateInstance}")
+
                     self.wells[m[self.WELL_POS]] = WellModel()
                     self.wells[m[self.WELL_POS]].well_id = m[0]
-                    self.wells[m[self.WELL_POS]].plate_id = self.plate_id
+                    self.wells[m[self.WELL_POS]].plate_id = PlateInstance
                 else:
                     self.wells[m[self.WELL_POS]] = None
 
@@ -378,10 +382,15 @@ class TestPlate(Plate):
     # Control_Count = models.PositiveIntegerField()
     # Layout_Dilution = models.CharField(max_length=25)
 
-    poscontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
-    negcontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
-    sample_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=4)
-    edge_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),size=2)
+    poscontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),
+                                  size=4, null=True, blank=True, verbose_name = "PosCtrl")
+    negcontrol_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),
+                                  size=4, null=True, blank=True, verbose_name = "NegCtrl")
+    sample_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),
+                              size=4, null=True, blank=True, verbose_name = "Sample")
+    edge_stats = ArrayField(models.DecimalField(max_digits=12, decimal_places=4),
+                            size=2, null=True, blank=True, verbose_name = "Edge")
+    
     analysis_parameter = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
     zfactor = models.DecimalField(max_digits=12, decimal_places=3)
     plate_qc = models.DecimalField(max_digits=12, decimal_places=3)
@@ -410,6 +419,74 @@ class TestPlate(Plate):
         #    models.Index(name="testplate_test_idx",fields=['test_media', 'test_strain', 'test_dye', 'test_addition']),
         ]
 
+    #--------------------------------------------------------------
+    def __repr__(self):
+        _str  = f" [Testplate] {self.plate_id} Size:{self.n_wells} "
+        _str += f"[R:{self.n_reads} S:{self.n_sample} L:{self.n_layout}"
+        _str += f"I:{self.n_inhibition} DR:{self.n_doseresponse} SYN:{self.n_synergies}]"
+        if hasattr(self,'wells'):
+            _wellid = list(self.wells.keys())
+            _str += f" Wells:{len(self.wells)} [{_wellid[0]}..{_wellid[-1]}]"
+           
+        return(_str)
+    
+    #------------------------------------------------
+    @classmethod
+    def new(cls,PlateID,PlateSize,WellData=True):
+        #print(f"[TestPlate.new] {PlateID} {PlateSize} ")
+        if cls.exists(PlateID.upper()):
+            logger.warning(f"[Testplate] New {PlateID.upper()} alreday exists ")
+            return(None)
+        else:
+            _plate = cls()
+            _plate.plate_id = PlateID.upper()
+            _plate.set_platesize(PlateSize)
+            _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],'Test')
+
+            if WellData:
+                #print(f"[TestPlate.new] WithModel {TestWell}")
+                _plate.init_wells(WellModel=TestWell,PlateInstance=_plate)
+            else:
+                _plate.init_wells(WellModel=None, PlateInstance=None)
+            return(_plate)
+
+    #------------------------------------------------
+    def validate_model(self, WellData=True, verbose = 0):
+        retDict = []
+        PlateDict = super(TestPlate, self).validate_model(verbose=verbose)
+        if len(PlateDict) > 0:
+            retDict.append(PlateDict)
+
+        if self.wells and WellData:
+            for w in self.wells:
+                if self.wells[w] is not None:
+                    WellDict = super(TestWell,self.wells[w]).validate_model(verbose=verbose)
+                    if len(WellDict) > 0:
+                        retDict.append(WellDict)
+        
+        return(retDict)
+
+    #------------------------------------------------
+    def init_model(self, WellData=True, verbose = 0):
+        retDict = []
+        super(TestPlate, self).init_fields()
+
+        if self.wells and WellData:
+            for w in self.wells:
+                if self.wells[w] is not None:
+                    super(TestWell,self.wells[w]).init_fields()
+        
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if self.plate_id:
+            super(TestPlate, self).save(*args, **kwargs)
+            if self.wells:
+                for w in self.wells:
+                    if self.wells[w] is not None:
+                        print(f"[TestPlate.save] {self.wells[w]}")        
+                        super(TestWell,self.wells[w]).save(*args, **kwargs)
+        else:
+            logger.warning(f"[TestPlate] SAVE has no PlateID ") 
     #--------------------------------------------------------------
     def get_wells(self) -> int:
         # Create empty Wells
@@ -443,7 +520,6 @@ class TestPlate(Plate):
                         if Selection == 'is_edge':
                             if self.is_edgewell(w) and not getattr(self.wells[w],'is_negcontrol'):
                                 _readouts.append(float(self.wells[w].readouts[0]))
-                                print(w)
                         elif Selection == 'is_nonedge':
                             if not self.is_edgewell(w) and not getattr(self.wells[w],'is_negcontrol'):
                                 _readouts.append(float(self.wells[w].readouts[0]))
@@ -463,17 +539,6 @@ class TestPlate(Plate):
     # Model specific implemnetation    
         pass
 
-    #------------------------------------------------
-    @classmethod
-    def create(cls,PlateID,PlateSize,PlateType,WellData=True) :
-        _plate = cls()
-        _plate.set_platesize(PlateSize)
-        _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
-        if WellData:
-            _plate.init_wells(WellModel=TestWell)
-        else:
-            _plate.init_wells(WellModel=None)
-        return(_plate)
 
     #--------------------------------------------------------------
     def apply_layout(self) -> int:
@@ -481,66 +546,68 @@ class TestPlate(Plate):
 
     #--------------------------------------------------------------
     def calc_inhibition(self,verbose=0) -> int:
+        if self.n_reads > 0:
+            posReadOuts = self.get_readouts('is_poscontrol')
+            pos_median = np.median(posReadOuts)
+            pos_mad = np.median(np.absolute(posReadOuts - pos_median))
+            pos_mean   = np.mean(posReadOuts)
+            pos_std   = np.std(posReadOuts)
 
-        posReadOuts = self.get_readouts('is_poscontrol')
-        pos_median = np.median(posReadOuts)
-        pos_mad = np.median(np.absolute(posReadOuts - pos_median))
-        pos_mean   = np.mean(posReadOuts)
-        pos_std   = np.std(posReadOuts)
+            negReadOuts = self.get_readouts('is_negcontrol')
+            neg_median = np.median(negReadOuts)
+            neg_mad = np.median(np.absolute(negReadOuts - neg_median))
 
-        negReadOuts = self.get_readouts('is_negcontrol')
-        neg_median = np.median(negReadOuts)
-        neg_mad = np.median(np.absolute(negReadOuts - neg_median))
+            smpReadOuts = self.get_readouts('is_sample')
+            smp_median = np.median(smpReadOuts)
+            smp_mad    = np.median(np.absolute(smpReadOuts - smp_median))
+            smp_mean   = np.mean(smpReadOuts)
+            smp_std   = np.std(smpReadOuts)
 
-        smpReadOuts = self.get_readouts('is_sample')
-        smp_median = np.median(smpReadOuts)
-        smp_mad    = np.median(np.absolute(smpReadOuts - smp_median))
-        smp_mean   = np.mean(smpReadOuts)
-        smp_std   = np.std(smpReadOuts)
+            edgeReadOuts = self.get_readouts('is_edge')
+            nonedgeReadOuts = self.get_readouts('is_nonedge')
 
-        edgeReadOuts = self.get_readouts('is_edge')
-        nonedgeReadOuts = self.get_readouts('is_nonedge')
+            self.poscontrol_stats = [round(pos_median,4), round(pos_mad,4),round(pos_mean,4), round(pos_std,4)]
+            self.negcontrol_stats = [round(neg_median,4), round(neg_mad,4),round(np.mean(negReadOuts),4), round(np.std(negReadOuts),4)]
+            self.sample_stats     = [round(smp_median,4), round(smp_mad,4),round(smp_mean,4), round(smp_std,4)]
+            self.edge_stats       = [np.median(edgeReadOuts), np.median(nonedgeReadOuts)]
 
-        self.poscontrol_stats = [round(pos_median,4), round(pos_mad,4),round(pos_mean,4), round(pos_std,4)]
-        self.negcontrol_stats = [round(neg_median,4), round(neg_mad,4),round(np.mean(negReadOuts),4), round(np.std(negReadOuts),4)]
-        self.sample_stats     = [round(smp_median,4), round(smp_mad,4),round(smp_mean,4), round(smp_std,4)]
-        self.edge_stats       = [np.median(edgeReadOuts), np.median(nonedgeReadOuts)]
+            self.zfactor = round(1 - 3 * (pos_mad + neg_mad)/abs(pos_median - neg_median), 3)
+            self.analysis_parameter = "Std pyAnalysis (dj)"
 
-        self.zfactor = round(1 - 3 * (pos_mad + neg_mad)/abs(pos_median - neg_median), 3)
-        self.analysis_parameter = "Std pyAnalysis (dj)"
+            _n_inhibition = 0
+            for w in self.wells:
+                self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats)
+                _n_inhibition += 1
+                #print(f"{w} {self.wells[w].inhibition} {self.wells[w].zscore} {self.wells[w].mscore} {self.wells[w].readouts[0]} {self.wells[w].act_type}")
 
-        _n_inhibition = 0
-        for w in self.wells:
-            self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats)
-            _n_inhibition += 1
-            #print(f"{w} {self.wells[w].inhibition} {self.wells[w].zscore} {self.wells[w].mscore} {self.wells[w].readouts[0]} {self.wells[w].act_type}")
+            self.n_inhibition = _n_inhibition
+            self.plate_qc = self.zfactor
+            if self.test_issues:
+                if 'Invalid' in self.test_issues:
+                    self.plate_qc = -4
+                if 'Dispensing' in self.test_issues:
+                    self.plate_qc = -5
+                if 'GrowthVariation' in self.test_issues:
+                    self.plate_qc = -6
+                if 'NoGrowth' in self.test_issues:
+                    self.plate_qc = -6
+                if 'Contamination' in self.test_issues:
+                    self.plate_qc = -7
 
-        self.n_inhibition = _n_inhibition
-        self.plate_qc = self.zfactor
-        if self.test_issues:
-            if 'Invalid' in self.test_issues:
-                self.plate_qc = -4
-            if 'Dispensing' in self.test_issues:
-                self.plate_qc = -5
-            if 'GrowthVariation' in self.test_issues:
-                self.plate_qc = -6
-            if 'NoGrowth' in self.test_issues:
-                self.plate_qc = -6
-            if 'Contamination' in self.test_issues:
-                self.plate_qc = -7
+            if self.zfactor >= self.ZFACTOR_CUTOFF:
+                self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Valid')) 
+            else:
+                self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Rejected'))
+                self.test_issues = addto_StrList(self.test_issues,'FailedQC')
 
-        if self.zfactor >= self.ZFACTOR_CUTOFF:
-            self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Valid')) 
+            if verbose > 0:
+                _outstr  = f" {self.plate_quality} Zf: {self.zfactor:.3f} "
+                _outstr += f"[POS: {self.poscontrol_stats[self.STATS_MEDIAN]:.3f} {self.poscontrol_stats[self.STATS_MAD]:.3f}] "
+                _outstr += f"[NEG: {self.negcontrol_stats[self.STATS_MEDIAN]:.3f} {self.negcontrol_stats[self.STATS_MAD]:.3f}] "
+                _outstr += f"[Edge: {self.edge_stats[0]:.3f} {self.edge_stats[1]:.3f}] "
+                logger.info(f"[Calc Inhibition] {self.plate_id} - {_outstr} ")
         else:
-            self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Rejected'))
-            self.test_issues = addto_StrList(self.test_issues,'FailedQC')
-
-        if verbose > 0:
-            _outstr  = f" {self.plate_quality} Zf: {self.zfactor:.3f} "
-            _outstr += f"[POS: {self.poscontrol_stats[self.STATS_MEDIAN]:.3f} {self.poscontrol_stats[self.STATS_MAD]:.3f}] "
-            _outstr += f"[NEG: {self.negcontrol_stats[self.STATS_MEDIAN]:.3f} {self.negcontrol_stats[self.STATS_MAD]:.3f}] "
-            _outstr += f"[Edge: {self.edge_stats[0]:.3f} {self.edge_stats[1]:.3f}] "
-            logger.info(f"[Calc Inhibition] {self.plate_id} - {_outstr} ")
+            logger.warning(f"[Calc Inhibition] Plates has NO ReadOuts ")
 
     # -------------------------------------------------------
     def plot_heatmap(self,Property,outDir,propLegend=True):
@@ -608,9 +675,10 @@ class TestWell(Sample_Base):
     is_skip = models.BooleanField(default=False, verbose_name = "is Skip")
     is_valid = models.BooleanField(default=False, verbose_name = "is Valid")
     
-    readouts = ArrayField(models.DecimalField(max_digits=12, decimal_places=5),size=4)
+    readouts = ArrayField(models.DecimalField(max_digits=12, decimal_places=5),
+                          size=4, verbose_name = "Readouts", null=True, blank=True)
     readout_types = ArrayField(models.CharField(max_length=15, blank=True),
-                               size=4, verbose_name = "Readout types", null=True, blank=True)
+                          size=4, verbose_name = "Readout types", null=True, blank=True)
     
     inhibition = models.DecimalField(max_digits=9, decimal_places=3)
     zscore = models.DecimalField(max_digits=9, decimal_places=3)
@@ -670,8 +738,11 @@ class TestWell(Sample_Base):
         return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
 
     # #------------------------------------------------
-    # def save(self, *args, **kwargs):
-    #         super(TestWell, self).save(*args, **kwargs) 
+    def save(self, *args, **kwargs):
+            if self.plate_id and self.well_id:
+                super(TestWell, self).save(*args, **kwargs)
+            else:
+                logger.warning(f"[TestWell] SAVE has not PlateID and/or WellID") 
 
     #------------------------------------------------
     # 

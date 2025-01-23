@@ -1,3 +1,4 @@
+
 import os, sys
 import datetime
 import csv
@@ -16,7 +17,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Upload_ActStrDR"
+logName = "Update_Readouts"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -26,7 +27,6 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
     level=logLevel)
 logger.info("-------------------------------------------")
-#-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -47,41 +47,51 @@ def main(prgArgs,djDir):
 
     from dplate.models import TestPlate
 
-    existingPlateID = 'TP00360-04C'
-    print("")
-    print("------------------------------------------------")
-    print(f"-- Test Existing TestPlate {existingPlateID}")
-    tp = TestPlate.get(existingPlateID, WellData=True, verbose=1)
-    print(repr(tp))
-    # tp.calc_inhibition(verbose=1)
-    # print(f"[PosCtrl] {tp.poscontrol_stats}")
-    # print(f"[NegCtrl] {tp.negcontrol_stats}"),
-    # print(f"[Sample ] {tp.sample_stats}")
-    # print(f"[Edge   ] {tp.edge_stats}")
-    # print(f"[ZFactor] {tp.zfactor}")
-    
-    # for w in tp.wells:
-    #     print(f"{tp.wells[w]} {tp.wells[w].inhibition}")
+    TableDict = {"OD450-650" : ['OD450','OD650'],
+                 "OD570-600" : ['OD570','OD600'],
+                }
+    if prgArgs.table in TableDict:
+        if int(prgArgs.test)>0:
+            qryTP = TestPlate.objects.filter(readout_type = prgArgs.table)[:int(prgArgs.test)]
+            nEntries = qryTP.count()
+        else:
+            cntTP = TestPlate.objects.filter(readout_type = prgArgs.table)
+            nEntries = cntTP.count()    
+            qryTP = TestPlate.objects.filter(readout_type = prgArgs.table).iterator(chunk_size=1000)
+        logger.info(f" [{prgArgs.table}] Entries: {nEntries}")
 
-    #--------------------------------------------------------
-    newPlateID = 'xx_test'
-    print("")
-    print("------------------------------------------------")
-    print(f"-- Test TestPlate.new {newPlateID}")
-    np = TestPlate.new('xx_test',96)
-    if np is None:
-        np = TestPlate.get(newPlateID.upper(), WellData=True, verbose=1)
-    
-    if np:
-        print(repr(np))
-        # for w in np.wells:
-        #     print(f"{np.wells[w]} {np.wells[w].inhibition}")
+        OutNumbers = {'Processed':0, 'Empty':0, 'Failed':0, 'New':0, 'Uploaded':0,}
+        for djTP in tqdm(qryTP, total= nEntries, desc=f'[{prgArgs.table}]'):
+            djTP.get_wells()
+            for w in djTP.wells:
+                OutNumbers['Processed'] += 1
+                toSave = False
 
-        #print(f" (get_welldata) {np.get_welldata()}")
-        np.init_model()
-        np.calc_inhibition(verbose=1)
-        if prgArgs.upload:
-            np.save()
+                if hasattr(djTP.wells[w],'readout_types') and hasattr(djTP.wells[w],'readouts'):
+                    if len(djTP.wells[w].readout_types) == 3 and len(djTP.wells[w].readouts) == 3:
+                        _old_readout_types = djTP.wells[w].readout_types
+                        _idx1 = _old_readout_types.index(TableDict[prgArgs.table][0])
+                        _idx2 = _old_readout_types.index(TableDict[prgArgs.table][1])
+                        _new_readout = djTP.wells[w].readouts[_idx1] - djTP.wells[w].readouts[_idx2]
+                        #print(f" [{djTP.plate_id} {w}] : {djTP.wells[w].readouts[0]} {_new_readout}")
+
+                        if _new_readout != djTP.wells[w].readouts[0]:
+                            toSave = True
+                            OutNumbers['New'] += 1
+                            djTP.wells[w].readouts[0] = _new_readout
+                            #print(f" [{djTP.plate_id} {w}] : {djTP.wells[w].readouts[0]} {toSave}")
+                    else:
+                        OutNumbers['Failed'] += 1
+                        logger.warning(f"[{djTP.plate_id} {w}] {djTP.wells[w].readout_types} <-!=-> {djTP.wells[w].readouts}")
+                else:
+                    OutNumbers['Empty'] += 1
+                
+                if prgArgs.upload and toSave:
+                    djTP.wells[w].save()
+            #print(repr(djTP))
+
+        logger.info(f"{prgArgs.table} {OutNumbers}")
+
 
 #==============================================================================
 if __name__ == "__main__":
