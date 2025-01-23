@@ -50,6 +50,7 @@ def main(prgArgs,djDir):
     TableDict = {"OD450-650" : ['OD450','OD650'],
                  "OD570-600" : ['OD570','OD600'],
                 }
+    
     if prgArgs.table in TableDict:
         if int(prgArgs.test)>0:
             qryTP = TestPlate.objects.filter(readout_type = prgArgs.table)[:int(prgArgs.test)]
