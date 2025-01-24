@@ -30,9 +30,6 @@ logging.basicConfig(
 
 def main(prgArgs,djDir):
 
-    # sys.path.append(djDir)
-    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
-
     django.setup()
 
     from dplate.models import Labware, TestPlate, TestWell
@@ -41,6 +38,15 @@ def main(prgArgs,djDir):
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
+
+    logger.info(f"Python         : {sys.version.split('|')[0]}")
+    logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
+    #logger.info(f"LogFile        : {logFileName}")
+
+    logger.info(f"Django         : {django.__version__}")
+    logger.info(f"Django Folder  : {djDir['djPrj']}")
+    logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
+
 
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'Sum_Structure_DR':

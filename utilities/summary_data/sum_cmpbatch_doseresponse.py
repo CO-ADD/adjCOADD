@@ -30,8 +30,6 @@ logging.basicConfig(
 
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
     from dplate.models import Labware, TestPlate, TestWell
@@ -46,7 +44,7 @@ def main(prgArgs,djDir):
     #logger.info(f"LogFile        : {logFileName}")
 
     logger.info(f"Django         : {django.__version__}")
-    logger.info(f"Django Folder  : {djDir}")
+    logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
     
    # AssayData MIC -------------------------------------------------------------
@@ -133,22 +131,12 @@ if __name__ == "__main__":
 
     prgArgs = prgParser.parse_args()
 
-    # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
+    from zDjango.djUtils import init_django_dir
 
+    # Django -------------------------------------------------------------
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
 
 #==============================================================================
