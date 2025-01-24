@@ -131,22 +131,12 @@ if __name__ == "__main__":
 
     prgArgs = prgParser.parse_args()
 
-    # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
+    from zDjango.djUtils import init_django_dir
 
+    # Django -------------------------------------------------------------
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
 
 #==============================================================================
