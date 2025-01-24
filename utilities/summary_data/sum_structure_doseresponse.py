@@ -32,7 +32,7 @@ def main(prgArgs,djDir):
 
     # sys.path.append(djDir)
     # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
-    
+
     django.setup()
 
     from dplate.models import Labware, TestPlate, TestWell
@@ -48,7 +48,8 @@ def main(prgArgs,djDir):
         OutName = f"[{prgArgs.table}]"
         OutDict = []
         OutFile = f"{prgArgs.table}_{logTime:%Y%m%d_%H%M%S}.xlsx"
-        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+        OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
+
 
         # Get all Distinct CmpBatch_Lst
         if prgArgs.structureid:
