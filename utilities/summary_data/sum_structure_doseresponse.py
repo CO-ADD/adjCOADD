@@ -30,8 +30,9 @@ logging.basicConfig(
 
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
+    # sys.path.append(djDir)
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
+    
     django.setup()
 
     from dplate.models import Labware, TestPlate, TestWell
