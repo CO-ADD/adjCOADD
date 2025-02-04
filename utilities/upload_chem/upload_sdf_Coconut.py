@@ -42,7 +42,7 @@ def main(prgArgs,djDir):
     from apputil.models import ApplicationUser, Dictionary
     from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
     from dchem.models import Chem_Structure, Chem_Salt
-    from dchem.utils.mol_std import if_SimpleName
+    from adjCOADD.applib.mol.mol_std import if_SimpleName
     from dsample.models import Library, Library_Compound
 
     

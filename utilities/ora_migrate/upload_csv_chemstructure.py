@@ -26,7 +26,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import ApplicationUser
     from dchem.models import Chem_Structure
-    from dchem.utils.mol_std import get_atomclass_list,list_metalatoms
+    from adjCOADD.applib.mol.mol_std import get_atomclass_list,list_metalatoms
 
     # Logger ----------------------------------------------------------------
     import logging

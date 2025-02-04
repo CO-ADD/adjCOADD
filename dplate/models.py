@@ -213,7 +213,7 @@ class Plate(AuditModel):
 
     #------------------------------------------------
     def well_pos(self,loc):
-        m = self.map_wellmap(loc)
+        m = self.map_well(loc)
         return(m[self.MAP_POSITIONS['pos1D']])
 
     #------------------------------------------------
@@ -355,7 +355,7 @@ class TestPlate(Plate):
     
     test_dye = models.CharField(max_length=25, blank=True, verbose_name = "Dye")
     test_additive = models.CharField(max_length=25, blank=True, verbose_name = "Additive")
-    test_volume = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "Volume (uL)")
+    test_volume = models.DecimalField(max_digits=10, decimal_places=2, default = -1, verbose_name = "Volume (uL)")
     test_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
     test_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")
 
@@ -392,8 +392,8 @@ class TestPlate(Plate):
                             size=2, null=True, blank=True, verbose_name = "Edge")
     
     analysis = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
-    zfactor = models.DecimalField(max_digits=12, decimal_places=3)
-    plate_qc = models.DecimalField(max_digits=12, decimal_places=3)
+    zfactor = models.DecimalField(max_digits=12, decimal_places=3, default=-1,)
+    plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1)
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
     
@@ -454,15 +454,16 @@ class TestPlate(Plate):
     def validate_model(self, WellData=True, verbose = 0):
         retDict = []
         PlateDict = super(TestPlate, self).validate_model(verbose=verbose)
-        if len(PlateDict) > 0:
-            retDict.append(PlateDict)
+        for wd in PlateDict:
+            retDict.append(wd)
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
                     WellDict = super(TestWell,self.wells[w]).validate_model(verbose=verbose)
-                    if len(WellDict) > 0:
-                        retDict.append(WellDict)
+                    for wd in WellDict:
+                        if 'plate_id' not in wd :
+                            retDict.append(wd)
         
         return(retDict)
 
@@ -479,11 +480,17 @@ class TestPlate(Plate):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         if self.plate_id:
+            verbose = kwargs.get('verbose',0)
+            kwargs.pop("verbose",None)
+
             super(TestPlate, self).save(*args, **kwargs)
+            if verbose > 0:
+                logger.info(f"[TestPlate.save] {self.plate_id}")
             if self.wells:
                 for w in self.wells:
                     if self.wells[w] is not None:
-                        print(f"[TestPlate.save] {self.wells[w]}")        
+                        if verbose > 1:
+                            logger.info(f"[TestWell.save] {self.wells[w]}")        
                         super(TestWell,self.wells[w]).save(*args, **kwargs)
         else:
             logger.warning(f"[TestPlate] SAVE has no PlateID ") 
@@ -538,7 +545,6 @@ class TestPlate(Plate):
     # Get fielddata from the Wells, by Selection
     # Model specific implemnetation    
         pass
-
 
     #--------------------------------------------------------------
     def apply_layout(self) -> int:
@@ -682,9 +688,9 @@ class TestWell(Sample_Base):
     readout_types = ArrayField(models.CharField(max_length=15, blank=True),
                           size=4, verbose_name = "Readout types", null=True, blank=True)
     
-    inhibition = models.DecimalField(max_digits=9, decimal_places=3)
-    zscore = models.DecimalField(max_digits=9, decimal_places=3)
-    mscore = models.DecimalField(max_digits=9, decimal_places=3)
+    inhibition = models.DecimalField(max_digits=9, decimal_places=3,default=-1)
+    zscore = models.DecimalField(max_digits=9, decimal_places=3,default=-1)
+    mscore = models.DecimalField(max_digits=9, decimal_places=3,default=-1)
 
     # I - Inactive, 
     # P - Partial (Inhib>=50 & MScore >= 2.5), 

@@ -200,6 +200,9 @@ class AuditModel(models.Model):
                 #         retValid[key] = ", ".join(e.message_dict[key])
                 # else:
                 #     retValid[key] = ", ".join(e.message_dict[key])
+        except AttributeError as e:
+            logger.error(f"AttributeError: {e}")
+
         return(retValid)
 
     #-------------------------------------------------------------------
@@ -209,9 +212,10 @@ class AuditModel(models.Model):
         self.init_fields()
         _valDict = self.validate_fields()
         if _valDict:
-            validDict.append(_valDict)
-            if verbose > 0:
-                logger.warning(f" [{self._meta.model_name}] {validDict} ")
+            if self._meta.pk.name not in _valDict:
+                validDict.append(_valDict)
+                if verbose > 0:
+                    logger.warning(f" [{self._meta.model_name}] {validDict} ")
         return(validDict)
 
     #-------------------------------------------------------------------
@@ -378,6 +382,7 @@ class AuditModel(models.Model):
         #
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
+
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
@@ -396,7 +401,12 @@ class AuditModel(models.Model):
         kwargs.pop("clean",None)
         if modelClean:
             self.full_clean()
-                 
+
+        verbose = kwargs.get("verbose",0)
+        kwargs.pop("verbose",None)
+        if verbose > 0:
+            logger.info(f"[Saving] {self}")
+
         super(AuditModel,self).save(*args, **kwargs)
 
     #------------------------------------------------

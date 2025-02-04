@@ -51,7 +51,7 @@ def main(prgArgs,djDir):
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
-    from dchem.utils.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
+    from adjCOADD.applib.mol.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
