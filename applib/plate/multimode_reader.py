@@ -25,10 +25,10 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
         if len(xDF)>0:
             djTP = None
             if xDF[0][0] == "Application: Tecan i-control":
-                djTP = read_iControl_xlsheet(xSheet,xDF,prefix=prefix)
+                djTP,_status = read_iControl_xlsheet(xSheet,xDF,prefix=prefix)
                 
-            # elif xDF[0][0] == "Experiment" or xDF[0][1] == "Experiment":
-            #     xPl = readPlate_Gen5_sheet(xSheet,xDF,prefix=prefix)
+            elif xDF[0][0] == "Experiment" or xDF[0][1] == "Experiment":
+                xPl = read_Gen5_sheet(xSheet,xDF,prefix=prefix)
             
             # elif "CLARIOstar" in xDF[0][3]:
             #     xPl = readPlate_BMG_sheet(xSheet,xDF,prefix=prefix)
@@ -37,7 +37,7 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
                 djTP.input_file = os.path.split(xlFile)[1]
 
                 lstPl.append(djTP)
-                logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells} {djTP.readout_type}")
+                logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type} [{_status}]")
             else:
                 logger.info(f"[{xSheet}] - Unknown PlateReader Format")
     return(lstPl)
@@ -49,6 +49,7 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
 def read_iControl_xlsheet(xSheet,xDF,prefix=None):
     max_PlateID_len = 25
 
+    # Read XLS Sheet into plateDict ------------------------------------------------
     plateDict = {}
     plateDict['READS'] = []
 
@@ -122,25 +123,10 @@ def read_iControl_xlsheet(xSheet,xDF,prefix=None):
         if len(plateDict['PLATE_ID']) > max_PlateID_len:
             logger.warning(f"WARNING : PlateID - length: {len(plateDict['PLATE_ID'])} / {max_PlateID_len}")
  
-        # Setup TestPlate ---------------------------------------------------------
-        djPlate = TestPlate.get(plateDict['PLATE_ID'],WellData=True,verbose=1)
-        if djPlate is None:
-            logger.info(f" New Plate {plateDict['PLATE_ID']}")
-            djPlate = TestPlate.new(plateDict['PLATE_ID'],nWells,WellData=True)
 
-
-        djPlate.reader = 'Tecan M1000 (iControl)'
-        djPlate.experiment = ""
-        djPlate.protocol = ""
-        djPlate.test_operator = plateDict['USER'].split('\\')[-1]
-        djPlate.test_date = plateDict['TEST_DATE']
-        djPlate.n_reads = nWells
-
-        # Fix ReadOut_Types ---------------------------------------------------------
-        djPlate.n_readouts = len(plateDict['READS'])
-
+        # Set ReadOut_Types ---------------------------------------------------------    
         if "Absorbance" in plateDict['MODE'] :
-            if djPlate.n_readouts > 1 :
+            if len(plateDict['READS']) > 1 :
                 _mWaveLengths = plateDict['MEASUREMENT WAVELENGTH'].split(";")
 
                 # Absorbance Resazurin OD (570-600)
@@ -172,6 +158,22 @@ def read_iControl_xlsheet(xSheet,xDF,prefix=None):
                 _r = 'F'
             _readout_types = [f"{_r}{plateDict['EXCITATION WAVELENGTH']}/{plateDict['EMISSION WAVELENGTH']}"] 
 
+        # Setup TestPlate ---------------------------------------------------------
+        _status = "Exists"
+        djPlate = TestPlate.get(plateDict['PLATE_ID'],WellData=True,verbose=0)
+        if djPlate is None:
+            #logger.info(f" New Plate {plateDict['PLATE_ID']}")
+            djPlate = TestPlate.new(plateDict['PLATE_ID'],nWells,WellData=True)
+            _status = "New"
+
+        djPlate.reader = 'Tecan M1000 (iControl)'
+        djPlate.experiment = ""
+        djPlate.protocol = ""
+        djPlate.test_operator = plateDict['USER'].split('\\')[-1]
+        djPlate.test_date = plateDict['TEST_DATE']
+        djPlate.n_reads = nWells
+
+        djPlate.n_readouts = len(_readout_types)
         djPlate.readout_type = _readout_types[0]
 
         # Well ReadOuts ---------------------------------------------------------
@@ -192,16 +194,90 @@ def read_iControl_xlsheet(xSheet,xDF,prefix=None):
                 djPlate.wells[_wellid].readouts = _readouts
                 djPlate.wells[_wellid].readout_types = _readout_types
 
-        return(djPlate)
+        return(djPlate,_status)
     else:
-        return(None)
+        return(None,False)
+
+#--------------------------------------------------------------------------------------------------------------
+# Plate - Read TestPlate Readout - Tecan iControl XML
+#--------------------------------------------------------------------------------------------------------------
+def read_iControl_xml(xmlFile,fileBarcode=None): 
+
+    if os.path.exists(xmlFile):
+        tree = ElementTree.parse(xmlFile)
+        root = tree.getroot()
+        Barcode = None
+        for plate in root.iter('Plate'):
+            for p in plate.iter():
+                if p.tag == 'BC':
+                    Barcode = p.text.strip()
+                    if Barcode == '':
+                        Barcode = None
+                    #print(f"[{Barcode}]")
+        for script in root.iter('Script'):
+            for s in script.iter():
+                if s.tag == '{tecan.at.schema.documents}ReadingLabel':
+                    ReadLabel = s.attrib['name']
+                if Barcode is None:
+                    if s.tag == '{tecan.at.schema.documents}Barcode':
+                        if 'name' in s.attrib: 
+                            Barcode = s.attrib['name']
+                #print(s.tag)
+        for section in root.iter('Section'):
+            #print(section.attrib['Time_End'])
+            TestDate = pd.to_datetime(section.attrib['Time_End'])
+            #print(datetime.fromisoformat(section.attrib['Time_End']))
+            for parameter in section.iter('Parameter'):
+                #print(parameter.attrib)
+                if parameter.attrib['Name'] == 'Mode':
+                    Mode = parameter.attrib['Value']
+                    #print()
+                if parameter.attrib['Name'] == 'Wavelength':
+                    Wavelength = parameter.attrib['Value']
+                    WavelengthUnit = parameter.attrib['Unit']
+            rWell = {}
+            for well in section.iter('Well'):
+                #print(well.attrib['Pos'])
+                #print(well[0].text)
+                rWell[well.attrib['Pos']] = well[0].text
+            nWells = len(rWell)
+            PlateSize = f"{nWells}w"
+            if Barcode is None:
+                #print(f"No Barcode -> {fileBarcode}")
+                if fileBarcode:
+                    Barcode = fileBarcode
+                else:
+                    Barcode,_ = os.path.splitext(os.path.split(xmlFile)[1])
+
+        xPl = Plate(Barcode,nWells)
+
+        readMode = ""
+        if Mode == "Absorbance":
+            readMode = "OD"
+        if Wavelength:
+            readMode += Wavelength
+        xPl.PlateData['PLATE_SIZE'] = PlateSize
+        xPl.PlateData['TEST_DATE'] = TestDate
+        xPl.PlateData['READER'] = 'Tecan M1000 (iControl)'
+        xPl.PlateData['NREADS'] = 1
+        xPl.PlateData['PROTOCOL'] = 'OD600-Corning'
+        xPl.PlateData['READOUT_ID'] = readMode
+        xPl.PlateData['INPUTFILE'] = os.path.split(xmlFile)[1]
+        xPl.PlateData['HAS_READOUT'] = 1
+
+        for w in rWell:
+            xPl.set_WellProperty(w,'READOUT',rWell[w])
+        print(f" [XML-iControl] {Barcode} {PlateSize} [{xmlFile}]")
+        return(xPl)
+    return(None)
     
 #--------------------------------------------------------------------------------------------------------------
 # Plate - Read TestPlate Readout - BioTek HTC XLSX.SHEET
 #--------------------------------------------------------------------------------------------------------------
-def readPlate_Gen5_sheet(xSheet,xDF,prefix=None,):
+def read_Gen5_sheet(xSheet,xDF,prefix=None,):
     max_PlateID_len = 25
 
+    # Read XLS Sheet into plateDict ------------------------------------------------
     plateDict = {}
     plateDict['READOUTS'] = []
 
@@ -242,7 +318,7 @@ def readPlate_Gen5_sheet(xSheet,xDF,prefix=None,):
                     _row.append(xDF[c+2][r])
                 _matrix.append(_row)
             else:
-                plateDict['READOUTS'].append(_matrix)
+                plateDict['READS'].append(_matrix)
                 _flMatrix = 0
                 _matrix = []
 
@@ -265,20 +341,17 @@ def readPlate_Gen5_sheet(xSheet,xDF,prefix=None,):
 
     # In case matrix goes to last line
     if _flMatrix > 0 :
-        plateDict['READOUTS'].append(_matrix)
+        plateDict['READS'].append(_matrix)
         _flMatrix = 0
         _matrix = []
 
-    if len(plateDict['READOUTS']) > 0:
-
-        plateDict['MODE'] = "Absorbance"
-
-        # Fix Barcode 
+    if len(plateDict['READS']) > 0:
+        # Fix Barcode  ---------------------------------------------------------
         if 'BARCODE' in plateDict:
             if plateDict['BARCODE'] == 'Unable to read':
                 plateDict.pop('BARCODE')
         
-        # Set PlateID
+        # Set PlateID ---------------------------------------------------------
         if 'BARCODE' in plateDict:
             plateDict['PLATE_ID'] =  plateDict['BARCODE']
         else:   
@@ -287,68 +360,75 @@ def readPlate_Gen5_sheet(xSheet,xDF,prefix=None,):
             else:
                 plateDict['PLATE_ID'] = xSheet
         if len(plateDict['PLATE_ID']) > max_PlateID_len:
-            print(f"WARNING : PlateID - length: {len(plateDict['PLATE_ID'])} / {max_PlateID_len}")
-
+            logger.warning(f"WARNING : PlateID - length: {len(plateDict['PLATE_ID'])} / {max_PlateID_len}")
  
-        # Setup TestPlate
-        xPl = Plate(plateDict['PLATE_ID'],nWells,plateType='TestPlate')                                
+        # Set ReadOut_Types ---------------------------------------------------------    
+        plateDict['MODE'] = "Absorbance"
 
-        xPl.PlateData['PLATE_SIZE'] = f'{nWells}w'
-        xPl.PlateData['TEST_DATE'] = plateDict['TEST_DATE']
-        #xPl.PlateData['TEST_OPERATOR'] = plateDict['USER'].split('\\')[-1]
-        xPl.PlateData['READER'] = 'BioTek HTX (Gen5)'
-        xPl.PlateData['EXPERIMENT'] = os.path.split(plateDict['EXPERIMENT FILE PATH'])[1]
-        xPl.PlateData['PROTOCOL']   = os.path.split(plateDict['PROTOCOL FILE PATH'])[1]
-        xPl.PlateData['NREADS'] = len(plateDict['READOUTS'])
-        #xPl.PlateData['PROTOCOL'] = 'OD600-Corning'
-        xPl.PlateData['HAS_READOUT'] = 1
-
-        # print(xPl.PlateData)
-        # print(plateDict)
-        # ReadOuts
-        if xPl.PlateData['NREADS'] > 1:
-
-            # Define calculation of multiple Readouts
-            _aR = 0
-            _bR = 1
-            _calcType = 'Substraction'
-            _mWaveLength = [plateDict['MEASUREMENT 1'],plateDict['MEASUREMENT 2']]
-
-            if "Absorbance" in plateDict['MODE']:
-                # fix OD570-600
-                if "-".join(_mWaveLength) == '600-570':
-                    _aR = 1
-                    _bR = 0
-
-            plateDict['MEASUREMENT'] = f"{_mWaveLength[_aR]}-{_mWaveLength[_bR]}"
-            for r in range(_nrow):
-                for c in range(_ncol):
-                    xPl.set_WellProperty((r+1,c+1),'WELL_ID', xPl.map_WellID((r+1,c+1)))
-                    xPl.set_WellProperty((r+1,c+1),'READOUT',plateDict['READOUTS'][_aR][r][c]-plateDict['READOUTS'][_bR][r][c])
-                    xPl.set_WellProperty((r+1,c+1),'READOUTA',plateDict['READOUTS'][_aR][r][c])
-                    xPl.set_WellProperty((r+1,c+1),'READOUTB',plateDict['READOUTS'][_bR][r][c])
-
-        else:
-            for r in range(_nrow):
-                for c in range(_ncol):
-                    xPl.set_WellProperty((r+1,c+1),'WELL_ID', xPl.map_WellID((r+1,c+1)))
-                    xPl.set_WellProperty((r+1,c+1),'READOUT',plateDict['READOUTS'][0][r][c])
-            plateDict['MEASUREMENT'] = plateDict['MEASUREMENT 1']
-
-        # Fix ReadOut_ID 
         if "Absorbance" in plateDict['MODE'] :
-            plateDict['READOUT_ID'] = f"OD{plateDict['MEASUREMENT']}"
-        # elif plateDict['MODE'] == "Fluorescence Bottom Reading":
-        #     plateDict['READOUT_ID'] = f"Fb{plateDict['EXCITATION WAVELENGTH']}/{plateDict['EMISSION WAVELENGTH']}" 
-        # elif plateDict['MODE'] == "Fluorescence Top Reading":
-        #     plateDict['READOUT_ID'] = f"Ft{plateDict['EXCITATION WAVELENGTH']}/{plateDict['EMISSION WAVELENGTH']}"
-        xPl.PlateData['READOUT_ID'] = plateDict['READOUT_ID']
+            if len(plateDict['READS']) > 1 :
+                _mWaveLengths = plateDict['MEASUREMENT 1'],plateDict['MEASUREMENT 2']
 
-        #print(plateDict['READOUTS'])
-        return(xPl)
+                # Absorbance Resazurin OD (570-600)
+                if '570' in _mWaveLengths and '600' in _mWaveLengths:
+                    _aR = _mWaveLengths.index('570')
+                    _bR = _mWaveLengths.index('600')
+
+                # Absorbance Readout_A - Readout_B
+                else:
+                    _aR = 0
+                    _bR = 1
+
+                # Set _readout_types for Wells  
+                _readout_types = [f"OD{_mWaveLengths[_aR]}-{_mWaveLengths[_bR]}"]
+                for w in _mWaveLengths:
+                    _readout_types.append(f"OD{w}")
+
+            else:
+                # Absorbance OD (Wavelength)
+                _readout_types = [f"OD{plateDict['MEASUREMENT 1']}"]     
+
+
+        # Setup TestPlate ---------------------------------------------------------
+        _status = "Exists"
+        djPlate = TestPlate.get(plateDict['PLATE_ID'],WellData=True,verbose=0)
+        if djPlate is None:
+            #logger.info(f" New Plate {plateDict['PLATE_ID']}")
+            djPlate = TestPlate.new(plateDict['PLATE_ID'],nWells,WellData=True)
+            _status = "New"
+
+        djPlate.reader = 'BioTek HTX (Gen5)'
+        djPlate.experiment = os.path.split(plateDict['EXPERIMENT FILE PATH'])[1]
+        djPlate.protocol = os.path.split(plateDict['PROTOCOL FILE PATH'])[1]
+        #djPlate.test_operator = plateDict['USER'].split('\\')[-1]
+        djPlate.test_date = plateDict['TEST_DATE']
+        djPlate.n_reads = nWells
+
+        djPlate.n_readouts = len(_readout_types)
+        djPlate.readout_type = _readout_types[0]
+
+        # Well ReadOuts ---------------------------------------------------------
+        for r in range(_nrow):
+            for c in range(_ncol):
+                _wellid = djPlate.well_id((r+1,c+1))
+                if djPlate.n_readouts > 1:
+                    _readouts = [plateDict['READS'][_aR][r][c] - plateDict['READS'][_bR][r][c]]
+                    _readouts.append(plateDict['READS'][0][r][c])
+                    _readouts.append(plateDict['READS'][1][r][c])
+                else:
+                    _readouts = [plateDict['READS'][0][r][c]]
+
+                # Convert to DecimalField with 5 decimal points
+                for i in range(len(_readouts)):
+                    _readouts[i] = Decimal(_readouts[i]).quantize(Decimal("1.00000"))
+
+                djPlate.wells[_wellid].readouts = _readouts
+                djPlate.wells[_wellid].readout_types = _readout_types
+
+        return(djPlate,_status)
     else:
-        return(None)
-
+        return(None,False)
+        
 #--------------------------------------------------------------------------------------------------------------
 # Plate - Read TestPlate Readout - BMG CLARIOstar XLSX.SHEET
 #--------------------------------------------------------------------------------------------------------------
@@ -468,3 +548,68 @@ def readPlate_BMG_sheet(xSheet,xDF,prefix=None,):
         return(xPl)
     else:
         return(None)
+
+#--------------------------------------------------------------------------------------------------------------
+# Plate - Read TestPlate Readout - BioTek Epoch 
+#--------------------------------------------------------------------------------------------------------------
+def readPlate_Epoch_txt(pltFile,fileBarcode=None): 
+
+    if os.path.exists(pltFile):
+        with open(pltFile,"r") as file:
+            txtData = list(csv.reader(file, delimiter= '\t'))
+
+        plSize = 0
+        plDate = None
+        plProtocol = None
+
+        # Get Plate Size
+        if len(txtData[1]) > 24:
+            if txtData[1][24] == '24' and txtData[17][0] == 'P':
+                plSize = 384
+        else:
+            if txtData[1][12] == '12' and txtData[9][0] == 'H':
+                plSize = 96
+
+        # Get last Datetime
+        flDate = False
+        for r in txtData:
+            if len(r)>0:
+                if flDate:
+                    plDate = pd.to_datetime(r[0])
+                    #plDate = datetime.strptime(r[0],"%d/%m/%Y %H:%M:%S %p")
+                if r[0] == 'Date':
+                    flDate=True
+
+        # Get last Protocol
+        for r in txtData:
+            if len(r)>2:
+                if 'Protocol' in r[2]:
+                    res = re.findall('([A-Za-z0-9\s]+).prt',r[2])
+                    plProtocol = f"{res[0]}.prt" 
+
+        readMode = "OD" + txtData[0][0]
+        if fileBarcode:
+            Barcode = fileBarcode
+        else:
+            Barcode = os.path.splitext(os.path.split(pltFile)[1])[0]
+
+        if plSize > 0:
+            xPl = Plate(Barcode,plSize)
+            xPl.PlateData['PLATE_SIZE'] = f"{plSize}w"
+            xPl.PlateData['TEST_DATE'] = plDate
+            xPl.PlateData['READER'] = 'Biotek Epoch (Gen5)'
+            xPl.PlateData['NREADS'] = 1
+            xPl.PlateData['PROTOCOL'] = plProtocol
+            xPl.PlateData['READOUT_ID'] = readMode
+            xPl.PlateData['INPUTFILE'] = os.path.split(pltFile)[1]
+            xPl.PlateData['HAS_READOUT'] = 1
+
+            readRow = 1
+            readCol = 0
+            for r in range(1,xPl.rows+1):
+                for c in range(1,xPl.columns+1):
+                    xPl.set_WellProperty((r,c),'READOUT',txtData[readRow+r][readCol+c])
+
+            print(f" [TXT-Epoch] {Barcode} {plSize}w [{pltFile}]")
+            return(xPl)
+    return(None)

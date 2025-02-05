@@ -250,7 +250,7 @@ class Plate(AuditModel):
     #--------------------------------------------------------------
     def init_wells(self, WellModel=None, PlateInstance = None, reset=False) -> int:
     #
-    # Initalise with Empty Wells, or with New WellModels() 
+    # Initalise Wells Dictionary, with Empty or with New WellModels() 
     #
         #print(f"[Plate.init_wells] {WellModel} {reset}")
         if not hasattr(self,'wells') or reset:
@@ -345,7 +345,6 @@ class TestPlate(Plate):
         
     ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
     test_date = models.DateField(null=True, blank=True, verbose_name = "Test Date")
-    test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
     #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
 
     test_orgbatch = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch", on_delete=models.DO_NOTHING,
@@ -353,8 +352,13 @@ class TestPlate(Plate):
     test_cellbatch = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "CellBatch", on_delete=models.DO_NOTHING,
         db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
     
+    # Specific Assay condition - extension of Assay Condition
+    test_media = models.CharField(max_length=50, blank=True, verbose_name = "Media")
     test_dye = models.CharField(max_length=25, blank=True, verbose_name = "Dye")
     test_additive = models.CharField(max_length=25, blank=True, verbose_name = "Additive")
+    subculture_type = models.CharField(max_length=25, blank=True, verbose_name = "Subculture/Seeding")
+    incubation_time = models.CharField(max_length=25, blank=True, verbose_name = "Incubation Time")
+
     test_volume = models.DecimalField(max_digits=10, decimal_places=2, default = -1, verbose_name = "Volume (uL)")
     test_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
     test_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")
@@ -495,9 +499,9 @@ class TestPlate(Plate):
         else:
             logger.warning(f"[TestPlate] SAVE has no PlateID ") 
     #--------------------------------------------------------------
-    def get_wells(self) -> int:
-        # Create empty Wells
-        self.init_wells()
+    def get_wells(self, fill_missing=True) -> int:
+        # Create None Wells
+        self.init_wells(WellModel=None, PlateInstance=None)
 
         # get Wells for that Plate 
         qryTW = TestWell.objects.filter(plate_id=self)
@@ -505,6 +509,16 @@ class TestPlate(Plate):
         for w in qryTW:
             m = self.map_well(w.well_id)
             self.wells[m[0]] = w
+
+        # Fill None Wells with empty TestWell
+        if lWells < len(self.wells) and fill_missing:
+            for w in self.wells:
+                if self.wells[w] is None:
+                    self.wells[w] = TestWell()
+                    self.wells[w].well_id = w
+                    self.wells[w].plate_id = self
+            lWells = len(self.wells)
+        
         return(lWells)
 
     #--------------------------------------------------------------

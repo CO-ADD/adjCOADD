@@ -15,7 +15,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Sum_CmpBatch_DoseResp"
+logName = "UploadTestPlateList"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -27,6 +27,69 @@ logging.basicConfig(
 #    handlers=[logging.StreamHandler()],
     level=logLevel)
 
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+def load_PrepSheet_TestPlateList(db,xlPrepSheet,upload=False):
+    dfTPl = oraCastDB.read_ExcelSheet(xlPrepSheet,"TestPlateList")
+    dfTPl.columns = [c.upper() for c in dfTPl.columns]
+    print(dfTPl)
+
+    sCol = {"ASSAY_ID":"ASSAYTYPE_ID",
+            "RESULT_TYPE":"RESULT_TYPE",
+            "MOTHERPLATE_ID":"MOTHERPLATE_ID",
+            "MOTHERPLATE2_ID":"MOTHERPLATE2_ID",
+            "PLATING":"PLATING",
+            "LABWARE":"LABWARE_ID",
+            "TEST_STRAIN":"TEST_STRAIN",
+            "TEST_MEDIA":"MEDIA_ID",
+            "TEST_DYE":"TEST_DYE",
+            "TEST_ADDITIVE":"TEST_ADDITIVE",
+            "LAYOUT":"LAYOUT_CONTROL",
+            "PROCESSING":"PROCESSING",
+            "ISSUES":"ISSUES",
+            "SYN_COMPOUNDS_AB":"SYN_COMPOUNDS_A",
+            "SYN_COMPOUNDS_POT":"SYN_COMPOUNDS_B"
+        }
+
+
+    if len(dfTPl) > 0:
+        for idx, row in dfTPl.iterrows():      
+            fUpload = False
+            nCnt = oraCastDB.check_PlateID_exists(db,"TestPlate",row['TESTPLATE_ID'])
+            if nCnt == 1:
+                fUpload = True
+            else:
+                fUpload = False
+                logger.error(f"[CastDB] No TestPlate Found [{row['TESTPLATE_ID']}]")
+            if pd.notnull(row['MOTHERPLATE_ID']):
+                m1Cnt = oraCastDB.check_PlateID_exists(db,"MasterPlate",row['MOTHERPLATE_ID'])
+                if m1Cnt == 1:
+                    fUpload = True
+                else:
+                    fUpload = False
+                    logger.error(f"[CastDB] No MotherPlate Found [{row['MOTHERPLATE_ID']}]")
+            if pd.notnull(row['MOTHERPLATE2_ID']):
+                if row['MOTHERPLATE2_ID']:
+                    m2Cnt = oraCastDB.check_PlateID_exists(db,"MasterPlate",row['MOTHERPLATE2_ID'])
+                    if m2Cnt == 1:
+                        fUpload = True
+                    else:
+                        fUpload = False
+                        logger.error(f"[CastDB] No MotherPlate2 Found [dlTPl[p]['MOTHERPLATE_ID']]")
+
+
+            if fUpload and upload:
+                cTable = "TestPlate"
+                sWhere = f" Plate_ID = '{row['TESTPLATE_ID']}' "
+                sDict = set_dictFields(row,sCol)
+                sSql = db.gen_UpdateSQL(cTable,sDict,sWhere,bindvars=True)
+
+                logger.info(f"[CastDB] Updating {row['TESTPLATE_ID']} PlateData ")
+                db.exec(sSql,sDict,commit=True)
+            else:
+                logger.info(f"[CastDB] NO Updating for {row['TESTPLATE_ID']} ")
+
+    iCol = "TestPlate_ID"
 #-----------------------------------------------------------------------------
 
 def main(prgArgs,djDir):
@@ -47,44 +110,11 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
     
    # TestPlate XLSX -------------------------------------------------------------
-    if prgArgs.table == 'TestPlate':
-    
-       if prgArgs.runid and prgArgs.excelfile:
-        new_runid = False
+    if prgArgs.table == 'TestPlateList':
 
-        djRun = Screen_Run.get(prgArgs.runid)
-        if djRun is None:
-            djRun = Screen_Run()
-            djRun.run_id = prgArgs.runid
-            new_runid = True
-        
-        if new_runid and prgArgs.upload:
-            djRun.save()    
 
-        if os.path.isfile(prgArgs.excelfile):
-            logger.info(f"[Reading XLSX: {prgArgs.excelfile} ({prgArgs.runid}) ")
-            lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix)
-            for tp in lstTP:
-                validStatus = True
-                validDict = {}
-                tp.run_id = djRun
 
-                # for wid in tp.wells:
-                #     print(f"{tp.wells[wid]} - {tp.wells[wid].readouts}")
-                
-                tp.init_model()
-                validDict = tp.validate_model(WellData=False, verbose = 0)
-                if validDict:
-                    validStatus = False
-                    validDF = pd.DataFrame(validDict)
-                    for c in validDF.columns:
-                        print(validDF[c].unique())
-                    
-                if prgArgs.upload and validStatus:
-                    for tp in lstTP:
-                        tp.save(verbose=1)
-
-   # #==============================================================================
+#==============================================================================
 if __name__ == "__main__":
 
     print("-------------------------------------------------------------------")
@@ -95,7 +125,7 @@ if __name__ == "__main__":
     # ArgParser -------------------------------------------------------------
     prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [CompoundID]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [TestPlate]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
@@ -107,7 +137,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=True, dest="excelfile", action='store', help="Excel File")
-    prgParser.add_argument("--prefix",default=None,required=False, dest="prefix", action='store', help="Prefix")
+    prgParser.add_argument("--prefix",default=None,required=False, dest="prefix", action='store', help="Prefix to add to PlateID")
 
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)

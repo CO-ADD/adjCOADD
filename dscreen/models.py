@@ -161,7 +161,12 @@ class Assay(AuditModel):
     assay_code = models.CharField(max_length=20, blank=True, verbose_name = "Assay Code")
     test_media = models.CharField(max_length=150, blank=True, verbose_name = "Media")
     test_dye = models.CharField(max_length=150, blank=True, verbose_name = "Dye/Kit")
+    test_enviroment = models.CharField(max_length=150, blank=True, verbose_name = "Enviroment")
+    test_temperature = models.CharField(max_length=150, blank=True, verbose_name = "Temp")
     test_additive = models.CharField(max_length=150, blank=True, verbose_name = "Additive")
+    subculture_type = models.CharField(max_length=25, blank=True, verbose_name = "Subculture/Seeding")
+    incubation_time = models.CharField(max_length=25, blank=True, verbose_name = "Incubation Time")
+    
     organism_id = models.ForeignKey(Organism, null=True, blank=True, verbose_name = "Organism ID", on_delete=models.DO_NOTHING,
         db_column="organism_id", related_name="%(class)s_organism_id")
     cell_id = models.ForeignKey(Cell, null=True, blank=True, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
