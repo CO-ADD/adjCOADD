@@ -196,7 +196,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.data import join_lst
-    from apputil.utils.set_data import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
     from dorganism.utils.utils import reformat_OrgBatchID
 
     from ddrug.models import Drug, MIC_COADD

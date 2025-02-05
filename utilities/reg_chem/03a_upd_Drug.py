@@ -44,7 +44,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID, Library, Library_Compound
     from dchem.models import Chem_Structure, Chem_Salt

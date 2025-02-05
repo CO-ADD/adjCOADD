@@ -41,7 +41,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
+    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run

@@ -40,7 +40,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import ApplicationUser, Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
     from dchem.models import Chem_Structure, Chem_Salt
     from dsample.models import Library, Library_Compound
 

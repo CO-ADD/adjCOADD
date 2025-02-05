@@ -41,7 +41,7 @@ def main(prgArgs,djDir):
     from dsummary.utils.upd_sum_cmpbatch import sum_cmpbatch_sc
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
-    from apputil.utils.set_data import set_dictFields
+    from adjCOADD.applib.data.set_fielddata import set_dictFields
     from dcell.models import Cell
     from dorganism.models import Organism
     from adjcoadd.constants import COMPOUND_SEP

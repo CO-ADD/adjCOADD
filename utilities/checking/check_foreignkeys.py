@@ -73,7 +73,7 @@ def main(prgArgs,djDir):
 
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
     from dsample.models import Project
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 

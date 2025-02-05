@@ -88,7 +88,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
     from dcollab.models import Organisation, Collab_User, Collab_Group
 
     from django_countries import countries

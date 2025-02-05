@@ -94,7 +94,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.set_data import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
     from dscreen.models import Screen_Run
 
     

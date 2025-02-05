@@ -43,7 +43,7 @@ def set_arrayFields(djModel,rowDict, arrDict):
             setattr(djModel,f,_list)
         
 #------------------------------------------------------------------------------------
-def set_dictFields(djModel,rowDict,dictList):
+def set_Fields(djModel,rowDict,dictList):
     for e in dictList:
         if e in rowDict:
             if pd.notnull(rowDict[e]):
@@ -88,15 +88,17 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
 #       save
 
 #------------------------------------------------------------------------------------
-def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],valLog=None):
+def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],fkeyDict={}, valLog=None):
     validStatus = True
 
     if len(FieldList)>0:
-        set_dictFields(djModel,row,FieldList)
+        set_Fields(djModel,row,FieldList)
     if len(ArrayDict)>0:
         set_arrayFields(djModel,row,ArrayDict)     
     if len(DictList)>0:
         set_Dictionaries(djModel,row,DictList)
+    if len(fkeyDict)>0:
+        set_fkeyFields(djModel,row,fkeyDict)
         
     djModel.init_fields()
     validDict = djModel.validate_fields()
