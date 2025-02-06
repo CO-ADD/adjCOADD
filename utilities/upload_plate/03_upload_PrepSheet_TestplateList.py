@@ -50,71 +50,7 @@ def get_PlatePrep_xlsx(xlsFile, sheets=[]):
                 
     return(PlatePrep_Sheets)
 
-
 #-----------------------------------------------------------------------------
-def load_PrepSheet_TestPlateList(db,xlPrepSheet,upload=False):
-    dfTPl = oraCastDB.read_ExcelSheet(xlPrepSheet,"TestPlateList")
-    dfTPl.columns = [c.upper() for c in dfTPl.columns]
-    print(dfTPl)
-
-    sCol = {"ASSAY_ID":"ASSAYTYPE_ID",
-            "RESULT_TYPE":"RESULT_TYPE",
-            "MOTHERPLATE_ID":"MOTHERPLATE_ID",
-            "MOTHERPLATE2_ID":"MOTHERPLATE2_ID",
-            "PLATING":"PLATING",
-            "LABWARE":"LABWARE_ID",
-            "TEST_STRAIN":"TEST_STRAIN",
-            "TEST_MEDIA":"MEDIA_ID",
-            "TEST_DYE":"TEST_DYE",
-            "TEST_ADDITIVE":"TEST_ADDITIVE",
-            "LAYOUT":"LAYOUT_CONTROL",
-            "PROCESSING":"PROCESSING",
-            "ISSUES":"ISSUES",
-            "SYN_COMPOUNDS_AB":"SYN_COMPOUNDS_A",
-            "SYN_COMPOUNDS_POT":"SYN_COMPOUNDS_B"
-        }
-
-
-    if len(dfTPl) > 0:
-        for idx, row in dfTPl.iterrows():      
-            fUpload = False
-            nCnt = oraCastDB.check_PlateID_exists(db,"TestPlate",row['TESTPLATE_ID'])
-            if nCnt == 1:
-                fUpload = True
-            else:
-                fUpload = False
-                logger.error(f"[CastDB] No TestPlate Found [{row['TESTPLATE_ID']}]")
-            if pd.notnull(row['MOTHERPLATE_ID']):
-                m1Cnt = oraCastDB.check_PlateID_exists(db,"MasterPlate",row['MOTHERPLATE_ID'])
-                if m1Cnt == 1:
-                    fUpload = True
-                else:
-                    fUpload = False
-                    logger.error(f"[CastDB] No MotherPlate Found [{row['MOTHERPLATE_ID']}]")
-            if pd.notnull(row['MOTHERPLATE2_ID']):
-                if row['MOTHERPLATE2_ID']:
-                    m2Cnt = oraCastDB.check_PlateID_exists(db,"MasterPlate",row['MOTHERPLATE2_ID'])
-                    if m2Cnt == 1:
-                        fUpload = True
-                    else:
-                        fUpload = False
-                        logger.error(f"[CastDB] No MotherPlate2 Found [dlTPl[p]['MOTHERPLATE_ID']]")
-
-
-            if fUpload and upload:
-                cTable = "TestPlate"
-                sWhere = f" Plate_ID = '{row['TESTPLATE_ID']}' "
-                sDict = set_dictFields(row,sCol)
-                sSql = db.gen_UpdateSQL(cTable,sDict,sWhere,bindvars=True)
-
-                logger.info(f"[CastDB] Updating {row['TESTPLATE_ID']} PlateData ")
-                db.exec(sSql,sDict,commit=True)
-            else:
-                logger.info(f"[CastDB] NO Updating for {row['TESTPLATE_ID']} ")
-
-    iCol = "TestPlate_ID"
-#-----------------------------------------------------------------------------
-
 def main(prgArgs,djDir):
 
     django.setup()
@@ -135,10 +71,6 @@ def main(prgArgs,djDir):
     logger.info(f"Django         : {django.__version__}")
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
-
-
-        
-
 
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'TestPlateList':
@@ -182,9 +114,11 @@ def main(prgArgs,djDir):
 
             # TestPlates  ------------------------------------------------------------------------
             TestPlateDict = {}
-            TestPlate_FieldList = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues' ]
+            TestPlate_FieldList = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues','control_layout' ]
             TestPlate_FKeyDict  = {'assay_id': Assay,'cellbatch_id': Cell_Batch, 'orgbatch_id': Organism_Batch, 'labware_id': Labware}
             TestPlate_DictList = ['result_type']
+
+            # Missing MatherPlate_ID, SynCompounds
 
             for idx,row in tqdm(PrepSheets['TestPlateList'].iterrows(), total= len(PrepSheets['TestPlateList']), desc='[TestPlates]'):
                 OutNumbers['Processed Plates'] += 1

@@ -490,14 +490,21 @@ class TestPlate(Plate):
             super(TestPlate, self).save(*args, **kwargs)
             if verbose > 0:
                 logger.info(f"[TestPlate.save] {self.plate_id}")
-            if self.wells:
+            if hasattr(self,'wells'):
                 for w in self.wells:
                     if self.wells[w] is not None:
                         if verbose > 1:
                             logger.info(f"[TestWell.save] {self.wells[w]}")        
                         super(TestWell,self.wells[w]).save(*args, **kwargs)
         else:
-            logger.warning(f"[TestPlate] SAVE has no PlateID ") 
+            logger.warning(f"[TestPlate] SAVE has no PlateID ")
+
+    #--------------------------------------------------------------
+    def set_well_field(self,pos,field,value):
+        if hasattr(self,'wells'):
+            _w = self.well_id(pos)
+            setattr(self.wells[_w],field,value)
+
     #--------------------------------------------------------------
     def get_wells(self, fill_missing=True) -> int:
         # Create None Wells
@@ -561,8 +568,44 @@ class TestPlate(Plate):
         pass
 
     #--------------------------------------------------------------
-    def apply_layout(self) -> int:
-        pass
+    def apply_layout(self,verbose=0) -> int:
+        CONTROL_LABELS = ['is_negcontrol','is_poscontrol','is_control','is_sample']
+        CONTROL_ORDER = {'Neg':['is_negcontrol'],'Pos':['is_poscontrol'],'Ref':['is_control','is_sample'],'Smp':['is_sample']}
+
+        if self.control_layout:
+            # Parse LAYOUT ------------------------------------------------------
+            if verbose > 0:
+                logger.info(f"[TestPlate ApplyLayout] {self.plate_id} <- {self.control_layout} {self.n_wells}")
+            _layLst = self.control_layout.split('_')
+            _layDict = {}
+            nLay = 0
+            for _lo in CONTROL_ORDER:
+                _l = _layLst[nLay]
+                if _l != 'X':
+                    _layDict[_lo] = {'R1':self.ROW_LABELS.index(_l[:1])+1,
+                                     'C1':int(_l[1:3]),
+                                     'R2':self.ROW_LABELS.index(_l[3:4])+1,
+                                     'C2':int(_l[4:6])}
+                else:
+                    _layDict[_lo] = {}
+                nLay += 1
+
+            # ReSet LAYOUT ------------------------------------------------------
+            for w in self.wells:
+                for crt in CONTROL_LABELS:
+                    self.set_well_field(w,crt,True)
+
+            _n_layout = -1
+            # Set per LAYOUT ------------------------------------------------------
+            for _lo in CONTROL_ORDER:
+                _rc = _layDict[_lo]
+                if 'R1' in _rc :
+                    for r in range(_rc['R1'],_rc['R2']+1):
+                        for c in range(_rc['C1'],_rc['C2']+1):
+                            for crt in CONTROL_ORDER[_lo]:
+                                self.set_well_field((r,c),crt,True)
+
+            self.n_layout= _n_layout 
 
     #--------------------------------------------------------------
     def calc_inhibition(self,verbose=0) -> int:
