@@ -529,12 +529,18 @@ class TestPlate(Plate):
         return(lWells)
 
     #--------------------------------------------------------------
-    def get_welldata(self,) -> pd.DataFrame:
+    def get_welldata(self,RowCol=False) -> pd.DataFrame:
         _dicts = []
         if self.wells:
             for w in self.wells:
-                if self.wells[w] is not None:        
-                    _dicts.append(self.wells[w].get_welldict())
+                if self.wells[w] is not None:
+                    _well_dict = self.wells[w].get_welldict()
+                    if RowCol:
+                        _r,_c = self.well_rowcol(w)
+                        _well_dict['row'] = self.ROW_LABELS[_r]
+                        _well_dict['col'] = _c
+        
+                    _dicts.append(_well_dict)
         self.well_data = pd.DataFrame(_dicts)
         return(len(self.well_data))
 
@@ -593,7 +599,7 @@ class TestPlate(Plate):
             # ReSet LAYOUT ------------------------------------------------------
             for w in self.wells:
                 for crt in CONTROL_LABELS:
-                    self.set_well_field(w,crt,True)
+                    self.set_well_field(w,crt,False)
 
             _n_layout = -1
             # Set per LAYOUT ------------------------------------------------------
