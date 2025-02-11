@@ -66,6 +66,8 @@ def main(prgArgs,djDir):
                     # for _w in ['A01','A22','A23','A24']:
                     #     print(f"{tp.plate_id} {_w} {tp.wells[_w].is_negcontrol} {tp.wells[_w].is_poscontrol} {tp.wells[_w].is_control} {tp.wells[_w].is_sample}")
                     tp.apply_layout()
+                    tp.calc_inhibition()
+                    
                     # for _w in ['A01','A22','A23','A24']:
                     #     print(f"{tp.plate_id} {_w} {tp.wells[_w].is_negcontrol} {tp.wells[_w].is_poscontrol} {tp.wells[_w].is_control} {tp.wells[_w].is_sample}")
                     # tp.calc_inhibition(verbose=1)
