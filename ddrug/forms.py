@@ -31,10 +31,10 @@ class Drug_form(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['drug_panel'].widget = forms.CheckboxSelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
+        self.fields['drug_panel'].widget = forms.CheckboxSelectMultiple(choices= [])# Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_panel'], showDesc=False),)
         self.fields['drug_panel'].widget.attrs.update({'class': 'form-select', 'size':'5', 'multiple': 'true'})
-        self.fields['drug_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
-        self.fields['max_phase'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['max_phase'])]
+        self.fields['drug_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.DICTIONARY_FIELDS['drug_type'])]
+        self.fields['max_phase'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Drug.DICTIONARY_FIELDS['max_phase'])]
         self.create_field_groups()
         for field in self.fields.values():
             if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
@@ -86,7 +86,7 @@ class Drug_filter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Drug.Choice_Dictionary['drug_type'])]
+        self.filters["Drug_Type"].extra['choices']=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Drug.DICTIONARY_FIELDS['drug_type'])]
         self.filters['Drug_Name'].label='Drug Name'
         self.filters['Drug_Type'].label='Drug Type'
         self.filters['Target'].label='Drug Target'
@@ -113,7 +113,7 @@ class VitekCard_Filter(Filterbase):
     f_OrgID = CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
     #card_barcode = django_filters.CharFilter(lookup_expr='icontains')
     card_code = ChoiceFilter(field_name='card_code', choices=[], label="Card Code")
-    card_type = django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=VITEK_Card.Choice_Dictionary['card_type']))
+    card_type = django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=VITEK_Card.DICTIONARY_FIELDS['card_type']))
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -289,7 +289,7 @@ class MIC_Pubfilter(Filterbase):
 
         self.filters['f_OrgName'].extra["choices"] = self.Meta.model.get_field_choices(field_name='organism_id__organism_name')
         self.filters['f_DrugName'].extra["choices"] = self.Meta.model.get_field_choices(field_name='drug_id__drug_name')
-        self.filters["mic_type"].extra['choices']=[('', ''),] + [(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(MIC_Pub.Choice_Dictionary['mic_type'])]
+        self.filters["mic_type"].extra['choices']=[('', ''),] + [(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(MIC_Pub.DICTIONARY_FIELDS['mic_type'])]
         self.filters['bp_profile'].extra["choices"] = self.Meta.model.get_field_choices(field_name='bp_profile')
         self.filters['source'].extra["choices"] = self.Meta.model.get_field_choices(field_name='source')
 
@@ -331,9 +331,9 @@ class Breakpointfilter(Filterbase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['bp_type'])]
-        self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['notorg_rank'])]
-        self.filters["org_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.Choice_Dictionary['org_rank'])]
+        self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['bp_type'])]
+        self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['notorg_rank'])]
+        self.filters["org_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['org_rank'])]
 
     class Meta:
         model=Breakpoint

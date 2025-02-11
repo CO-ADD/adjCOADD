@@ -32,7 +32,7 @@ class Project(AuditModel):
     List of Projects
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'project_type':'Project_Type',
         'project_status':'Project_Status',
         'provided_container':'Container_Type',
@@ -162,7 +162,7 @@ class Library(AuditModel):
     List of Chem Library 
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'project_type':'Project_Type',
         'project_status':'Project_Status',
         'provided_container':'Container_Type',
@@ -234,7 +234,7 @@ class Compound_Batch(AuditModel):
     List of Compound Batches 
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'batch_type':'CmpBatch_Type',
     }
 
@@ -324,7 +324,7 @@ class COADD_Compound(AuditModel):
     List of CO-ADD Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'compound_type':'Compound_Type',
         'compound_source':'Compound_Source',
         'reg_amount_unit': 'Unit_Amount',
@@ -490,7 +490,7 @@ class ABase_Compound(AuditModel):
     List of Abase Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
     }
 
     ID_SEQUENCE = 'ABase_Compound'
@@ -532,7 +532,7 @@ class Library_Compound(AuditModel):
     List of Library Compounds
     """
 #-------------------------------------------------------------------------------------------------
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'compound_type':'Compound_Type',
         # 'reg_amount_unit': 'Unit_Amount',
         # 'reg_volume_unit':'Unit_Volume',
@@ -814,7 +814,7 @@ class Sample_Base(CmpBatchList_Base):
 
     STRING_FIELDS = CmpBatchList_Base.STRING_FIELDS + ['concs','conc_units','conc_types'] 
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'conc_unit_lst':'Unit_Concentration',
         'conc_type_lst':'Concentration_Type',
     }
@@ -871,7 +871,7 @@ class Sample_Base(CmpBatchList_Base):
     def check_conc_unit_dictionary(self):
         _missing = []
         for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
-            if not Dictionary.exists(self.Choice_Dictionary['conc_unit_lst'],conc_unit):
+            if not Dictionary.exists(self.DICTIONARY_FIELDS['conc_unit_lst'],conc_unit):
                 _missing.append(conc_unit)
         if len(_missing) > 0:
             return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})

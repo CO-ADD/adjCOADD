@@ -38,7 +38,7 @@ class Genome_Sequence(AuditModel):
     #     'seq_date':'Seq Date'
      }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'seq_type':'Seq_Type',      # WGS, 16S, ..
         'seq_method':'Seq_Method',  # Illumina, MinION
     }
@@ -142,7 +142,7 @@ class ID_Pub(AuditModel):
         "id_date":"Date",
         "id_notes":"Notes",
     }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'id_type':'ID_Type',
     }
 
@@ -218,7 +218,7 @@ class ID_Sequence(AuditModel):
         "source": "Source",
         "id_notes":"Notes",
    }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'seq_file':'Seq_File', # Trimmed, Contigs
     }
 
@@ -303,7 +303,7 @@ class WGS_FastQC(AuditModel):
         "overrep" :"Overrepresented sequences",
         "adap_cont" :"Adapter Content",
     }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
     }
 
     seq = models.CharField(max_length=5, blank=True, verbose_name = "Seq")
@@ -392,7 +392,7 @@ class WGS_CheckM(AuditModel):
         "n_ambig_bases" :"#Ambig Bases",
         "trans_table" :"Trans Table",
     }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
     }
 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
@@ -483,7 +483,7 @@ class Gene(AuditModel):
         "source": "Source",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'gene_type':'Gene_Type',
     }
 

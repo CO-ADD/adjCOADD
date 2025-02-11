@@ -82,7 +82,7 @@ class IDPub_Form(ModelForm):
    
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
-        # self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Pub.Choice_Dictionary['id_type'], astatus__gte=0)]
+        # self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Pub.DICTIONARY_FIELDS['id_type'], astatus__gte=0)]
         # self.create_field_groups()
         # for field in self.fields.values():
         #     if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
@@ -153,7 +153,7 @@ class IDSeq_Form(ModelForm):
    
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
-        self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Sequence.Choice_Dictionary['id_type'], astatus__gte=0)]
+        self.fields['id_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=ID_Sequence.DICTIONARY_FIELDS['id_type'], astatus__gte=0)]
         self.create_field_groups()
         for field in self.fields.values():
             if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
@@ -272,7 +272,7 @@ class Gene_Form(ModelForm):
    
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
-        self.fields['gene_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Gene.Choice_Dictionary['gene_type'], astatus__gte=0)]
+        self.fields['gene_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.objects.filter(dict_class=Gene.DICTIONARY_FIELDS['gene_type'], astatus__gte=0)]
         self.create_field_groups()
         for field in self.fields.values():
             if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):

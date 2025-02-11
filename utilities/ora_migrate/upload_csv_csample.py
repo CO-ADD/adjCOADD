@@ -107,8 +107,8 @@ def main():
         for d in dictList:
             #print("fromDict",d)
             if pd.notnull(rowDict[d]):
-                if d in djModel.Choice_Dictionary:
-                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))            
+                if d in djModel.DICTIONARY_FIELDS:
+                    setattr(djModel,d,Dictionary.get(djModel.DICTIONARY_FIELDS[d],rowDict[d]))            
 
     choiceTables = ['COADD-Sample']
     if prgArgs.table in choiceTables:

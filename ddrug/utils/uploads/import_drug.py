@@ -33,7 +33,7 @@ def imp_Drug_fromDict(iDict,valLog):
         #djDrug.drug_id = iDict['drug_id']
         djDrug.drug_name = iDict['drug_name']
         valLog.add_log('Info',"",f"{iDict['drug_name']}",'New Drug','-') 
-    djDrug.drug_type = Dictionary.get(djDrug.Choice_Dictionary["drug_type"],iDict['drug_type'])
+    djDrug.drug_type = Dictionary.get(djDrug.DICTIONARY_FIELDS["drug_type"],iDict['drug_type'])
 
     djDrug.n_compounds = iDict['ncmpd']
     djDrug.drug_othernames = split_StrList(iDict['drug_othernames'])

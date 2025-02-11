@@ -48,7 +48,7 @@ class Screen_Run(AuditModel):
         "run_issues":"Issues",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'run_type':'Run_Type',
         'run_status':'Process_Status',
     }
@@ -146,7 +146,7 @@ class Assay(AuditModel):
         # "run_issues":"Issues",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         # 'run_type':'Run_Type',
         # 'run_status':'Process_Status',
     }
@@ -234,7 +234,7 @@ class AssayData_MIC(CmpBatchList_Base):
         # "run_issues":"Issues",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'pub_status':'Pub_Status',
     }
     
@@ -362,7 +362,7 @@ class AssayData_CC50(CmpBatchList_Base):
         # "run_id":"Run ID",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'pub_status':'Pub_Status',
     }
         
@@ -474,7 +474,7 @@ class AssayData_HC50(CmpBatchList_Base):
         # "run_id":"Run ID",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'pub_status':'Pub_Status',
     }
         

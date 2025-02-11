@@ -127,7 +127,7 @@ def main(prgArgs,djDir):
                     djOrg.organisation_name = org['organisation_name']
 
                 djOrg.organisation_code = org['organisation_code']
-                djOrg.organisation_type = Dictionary.get(djOrg.Choice_Dictionary["organisation_type"],org['organisation_type'])
+                djOrg.organisation_type = Dictionary.get(djOrg.DICTIONARY_FIELDS["organisation_type"],org['organisation_type'])
 
                 for code, name in list(countries):
                     if name == org['country']:
@@ -212,7 +212,7 @@ def main(prgArgs,djDir):
                     if f in group:
                         setattr(djGroup, f, group[f])
 
-                djGroup.mta_status = Dictionary.get(djGroup.Choice_Dictionary["mta_status"],group['mta_status'])
+                djGroup.mta_status = Dictionary.get(djGroup.DICTIONARY_FIELDS["mta_status"],group['mta_status'])
 
                 djOrg = Organisation.get(None,group['organisation'])
                 if djOrg is None:

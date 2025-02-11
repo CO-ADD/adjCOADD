@@ -124,7 +124,7 @@ def Cell_fromDict(iDict,valLog,for_upload=True):
     # assoc_documents = models.ManyToManyField(Document,verbose_name = "Documents", blank=True,
     #     db_table = "cell_doc", related_name="%(class)s_document")
 
-    # Choice_Dictionary = {
+    # DICTIONARY_FIELDS = {
     #     'mta_status':'License_Status',
     #     'cell_type':'Cell_Type',
     #     'cell_panel':'Cell_Panel',
@@ -181,7 +181,7 @@ def Cell_fromDict(iDict,valLog,for_upload=True):
     for _field in _SngDictFields:
        if _field in iDict:
             if iDict[_field] is not None:
-                _dictValue = Dictionary.get(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
+                _dictValue = Dictionary.get(Cell.DICTIONARY_FIELDS[_field],iDict[_field],verbose=0)
                 if _dictValue is None:
                     valLog.add_log("Error",vlog_Process,f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
                     validStatus = False
@@ -193,7 +193,7 @@ def Cell_fromDict(iDict,valLog,for_upload=True):
     for _field in _ArrDictFields:
        if _field in iDict:
             if iDict[_field] is not None:
-                _dictList, _errList = Dictionary.get_DictValues_fromStrList(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
+                _dictList, _errList = Dictionary.get_DictValues_fromStrList(Cell.DICTIONARY_FIELDS[_field],iDict[_field],verbose=0)
                 if len(_errList) > 0 :
                     for _errValue in _errList:
                         valLog.add_log("Error",vlog_Process,f"Value: {_errValue} ",f"[{_field}] not found",'-')
@@ -300,7 +300,7 @@ def CellBatch_fromDict(iDict,valLog,for_upload=True):
     for _field in _SngDictFields:
        if _field in iDict:
             if iDict[_field] is not None:
-                _dictValue = Dictionary.get(Cell.Choice_Dictionary[_field],iDict[_field],verbose=0)
+                _dictValue = Dictionary.get(Cell.DICTIONARY_FIELDS[_field],iDict[_field],verbose=0)
                 if _dictValue is None:
                     valLog.add_log("Error",vlog_Process,f"Value: {iDict[_field]} ",f"[{_field}] not found",'-')
                     validStatus = False

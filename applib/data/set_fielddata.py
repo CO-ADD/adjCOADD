@@ -13,7 +13,7 @@ from apputil.models import Dictionary
 # arrDict = {'screen_status': 'screen_status',                  # strList->List
 #             'ora_contact_ids':['CONTACT_A_ID','CONTACT_B_ID'] # append.List
 #            }
-# dictFields = ['project_type','provided_container','stock_conc_unit',] # using Choice_Dictionary
+# dictFields = ['project_type','provided_container','stock_conc_unit',] # using DICTIONARY_FIELDS
 
 
 #------------------------------------------------------------------------------------
@@ -54,8 +54,8 @@ def set_Dictionaries(djModel,rowDict,dictFields):
     for d in dictFields:
         if d in rowDict:
             if pd.notnull(rowDict[d]):
-                if d in djModel.Choice_Dictionary:
-                    setattr(djModel,d,Dictionary.get(djModel.Choice_Dictionary[d],rowDict[d]))
+                if d in djModel.DICTIONARY_FIELDS:
+                    setattr(djModel,d,Dictionary.get(djModel.DICTIONARY_FIELDS[d],rowDict[d]))
 
 #------------------------------------------------------------------------------------
 def set_arrayDictionaries(djModel,rowDict,arrDict):
@@ -64,7 +64,7 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
         _ret_list  = []
         if isinstance(arrDict[f],str):
             if pd.notnull(rowDict[arrDict[f]]):
-                if f in djModel.Choice_Dictionary:
+                if f in djModel.DICTIONARY_FIELDS:
                     _dict_list = strList_to_List(rowDict[arrDict[f]])
                 
         elif isinstance(arrDict[f],list):
@@ -73,7 +73,7 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
                     _dict_list.append(rowDict[l])
         
         for l in _dict_list:
-            _d = Dictionary.get(djModel.Choice_Dictionary[f],l)
+            _d = Dictionary.get(djModel.DICTIONARY_FIELDS[f],l)
             if _d:
                 _ret_list.append(str(_d))
             

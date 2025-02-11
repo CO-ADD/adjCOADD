@@ -149,10 +149,10 @@ def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lowe
                     djCult.biologist = ApplicationUser.get(cult['biologist'])
                     cult.pop('biologist')
                 if 'culture_type' in cult:
-                    djCult.culture_type = Dictionary.get(djCult.Choice_Dictionary["culture_type"],cult['culture_type'])
+                    djCult.culture_type = Dictionary.get(djCult.DICTIONARY_FIELDS["culture_type"],cult['culture_type'])
                     cult.pop('culture_type')
                 if 'culture_source' in cult:
-                    djCult.culture_source = Dictionary.get(djCult.Choice_Dictionary["culture_source"],cult['culture_source'])
+                    djCult.culture_source = Dictionary.get(djCult.DICTIONARY_FIELDS["culture_source"],cult['culture_source'])
                     cult.pop('culture_source')
 
                 # set values in instance
@@ -249,7 +249,7 @@ def update_OrgBatchStock_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, l
                     djStock.biologist = ApplicationUser.get(stock['biologist'])
                     stock.pop('biologist')
                 if 'stock_type' in stock:
-                    djStock.stock_type = Dictionary.get(djStock.Choice_Dictionary["stock_type"],stock['stock_type'])
+                    djStock.stock_type = Dictionary.get(djStock.DICTIONARY_FIELDS["stock_type"],stock['stock_type'])
                     stock.pop('stock_type')
 
                 # set values in instance
@@ -341,7 +341,7 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
                         batch['STOCK_DATE'] = firstStockDate
                     if batch['STOCK_TYPE'] in fix_StockType:
                         sType = fix_StockType[batch['STOCK_TYPE']]
-                        batch['STOCK_TYPE'] = Dictionary.get(djStock.Choice_Dictionary["stock_type"],sType)
+                        batch['STOCK_TYPE'] = Dictionary.get(djStock.DICTIONARY_FIELDS["stock_type"],sType)
                     else:
                         logger.info(f"{batch} WRONG StockType {batch['STOCK_TYPE']} ")
 
@@ -453,7 +453,7 @@ def update_OrgBatch_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
                     djBatch.biologist = ApplicationUser.get(batch['biologist'])
                     batch.pop('biologist')
                 if 'qc_status' in batch:
-                    djBatch.qc_status = Dictionary.get(djBatch.Choice_Dictionary["qc_status"],batch['qc_status'],None)
+                    djBatch.qc_status = Dictionary.get(djBatch.DICTIONARY_FIELDS["qc_status"],batch['qc_status'],None)
                     batch.pop('qc_status')
 
                 # set values in instance
@@ -618,28 +618,28 @@ def update_Organism_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
 # 			
 
                 if 'lab_restriction' in org:
-                    djOrg.lab_restriction = Dictionary.get(djOrg.Choice_Dictionary["lab_restriction"],org['lab_restriction'],None)
+                    djOrg.lab_restriction = Dictionary.get(djOrg.DICTIONARY_FIELDS["lab_restriction"],org['lab_restriction'],None)
                     org.pop('lab_restriction')
                 if 'risk_group' in org:
-                    djOrg.risk_group = Dictionary.get(djOrg.Choice_Dictionary["risk_group"],org['risk_group'],None)
+                    djOrg.risk_group = Dictionary.get(djOrg.DICTIONARY_FIELDS["risk_group"],org['risk_group'],None)
                     org.pop('risk_group')
                 if 'pathogen_group' in org:
-                    djOrg.pathogen_group = Dictionary.get(djOrg.Choice_Dictionary["pathogen_group"],None,org['pathogen_group'])
+                    djOrg.pathogen_group = Dictionary.get(djOrg.DICTIONARY_FIELDS["pathogen_group"],None,org['pathogen_group'])
                     org.pop('pathogen_group')
                 if 'oxygen_pref' in org:
-                    djOrg.oxygen_pref = Dictionary.get(djOrg.Choice_Dictionary["oxygen_pref"],org['oxygen_pref'],None)
+                    djOrg.oxygen_pref = Dictionary.get(djOrg.DICTIONARY_FIELDS["oxygen_pref"],org['oxygen_pref'],None)
                     org.pop('oxygen_pref')
                 if 'biologist' in org:
                     djOrg.biologist = ApplicationUser.get(org['biologist'])
                     org.pop('biologist')
                 if 'mta_status' in org:
-                    djOrg.mta_status = Dictionary.get(djOrg.Choice_Dictionary['mta_status'],org['mta_status'],None)
+                    djOrg.mta_status = Dictionary.get(djOrg.DICTIONARY_FIELDS['mta_status'],org['mta_status'],None)
                     org.pop('mta_status')
                 if 'strain_type' in org:
-                    djOrg.strain_type = Dictionary.get_DictValues_fromStrList(djOrg.Choice_Dictionary["strain_type"],org['strain_type'],None)
+                    djOrg.strain_type = Dictionary.get_DictValues_fromStrList(djOrg.DICTIONARY_FIELDS["strain_type"],org['strain_type'],None)
                     org.pop('strain_type')
                 if 'strain_panel' in org:
-                    djOrg.strain_panel = Dictionary.get_DictValues_fromStrList(djOrg.Choice_Dictionary["strain_panel"],org['strain_panel'],None)
+                    djOrg.strain_panel = Dictionary.get_DictValues_fromStrList(djOrg.DICTIONARY_FIELDS["strain_panel"],org['strain_panel'],None)
                     org.pop('strain_panel')
 
                 # set values in instance
@@ -718,7 +718,7 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
             if djOrg:
                 djOrg.strain_ids = org['STRAIN_IDS']
                 djOrg.strain_code= org['STRAIN_CODE']
-                djOrg.strain_type = Dictionary.get_DictValues_fromStrList(djOrg.Choice_Dictionary["strain_type"],org['STRAIN_TYPE'],None)
+                djOrg.strain_type = Dictionary.get_DictValues_fromStrList(djOrg.DICTIONARY_FIELDS["strain_type"],org['STRAIN_TYPE'],None)
                 djOrg.strain_panel = split_StrList(org['SCREEN_PANEL'])
                 djOrg.res_property= org['RESISTANCE_PROPERTY']
                 djOrg.gen_property= org['GENETIC_PROPERTY']
@@ -735,10 +735,10 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
                 djOrg.strain_identification= org['STRAIN_IDENT']
                 djOrg.mta_status = Dictionary.get('License_Status',org['MTA_STATUS'],None)
                 djOrg.mta_document= org['MTA_DOCUMENT']
-                djOrg.lab_restriction = Dictionary.get(djOrg.Choice_Dictionary["lab_restriction"],org['LAB_RESTRICTION'],None)
-                djOrg.risk_group = Dictionary.get(djOrg.Choice_Dictionary["risk_group"],org['RISK_GROUP'],None)
-                djOrg.pathogen_group = Dictionary.get(djOrg.Choice_Dictionary["pathogen_group"],None,org['PATHOGEN'])
-                djOrg.oxygen_pref = Dictionary.get(djOrg.Choice_Dictionary["oxygen_pref"],org['OXYGEN_PREF'],None)
+                djOrg.lab_restriction = Dictionary.get(djOrg.DICTIONARY_FIELDS["lab_restriction"],org['LAB_RESTRICTION'],None)
+                djOrg.risk_group = Dictionary.get(djOrg.DICTIONARY_FIELDS["risk_group"],org['RISK_GROUP'],None)
+                djOrg.pathogen_group = Dictionary.get(djOrg.DICTIONARY_FIELDS["pathogen_group"],None,org['PATHOGEN'])
+                djOrg.oxygen_pref = Dictionary.get(djOrg.DICTIONARY_FIELDS["oxygen_pref"],org['OXYGEN_PREF'],None)
                 djOrg.biologist = ApplicationUser.get(org['BIOLOGIST'])
 
                 djOrg.init_fields()
@@ -795,11 +795,11 @@ def update_Taxonomy_ora(upload=False,uploaduser=None,OutputN=1000):
             djTax.organism_name = tax['ORGANISM_NAME'].strip()
         djTax.other_names = tax['ORGANISM_NAME_OTHER']
         djTax.code = tax['ORGANISM_CODE']
-        djTax.org_class = Dictionary.get(djTax.Choice_Dictionary["org_class"],None,tax['ORGANISM_CLASS'],verbose=1)
+        djTax.org_class = Dictionary.get(djTax.DICTIONARY_FIELDS["org_class"],None,tax['ORGANISM_CLASS'],verbose=1)
         djTax.tax_id = tax['TAX_ID']
         djTax.parent_tax_id = tax['PARENT_TAX_ID']
         djTax.tax_rank = tax['TAX_RANK']
-        djTax.division = Dictionary.get(djTax.Choice_Dictionary["division"],tax['DIVISION_CODE'],None,verbose=1)            
+        djTax.division = Dictionary.get(djTax.DICTIONARY_FIELDS["division"],tax['DIVISION_CODE'],None,verbose=1)            
         if tax['LINEAGE']:
             djTax.lineage = split_StrList(tax['LINEAGE'])
         #djTax.urlname = slugify(tax['ORGANISM_NAME'],lower=False,allow_unicode=False)

@@ -33,7 +33,7 @@ class Drug(AuditModel):
         "drug_subclass":"Sub Class",
     }
     
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'drug_type':'Drug_Type',
         'max_phase':'Max_Phase',
     }
@@ -232,7 +232,7 @@ class Breakpoint(AuditModel):
         'bp_source_version':'bp_source_version',
     }
 
-    Choice_Dictionary= {
+    DICTIONARY_FIELDS= {
         'org_rank':'Tax_Rank',
         'notorg_rank':'Tax_Rank',
         'bp_type':'Result_Type',
@@ -330,7 +330,7 @@ class VITEK_Card(AuditModel):
         "instrument":"Instrument",
     }
 
-    Choice_Dictionary= {
+    DICTIONARY_FIELDS= {
         'card_type':'Card_Type',
     }
 
@@ -552,7 +552,7 @@ class MIC_COADD(AuditModel):
         #"media":"Media",
     }
     
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'mic_type':'MIC_Type',
         'plate_size':'Plate_Size',
         'plate_material':'Plate_Material',
@@ -650,7 +650,7 @@ class MIC_Pub(AuditModel):
         "mic_type":"Type",
         "source":"Source",
     }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'mic_type':'MIC_Type',
     }
 

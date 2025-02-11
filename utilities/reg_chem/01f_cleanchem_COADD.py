@@ -134,8 +134,8 @@ def main(prgArgs,djDir):
                 _ctype = djCmpd.ora_compound_type
 
             if _ctype in TypeConf:
-                setattr(djCmpd,'compound_type',Dictionary.get(djCmpd.Choice_Dictionary['compound_type'],TypeConf[_ctype][0]))
-                setattr(djCmpd,'compound_source',Dictionary.get(djCmpd.Choice_Dictionary['compound_source'],TypeConf[_ctype][1]))
+                setattr(djCmpd,'compound_type',Dictionary.get(djCmpd.DICTIONARY_FIELDS['compound_type'],TypeConf[_ctype][0]))
+                setattr(djCmpd,'compound_source',Dictionary.get(djCmpd.DICTIONARY_FIELDS['compound_source'],TypeConf[_ctype][1]))
 
                 djCmpd.init_fields()
                 validDict = djCmpd.validate_fields()

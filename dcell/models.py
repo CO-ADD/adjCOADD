@@ -58,7 +58,7 @@ class Cell(AuditModel):
        'Group4': ['collect_tissue', 'patient_diagnosis', 'patient']
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
         'cell_type':'Cell_Type',
         'cell_panel':'Cell_Panel',
@@ -199,7 +199,7 @@ class Cell_Batch(AuditModel):
         "biologist":"Biologist"
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
         'batch_quality':'OrgBatch_Quality',
     }
@@ -339,7 +339,7 @@ class CellBatch_Stock(AuditModel):
         "biologist":"Biologist",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'stock_type':'Stock_Type',
     }
 
@@ -398,7 +398,7 @@ class Cell_Culture(AuditModel):
         "biologist":"Biologist"
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'culture_type':'Culture_Type',
         'culture_source':'Culture_Source',
     }

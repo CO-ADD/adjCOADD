@@ -31,7 +31,7 @@ class Taxonomy(AuditModel):
         Division_Code   ROD, BCT, MAM, PLN, PRI
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'org_class':'Organism_Class',
         'division':'Organism_Division',
     }
@@ -135,7 +135,7 @@ class Organism(AuditModel):
        'Group4': ['collect_date', 'collect_region', 'collect_country', 'collect_site', 'collect_specie', 'collect_tissue', 'patient_diagnosis', 'patient']
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'risk_group':'Risk_Group',
         'pathogen_group':'Pathogen_Group',
         'oxygen_pref':'Oxygen_Preference',
@@ -305,7 +305,7 @@ class Organism_Batch(AuditModel):
         "biologist":"Biologist"
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
         'batch_quality':'OrgBatch_Quality',
     }
@@ -498,7 +498,7 @@ class OrgBatch_Stock(AuditModel):
         "biologist":"Biologist",
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'stock_type':'Stock_Type',
     }
 
@@ -608,7 +608,7 @@ class Organism_Culture(AuditModel):
         "biologist":"Biologist"
     }
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'culture_type':'Culture_Type',
         'culture_source':'Culture_Source',
     }

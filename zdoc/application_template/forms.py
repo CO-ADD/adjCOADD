@@ -64,15 +64,15 @@ class CreateNewModel_form(forms.ModelForm):
     #     super(CreateOrganism_form, self).__init__(*args, **kwargs)
     #     for field_name in self.fields:
     #         self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-    #     self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
+    #     self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_type'], showDesc=False),)
     #     self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
-    #     self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
+    #     self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_panel'], showDesc=False),)
     #     self.fields['strain_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
-    #     self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['oxygen_pref'])]
-    #     self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['risk_group'])]
-    #     self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['pathogen_group'])]
-    #     self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['mta_status'])]
-    #     self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['lab_restriction'])]
+    #     self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['oxygen_pref'])]
+    #     self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['risk_group'])]
+    #     self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['pathogen_group'])]
+    #     self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['mta_status'])]
+    #     self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['lab_restriction'])]
     #     self.create_field_groups()
 
     #     for field in self.fields.values():
@@ -124,8 +124,8 @@ class NewModelfilter(Filterbase):
     pass
     # organism_name = django_filters.CharFilter(lookup_expr='icontains')
     # lineage = django_filters.CharFilter(lookup_expr='icontains')
-    # org_class=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
-    # division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
+    # org_class=django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.DICTIONARY_FIELDS['org_class']))
+    # division= django_filters.ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.DICTIONARY_FIELDS['division']))
     
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)

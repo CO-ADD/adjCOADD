@@ -193,7 +193,7 @@ def update_VitekCard_ora(upload=False,uploaduser=None,OutputN=1000):
                 djCard.orgbatch_id = orgBatch
                 djCard.card_barcode = card['CARD_BARCODE'] 
                 djCard.card_code = card['CARD_CODE'] 
-            djCard.card_type = Dictionary.exists(djCard.Choice_Dictionary["card_type"],card['CARD_TYPE'])
+            djCard.card_type = Dictionary.exists(djCard.DICTIONARY_FIELDS["card_type"],card['CARD_TYPE'])
             djCard.instrument = card['INSTRUMENT']
             djCard.analysis_time = card['ANALYSIS_TIME']
             djCard.expiry_date = card['EXPIRY_DATE']

@@ -80,7 +80,7 @@ def main(prgArgs,djDir):
                         djStock.orgbatch_id = djOrgBatch
                     row.pop('orgbatch_id')
  
-                    djStock.stock_type = Dictionary.get(djStock.Choice_Dictionary["stock_type"],row['stock_type'])
+                    djStock.stock_type = Dictionary.get(djStock.DICTIONARY_FIELDS["stock_type"],row['stock_type'])
                     row.pop('stock_type')
 
                     djStock.biologist = djBiologist

@@ -19,7 +19,7 @@ from apputil.utils.data import addto_StrList, strList_to_List
 from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
-from dsample.models import Sample_Base
+from dsample.models import Sample_Base, CmpBatchList_Base
 from ddrug.utils.bio_data import ActScoreSC_Cutoff, ActType_SC
 from adjcoadd.constants import *
 
@@ -57,7 +57,7 @@ class Labware(AuditModel):
     WELL_SIZE = Choices('Shallow','Deep','Storage')
     
     
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'plate_material':'Plate_Material',
     }
 
@@ -104,7 +104,7 @@ class Plate(AuditModel):
     MAP_POSITIONS = {'wellID':0,'pos2D':1,'pos1D':2}
     WELL_POS = MAP_POSITIONS['wellID']
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'plate_type':'Plate_Type',
     }
 
@@ -181,7 +181,7 @@ class Plate(AuditModel):
         _plate = cls()
         _plate.plate_id = PlateID.upper()
         _plate.set_platesize(PlateSize)
-        _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],PlateType)
+        _plate.plate_type = Dictionary.get(cls.DICTIONARY_FIELDS["plate_type"],PlateType)
         _plate.init_wells()
         return(_plate)
     
@@ -323,7 +323,7 @@ class TestPlate(Plate):
     STATS_MEAN = 2
     STATS_STD = 3
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'result_type':'Result_Type',
         'plate_quality':'Data_Quality',
         'plate_type':'Plate_Type',
@@ -450,7 +450,7 @@ class TestPlate(Plate):
             _plate = cls()
             _plate.plate_id = PlateID.upper()
             _plate.set_platesize(PlateSize)
-            _plate.plate_type = Dictionary.get(cls.Choice_Dictionary["plate_type"],'Test')
+            _plate.plate_type = Dictionary.get(cls.DICTIONARY_FIELDS["plate_type"],'Test')
 
             if WellData:
                 #print(f"[TestPlate.new] WithModel {TestWell}")
@@ -671,9 +671,9 @@ class TestPlate(Plate):
                     self.plate_qc = -7
 
             if self.zfactor >= self.ZFACTOR_CUTOFF:
-                setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Valid')) 
+                setattr(self,'plate_quality',Dictionary.get(self.DICTIONARY_FIELDS['plate_quality'],'Valid')) 
             else:
-                setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Rejected'))
+                setattr(self,'plate_quality',Dictionary.get(self.DICTIONARY_FIELDS['plate_quality'],'Rejected'))
                 self.test_issues = addto_StrList(self.test_issues,'FailedQC')
 
             if verbose > 0:
@@ -769,10 +769,9 @@ class TestWell(Sample_Base):
     """
 #=================================================================================================
 
-    #STRING_FIELDS =['concs','conc_units','conc_types','sets']
     STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets']
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'conc_unit_lst':'Unit_Concentration',
         'conc_type_lst':'Concentration_Type',
         'solvent_conc_unit':'Unit_Concentration',
@@ -875,9 +874,9 @@ class TestWell(Sample_Base):
     def conv_list_to_string(self):
         super().conv_list_to_string()
 
-        self.sets        = ''
+        self.sets = ''
         if self.set_lst:
-            self.sets        = COMPOUND_SEP.join([str(x) for x in self.set_lst if x > 0])
+            self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst != ""])
 
     #------------------------------------------------  
     def conv_string_to_lst(self):
@@ -900,7 +899,6 @@ class TestWell(Sample_Base):
             self.conv_list_to_string()
             _ClassFields += self.STRING_FIELDS
         return(self.fields_to_dict(ClassFields=_ClassFields,ReadoutField=ReadoutField))
-        #return(model_to_dict(self, _Fields))
 
     #------------------------------------------------  
     def calc_inhibition(self,POS_Stats,NEG_Stats, verbose=0):
@@ -921,3 +919,265 @@ class TestWell(Sample_Base):
         _acttype = ActType_SC(_inhibition,_mscore)
         self.act_score = ActScoreSC_Cutoff[_acttype]['Score']
         self.act_type = ActScoreSC_Cutoff[_acttype]['Code']
+
+#=================================================================================================#=================================================================================================
+class MasterPlate(Plate):
+    """
+
+    """
+#=================================================================================================
+
+    DICTIONARY_FIELDS = {
+        'plate_quality':'Data_Quality',
+        'plate_type':'Plate_Type',
+        'master_conc_unit':'Unit_Concentration',
+        'master_volume_unit':'Unit_Volume',
+    }
+
+    plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
+    cpoz_id = models.CharField(max_length=2, blank=True, verbose_name = "CpOz ID")
+    run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)s_runid")    
+    prep_date = models.DateField(null=True, blank=True, verbose_name = "Prep Date")
+
+    plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
+        db_column="plate_quality", related_name="%(class)s_platequality")
+
+    control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Control Layout")
+    dilution_layout = models.CharField(max_length=35, blank=True, verbose_name = "Dilution Layout")
+
+    n_samples = models.SmallIntegerField(default=-1, verbose_name = "#Samples")
+    n_layout = models.SmallIntegerField(default=-1, verbose_name = "Layout")
+    process_status = models.SmallIntegerField(default=-1, verbose_name = "Process Status")
+
+    master_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
+    master_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")
+
+    master_solvent = models.CharField(max_length=25, blank=True, verbose_name = "Solvent" )
+    master_conc = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "Conc")
+    master_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Conc Unit", on_delete=models.DO_NOTHING,
+         db_column="conc_unit", related_name="%(class)s_conc_unit")
+    master_volume = models.DecimalField(default=-1, max_digits=10, decimal_places=2,  verbose_name = "Volume (uL)")
+    master_volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Volume Unit", on_delete=models.DO_NOTHING,
+         db_column="volume_unit", related_name="%(class)s_volume_unit")
+
+    class Meta:
+        app_label = 'dplate'
+        db_table = 'masterplate'
+        ordering=['plate_id']
+        indexes = [
+            models.Index(name="masterplate_labw_idx",fields=['labware_id']),
+            models.Index(name="masterplate_run_idx",fields=['run_id']),
+            models.Index(name="masterplate_proc_idx",fields=['process_status']),
+            models.Index(name="masterplate_pq_idx",fields=['plate_quality']),
+        ]
+
+    #--------------------------------------------------------------
+    def __repr__(self):
+        _str  = f" [Masterplate] {self.plate_id} Size:{self.n_wells} {self.plate_type}"
+        if hasattr(self,'wells'):
+            _wellid = list(self.wells.keys())
+            _str += f" Wells:{len(self.wells)} [{_wellid[0]}..{_wellid[-1]}]"           
+        return(_str)
+
+    #------------------------------------------------
+    @classmethod
+    def new(cls,PlateID,PlateSize,PlateType,WellData=True):
+        #print(f"[MasterPlate.new] {PlateID} {PlateSize} ")
+        if cls.exists(PlateID.upper()):
+            logger.warning(f"[Masterplate] New {PlateID.upper()} alreday exists ")
+            return(None)
+        else:
+            _plate = cls()
+            _plate.plate_id = PlateID.upper()
+            _plate.set_platesize(PlateSize)
+            _plate.plate_type = Dictionary.get(cls.DICTIONARY_FIELDS["plate_type"],PlateType)
+
+            if WellData:
+                #print(f"[MasterPlate.new] WithModel {TestWell}")
+                _plate.init_wells(WellModel=MasterWell,PlateInstance=_plate)
+            else:
+                _plate.init_wells(WellModel=None, PlateInstance=None)
+            return(_plate)
+
+    #------------------------------------------------
+    def validate_model(self, WellData=True, verbose = 0):
+        retDict = []
+        PlateDict = super(MasterPlate, self).validate_model(verbose=verbose)
+        for wd in PlateDict:
+            retDict.append(wd)
+
+        if self.wells and WellData:
+            for w in self.wells:
+                if self.wells[w] is not None:
+                    WellDict = super(MasterWell,self.wells[w]).validate_model(verbose=verbose)
+                    for wd in WellDict:
+                        if 'plate_id' not in wd :
+                            retDict.append(wd)
+        
+        return(retDict)
+
+    #------------------------------------------------
+    def init_model(self, WellData=True, verbose = 0):
+        retDict = []
+        super(MasterPlate, self).init_fields()
+
+        if self.wells and WellData:
+            for w in self.wells:
+                if self.wells[w] is not None:
+                    super(MasterWell,self.wells[w]).init_fields()
+        
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if self.plate_id:
+            verbose = kwargs.get('verbose',0)
+            kwargs.pop("verbose",None)
+
+            super(MasterPlate, self).save(*args, **kwargs)
+            if verbose > 0:
+                logger.info(f"[MasterPlate.save] {self.plate_id}")
+            if hasattr(self,'wells'):
+                for w in self.wells:
+                    if self.wells[w] is not None:
+                        if verbose > 1:
+                            logger.info(f"[MasterWell.save] {self.wells[w]}")        
+                        super(MasterWell,self.wells[w]).save(*args, **kwargs)
+        else:
+            logger.warning(f"[MasterPlate] SAVE has no PlateID ")
+
+#=================================================================================================
+class MasterWell(Sample_Base):
+    """
+
+    """
+#=================================================================================================
+
+    #STRING_FIELDS =['concs','conc_units','conc_types','sets']
+    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets','test_concs','test_conc_units','test_conc_types']
+
+    DICTIONARY_FIELDS = {
+        'conc_unit_lst':'Unit_Concentration',
+        'conc_type_lst':'Concentration_Type',
+        'solvent_conc_unit':'Unit_Concentration',
+        'amount_unit':'Unit_Amount',
+        'volume_unit':'Unit_Volume',
+    }
+
+    plate_id = models.ForeignKey(MasterPlate, blank=True, null=True, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
+        db_column="plate_id", related_name="%(class)s_plateid")
+    well_id = models.CharField(max_length=5, blank=True, null=True, verbose_name = "Well ID")
+    barcode = models.CharField(max_length=15, blank=True, null=True, unique=True, verbose_name = "Barcode")
+
+    sets = ""
+    set_lst = ArrayField(models.CharField(max_length=5, blank=True),
+                                 size=Sample_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
+
+    solvent = models.CharField(max_length=25, blank=True, verbose_name = "Solvent" )
+    solvent_conc = models.DecimalField(default=0, max_digits=12, decimal_places=4, verbose_name = "SolvConc")
+    solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "SolvConc Unit", on_delete=models.DO_NOTHING,
+         db_column="solvent_conc_unit", related_name="%(class)s_solvent_conc_unit")
+
+    amount = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "Amount")
+    amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Amount Unit", on_delete=models.DO_NOTHING,
+         db_column="amount_unit", related_name="%(class)s_amount_unit")
+    volume = models.DecimalField(default=-1, max_digits=10, decimal_places=2,  verbose_name = "Volume")
+    volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Volume Unit", on_delete=models.DO_NOTHING,
+         db_column="volume_unit", related_name="%(class)s_volume_unit")
+
+    dilution_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Dilution List", null=True, blank=True)
+
+    test_concs = ""
+    test_conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "TestConc List", null=True, blank=True)
+    test_conc_units = ""
+    test_conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "TestConcUnit List", null=True, blank=True)
+    test_conc_types = ""
+    test_conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
+                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "TestConcType List", null=True, blank=True)
+
+    prev_plate_id = models.CharField(max_length=25, blank=True, verbose_name = "Prev Plate ID")
+    prev_well_id = models.CharField(max_length=5, blank=True, verbose_name = "Prev Well ID")
+
+    chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
+
+# CPOZ2_SN	VARCHAR2(25 BYTE)
+# CPOZ_SN	VARCHAR2(25 BYTE)
+# TEST_SOLVENT_CONC	NUMBER
+
+    class Meta:
+        app_label = 'dplate'
+        db_table = 'masterwell'
+        ordering=['plate_id','well_id']
+        constraints = [
+            models.UniqueConstraint(name='masterwell_loc_cst', fields=['plate_id', 'well_id'], )
+        ]        
+        indexes = [
+            GinIndex(name="masterwell_cmp_idx",fields=['cmpbatch_lst']),
+            models.Index(name="masterwell_wid_idx",fields=['well_id']),
+            models.Index(name="masterwell_bc_idx",fields=['barcode']),
+            #models.Index(name="testwell_is_idx",fields=['is_control', 'is_poscontrol', 'is_negcontrol', 'is_sample']),
+            models.Index(name="masterwell_chkm_idx",fields=['chk_migration']),
+        ]
+    #-------------------------------------------------------------------------------
+    def __str__(self):
+        return f"{self.plate_id} {self.well_id} {self.barcode}"
+
+    #------------------------------------------------
+    # Returns an TestWell instance if found by plate_id and well_id
+    @classmethod
+    def get(cls,PlateID,WellID,Barcode=None,verbose=0):
+        try:
+            if Barcode:
+                retInstance = cls.objects.get(barcode=Barcode)
+            else:
+                retInstance = cls.objects.get(plate_id=PlateID, well_id=WellID)
+        except:
+            if verbose:
+                logger.warning(f"[Well Not Found] {PlateID} {WellID} {Barcode}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID,Barcode=None):
+        if Barcode:
+            return cls.objects.filter(barcode=Barcode).exists()
+        else:    
+            return cls.objects.filter(plate_id=PlateID, well_id=WellID).exists()
+
+    # #------------------------------------------------
+    def save(self, *args, **kwargs):
+            if (self.plate_id and self.well_id) or self.barcode:
+                super(MasterWell, self).save(*args, **kwargs)
+            else:
+                logger.warning(f"[MasterWell] SAVE has not PlateID and/or WellID") 
+
+
+    #------------------------------------------------  
+    def conv_list_to_string(self):
+        super().conv_list_to_string()
+
+        self.sets = ''
+        if self.set_lst:
+            self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst != ""])
+
+        self.test_concs = ''
+        if self.test_conc_lst:
+            self.test_concs  = COMPOUND_SEP.join([str(x) for x in self.test_conc_lst if x > 0])
+        self.test_conc_units = ''
+        if self.test_conc_unit_lst:
+            self.test_conc_units = COMPOUND_SEP.join([str(x) for x in self.test_conc_unit_lst != ""])
+        self.test_conc_types = ''
+        if self.test_conc_type_lst:
+            self.test_conc_types = COMPOUND_SEP.join([str(x) for x in self.test_conc_type_lst != ""])
+
+    #------------------------------------------------  
+    def conv_string_to_lst(self):
+        super().conv_string_to_lst()
+        self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
+        self.test_conc_lst = strList_to_List(self.test_concs,sep=COMPOUND_SEP,size=4,fill=0)
+        self.test_conc_units = strList_to_List(self.test_conc_units,sep=COMPOUND_SEP,size=4,fill="")
+        self.test_conc_types = strList_to_List(self.test_conc_types,sep=COMPOUND_SEP,size=4,fill="")

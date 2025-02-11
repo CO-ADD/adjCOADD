@@ -25,7 +25,7 @@ class Chem_Structure(AuditModel):
     List of ChemStructure 
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'structure_type':'Structure_Type',
     }
 
@@ -286,7 +286,7 @@ class Chem_Salt(AuditModel):
     List of Salt/Ion/Solvent 
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'salt_type':'Salt_Type',
     }
 
@@ -360,7 +360,7 @@ class Chem_Group(AuditModel):
     ID_PREFIX = 'CG'
     ID_PAD = 5
 
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'chemgroup_type':'ChemGroup_Type',
     }
 
@@ -433,7 +433,7 @@ class Chem_Reaction(AuditModel):
     List of Chemical Reaction/Transformations/Substructures/Alerts
     """
 #=================================================================================================
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'alert_type':'Alert_Type',
     }
 

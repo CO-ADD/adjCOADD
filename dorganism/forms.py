@@ -34,8 +34,8 @@ class Taxonomy_Form(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['org_class'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['org_class'])]
-        self.fields['division'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.Choice_Dictionary['division'])]
+        self.fields['org_class'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.DICTIONARY_FIELDS['org_class'])]
+        self.fields['division'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Taxonomy.DICTIONARY_FIELDS['division'])]
 
     class Meta:
         model =Taxonomy
@@ -46,8 +46,8 @@ class Taxonomy_Form(forms.ModelForm):
 class Taxonomy_Filter(Filterbase):
     organism_name = CharFilter(lookup_expr='icontains')
     lineage = CharFilter(lookup_expr='icontains')
-    org_class=ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['org_class']))
-    division= ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.Choice_Dictionary['division']))
+    org_class=ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.DICTIONARY_FIELDS['org_class']))
+    division= ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.DICTIONARY_FIELDS['division']))
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -79,12 +79,12 @@ class Organism_Filter(Filterbase):
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
     Panel = MultipleChoiceFilter(field_name='strain_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.Choice_Dictionary['mta_status'], astatus__gte=0))
+    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Organism.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc = False)
+        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    
@@ -113,15 +113,15 @@ class CreateOrganism_form(forms.ModelForm):
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_type'], showDesc=False),)
+        self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
-        self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.Choice_Dictionary['strain_panel'], showDesc=False),)
+        self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
-        self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['oxygen_pref'])]
-        self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['risk_group'])]
-        self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['pathogen_group'])]
-        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['mta_status'])]
-        self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.Choice_Dictionary['lab_restriction'])]
+        self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['oxygen_pref'])]
+        self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['risk_group'])]
+        self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['pathogen_group'])]
+        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['mta_status'])]
+        self.fields['lab_restriction'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['lab_restriction'])]
         self.create_field_groups()
 
         for field in self.fields.values():
@@ -184,8 +184,8 @@ class OrgBatch_Form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(OrgBatch_Form, self).__init__(*args, **kwargs)
-        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['batch_quality'])] 
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])] 
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.DICTIONARY_FIELDS['batch_quality'])] 
+        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.DICTIONARY_FIELDS['qc_status'])] 
 
     class Meta:
         model =Organism_Batch
@@ -208,8 +208,8 @@ class OrgBatch_UpdateForm(forms.ModelForm):
         instance=kwargs.get('instance')
         if instance and instance.stock_level:
             self.fields['stock_level'].initial=instance.stock_level
-        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['batch_quality'])]
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.Choice_Dictionary['qc_status'])]
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.DICTIONARY_FIELDS['batch_quality'])]
+        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Organism_Batch.DICTIONARY_FIELDS['qc_status'])]
         self.create_field_groups()
 
     def create_field_groups(self):
@@ -246,7 +246,7 @@ class OrgBatchStock_CreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['stock_type'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(OrgBatch_Stock.Choice_Dictionary['stock_type'])]
+        self.fields['stock_type'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(OrgBatch_Stock.DICTIONARY_FIELDS['stock_type'])]
 
     class Meta:
         model =OrgBatch_Stock
@@ -289,8 +289,8 @@ class OrgCulture_Form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
-        self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_type'])]
-        self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_source'])]
+        self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.DICTIONARY_FIELDS['culture_type'])]
+        self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.DICTIONARY_FIELDS['culture_source'])]
 
     class Meta:
         model =Organism_Culture
@@ -304,8 +304,8 @@ class OrgCulture_UpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_type'])]
-        self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.Choice_Dictionary['culture_source'])]
+        self.fields['culture_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.DICTIONARY_FIELDS['culture_type'])]
+        self.fields['culture_source'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism_Culture.DICTIONARY_FIELDS['culture_source'])]
         self.create_field_groups()
 
     def create_field_groups(self):

@@ -19,7 +19,7 @@ class Organisation(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS   = {}
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'organisation_type':'Organisation_Type',
     }
 
@@ -89,7 +89,7 @@ class Collab_User(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {}
-    Choice_Dictionary = {}
+    DICTIONARY_FIELDS = {}
 
     ID_SEQUENCE = 'Collab_User'
     ID_PREFIX = 'CUSR'
@@ -167,7 +167,7 @@ class Collab_Group(AuditModel):
     """
 #=================================================================================================
     HEADER_FIELDS = {}
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
     }
 
@@ -239,7 +239,7 @@ class Data_Source(AuditModel):
     HEADER_FIELDS = {
 
     }
-    Choice_Dictionary = {
+    DICTIONARY_FIELDS = {
         'data_type':'Data_Type',
     }
 

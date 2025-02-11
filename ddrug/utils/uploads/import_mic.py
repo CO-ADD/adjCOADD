@@ -31,7 +31,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
 
     if 'org_name' in iDict:
         OrgName = iDict['org_name']
-        OrgRank = Dictionary.get(Breakpoint.Choice_Dictionary["org_rank"],iDict['org_rank'])
+        OrgRank = Dictionary.get(Breakpoint.DICTIONARY_FIELDS["org_rank"],iDict['org_rank'])
         if OrgRank is None:
             valLog.add_log('Error','oraOrgDB',iDict['org_rank'],'Tax Rank not correct','-')
             validStatus = False
@@ -41,7 +41,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
 
     if 'notorg_name' in iDict:
         NotOrgName = iDict['notorg_name']
-        NotOrgRank = Dictionary.get(Breakpoint.Choice_Dictionary["notorg_rank"],iDict['notorg_rank'])
+        NotOrgRank = Dictionary.get(Breakpoint.DICTIONARY_FIELDS["notorg_rank"],iDict['notorg_rank'])
         if NotOrgRank is None:
             valLog.add_log('Error','oraOrgDB',iDict['notorg_rank'],'(Not) Tax Rank not correct','-')
             validStatus = False
@@ -61,7 +61,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
 
         valLog.add_log('Info',"",f"{iDict['drug_name']} {OrgRank} {OrgName} {NotOrgRank} {NotOrgName}",'New BP','-')
 
-    djBP.bp_type = Dictionary.get(djBP.Choice_Dictionary["bp_type"],iDict['bp_type'])
+    djBP.bp_type = Dictionary.get(djBP.DICTIONARY_FIELDS["bp_type"],iDict['bp_type'])
     if djBP.bp_type is None:
         valLog.add_log('Error','oraOrgDB',iDict['bp_type'],'BP Type not correct','-')
         validStatus = False
@@ -127,14 +127,14 @@ def imp_MICCOADD_fromDict(iDict,valLog):
     
     djMIC.mic = iDict['mic']
     djMIC.mic_unit = iDict['mic_unit']
-    djMIC.mic_type = Dictionary.get(MIC_COADD.Choice_Dictionary["mic_type"],'BMD',None,verbose=1)
+    djMIC.mic_type = Dictionary.get(MIC_COADD.DICTIONARY_FIELDS["mic_type"],'BMD',None,verbose=1)
 
-    djMIC.plate_size = Dictionary.get(MIC_COADD.Choice_Dictionary["plate_size"],iDict['plate_size'],None,verbose=1)
-    djMIC.plate_material = Dictionary.get(MIC_COADD.Choice_Dictionary["plate_material"],iDict['plate_material'],None,verbose=1)
+    djMIC.plate_size = Dictionary.get(MIC_COADD.DICTIONARY_FIELDS["plate_size"],iDict['plate_size'],None,verbose=1)
+    djMIC.plate_material = Dictionary.get(MIC_COADD.DICTIONARY_FIELDS["plate_material"],iDict['plate_material'],None,verbose=1)
 
     #djMIC.bp_profile = iDict['bp_profile']
     #djMIC.bp_source = iDict['bp_source']
-    #djMIC.media = Dictionary.get(cls.Choice_Dictionary["media"],iDict['media'],None,verbose=1)
+    #djMIC.media = Dictionary.get(cls.DICTIONARY_FIELDS["media"],iDict['media'],None,verbose=1)
 
     djMIC.init_fields()
     validDict = djMIC.validate_fields()
@@ -180,7 +180,7 @@ def imp_MICPub_fromDict(iDict,valLog):
         valLog.add_log('Info','',f"{iDict['organism_id']} {iDict['drug_name']} {iDict['source']}",'New MIC ','-')
     
     if 'source_type' in iDict:
-        djMIC.mic_type = Dictionary.get(MIC_Pub.Choice_Dictionary["mic_type"],iDict['source_type'],None,verbose=1)
+        djMIC.mic_type = Dictionary.get(MIC_Pub.DICTIONARY_FIELDS["mic_type"],iDict['source_type'],None,verbose=1)
     if 'mic' in iDict:
         djMIC.mic = iDict['mic']
         djMIC.mic_unit = iDict['mic_unit']

@@ -44,7 +44,7 @@ def VitekCard_fromDict(iDict,valLog,upload=False):
             valLog.add_log('Warning',iDict['filename'],infoCard, f"Update [{iDict['card_type']}] VITEK card",'-')
 
     djVitekCard.orgbatch_id = OrgBatch
-    djVitekCard.card_type = Dictionary.get(djVitekCard.Choice_Dictionary["card_type"],iDict['card_type'])
+    djVitekCard.card_type = Dictionary.get(djVitekCard.DICTIONARY_FIELDS["card_type"],iDict['card_type'])
     if djVitekCard.card_type is None:
         valLog.add_log('Error',iDict['filename'],iDict['card_type'],'Vitek Card Type not correct','-')
         validStatus = False

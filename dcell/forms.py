@@ -29,14 +29,14 @@ class Cell_Filter(Filterbase):
     Notes = CharFilter(field_name='cell_notes', lookup_expr='icontains')
     Type = MultipleChoiceFilter(field_name='cell_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Cell.Choice_Dictionary['mta_status'], astatus__gte=0))
+    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Cell.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
     Panel = MultipleChoiceFilter(field_name='cell_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_panel'], showDesc = False)
+        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_type'], showDesc = False)
+        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_panel'], showDesc = False)
         for i in self.filters:
             self.filters[i].label=i
    
@@ -61,13 +61,13 @@ class Cell_CreateForm(forms.ModelForm):
         super(Cell_CreateForm, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['cell_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_type'], showDesc=False),)
+        self.fields['cell_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_type'], showDesc=False),)
         self.fields['cell_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
 
-        self.fields['cell_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.Choice_Dictionary['cell_panel'], showDesc=False),)
+        self.fields['cell_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_panel'], showDesc=False),)
         self.fields['cell_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
 
-        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.Choice_Dictionary['mta_status'])]
+        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Cell.DICTIONARY_FIELDS['mta_status'])]
         self.create_field_groups()
 
         for field in self.fields.values():
@@ -131,8 +131,8 @@ class CellBatch_Form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CellBatch_Form, self).__init__(*args, **kwargs)
-        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.Choice_Dictionary['batch_quality'])] 
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.Choice_Dictionary['qc_status'])] 
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.DICTIONARY_FIELDS['batch_quality'])] 
+        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.DICTIONARY_FIELDS['qc_status'])] 
 
     class Meta:
         model =Cell_Batch
@@ -158,8 +158,8 @@ class CellBatch_UpdateForm(forms.ModelForm):
         instance=kwargs.get('instance')
         if instance and instance.stock_level:
             self.fields['stock_level'].initial=instance.stock_level
-        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.Choice_Dictionary['batch_quality'])]
-        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.Choice_Dictionary['qc_status'])]
+        self.fields['batch_quality'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.DICTIONARY_FIELDS['batch_quality'])]
+        self.fields['qc_status'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(Cell_Batch.DICTIONARY_FIELDS['qc_status'])]
         self.create_field_groups()
 
     def create_field_groups(self):
@@ -196,7 +196,7 @@ class CellBatchStock_CreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['stock_type'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(CellBatch_Stock.Choice_Dictionary['stock_type'])]
+        self.fields['stock_type'].choices=[(obj.dict_value, repr(obj)) for obj in Dictionary.get_filterobj(CellBatch_Stock.DICTIONARY_FIELDS['stock_type'])]
 
     class Meta:
         model =CellBatch_Stock

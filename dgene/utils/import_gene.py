@@ -32,12 +32,12 @@ def imp_Sequence_fromDict(iDict,valLog):
         valLog.add_log('Error','Organism Batch does not Exists',iDict['orgbatch_id'],'Use existing OrganismBatch ID')
         validStatus = False
 
-    SeqType = Dictionary.get(Genome_Sequence.Choice_Dictionary["seq_type"],iDict['seq_type'])
+    SeqType = Dictionary.get(Genome_Sequence.DICTIONARY_FIELDS["seq_type"],iDict['seq_type'])
     if SeqType is None:
         valLog.add_log('Error','Seq Type not Correct',iDict['seq_type'])
         validStatus = False
 
-    SeqMethod = Dictionary.get(Genome_Sequence.Choice_Dictionary["seq_method"],iDict['seq_method'])
+    SeqMethod = Dictionary.get(Genome_Sequence.DICTIONARY_FIELDS["seq_method"],iDict['seq_method'])
     if SeqMethod is None:
         valLog.add_log('Error','Seq Method not Correct',iDict['seq_method'])
         validStatus = False
@@ -235,7 +235,7 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
     else:
         iDict['seq_id'] = str(objSeq)
 
-    SeqFile = Dictionary.get(ID_Sequence.Choice_Dictionary["seq_file"],iDict['seq_file'])
+    SeqFile = Dictionary.get(ID_Sequence.DICTIONARY_FIELDS["seq_file"],iDict['seq_file'])
     if SeqFile is None:
         valLog.add_log('Error','ID Type not Correct',iDict['seq_file'],'-')
         validStatus = False
@@ -310,7 +310,7 @@ def imp_Gene_fromDict(iDict,valLog):
 
     # Clean up Dictionary Uper/Title case
     gType = clean_GeneUpper(iDict['gene_type'])
-    GeneType = Dictionary.get(Gene.Choice_Dictionary["gene_type"],gType)
+    GeneType = Dictionary.get(Gene.DICTIONARY_FIELDS["gene_type"],gType)
     if GeneType is None:
         valLog.add_log('Error','Gene Type not Correct',gType,'-')
         validStatus = False
