@@ -160,6 +160,86 @@ def get_oraTestWells(test=0):
 
     return(twDF)
 
+#-----------------------------------------------------------------------------
+def get_oraMasterPlates(test=0):
+    from oraCastDB.oraCastDB import openCastDB
+
+    renameCol = {
+        "media_id":  "test_media",
+        "issues":    "test_issues",
+        "volume":    "test_volume",
+        "processing":       "test_processing",
+        "n_dr":      "n_doseresponse",
+        "n_syn":   "n_synergies",
+        "has_readout":   "n_reads",
+        "has_compound":   "n_sample",
+        "has_layout":   "n_layout",
+        "nreads":   "n_readouts",
+        "readout_id" : "readout_type",
+        "layout_control" : "control_layout",
+        "assaytype_id" : "assay_id" 
+    }
+
+    replaceValues = {
+#      'result_type':{'HC10':'HC50'},
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    mpSQL = "Select * From MasterPlate "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        mpSQL += f" Fetch First {test} Rows Only "
+
+    CastDB = openCastDB()
+    logger.info(f"[MasterPlates] ... ")
+    mpDF = pd.DataFrame(CastDB.get_dict_list(mpSQL))
+    nTotal = len(mpDF)
+    logger.info(f"[MasterPlates] {nTotal} ")
+    CastDB.close()
+
+    logger.info(f"DF - Rename Columns {len(renameCol)}")
+    mpDF.rename(columns=renameCol, inplace=True)
+
+    logger.info(f"DF - Replace Values {len(replaceValues)}")
+    for k in replaceValues:
+        mpDF[k].replace(replaceValues[k],inplace=True)
+
+    return(mpDF)
+
+#-----------------------------------------------------------------------------
+def get_oraMasterWells(test=0):
+    from oraCastDB.oraCastDB import openCastDB
+
+    renameCol = {
+        "assaytype_id" : "assay_id",
+    }
+
+    replaceValues = {
+      'plate_size':{'384w':384,'96w':96,},
+    }
+
+    mwSQL = "Select * From MasterWell "
+    # Leaving MCC (3132), CM (190) and S00 (1) - from ora.Compound
+
+    if test>0:
+        mwSQL += f" Fetch First {test} Rows Only "
+
+    CastDB = openCastDB()
+    logger.info(f"[MasterWells] ... ")
+    mwDF = pd.DataFrame(CastDB.get_dict_list(mwSQL))
+    nTotal = len(mwDF)
+    logger.info(f"[TestWells] {nTotal} ")
+    CastDB.close()
+
+    # logger.info(f"DF - Rename Columns {len(renameCol)}")
+    # twDF.rename(columns=renameCol, inplace=True)
+
+    # logger.info(f"DF - Replace Values {len(replaceValues)}")
+    # for k in replaceValues:
+    #     twDF[k].replace(replaceValues[k],inplace=True)
+
+    return(mwDF)
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -170,7 +250,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields
-    from dplate.models import Labware, TestPlate, TestWell
+    from dplate.models import Labware, TestPlate, MasterPlate
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
     from dorganism.models import Organism_Batch
@@ -282,6 +362,73 @@ def main(prgArgs,djDir):
         logger.info(f"{OutName} {OutNumbers}")
         logger.info(OutDict)
 
+   # MasterPlate -------------------------------------------------------------
+    elif prgArgs.table == "MasterPlates" :
+
+        OutName = "[MasterPlates]"
+        OutDict = []
+        OutFile = f"UpdateMasterPlates_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
+        logger.info(f"{OutName} ---------------------------------------------------------")
+        mpDF = get_oraMasterPlates(int(prgArgs.test))
+        logger.info("--------------------------------------------------------------------")
+        logger.info(f"{OutName} {mpDF.columns} ")
+
+        arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
+                       'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
+                       'poscontrol_stats':['poscontrol_median','poscontrol_mad','poscontrol_ave','poscontrol_stdev'], 
+                       'negcontrol_stats':['negcontrol_median','negcontrol_mad','negcontrol_ave','negcontrol_stdev'], 
+                       'sample_stats':['sample_median','sample_mad','sample_ave','sample_stdev'], 
+                       'edge_stats':['edge_median','nonedge_median'], 
+                       }
+        copyFields = ['plating','process_status',
+                      'test_date','test_media','test_dye','test_additive','test_issues','test_volume',
+                      'reader','experiment', 'protocol', 'inputfile','test_processing',
+                      'control_layout','readout_type',
+                      'plate_qc', 'zfactor','analysis_parameter',
+                      'n_inhibition','n_doseresponse','n_synergies','n_readouts',
+                      'n_reads', 'n_sample', 'n_layout',
+                      ]
+        dictFields = ['plate_quality','plate_type']
+        fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run, }
+
+        for idx,row in tqdm(mpDF.iterrows(), total=mpDF.shape[0], desc=OutName):
+            #print(row)
+            OutNumbers['Processed'] += 1
+            NewEntry = False
+            validStatus = True
+
+            djObj = MasterPlate.get(row['plate_id'])
+            if djObj is None:
+                djObj = MasterPlate()
+                djObj.plate_id = row['plate_id']
+                
+                NewEntry = True
+                OutNumbers['New Entry'] += 1
+
+            djObj.set_platesize(row['plate_size'])
+
+            set_dictFields(djObj,row,copyFields)
+            set_arrayFields(djObj,row,arrayFields)
+            set_Dictionaries(djObj,row,dictFields)
+            set_fkeyFields(djObj,row,fkeyFields)
+
+            djObj.init_fields()
+            validDict = djObj.validate_fields(exclude=list(arrayFields.keys()))
+            if validDict:
+                validStatus = False
+                for k in validDict:
+                    logger.warning('Warning',k,validDict[k],'-')
+                OutDict.append(row)
+
+            if validStatus:
+                if prgArgs.upload:
+                    if NewEntry or prgArgs.overwrite:
+                        OutNumbers['Upload Entries'] += 1
+                        djObj.save(user=prgArgs.appuser)
+        logger.info(f"{OutName} {OutNumbers}")
+        logger.info(OutDict)
 
    # Labware -------------------------------------------------------------
     elif prgArgs.table == "Labware" :
