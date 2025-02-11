@@ -7,6 +7,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.postgres.fields import ArrayField
+from django.forms.models import model_to_dict
 from django.urls import reverse
 from django import forms
 from django.utils import timezone
@@ -324,6 +325,24 @@ class AuditModel(models.Model):
             #             clFields[field.name]=defValue
         return(clFields)
 
+    #------------------------------------------------
+    def fields_to_dict(self,AuditFields=False, ModelFields=[], ClassFields=[]):
+        if not ModelFields:
+            if AuditFields:
+                _fields =[field.name for field in self._meta.fields]
+            else:
+                _fields =[field.name for field in self._meta.fields if field.name not in self.AUDIT_FIELDS]
+            _dict = model_to_dict(self,_fields)
+        else:
+            _dict = model_to_dict(self,ModelFields)
+
+        if ClassFields:
+            for field in ClassFields:
+                if hasattr(self,field):
+                    _dict[field] = getattr(self,field)
+
+        return(_dict)
+    
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.pk}"

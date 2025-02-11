@@ -1,4 +1,4 @@
-import re, math
+import os, re, math
 import pandas as pd
 import numpy as np
 
@@ -12,7 +12,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
-from django.forms.models import model_to_dict
+#from django.forms.models import model_to_dict
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from apputil.utils.data import addto_StrList, strList_to_List
@@ -22,6 +22,11 @@ from dcell.models import Cell_Batch
 from dsample.models import Sample_Base
 from ddrug.utils.bio_data import ActScoreSC_Cutoff, ActType_SC
 from adjcoadd.constants import *
+
+import matplotlib.ticker as tic
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 import logging
 logger = logging.getLogger(__name__)
@@ -529,15 +534,15 @@ class TestPlate(Plate):
         return(lWells)
 
     #--------------------------------------------------------------
-    def get_welldata(self,RowCol=False) -> pd.DataFrame:
+    def get_welldata(self, RowCol=False, ListToString=False, ReadoutField=True) -> pd.DataFrame:
         _dicts = []
         if self.wells:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    _well_dict = self.wells[w].get_welldict()
+                    _well_dict = self.wells[w].get_welldict(ListToString=ListToString, ReadoutField=ReadoutField)
                     if RowCol:
                         _r,_c = self.well_rowcol(w)
-                        _well_dict['row'] = self.ROW_LABELS[_r]
+                        _well_dict['row'] = self.ROW_LABELS[_r-1]
                         _well_dict['col'] = _c
         
                     _dicts.append(_well_dict)
@@ -666,9 +671,9 @@ class TestPlate(Plate):
                     self.plate_qc = -7
 
             if self.zfactor >= self.ZFACTOR_CUTOFF:
-                self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Valid')) 
+                setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Valid')) 
             else:
-                self.plate_quality = setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Rejected'))
+                setattr(self,'plate_quality',Dictionary.get(self.Choice_Dictionary['plate_quality'],'Rejected'))
                 self.test_issues = addto_StrList(self.test_issues,'FailedQC')
 
             if verbose > 0:
@@ -710,12 +715,62 @@ class TestPlate(Plate):
         gAxisY = f"Row"
         gAxisX = f"Column"
 
+        if not hasattr(self, 'well_data'):
+            self.get_welldata(RowCol=True)
+
+             
+
+        self.well_data = self.well_data.astype({Property: 'float'})
+        prop_map = self.well_data.pivot_table(index="row", columns="col", values=Property)
+
+        fig, ax = plt.subplots(figsize=(12,6))
+        fig.text(0.05,0.91,bigTitle, fontsize=19, ha = 'left')
+        fig.text(0.97,0.91,subTitle, fontsize=12, color = 'darkgrey', ha = 'right')
+        fig.text(0.84,0.80,propTxt,fontsize=9, color = 'black', ha = 'left', va='top',wrap=True,backgroundcolor='lightgray')
+        
+        if Property == 'inhibition':
+            _fmt = ".1f"
+            _vmin = 0
+            _vmax = 100
+            _col = plt.cm.get_cmap('RdYlGn_r')
+        else:
+            _fmt = ".3f"
+            #_vmin,_vmax = well_df[Property].quantile([.01, .99])
+            _vmax = self.well_data[Property].max()
+            _vmin = self.well_data[Property].min()
+            _col = sns.light_palette("darkred", as_cmap=True)
+        
+        ax = sns.heatmap(prop_map, 
+                         linewidth=.5, 
+                         annot=True, fmt=_fmt, annot_kws={'size': 5},
+                         xticklabels=True, yticklabels=True,
+                         vmin=_vmin, vmax=_vmax, 
+                         cmap=_col)
+        
+        plt.yticks(rotation=0) 
+        plt.xlabel(gAxisX, fontsize= 12)
+        plt.ylabel(gAxisY, fontsize= 12)
+
+        if outDir:
+            xOutDir = os.path.join(outDir,self.run_id)
+            if not os.path.exists(xOutDir):
+                os.makedirs(xOutDir)
+
+            jpgFile = f"{self.PlateID}_{Property}.jpg"
+            fig.savefig(os.path.join(xOutDir,jpgFile))
+        else:
+            fig.show()
+
+
 #=================================================================================================
 class TestWell(Sample_Base):
     """
 
     """
 #=================================================================================================
+
+    #STRING_FIELDS =['concs','conc_units','conc_types','sets']
+    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets']
 
     Choice_Dictionary = {
         'conc_unit_lst':'Unit_Concentration',
@@ -815,21 +870,37 @@ class TestWell(Sample_Base):
             else:
                 logger.warning(f"[TestWell] SAVE has not PlateID and/or WellID") 
 
-    #------------------------------------------------
-    # 
-    def get_welldict(self) -> dict:
-        _Fields =[field.name for field in self._meta.fields if field.name not in self.AUDIT_FIELDS]
-        return(model_to_dict(self, _Fields))
 
     #------------------------------------------------  
     def conv_list_to_string(self):
         super().conv_list_to_string()
-        self.sets        = COMPOUND_SEP.join([str(x) for x in self.set_lst if x > 0])
+
+        self.sets        = ''
+        if self.set_lst:
+            self.sets        = COMPOUND_SEP.join([str(x) for x in self.set_lst if x > 0])
 
     #------------------------------------------------  
     def conv_string_to_lst(self):
         super().conv_string_to_lst()
         self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------  
+    def fields_to_dict(self,AuditFields=False, ModelFields=[], ClassFields=[], ReadoutField=True):
+        _dict = super().fields_to_dict(AuditFields=AuditFields, ModelFields=ModelFields, ClassFields=ClassFields)
+        if ReadoutField:
+            if self.readouts:
+                for i in range(len(self.readouts)):
+                    _dict[f'readout_{i+1}'] = self.readouts[i]
+        return(_dict)
+
+    #------------------------------------------------
+    def get_welldict(self, ListToString=False, ReadoutField=True) -> dict:
+        _ClassFields = []
+        if ListToString:
+            self.conv_list_to_string()
+            _ClassFields += self.STRING_FIELDS
+        return(self.fields_to_dict(ClassFields=_ClassFields,ReadoutField=ReadoutField))
+        #return(model_to_dict(self, _Fields))
 
     #------------------------------------------------  
     def calc_inhibition(self,POS_Stats,NEG_Stats, verbose=0):

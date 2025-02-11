@@ -708,6 +708,8 @@ class Convert_CompoundID(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class CmpBatchList_Base(AuditModel):    
 #-------------------------------------------------------------------------------------------------
+
+    STRING_FIELDS = ['cmpbatches']
     MAX_CMPBATCHES = 4
 
     cmpbatches = ""
@@ -730,9 +732,13 @@ class CmpBatchList_Base(AuditModel):
 
     #------------------------------------------------  
     def conv_list_to_string(self):
-        _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
-        self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-        self.n_cmpbatches = len(_CmpLst)
+        if self.cmpbatch_lst:
+            _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
+            self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
+            self.n_cmpbatches = len(_CmpLst)
+        else:
+            self.cmpbatches   = ''
+            self.n_cmpbatches = 0
 
     #------------------------------------------------  
     def conv_string_to_list(self):
@@ -805,6 +811,9 @@ class CmpBatchList_Base(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class Sample_Base(CmpBatchList_Base):    
 #-------------------------------------------------------------------------------------------------
+
+    STRING_FIELDS = CmpBatchList_Base.STRING_FIELDS + ['concs','conc_units','conc_types'] 
+
     Choice_Dictionary = {
         'conc_unit_lst':'Unit_Concentration',
         'conc_type_lst':'Concentration_Type',
@@ -838,17 +847,21 @@ class Sample_Base(CmpBatchList_Base):
 
     #------------------------------------------------  
     def conv_list_to_string(self):
-        CmpBatchList_Base.conv_list_to_string()
-        # _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
-        # self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-        #self.n_cmpbatches = len(_CmpLst)
-        self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
-        self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
-        self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
+        super().conv_list_to_string()
+        self.concs        = ''
+        self.conc_units   = ''
+        self.conc_types   = ''
+        
+        if self.conc_lst:
+            self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
+        if self.conc_unit_lst:
+            self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
+        if self.conc_type_lst:
+            self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
 
     #------------------------------------------------  
     def conv_string_to_list(self):
-        CmpBatchList_Base.conv_string_to_list()
+        super().conv_string_to_list()
         #self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
         self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
         self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
