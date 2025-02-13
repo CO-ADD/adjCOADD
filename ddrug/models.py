@@ -81,7 +81,7 @@ class Drug(AuditModel):
     comptox	=   models.CharField(max_length=20, blank=True, verbose_name = "CompTox")	
     echa = 	    models.CharField(max_length=15, blank=True, verbose_name = "ECHA")	
     chebi =     models.CharField(max_length=15, blank=True, verbose_name = "ChEBI")	
-    uq_imb =    models.CharField(max_length=15, blank=True, verbose_name = "IMB")	
+    uq_imb =    models.CharField(max_length=50, blank=True, verbose_name = "IMB")	
     vendor =    models.CharField(max_length=15, blank=True, verbose_name = "Vendor")	
     vendor_catno = models.CharField(max_length=15, blank=True, verbose_name = "CatNo")	
     
@@ -104,7 +104,8 @@ class Drug(AuditModel):
         ordering=['drug_name']
         indexes = [
             models.Index(name="drug_dname_idx", fields=['drug_name']),
-            #models.Index(name="drug_csid_idx", fields=['structure_id']),
+            models.Index(name="drug_csid_idx", fields=['structure_ids']),
+            models.Index(name="drug_uq_idx", fields=['uq_imb']),
             #GistIndex(name="drug_smol_idx",fields=['smol']),
             #GistIndex(name="drug_ffp2_idx",fields=['ffp2']),
             #GistIndex(name="drug_mfp2_idx",fields=['mfp2'])

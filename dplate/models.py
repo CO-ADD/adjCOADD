@@ -352,9 +352,9 @@ class TestPlate(Plate):
     test_date = models.DateField(null=True, blank=True, verbose_name = "Test Date")
     #test_strain = models.CharField(max_length=15, blank=True, verbose_name = "Strain")
 
-    test_orgbatch = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch", on_delete=models.DO_NOTHING,
+    test_orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatchid")
-    test_cellbatch = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "CellBatch", on_delete=models.DO_NOTHING,
+    test_cellbatch_id = models.ForeignKey(Cell_Batch, null=True, blank=True, verbose_name = "CellBatch", on_delete=models.DO_NOTHING,
         db_column="cellbatch_id", related_name="%(class)s_cellbatchid")
     
     # Specific Assay condition - extension of Assay Condition
