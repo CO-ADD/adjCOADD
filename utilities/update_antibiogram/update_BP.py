@@ -35,14 +35,14 @@ def main(prgArgs,djDir):
 
     django.setup()
 
-    from apputil.models import Dictionary
-    from dsample.models import COADD_Compound, Compound_Batch
+    # from apputil.models import Dictionary
+    # from dsample.models import COADD_Compound, Compound_Batch
     from ddrug.models import Drug, MIC_COADD
-    from dsummary.utils.upd_sum_cmpbatch import sum_structure_sc
-    from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
-    from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
+    # from dsummary.utils.upd_sum_cmpbatch import sum_structure_sc
+    # from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
+    # from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
-    from django.db.models import Q
+    # from django.db.models import Q
 
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
@@ -67,7 +67,8 @@ def main(prgArgs,djDir):
             for mic in tqdm(qryMIC, total=nMIC, desc=prgArgs.table):
                 validStatus = True 
                 OutNumbers['Processed'] += 1
-
+                mic.calc_breakpoint()
+                print(f"{mic.bp_profile} {mic.bp_profile}")
 
 
                     # djMIC.init_fields()

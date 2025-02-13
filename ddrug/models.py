@@ -13,6 +13,7 @@ from apputil.models import AuditModel, Dictionary
 from dorganism.models import Organism, Organism_Batch
 from dscreen.models import Screen_Run
 from dchem.models import Chem_Structure
+from ddrug.utils.bio_analysis import calc_Breakpoint
 #-------------------------------------------------------------------------------------------------
 # Drugs related Application Model
 #-------------------------------------------------------------------------------------------------
@@ -634,6 +635,9 @@ class MIC_COADD(AuditModel):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(orgbatch_id=OrgBatchID,drug_id=DrugID,testplate_id=TestPlateID,testwell_id=TestWellID).exists()
 
+   #------------------------------------------------
+    def calc_breakpoint(self):
+        self.bp_profile, self.bp_source = calc_Breakpoint(self.drug_id.drug_name,self.orgbatch_id.organism_id.organism_name,self.mic_type,self.mic)
 
 #=================================================================================================
 class MIC_Pub(AuditModel):

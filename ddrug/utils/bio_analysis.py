@@ -8,10 +8,10 @@ logger = logging.getLogger(__name__)
 
 #import django
 
-from apputil.models import ApplicationUser, Dictionary, ApplicationLog
-from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
-from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
-from ddrug.models import Drug, MIC_COADD, MIC_Pub, Breakpoint
+# from apputil.models import ApplicationUser, Dictionary, ApplicationLog
+from dorganism.models import Taxonomy
+# from dorganism.utils.utils import reformat_OrganismID, reformat_OrgBatchID
+from ddrug.models import Drug, Breakpoint
 from ddrug.utils.bio_data import split_DR
 
 
