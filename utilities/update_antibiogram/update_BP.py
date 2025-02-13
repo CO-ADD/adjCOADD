@@ -60,8 +60,13 @@ def main(prgArgs,djDir):
     if prgArgs.table == 'MIC_COADD':
         if prgArgs.runid:
             qryMIC = MIC_COADD.objects.filter(run_id=prgArgs.runid)
-        else:
+        elif prgArgs.new:
+            qryMIC = MIC_COADD.objects.filter(bp_profile='')
+        elif prgArgs.overwrite:
             qryMIC = MIC_COADD.objects.all()
+        else:
+            qryMIC = None
+            
         nMIC = qryMIC.count()
         logger.info(f" [{prgArgs.table}] {nMIC} for {prgArgs.runid}")
         if qryMIC:
@@ -69,11 +74,9 @@ def main(prgArgs,djDir):
             OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0, 'Failed':0}
 
             for mic in tqdm(qryMIC, total=nMIC, desc=prgArgs.table):
-            #for mic in qryMIC:
                 validStatus = True 
                 OutNumbers['Processed'] += 1
                 mic.calc_breakpoint()
-
 
                 mic.init_fields()
                 validDict = mic.validate_fields()
