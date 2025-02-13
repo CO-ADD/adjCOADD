@@ -16,8 +16,12 @@ import django
 import logging
 logTime= datetime.datetime.now()
 logName = "Update_BPProfile"
-logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logDir = "log"
+logFileName = os.path.join(logDir,f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
+
+if not os.path.isdir(logDir):
+    os.mkdir(logDir)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -65,22 +69,22 @@ def main(prgArgs,djDir):
             OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0, 'Failed':0}
 
             for mic in tqdm(qryMIC, total=nMIC, desc=prgArgs.table):
+            #for mic in qryMIC:
                 validStatus = True 
                 OutNumbers['Processed'] += 1
                 mic.calc_breakpoint()
-                print(f"{mic.bp_profile} {mic.bp_profile}")
 
 
-                    # djMIC.init_fields()
-                    # validDict = djMIC.validate_fields()
-                    # if validDict:
-                    #     validStatus = False
-                    #     OutNumbers['Failed'] += 1 
-                    #     logger.error(f"[{prgArgs.table}] {validDict}")
+                mic.init_fields()
+                validDict = mic.validate_fields()
+                if validDict:
+                    validStatus = False
+                    OutNumbers['Failed'] += 1 
+                    logger.error(f"[{prgArgs.table}] {validDict}")
 
-                    # if prgArgs.upload and validStatus:
-                    #     djMIC.save()
-                    #     OutNumbers['Uploaded'] += 1
+                if prgArgs.upload and validStatus:
+                    mic.save()
+                    OutNumbers['Uploaded'] += 1
 
         logger.info(f" [{prgArgs.table}] {OutNumbers}")
 

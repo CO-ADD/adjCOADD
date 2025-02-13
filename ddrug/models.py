@@ -10,10 +10,14 @@ from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
-from dorganism.models import Organism, Organism_Batch
+from dorganism.models import Organism, Organism_Batch, Taxonomy
 from dscreen.models import Screen_Run
 from dchem.models import Chem_Structure
-from ddrug.utils.bio_analysis import calc_Breakpoint
+from ddrug.utils.bio_data import split_DR
+
+import logging
+logger = logging.getLogger(__name__)
+
 #-------------------------------------------------------------------------------------------------
 # Drugs related Application Model
 #-------------------------------------------------------------------------------------------------
@@ -313,6 +317,71 @@ class Breakpoint(AuditModel):
                                           bp_type=BPType, bp_source=BPSource).exists()
 
 
+   #------------------------------------------------
+    @classmethod
+    def get_byDrugTax(cls, djDrug, djTaxonomy, BPType = 'MIC', Source = ['EUCAST','CLSI'],verbose=0):
+
+        djBPType = Dictionary.get(cls.DICTIONARY_FIELDS["bp_type"],BPType)
+        if djDrug and djTaxonomy:
+            qryBP = cls.objects.filter(drug_id=djDrug, bp_type=djBPType)
+            TaxLineage = djTaxonomy.lineage
+            TaxNameLst = djTaxonomy.organism_name.split(' ')
+
+            selBP = (0,None)
+            notBP = (0,None)
+            for djBP in qryBP:
+                _notRank = str(djBP.notorg_rank)
+                _orgRank = str(djBP.org_rank)
+                if djBP.bp_source == 'EUCAST':
+                    if _orgRank == 'Specie' and djBP.org_name == djTaxonomy.organism_name and selBP[0] < 10:
+                        selBP = (10,djBP)
+                    elif _orgRank == 'Genus' and djBP.org_name in TaxNameLst and selBP[0] < 9:
+                        selBP = (9,djBP)
+                    elif _orgRank == 'Family' and djBP.org_name in TaxLineage and selBP[0] < 8:
+                        selBP = (8,djBP)
+
+                if djBP.bp_source == 'CLSI':
+                    if _orgRank == 'Specie' and djBP.org_name == djTaxonomy.organism_name and selBP[0] < 5:
+                        selBP = (5,djBP)
+                    elif _orgRank == 'Genus' and djBP.org_name in TaxNameLst and selBP[0] < 4:
+                        selBP = (4,djBP)
+                    elif _orgRank == 'Family' and djBP.org_name in TaxLineage and selBP[0] < 3:
+                        selBP = (3,djBP)
+
+            if selBP[0] > 0:
+                return(selBP[1])
+            else:
+                if notBP[0] > 0:
+                    return(notBP[1])
+                else:
+                    if verbose > 0 :
+                        logger.info(f"[Breakpoint] Unable to find BP for {djDrug.drug_name} {djTaxonomy.organism_name} {BPType} from {qryBP.count()} entries")
+                    return(None)
+        return(None)
+    
+   #------------------------------------------------
+    def calc_bp(self,DR):
+        """
+        Calculate the Breakpoint profile from MIC/Zone value and Breakpoint object
+        """
+        _bpType = str(self.bp_type)
+        _prefix,_val,_sval = split_DR(DR)
+        if _bpType == 'MIC':
+            _bp = 'I'
+            if _val <= self.bp_sens_le :
+                _bp = 'S'
+            elif _val > self.bp_res_gt :
+                _bp = 'R'
+            return _bp
+        if _bpType == 'Zone':
+            _bp = 'I'
+            if _val <= self.bp_sens_le :
+                _bp = 'S'
+            elif _val > self.bp_res_gt :
+                _bp = 'R'
+            return _bp
+        return(None)
+    
 #=================================================================================================
 class VITEK_Card(AuditModel):
 #     """
@@ -637,7 +706,14 @@ class MIC_COADD(AuditModel):
 
    #------------------------------------------------
     def calc_breakpoint(self):
-        self.bp_profile, self.bp_source = calc_Breakpoint(self.drug_id.drug_name,self.orgbatch_id.organism_id.organism_name,self.mic_type,self.mic)
+        djBP = Breakpoint.get_byDrugTax(self.drug_id,self.orgbatch_id.organism_id.organism_name,BPType='MIC')
+        if djBP:
+            self.bp_profile = djBP.calc_bp(self.mic)
+            self.bp_source = djBP.bp_source
+        else:
+            self.bp_profile = "-"    
+            self.bp_source = "no BP"
+
 
 #=================================================================================================
 class MIC_Pub(AuditModel):
