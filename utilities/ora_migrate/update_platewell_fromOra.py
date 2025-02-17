@@ -406,8 +406,11 @@ def main(prgArgs,djDir):
                                 # if djWell.well_id in debugWells:
                                 #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
                     else:
-                        logger.info(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
-                        logger.info(f" [Error] {row}")
+                        if 'Error' in row:
+                            logger.info(f" [Error] Issues with {djWell.plate_id} {djWell.well_id} - {row['Error']}")
+                        else:
+                            logger.info(f" [Error] Issues with {djWell.plate_id} {djWell.well_id} ")
+                            logger.info(f" [Error] {row}")
                         OutDict.append(row)
                 else:
                     row.update({'Error': ' Old Compound_ID not found'})
