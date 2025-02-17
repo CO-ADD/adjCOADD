@@ -20,8 +20,12 @@ from oraCastDB.oraCastDB import openCastDB
 import logging
 logTime= datetime.datetime.now()
 logName = "Upload_Well"
-logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logDir = "log"
+logFileName = os.path.join(logDir,f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
+
+if not os.path.isdir(logDir):
+    os.mkdir(logDir)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -41,7 +45,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
+    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell,MasterPlate, MasterWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
@@ -50,7 +54,6 @@ def main(prgArgs,djDir):
     from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
     from update_utils import convert_castdb_compoundid_from_ora
 
-    
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
     #logger.info(f"LogFile        : {logFileName}")
@@ -166,7 +169,7 @@ def main(prgArgs,djDir):
 
                     #print(f" {OutName} {djWell} ")
 
-                set_dictFields(djWell,row,copyFields)
+                set_Fields(djWell,row,copyFields)
                 set_arrayFields(djWell,row,arrayFields)
                 set_Dictionaries(djWell,row,dictFields)
 
@@ -259,20 +262,20 @@ def main(prgArgs,djDir):
         logger.info(f"{OutName} ---------------------------------------------------------")
         CastDB = openCastDB()
 
-        twSQL = ""
+        mwSQL = ""
         if prgArgs.plateid:
-            twSQL = f"Select * From MasterWell Where plate_id = '{prgArgs.plateid}'"
-            nWells = CastDB.nCount(f"Select count(1) From MasterWell Where plate_id = '{prgArgs.plateid}'" )
+            mwSQL = f"Select * From MasterWell Where plate_id = '{prgArgs.plateid}' "
+            nWells = CastDB.nCount(f"Select count(1) From MasterWell Where plate_id = '{prgArgs.plateid}' " )
         elif prgArgs.new:
-            twSQL = "Select * From MasterWell Where is_migrated < 1"
-            nWells = CastDB.nCount("Select count(1) From MasterWell Where is_migrated < 1" )
+            mwSQL = "Select * From MasterWell Where is_migrated < 1 "
+            nWells = CastDB.nCount("Select count(1) From MasterWell Where is_migrated < 1 " )
 
         elif int(prgArgs.test) > 0:
-            twSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+            mwSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
             nWells = int(prgArgs.test)
         else:
-            twSQL = "Select * From MasterWell "
-            nWells = CastDB.nCount("Select count(1) From Masterell" )
+            mwSQL = "Select * From MasterWell "
+            nWells = CastDB.nCount("Select count(1) From Masterwell " )
         logger.info(f"{OutName} {nWells} ")
 
         # ---------------------------------------------------------------------------------
@@ -303,24 +306,24 @@ def main(prgArgs,djDir):
                        'dilution_lst':['dilution','dilution2','dilution3','dilution4'], 
                        }
         
-        copyFields = [
+        copyFields = [ 'solvent', 'solvent_conc', 'amount','volume',
                     #   'zscore','mscore','act_type',
                     #   'inhibition','active','pscore',
                     #   'is_skip','is_sample', 'is_negcontrol', 'is_poscontrol','is_control','is_valid',
                     #   'volume',
                     #   'solvent', 'solvent_conc',
                       ]
-        dictFields = ['solvent_conc_unit']
+        dictFields = ['solvent_conc_unit','amount_unit','volume_unit']
         fkeyFields = {'plate_id':MasterPlate}
 
 
-        CastDB.exec(twSQL)  
+        CastDB.exec(mwSQL)  
         sql_columns = [i[0].lower() for i in CastDB.cursor.description]
         logger.info(sql_columns)
 
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
 #        for crow in CastDB.cursor:
-
+            #print(f"{crow}")
             OutNumbers['Processed'] += 1
             NewEntry = False
             validStatus = True
@@ -331,9 +334,6 @@ def main(prgArgs,djDir):
 
             for k_old in renameCol:
                 row[renameCol[k_old]] = row.pop(k_old)
-            if 'solvent_conc_unit' in row:
-                if row['solvent_conc_unit'] is not None:
-                    row['solvent_conc_unit'] = row['solvent_conc_unit'].lower()
 
             debugWells = ['A18','A17']
             # if row['well_id'] in debugWells:
@@ -345,7 +345,7 @@ def main(prgArgs,djDir):
             if djPlate:
                 djWell = MasterWell.get(djPlate,row['well_id'])
                 if djWell is None:
-                    djWell = TestWell()
+                    djWell = MasterWell()
                     djWell.plate_id = djPlate
                     djWell.well_id = row['well_id']
                     NewEntry = True
@@ -353,7 +353,7 @@ def main(prgArgs,djDir):
 
                     #print(f" {OutName} {djWell} ")
 
-                set_dictFields(djWell,row,copyFields)
+                set_Fields(djWell,row,copyFields)
                 set_arrayFields(djWell,row,arrayFields)
                 set_Dictionaries(djWell,row,dictFields)
 
@@ -386,6 +386,11 @@ def main(prgArgs,djDir):
                         # for k in validDict:
                         #     print('Warning',k,validDict[k],'-')
                         row.update(validDict)
+
+                    # Fix Barcode '' -> Null
+                    if hasattr(djWell,'barcode'):
+                        if djWell.barcode == '':
+                            djWell.barcode = None
 
                     # if djWell.well_id in debugWells:
                     #     print(f" [D99] {djWell.well_id} {djWell.cmpbatch_lst}")
@@ -452,7 +457,12 @@ if __name__ == "__main__":
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
-    prgArgs = prgParser.parse_args()
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
+
 
     # Django -------------------------------------------------------------
     if prgArgs.django == 'Meran':

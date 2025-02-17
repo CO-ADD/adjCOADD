@@ -53,7 +53,7 @@ class Labware(AuditModel):
     PLATE_COLORS = Choices('Clear', 'Black', 'White')
     WELL_BOTTOMS = Choices('Clear', 'Black', 'White','Barcode')
     WELL_SHAPES = Choices('Flat','Round','U-Shape','V-Shape')
-    WELL_TYPE = Choices('Well','Tube')
+    WELL_TYPE = Choices('Well','Tube','Vial')
     WELL_SIZE = Choices('Shallow','Deep','Storage')
     
     
@@ -157,22 +157,27 @@ class Plate(AuditModel):
     #------------------------------------------------
     def set_platesize(self,PlateSize):
         # -- Set Plate Size
-        if isinstance(PlateSize,int):
-            if PlateSize in self.PLATE_SIZES:
-                self.n_rows = self.PLATE_SIZES[PlateSize][0]
-                self.n_cols = self.PLATE_SIZES[PlateSize][1]
-                self.n_wells = PlateSize
+        if not np.isnan(PlateSize):
+            if isinstance(PlateSize,float):
+                PlateSize = int(PlateSize)
+
+            if isinstance(PlateSize,int):
+                if PlateSize in self.PLATE_SIZES:
+                    self.n_rows = self.PLATE_SIZES[PlateSize][0]
+                    self.n_cols = self.PLATE_SIZES[PlateSize][1]
+                    self.n_wells = PlateSize
+                else:
+                    raise KeyError(f"Undefined PlateSize {PlateSize}")
+            elif isinstance(PlateSize,tuple):
+                self.n_rows = PlateSize[0]
+                self.n_cols = PlateSize[1]
+                self.n_wells = self.n_rows * self.n_cols
             else:
-                raise KeyError(f"Undefined PlateSize {PlateSize}")
-        elif isinstance(PlateSize,tuple):
-            self.n_rows = PlateSize[0]
-            self.n_cols = PlateSize[1]
-            self.n_wells = self.n_rows * self.n_cols
-        else:
-            self.n_rows = 0
-            self.n_cols = 0
-            self.n_wells = 0
-            raise KeyError(f"Undefined PlateSize parameters {PlateSize}")
+                self.n_rows = 0
+                self.n_cols = 0
+                self.n_wells = 0
+                raise KeyError(f"Undefined PlateSize parameters {PlateSize}")
+            
 
     #------------------------------------------------
     @classmethod
@@ -935,7 +940,9 @@ class MasterPlate(Plate):
     }
 
     plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
-    cpoz_id = models.CharField(max_length=2, blank=True, verbose_name = "CpOz ID")
+    cpoz_id = models.CharField(max_length=15, blank=True, verbose_name = "CpOz ID")
+    well_type= models.CharField(max_length=20, blank=True, null=True, choices=Labware.WELL_TYPE, verbose_name = "Type")  
+
     run_id = models.ForeignKey(Screen_Run, null=True, blank=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_runid")    
     prep_date = models.DateField(null=True, blank=True, verbose_name = "Prep Date")
@@ -943,23 +950,23 @@ class MasterPlate(Plate):
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
 
-    control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Control Layout")
+#    control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Control Layout")
     dilution_layout = models.CharField(max_length=35, blank=True, verbose_name = "Dilution Layout")
 
     n_samples = models.SmallIntegerField(default=-1, verbose_name = "#Samples")
     n_layout = models.SmallIntegerField(default=-1, verbose_name = "Layout")
     process_status = models.SmallIntegerField(default=-1, verbose_name = "Process Status")
 
-    master_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
-    master_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")
+    # master_processing = models.CharField(max_length=25, blank=True, verbose_name = "Processing")
+    # master_issues = models.CharField(max_length=150, blank=True, verbose_name = "Issue")
 
     master_solvent = models.CharField(max_length=25, blank=True, verbose_name = "Solvent" )
     master_conc = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "Conc")
     master_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Conc Unit", on_delete=models.DO_NOTHING,
-         db_column="conc_unit", related_name="%(class)s_conc_unit")
+         db_column="master_conc_unit", related_name="%(class)s_master_conc_unit")
     master_volume = models.DecimalField(default=-1, max_digits=10, decimal_places=2,  verbose_name = "Volume (uL)")
     master_volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Volume Unit", on_delete=models.DO_NOTHING,
-         db_column="volume_unit", related_name="%(class)s_volume_unit")
+         db_column="master_volume_unit", related_name="%(class)s_master_volume_unit")
 
     class Meta:
         app_label = 'dplate'
@@ -967,6 +974,7 @@ class MasterPlate(Plate):
         ordering=['plate_id']
         indexes = [
             models.Index(name="masterplate_labw_idx",fields=['labware_id']),
+            models.Index(name="masterplate_wtyp_idx",fields=['well_type']),
             models.Index(name="masterplate_run_idx",fields=['run_id']),
             models.Index(name="masterplate_proc_idx",fields=['process_status']),
             models.Index(name="masterplate_pq_idx",fields=['plate_quality']),

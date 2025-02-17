@@ -20,8 +20,12 @@ from oraCastDB import oraCastDB
 import logging
 logTime= datetime.datetime.now()
 logName = "Upload_Plate"
-logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logDir = "log"
+logFileName = os.path.join(logDir,f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
+
+if not os.path.isdir(logDir):
+    os.mkdir(logDir)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -165,23 +169,18 @@ def get_oraMasterPlates(test=0):
     from oraCastDB.oraCastDB import openCastDB
 
     renameCol = {
-        "media_id":  "test_media",
-        "issues":    "test_issues",
-        "volume":    "test_volume",
-        "processing":       "test_processing",
-        "n_dr":      "n_doseresponse",
-        "n_syn":   "n_synergies",
-        "has_readout":   "n_reads",
-        "has_compound":   "n_sample",
-        "has_layout":   "n_layout",
-        "nreads":   "n_readouts",
-        "readout_id" : "readout_type",
-        "layout_control" : "control_layout",
-        "assaytype_id" : "assay_id" 
+        "n_wells":  "_n_wells",
+        "n_testplates":    "_n_testplates",
+        "solvent":    "master_solvent",
+        "conc":       "master_conc",
+        "conc_unit":       "master_conc_unit",
+        "volume":       "master_volume",
+        "volume_unit":       "master_volume_unit",
+        "layout_dilution" : "dilution_layout",
     }
 
     replaceValues = {
-#      'result_type':{'HC10':'HC50'},
+      'plate_type':{'Stock':'Storage'},
       'plate_size':{'384w':384,'96w':96,},
     }
 
@@ -249,7 +248,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields
+    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields
     from dplate.models import Labware, TestPlate, MasterPlate
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
@@ -341,7 +340,7 @@ def main(prgArgs,djDir):
                 row['test_orgbatch'] = None
                 row['test_cellbatch'] = None
 
-            set_dictFields(djObj,row,copyFields)
+            set_Fields(djObj,row,copyFields)
             set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
@@ -368,33 +367,29 @@ def main(prgArgs,djDir):
         OutName = "[MasterPlates]"
         OutDict = []
         OutFile = f"UpdateMasterPlates_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
-        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0, 'Failed Entries':0}
 
         logger.info(f"{OutName} ---------------------------------------------------------")
         mpDF = get_oraMasterPlates(int(prgArgs.test))
         logger.info("--------------------------------------------------------------------")
         logger.info(f"{OutName} {mpDF.columns} ")
 
-        arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
-                       'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
-                       'poscontrol_stats':['poscontrol_median','poscontrol_mad','poscontrol_ave','poscontrol_stdev'], 
-                       'negcontrol_stats':['negcontrol_median','negcontrol_mad','negcontrol_ave','negcontrol_stdev'], 
-                       'sample_stats':['sample_median','sample_mad','sample_ave','sample_stdev'], 
-                       'edge_stats':['edge_median','nonedge_median'], 
-                       }
-        copyFields = ['plating','process_status',
-                      'test_date','test_media','test_dye','test_additive','test_issues','test_volume',
-                      'reader','experiment', 'protocol', 'inputfile','test_processing',
-                      'control_layout','readout_type',
-                      'plate_qc', 'zfactor','analysis_parameter',
-                      'n_inhibition','n_doseresponse','n_synergies','n_readouts',
-                      'n_reads', 'n_sample', 'n_layout',
-                      ]
-        dictFields = ['plate_quality','plate_type']
+        # arrayFields = {'motherplate_ids':['motherplate_id','motherplate2_id'],
+        #                'synergy_cmpbatches':['syn_compounds_a', 'syn_compounds_b'],
+        #                'poscontrol_stats':['poscontrol_median','poscontrol_mad','poscontrol_ave','poscontrol_stdev'], 
+        #                'negcontrol_stats':['negcontrol_median','negcontrol_mad','negcontrol_ave','negcontrol_stdev'], 
+        #                'sample_stats':['sample_median','sample_mad','sample_ave','sample_stdev'], 
+        #                'edge_stats':['edge_median','nonedge_median'], 
+        #                }
+        copyFields = ['plating','process_status','well_type','prep_date',
+                      'dilution_layout','cpoz_id',
+                      'master_conc','master_volume','master_solvent'
+                    ]
+        dictFields = ['plate_quality','plate_type','master_conc_unit','master_volume_unit']
         fkeyFields = {'labware_id':Labware, 'run_id':Screen_Run, }
 
         for idx,row in tqdm(mpDF.iterrows(), total=mpDF.shape[0], desc=OutName):
-            #print(row)
+            # print(row)
             OutNumbers['Processed'] += 1
             NewEntry = False
             validStatus = True
@@ -409,17 +404,18 @@ def main(prgArgs,djDir):
 
             djObj.set_platesize(row['plate_size'])
 
-            set_dictFields(djObj,row,copyFields)
-            set_arrayFields(djObj,row,arrayFields)
+            set_Fields(djObj,row,copyFields)
+            # set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
 
             djObj.init_fields()
-            validDict = djObj.validate_fields(exclude=list(arrayFields.keys()))
+            validDict = djObj.validate_fields()
             if validDict:
+                OutNumbers['Failed Entries'] += 1
                 validStatus = False
                 for k in validDict:
-                    logger.warning('Warning',k,validDict[k],'-')
+                    logger.warning(f" {OutName} INVALID {k} {validDict[k]}")
                 OutDict.append(row)
 
             if validStatus:
@@ -427,8 +423,9 @@ def main(prgArgs,djDir):
                     if NewEntry or prgArgs.overwrite:
                         OutNumbers['Upload Entries'] += 1
                         djObj.save(user=prgArgs.appuser)
+
         logger.info(f"{OutName} {OutNumbers}")
-        logger.info(OutDict)
+#        logger.info(OutDict)
 
    # Labware -------------------------------------------------------------
     elif prgArgs.table == "Labware" :
@@ -464,7 +461,7 @@ def main(prgArgs,djDir):
                 NewEntry = True
                 OutNumbers['New Entry'] += 1
 
-            set_dictFields(djObj,row,copyFields)
+            set_Fields(djObj,row,copyFields)
             set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
 
@@ -507,7 +504,12 @@ if __name__ == "__main__":
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
-    prgArgs = prgParser.parse_args()
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
+
 
     # Django -------------------------------------------------------------
     if prgArgs.django == 'Meran':
