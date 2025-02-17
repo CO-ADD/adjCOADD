@@ -44,6 +44,8 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
+
     from apputil.models import Dictionary
     from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
     from dplate.models import Labware, TestPlate, TestWell,MasterPlate, MasterWell
@@ -405,6 +407,7 @@ def main(prgArgs,djDir):
                                 #     print(f" [DSAVE] {djWell.well_id} {djWell.cmpbatch_lst}")
                     else:
                         logger.info(f" [Error] Issues with {djWell.plate_id} {djWell.well_id}")
+                        logger.info(f" [Error] {row}")
                         OutDict.append(row)
                 else:
                     row.update({'Error': ' Old Compound_ID not found'})
