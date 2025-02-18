@@ -347,7 +347,7 @@ def main(prgArgs,djDir):
             NewEntry = False
             
             if row['plate_id'] not in chk_PlateID:
-                chk_PlateID[chk_PlateID] = 1
+                chk_PlateID[row['plate_id']] = 1
                 logger.info(f" [Plate] Processing {row['plate_id']} ")
             
             djPlate = MasterPlate.get(row['plate_id'])
