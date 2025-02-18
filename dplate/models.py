@@ -1080,7 +1080,7 @@ class MasterWell(Sample_Base):
     set_lst = ArrayField(models.CharField(max_length=5, blank=True),
                                  size=Sample_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
 
-    solvent = models.CharField(max_length=25, blank=True, verbose_name = "Solvent" )
+    solvent = models.CharField(max_length=50, blank=True, verbose_name = "Solvent" )
     solvent_conc = models.DecimalField(default=0, max_digits=12, decimal_places=4, verbose_name = "SolvConc")
     solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "SolvConc Unit", on_delete=models.DO_NOTHING,
          db_column="solvent_conc_unit", related_name="%(class)s_solvent_conc_unit")
