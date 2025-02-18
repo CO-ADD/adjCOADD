@@ -323,8 +323,10 @@ def main(prgArgs,djDir):
         sql_columns = [i[0].lower() for i in CastDB.cursor.description]
         logger.info(sql_columns)
 
-        for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
-#        for crow in CastDB.cursor:
+        chk_PlateID = {}
+
+#        for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
+        for crow in CastDB.cursor:
             #print(f"{crow}")
             OutNumbers['Processed'] += 1
             NewEntry = False
@@ -343,6 +345,11 @@ def main(prgArgs,djDir):
             # print(f" [D] {row}")
 
             NewEntry = False
+            
+            if row['plate_id'] not in chk_PlateID:
+                chk_PlateID[chk_PlateID] = 1
+                logger.info(f" [Plate] Processing {row['plate_id']} ")
+            
             djPlate = MasterPlate.get(row['plate_id'])
             if djPlate:
                 djWell = MasterWell.get(djPlate,row['well_id'])
