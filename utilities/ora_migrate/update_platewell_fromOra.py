@@ -276,7 +276,7 @@ def main(prgArgs,djDir):
             mwSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
             nWells = int(prgArgs.test)
         else:
-            mwSQL = "Select * From MasterWell "
+            mwSQL = "Select * From MasterWell Order By plate_id, well_id"
             nWells = CastDB.nCount("Select count(1) From Masterwell " )
         logger.info(f"{OutName} {nWells} ")
 
