@@ -80,7 +80,7 @@ def main(prgArgs,djDir):
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
     from apputil.models import ApplicationUser, Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
     from dchem.models import Chem_Structure, Chem_Salt
     from dsample.models import Library, Library_Compound
 
