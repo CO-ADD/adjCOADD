@@ -14,6 +14,7 @@ from rdkit import Chem
 from tqdm import tqdm
 # from zUtils import zData
 
+from zDjango.djUtils import init_django_dir
 import django
 #from djCOADD import djOrgDB
 # from oraCastDB import oraCastDB
@@ -168,21 +169,9 @@ if __name__ == "__main__":
         prgParser.print_help()
         sys.exit(0)
 
-    # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
-
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
         print("-------------------------------------------------------------------")
 
