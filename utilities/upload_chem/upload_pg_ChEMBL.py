@@ -80,7 +80,7 @@ def main(prgArgs,djDir):
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
     from apputil.models import ApplicationUser, Dictionary
-    from applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries
     from dchem.models import Chem_Structure, Chem_Salt
     from dsample.models import Library, Library_Compound
 
@@ -121,7 +121,7 @@ def main(prgArgs,djDir):
                     new_compound = True
                 djCmpd.compound_desc = f"MolRegNo: {row['molregno']}"
 
-                set_dictFields(djCmpd,row,['reg_smiles','compound_name'])
+                set_Fields(djCmpd,row,['reg_smiles','compound_name'])
                 # set_arrayFields(djCmpd,row,arrayFields)
                 set_Dictionaries(djCmpd,row,['compound_type'])
 
