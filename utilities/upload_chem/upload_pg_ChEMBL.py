@@ -73,7 +73,7 @@ def get_pgCompound(test=0):
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
+    sys.path.append(djDir['djPrj'])
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
