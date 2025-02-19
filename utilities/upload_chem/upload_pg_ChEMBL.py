@@ -151,7 +151,7 @@ if __name__ == "__main__":
     print("-------------------------------------------------------------------")
 
     # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+    prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
