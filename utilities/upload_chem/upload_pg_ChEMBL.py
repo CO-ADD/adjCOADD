@@ -6,7 +6,9 @@ import datetime
 import csv
 import pandas as pd
 import numpy as np
-import argparse
+import configargparse
+from pathlib import Path
+
 
 from zSql import zSqlConnector
 from rdkit import Chem 
@@ -158,10 +160,10 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
-#    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-#    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+
+    prgParser.add_argument("--django",default='Local',required=True, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
     try:
         prgArgs = prgParser.parse_args()
