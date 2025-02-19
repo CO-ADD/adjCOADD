@@ -276,6 +276,7 @@ def main(prgArgs,djDir):
             mwSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
             nWells = int(prgArgs.test)
         else:
+            # Just as Test
             # mwSQL = "Select * From MasterWell Where Dilution is not Null Order By plate_id, well_id"
             # nWells = CastDB.nCount("Select count(1) From Masterwell Where Dilution is not Null" )
             mwSQL = "Select * From MasterWell Order By plate_id, well_id"
