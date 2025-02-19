@@ -325,8 +325,8 @@ def main(prgArgs,djDir):
 
         chk_PlateID = {}
 
-#        for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
-        for crow in CastDB.cursor:
+        for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
+#        for crow in CastDB.cursor:
             #print(f"{crow}")
             OutNumbers['Processed'] += 1
             NewEntry = False
@@ -346,9 +346,9 @@ def main(prgArgs,djDir):
 
             NewEntry = False
             
-            if row['plate_id'] not in chk_PlateID:
-                chk_PlateID[row['plate_id']] = 1
-                logger.info(f" [Plate] Processing {row['plate_id']} ")
+            # if row['plate_id'] not in chk_PlateID:
+            #     chk_PlateID[row['plate_id']] = 1
+            #     logger.info(f" [Plate] Processing {row['plate_id']} ")
             
             djPlate = MasterPlate.get(row['plate_id'])
             if djPlate:
