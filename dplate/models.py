@@ -1092,7 +1092,7 @@ class MasterWell(Sample_Base):
     volume_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Volume Unit", on_delete=models.DO_NOTHING,
          db_column="volume_unit", related_name="%(class)s_volume_unit")
 
-    dilution_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
+    dilution_lst = ArrayField(models.CharField(max_length=15, default=""), 
                                  size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Dilution List", null=True, blank=True)
 
     test_concs = ""
