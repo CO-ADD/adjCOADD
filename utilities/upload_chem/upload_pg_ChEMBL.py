@@ -22,23 +22,29 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "Upload_SMIcsv"
-#logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logName = "Upload_ChEMBL"
+logDir = "log"
+logFileName = os.path.join(logDir,f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
+
+if not os.path.isdir(logDir):
+    os.mkdir(logDir)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format="[%(name)-20s] %(message)s ",
-#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    handlers=[logging.StreamHandler()],
+    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+#    handlers=[logging.StreamHandler()],
     level=logLevel)
 #-----------------------------------------------------------------------------
 
+#-----------------------------------------------------------------------------
 def openChEMBL(User='chembl', Passwd='chembl',DataBase="chembl",verbose=1):
     dbPG = zSqlConnector.PostgreSQL()
     dbPG.open(User,Passwd,"imb-coadd-db.imb.uq.edu.au",DataBase,verbose=verbose)
     return(dbPG)
 
+#-----------------------------------------------------------------------------
 def get_pgCompound(test=0):
 
     cmpdSQL = """
@@ -68,12 +74,13 @@ def main(prgArgs,djDir):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
+    logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
+
     from apputil.models import ApplicationUser, Dictionary
     from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
     from dchem.models import Chem_Structure, Chem_Salt
     from dsample.models import Library, Library_Compound
 
-    
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
     #logger.info(f"LogFile        : {logFileName}")
@@ -97,7 +104,6 @@ def main(prgArgs,djDir):
         if djLib:
 
             cmpdLst = get_pgCompound(int(prgArgs.test))
-
 
             outNumbers = {'Proc':0,'New Compounds':0,'Upload Compounds':0, 'New Samples': 0, 'Upload Samples': 0, 'Failed': 0}
             outDict = []
@@ -132,7 +138,7 @@ def main(prgArgs,djDir):
                             outNumbers['Upload Compounds'] += 1
                             djCmpd.save()
 
-            print(f"[LibCompounds] :{outNumbers}")
+            print(f"[{LibraryID}] :{outNumbers}")
 
 #==============================================================================
 if __name__ == "__main__":
@@ -140,7 +146,6 @@ if __name__ == "__main__":
     print("-------------------------------------------------------------------")
     print("Running : ",sys.argv)
     print("-------------------------------------------------------------------")
-
 
     # ArgParser -------------------------------------------------------------
     prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
@@ -156,17 +161,22 @@ if __name__ == "__main__":
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of rows to test")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
-    prgArgs = prgParser.parse_args()
+
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
 
     # Django -------------------------------------------------------------
-    if prgArgs.config == 'Meran':
+    if prgArgs.django == 'Meran':
         djDir = "D:/Code/zdjCode/adjCOADD"
     #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
     #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.config == 'Work':
+    elif prgArgs.django == 'Work':
         djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
     #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.config == 'Laptop':
+    elif prgArgs.django == 'Laptop':
         djDir = "C:/Code/zdjCode/adjCOADD"
     #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
     else:
