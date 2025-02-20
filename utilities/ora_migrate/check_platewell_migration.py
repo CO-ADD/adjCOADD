@@ -69,6 +69,37 @@ def main(prgArgs):
         oraDB.close()
         djDB.close()
 
+
+    if prgArgs.table == "MasterWells" :
+
+        OutName = "[TestWells]"
+        OutDict = []
+        OutFile = f"checkMasterWells_inORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
+
+        oraDB = openCastDB()
+        djDB = openCoaddDB()
+
+        djSQL = "Select plate_id, well_id from dplate.masterwell "
+        nWells = djDB.nCount("Select count(1) From dplate.masterwell" )
+        logger.info(f"{OutName} {nWells} ")
+
+
+        djDB.exec(djSQL)  
+        sql_columns = [i[0].lower() for i in djDB.cursor.description]
+        logger.info(sql_columns)
+        
+        for crow in tqdm(djDB.cursor, total=nWells, desc=OutName):
+            row = dict()
+            for col in sql_columns:
+                row[col.lower()] = crow[sql_columns.index(col)]
+            updSQL = f"Update MasterWell Set is_migrated = 1 Where Plate_ID = '{row['plate_id']}' and Well_ID = '{row['well_id']}' "
+            oraDB.exec(updSQL,commit=True)
+
+        oraDB.close()
+        djDB.close()
+
+
 #==============================================================================
 if __name__ == "__main__":
 
