@@ -144,7 +144,7 @@ def main(prgArgs,djDir):
                                 djCmpBatch.batch_id = '00'
                                 djCmpBatch.structure_id = djChem
                                 new_cmpbatch = True
-                                outNumbers['New CmpBatch'] += 1
+                                outNumbers['New CmpBatches'] += 1
 
                             djCmpBatch.structure_type = _MolType    
                             djCmpBatch.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
