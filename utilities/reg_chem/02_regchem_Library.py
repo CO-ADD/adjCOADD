@@ -44,7 +44,7 @@ def main(prgArgs,djDir):
     from apputil.models import Dictionary
     from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries
     from apputil.utils.data import Dict_to_StrList
-    from dsample.models import Library, Library_Compound, Sample
+    from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
     from adjCOADD.applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
 
@@ -76,12 +76,12 @@ def main(prgArgs,djDir):
 
         outNumbers = {'Proc':0, 'Mixture':0, 'Metal Compounds':0, 'Failed SMI': 0,
                       'Updated Compounds':0,
-                      'New Samples':0, 'Updated Samples':0,
+                      'New CmpBatches':0, 'Updated CmpBatches':0,
                       'New ChemStructures':0,'Updated ChemStructures':0}
 
         for djCmpd in tqdm(qryCmpd.iterator(), total=nCmpd, desc="Processing Compounds"):
             outNumbers['Proc'] += 1
-            updated_sample = False
+            updated_cmpbatch = False
             validStatus = True
 
             # # Check if this Standardisation has been done already 
@@ -100,7 +100,7 @@ def main(prgArgs,djDir):
                     if _moldict['valid'] > 0:
 
                         if _moldict['nfrag'] == 1:
-                            updated_sample = True
+                            updated_cmpbatch = True
                             validStatus = True
                             
                             djCmpd.std_status = 'Valid'
@@ -134,39 +134,40 @@ def main(prgArgs,djDir):
                                 # Reload to get MW
                                 djChem.get(_csid) 
 
-                            #------------------------------------------------------------
-                            djSample = Sample.get(djCmpd.compound_id)
-                            if djSample is None:
-                                djSample = Sample()
-                                djSample.sample_id = djCmpd.compound_id
-                                djSample.sample_code = djCmpd.compound_code
-                                djSample.sample_source = 'LIBRARY'
-                                djSample.structure_id = djChem
-                                new_sample = True
-                                outNumbers['New Samples'] += 1
+                            #- CompoundBatch ------------------------------------
+                            djCmpBatch = Compound_Batch.get(djCmpd.compound_id)
+                            if djCmpBatch is None:
+                                djCmpBatch = Compound_Batch()
+                                djCmpBatch.cmpbatch_id = djCmpd.compound_id
+                                djCmpBatch.batch_code = djCmpd.compound_code
+                                djCmpBatch.batch_source = 'LIBRARY'
+                                djCmpBatch.batch_id = '00'
+                                djCmpBatch.structure_id = djChem
+                                new_cmpbatch = True
+                                outNumbers['New CmpBatch'] += 1
 
-                            djSample.structure_type = _MolType    
-                            djSample.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
-                            djSample.smiles_extra = _moldict['smiles_extra']
-                            djSample.mw_extra = _moldict['mw_extra']
-                            djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
-                            djSample.full_mf = get_MF_Smiles(_moldict['smi']+djSample.smiles_extra)
+                            djCmpBatch.structure_type = _MolType    
+                            djCmpBatch.salt_code = SaltDictList_to_SaltCode([_saltdict,_iondict,_solvdict])
+                            djCmpBatch.smiles_extra = _moldict['smiles_extra']
+                            djCmpBatch.mw_extra = _moldict['mw_extra']
+                            djCmpBatch.full_mw = float(djCmpBatch.mw_extra) + float(djChem.mw)
+                            djCmpBatch.full_mf = get_MF_Smiles(_moldict['smi']+djCmpBatch.smiles_extra)
                             
-                            djSample.init_fields()
-                            validDict = djSample.validate_fields()
+                            djCmpBatch.init_fields()
+                            validDict = djCmpBatch.validate_fields()
                             if validDict:
                                 validStatus = False
                                 for k in validDict:
                                     logger.warning(f"{k}: {validDict[k]}")
                                     
                             if prgArgs.upload and validStatus:
-                                _StdProcess.append("Sample")
-                                #djCmpd.std_process += ";Sample"
-                                djSample.save()
-                                outNumbers['Updated Samples'] += 1    
+                                _StdProcess.append("CmpBatch")
+                                #djCmpd.std_process += ";CmpBatch"
+                                djCmpBatch.save()
+                                outNumbers['Updated CmpBatches'] += 1    
                             #------------------------------------------------------------
 
-                            djCmpd.sample_id = djSample
+                            djCmpd.cmpbatch_id = djCmpBatch
                             djCmpd.std_process = ";".join(_StdProcess)
                         else:
                             djCmpd.std_status = 'Mixture'
