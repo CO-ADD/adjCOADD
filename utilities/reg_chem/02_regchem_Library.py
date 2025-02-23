@@ -1,12 +1,11 @@
 #
-#
-#
 import os, sys
 import datetime
 import csv
 import pandas as pd
 import numpy as np
-import argparse
+import configargparse
+from pathlib import Path
 
 from zChem.zMolStandardize import SmiStandardizer_DB
 from rdkit import Chem
@@ -16,38 +15,40 @@ from tqdm import tqdm
 
 import django
 #-----------------------------------------------------------------------------
+# Logger ----------------------------------------------------------------
+import logging
+logTime= datetime.datetime.now()
+logName = "regChem_02RegChem_Library"
+logDir = "log"
+logFileName = os.path.join(logDir,f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
+logLevel = logging.INFO 
+
+if not os.path.isdir(logDir):
+    os.mkdir(logDir)
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    format="[%(name)-20s] %(message)s ",
+    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+#    handlers=[logging.StreamHandler()],
+    level=logLevel)
 
 
-    
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
-    # Logger ----------------------------------------------------------------
-    import logging
-    logTime= datetime.datetime.now()
-    logName = "regChem_02RegChem_Library"
-    logFileName = os.path.join(djDir,"applog",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
-    logLevel = logging.INFO 
-
-    logger = logging.getLogger(__name__)
-    logging.basicConfig(
-        format="[%(name)-20s] %(message)s ",
-        handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-    #    handlers=[logging.StreamHandler()],
-        level=logLevel)
-#-----------------------------------------------------------------------------
-
-    sys.path.append(djDir)
+    sys.path.append(djDir['djPrj'])
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
-    from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries
-    from apputil.utils.data import Dict_to_StrList
+    logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
+
+    # from apputil.models import Dictionary
+    # from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries
+    # from apputil.utils.data import Dict_to_StrList
     from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
     from applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
-
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
@@ -212,10 +213,9 @@ if __name__ == "__main__":
 
 
     # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+    prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
-    prgParser.add_argument("--config",default='Local',required=True, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-l",default=None,required=False, dest="library", action='store', help="Library")
 
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
@@ -225,6 +225,8 @@ if __name__ == "__main__":
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
 #    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
+    prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
     try:
         prgArgs = prgParser.parse_args()
@@ -232,20 +234,11 @@ if __name__ == "__main__":
         prgParser.print_help()
         sys.exit(0)
 
-    # Django -------------------------------------------------------------
-    if prgArgs.config == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.config == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.config == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
+    from zDjango.djUtils import init_django_dir
 
+    # Django -------------------------------------------------------------
+    djDir = init_django_dir(prgArgs,"adjCOADD")
+ 
     if djDir:
         main(prgArgs,djDir)
         print("-------------------------------------------------------------------")
