@@ -95,7 +95,7 @@ def main(prgArgs,djDir):
                     djMIC.plate_size = Dictionary.get(MIC_COADD.DICTIONARY_FIELDS["plate_size"],mic.testplate_id.labware_id.plate_size,None,verbose=1) 
                     djMIC.plate_material = mic.testplate_id.labware_id.plate_material 
 
-                    djMIC.init_fields()
+                    djMIC.setdefault_fields()
                     validDict = djMIC.validate_fields()
                     if validDict:
                         validStatus = False

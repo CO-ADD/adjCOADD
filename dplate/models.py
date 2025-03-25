@@ -1,6 +1,7 @@
 import os, re, math
 import pandas as pd
 import numpy as np
+from decimal import Decimal
 
 from django.db import models
 from model_utils import Choices
@@ -103,6 +104,7 @@ class Plate(AuditModel):
                  'Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF']
     MAP_POSITIONS = {'wellID':0,'pos2D':1,'pos1D':2}
     WELL_POS = MAP_POSITIONS['wellID']
+    WELL_ID = MAP_POSITIONS['wellID']
 
     DICTIONARY_FIELDS = {
         'plate_type':'Plate_Type',
@@ -145,7 +147,7 @@ class Plate(AuditModel):
             retInstance = None
 
         if retInstance and WellData:
-            retInstance.n_wells = retInstance.get_wells()
+            retInstance.get_wells()
 
         return(retInstance)
 
@@ -237,6 +239,12 @@ class Plate(AuditModel):
         return(m[self.MAP_POSITIONS['wellID']])
 
     #------------------------------------------------
+    def get_well(self,loc):
+        if self.wells:
+            w = self.map_well(loc)[self.WELL_POS]
+            return(self.wells[w])
+
+    #------------------------------------------------
     # Initialising Wells
     #------------------------------------------------
     def get_wells(self) -> int:
@@ -244,6 +252,31 @@ class Plate(AuditModel):
         self.init_wells()
         # Fill with Database Wells
         # to be implmented in specific models
+
+    #--------------------------------------------------------------
+    def load_wells(self, WellModel, fill_missing=True) -> int:
+        # Create None Wells
+        self.init_wells(WellModel=None, PlateInstance=None)
+
+        # get Wells for that Plate 
+        qryTW = WellModel.objects.filter(plate_id=self)
+        lWells = qryTW.count()
+        for w in qryTW:
+            m = self.map_well(w.well_id)
+            self.wells[m[0]] = w
+
+        # Fill None Wells with empty {WellModel}
+        if lWells < len(self.wells) and fill_missing:
+            for w in self.wells:
+                if self.wells[w] is None:
+                    self.wells[w] = WellModel()
+                    self.wells[w].well_id = w
+                    self.wells[w].plate_id = self
+            lWells = len(self.wells)
+        
+        return(lWells)
+
+
 
     #------------------------------------------------
     def save_wells(self) :
@@ -279,7 +312,7 @@ class Plate(AuditModel):
                     #print(f"[Plate.init_wells] {m} with {WellModel} for {PlateInstance}")
 
                     self.wells[m[self.WELL_POS]] = WellModel()
-                    self.wells[m[self.WELL_POS]].well_id = m[0]
+                    self.wells[m[self.WELL_POS]].well_id = m[self.WELL_ID]
                     self.wells[m[self.WELL_POS]].plate_id = PlateInstance
                 else:
                     self.wells[m[self.WELL_POS]] = None
@@ -482,14 +515,14 @@ class TestPlate(Plate):
         return(retDict)
 
     #------------------------------------------------
-    def init_model(self, WellData=True, verbose = 0):
+    def setdefault_model(self, WellData=True, verbose = 0):
         retDict = []
-        super(TestPlate, self).init_fields()
+        super(TestPlate, self).setdefault_fields()
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    super(TestWell,self.wells[w]).init_fields()
+                    super(TestWell,self.wells[w]).setdefault_fields()
         
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -774,13 +807,25 @@ class TestWell(Sample_Base):
     """
 #=================================================================================================
 
-    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets']
-
     DICTIONARY_FIELDS = {
         'conc_unit_lst':'Unit_Concentration',
         'conc_type_lst':'Concentration_Type',
         'solvent_conc_unit':'Unit_Concentration',
     }
+
+    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets']
+
+    ARRAY_FIELDS = {'cmpbatch_lst':['compound_id','compound2_id','compound3_id','compound4_id'],
+                    'conc_lst':['conc','conc2','conc3','conc4',],
+                    'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
+                    'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
+                    'set_lst':['set_id','set2_id','set3_id','set4_id'], 
+                    }
+    
+    COPY_FIELDS = ['solvent', 'solvent_conc', 'amount','volume',]
+
+
+    # Fields ---------------------------------------------------------------------------------------------------
 
     plate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
         db_column="plate_id", related_name="%(class)s_plateid")
@@ -988,6 +1033,7 @@ class MasterPlate(Plate):
             _str += f" Wells:{len(self.wells)} [{_wellid[0]}..{_wellid[-1]}]"           
         return(_str)
 
+
     #------------------------------------------------
     @classmethod
     def new(cls,PlateID,PlateSize,PlateType,WellData=True):
@@ -1026,14 +1072,14 @@ class MasterPlate(Plate):
         return(retDict)
 
     #------------------------------------------------
-    def init_model(self, WellData=True, verbose = 0):
+    def setdefault_model(self, WellData=True, verbose = 0):
         retDict = []
-        super(MasterPlate, self).init_fields()
+        super(MasterPlate, self).setdefault_fields()
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    super(MasterWell,self.wells[w]).init_fields()
+                    super(MasterWell,self.wells[w]).setdefault_fields(ignore_fields=['barcode'])
         
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -1053,6 +1099,51 @@ class MasterPlate(Plate):
         else:
             logger.warning(f"[MasterPlate] SAVE has no PlateID ")
 
+    #------------------------------------------------
+    def add_dilutions(self):
+        DILUTION_DICT = {
+            'Col8':     ( 8, 2, True, False),
+            'Col16':    (16, 2, True, False),
+            'Fix_Col16':(16, 0, True, False),
+            'Fix_Col8': ( 8, 0, True, False),
+            'Row8':     ( 8, 2, False, True),
+            'Row10':    (10, 2, False, True),
+        }
+
+        if self.wells:
+            for w_id in self.wells:
+                if self.wells[w_id].dilution_lst:
+                    #logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w_id}] {self.wells[w_id].dilution_lst}")
+                    for i in range(len(self.wells[w_id].dilution_lst)):
+                        w_dil =self.wells[w_id].dilution_lst[i]
+                        if w_dil in DILUTION_DICT:
+                            nConc,dConc,dRow,dCol  = DILUTION_DICT[w_dil]
+                            wR,wC = self.well_rowcol(w_id)
+                            wConc = self.wells[w_id].test_conc_lst[i]
+                            #print(f"{self.plate_id} {w_id} {wConc}")
+                            for n in range(nConc-1):
+                                if dConc > 0:
+                                    wConc = wConc / dConc
+                                if dRow:
+                                    wR += 1
+                                elif dCol:
+                                    wC += 1
+                                dw_id = self.well_id((wR,wC))
+                                if self.wells[dw_id].n_cmpbatches == 0:
+                                    self.wells[dw_id].cmpbatch_lst = self.wells[w_id].cmpbatch_lst
+                                    self.wells[dw_id].n_cmpbatches = self.wells[w_id].n_cmpbatches
+                                    self.wells[dw_id].test_conc_lst = self.wells[w_id].test_conc_lst
+                                    self.wells[dw_id].test_conc_unit_lst = self.wells[w_id].test_conc_unit_lst
+                                    self.wells[dw_id].set_lst = self.wells[w_id].set_lst
+                                self.wells[dw_id].test_conc_lst[i] = Decimal(wConc).quantize(Decimal("1.0000")) 
+
+                                #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
+                        else:
+                            logger.warning(f"[MasterPlate] Unknown dilution {w_dil} [{self.plate_id} {w_id}]")
+
+                    
+
+
 #=================================================================================================
 class MasterWell(Sample_Base):
     """
@@ -1070,6 +1161,20 @@ class MasterWell(Sample_Base):
         'amount_unit':'Unit_Amount',
         'volume_unit':'Unit_Volume',
     }
+
+    ARRAY_FIELDS = {'cmpbatch_lst':['compound_id','compound2_id','compound3_id','compound4_id'],
+                    'conc_lst':['conc','conc2','conc3','conc4',],
+                    'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
+                    'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
+                    'set_lst':['set_id','set2_id','set3_id','set4_id'], 
+                    'test_conc_lst':['test_conc','test_conc2','test_conc3','test_conc4',],
+                    'test_conc_unit_lst':['test_conc_unit','test_conc2_unit','test_conc3_unit','test_conc4_unit'], 
+                    'test_conc_type_lst':['test_conc_type','test_conc2_type','test_conc3_type','test_conc4_type'], 
+                    'dilution_lst':['dilution','dilution2','dilution3','dilution4'], 
+                    }
+    
+    COPY_FIELDS = ['solvent', 'solvent_conc', 'amount','volume',]
+
 
     plate_id = models.ForeignKey(MasterPlate, blank=True, null=True, verbose_name = "Plate ID", on_delete=models.DO_NOTHING,
         db_column="plate_id", related_name="%(class)s_plateid")
@@ -1133,7 +1238,7 @@ class MasterWell(Sample_Base):
         return f"{self.plate_id} {self.well_id} {self.barcode}"
 
     #------------------------------------------------
-    # Returns an TestWell instance if found by plate_id and well_id
+    # Returns an MasterWell instance if found by plate_id and well_id
     @classmethod
     def get(cls,PlateID,WellID,Barcode=None,verbose=0):
         try:

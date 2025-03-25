@@ -113,7 +113,7 @@ def main(prgArgs,djDir):
                         #logger.info(f"[CO-ADD Compound] New Chem_Structure {djCmpd.std_smiles}")
 
 
-                        djChem.init_fields()
+                        djChem.setdefault_fields()
                         validDict = djChem.validate_fields()
                         
                         if validDict:
@@ -154,7 +154,7 @@ def main(prgArgs,djDir):
                     djSample.full_mw = float(djSample.mw_extra) + float(djChem.mw)
                     djSample.full_mf = get_MF_Smiles(djCmpd.std_smiles+djSample.smiles_extra)
                     
-                    djSample.init_fields()
+                    djSample.setdefault_fields()
                     validDict = djSample.validate_fields()
                     if validDict:
                         validStatus = False

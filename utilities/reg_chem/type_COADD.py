@@ -173,7 +173,7 @@ def main(prgArgs,djDir):
                 updated_sample = True
 
             validStatus = True
-            djCmpd.init_fields()
+            djCmpd.setdefault_fields()
             validDict = djCmpd.validate_fields()
             if validDict:
                 validStatus = False

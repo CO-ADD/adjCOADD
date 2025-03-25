@@ -114,7 +114,10 @@ def read_iControl_xlsheet(xSheet,xDF,prefix=None):
         
         # Set PlateID ---------------------------------------------------------
         if 'BARCODE' in plateDict:
-            plateDict['PLATE_ID'] =  plateDict['BARCODE']
+            if prefix:
+                plateDict['PLATE_ID'] = prefix+"_"+plateDict['BARCODE']
+            else:
+                plateDict['PLATE_ID'] =  plateDict['BARCODE']
         else:   
             if prefix:
                 plateDict['PLATE_ID'] = prefix+"_"+xSheet

@@ -132,7 +132,7 @@ def main(prgArgs,djDir):
 
             validStatus = True
 
-            djSalt.init_fields()
+            djSalt.setdefault_fields()
             validDict = djSalt.validate_fields()
             if validDict:
                 validStatus = False
@@ -172,7 +172,7 @@ def main(prgArgs,djDir):
 
             validStatus = True
 
-            djGroup.init_fields()
+            djGroup.setdefault_fields()
             validDict = djGroup.validate_fields()
             if validDict:
                 validStatus = False

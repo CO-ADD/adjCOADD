@@ -143,7 +143,7 @@ def main(prgArgs,djDir):
                     djCmpd.std_status = 'Empty'
                     djCmpd.std_process = "Std"
 
-                djCmpd.init_fields()
+                djCmpd.setdefault_fields()
                 validDict = djCmpd.validate_fields()
 
                 if validDict:

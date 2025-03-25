@@ -69,7 +69,7 @@ def main(prgArgs,djDir):
                 djE.project_id = row['project_id']
                 djE.project_name = row['project_name']
                 if prgArgs.upload:
-                    djE.init_fields()
+                    djE.setdefault_fields()
                     djE.save()
             else:
                 print(f"[Exists already] {row['ora_project_id']} {row['project_id']} ")
@@ -93,7 +93,7 @@ def main(prgArgs,djDir):
                 djE.sample_type = row['stype']
                 djE.project_id = row['project_id']
                 if prgArgs.upload:
-                    djE.init_fields()
+                    djE.setdefault_fields()
                     djE.save()
             else:
                 print(f"[Exists already] {row['ora_compound_id']} {row['compound_id']} ")
