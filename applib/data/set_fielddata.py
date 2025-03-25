@@ -80,13 +80,6 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
         if len(_ret_list)>0:
             setattr(djModel,f,_ret_list)
 
-
-# if upload:
-#    if overwrite:
-#       save
-#    elif newentry:
-#       save
-
 #------------------------------------------------------------------------------------
 def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],fkeyDict={}, valLog=None):
     validStatus = True
