@@ -141,7 +141,7 @@ def update_VitekID_ora(upload=False,uploaduser=None,OutputN=1000):
             djID.filename = id['FILENAME']
             djID.page_no = id['PAGENO']
 
-            djID.init_fields()
+            djID.setdefault_fields()
             validDict = djID.validate_fields()
             if validDict:
                 logger.info(f" XX {djID} {validDict} ")
@@ -199,7 +199,7 @@ def update_VitekCard_ora(upload=False,uploaduser=None,OutputN=1000):
             djCard.expiry_date = card['EXPIRY_DATE']
             djCard.proc_date = card['PROCESSING_DATE']
 
-            djCard.init_fields()
+            djCard.setdefault_fields()
             validDict = djCard.validate_fields()
             if validDict:
                 logger.info(f" XX {djCard} {validDict} ")

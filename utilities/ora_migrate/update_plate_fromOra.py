@@ -345,7 +345,7 @@ def main(prgArgs,djDir):
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
 
-            djObj.init_fields()
+            djObj.setdefault_fields()
             validDict = djObj.validate_fields(exclude=list(arrayFields.keys()))
             if validDict:
                 validStatus = False
@@ -409,7 +409,7 @@ def main(prgArgs,djDir):
             set_Dictionaries(djObj,row,dictFields)
             set_fkeyFields(djObj,row,fkeyFields)
 
-            djObj.init_fields()
+            djObj.setdefault_fields()
             validDict = djObj.validate_fields()
             if validDict:
                 OutNumbers['Failed Entries'] += 1
@@ -465,7 +465,7 @@ def main(prgArgs,djDir):
             set_arrayFields(djObj,row,arrayFields)
             set_Dictionaries(djObj,row,dictFields)
 
-            djObj.init_fields()
+            djObj.setdefault_fields()
             validDict = djObj.validate_fields()
             if validDict:
                 validStatus = False

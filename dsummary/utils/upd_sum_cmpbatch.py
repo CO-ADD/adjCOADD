@@ -159,7 +159,7 @@ def pivot_sum_sc(SumType,dfSC,CmpBatchLst,StructureID,OutNumbers,
                     CmpDict['hc_n_actives'] += 1
 
         # Vakidate and Save
-        djSum.init_fields()
+        djSum.setdefault_fields()
         validDict = djSum.validate_fields()
         if validDict:
             validStatus = False
@@ -390,7 +390,7 @@ def pivot_sum_dr(SumType,drType,dfDR,CmpBatchLst,StructureID,OutNumbers,
                     CmpDict['hc_n_actives'] += 1
 
         # Validate and Save
-        djSum.init_fields()
+        djSum.setdefault_fields()
         validDict = djSum.validate_fields()
         if validDict:
             validStatus = False

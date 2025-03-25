@@ -70,7 +70,7 @@ def imp_Drug_fromDict(iDict,valLog):
 #    djDrug.smol = iDict['smiles']
 #    djDrug.smol = smiles2mol(iDict['smiles'],verbose=1)
 
-    djDrug.init_fields()
+    djDrug.setdefault_fields()
     validStatus = True
     validDict = djDrug.validate_fields()
     if validDict:
@@ -144,7 +144,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
     djBP.bp_source = iDict['bp_source']
     djBP.bp_source_version = iDict['bp_source_version']
 
-    djBP.init_fields()
+    djBP.setdefault_fields()
     validStatus = True
     validDict = djBP.validate_fields()
     if validDict:
@@ -206,7 +206,7 @@ def imp_VitekCard_fromDict(iDict,valLog,upload=False):
     djVitekCard.proc_date = iDict['processing_date'] if 'processing_date' in iDict.keys() else None
     djVitekCard.analysis_time = iDict['analysis_time'] if 'analysis_time' in iDict.keys() else None
 
-    djVitekCard.init_fields()
+    djVitekCard.setdefault_fields()
     validDict = djVitekCard.validate_fields()
     if validDict:
         validStatus = False
@@ -250,7 +250,7 @@ def imp_VitekID_fromDict(iDict,valLog,upload=False):
     djVitekID.filename = iDict['filename']
     djVitekID.page_no = iDict['pageno']  
 
-    djVitekID.init_fields()
+    djVitekID.setdefault_fields()
     validDict = djVitekID.validate_fields()
     if validDict:
         validStatus = False
@@ -309,7 +309,7 @@ def imp_VitekAST_fromDict(iDict,valLog,upload=False):
     djVitekAST.filename = iDict['filename']
     djVitekAST.page_no = iDict['pageno']  
 
-    djVitekAST.init_fields()
+    djVitekAST.setdefault_fields()
     validDict = djVitekAST.validate_fields()
     if validDict:
         validStatus = False
@@ -373,7 +373,7 @@ def imp_MICCOADD_fromDict(iDict,valLog):
     #djMIC.bp_source = iDict['bp_source']
     #djMIC.media = Dictionary.get(cls.DICTIONARY_FIELDS["media"],iDict['media'],None,verbose=1)
 
-    djMIC.init_fields()
+    djMIC.setdefault_fields()
     validDict = djMIC.validate_fields()
     if validDict:
         validStatus = False
@@ -429,7 +429,7 @@ def imp_MICPub_fromDict(iDict,valLog):
         djMIC.zone_diameter = iDict['zone_diameter']
 
 
-    djMIC.init_fields()
+    djMIC.setdefault_fields()
     validDict = djMIC.validate_fields()
     if validDict:
         validStatus = False

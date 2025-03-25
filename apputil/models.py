@@ -168,6 +168,8 @@ class AuditModel(models.Model):
         retValid = {}
         try:
             self.full_clean(**kwargs)
+        # except AttributeError as e:
+        #     print(e)
         except ValidationError as e:
             for key in e.message_dict:
                 _field = self._meta.get_field(key)
@@ -210,7 +212,7 @@ class AuditModel(models.Model):
     def validate_model(self, verbose = 0):
         validDict = []
 
-        self.init_fields()
+        self.setdefault_fields()
         _valDict = self.validate_fields()
         if _valDict:
             if self._meta.pk.name not in _valDict:
@@ -220,10 +222,12 @@ class AuditModel(models.Model):
         return(validDict)
 
     #-------------------------------------------------------------------
-    def init_field(self, Field, Reset=False, 
+    def setdefault_field(self, Field, Reset=False, 
                    default_Char="", default_Integer=0, default_Decimal=0.0):
     #
-    # Inititalises empty fields
+    # TODO: Rename to setdefault_field
+    #
+    # Set default value for empty fields
     #   1) by default settings in field definition
     #   2) or if no default, by given default Char, Integer, Decimal 
     #
@@ -285,44 +289,23 @@ class AuditModel(models.Model):
         return(_defValue)
 
     #-------------------------------------------------------------------
-    def init_fields(self, Reset=False, 
-                    default_Char="", default_Integer=0, default_Decimal=0.0):
+    def setdefault_fields(self, Reset=False, 
+                    default_Char="", default_Integer=0, default_Decimal=0.0,
+                    ignore_fields = []):
+    
+    #
+    # TODO: Rename to setdefault_fields
+    #
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
-            _defval = self.init_field(field, Reset=Reset,
-                                    default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
-            clFields[field.name]=_defval
-            # fType = field.get_internal_type()
-            # if fType == "IntegerField":
-            #     if hasattr(self,field.name):
-            #         if getattr(self,field.name) is None:
-            #             defValue = default_Integer
-            #             fDict = field.deconstruct()[3]
-            #             if 'default' in fDict:
-            #                 defValue = fDict['default']
-            #             setattr(self,field.name,defValue)
-            #             clFields[field.name]=defValue
-            # if fType == "DecimalField":
-            #     if hasattr(self,field.name):
-            #         if getattr(self,field.name) is None:
-            #             defValue = default_Decimal
-            #             fDict = field.deconstruct()[3]
-            #             if 'default' in fDict:
-            #                 defValue = fDict['default']
-            #             setattr(self,field.name,defValue)
-            #             clFields[field.name]=defValue
-            # elif fType == "CharField":
-            #     if hasattr(self,field.name):
-            #         if getattr(self,field.name) is None:
-            #             defValue = default_Char
-            #             fDict = field.deconstruct()[3]
-            #             if 'default' in fDict:
-            #                 defValue = fDict['default']
-            #             setattr(self,field.name,defValue)
-            #             clFields[field.name]=defValue
+            if field.name not in ignore_fields:
+                _defval = self.setdefault_field(field, Reset=Reset,
+                                        default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
+                clFields[field.name]=_defval
+
         return(clFields)
 
     #------------------------------------------------

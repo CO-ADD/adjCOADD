@@ -15,7 +15,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "UploadTestPlateXLSX"
+logName = "UploadMasterPlateXLSX"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -28,13 +28,12 @@ logging.basicConfig(
     level=logLevel)
 
 #-----------------------------------------------------------------------------
-
 def main(prgArgs,djDir):
 
     django.setup()
 
     from dplate.models import Labware, TestPlate, TestWell
-    from applib.plate.multimode_reader import multimodereader_xls
+    from applib.plate.masterplates import read_motherplate_prepsheet_xls
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -46,9 +45,8 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
     
-   # TestPlate XLSX -------------------------------------------------------------
-    if prgArgs.table == 'TestPlate':
-    
+   # MotherPlate XLSX -------------------------------------------------------------
+    if prgArgs.table == 'MasterPlate':
        if prgArgs.runid and prgArgs.excelfile:
         new_runid = False
 
@@ -62,29 +60,26 @@ def main(prgArgs,djDir):
             djRun.save()    
 
         if os.path.isfile(prgArgs.excelfile):
-            logger.info(f"[Reading XLSX: {prgArgs.excelfile} ({prgArgs.runid}) ")
-            lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix)
+            lstMP = read_motherplate_prepsheet_xls(prgArgs.excelfile)
 
             if prgArgs.upload:
-                _desc = 'TestPlates Saving'
+                _desc = 'MotherPlates Saving'
             else:
-                _desc = 'TestPlates Validating'
+                _desc = 'MotherPlates Validating'
 
-            for tp in tqdm(lstTP, desc=_desc):
+            for mp in tqdm(lstMP, desc=_desc):
                 validStatus = True
                 validDict = {}
-                tp.run_id = djRun
-                
-                tp.setdefault_model()
-                validDict = tp.validate_model(WellData=False, verbose = 0)
+                mp.run_id = djRun
+                validDict = mp.validate_model(WellData=True, verbose = 0)
                 if validDict:
                     validStatus = False
                     validDF = pd.DataFrame(validDict)
                     for c in validDF.columns:
-                        print(validDF[c].unique())
+                        print(f" ** {validDF[c].unique()}")
                     
                 if prgArgs.upload and validStatus:
-                    tp.save(verbose=0)
+                    mp.save(verbose=0)
 
 #==============================================================================
 if __name__ == "__main__":

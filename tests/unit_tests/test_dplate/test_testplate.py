@@ -78,7 +78,7 @@ def main(prgArgs,djDir):
         #     print(f"{np.wells[w]} {np.wells[w].inhibition}")
 
         #print(f" (get_welldata) {np.get_welldata()}")
-        np.init_model()
+        np.setdefault_model()
         np.calc_inhibition(verbose=1)
         if prgArgs.upload:
             np.save()

@@ -57,7 +57,7 @@ def VitekCard_fromDict(iDict,valLog,upload=False):
     djVitekCard.proc_date = iDict['processing_date'] if 'processing_date' in iDict.keys() else None
     djVitekCard.analysis_time = iDict['analysis_time'] if 'analysis_time' in iDict.keys() else None
 
-    djVitekCard.init_fields()
+    djVitekCard.setdefault_fields()
     validDict = djVitekCard.validate_fields()
     if validDict:
         validStatus = False
@@ -101,7 +101,7 @@ def VitekID_fromDict(iDict,valLog,upload=False):
     djVitekID.filename = iDict['filename']
     djVitekID.page_no = iDict['pageno']  
 
-    djVitekID.init_fields()
+    djVitekID.setdefault_fields()
     validDict = djVitekID.validate_fields()
     if validDict:
         validStatus = False
@@ -160,7 +160,7 @@ def VitekAST_fromDict(iDict,valLog,upload=False):
     djVitekAST.filename = iDict['filename']
     djVitekAST.page_no = iDict['pageno']  
 
-    djVitekAST.init_fields()
+    djVitekAST.setdefault_fields()
     validDict = djVitekAST.validate_fields()
     if validDict:
         validStatus = False

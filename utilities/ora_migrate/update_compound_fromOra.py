@@ -183,7 +183,7 @@ def main(prgArgs,djDir):
 
                         validStatus = True
 
-                        djBatch.init_fields()
+                        djBatch.setdefault_fields()
                         validDict = djBatch.validate_fields()
                         if validDict:
                             validStatus = False
@@ -201,7 +201,7 @@ def main(prgArgs,djDir):
                         djCmpd.cmpbatch_id = djBatch
                         validStatus = True
 
-                        djCmpd.init_fields()
+                        djCmpd.setdefault_fields()
                         validDict = djCmpd.validate_fields()
                         if validDict:
                             validStatus = False

@@ -165,7 +165,7 @@ def main(prgArgs,djDir):
                         validStatus = False    
                         row.update(validDict)
 
-                    djAssay.init_fields()
+                    djAssay.setdefault_fields()
                     #validDict = djAssay.validate_fields()
                     validDict = djAssay.validate_fields(exclude=list(arrayFields.keys()))
                     if validDict:

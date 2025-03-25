@@ -110,7 +110,7 @@ def main():
                             djSmp.sample_code = row['compound_code']
                             djSmp.sample_name = row['compound_name']
                             if prgArgs.upload:
-                                djSmp.init_fields()
+                                djSmp.setdefault_fields()
                                 djSmp.save()
                         else:
                             row['Issue'] = f"No Project ID"

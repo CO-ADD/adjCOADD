@@ -124,7 +124,7 @@ def main(prgArgs,djDir):
             if 'rgstdrugname' in row:
                 djObj.batch_notes = row['rgstdrugname']
 
-            djObj.init_fields()
+            djObj.setdefault_fields()
             validDict = djObj.validate_fields()
             if validDict:
                 validStatus = False

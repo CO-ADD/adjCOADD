@@ -112,7 +112,7 @@ def main(prgArgs,djDir):
                 #     djAss.cell_id = None
 
                 # Validate and Save
-                djAss.init_fields()
+                djAss.setdefault_fields()
                 validDict = djAss.validate_fields()
                 if validDict:
                     validStatus = False

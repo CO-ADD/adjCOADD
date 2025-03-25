@@ -38,8 +38,9 @@ def set_arrayFields(djModel,rowDict, arrDict):
         elif isinstance(arrDict[f],list):
             _list = []
             for l in arrDict[f]:
-                if pd.notnull(rowDict[l]):
-                    _list.append(rowDict[l])
+                if l in rowDict:
+                    if pd.notnull(rowDict[l]):
+                        _list.append(rowDict[l])
             setattr(djModel,f,_list)
         
 #------------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],fkey
     if len(fkeyDict)>0:
         set_fkeyFields(djModel,row,fkeyDict)
         
-    djModel.init_fields()
+    djModel.setdefault_fields()
     validDict = djModel.validate_fields()
     if validDict:
         validStatus = False
