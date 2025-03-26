@@ -209,7 +209,7 @@ class Plate(AuditModel):
             row = loc[0] - 1
             col = loc[1] - 1
         elif isinstance(loc,str) :
-            res = re.findall('([A-Za-z]+|\d+)',loc)
+            res = re.findall(r'([A-Za-z]+|\d+)',loc)
             loc = f"{res[0]}{int(res[1]):02d}"
             if check:
                 if not loc in self.well_check['wellID']:

@@ -587,7 +587,7 @@ def readPlate_Epoch_txt(pltFile,fileBarcode=None):
         for r in txtData:
             if len(r)>2:
                 if 'Protocol' in r[2]:
-                    res = re.findall('([A-Za-z0-9\s]+).prt',r[2])
+                    res = re.findall(r'([A-Za-z0-9\s]+).prt',r[2])
                     plProtocol = f"{res[0]}.prt" 
 
         readMode = "OD" + txtData[0][0]
