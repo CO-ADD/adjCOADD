@@ -52,8 +52,8 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
             djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
             validDict = djWell.check_cmpbatch_id()
 
-            for i in range(len(djWell.test_conc_lst)):
-                djWell.test_conc_lst[i] = Decimal(djWell.test_conc_lst[i]).quantize(Decimal("1.0000"))
+            #for i in range(len(djWell.test_conc_lst)):
+            #    djWell.test_conc_lst[i] = Decimal(djWell.test_conc_lst[i]).quantize(Decimal("1.0000"))
 
             if validDict:
                 validStatus = False    
@@ -79,11 +79,11 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
             #         #print(validDict)
             #         row.update(validDict)
 
-            #     djWell.setdefault_fields()
+            #     djWell.set_defaults_model()
             #     validDict = djWell.validate_fields(exclude=list(arrayFields.keys()))
 
 
-        #djMP.setdefault_model()
+        #djMP.set_defaults_model()
         lstPl.append(djMP)
         logger.info(f"[{djMP.plate_id:25s}] - {djMP.plate_type}  {djMP.n_wells}w  [{_status}]")
 

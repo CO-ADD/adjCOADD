@@ -235,7 +235,7 @@ class Chem_Structure(AuditModel):
                     setattr(djchem,s,sDict[s])
 
             validStatus = True
-            djchem.setdefault_fields()
+            djchem.set_defaults_model()
             validDict = djchem.validate_fields()
             if validDict:
                 validStatus = False

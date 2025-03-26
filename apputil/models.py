@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from decimal import Decimal
+
 from sequences import Sequence
 from asgiref.sync import sync_to_async
 
@@ -168,8 +170,6 @@ class AuditModel(models.Model):
         retValid = {}
         try:
             self.full_clean(**kwargs)
-        # except AttributeError as e:
-        #     print(e)
         except ValidationError as e:
             for key in e.message_dict:
                 _field = self._meta.get_field(key)
@@ -212,7 +212,7 @@ class AuditModel(models.Model):
     def validate_model(self, verbose = 0):
         validDict = []
 
-        self.setdefault_fields()
+        #self.set_defaults_model()
         _valDict = self.validate_fields()
         if _valDict:
             if self._meta.pk.name not in _valDict:
@@ -222,10 +222,8 @@ class AuditModel(models.Model):
         return(validDict)
 
     #-------------------------------------------------------------------
-    def setdefault_field(self, Field, Reset=False, 
+    def set_default_field(self, Field, Reset=False, 
                    default_Char="", default_Integer=0, default_Decimal=0.0):
-    #
-    # TODO: Rename to setdefault_field
     #
     # Set default value for empty fields
     #   1) by default settings in field definition
@@ -249,6 +247,7 @@ class AuditModel(models.Model):
 
         _defValue = None
         _fieldType = _field.get_internal_type()
+        
         if _fieldType in _Defaults:
             if hasattr(self,_field.name):
                 if getattr(self,_field.name) is None or Reset:
@@ -258,52 +257,80 @@ class AuditModel(models.Model):
                     else:
                         _defValue = _Defaults[_fieldType]
                     setattr(self,_field.name,_defValue)
-
-        # if fType == "IntegerField":
-        #     if hasattr(self,_field.name):
-        #         if getattr(self,_field.name) is None or Reset:
-        #             fDict = _field.deconstruct()[3]
-        #             if 'default' in fDict:
-        #                 defValue = fDict['default']
-        #             else:
-        #                 defValue = default_Integer
-        #             setattr(self,_field.name,defValue)
-        # if fType == "DecimalField":
-        #     if hasattr(self,_field.name):
-        #         if getattr(self,_field.name) is None or Reset:
-        #             fDict = _field.deconstruct()[3]
-        #             if 'default' in fDict:
-        #                 defValue = fDict['default']
-        #             else:
-        #                 defValue = default_Decimal
-        #             setattr(self,_field.name,defValue)
-        # elif fType == "CharField":
-        #     if hasattr(self,_field.name):
-        #         if getattr(self,_field.name) is None or Reset:
-        #             fDict = _field.deconstruct()[3]
-        #             if 'default' in fDict:
-        #                 defValue = fDict['default']
-        #             else:
-        #                 defValue = default_Char
-        #             setattr(self,_field.name,defValue)
+        
         return(_defValue)
 
     #-------------------------------------------------------------------
-    def setdefault_fields(self, Reset=False, 
+    def set_none_field(self, Field, Reset=False, 
+                   default_Char="", default_Integer=0, default_Decimal=0.0):
+    #
+    # Set fields with default values to None 
+    # 
+        _Defaults = {
+            "IntegerField":default_Integer,
+            "DecimalField":default_Decimal,
+            "CharField":default_Char,
+        }
+
+        if isinstance(Field,str):
+            _field = self._meta.get_field(Field)
+        else:
+            _field = Field
+
+        _defValue = None
+        _fieldType = _field.get_internal_type()
+        
+        if _fieldType in _Defaults:
+            if hasattr(self,_field.name):
+                if getattr(self,_field.name) is _Defaults[_fieldType] or Reset:
+                    setattr(self,_field.name,None)
+                    _defValue = _field.name
+        
+        return(_defValue)
+    #-------------------------------------------------------------------
+    def fix_decimal_arrayfield(self,Field):
+        #
+        # Fix ArrayFields(DecimalFields) - convert any float to Decimals with defined Precision
+        #
+                    
+        if isinstance(Field,str):
+            _field = self._meta.get_field(Field)
+        else:
+            _field = Field
+        
+        _defValue = None
+        print(_field.get_internal_type())    
+        if _field.get_internal_type() == 'ArrayField':
+            if _field.base_field.get_internal_type() == 'DecimalField':
+                _prec =  _field.base_field.decimal_places 
+                _arr = getattr(self,_field.name)
+                if _arr:
+                    for i in range(len(_arr)):
+                        _arr[i] = Decimal(_arr[i]).quantize(Decimal(10)**-_prec)
+                setattr(self,_field.name,_arr)
+                
+                _defValue = _prec
+        return(_defValue)
+
+    #-------------------------------------------------------------------
+    def set_defaults_model(self, Reset=False, fix_Decimals=True,
                     default_Char="", default_Integer=0, default_Decimal=0.0,
-                    ignore_fields = []):
-    
-    #
-    # TODO: Rename to setdefault_fields
-    #
+                    ignore_fields = [], ):   
     #
     # Sets 'None' fields in the instance according to Django guidelines 
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
             if field.name not in ignore_fields:
-                _defval = self.setdefault_field(field, Reset=Reset,
+                # Set Defaults for IntegerFields, DecimalFields and CharFields
+                _defval = self.set_default_field(field, Reset=Reset,
                                         default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
+                
+                # Fix DecimalFields within ArrayFields
+                if fix_Decimals:
+                    _decprc = self.fix_decimal_arrayfield(field)
+                    if _decprc:
+                        clFields[field.name]= f"Decimal {_decprc}"
                 clFields[field.name]=_defval
 
         return(clFields)

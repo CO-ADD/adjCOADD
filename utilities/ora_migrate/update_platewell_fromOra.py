@@ -208,7 +208,7 @@ def main(prgArgs,djDir):
                         #print(validDict)
                         row.update(validDict)
 
-                    djWell.setdefault_fields()
+                    djWell.set_defaults_model()
                     validDict = djWell.validate_fields(exclude=list(arrayFields.keys()))
                     if validDict:
                         validStatus = False
@@ -391,7 +391,7 @@ def main(prgArgs,djDir):
                         #print(validDict)
                         row.update(validDict)
 
-                    djWell.setdefault_fields()
+                    djWell.set_defaults_model()
                     validDict = djWell.validate_fields(exclude=list(arrayFields.keys()))
                     if validDict:
                         validStatus = False

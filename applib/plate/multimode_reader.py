@@ -191,8 +191,8 @@ def read_iControl_xlsheet(xSheet,xDF,prefix=None):
                     _readouts = [plateDict['READS'][0][r][c]]
 
                 # Convert to DecimalField with 5 decimal points
-                for i in range(len(_readouts)):
-                    _readouts[i] = Decimal(_readouts[i]).quantize(Decimal("1.00000"))
+                #for i in range(len(_readouts)):
+                #    _readouts[i] = Decimal(_readouts[i]).quantize(Decimal("1.00000"))
 
                 djPlate.wells[_wellid].readouts = _readouts
                 djPlate.wells[_wellid].readout_types = _readout_types
@@ -422,8 +422,8 @@ def read_Gen5_sheet(xSheet,xDF,prefix=None,):
                     _readouts = [plateDict['READS'][0][r][c]]
 
                 # Convert to DecimalField with 5 decimal points
-                for i in range(len(_readouts)):
-                    _readouts[i] = Decimal(_readouts[i]).quantize(Decimal("1.00000"))
+                #for i in range(len(_readouts)):
+                #    _readouts[i] = Decimal(_readouts[i]).quantize(Decimal("1.00000"))
 
                 djPlate.wells[_wellid].readouts = _readouts
                 djPlate.wells[_wellid].readout_types = _readout_types

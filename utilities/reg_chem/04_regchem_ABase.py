@@ -123,7 +123,7 @@ def main(prgArgs,djDir):
                 djCmp.reg_mw = row['objsmolmassvalue']
                 djCmp.reg_mf = row['objsmolformula']
 
-            djCmp.setdefault_fields()
+            djCmp.set_defaults_model()
             validDict = djCmp.validate_fields()
             if validDict:
                 validStatus = False
@@ -177,7 +177,7 @@ def main(prgArgs,djDir):
                         djChem.smol = _mol
                         OutNumbers['New'] += 1
 
-                    djChem.setdefault_fields()
+                    djChem.set_defaults_model()
                     validDict = djChem.validate_fields()
                     
                     if validDict:
@@ -206,7 +206,7 @@ def main(prgArgs,djDir):
 
                 validStatus = True
                 validDict = djMCC.validate_fields()
-                djMCC.setdefault_fields()
+                djMCC.set_defaults_model()
                 validDict = djMCC.validate_fields()
                 
                 if validDict:

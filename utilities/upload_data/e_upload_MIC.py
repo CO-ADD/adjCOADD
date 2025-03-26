@@ -75,7 +75,7 @@ def update_MICPub_ora(upload=False,uploaduser=None,OutputN=100):
     for mic in micLst:
         mic['ORGANISM_ID'] = reformat_OrganismID(mic['ORGANISM_ID'])
         djMIC = imp_MICPub_fromDict(mic,vLog)
-        djMIC.setdefault_fields()
+        djMIC.set_defaults_model()
         validDict = djMIC.validate_fields()
 
         if validDict:
@@ -131,7 +131,7 @@ def update_MICPub_xls(XlsFile, XlsSheet=0, upload=False,uploaduser=None,OutputN=
             mic['organism_id'] = reformat_OrganismID(mic['organism_id'])
             mic['mic_unit'] = "ug/mL"
             djMIC = imp_MICPub_fromDict(mic,vLog)
-            djMIC.setdefault_fields()
+            djMIC.set_defaults_model()
             validDict = djMIC.validate_fields()
 
             if validDict:
@@ -214,7 +214,7 @@ def update_MICCOADD_ora(RunID,upload=False,uploaduser=None,OutputN=100):
             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
             djMIC = imp_MICCOADD_fromDict(mic,vLog)
-            djMIC.setdefault_fields()
+            djMIC.set_defaults_model()
             validDict = djMIC.validate_fields()
 
             if validDict:

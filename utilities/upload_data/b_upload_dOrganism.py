@@ -76,7 +76,7 @@ def update_OrgBatchImg(JpegFolder,upload=False,uploaduser=None):
                 djImg.orgbatch_id = Organism_Batch.get(JpegFiles[i].replace(".jpeg",""))
                 djImg.image_file = f"images/orgbatch/{get_subdir(JpegFiles[i])}/{JpegFiles[i]}"
 
-            djImg.setdefault_fields()
+            djImg.set_defaults_model()
             validDict = djImg.validate_fields()
 
             if validDict:
@@ -160,7 +160,7 @@ def update_OrgCulture_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lowe
                     setattr(djCult,e,cult[e])
 
 
-                djCult.setdefault_fields()
+                djCult.set_defaults_model()
                 validDict = djCult.validate_fields()
 
                 if validDict:
@@ -257,7 +257,7 @@ def update_OrgBatchStock_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, l
                     setattr(djStock,e,stock[e])
 
 
-                djStock.setdefault_fields()
+                djStock.set_defaults_model()
                 validDict = djStock.validate_fields()
 
                 if validDict:
@@ -368,7 +368,7 @@ def update_OrgBatchStock_ora(upload=False,uploaduser=None,OutputN=1000):
                     djStock.n_left = batch['STOCK_NLEFT']
                     djStock.biologist = ApplicationUser.get(batch['BIOLOGIST'])
 
-                    djStock.setdefault_fields()
+                    djStock.set_defaults_model()
                     validDict = djStock.validate_fields()
                     if validDict:
                         logger.info(f"{djStock} {validDict} ")
@@ -461,7 +461,7 @@ def update_OrgBatch_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
                     setattr(djBatch,e,batch[e])
 
 
-                djBatch.setdefault_fields()
+                djBatch.set_defaults_model()
                 validDict = djBatch.validate_fields()
                 if validDict:
                     logger.info(f" XX {djBatch} {validDict} ")
@@ -543,7 +543,7 @@ def update_OrgBatch_ora(upload=False,uploaduser=None,OutputN=1000):
                 djBatch.stock_level = [batch['MASTER_LEVEL'] ,batch['STOCK_LEVEL'] ,batch['HIGHUSE_LEVEL'] ]
                 djBatch.biologist = ApplicationUser.get(batch['BIOLOGIST'])
 
-                djBatch.setdefault_fields()
+                djBatch.set_defaults_model()
                 validDict = djBatch.validate_fields()
                 if validDict:
                     logger.info(f"{djBatch} {validDict} ")
@@ -647,7 +647,7 @@ def update_Organism_xls(XlsFile, XlsSheet=0,upload=False,uploaduser=None, lower=
                     setattr(djOrg,e,org[e])
 
 
-                djOrg.setdefault_fields()
+                djOrg.set_defaults_model()
                 validDict = djOrg.validate_fields()
                 if validDict:
                     logger.info(f" XX {djOrg} {validDict} ")
@@ -741,7 +741,7 @@ def update_Organism_ora(upload=False,uploaduser=None,OutputN=1000):
                 djOrg.oxygen_pref = Dictionary.get(djOrg.DICTIONARY_FIELDS["oxygen_pref"],org['OXYGEN_PREF'],None)
                 djOrg.biologist = ApplicationUser.get(org['BIOLOGIST'])
 
-                djOrg.setdefault_fields()
+                djOrg.set_defaults_model()
                 validDict = djOrg.validate_fields()
                 if validDict:
                     logger.info(f" XX {djOrg} {validDict} ")
@@ -805,7 +805,7 @@ def update_Taxonomy_ora(upload=False,uploaduser=None,OutputN=1000):
         #djTax.urlname = slugify(tax['ORGANISM_NAME'],lower=False,allow_unicode=False)
         djTax.urlname = slugify(tax['ORGANISM_NAME'],allow_unicode=False)
         
-        djTax.setdefault_fields()
+        djTax.set_defaults_model()
         validDict = djTax.validate_fields()
         if validDict:
             logger.info(f" XX {djTax} {validDict} ")

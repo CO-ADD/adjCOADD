@@ -98,7 +98,7 @@ def main(prgArgs,djDir):
                         setattr(djStock,e,row[e])
 
 
-                    djStock.setdefault_fields()
+                    djStock.set_defaults_model()
                     validDict = djStock.validate_fields()
 
                     if validDict:

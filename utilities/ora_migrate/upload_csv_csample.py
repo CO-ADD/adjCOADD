@@ -162,7 +162,7 @@ def main():
                         set_DictFields(djPrj,row,dictFields)
                         if prgArgs.upload:
                             validStatus = True
-                            djPrj.setdefault_fields()
+                            djPrj.set_defaults_model()
                             validDict = djPrj.validate_fields()
                             if validDict:
                                 validStatus = False

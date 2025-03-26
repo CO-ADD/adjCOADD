@@ -145,7 +145,7 @@ def get_MIC_COADD(test=0):
 #             mic['ADDITIVE'] = mic['TEST_ADDITIVE']
 
 #             djMIC = imp_MICCOADD_fromDict(mic,vLog)
-#             djMIC.setdefault_fields()
+#             djMIC.set_defaults_model()
 #             validDict = djMIC.validate_fields()
 
 #             if validDict:

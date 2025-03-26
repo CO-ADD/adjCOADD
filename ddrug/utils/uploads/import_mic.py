@@ -74,7 +74,7 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
     djBP.bp_source = iDict['bp_source']
     djBP.bp_source_version = iDict['bp_source_version']
 
-    djBP.setdefault_fields()
+    djBP.set_defaults_model()
     validStatus = True
     validDict = djBP.validate_fields()
     if validDict:
@@ -136,7 +136,7 @@ def imp_MICCOADD_fromDict(iDict,valLog):
     #djMIC.bp_source = iDict['bp_source']
     #djMIC.media = Dictionary.get(cls.DICTIONARY_FIELDS["media"],iDict['media'],None,verbose=1)
 
-    djMIC.setdefault_fields()
+    djMIC.set_defaults_model()
     validDict = djMIC.validate_fields()
     if validDict:
         validStatus = False
@@ -192,7 +192,7 @@ def imp_MICPub_fromDict(iDict,valLog):
         djMIC.zone_diameter = iDict['zone_diameter']
 
 
-    djMIC.setdefault_fields()
+    djMIC.set_defaults_model()
     validDict = djMIC.validate_fields()
     if validDict:
         validStatus = False

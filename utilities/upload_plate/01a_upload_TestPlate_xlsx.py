@@ -75,7 +75,7 @@ def main(prgArgs,djDir):
                 validDict = {}
                 tp.run_id = djRun
                 
-                tp.setdefault_model()
+                tp.set_defaults_model()
                 validDict = tp.validate_model(WellData=False, verbose = 0)
                 if validDict:
                     validStatus = False

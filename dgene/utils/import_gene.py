@@ -65,7 +65,7 @@ def imp_Sequence_fromDict(iDict,valLog):
     djSeq.source_link = iDict['source_link']
     djSeq.reference = iDict['reference']
 
-    djSeq.setdefault_fields()
+    djSeq.set_defaults_model()
     validDict = djSeq.validate_fields()
     if validDict:
         #validStatus = False
@@ -125,7 +125,7 @@ def imp_FastQC_fromDict(iDict, valLog, objSeq = None):
     djInst.overrep = iDict['overrepresented sequences']
     djInst.adap_cont = iDict['adapter content']
 
-    djInst.setdefault_fields()
+    djInst.set_defaults_model()
     validDict = djInst.validate_fields()
     if validDict:
         validStatus = False
@@ -194,7 +194,7 @@ def imp_CheckM_fromDict(iDict,valLog, objSeq = None):
     djInst.n50_contigs = int(iDict['n50_contigs'])
 
     if validStatus:
-        djInst.setdefault_fields()
+        djInst.set_defaults_model()
         validStatus = True
         validDict = djInst.validate_fields()
         if validDict:
@@ -264,7 +264,7 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
         djInst.source = iDict['source']
 
     if validStatus:
-        djInst.setdefault_fields()
+        djInst.set_defaults_model()
         validStatus = True
         validDict = djInst.validate_fields()
         if validDict:
@@ -342,7 +342,7 @@ def imp_Gene_fromDict(iDict,valLog):
     if 'gene_modification' not in iDict:
         djGene.gene_modification = '-'
 
-    djGene.setdefault_fields()
+    djGene.set_defaults_model()
     validDict = djGene.validate_fields()
     if validDict:
         #validStatus = False
@@ -386,7 +386,7 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
         djAMRGt.closest_name = iDict['closestname']
     #djAMRGt.contig = iDict['contigid']
 
-    djAMRGt.setdefault_fields()
+    djAMRGt.set_defaults_model()
     validDict = djAMRGt.validate_fields()
     if validDict:
         #validStatus = False

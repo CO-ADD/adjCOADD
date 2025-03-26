@@ -78,7 +78,7 @@ def main(prgArgs,djDir):
                 OutNumbers['Processed'] += 1
                 mic.calc_breakpoint()
 
-                mic.setdefault_fields()
+                mic.set_defaults_model()
                 validDict = mic.validate_fields()
                 if validDict:
                     validStatus = False

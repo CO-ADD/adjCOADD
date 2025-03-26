@@ -276,8 +276,6 @@ class Plate(AuditModel):
         
         return(lWells)
 
-
-
     #------------------------------------------------
     def save_wells(self) :
         if self.wells:
@@ -515,14 +513,14 @@ class TestPlate(Plate):
         return(retDict)
 
     #------------------------------------------------
-    def setdefault_model(self, WellData=True, verbose = 0):
+    def set_defaults_model(self, WellData=True, verbose = 0):
         retDict = []
-        super(TestPlate, self).setdefault_fields()
+        super(TestPlate, self).set_defaults_model()
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    super(TestWell,self.wells[w]).setdefault_fields()
+                    super(TestWell,self.wells[w]).set_defaults_model()
         
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -1072,14 +1070,14 @@ class MasterPlate(Plate):
         return(retDict)
 
     #------------------------------------------------
-    def setdefault_model(self, WellData=True, verbose = 0):
+    def set_defaults_model(self, WellData=True, verbose = 0):
         retDict = []
-        super(MasterPlate, self).setdefault_fields()
+        super(MasterPlate, self).set_defaults_model()
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    super(MasterWell,self.wells[w]).setdefault_fields(ignore_fields=['barcode'])
+                    super(MasterWell,self.wells[w]).set_defaults_model(ignore_fields=['barcode'])
         
     #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -1135,7 +1133,7 @@ class MasterPlate(Plate):
                                     self.wells[dw_id].test_conc_lst = self.wells[w_id].test_conc_lst
                                     self.wells[dw_id].test_conc_unit_lst = self.wells[w_id].test_conc_unit_lst
                                     self.wells[dw_id].set_lst = self.wells[w_id].set_lst
-                                self.wells[dw_id].test_conc_lst[i] = Decimal(wConc).quantize(Decimal("1.0000")) 
+                                #self.wells[dw_id].test_conc_lst[i] = Decimal(wConc).quantize(Decimal("1.0000")) 
 
                                 #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
                         else:
@@ -1264,6 +1262,11 @@ class MasterWell(Sample_Base):
     # #------------------------------------------------
     def save(self, *args, **kwargs):
             if (self.plate_id and self.well_id) or self.barcode:
+                
+                # Sets empty barcodes ('') to None 
+                #    required for unique barcode constrain 
+                self.set_none_field('barcode')
+                
                 super(MasterWell, self).save(*args, **kwargs)
             else:
                 logger.warning(f"[MasterWell] SAVE has not PlateID and/or WellID") 

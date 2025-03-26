@@ -94,7 +94,7 @@ def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],fkey
     if len(fkeyDict)>0:
         set_fkeyFields(djModel,row,fkeyDict)
         
-    djModel.setdefault_fields()
+    djModel.set_defaults_model()
     validDict = djModel.validate_fields()
     if validDict:
         validStatus = False
