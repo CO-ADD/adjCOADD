@@ -45,7 +45,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
@@ -86,8 +86,8 @@ def main(prgArgs,djDir):
             if djCmpd:
                 validStatus = True
                 set_dictFields(djCmpd,row,updFields)
-                # set_arrayFields(djCmpd,row,arrayFields)
-                set_Dictionaries(djCmpd,row,updDict)
+                # set_model_arrayfields(djCmpd,row,arrayFields)
+                set_model_dicts(djCmpd,row,updDict)
                 
                 djCmpd.set_defaults_model()
                 validDict = djCmpd.validate_fields()

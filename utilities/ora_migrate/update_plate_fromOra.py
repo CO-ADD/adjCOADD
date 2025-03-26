@@ -248,7 +248,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields
+    from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts, set_model_fkeys
     from dplate.models import Labware, TestPlate, MasterPlate
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
@@ -340,10 +340,10 @@ def main(prgArgs,djDir):
                 row['test_orgbatch'] = None
                 row['test_cellbatch'] = None
 
-            set_Fields(djObj,row,copyFields)
-            set_arrayFields(djObj,row,arrayFields)
-            set_Dictionaries(djObj,row,dictFields)
-            set_fkeyFields(djObj,row,fkeyFields)
+            set_model_fields(djObj,row,copyFields)
+            set_model_arrayfields(djObj,row,arrayFields)
+            set_model_dicts(djObj,row,dictFields)
+            set_model_fkeys(djObj,row,fkeyFields)
 
             djObj.set_defaults_model()
             validDict = djObj.validate_fields(exclude=list(arrayFields.keys()))
@@ -404,10 +404,10 @@ def main(prgArgs,djDir):
 
             djObj.set_platesize(row['plate_size'])
 
-            set_Fields(djObj,row,copyFields)
-            # set_arrayFields(djObj,row,arrayFields)
-            set_Dictionaries(djObj,row,dictFields)
-            set_fkeyFields(djObj,row,fkeyFields)
+            set_model_fields(djObj,row,copyFields)
+            # set_model_arrayfields(djObj,row,arrayFields)
+            set_model_dicts(djObj,row,dictFields)
+            set_model_fkeys(djObj,row,fkeyFields)
 
             djObj.set_defaults_model()
             validDict = djObj.validate_fields()
@@ -461,9 +461,9 @@ def main(prgArgs,djDir):
                 NewEntry = True
                 OutNumbers['New Entry'] += 1
 
-            set_Fields(djObj,row,copyFields)
-            set_arrayFields(djObj,row,arrayFields)
-            set_Dictionaries(djObj,row,dictFields)
+            set_model_fields(djObj,row,copyFields)
+            set_model_arrayfields(djObj,row,arrayFields)
+            set_model_dicts(djObj,row,dictFields)
 
             djObj.set_defaults_model()
             validDict = djObj.validate_fields()

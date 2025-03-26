@@ -20,9 +20,11 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
     xlWB = pd.ExcelFile(xlFile)
     lstPl = []
     for xSheet in xlWB.sheet_names:
+        
         xDF = xlWB.parse(xSheet, header = None)
 
         if len(xDF)>0:
+            dictPl = {}
             djTP = None
             if xDF[0][0] == "Application: Tecan i-control":
                 djTP,_status = read_iControl_xlsheet(xSheet,xDF,prefix=prefix)
@@ -36,7 +38,11 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
             if djTP:
                 djTP.input_file = os.path.split(xlFile)[1]
 
-                lstPl.append(djTP)
+                dictPl['plate_id'] = djTP.plate_id
+                dictPl['plate'] = djTP
+                dictPl['new'] = _status == 'New'
+                
+                lstPl.append(dictPl)
                 logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type} [{_status}]")
             else:
                 logger.info(f"[{xSheet}] - Unknown PlateReader Format")

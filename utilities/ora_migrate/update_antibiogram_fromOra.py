@@ -196,7 +196,7 @@ def main(prgArgs,djDir):
 
     from apputil.models import Dictionary
     from apputil.utils.data import join_lst
-    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_model_from_dict
     from dorganism.utils.utils import reformat_OrgBatchID
 
     from ddrug.models import Drug, MIC_COADD
@@ -269,10 +269,9 @@ def main(prgArgs,djDir):
                     row['plate_size'] = row['plate_size'].replace('w','')
                     row['mic_type'] = 'BMD'
                     
-                    validStatus = set_Fields_fromDict(djMIC,row,
-                                                    FieldList=['mic','mic_unit','media','dye','additive','test_date'], 
-                                                    ArrayDict={}, 
-                                                    DictList=['plate_size','plate_material','mic_type'])
+                    validStatus = set_model_from_dict(djMIC,row,
+                                                    list_Fields=['mic','mic_unit','media','dye','additive','test_date'], 
+                                                    list_Dicts=['plate_size','plate_material','mic_type'])
 
                     if validStatus:
                         if prgArgs.upload:

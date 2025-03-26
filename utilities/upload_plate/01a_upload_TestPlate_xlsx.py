@@ -70,13 +70,13 @@ def main(prgArgs,djDir):
             else:
                 _desc = 'TestPlates Validating'
 
-            for tp in tqdm(lstTP, desc=_desc):
+            for tpDict in tqdm(lstTP, desc=_desc):
                 validStatus = True
                 validDict = {}
-                tp.run_id = djRun
+                tpDict['plate'].run_id = djRun
                 
-                tp.set_defaults_model()
-                validDict = tp.validate_model(WellData=False, verbose = 0)
+                tpDict['plate'].set_defaults_model()
+                validDict = tpDict['plate'].validate_model(WellData=False, verbose = 0)
                 if validDict:
                     validStatus = False
                     validDF = pd.DataFrame(validDict)
@@ -84,7 +84,8 @@ def main(prgArgs,djDir):
                         print(validDF[c].unique())
                     
                 if prgArgs.upload and validStatus:
-                    tp.save(verbose=0)
+                    if tpDict['new'] or prgArgs.overwrite:
+                        tpDict['plate'].save(verbose=0)
 
 #==============================================================================
 if __name__ == "__main__":

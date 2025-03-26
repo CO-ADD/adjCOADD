@@ -17,59 +17,79 @@ from apputil.models import Dictionary
 
 
 #------------------------------------------------------------------------------------
-def set_fkeyFields(djModel,rowDict, arrDict):
+def set_model_fkeys(djModel, rowDict, dict_FKeys):
+    #
+    # dict_FKeys = {'field_name': FKey Model}
+    #
     valid = True
-    for f in arrDict:
+    for f in dict_FKeys:
         if f in rowDict:
-            _obj = arrDict[f].get(rowDict[f])
+            _obj = dict_FKeys[f].get(rowDict[f])
             if _obj is not None:
                 setattr(djModel,f,_obj)
             else:
+                logger.warning(f" [set_fkeys] {f} = {rowDict[f]} not found in [{dict_FKeys[f].__name__}]" )
+                setattr(djModel,f,None)
                 valid = False
     return valid           
-#------------------------------------------------------------------------------------
-def set_arrayFields(djModel,rowDict, arrDict):
-    for f in arrDict:
-        #print("arrFields",f)
-        if isinstance(arrDict[f],str):
-            if pd.notnull(rowDict[arrDict[f]]):
-                setattr(djModel,f,strList_to_List(str(rowDict[arrDict[f]])) )
-                
-        elif isinstance(arrDict[f],list):
-            _list = []
-            for l in arrDict[f]:
-                if l in rowDict:
-                    if pd.notnull(rowDict[l]):
-                        _list.append(rowDict[l])
-            setattr(djModel,f,_list)
         
 #------------------------------------------------------------------------------------
-def set_Fields(djModel,rowDict,dictList):
-    for e in dictList:
+def set_model_fields(djModel,rowDict,list_Fields):
+    #
+    # list_Fields = ['fieldname1','fielname2',...,'filenameN'] 
+    #
+    for e in list_Fields:
         if e in rowDict:
             if pd.notnull(rowDict[e]):
                 setattr(djModel,e,rowDict[e])
 
 #------------------------------------------------------------------------------------
-def set_Dictionaries(djModel,rowDict,dictFields):
-    for d in dictFields:
+def set_model_dicts(djModel,rowDict,list_Dicts):
+    #
+    # list_Dicts = ['fieldname1','fielname2',...,'filenameN'] 
+    #
+    for d in list_Dicts:
         if d in rowDict:
             if pd.notnull(rowDict[d]):
                 if d in djModel.DICTIONARY_FIELDS:
                     setattr(djModel,d,Dictionary.get(djModel.DICTIONARY_FIELDS[d],rowDict[d]))
 
 #------------------------------------------------------------------------------------
-def set_arrayDictionaries(djModel,rowDict,arrDict):
-    for f in arrDict:
+def set_model_arrayfields(djModel,rowDict, dict_Arrays):
+    #
+    # dict_Arrays = {'fieldname_lst' : ['input1','input2',...,'inputn'] }
+    #
+    for f in dict_Arrays:
+        _array = []
+        if isinstance(dict_Arrays[f],str):
+            if pd.notnull(rowDict[dict_Arrays[f]]):
+                _array = strList_to_List(str(rowDict[dict_Arrays[f]]))
+                setattr(djModel,f, _array)
+                
+        elif isinstance(dict_Arrays[f],list):
+            for l in dict_Arrays[f]:
+                if l in rowDict:
+                    if pd.notnull(rowDict[l]):
+                        _array.append(rowDict[l])
+        if _array:
+            setattr(djModel,f,_array)
+
+#------------------------------------------------------------------------------------
+def set_model_dictarrayfields(djModel,rowDict,dict_ArrayDicts):
+    #
+    # arrDict = {'fieldname_lst' : ['input1','input2',...,'inputN'] }
+    #   inputN - checked if in Dictionary
+    #
+    for f in dict_ArrayDicts:
         _dict_list = []
         _ret_list  = []
-        if isinstance(arrDict[f],str):
-            if pd.notnull(rowDict[arrDict[f]]):
+        if isinstance(dict_ArrayDicts[f],str):
+            if pd.notnull(rowDict[dict_ArrayDicts[f]]):
                 if f in djModel.DICTIONARY_FIELDS:
-                    _dict_list = strList_to_List(rowDict[arrDict[f]])
+                    _dict_list = strList_to_List(rowDict[dict_ArrayDicts[f]])
                 
-        elif isinstance(arrDict[f],list):
-            for l in arrDict[f]:
+        elif isinstance(dict_ArrayDicts[f],list):
+            for l in dict_ArrayDicts[f]:
                 if pd.notnull(rowDict[l]):
                     _dict_list.append(rowDict[l])
         
@@ -82,17 +102,59 @@ def set_arrayDictionaries(djModel,rowDict,arrDict):
             setattr(djModel,f,_ret_list)
 
 #------------------------------------------------------------------------------------
-def set_Fields_fromDict(djModel,row,FieldList=[], ArrayDict={}, DictList=[],fkeyDict={}, valLog=None):
+def set_model_fkeyarrayfields(djModel,rowDict,dict_ArrayFKeys):
+    #
+    #  dict_ArrayFKeys = {'fieldname_lst' : {'model': Model, 'fields': ['input1','input2',...,'inputN'] } }
+    #   inputN - checked if in Dictionary
+    #
+
+    for f in dict_ArrayFKeys:
+        #print("arrFields",f)
+        _array = []
+        _fields = dict_ArrayFKeys[f]['fields']
+        _model = dict_ArrayFKeys[f]['model']
+        
+        if isinstance(_fields,str):
+            if pd.notnull(rowDict[_fields]):
+                _array = strList_to_List(str(rowDict[_fields]))
+                setattr(djModel,f,_array)
+                
+        elif isinstance(_fields,list):
+            for l in _fields:
+                if l in rowDict:
+                    if pd.notnull(rowDict[l]):
+                        _array.append(rowDict[l])
+        if _array:
+            _valid = True
+            for _a in _array:
+                _obj = _model.get(_a)
+                if _obj is None:
+                    logger.warning(f" [set_fkeys] {f} = {_a} not found in [{_model.__name__}]" )
+                    _valid = False
+            if _valid:
+                setattr(djModel,f,_array)
+
+
+#------------------------------------------------------------------------------------
+def set_model_from_dict(djModel,row,
+                        list_Fields=[], 
+                        dict_Arrays={}, 
+                        list_Dicts=[],
+                        dict_FKeys={},
+                        dict_FKeyArrays = {}, 
+                        valLog=None):
     validStatus = True
 
-    if len(FieldList)>0:
-        set_Fields(djModel,row,FieldList)
-    if len(ArrayDict)>0:
-        set_arrayFields(djModel,row,ArrayDict)     
-    if len(DictList)>0:
-        set_Dictionaries(djModel,row,DictList)
-    if len(fkeyDict)>0:
-        set_fkeyFields(djModel,row,fkeyDict)
+    if len(list_Fields)>0:
+        set_model_fields(djModel,row,list_Fields)
+    if len(dict_Arrays)>0:
+        set_model_arrayfields(djModel,row,dict_Arrays)     
+    if len(list_Dicts)>0:
+        set_model_dicts(djModel,row,list_Dicts)
+    if len(dict_FKeys)>0:
+        set_model_fkeys(djModel,row,dict_FKeys)
+    if len(dict_FKeyArrays)>0:
+        set_model_fkeyarrayfields(djModel,row,dict_FKeyArrays)
         
     djModel.set_defaults_model()
     validDict = djModel.validate_fields()

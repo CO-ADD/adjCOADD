@@ -517,10 +517,13 @@ class TestPlate(Plate):
         retDict = []
         super(TestPlate, self).set_defaults_model()
 
-        if self.wells and WellData:
-            for w in self.wells:
-                if self.wells[w] is not None:
-                    super(TestWell,self.wells[w]).set_defaults_model()
+        # if self.wells have been set at all
+        if hasattr(self,'wells'):
+            # if self.wells is not None 
+            if self.wells and WellData:
+                for w in self.wells:
+                    if self.wells[w] is not None:
+                        super(TestWell,self.wells[w]).set_defaults_model()
         
     #------------------------------------------------
     def save(self, *args, **kwargs):

@@ -47,7 +47,7 @@ def main(prgArgs,djDir):
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
     from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
+    from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts, set_model_fkeys, set_model_dictarrayfields
     from dplate.models import Labware, TestPlate, TestWell,MasterPlate, MasterWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import Screen_Run
@@ -171,9 +171,9 @@ def main(prgArgs,djDir):
 
                     #print(f" {OutName} {djWell} ")
 
-                set_Fields(djWell,row,copyFields)
-                set_arrayFields(djWell,row,arrayFields)
-                set_Dictionaries(djWell,row,dictFields)
+                set_model_fields(djWell,row,copyFields)
+                set_model_arrayfields(djWell,row,arrayFields)
+                set_model_dicts(djWell,row,dictFields)
 
                 # Fix Readout_types
                 _readout = []
@@ -365,9 +365,9 @@ def main(prgArgs,djDir):
 
                     #print(f" {OutName} {djWell} ")
 
-                set_Fields(djWell,row,copyFields)
-                set_arrayFields(djWell,row,arrayFields)
-                set_Dictionaries(djWell,row,dictFields)
+                set_model_fields(djWell,row,copyFields)
+                set_model_arrayfields(djWell,row,arrayFields)
+                set_model_dicts(djWell,row,dictFields)
 
                 _new_lst = []
                 for _old in djWell.cmpbatch_lst:

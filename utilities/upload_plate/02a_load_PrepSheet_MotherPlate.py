@@ -63,23 +63,26 @@ def main(prgArgs,djDir):
             lstMP = read_motherplate_prepsheet_xls(prgArgs.excelfile)
 
             if prgArgs.upload:
-                _desc = 'MotherPlates Saving'
+                _desc = 'MotherPlates Saving NEW'
+                if prgArgs.overwrite:
+                    _desc = 'MotherPlates Saving ALL'
             else:
                 _desc = 'MotherPlates Validating'
 
-            for mp in tqdm(lstMP, desc=_desc):
+            for mpDict in tqdm(lstMP, desc=_desc):
                 validStatus = True
                 validDict = {}
-                mp.run_id = djRun
-                validDict = mp.validate_model(WellData=True, verbose = 0)
+                mpDict['plate'].run_id = djRun
+                validDict = mpDict['plate'].validate_model(WellData=True, verbose = 0)
                 if validDict:
                     validStatus = False
                     validDF = pd.DataFrame(validDict)
                     for c in validDF.columns:
-                        print(f" ** {validDF[c].unique()}")
+                        logger.warning(f" ** {validDF[c].unique()}")
                     
                 if prgArgs.upload and validStatus:
-                    mp.save(verbose=0)
+                    if mpDict['new'] or prgArgs.overwrite:
+                        mpDict['plate'].save(verbose=0)
 
 #==============================================================================
 if __name__ == "__main__":

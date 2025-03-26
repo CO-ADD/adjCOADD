@@ -36,7 +36,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
+    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts, set_model_fkeys, set_model_dictarrayfields
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
@@ -175,9 +175,9 @@ def main(prgArgs,djDir):
                         djAssay.assay_id = reformat_OrganismID(row['assay_id'])
 
                     set_dictFields(djAssay,row,copyFields)
-                    set_arrayFields(djAssay,row,arrayFields)
-                    set_fkeyFields(djAssay,row,fkeyFields)
-                    #set_Dictionaries(djAssay,row,dictFields)
+                    set_model_arrayfields(djAssay,row,arrayFields)
+                    set_model_fkeys(djAssay,row,fkeyFields)
+                    #set_model_dicts(djAssay,row,dictFields)
 
                     # Fix CmpBatch ID's
                     _new_lst = []

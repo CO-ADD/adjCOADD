@@ -45,7 +45,7 @@ def main(prgArgs,djDir):
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
     from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries, set_fkeyFields, set_arrayDictionaries
+    from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts, set_model_fkeys, set_model_dictarrayfields
 
     # from dplate.models import Labware, TestPlate, TestWell,MasterPlate, MasterWell
     # from dsample.models import Convert_ProjectID, Convert_CompoundID

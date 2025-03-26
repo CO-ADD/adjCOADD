@@ -56,11 +56,11 @@ def main(prgArgs,djDir):
     django.setup()
 
     from dscreen.models import Assay
-    from dplate.models import Labware, TestPlate, TestWell
+    from dplate.models import Labware, TestPlate, TestWell, MasterPlate
     from dorganism.models import Organism, Organism_Batch
     from dcell.models import Cell, Cell_Batch
     from applib.plate.multimode_reader import multimodereader_xls
-    from applib.data.set_fielddata import set_Fields_fromDict
+    from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -83,11 +83,13 @@ def main(prgArgs,djDir):
 
             # Assays ------------------------------------------------------------------------
             AssayDict = {}
-            Assay_FieldList = ['assay_subtype','test_media', 'test_dye', 'test_enviroment', 'test_time',
+            ass_Fields = ['assay_subtype','sum_assay_id','test_media', 'test_dye', 'test_enviroment', 'test_time',
                                 'test_temperature', 'subculture_type', 'test_addition', ]
-            Assay_FKeyDict  = {'organism_id': Organism,'cell_id': Cell}
+            ass_FKeys  = {'organism_id': Organism,'cell_id': Cell}
 
             validStatus = True
+            
+            logger.info(f"[Assays]")
             for idx,row in tqdm(PrepSheets['Assays'].iterrows(), total= len(PrepSheets['Assays']), desc='[Assays]'):
                 OutNumbers['Processed Assays'] += 1
                 djAss = Assay.get(row['assay_id'])
@@ -100,7 +102,7 @@ def main(prgArgs,djDir):
                         djAss.assay_type =  row['organism_id']
                     elif 'cell_id' in row:
                         djAss.assay_type =  row['cell_id']    
-                    validStatus = set_Fields_fromDict(djAss,row,FieldList=Assay_FieldList, fkeyDict=Assay_FKeyDict)
+                    validStatus = set_model_from_dict(djAss,row,list_Fields=ass_Fields, dict_FKeys=ass_FKeys)
                     new_assay = True
                     OutNumbers['New Assays'] += 1
 
@@ -109,38 +111,60 @@ def main(prgArgs,djDir):
                     djAss.save()
 
                 AssayDict[row['assay_id']] = djAss
-
-            logger.info(f"[Assays]: New Assays: {OutNumbers['New Assays']} of {OutNumbers['Processed Assays']} - Uploaded {OutNumbers['Uploaded Assays']}")
+            
+            logger.info(f"[Assays]: {OutNumbers['New Assays']} new assays (of {OutNumbers['Processed Assays']}) ")
+            logger.info(f"[Assays]: New assays uploaded {OutNumbers['Uploaded Assays']} [Upload: {prgArgs.upload}]")
+            if (OutNumbers['Processed Assays'] - OutNumbers['New Assays']) > 0:
+                logger.info(f"[Assays]: -- Existing assays need to updated online")
+            logger.info(f"[Assays]")
 
             # TestPlates  ------------------------------------------------------------------------
+            PrepSheets['TestPlateList'].rename(columns={"test_strain": "test_orgbatch_id", "test_cellline": "test_cellbatch_id"},inplace=True)
+            print( PrepSheets['TestPlateList'].columns)
             TestPlateDict = {}
-            TestPlate_FieldList = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues','control_layout' ]
-            TestPlate_FKeyDict  = {'assay_id': Assay,'cellbatch_id': Cell_Batch, 'orgbatch_id': Organism_Batch, 'labware_id': Labware}
-            TestPlate_DictList = ['result_type']
+            tp_Fields = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues','control_layout' ]
+            tp_FKeys  = {'assay_id': Assay,'test_cellbatch_id': Cell_Batch, 'test_orgbatch_id': Organism_Batch, 'labware_id': Labware}
+            tp_Dicts = ['result_type']
+            tp_Arrays = {'motherplate_ids':['motherplate_id','motherplate2_id'],'synergy_cmpbatches':['syn_compounds_ab','syn_compounds_pot']}
+            tp_FKeyArrays = {'motherplate_ids':{'model':MasterPlate, 'fields': ['motherplate_id','motherplate2_id']},
+                             'synergy_cmpbatches':{'model':Organism_Batch, 'fields':['syn_compounds_ab','syn_compounds_pot']}
+                            }
+            
 
             # Missing MatherPlate_ID, SynCompounds
-
             for idx,row in tqdm(PrepSheets['TestPlateList'].iterrows(), total= len(PrepSheets['TestPlateList']), desc='[TestPlates]'):
                 OutNumbers['Processed Plates'] += 1
                 validStatus = True
-                djTP = TestPlate.get(row['plate_id'],WellData=False)
+                djTP = TestPlate.get(row['testplate_id'],WellData=False)
                 if djTP is None:
-                    logger.info(f"[TestPlate] {row['plate_id']} does not exist - Upload first the ReadOuts or check the Plate_ID")
+                    logger.info(f"[TestPlate] {row['testplate_id']} does not exist - Upload first the ReadOuts or check the Plate_ID")
                     OutNumbers['New Plates'] += 1
                 else:
-                    validStatus = set_Fields_fromDict(djTP,row,FieldList=TestPlate_FieldList, ArrayDict={}, DictList=TestPlate_DictList, fkeyDict=TestPlate_FKeyDict)
-                    TestPlateDict[row['plate_id']] = djTP
-
+                    validStatus = set_model_from_dict(djTP,row,
+                                                      list_Fields=tp_Fields, 
+                                                      dict_Arrays=tp_Arrays, 
+                                                      list_Dicts=tp_Dicts, 
+                                                      dict_FKeys=tp_FKeys,
+                                                      dict_FKeyArrays= tp_FKeyArrays)
+                    TestPlateDict[row['testplate_id']] = djTP
+                    #print(f" [{djTP.plate_id}] {validStatus}")
                 if prgArgs.upload and validStatus:
-                    OutNumbers['Uploaded Assays'] += 1
+                    OutNumbers['Uploaded Plates'] += 1
+                    djTP.test_orgbatch_id
                     djTP.save()
 
-            logger.info(f"[TestPlates]: New Plates: {OutNumbers['New Plates']} of {OutNumbers['Processed Plates']} - Uploaded {OutNumbers['Uploaded Plates']}")
+            logger.info(f"[TestPlates]")
+            logger.info(f"[TestPlates]: {OutNumbers['Processed Plates']} TestPlates ({OutNumbers['New Plates']} new plates)")
+            logger.info(f"[TestPlates]: Plates uploaded {OutNumbers['Uploaded Plates']} [Upload: {prgArgs.upload}]")
+            if OutNumbers['New Plates'] > 0:     
+                logger.info(f"[TestPlates]: -- The {OutNumbers['New Plates']} new plates are not uploaded")
+                logger.info(f"[TestPlates]: -- ReadOuts need to be uploaded first, or check the TestPlate_ID")
+            logger.info(f"[TestPlates]")
 
-            if not validStatus:
-                logger.info(f"[TestPlates]: New Plates: {OutNumbers['New Plates']} of {OutNumbers['Processed Plates']} - Uploaded {OutNumbers['Uploaded Plates']}")
+            # if not validStatus:
+            #     logger.info(f"[TestPlates]: New Plates: {OutNumbers['New Plates']} of {OutNumbers['Processed Plates']} - Uploaded {OutNumbers['Uploaded Plates']}")
 
-            logger.info(f" [TestPlateList] {OutNumbers}")
+            # logger.info(f" [TestPlateList] {OutNumbers}")
     
 #==============================================================================
 if __name__ == "__main__":

@@ -78,7 +78,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
     from dsample.models import Project, COADD_Compound, Compound_Batch
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
@@ -170,8 +170,8 @@ def main(prgArgs,djDir):
                             outNumbers['New Batches'] += 1
 
                         set_dictFields(djCmpd,row,cpyFields)
-                    #     set_arrayFields(djPrj,row,arrayFields)
-                        set_Dictionaries(djCmpd,row,dictFields)
+                    #     set_model_arrayfields(djPrj,row,arrayFields)
+                        set_model_dicts(djCmpd,row,dictFields)
 
                         if djCmpd.reg_mw < 2:
                             djCmpd.reg_mw = 0

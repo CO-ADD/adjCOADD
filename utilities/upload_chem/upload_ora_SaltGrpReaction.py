@@ -95,7 +95,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import ApplicationUser, Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
     from dchem.models import Chem_Structure, Chem_Salt, Chem_Group
     from dsample.models import Library, Library_Compound
 
@@ -127,8 +127,8 @@ def main(prgArgs,djDir):
                 new_compound = True
 
             set_dictFields(djSalt,row,['salt_name','smiles','mw','mf','charge','natoms','h_equiv'])
-            # set_arrayFields(djCmpd,row,arrayFields)
-            set_Dictionaries(djSalt,row,['salt_type'])
+            # set_model_arrayfields(djCmpd,row,arrayFields)
+            set_model_dicts(djSalt,row,['salt_type'])
 
             validStatus = True
 
@@ -167,8 +167,8 @@ def main(prgArgs,djDir):
                 new_compound = True
 
             set_dictFields(djGroup,row,['chemgroup_name','chemgroup_set','smarts','allowed_min','allowed_max'])
-            # set_arrayFields(djCmpd,row,arrayFields)
-            set_Dictionaries(djGroup,row,['chemgroup_type'])
+            # set_model_arrayfields(djCmpd,row,arrayFields)
+            set_model_dicts(djGroup,row,['chemgroup_type'])
 
             validStatus = True
 

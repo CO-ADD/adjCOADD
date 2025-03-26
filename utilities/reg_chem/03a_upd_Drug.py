@@ -44,7 +44,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_model_from_dict
     from apputil.utils.data import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID, Library, Library_Compound
     from dchem.models import Chem_Structure, Chem_Salt
@@ -65,10 +65,6 @@ def main(prgArgs,djDir):
     if prgArgs.table == "Drug" :
 
         LibID = 'ANTIMICRO'
-
-
-
-        # set_Fields_fromDict(djModel,row,dictList=[], arrDict=[], dictFields=[],valLog=None)
 
         # logger.info("--> DRUG_Compound ---------------------------------------------------------")
         # qryCmpd = COADD_Compound.objects.all()            
@@ -98,7 +94,7 @@ def main(prgArgs,djDir):
                         djCmpd.compound_code = row['drug_name']
                         djCmpd.library_id = djLib
 
-                        validStatus = set_Fields_fromDict(djCmpd,row,['reg_smiles'], [], [],valLog=None)
+                        validStatus = set_model_from_dict(djCmpd,row,list_Fields=['reg_smiles'], valLog=None)
                         new_compound = True
                         logger.info(f"New AntiMicro Compound {row['drug_name']}")
 
@@ -117,9 +113,11 @@ def main(prgArgs,djDir):
                     else:
                         logger.info(f"Exists {row['drug_name']}")
 
-                    validStatus = set_Fields_fromDict(djDrug,row,['antimicro','drug_target','durg_subtarget','drug_class','durg_subclass','antimicro_class'],
-                                                                {'drug_othernames':'drug_othernames'}, 
-                                                                ['drug_type'],valLog=None)
+                    validStatus = set_model_from_dict(djDrug,row,
+                                                      list_Fields= ['antimicro','drug_target','durg_subtarget','drug_class','durg_subclass','antimicro_class'],
+                                                      dict_Arrays = {'drug_othernames':'drug_othernames'}, 
+                                                      list_Dicts = ['drug_type'],
+                                                      valLog=None)
                     
                     if prgArgs.upload and validStatus:
                          if new_drug or prgArgs.overwrite:

@@ -37,7 +37,7 @@ def main(prgArgs,djDir):
     from dorganism.models import Organism, Organism_Batch
     from dcell.models import Cell, Cell_Batch
     from applib.plate.multimode_reader import multimodereader_xls
-    from applib.data.set_fielddata import set_Fields_fromDict
+    from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -98,7 +98,7 @@ def main(prgArgs,djDir):
             #             djAss.assay_type =  row['organism_id']
             #         elif 'cell_id' in row:
             #             djAss.assay_type =  row['cell_id']    
-            #         validStatus = set_Fields_fromDict(djAss,row,FieldList=Assay_FieldList, fkeyDict=Assay_FKeyDict)
+            #         validStatus = set_model_from_dict(djAss,row,FieldList=Assay_FieldList, fkeyDict=Assay_FKeyDict)
             #         new_assay = True
             #         OutNumbers['New Assays'] += 1
 
@@ -126,7 +126,7 @@ def main(prgArgs,djDir):
             #         logger.info(f"[TestPlate] {row['plate_id']} does not exist - Upload first the ReadOuts or check the Plate_ID")
             #         OutNumbers['New Plates'] += 1
             #     else:
-            #         validStatus = set_Fields_fromDict(djTP,row,FieldList=TestPlate_FieldList, ArrayDict={}, DictList=TestPlate_DictList, fkeyDict=TestPlate_FKeyDict)
+            #         validStatus = set_model_from_dict(djTP,row,FieldList=TestPlate_FieldList, ArrayDict={}, DictList=TestPlate_DictList, fkeyDict=TestPlate_FKeyDict)
             #         TestPlateDict[row['plate_id']] = djTP
 
             #     if prgArgs.upload and validStatus:

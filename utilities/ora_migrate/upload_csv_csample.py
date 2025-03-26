@@ -19,7 +19,7 @@ import django
 import logging
 #-----------------------------------------------------------------------------
 
-def set_arrayFields_fromDict(djModel,rowDict, arrDict):
+def set_model_arrayfields_fromDict(djModel,rowDict, arrDict):
     for f in arrDict:
         #print("arrFields",f)
         if isinstance(arrDict[f],str):
@@ -158,7 +158,7 @@ def main():
                         djPrj.project_id = cvPrj.project_id
                         
                         set_fromDict(djPrj,row,cpyFields)
-                        set_arrayFields_fromDict(djPrj,row,arrayFields)
+                        set_model_arrayfields_fromDict(djPrj,row,arrayFields)
                         set_DictFields(djPrj,row,dictFields)
                         if prgArgs.upload:
                             validStatus = True

@@ -122,7 +122,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_arrayFields, set_dictFields, set_Dictionaries
+    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
     from dsample.models import Project
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
@@ -179,8 +179,8 @@ def main(prgArgs,djDir):
                     row['Issue'] = f"Exists"
 
                 set_dictFields(djPrj,row,cpyFields)
-                set_arrayFields(djPrj,row,arrayFields)
-                set_Dictionaries(djPrj,row,dictFields)
+                set_model_arrayfields(djPrj,row,arrayFields)
+                set_model_dicts(djPrj,row,dictFields)
 
                 validStatus = True
                 djPrj.set_defaults_model()

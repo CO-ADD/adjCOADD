@@ -299,7 +299,7 @@ class AuditModel(models.Model):
             _field = Field
         
         _defValue = None
-        print(_field.get_internal_type())    
+        #print(_field.get_internal_type())    
         if _field.get_internal_type() == 'ArrayField':
             if _field.base_field.get_internal_type() == 'DecimalField':
                 _prec =  _field.base_field.decimal_places 

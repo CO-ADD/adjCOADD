@@ -44,7 +44,7 @@ def main(prgArgs,djDir):
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
     # from apputil.models import Dictionary
-    # from applib.data.set_fielddata import set_arrayFields, set_Fields, set_Dictionaries
+    # from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts
     # from apputil.utils.data import Dict_to_StrList
     from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt

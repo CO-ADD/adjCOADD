@@ -94,7 +94,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_Fields_fromDict
+    from adjCOADD.applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
 
     
@@ -145,19 +145,14 @@ def main(prgArgs,djDir):
 
             
             # set_dictFields(djPrj,row,cpyFields)
-            # set_arrayFields(djPrj,row,arrayFields)
-            # set_Dictionaries(djPrj,row,dictFields)
+            # set_model_arrayfields(djPrj,row,arrayFields)
+            # set_model_dicts(djPrj,row,dictFields)
 
             validStatus = True
-            validStatus = set_Fields_fromDict(djRun,row,
-                                              FieldList=cpyFields, 
-                                              ArrayDict=arrayFields, 
-                                              DictList=dictFields)
-
-            # validStatus = set_Fields_fromDict(djRun,row,
-            #                                   FieldList=[], 
-            #                                   ArrayDict={}, 
-            #                                   DictList=['run_type'])
+            validStatus = set_model_from_dict(djRun,row,
+                                              list_Fields=cpyFields, 
+                                              dict_Arrays=arrayFields, 
+                                              list_Dicts=dictFields)
 
             # djPrj.set_defaults_model()
             # validDict = djPrj.validate_fields()
