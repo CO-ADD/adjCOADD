@@ -608,7 +608,14 @@ class TestPlate(Plate):
                         _readouts.append(float(self.wells[w].readouts[0]))
         return(np.array(_readouts))
 
-
+    def update_n(self,nType='n_samples'):
+        if nType == 'n_samples':
+            n_sample = 0
+            if self.n_wells >0:
+                for w in self.wells:
+                    if self.wells[w].n_cmpbatches > 0:
+                        n_sample += 1
+            self.n_samples = n_sample
 
     #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
@@ -895,6 +902,9 @@ class TestWell(Sample_Base):
     def __str__(self):
         return f"{self.plate_id} {self.well_id}"
 
+    def str_cmpbatch_data(self):
+        return f"{self.plate_id} {self.well_id} {self.cmpbatch_lst} {self.conc_lst} {self.conc_unit_lst}"
+
     #------------------------------------------------
     # Returns an TestWell instance if found by plate_id and well_id
     @classmethod
@@ -950,6 +960,20 @@ class TestWell(Sample_Base):
             self.conv_list_to_string()
             _ClassFields += self.STRING_FIELDS
         return(self.fields_to_dict(ClassFields=_ClassFields,ReadoutField=ReadoutField))
+    
+    #------------------------------------------------
+    def clear_cmpbatch_data(self):
+        super().clear_cmpbatch_data()
+        self.set_lst = []
+    
+    #------------------------------------------------
+    def clear_inhibition_data(self):
+        self.inhibition = -1
+        self.zscore = -1
+        self.mscore = -1
+        self.act_score = -1
+        self.act_type = ''
+            
 
     #------------------------------------------------  
     def calc_inhibition(self,POS_Stats,NEG_Stats, verbose=0):
@@ -1054,6 +1078,29 @@ class MasterPlate(Plate):
             else:
                 _plate.init_wells(WellModel=None, PlateInstance=None)
             return(_plate)
+
+    #--------------------------------------------------------------
+    def get_wells(self, fill_missing=True) -> int:
+        # Create None Wells
+        self.init_wells(WellModel=None, PlateInstance=None)
+
+        # get Wells for that Plate 
+        qryTW = MasterWell.objects.filter(plate_id=self)
+        lWells = qryTW.count()
+        for w in qryTW:
+            m = self.map_well(w.well_id)
+            self.wells[m[0]] = w
+
+        # Fill None Wells with empty TestWell
+        if lWells < len(self.wells) and fill_missing:
+            for w in self.wells:
+                if self.wells[w] is None:
+                    self.wells[w] = MasterWell()
+                    self.wells[w].well_id = w
+                    self.wells[w].plate_id = self
+            lWells = len(self.wells)
+        
+        return(lWells)
 
     #------------------------------------------------
     def validate_model(self, WellData=True, verbose = 0):
@@ -1237,6 +1284,9 @@ class MasterWell(Sample_Base):
     #-------------------------------------------------------------------------------
     def __str__(self):
         return f"{self.plate_id} {self.well_id} {self.barcode}"
+    
+    def str_cmpbatch_data(self):
+        return f"{self.plate_id} {self.well_id} {self.cmpbatch_lst} {self.test_conc_lst} {self.test_conc_unit_lst}"
 
     #------------------------------------------------
     # Returns an MasterWell instance if found by plate_id and well_id
@@ -1300,3 +1350,14 @@ class MasterWell(Sample_Base):
         self.test_conc_lst = strList_to_List(self.test_concs,sep=COMPOUND_SEP,size=4,fill=0)
         self.test_conc_units = strList_to_List(self.test_conc_units,sep=COMPOUND_SEP,size=4,fill="")
         self.test_conc_types = strList_to_List(self.test_conc_types,sep=COMPOUND_SEP,size=4,fill="")
+
+    #------------------------------------------------
+    def clear_cmpbatch_data(self):
+        super().clear_cmpbatch_data()
+        self.set_lst = []
+        self.test_concs = ""
+        self.test_conc_lst = []
+        self.test_conc_units = ""
+        self.test_conc_unit_lst = []
+        self.test_conc_types = ""
+        self.test_conc_type_lst = []

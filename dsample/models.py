@@ -756,12 +756,19 @@ class CmpBatchList_Base(AuditModel):
             return(None)
 
     #------------------------------------------------  
-    def set_cmpbatch_id(self,CmpBatchLst):
-        _CmpLst = [str(x) for x in CmpBatchLst if x != ""]
-        self.cmpbatch_lst  = _CmpLst
-        self.n_cmpbatches = len(_CmpLst)
-        if self.n_cmpbatches == 1:
-            self.cmpbatch_id = Compound_Batch.get(_CmpLst[0])
+    def set_cmpbatch_id(self,CmpBatchLst=None):
+        if CmpBatchLst:
+            _CmpLst = [str(x) for x in CmpBatchLst if x != ""]
+            setattr(self,'cmpbatch_lst',_CmpLst)
+        else:
+           _CmpLst = getattr(self,'cmpbatch_lst')
+        if _CmpLst: 
+            setattr(self,'n_cmpbatches',len(_CmpLst))
+            if self.n_cmpbatches == 1:
+                self.cmpbatch_id = Compound_Batch.get(_CmpLst[0])
+        else:
+            setattr(self,'n_cmpbatches',0)
+            self.cmpbatch_id = None 
 
     #------------------------------------------------  
     def __str__(self) -> str:
@@ -807,7 +814,14 @@ class CmpBatchList_Base(AuditModel):
             CmpBatchLst = [CmpBatchLst]
         return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
     
-    
+    #------------------------------------------------
+    # Clear/Reset cmpbatch data
+    def clear_cmpbatch_data(self):
+        self.cmpbatches = ""
+        self.cmpbatch_lst = []
+        self.n_cmpbatches=0
+        self.cmpbatch_id = None
+        
 #-------------------------------------------------------------------------------------------------
 class Sample_Base(CmpBatchList_Base):    
 #-------------------------------------------------------------------------------------------------
@@ -896,6 +910,17 @@ class Sample_Base(CmpBatchList_Base):
     #------------------------------------------------  
     def __repr__(self) -> str:
         return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
+
+    #------------------------------------------------
+    # Clear/Reset cmpbatch data
+    def clear_cmpbatch_data(self):
+        super().clear_cmpbatch_data
+        self.concs = ""
+        self.conc_lst = []
+        self.conc_units = ""
+        self.conc_unit_lst = []
+        self.conc_types = ""
+        self.conc_type_lst = []
 
     # #------------------------------------------------
     # # Returns an User instance if found by name
