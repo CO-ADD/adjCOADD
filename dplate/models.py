@@ -608,6 +608,7 @@ class TestPlate(Plate):
                         _readouts.append(float(self.wells[w].readouts[0]))
         return(np.array(_readouts))
 
+    #--------------------------------------------------------------
     def update_n(self,nType='n_samples'):
         if nType == 'n_samples':
             n_sample = 0
