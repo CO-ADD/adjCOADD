@@ -16,7 +16,7 @@ from django.utils.text import slugify
 #from django.forms.models import model_to_dict
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from apputil.utils.data import addto_StrList, strList_to_List
+from applib.data.str_lists import addto_StrList, strList_to_List
 from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
@@ -573,20 +573,20 @@ class TestPlate(Plate):
         return(lWells)
 
     #--------------------------------------------------------------
-    def get_welldata(self, RowCol=False, ListToString=False, ReadoutField=True) -> pd.DataFrame:
+    def make_wells_df(self, RowCol=False, ListToString=False, ReadoutField=True) -> pd.DataFrame:
         _dicts = []
         if self.wells:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    _well_dict = self.wells[w].get_welldict(ListToString=ListToString, ReadoutField=ReadoutField)
+                    _well_dict = self.wells[w].get_well_dict(ListToString=ListToString, ReadoutField=ReadoutField)
                     if RowCol:
                         _r,_c = self.well_rowcol(w)
                         _well_dict['row'] = self.ROW_LABELS[_r-1]
                         _well_dict['col'] = _c
         
                     _dicts.append(_well_dict)
-        self.well_data = pd.DataFrame(_dicts)
-        return(len(self.well_data))
+        self.wells_df = pd.DataFrame(_dicts)
+        return(len(self.wells_df))
 
     #--------------------------------------------------------------
     def get_readouts(self,Selection = None):
@@ -619,6 +619,14 @@ class TestPlate(Plate):
             self.n_samples = n_sample
 
     #--------------------------------------------------------------
+    def clear_cmpbatch_data(self):  
+        #
+        # resets cmpbatch data (incl conc, conc_unit, conc_type)
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].clear_cmpbatch_data()
+
+    #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
     #
     # Get fielddata from the Wells, by Selection
@@ -630,6 +638,7 @@ class TestPlate(Plate):
         CONTROL_LABELS = ['is_negcontrol','is_poscontrol','is_control','is_sample']
         CONTROL_ORDER = {'Neg':['is_negcontrol'],'Pos':['is_poscontrol'],'Ref':['is_control','is_sample'],'Smp':['is_sample']}
 
+        _n_layout = -1
         if self.control_layout:
             # Parse LAYOUT ------------------------------------------------------
             if verbose > 0:
@@ -649,24 +658,27 @@ class TestPlate(Plate):
                 nLay += 1
 
             # ReSet LAYOUT ------------------------------------------------------
+            _n_layout = -1
             for w in self.wells:
                 for crt in CONTROL_LABELS:
                     self.set_well_field(w,crt,False)
-
-            _n_layout = -1
             # Set per LAYOUT ------------------------------------------------------
+            _n_layout = 0
             for _lo in CONTROL_ORDER:
                 _rc = _layDict[_lo]
                 if 'R1' in _rc :
+                    _n_layout += 1
                     for r in range(_rc['R1'],_rc['R2']+1):
                         for c in range(_rc['C1'],_rc['C2']+1):
                             for crt in CONTROL_ORDER[_lo]:
                                 self.set_well_field((r,c),crt,True)
 
-            self.n_layout= _n_layout 
+        self.n_layout= _n_layout
+        return(_n_layout) 
 
     #--------------------------------------------------------------
     def calc_inhibition(self,verbose=0) -> int:
+        _n_inhibition = 0
         if self.n_reads > 0:
             posReadOuts = self.get_readouts('is_poscontrol')
             pos_median = np.median(posReadOuts)
@@ -698,12 +710,13 @@ class TestPlate(Plate):
             self.zfactor = round(1 - 3 * (pos_mad + neg_mad)/abs(pos_median - neg_median), 3)
             self.analysis_parameter = "Std pyAnalysis (dj)"
 
-            _n_inhibition = 0
+            
             for w in self.wells:
                 self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats,verbose=verbose)
                 _n_inhibition += 1
 
-            self.n_inhibition = _n_inhibition
+            self.n_inhibitions = _n_inhibition
+
             self.plate_qc = self.zfactor
             if self.test_issues:
                 if 'Invalid' in self.test_issues:
@@ -721,6 +734,7 @@ class TestPlate(Plate):
                 setattr(self,'plate_quality',Dictionary.get(self.DICTIONARY_FIELDS['plate_quality'],'Valid')) 
             else:
                 setattr(self,'plate_quality',Dictionary.get(self.DICTIONARY_FIELDS['plate_quality'],'Rejected'))
+
                 self.test_issues = addto_StrList(self.test_issues,'FailedQC')
 
             if verbose > 0:
@@ -731,6 +745,8 @@ class TestPlate(Plate):
                 logger.info(f"[Calc Inhibition] {self.plate_id} - {_outstr} ")
         else:
             logger.warning(f"[Calc Inhibition] Plates has NO ReadOuts ")
+
+        return(_n_inhibition)
 
     # -------------------------------------------------------
     def plot_heatmap(self,Property,outDir,propLegend=True):
@@ -750,7 +766,7 @@ class TestPlate(Plate):
             propTxt += f"{n_line}QC     : {self.plate_quality}"
             propTxt += f"{n_line}"
             propTxt += f"{n_line}PosCtrl: {self.poscontrol_stats[self.STATS_MEDIAN]:.2f}"
-            propTxt += f"{n_line}NegCtrl: {self.poscontrol_stats[self.STATS_MEDIAN]:.2f}"
+            propTxt += f"{n_line}NegCtrl: {self.negcontrol_stats[self.STATS_MEDIAN]:.2f}"
         else:
             bigTitle = f"{self.plate_id} (-) - {self.run_id} "
             subTitle = f"{Property} ({self.readout_type})"
@@ -762,13 +778,11 @@ class TestPlate(Plate):
         gAxisY = f"Row"
         gAxisX = f"Column"
 
-        if not hasattr(self, 'well_data'):
-            self.get_welldata(RowCol=True)
+        if not hasattr(self, 'wells_df'):
+            self.make_wells_df(RowCol=True)
 
-             
-
-        self.well_data = self.well_data.astype({Property: 'float'})
-        prop_map = self.well_data.pivot_table(index="row", columns="col", values=Property)
+        self.wells_df = self.wells_df.astype({Property: 'float'})
+        prop_map = self.wells_df.pivot_table(index="row", columns="col", values=Property)
 
         fig, ax = plt.subplots(figsize=(12,6))
         fig.text(0.05,0.91,bigTitle, fontsize=19, ha = 'left')
@@ -783,8 +797,8 @@ class TestPlate(Plate):
         else:
             _fmt = ".3f"
             #_vmin,_vmax = well_df[Property].quantile([.01, .99])
-            _vmax = self.well_data[Property].max()
-            _vmin = self.well_data[Property].min()
+            _vmax = self.wells_df[Property].max()
+            _vmin = self.wells_df[Property].min()
             _col = sns.light_palette("darkred", as_cmap=True)
         
         ax = sns.heatmap(prop_map, 
@@ -799,12 +813,13 @@ class TestPlate(Plate):
         plt.ylabel(gAxisY, fontsize= 12)
 
         if outDir:
-            xOutDir = os.path.join(outDir,self.run_id)
+            xOutDir = os.path.join(outDir,str(self.run_id))
             if not os.path.exists(xOutDir):
                 os.makedirs(xOutDir)
 
-            jpgFile = f"{self.PlateID}_{Property}.jpg"
+            jpgFile = f"{self.plate_id}_{Property}.jpg"
             fig.savefig(os.path.join(xOutDir,jpgFile))
+            plt.close(fig)
         else:
             fig.show()
 
@@ -955,7 +970,7 @@ class TestWell(Sample_Base):
         return(_dict)
 
     #------------------------------------------------
-    def get_welldict(self, ListToString=False, ReadoutField=True) -> dict:
+    def get_well_dict(self, ListToString=False, ReadoutField=True) -> dict:
         _ClassFields = []
         if ListToString:
             self.conv_list_to_string()

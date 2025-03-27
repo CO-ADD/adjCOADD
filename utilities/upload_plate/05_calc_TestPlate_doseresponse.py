@@ -15,7 +15,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "PopulateTestPlates"
+logName = "CalcTestPlateDoseresponse"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -27,17 +27,16 @@ logging.basicConfig(
 #    handlers=[logging.StreamHandler()],
     level=logLevel)
 
-
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
     django.setup()
 
     from dscreen.models import Assay
-    from dplate.models import Labware, TestPlate, TestWell, MasterPlate
+    from dplate.models import Labware, TestPlate, TestWell
     from dorganism.models import Organism, Organism_Batch
     from dcell.models import Cell, Cell_Batch
-    from applib.plate.testplates import add_mother_to_testplate
+    from applib.plate.multimode_reader import multimodereader_xls
     from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
@@ -51,36 +50,74 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
    # TestPlate XLSX -------------------------------------------------------------
-    if prgArgs.table == 'Populate_TestPlates':
-        if prgArgs.runid:
-            qryTP = TestPlate.objects.filter(run_id = prgArgs.runid).values('plate_id')
-            djMPS = {}
-            for tp in tqdm(qryTP):
-                djTP = TestPlate.get(tp['plate_id'],WellData=True)
+    if prgArgs.table == 'TestPlateDoseresponse':
+        if prgArgs.plateid:
+            djTP = TestPlate.get(prgArgs.plateid,WellData=True)
+            if djTP:
+                if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type}")
+                    djTP.make_wells_df()
+                    print(djTP.wells_df)
 
-                if hasattr(djTP,'motherplate_ids'):
-                    mp_ids = getattr(djTP,'motherplate_ids')
-                    for mp in mp_ids:
-                        if mp not in djMPS:
-                            djMPS[mp] = MasterPlate.get(mp,WellData=True)
-                            
-                    if len(mp_ids) > 0:
-                        add_mother_to_testplate(djMPS[mp_ids[0]],djTP,ClearData=True)
-                    if len(mp_ids) > 1:
-                        add_mother_to_testplate(djMPS[mp_ids[1]],djTP,ClearData=False)
-                    
-                    djTP.update_n('n_samples')    
-                        
-                    if len(mp_ids)>0 and prgArgs.upload:
-                        djTP.save()
-            
-                
-                        
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                else:
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
+
+
+
+
+
+
+
+
+        elif prgArgs.runid:
+
+            OutNumbers = {'Processed Plates':0,'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0}
+
+            qryTP = TestPlate.objects.filter(run_id = prgArgs.runid).values('plate_id')
+            # qryTP = TestPlate.objects.filter(run_id = prgArgs.runid)
+            nCnt = qryTP.count()
+            logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {nCnt}")
+
+            for tp in tqdm(qryTP, desc='Testplates'):
+                OutNumbers['Processed Plates'] += 1
+
+                djTP = TestPlate.get(tp['plate_id'],WellData=True)
+                if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
+
+                    if str(djTP.result_type) in ['MIC','CC50','HC50']:
+
+
+                        if prgArgs.plotdir:
+                            djTP.plot_heatmap('readout_1',prgArgs.plotdir)
+
+                        if prgArgs.upload:
+                            djTP.save()
+
+                else:
+                    OutNumbers['Failed Plates'] += 1
+                    logger.warning(f" FAILED: {djTP.plate_id} only {djTP.n_wells} wells found")
+
+
+            logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")
+
+    
 #==============================================================================
 if __name__ == "__main__":
 
@@ -100,11 +137,12 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-#    prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
+    prgParser.add_argument("-p","--plate",default=None,required=False, dest="plateid", action='store', help="Single File to calculate")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
+    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="RunID")
 #    prgParser.add_argument("-e","--excel",default=None,required=True, dest="excelfile", action='store', help="Excel File")
-#    prgParser.add_argument("--prefix",default=None,required=False, dest="prefix", action='store', help="Prefix to add to PlateID")
+    prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
+    #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)

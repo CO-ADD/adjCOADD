@@ -72,7 +72,7 @@ def main(prgArgs,djDir):
 
     from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
-    from adjCOADD.applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
+    from applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
     from dsample.models import ABase_Compound
     from adjcoadd.constants import COMPOUND_SEP
 

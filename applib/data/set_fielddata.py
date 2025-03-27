@@ -3,7 +3,7 @@ import pandas as pd
 import logging
 logger = logging.getLogger(__name__)
 
-from apputil.utils.data import strList_to_List
+from applib.data.str_lists import strList_to_List
 from apputil.models import Dictionary
 #
 

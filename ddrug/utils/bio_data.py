@@ -8,7 +8,7 @@ from django_rdkit.config import config
 from django.conf import settings
 
 from adjcoadd.constants import COMPOUND_SEP
-from apputil.utils.data import join_lst, limit_lst, to_num, strList_to_List, split_StrList
+from applib.data.str_lists import join_lst, limit_lst, to_num, strList_to_List, split_StrList
 
 import logging
 logger = logging.getLogger(__name__)

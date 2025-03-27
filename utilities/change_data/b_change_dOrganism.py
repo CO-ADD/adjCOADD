@@ -16,7 +16,7 @@ from django.db.models import ForeignKey, Model
 from zUtils import zData
 
 from apputil.models import ApplicationLog
-from apputil.utils.data import append_StrList
+from applib.data.str_lists import append_StrList
 from dorganism.utils.utils import get_subdir
 
 from apputil.models import ApplicationUser, Dictionary

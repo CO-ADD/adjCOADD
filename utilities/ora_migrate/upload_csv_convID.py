@@ -28,7 +28,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from dsample.models import Project
-    from adjCOADD.applib.mol.mol_std import get_atomclass_list,list_metalatoms
+    from applib.mol.mol_std import get_atomclass_list,list_metalatoms
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
     # Logger ----------------------------------------------------------------

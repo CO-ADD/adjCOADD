@@ -14,7 +14,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from apputil.utils.data import strList_to_List
+from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
 from dsample.models import CmpBatchList_Base
 from dchem.models import Chem_Structure

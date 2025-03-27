@@ -80,7 +80,7 @@ def main():
 
     from apputil.models import Dictionary
     from dsample.models import Project, Convert_ProjectID
-    from adjCOADD.applib.mol.mol_std import get_atomclass_list,list_metalatoms
+    from applib.mol.mol_std import get_atomclass_list,list_metalatoms
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
     logName = "UploadOrgDB"

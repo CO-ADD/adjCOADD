@@ -54,7 +54,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from apputil.utils.data import join_lst
+    from applib.data.str_lists import join_lst
     from dorganism.utils.utils import reformat_OrgBatchID
 
     from ddrug.models import Drug, MIC_COADD

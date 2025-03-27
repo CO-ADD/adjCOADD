@@ -15,7 +15,7 @@ from oraCastDB import oraCastDB
 from zUtils.zMonitor import Timer
 
 from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import split_StrList
+from applib.data.str_lists import split_StrList
 
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock, OrgBatch_Image
 from dorganism.utils.utils import get_subdir, reformat_OrganismID
