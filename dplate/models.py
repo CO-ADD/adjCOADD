@@ -573,20 +573,20 @@ class TestPlate(Plate):
         return(lWells)
 
     #--------------------------------------------------------------
-    def get_welldata(self, RowCol=False, ListToString=False, ReadoutField=True) -> pd.DataFrame:
+    def make_wells_df(self, RowCol=False, ListToString=False, ReadoutField=True) -> pd.DataFrame:
         _dicts = []
         if self.wells:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    _well_dict = self.wells[w].get_welldict(ListToString=ListToString, ReadoutField=ReadoutField)
+                    _well_dict = self.wells[w].get_well_dict(ListToString=ListToString, ReadoutField=ReadoutField)
                     if RowCol:
                         _r,_c = self.well_rowcol(w)
                         _well_dict['row'] = self.ROW_LABELS[_r-1]
                         _well_dict['col'] = _c
         
                     _dicts.append(_well_dict)
-        self.well_data = pd.DataFrame(_dicts)
-        return(len(self.well_data))
+        self.wells_df = pd.DataFrame(_dicts)
+        return(len(self.wells_df))
 
     #--------------------------------------------------------------
     def get_readouts(self,Selection = None):
@@ -616,6 +616,14 @@ class TestPlate(Plate):
                     if self.wells[w].n_cmpbatches > 0:
                         n_sample += 1
             self.n_samples = n_sample
+
+    #--------------------------------------------------------------
+    def clear_cmpbatch_data(self):  
+        #
+        # resets cmpbatch data (incl conc, conc_unit, conc_type)
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].clear_cmpbatch_data()
 
     #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
@@ -769,13 +777,11 @@ class TestPlate(Plate):
         gAxisY = f"Row"
         gAxisX = f"Column"
 
-        if not hasattr(self, 'well_data'):
-            self.get_welldata(RowCol=True)
+        if not hasattr(self, 'wells_df'):
+            self.make_wells_df(RowCol=True)
 
-             
-
-        self.well_data = self.well_data.astype({Property: 'float'})
-        prop_map = self.well_data.pivot_table(index="row", columns="col", values=Property)
+        self.wells_df = self.wells_df.astype({Property: 'float'})
+        prop_map = self.wells_df.pivot_table(index="row", columns="col", values=Property)
 
         fig, ax = plt.subplots(figsize=(12,6))
         fig.text(0.05,0.91,bigTitle, fontsize=19, ha = 'left')
@@ -790,8 +796,8 @@ class TestPlate(Plate):
         else:
             _fmt = ".3f"
             #_vmin,_vmax = well_df[Property].quantile([.01, .99])
-            _vmax = self.well_data[Property].max()
-            _vmin = self.well_data[Property].min()
+            _vmax = self.wells_df[Property].max()
+            _vmin = self.wells_df[Property].min()
             _col = sns.light_palette("darkred", as_cmap=True)
         
         ax = sns.heatmap(prop_map, 
@@ -963,7 +969,7 @@ class TestWell(Sample_Base):
         return(_dict)
 
     #------------------------------------------------
-    def get_welldict(self, ListToString=False, ReadoutField=True) -> dict:
+    def get_well_dict(self, ListToString=False, ReadoutField=True) -> dict:
         _ClassFields = []
         if ListToString:
             self.conv_list_to_string()

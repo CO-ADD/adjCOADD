@@ -17,7 +17,7 @@ from decimal import Decimal
 #--------------------------------------------------------------------------------------------------------------
 # Add MotherWell to TestWell
 #--------------------------------------------------------------------------------------------------------------
-def add_mother_to_testwell(djMW,djTW,ClearData=False):
+def add_mother_to_testwell(djMW,djTW):
     
     FIELD_LIST = [['cmpbatch_lst','cmpbatch_lst'],
                   ['set_lst','set_lst'],
@@ -25,10 +25,7 @@ def add_mother_to_testwell(djMW,djTW,ClearData=False):
                   ['test_conc_unit_lst','conc_unit_lst'],
                   ['test_conc_type_lst','conc_type_lst'],
                 ]
-    
-    if ClearData:
-        djTW.clear_cmpbatch_data()
-    
+        
     for f in FIELD_LIST:
         _mw = getattr(djMW, f[0], None) 
         if _mw:
@@ -44,11 +41,11 @@ def add_mother_to_testwell(djMW,djTW,ClearData=False):
 #--------------------------------------------------------------------------------------------------------------
 # Add MotherPlate to TestPlate
 #--------------------------------------------------------------------------------------------------------------
-def add_mother_to_testplate(djMP,djTP,ClearData=False):
+def add_mother_to_testplate(djMP,djTP):
     if hasattr(djTP,'wells') and hasattr(djMP,'wells'):
         if djTP.n_wells == djMP.n_wells:
             for w in djMP.wells:
-                add_mother_to_testwell(djMP.wells[w],djTP.wells[w],ClearData=ClearData)
+                add_mother_to_testwell(djMP.wells[w],djTP.wells[w])
         else:
             logger.info(f" [MP->TP] Different n_wells {djMP.n_wells} -> {djTP.n_wells}")     
     else:
