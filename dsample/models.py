@@ -914,7 +914,7 @@ class Sample_Base(CmpBatchList_Base):
     #------------------------------------------------
     # Clear/Reset cmpbatch data
     def clear_cmpbatch_data(self):
-        super().clear_cmpbatch_data
+        super().clear_cmpbatch_data()
         self.concs = ""
         self.conc_lst = []
         self.conc_units = ""
