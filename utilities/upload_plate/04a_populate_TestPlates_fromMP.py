@@ -52,7 +52,9 @@ def main(prgArgs,djDir):
 
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'Populate_TestPlates':
+        logger.info(f" [Populate TestPlates] ")
         if prgArgs.runid:
+            logger.info(f" [Populate TestPlates] {prgArgs.runid}")
             qryTP = TestPlate.objects.filter(run_id = prgArgs.runid).values('plate_id')
             djMPS = {}
             for tp in tqdm(qryTP):
