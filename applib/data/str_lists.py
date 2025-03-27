@@ -76,7 +76,10 @@ def append_StrList(strLst, newValue, sep=';'):
 #-----------------------------------------------------------------------------
 def addto_StrList(strLst, newValue, sep=';'):
 #-----------------------------------------------------------------------------
-    _lst = split_StrList(strLst,sep=sep)
+    _lst = []
+    if strLst:
+        _lst = split_StrList(strLst,sep=sep)
+        
     if newValue not in _lst:
         _lst.append(newValue)
     return(sep.join(list(set(_lst))))

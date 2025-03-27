@@ -10,7 +10,7 @@ from dscreen.models import Screen_Run
 from ddrug.utils.molecules import *
 
 from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import *
+from applib.data.str_lists import *
 
 # ----------------------------------------------------------------------------------------------------
 def imp_Drug_fromDict(iDict,valLog):

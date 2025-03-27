@@ -12,7 +12,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.indexes import GinIndex
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from apputil.utils.data import strList_to_List
+from applib.data.str_lists import strList_to_List
 from dcollab.models import Collab_Group, Collab_User
 from dchem.models import Chem_Structure
 from adjcoadd.constants import *

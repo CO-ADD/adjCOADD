@@ -7,7 +7,7 @@ from dorganism.models import Taxonomy
 from dcell.models import Cell, Cell_Batch
 
 from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import split_StrList, append_StrList
+from applib.data.str_lists import split_StrList, append_StrList
 
 import logging
 logger = logging.getLogger(__name__)

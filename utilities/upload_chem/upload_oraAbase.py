@@ -75,7 +75,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts, set_model_fkeys
+    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts, set_model_fkeys
     from dsample.models import Compound_Batch
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")

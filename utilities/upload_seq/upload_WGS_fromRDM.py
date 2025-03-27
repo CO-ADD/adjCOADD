@@ -38,8 +38,8 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import ApplicationUser, Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
-    from apputil.utils.data import listFolders
+    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
+    from applib.data.str_lists import listFolders
     from apputil.utils import validation_log
     
     from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM

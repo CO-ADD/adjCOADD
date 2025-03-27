@@ -25,7 +25,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 #from apputil.utils.views_base import SuperUserRequiredMixin
 from apputil.utils.validation_log import Validation_Log
-from apputil.utils.data import Timer
+from applib.data.str_lists import Timer
 
 # ==================================================================================
 # General File Utilities

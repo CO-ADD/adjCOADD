@@ -47,11 +47,11 @@ def main(prgArgs,djDir):
     django.setup()
 
     from apputil.models import Dictionary
-    from adjCOADD.applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
-    from apputil.utils.data import Dict_to_StrList
+    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
+    from applib.data.str_lists import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID
     from dchem.models import Chem_Salt
-    from adjCOADD.applib.mol.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
+    from applib.mol.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
 
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")

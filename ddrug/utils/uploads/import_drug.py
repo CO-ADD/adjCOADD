@@ -10,7 +10,7 @@ from ddrug.models import Drug
 from ddrug.utils.molecules import *
 
 from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import split_StrList
+from applib.data.str_lists import split_StrList
 
 # ----------------------------------------------------------------------------------------------------
 def imp_Drug_fromDict(iDict,valLog):

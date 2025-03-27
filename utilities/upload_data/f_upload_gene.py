@@ -18,7 +18,7 @@ from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
 #from dgene.utils.parse_wgs import ()
 from dgene.utils.upload_gene import (get_RDM, split_BatchID_RunID, get_subdir,
                                      upload_Trim, upload_CheckM, upload_FastA, upload_AMR)
-from apputil.utils.data import listFolders
+from applib.data.str_lists import listFolders
 from apputil.utils import validation_log
 
 #-----------------------------------------------------------------------------------

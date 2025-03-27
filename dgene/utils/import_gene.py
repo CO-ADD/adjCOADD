@@ -10,7 +10,7 @@ from dscreen.models import Screen_Run
 from dgene.models import Genome_Sequence,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM, Gene, AMR_Genotype
 
 from apputil.models import ApplicationUser, Dictionary
-from apputil.utils.data import *
+from applib.data.str_lists import *
 
 # ----------------------------------------------------------------------------------------------------
 def imp_Sequence_fromDict(iDict,valLog):

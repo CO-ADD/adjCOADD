@@ -129,9 +129,12 @@ def main(prgArgs,djDir):
             tp_FKeyArrays = {'motherplate_ids':{'model':MasterPlate, 'fields': ['motherplate_id','motherplate2_id']},
                              'synergy_cmpbatches':{'model':Organism_Batch, 'fields':['syn_compounds_ab','syn_compounds_pot']}
                             }
-            
+            #
+            # TODO check that essential columns are in Excel Sheet
+            #   ['testplate_id', 'assay_id', 'test_strain','result_type','labware_id', 'control_layout' ] 
+            #
 
-            # Missing MatherPlate_ID, SynCompounds
+            # SynCompounds
             for idx,row in tqdm(PrepSheets['TestPlateList'].iterrows(), total= len(PrepSheets['TestPlateList']), desc='[TestPlates]'):
                 OutNumbers['Processed Plates'] += 1
                 validStatus = True

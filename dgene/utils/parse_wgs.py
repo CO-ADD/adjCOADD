@@ -5,7 +5,7 @@ import csv
 import numpy as np
 import pandas as pd
 
-from apputil.utils.data import listFolders
+from applib.data.str_lists import listFolders
 # #-----------------------------------------------------------------------------
 # def split_BatchID_RunID(batch_run_id):
 # #-----------------------------------------------------------------------------
