@@ -28,7 +28,8 @@ logging.basicConfig(
     level=logLevel)
 
 
-
+#-----------------------------------------------------------------------------
+    
 
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
@@ -54,37 +55,39 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
+
+    # Process TestPlate -------------------------------------------------------------
+    def process_testplate(PlateID):
+        djTP = TestPlate.get(PlateID,WellData=True)
+        if djTP:
+            if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
+                logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
+                
+                djTP.conv_list_to_string()
+                djTP.make_wells_df(ListToString=True)
+
+                grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                for CmpBatch,DRData in grpData:
+                    if CmpBatch:
+                        djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                        # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                        djDR.calc_doseresponse()
+
+                        #print(f" [{djDR.testwell_id}] {str(djDR)}")
+                        djDR.doseresponse_to_assaydata()
+                        if prgArgs.upload:
+                            djDR.save_assaydata(overwrite=prgArgs.overwrite)
+            else:
+                logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
+
+
+
+
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'TestPlateDoseresponse':
         if prgArgs.plateid:
-            djTP = TestPlate.get(prgArgs.plateid,WellData=True)
-            if djTP:
-                if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
-                    
-                    djTP.conv_list_to_string()
-                    djTP.make_wells_df(ListToString=True)
-
-                    grpData = djTP.wells_df.groupby('cmpbatch_sets')
-                    for CmpBatch,DRData in grpData:
-                        if CmpBatch:
-                            _dr = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                            # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                            _dr.calc_doseresponse()
-
-                            print(f" [{_dr.test_well_id}] {str(_dr)}")
-                        #print(grpdf[['cmpbatch_lst','conc_lst','inhibition','conc_unit_lst','act_type']].sort_values(by='conc_lst',ascending=False))
-
-                else:
-                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
-
-
-
-
-
-
-
-
+            process_testplate(prgArgs.plateid)
+ 
         elif prgArgs.runid:
 
             OutNumbers = {'Processed Plates':0,'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0}
@@ -96,22 +99,7 @@ def main(prgArgs,djDir):
 
             for tp in tqdm(qryTP, desc='Testplates'):
                 OutNumbers['Processed Plates'] += 1
-
-                djTP = TestPlate.get(tp['plate_id'],WellData=True)
-                if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-
-                    if str(djTP.result_type) in ['MIC','CC50','HC50']:
-
-
-                        if prgArgs.plotdir:
-                            djTP.plot_heatmap('readout_1',prgArgs.plotdir)
-
-                        if prgArgs.upload:
-                            djTP.save()
-
-                else:
-                    OutNumbers['Failed Plates'] += 1
-                    logger.warning(f" FAILED: {djTP.plate_id} only {djTP.n_wells} wells found")
+                process_testplate(tp['plate_id'])
 
 
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")

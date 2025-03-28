@@ -7,6 +7,9 @@ import scipy.optimize as opt
 from adjcoadd.constants import COMPOUND_SEP
 from applib.bio.bio_data import ActType_DR, pScore, format_DR, dr_max_quality, ActScoreDR_Cutoff
 from dsample.models import Compound_Batch
+from dscreen.models import AssayData_MIC,AssayData_CC50,AssayData_HC50
+
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -55,18 +58,22 @@ class DoseResponse():
             self.cmin = self.df['conc_lst'].min(axis=0)
             
             self.n_wells = len(self.df)
-            self.n_concs = len(self.df['conc'].unique())
+            self.n_conc = len(self.df['conc'].unique())
             
             # CmpBatch information - MW of 1st CmpBatch
-            self.cmpbatch = Compound_Batch.get(CmpBatches.split(COMPOUND_SEP)[0])
-            if self.cmpbatch:
-                self.full_mw = self.cmpbatch.full_mw
+            self.cmpbatch_lst = CmpBatches.split(COMPOUND_SEP)
+            self.n_cmpbatches = len(self.cmpbatch_lst)
+            self.cmpbatch_id = Compound_Batch.get(self.cmpbatch_lst[0])
+            if self.cmpbatch_id:
+                self.full_mw = self.cmpbatch_id.full_mw
             else:
                 self.full_mw = 0
             
+            
+            
             # TestPlate and Well information
             self.testplate = djTestPlate
-            self.test_well_id = min(dfDR['well_id'])
+            self.testwell_id = min(dfDR['well_id'])
             
         else:
             logger.warning(f" [DoseResponse] Missing columns ({dfDR.columns}) [{self.required_columns}]")
@@ -87,13 +94,60 @@ class DoseResponse():
         elif 'HC50' in str(self.testplate.result_type):
             self.IC50()
         else:
-            logger.warning(f" [DoseResponse] Unknonw ResultType [{self.testplate.result_type}]") 
+            logger.warning(f" [DoseResponse] Unknonw ResultType [{self.testplate.result_type}]")
+            
     #--------------------------------------------------------------
-    def save(self, overwrite=False):
-        if 'MIC' in str(self.testplate.result_type): 
-            djAss = 
+    def doseresponse_to_assaydata(self,verbose=0):
+                
+        ASS_FIELDS = { 'MIC': [
+                        'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
+                        'mic','mic_unit',['mic_skips','skips_active'],
+                        ['act_type','mic_act'], ['act_score','mic_act_score'], ['pscore','pmic'],
+                        'analysis','n_conc',
+                        ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
+                        ['data_quality','mic_quality'], ['valid','mic_valid'],
+                        'ic50','ic50_unit',['ic50_pscore','pic5'], 
+                        'ic50_quality', ['ic50_r2','ic50_fit_r2'], ['ic50_slope','ic50_fit_slope']
+                        # ref_mic, ref_mic_chk
+                        ],
+                    }
+        
+        ass_key = str(self.testplate.result_type)
+        if 'MIC' == ass_key:
+            
+            self.assaydata_status = 'Exists'
+            self.assaydata = AssayData_MIC.get(self.testplate.plate_id,self.testwell_id)
+            if self.assaydata is None:
+                self.assaydata = AssayData_MIC()
+                self.assaydata_status = 'New'
+            if verbose > 0:
+                logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
+                
+        self.assaydata.testplate_id = self.testplate
+        self.assaydata.testwell_id = self.testwell_id
+        self.assaydata.run_id = self.testplate.run_id
+        self.assaydata.assay_id = self.testplate.assay_id
+        
+        for f in ASS_FIELDS[ass_key]:
+            if isinstance(f,list):
+                if hasattr(self,f[1]):
+                    setattr(self.assaydata,f[0],getattr(self,f[1]))
+            else:
+                if hasattr(self,f):
+                    setattr(self.assaydata,f,getattr(self,f))
+                       
+        return(self.assaydata)
 
-
+    #--------------------------------------------------------------
+    def save_assaydata(self, overwrite=False):
+        if hasattr(self,'assaydata'):
+            if self.assaydata:
+                self.assaydata.set_defaults_model()
+                self.assaydata.validate_fields()
+                
+                if self.assaydata_status == 'New' or overwrite:    
+                    self.assaydata.save()
+        
     #--------------------------------------------------------------
     def __str__(self):
         _rstr = []
@@ -237,10 +291,10 @@ class DoseResponse():
             _mic_Comment.append(f"Inhibition")
 
         # In case not enough dilutions
-        if self.n_concs < self.min_dilutions:
+        if self.n_conc < self.min_dilutions:
             self.mic_valid = 1
             self.mic_quality = 'Retest'
-            _mic_Comment.append(f"{self.n_concs} Conc")
+            _mic_Comment.append(f"{self.n_conc} Conc")
 
         if len(_mic_Comment)>0:
             self.mic_comment = '; '.join(_mic_Comment)
@@ -364,9 +418,9 @@ class DoseResponse():
                 self.ic50_quality = 'Invalid (Inhibition)'
 
             # In case not enough dilutions
-            if self.n_concs < self.min_dilutions:
+            if self.n_conc < self.min_dilutions:
                 self.ic50_ = 0
-                self.ic50_quality = f"Invalid ({self.n_concs} Conc)"
+                self.ic50_quality = f"Invalid ({self.n_conc} Conc)"
 
         # ------------------------------------------------------------------
         # self.ic10 = format_XCFF(retFit['FIT_XC10'],10,self.cmax,self.cmin,self.dmax)
