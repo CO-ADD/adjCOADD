@@ -221,7 +221,6 @@ class AssayData_MIC(CmpBatchList_Base):
     from dplate.models import TestPlate
 #    from dorganism.models import Organism, Organism_Batch
 
-
     HEADER_FIELDS = {
         # "run_id":"Run ID",
         # "run_type":"Run Type",
@@ -328,7 +327,7 @@ class AssayData_MIC(CmpBatchList_Base):
         return(retInstance)
 
     #------------------------------------------------
-    # Returns an User instance if found by name
+    # Returns an AssayData  instance if found by name
     @classmethod
     def exists(cls,PlateID,WellID):
         return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
@@ -348,7 +347,15 @@ class AssayData_MIC(CmpBatchList_Base):
    #------------------------------------------------
     def set_actscores(self,verbose=0):
         self.act_score = ActScore_DR(self.mic,self.mic_unit,DMax=self.inhibit_max)
-        self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)    
+        self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)
+    
+    #------------------------------------------------
+    # 
+    @classmethod    
+    def calc_doseresponse(cls,):
+        retInst = cls()
+        
+        return(retInst)    
 
 #-------------------------------------------------------------------------------------------------
 class AssayData_CC50(CmpBatchList_Base):

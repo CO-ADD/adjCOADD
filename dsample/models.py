@@ -888,7 +888,7 @@ class Sample_Base(CmpBatchList_Base):
             if not Dictionary.exists(self.DICTIONARY_FIELDS['conc_unit_lst'],conc_unit):
                 _missing.append(conc_unit)
         if len(_missing) > 0:
-            return({'Error': f"Conc_Unith not found {', '.join(_missing)}"})
+            return({'Error': f"Conc_Unit not found {', '.join(_missing)}"})
         else:
             return(None)
 

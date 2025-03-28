@@ -350,7 +350,8 @@ class TestPlate(Plate):
     """
 #=================================================================================================
 
-    #WELL_CLASS = TestWell
+    WELL_CLASS = 'TestWell'
+    
     RESULT_TYPES = Choices('MIC','CC50','HC50','SYN-MIC')
     ZFACTOR_CUTOFF = 0.2
 
@@ -364,7 +365,7 @@ class TestPlate(Plate):
         'plate_quality':'Data_Quality',
         'plate_type':'Plate_Type',
     }
-
+    
     # plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
     # labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
     #     db_column="labware_id", related_name="%(class)s_labwareid")
@@ -627,6 +628,18 @@ class TestPlate(Plate):
                 self.wells[w].clear_cmpbatch_data()
 
     #--------------------------------------------------------------
+    def conv_list_to_string(self):
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].conv_list_to_string()
+        
+    #--------------------------------------------------------------
+    def process_wells(self,Function):
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].Function()
+ 
+    #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
     #
     # Get fielddata from the Wells, by Selection
@@ -837,7 +850,7 @@ class TestWell(Sample_Base):
         'solvent_conc_unit':'Unit_Concentration',
     }
 
-    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets']
+    STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets','cmpbatch_sets']
 
     ARRAY_FIELDS = {'cmpbatch_lst':['compound_id','compound2_id','compound3_id','compound4_id'],
                     'conc_lst':['conc','conc2','conc3','conc4',],
@@ -847,7 +860,6 @@ class TestWell(Sample_Base):
                     }
     
     COPY_FIELDS = ['solvent', 'solvent_conc', 'amount','volume',]
-
 
     # Fields ---------------------------------------------------------------------------------------------------
 
@@ -894,6 +906,9 @@ class TestWell(Sample_Base):
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
 
     chk_migration = models.SmallIntegerField(default=-1, blank=False, verbose_name = "Check for migration")
+    
+    # CmpBatch+Set list - for Doseresponse
+    cmpbatch_sets = ''
     #-------------------------------------------------------------------------------
     class Meta:
         app_label = 'dplate'
@@ -954,7 +969,12 @@ class TestWell(Sample_Base):
         self.sets = ''
         if self.set_lst:
             self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst != ""])
-
+        self.cmpbatch_sets = ''
+        if self.set_lst:
+            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}_{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) != ""])
+        else:
+            self.cmpbatch_sets = self.cmpbatches
+            
     #------------------------------------------------  
     def conv_string_to_lst(self):
         super().conv_string_to_lst()
@@ -1175,15 +1195,15 @@ class MasterPlate(Plate):
         }
 
         if self.wells:
-            for w_id in self.wells:
-                if self.wells[w_id].dilution_lst:
+            for w in self.wells:
+                if self.wells[w].dilution_lst:
                     #logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w_id}] {self.wells[w_id].dilution_lst}")
-                    for i in range(len(self.wells[w_id].dilution_lst)):
-                        w_dil =self.wells[w_id].dilution_lst[i]
+                    for i in range(len(self.wells[w].dilution_lst)):
+                        w_dil =self.wells[w].dilution_lst[i]
                         if w_dil in DILUTION_DICT:
                             nConc,dConc,dRow,dCol  = DILUTION_DICT[w_dil]
-                            wR,wC = self.well_rowcol(w_id)
-                            wConc = self.wells[w_id].test_conc_lst[i]
+                            wR,wC = self.well_rowcol(w)
+                            wConc = self.wells[w].test_conc_lst[i]
                             #print(f"{self.plate_id} {w_id} {wConc}")
                             for n in range(nConc-1):
                                 if dConc > 0:
@@ -1193,13 +1213,17 @@ class MasterPlate(Plate):
                                 elif dCol:
                                     wC += 1
                                 dw_id = self.well_id((wR,wC))
+                                
+                                # Set Dilution Well if empty
                                 if self.wells[dw_id].n_cmpbatches == 0:
-                                    self.wells[dw_id].cmpbatch_lst = self.wells[w_id].cmpbatch_lst
-                                    self.wells[dw_id].n_cmpbatches = self.wells[w_id].n_cmpbatches
-                                    self.wells[dw_id].test_conc_lst = self.wells[w_id].test_conc_lst
-                                    self.wells[dw_id].test_conc_unit_lst = self.wells[w_id].test_conc_unit_lst
-                                    self.wells[dw_id].set_lst = self.wells[w_id].set_lst
-                                #self.wells[dw_id].test_conc_lst[i] = Decimal(wConc).quantize(Decimal("1.0000")) 
+                                    self.wells[dw_id].cmpbatch_lst = self.wells[w].cmpbatch_lst
+                                    self.wells[dw_id].n_cmpbatches = self.wells[w].n_cmpbatches
+                                    self.wells[dw_id].test_conc_lst = self.wells[w].test_conc_lst
+                                    self.wells[dw_id].test_conc_unit_lst = self.wells[w].test_conc_unit_lst
+                                    self.wells[dw_id].set_lst = self.wells[w].set_lst
+                                    
+                                # Set test_conc of i-th cmpbatch to wconc
+                                self.wells[dw_id].test_conc_lst[i] = wConc
 
                                 #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
                         else:

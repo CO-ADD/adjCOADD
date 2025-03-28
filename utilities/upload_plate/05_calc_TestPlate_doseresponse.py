@@ -27,6 +27,9 @@ logging.basicConfig(
 #    handlers=[logging.StreamHandler()],
     level=logLevel)
 
+
+
+
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
@@ -56,8 +59,12 @@ def main(prgArgs,djDir):
             if djTP:
                 if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
                     logger.info(f" [{djTP.plate_id}] {djTP.result_type}")
-                    djTP.make_wells_df()
-                    print(djTP.wells_df)
+                    djTP.conv_list_to_string()
+                    djTP.make_wells_df(ListToString=True)
+                    print(djTP.wells_df.columns)
+                    grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                    for g in grpData:
+                        print(g)
 
 
 
