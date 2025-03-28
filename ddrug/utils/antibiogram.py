@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from dorganism.models import Taxonomy, Organism, Organism_Batch, Organism_Culture, OrgBatch_Stock
 from ddrug.models import Drug, VITEK_Card, VITEK_ID, VITEK_AST, MIC_COADD, MIC_Pub
 from ddrug.utils.molecules import *
-from ddrug.utils.bio_data import agg_DR
+from applib.bio.bio_data import agg_DR
 
 #from apputil.utils.data import *
 from apputil.utils.data_style import highlight_RSI

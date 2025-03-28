@@ -17,7 +17,7 @@ from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List, split_StrList
-from ddrug.utils.bio_data import pScore, ActScore_DR, ActScore_SC
+from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
 from dsample.models import CmpBatchList_Base, Compound_Batch
 from dcell.models import Cell
 from dorganism.models import Organism

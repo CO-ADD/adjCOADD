@@ -69,8 +69,6 @@ def ActScore_SC(Inhib,ZScore=None,cutoff_Inhib={'A':80,'P':50},cutoff_Zscore={'A
 #-----------------------------------------------------------------------------
 def ActType_DR(DR,DR_Unit,DMax=0, cutoffDR=ActScoreDR_Cutoff,cutoff_inhib=50):
 #-----------------------------------------------------------------------------
-
-    #print(f" {DR} {DR_Unit}")
     actType = 'Invalid'
     CmpdSep = '|'
 
@@ -85,6 +83,7 @@ def ActType_DR(DR,DR_Unit,DMax=0, cutoffDR=ActScoreDR_Cutoff,cutoff_inhib=50):
     else:
         unit = DR_Unit
 
+    #print(f"{prefix} {val} {DMax}")
     if (prefix == '=') or (prefix == '<'):
         actType = 'LowActive'
         if unit in cutoffDR['Active']['CutOff']:
@@ -399,26 +398,76 @@ def split_DR(strDR):
 
 
 # --------------------------------------------------------------------
-def format_DR(p,v):
-    strVal = ''
-    if v:
-        if isinstance(v,str):
-            strVal = v
+def format_DR(prefix,value_lst):
+    _strVal_lst = []
+    _Val_lst =[]
+    if value_lst:
+        if isinstance(value_lst,str):
+            _strVal_lst = [value_lst]
+            _Val_lst =[]
+        elif isinstance(value_lst,int) or isinstance(value_lst,float):
+            _Val_lst = [value_lst]
         else:
-            if int(v) == v:
-                strVal = f"{v}"
-            elif v > 1000:
-                    strVal = f"{v:.0f}"
-            elif v > 100:
-                    strVal = f"{v:.1f}"
-            elif v > 10:
-                    strVal = f"{v:.2f}"
+            _Val_lst = value_lst
+            
+        #
+        for _v in _Val_lst:
+            if int(_v) == float(_v):
+                _prec = 0
+            elif float(_v) > 1000:
+                _prec = 0
+            elif float(_v) > 100:
+                _prec = 1
+            elif float(_v) > 10:
+                _prec = 2
             else:
-                strVal = f"{v:.3f}"
+                _prec = 3
+                    
+            # Apply precision 
+            _str = f"{_v:.{_prec}f}"
+            
+            # Remove trailing 0 if in decimal
+            if '.' in _str:
+                _str = _str.rstrip('0')
+            _strVal_lst.append(_str)
 
-        if p == 'X':
+        if prefix == 'X':
             strVal = 'nf'
-        elif p == '<=' or p == '>':
-            strVal = p + strVal
+        elif prefix == '<=' or prefix == '>':
+            strVal = prefix + COMPOUND_SEP.join(_strVal_lst)
+        else:
+            strVal = COMPOUND_SEP.join(_strVal_lst) 
     return(strVal)
 
+
+# --------------------------------------------------------------------
+def dr_max_quality(dr,dmax,quality):
+    _ret = f"{dr} ({dmax:.1f})"
+    if 'Retest' in quality:    
+        _ret = "^ " + _ret
+    elif 'Invalid' in quality:
+        _ret = "# " + _ret
+    return(_ret)
+
+# def format_DR(p,v):
+#     strVal = ''
+#     if v:
+#         if isinstance(v,str):
+#             strVal = v
+#         else:
+#             if int(v) == v:
+#                 strVal = f"{v}"
+#             elif v > 1000:
+#                     strVal = f"{v:.0f}"
+#             elif v > 100:
+#                     strVal = f"{v:.1f}"
+#             elif v > 10:
+#                     strVal = f"{v:.2f}"
+#             else:
+#                 strVal = f"{v:.3f}"
+
+#         if p == 'X':
+#             strVal = 'nf'
+#         elif p == '<=' or p == '>':
+#             strVal = p + strVal
+#     return(strVal)

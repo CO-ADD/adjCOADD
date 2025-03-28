@@ -38,8 +38,10 @@ def main(prgArgs,djDir):
     from dscreen.models import Assay
     from dplate.models import Labware, TestPlate, TestWell
     from dorganism.models import Organism, Organism_Batch
+    from dsample.models import Compound_Batch
     from dcell.models import Cell, Cell_Batch
     from applib.plate.multimode_reader import multimodereader_xls
+    from applib.bio.doseresponse import DoseResponse
     from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
@@ -58,30 +60,20 @@ def main(prgArgs,djDir):
             djTP = TestPlate.get(prgArgs.plateid,WellData=True)
             if djTP:
                 if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-                    logger.info(f" [{djTP.plate_id}] {djTP.result_type}")
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
+                    
                     djTP.conv_list_to_string()
                     djTP.make_wells_df(ListToString=True)
-                    print(djTP.wells_df.columns)
+
                     grpData = djTP.wells_df.groupby('cmpbatch_sets')
-                    for g in grpData:
-                        print(g)
+                    for CmpBatch,DRData in grpData:
+                        if CmpBatch:
+                            _dr = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                            # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                            _dr.calc_doseresponse()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            print(f" [{_dr.test_well_id}] {str(_dr)}")
+                        #print(grpdf[['cmpbatch_lst','conc_lst','inhibition','conc_unit_lst','act_type']].sort_values(by='conc_lst',ascending=False))
 
                 else:
                     logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")

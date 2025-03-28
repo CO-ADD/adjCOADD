@@ -18,7 +18,7 @@ from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
 from dsample.models import CmpBatchList_Base
 from dchem.models import Chem_Structure
-from ddrug.utils.bio_data import pScore, ActScore_DR, ActScore_SC
+from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
 
 from adjcoadd.constants import *
 

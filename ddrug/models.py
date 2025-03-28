@@ -13,7 +13,7 @@ from apputil.models import AuditModel, Dictionary
 from dorganism.models import Organism, Organism_Batch, Taxonomy
 from dscreen.models import Screen_Run
 from dchem.models import Chem_Structure
-from ddrug.utils.bio_data import split_DR
+from applib.bio.bio_data import split_DR
 
 import logging
 logger = logging.getLogger(__name__)

@@ -3,7 +3,7 @@ import numpy as np
 from django.apps import apps
 from django.shortcuts import HttpResponse, render
 from apputil.utils.data_style import highlight_val, highlight_RSI
-from ddrug.utils.bio_data import agg_Lst, agg_DR, agg_Inhib
+from applib.bio.bio_data import agg_Lst, agg_DR, agg_Inhib
 
 #    #-------------------------------------------------------------------------------------------------
 # get_pivottable: - used to convert queryset into pivottable 

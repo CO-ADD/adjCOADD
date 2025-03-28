@@ -21,7 +21,7 @@ from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
 from dsample.models import Sample_Base, CmpBatchList_Base
-from ddrug.utils.bio_data import ActScoreSC_Cutoff, ActType_SC
+from applib.bio.bio_data import ActScoreSC_Cutoff, ActType_SC
 from adjcoadd.constants import *
 
 import matplotlib.ticker as tic

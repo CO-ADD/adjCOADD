@@ -9,7 +9,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
 from dchem.models import Chem_Structure
 from dplate.models import TestWell
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
-from ddrug.utils.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
+from applib.bio.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging
