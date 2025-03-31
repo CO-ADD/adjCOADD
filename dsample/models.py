@@ -534,13 +534,31 @@ class ABase_Compound(AuditModel):
 class ABase_Compound_Batch(AuditModel):
 
     DICTIONARY_FIELDS = {
+        'init_amount_unit':'amount_unit',
     }
 
     compound_id = models.ForeignKey(ABase_Compound, null=True, blank=True, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
         db_column="compound_id", related_name="%(class)s_compound_id")
     cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
         db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
-
+    
+    # full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
+    # full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
+    # salt_code
+    # salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
+    # solvent_code
+    # solvent_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvent Eq")
+    # chemist
+    # labbook_no
+    # labbook_page
+    # labbook_page_line
+    # supplier
+    # supplier_code
+    # supplier_batch
+    # supplier_po
+    # date_recieved
+    # init_amount = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Init Amount")
+    # init_amount_unit
 
     class Meta:
         app_label = 'dsample'
