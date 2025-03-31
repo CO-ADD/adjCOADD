@@ -526,6 +526,31 @@ class ABase_Compound(AuditModel):
     # def new_ABase_Compound_ID(cls,OldABaseID,verbose=0):
     #     return(OldABaseID.replace('MCC_','MCC'))
 
+
+#-------------------------------------------------------------------------------------------------
+    """
+    List of Abase CmmpBatches as per Registration
+    """
+class ABase_Compound_Batch(AuditModel):
+
+    DICTIONARY_FIELDS = {
+    }
+
+    compound_id = models.ForeignKey(ABase_Compound, null=True, blank=True, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
+        db_column="compound_id", related_name="%(class)s_compound_id")
+    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'abase_cmpbatch'
+        ordering=['compound_id']
+        indexes = [
+            models.Index(name="abcmpb_cmpb_idx", fields=['cmpbatch_id']),
+        ]
+
+
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):
     """

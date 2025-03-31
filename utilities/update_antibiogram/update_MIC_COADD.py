@@ -38,7 +38,7 @@ def main(prgArgs,djDir):
     from apputil.models import Dictionary
     from dsample.models import COADD_Compound, Compound_Batch
     from ddrug.models import Drug, MIC_COADD
-    from dsummary.utils.upd_sum_cmpbatch import sum_structure_sc
+    from dsummary.utils.summary_data import sum_structure_sc
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
@@ -74,9 +74,8 @@ def main(prgArgs,djDir):
                     cmp_lst.append("_".join(_l[:2]))
                 cmps = "|".join(cmp_lst)
 
-                djDrug = Drug.objects.get(uq_imb=cmps)
-
-                if djDrug:                
+                if Drug.objects.filter(uq_imb=cmps).exists():
+                    djDrug =   Drug.objects.get(uq_imb=cmps)               
                     djMIC = MIC_COADD.get(mic.testplate_id.test_orgbatch_id,djDrug,mic.testplate_id,mic.testwell_id,verbose=0)
                     if djMIC is None:
                         OutNumbers['New'] += 1
@@ -105,6 +104,8 @@ def main(prgArgs,djDir):
                     if prgArgs.upload and validStatus:
                         djMIC.save()
                         OutNumbers['Uploaded'] += 1
+                else:
+                    logger.warning(f" [MIC COADD] Drug {cmps} not found")
 
         logger.info(f" [{prgArgs.table}] {OutNumbers}")
 

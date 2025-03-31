@@ -40,7 +40,7 @@ def main(prgArgs,djDir):
 
     from dplate.models import Labware, TestPlate, TestWell
     from dsample.models import COADD_Compound, Compound_Batch
-    from dsummary.utils.upd_sum_cmpbatch import sum_cmpbatch_sc
+    from dsummary.utils.summary_data import sum_cmpbatch_sc
     from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run
     from dsummary.models import Summary_CmpBatch, Summary_CmpBatch_Doseresp
     from adjcoadd.constants import COMPOUND_SEP
