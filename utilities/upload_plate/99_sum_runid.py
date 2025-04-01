@@ -40,6 +40,7 @@ def main(prgArgs,djDir):
     from applib.plate.multimode_reader import multimodereader_xls
     from applib.bio.doseresponse import DoseResponse
     from applib.data.set_fielddata import set_model_from_dict
+    from dsummary.utils.analyse_data import Analysis_Screening
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -52,8 +53,17 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
 
-    # Process TestPlate -------------------------------------------------------------
+    cAnalysis = Analysis_Screening()
+    # Process TestPlate -----------------------------------------------------------
+    if prgArgs.runid:
+        cAnalysis.qry_by_RunID(prgArgs.runid)
+        cAnalysis.get_dataframe()
+        cAnalysis.get_sample_info()
+        cAnalysis.get_assay_info()
+        cAnalysis.add_Vitek_AST()
 
+        if prgArgs.excelfile:
+            cAnalysis.to_excel(prgArgs.excelfile)
 
 #==============================================================================
 if __name__ == "__main__":
@@ -77,7 +87,7 @@ if __name__ == "__main__":
     # prgParser.add_argument("-p","--plate",default=None,required=False, dest="plateid", action='store', help="Single File to calculate")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
-#    prgParser.add_argument("-e","--excel",default=None,required=True, dest="excelfile", action='store', help="Excel File")
+    prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
     prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
     #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 

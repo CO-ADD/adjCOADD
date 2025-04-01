@@ -286,10 +286,10 @@ class Summary_Structure(AuditModel):
     @classmethod
     def get(cls,StructureID, verbose=0):
         try:
-            retInstance = cls.objects.get(structure_id=StructureID, assay_id=AssayID)
+            retInstance = cls.objects.get(structure_id=StructureID)
         except:
             if verbose:
-                logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} {AssayID}")
+                logger.warning(f"[Summary Structure Inhibition Not Found] {StructureID} ")
             retInstance = None
         return(retInstance)
 

@@ -534,31 +534,35 @@ class ABase_Compound(AuditModel):
 class ABase_Compound_Batch(AuditModel):
 
     DICTIONARY_FIELDS = {
-        'init_amount_unit':'amount_unit',
+        'init_amount_unit':'Unit_Amount',
     }
 
+    # cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+    #     db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
+    cmpbatch_id = models.OneToOneField(Compound_Batch, primary_key=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
+                                        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
     compound_id = models.ForeignKey(ABase_Compound, null=True, blank=True, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
         db_column="compound_id", related_name="%(class)s_compound_id")
-    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
-        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
-    
-    # full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
-    # full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
-    # salt_code
-    # salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
-    # solvent_code
-    # solvent_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvent Eq")
-    # chemist
-    # labbook_no
-    # labbook_page
-    # labbook_page_line
-    # supplier
-    # supplier_code
-    # supplier_batch
+    full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
+    full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
+    salt_code = models.CharField(max_length=50, blank=True, verbose_name = "Salt Code")
+    salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
+    solvent_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvent Code")
+    solvent_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvent Eq")
+    supplier = models.CharField(max_length=50, blank=True, verbose_name = "Supplier")
+    supplier_code = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Code")
+    supplier_batch = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Batch")
     # supplier_po
-    # date_recieved
-    # init_amount = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Init Amount")
-    # init_amount_unit
+    date_recieved = models.DateField(null=True, blank=True, verbose_name = "Received")
+    init_amount = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Init Amount")
+    init_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Init Amount Unit", on_delete=models.DO_NOTHING,
+        db_column="init_amount_unit", related_name="%(class)s_init_amount_unit")
+
+    chemist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Chemist", on_delete=models.DO_NOTHING, 
+        db_column="chemist", related_name="%(class)s_chemist")
+    labbook_no = models.CharField(max_length=10, blank=True, verbose_name = "LabBook")
+    labbook_page = models.CharField(max_length=10, blank=True, verbose_name = "LabBook Page")
+    labbook_page_line = models.CharField(max_length=10, blank=True, verbose_name = "LabBook Page Line")
 
     class Meta:
         app_label = 'dsample'
@@ -566,7 +570,30 @@ class ABase_Compound_Batch(AuditModel):
         ordering=['compound_id']
         indexes = [
             models.Index(name="abcmpb_cmpb_idx", fields=['cmpbatch_id']),
+            models.Index(name="abcmpb_salt_idx", fields=['salt_code']),
+            models.Index(name="abcmpb_solv_idx", fields=['solvent_code']),
+            models.Index(name="abcmpb_fmw_idx", fields=['full_mw']),
+            models.Index(name="abcmpb_sup_idx", fields=['supplier']),
         ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,CompoundBatch, verbose=0):
+    # Returns an instance by compound_id
+        try:
+            retInstance = cls.objects.get(cmpbatch_id=CompoundBatch)
+        except:
+            retInstance = None
+            if verbose:
+                logger.warning(f"[ABase CompoundBatch Not Found] {CompoundBatch} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,CompoundBatch, verbose=0):
+    # Returns if an instance exists by compound_id
+        retValue = cls.objects.filter(cmpbatch_id=CompoundBatch).exists()
+        return(retValue)
 
 
 #-------------------------------------------------------------------------------------------------
