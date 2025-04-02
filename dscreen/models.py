@@ -503,11 +503,14 @@ class AssayData_HC50(CmpBatchList_Base):
     hc50_quality = models.CharField(max_length=20, blank=True, verbose_name = "HC50 Quality")
     hc50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "HC50 r2")
     hc50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "HC50 Slope")
-    hc10 = models.CharField(max_length=50, blank=True, verbose_name = "HC10")
 
     act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
     pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
+
+    hc10 = models.CharField(max_length=50, blank=True, verbose_name = "HC10")
+    tox_type = models.CharField(max_length=5, blank=True, verbose_name = "Tox Type")
+    tox_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Tox Score")
 
     analysis = models.CharField(max_length=15, verbose_name = "Analysis")
 

@@ -9,7 +9,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
                              Summary_Structure, Summary_Structure_Doseresp, Summary_Structure_Inhib,)
 from dchem.models import Chem_Structure
 from dplate.models import TestWell
-from dsample.models import Project
+from dsample.models import Project, COADD_Compound
 from ddrug.models import Drug, VITEK_AST
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
@@ -18,12 +18,15 @@ from adjcoadd.constants import COMPOUND_SEP
 import logging
 logger = logging.getLogger(__name__)
 
-
+#-----------------------------------------------------------------------------------------
 class Analysis_Screening():
-
+    """
+    Analysis class for Screening data Doseresponse and Single Concentration data
+    
+    """
+    # --------------------------------------------------------------------------------------
     def __init__(self):
-
-
+    # --------------------------------------------------------------------------------------
 
         # - SC Data ------------
         self.COL_TW = [ 'cmpbatch_lst', 'conc_lst','conc_unit_lst','n_cmpbatches',
@@ -31,10 +34,9 @@ class Analysis_Screening():
                         'plate_id','well_id','plate_id__result_type',
                         ]
         self.DF_COL_SC = [ 'cmpbatch_lst','conc_lst','conc_unit_lst','n_cmpbatches',
-                        'sum_assay_id','inhibition','mscore','act_type','act_score',
+                        'assay_id','inhibition','mscore','act_type','act_score',
                         'plate_id','well_id','result_type',
                         ]
-
 
         # - DR Data ------------
         self.COL_MIC  = ['cmpbatch_lst','n_cmpbatches',
@@ -57,6 +59,7 @@ class Analysis_Screening():
 
         
         # - Summary -----------
+        self.n_compounds = 0
         self.n_samples = 0
         self.n_assays = 0
         self.n_tw = 0
@@ -66,14 +69,48 @@ class Analysis_Screening():
         self.n_dr = 0
         self.n_sc = 0
 
+        self.dict_compounds = {}
         self.dict_samples = {}
         self.dict_assays = {}
         self.list_organism_ids = []
+        self.list_cmpbatch_ids = []
     # --------------------------------------------------------------------------------------
     def qry_by_ProjectID(self,ProjectID):
     # --------------------------------------------------------------------------------------
-        pass
+        qryCmpd = COADD_Compound.objects.filter(project_id = ProjectID).values('compound_id','compound_code',)
+        self.n_compounds = qryCmpd.count()
+        logger.info(f" [Analysis] ProjectID: {ProjectID} ({self.n_compounds})")
+        
+        if self.n_compounds > 0:
+            self.dict_compounds = {}
+            self.list_cmpbatch_ids = []
+            for qry in qryCmpd:
+                if qry['compound_id'] not in self.dict_compounds:
+                    self.dict_compounds[qry['compound_id']] = qry
+                    self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
+                    self.list_cmpbatch_ids.append(qry['compound_id'])
 
+            logger.info(f" [Analysis] ProjectID: {self.n_compounds} ")
+            
+        self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                testplate_id__plate_quality = 'Valid'                                            
+                                ).values_list(*self.COL_MIC)
+        self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                testplate_id__plate_quality = 'Valid'                                            
+                                ).values_list(*self.COL_CC50)
+        self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                testplate_id__plate_quality = 'Valid'                                            
+                                ).values_list(*self.COL_HC50)
+
+        self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
+                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                plate_id__plate_quality = 'Valid'                                            
+                                ).values_list(*self.COL_TW)
+        
+        
     # --------------------------------------------------------------------------------------
     def qry_by_RunID(self,RunID):
     # --------------------------------------------------------------------------------------
@@ -122,7 +159,6 @@ class Analysis_Screening():
         self.dict_assays = {}
 
         # - SC Data -------------------------------------------------------
-
         self.df_sc = None
         self.n_tw = self.qryTW.count()
         if self.n_tw > 0:

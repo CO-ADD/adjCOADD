@@ -18,7 +18,7 @@ class DoseResponse():
     
     #--------------------------------------------------------------
     def __init__(self, cutoff=80, 
-                 min_dilutions=6,  inhib_limit = 500,
+                 min_dilutions=6,  inhib_limit = 500, 
                  inhib_correction = True, inhib_correct_limit = 20,
                  ic50_dmax_cutoff = 40,
                  breakpoint=None, 
@@ -92,6 +92,7 @@ class DoseResponse():
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
         elif 'HC50' in str(self.testplate.result_type):
+            self.MIC(cutoff=10)
             self.IC50()
         else:
             logger.warning(f" [DoseResponse] Unknonw ResultType [{self.testplate.result_type}]")
@@ -99,17 +100,39 @@ class DoseResponse():
     #--------------------------------------------------------------
     def doseresponse_to_assaydata(self,verbose=0):
                 
-        ASS_FIELDS = { 'MIC': [
+        ASS_FIELDS = { 
+                    'MIC': [
                         'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
                         'mic','mic_unit',['mic_skips','skips_active'],
                         ['act_type','mic_act'], ['act_score','mic_act_score'], ['pscore','pmic'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
                         ['data_quality','mic_quality'], ['valid','mic_valid'],
-                        'ic50','ic50_unit',['ic50_pscore','pic5'], 
+                        'ic50','ic50_unit',['ic50_pscore','pic50'], 
                         'ic50_quality', ['ic50_r2','ic50_fit_r2'], ['ic50_slope','ic50_fit_slope']
                         # ref_mic, ref_mic_chk
                         ],
+                    'CC50': [
+                        'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
+                        ['cc50','ic50'],['cc50_unit','ic50_unit'],['pscore','pic50'], 
+                        ['cc50_quality','ic50_quality'], ['cc50_r2','ic50_fit_r2'], ['cc50_slope','ic50_fit_slope'],
+                        ['act_type','ic50_act'], ['act_score','ic50_act_score'],
+                        'analysis','n_conc',
+                        ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
+                        ['data_quality','ic50_quality'], ['valid','ic50_valid'],
+                        # ref_mic, ref_mic_chk
+                        ],                      
+                    'HC50': [
+                        'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
+                        ['hc50','ic50'],['hc50_unit','ic50_unit'],['pscore','pic50'], 
+                        ['hc50_quality','ic50_quality'], ['hc50_r2','ic50_fit_r2'], ['hc50_slope','ic50_fit_slope'],
+                        ['act_type','ic50_act'], ['act_score','ic50_act_score'], 
+                        ['hc10','mic'],['tox_type','mic_act'], ['tox_score','mic_act_score'],
+                        'analysis','n_conc',
+                        ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
+                        ['data_quality','ic50_quality'], ['valid','ic50_valid'],
+                        # ref_mic, ref_mic_chk
+                        ],                      
                     }
         
         ass_key = str(self.testplate.result_type)
@@ -119,6 +142,26 @@ class DoseResponse():
             self.assaydata = AssayData_MIC.get(self.testplate.plate_id,self.testwell_id)
             if self.assaydata is None:
                 self.assaydata = AssayData_MIC()
+                self.assaydata_status = 'New'
+            if verbose > 0:
+                logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
+
+        if 'CC50' == ass_key:
+            
+            self.assaydata_status = 'Exists'
+            self.assaydata = AssayData_CC50.get(self.testplate.plate_id,self.testwell_id)
+            if self.assaydata is None:
+                self.assaydata = AssayData_CC50()
+                self.assaydata_status = 'New'
+            if verbose > 0:
+                logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
+
+        if 'HC50' == ass_key:
+            
+            self.assaydata_status = 'Exists'
+            self.assaydata = AssayData_HC50.get(self.testplate.plate_id,self.testwell_id)
+            if self.assaydata is None:
+                self.assaydata = AssayData_HC50()
                 self.assaydata_status = 'New'
             if verbose > 0:
                 logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
@@ -204,14 +247,14 @@ class DoseResponse():
     #--------------------------------------------------------------
 
     #===================================================================        
-    def MIC(self, cutoff=80):     
+    def MIC(self, Inhibition_Cutoff=80):     
     #===================================================================
     
         if self.df is None:
             logger.warning(" [DoseResponse] MIC no data")
             return(None)   
              
-        self.df = self.df.apply(self.apply_active,args=(cutoff,),axis=1)
+        self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,),axis=1)
 
         #----------------------------------------------------------------
         # Evaluate the Well for MIC 
@@ -259,7 +302,7 @@ class DoseResponse():
         self.mic_unit = COMPOUND_SEP.join(self.df.loc[self.mic_well,'conc_unit_lst'])
         self.mic = format_DR(self.mic_prefix,self.mic_value)
         
-        self.inhibition_cutoff = cutoff
+        self.inhibition_cutoff = Inhibition_Cutoff
         #nWells = len(_mic_df)
 
         self.mic_valid = 1
