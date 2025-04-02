@@ -59,11 +59,12 @@ def main(prgArgs,djDir):
         cAnalysis.qry_by_ProjectID(prgArgs.projectid)
         cAnalysis.get_dataframe()
         cAnalysis.get_sample_info()
-        #cAnalysis.get_assay_info()
+        cAnalysis.get_assay_info()
+        cAnalysis.get_testplate_info()
+        cAnalysis.gen_pivot_tables()
         # cAnalysis.add_Vitek_AST()
 
-        if prgArgs.excelfile:
-            cAnalysis.to_excel(prgArgs.excelfile)
+        cAnalysis.to_excel(prgArgs.excelfile)
 
 
 #==============================================================================

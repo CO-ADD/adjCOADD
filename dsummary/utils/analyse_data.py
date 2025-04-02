@@ -8,15 +8,17 @@ from django.db.models import Q
 from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summary_CmpBatch_Inhib,
                              Summary_Structure, Summary_Structure_Doseresp, Summary_Structure_Inhib,)
 from dchem.models import Chem_Structure
-from dplate.models import TestWell
-from dsample.models import Project, COADD_Compound
+from dplate.models import TestWell, TestPlate
+from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
-from applib.bio.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
+from applib.bio.bio_data import DR_Range, agg_Inhib, agg_DR, agg_Lst, dr_max_quality, conv_Conc, split_DR, format_DR, DR_GeoMean
+from applib.data.df import resort_pivtable
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging
 logger = logging.getLogger(__name__)
+
 
 #-----------------------------------------------------------------------------------------
 class Analysis_Screening():
@@ -31,37 +33,38 @@ class Analysis_Screening():
         # - SC Data ------------
         self.COL_TW = [ 'cmpbatch_lst', 'conc_lst','conc_unit_lst','n_cmpbatches',
                         'plate_id__assay_id','inhibition','mscore','act_type','act_score',
-                        'plate_id','well_id','plate_id__result_type',
+                        'plate_id','well_id','plate_id__result_type','plate_id__run_id',
                         ]
         self.DF_COL_SC = [ 'cmpbatch_lst','conc_lst','conc_unit_lst','n_cmpbatches',
                         'assay_id','inhibition','mscore','act_type','act_score',
-                        'plate_id','well_id','result_type',
+                        'plate_id','well_id','result_type','run_id',
                         ]
 
         # - DR Data ------------
         self.COL_MIC  = ['cmpbatch_lst','n_cmpbatches',
                         'testplate_id__assay_id','mic','mic_unit','act_type','act_score','pscore','inhibit_max',                
-                        'testplate_id','testwell_id','testplate_id__result_type',
+                        'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
+                        'data_quality',
                         ]
         self.COL_CC50 = ['cmpbatch_lst','n_cmpbatches',
                          'testplate_id__assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
-                        'testplate_id','testwell_id','testplate_id__result_type',
+                        'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
+                        'data_quality',
                         ]
         self.COL_HC50 = ['cmpbatch_lst','n_cmpbatches',
                          'testplate_id__assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
-                        'testplate_id','testwell_id','testplate_id__result_type',
+                        'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
+                        'data_quality',
                         ]
 
         self.DF_COL_DR = ['cmpbatch_lst','n_cmpbatches',
                        'assay_id','dr','dr_unit','act_type','act_score','pscore','inhibit_max',
-                        'testplate_id','testwell_id','result_type',
+                        'testplate_id','testwell_id','result_type','run_id',
+                        'data_quality',
                         ]
 
         
         # - Summary -----------
-        self.n_compounds = 0
-        self.n_samples = 0
-        self.n_assays = 0
         self.n_tw = 0
         self.n_mic = 0
         self.n_cc50 = 0
@@ -69,11 +72,29 @@ class Analysis_Screening():
         self.n_dr = 0
         self.n_sc = 0
 
+        self.n_vitek = 0
+
+        self.n_compounds = 0
+        self.n_samples = 0
+        self.n_cmpbatch_ids = 0
         self.dict_compounds = {}
         self.dict_samples = {}
-        self.dict_assays = {}
-        self.list_organism_ids = []
         self.list_cmpbatch_ids = []
+
+        self.n_assays = 0
+        self.dict_assays = {}
+
+        self.n_testplates = 0
+        self.dict_testplates = {}
+        
+        self.n_organism_ids = 0
+        self.n_cell_ids = 0
+        self.list_organism_ids = []
+        self.list_cell_ids = []
+        
+        self.file_name = ''
+        
+        self.dict_pivtables = {}
     # --------------------------------------------------------------------------------------
     def qry_by_ProjectID(self,ProjectID):
     # --------------------------------------------------------------------------------------
@@ -89,8 +110,7 @@ class Analysis_Screening():
                     self.dict_compounds[qry['compound_id']] = qry
                     self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
                     self.list_cmpbatch_ids.append(qry['compound_id'])
-
-            logger.info(f" [Analysis] ProjectID: {self.n_compounds} ")
+            self.file_name = ProjectID
             
         self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
                                 cmpbatch_lst__overlap=self.list_cmpbatch_ids,
@@ -132,23 +152,31 @@ class Analysis_Screening():
                                 plate_id__run_id = RunID,
                                 plate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_TW)
+        
+        self.file_name = RunID
 
     # --------------------------------------------------------------------------------------
     @staticmethod
-    def apply_sampleid(s):
+    def apply_samples(s):
         s['sample_id'] = COMPOUND_SEP.join(s['cmpbatch_lst'])
+        if 'conc_lst' in s:
+            s['concs'] = COMPOUND_SEP.join([f"{c}" for c in s['conc_lst']])
+        if 'conc_unit_lst' in s:
+            s['conc_units'] = COMPOUND_SEP.join(s['conc_unit_lst'])
         return(s)
     
     # --------------------------------------------------------------------------------------
     @staticmethod
-    def apply_vitek(s):
-        if '>=' in s['mic']:
-            s['mic'] =  s['mic'].replace('>= ','>')
-        elif '<=' in s['mic']:
-                s['mic'] = s['mic'].replace('<= ','<=')
+    def apply_cmpbatch(s):
+        s['sample_id'] = COMPOUND_SEP.join(s['cmpbatch_lst'])
         return(s)
 
-
+    # --------------------------------------------------------------------------------------
+    @staticmethod
+    def apply_dr(s):
+        s['dr_max'] = dr_max_quality(s['dr'],s['inhibit_max'],'')
+        return(s)
+        
     # --------------------------------------------------------------------------------------
     def get_dataframe(self):
     # --------------------------------------------------------------------------------------
@@ -163,9 +191,9 @@ class Analysis_Screening():
         self.n_tw = self.qryTW.count()
         if self.n_tw > 0:
             self.df_sc = pd.DataFrame(list(self.qryTW), columns=self.DF_COL_SC)
-            self.df_sc = self.df_sc.apply(self.apply_sampleid,axis=1)
+            self.df_sc = self.df_sc.apply(self.apply_samples,axis=1)
             logger.info(f" [Analysis] SC {self.df_sc.shape} [{self.n_tw}] ")
-
+            self.n_sc = self.df_sc.size 
             # - Getting Samples
             for _s in self.df_sc['sample_id'].unique():
                 if _s not in self.dict_samples:
@@ -175,6 +203,11 @@ class Analysis_Screening():
             for _a in self.df_sc['assay_id'].unique():
                 if _a not in self.dict_assays:
                     self.dict_assays[_a] = {'assay_id':_a}
+
+            # - Getting Testplates
+            for _p in self.df_sc['plate_id'].unique():
+                if _p not in self.dict_testplates:
+                    self.dict_testplates[_p] = {'plate_id':_p}
 
 
         # - DR Data -------------------------------------------------------
@@ -196,9 +229,11 @@ class Analysis_Screening():
             dfHC50 = pd.DataFrame(list(self.qryHC50), columns=self.DF_COL_DR)
             dfHC50['dr_type'] = 'HC50'
             dfList.append(dfHC50)
+            
         if dfList:
             self.df_dr = pd.concat(dfList)
-            self.df_dr = self.df_dr.apply(self.apply_sampleid,axis=1)
+            self.df_dr = self.df_dr.apply(self.apply_samples,axis=1)
+            self.df_dr = self.df_dr.apply(self.apply_dr,axis=1)
             self.n_dr = self.df_dr.size
             logger.info(f" [Analysis] DR: {self.df_dr.shape}  [{self.n_mic} {self.n_cc50} {self.n_hc50}] ")
 
@@ -212,30 +247,33 @@ class Analysis_Screening():
                 if _a not in self.dict_assays:
                     self.dict_assays[_a] = {'assay_id':_a}
 
+            # - Getting Testplates
+            for _p in self.df_dr['testplate_id'].unique():
+                if _p not in self.dict_testplates:
+                    self.dict_testplates[_p] = {'plate_id':_p}
+
     # --------------------------------------------------------------------------------------
     def get_sample_info(self):
     # --------------------------------------------------------------------------------------
         # - Compounds Data ------------
-        # self.COL_CMP = ['assay_id','sum_assay_id', 'assay_type',
-        #                 'organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
-        #                 'cell_id__organism_name','cell_id__cell_line',
-        #                 ]
-        # self.COL_MCC = ['assay_id','sum_assay_id', 'assay_type',
-        #                 'organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
-        #                 'cell_id__organism_name','cell_id__cell_line',
-        #                 ]
-        
-        # self.DF_COL_CMP = [ 'assay_id','sum_assay_id', 'assay_type',
-        #                 'organism_name','strain_ids','strain_code',
-        #                 'cell_organism','cell_line',
-        #                 ]
+        self.COL_CMP = ['cmpbatch_id', 'full_mw','full_mf',
+                        'batch_source', 'batch_notes']
+        self.DF_COL_CMP = [ 'cmpbatch_id', 'full_mw','full_mf',
+                        'batch_source', 'batch_notes']
 
+        self.COL_MCC = ['assay_id','sum_assay_id', 'assay_type',
+                        'organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
+                        'cell_id__organism_name','cell_id__cell_line',
+                        ]
+        
+        _n_samples = [0,0,0]
         _sample_lst = []
         for k in self.dict_samples:
             _dict = {'sample_id':k}
 
-            # if MCC sample, check for Drug Info
-            if 'MCC_' in k:
+            if k.startswith('MCC_'):
+                # MCC sample, check for Drug Info
+                _n_samples[1] += 1
                 _lst = []
                 for batch in self.dict_samples[k]['cmpbatch_lst']:
                     _l = batch.split('_')
@@ -252,13 +290,42 @@ class Analysis_Screening():
                     _dict['sample_class'] = 'Screen'
                     _dict['project_id'] = '-'
 
-            else:
-                pass
+            elif k.startswith('C'):
+                # CO-ADD  sample
+                _n_samples[0] += 1
+                if COADD_Compound.objects.filter(compound_id = k).exists():
+                    djCmp = COADD_Compound.get(k)
+                    _dict['sample_code'] = djCmp.compound_code
+                    _dict['sample_class'] = 'CO-ADD'
+                    _dict['project_id'] = djCmp.project_id
+                else:
+                    _dict['sample_code'] = "-"
+                    _dict['sample_class'] = 'Screen'
+                    _dict['project_id'] = '-'
+                
+
+            elif k.startswith('LC'):
+                # Library sample
+                _n_samples[2] += 1
+
+                if Library_Compound.objects.filter(compound_id = k).exists():
+                    djCmp = Library_Compound.get(k)
+                    _dict['sample_code'] = djCmp.compound_code
+                    _dict['sample_class'] = 'Library'
+                    _dict['project_id'] = djCmp.library_id
+                else:
+                    _dict['sample_code'] = "-"
+                    _dict['sample_class'] = 'Screen'
+                    _dict['project_id'] = '-'
+
 
             _sample_lst.append(_dict)
         self.n_samples = len(_sample_lst)
         if  self.n_samples>0:
             self.df_samples = pd.DataFrame(_sample_lst)
+            logger.info(f" [Analysis] Samples: {self.n_samples}  {_n_samples} ")
+        else:
+            logger.warning(f" [Analysis] No Samples found")
             
 
     # --------------------------------------------------------------------------------------
@@ -267,83 +334,189 @@ class Analysis_Screening():
         # - Assay Data ------------
         self.COL_ASS = ['assay_id','sum_assay_id', 'assay_type',
                         'organism_id','organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
-                        'cell_id__organism_name','cell_id__cell_line',
+                        'cell_id','cell_id__organism_name','cell_id__cell_line',
                         ]
         self.DF_COL_ASS = [ 'assay_id','sum_assay_id', 'assay_type',
                         'organism_id','organism_name','strain_ids','strain_code',
-                        'cell_organism','cell_line',
+                        'cell_id','cell_organism','cell_line',
                         ]
-
-        _assay_lst =  self.df_dr['assay_id'].unique()
-        self.qrAss = Assay.objects.filter(assay_id__in=_assay_lst).values_list(*self.COL_ASS)
-        self.n_assays = self.qrAss.count()
+        
+        _assay_lst = list(self.dict_assays.keys())
+        self.qryAss = Assay.objects.filter(assay_id__in=_assay_lst).values_list(*self.COL_ASS)
+        self.n_assays = self.qryAss.count()
         if self.n_assays > 0:
-            self.df_assays = pd.DataFrame(list(self.qrAss), columns=self.DF_COL_ASS).fillna('-')
+            self.df_assays = pd.DataFrame(list(self.qryAss), columns=self.DF_COL_ASS).fillna('-')
             self.list_organism_ids = self.df_assays['organism_id'].unique()
+            self.n_organism_ids = len(self.list_organism_ids)
+            self.list_cell_ids = self.df_assays['cell_id'].unique()
+            self.n_cell_ids = len(self.list_cell_ids)
+            logger.info(f" [Analysis] Assays: {self.n_assays}  [{self.n_organism_ids} {self.n_cell_ids}] ")
+        else:
+            logger.warning(f" [Analysis] No Assays found")
 
+    # --------------------------------------------------------------------------------------
+    @staticmethod
+    def apply_testplates(s):
+        if 'poscontrol_stats' in s:
+            s['posctrl_ave'] = s['poscontrol_stats'][0]
+            s['posctrl_std'] = s['poscontrol_stats'][1]
+
+        if 'negcontrol_stats' in s:
+            s['negctrl_ave'] = s['negcontrol_stats'][0]
+            s['negctrl_std'] = s['negcontrol_stats'][1]
+
+        if 'sample_stats' in s:
+            s['sample_ave'] = s['sample_stats'][0]
+            s['sample_std'] = s['sample_stats'][1]
+
+        return(s)
+            
+    # --------------------------------------------------------------------------------------
+    def get_testplate_info(self,WithStats=False):
+    # --------------------------------------------------------------------------------------
+        # - Assay Data ------------
+        self.COL_TP = ['plate_id','assay_id','run_id','result_type','readout_type',
+                       'zfactor','plate_quality','poscontrol_stats','negcontrol_stats','sample_stats',
+                       'labware_id__labware_name','labware_id__plate_material','reader',
+                        ]
+        self.DF_COL_TP = ['plate_id','assay_id','run_id','result_type','readout_type',
+                       'zfactor','plate_quality','poscontrol_stats','negcontrol_stats','sample_stats',
+                       'labware_name','material','reader',
+                        ]
+        
+        _plate_lst = list(self.dict_testplates.keys())
+        self.qryTP = TestPlate.objects.filter(plate_id__in=_plate_lst).values_list(*self.COL_TP)
+        self.n_testplates = self.qryTP.count()
+        if self.n_testplates > 0:
+            self.df_testplates = pd.DataFrame(list(self.qryTP), columns=self.DF_COL_TP).fillna('-')
+            if WithStats:
+                self.df_testplates = self.df_testplates.apply(self.apply_testplates,axis=1)
+            logger.info(f" [Analysis] Testplates: {self.n_testplates}  ")
+        else:
+            logger.warning(f" [Analysis] No Testplates found")
+
+    # --------------------------------------------------------------------------------------
+    @staticmethod
+    def apply_vitek(s):
+        s['result_type'] = 'Vitek'
+        s['run_id'] = s['card_code']
+        if '>=' in s['mic']:
+            s['mic'] =  s['mic'].replace('>= ','>')
+        elif '<=' in s['mic']:
+            s['mic'] = s['mic'].replace('<= ','<=')
+        s['assay_type'] = s['orgbatch_id'][:7]
+        s['dr_max'] = f"{s['mic']} ({s['bp']})"
+        return(s)
 
     # --------------------------------------------------------------------------------------
     def add_Vitek_AST(self):
     # --------------------------------------------------------------------------------------
         # - Vitek AST Data ------------
-        self.COL_VAST = ['drug_id__drug_name','drug_id__drug_codes', 'drug_id__antimicro_class',
+        self.COL_VAST = ['drug_id__drug_name','drug_id__antimicro_class',
                          'card_barcode__orgbatch_id','card_barcode__card_code',
                          'mic','bp_profile',
                         ]
-        self.DF_COL_VAST = [ 'drug_name','drug_codes', 'antimicro_class',
+        self.DF_COL_VAST = ['sample_code','sample_class',
                          'orgbatch_id','card_code',
-                         'mic','bp_profile',
+                         'mic','bp',
                         ]
 
         if len(self.list_organism_ids)>0:
-            self.qryVAST = VITEK_AST.objects.filter(card_barcode__orgbatch_id__organism_id__in=self.list_organism_ids).values_list(*self.COL_VAST)
+            self.qryVAST = (VITEK_AST
+                            .objects
+                            .filter(card_barcode__orgbatch_id__organism_id__in=self.list_organism_ids)
+                            .exclude(mic__exact='')
+                            .values_list(*self.COL_VAST)
+                            )
             self.n_vitek = self.qryVAST.count()
             if self.n_vitek > 0:
                 self.df_vitek = pd.DataFrame(list(self.qryVAST), columns=self.DF_COL_VAST).fillna('-')
                 self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
                 logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
 
-
-
     # --------------------------------------------------------------------------------------
-    def to_excel(self,XlFile):
+    def gen_pivot_tables(self, PivTables = ['Values','Act']):
     # --------------------------------------------------------------------------------------
+        if self.n_sc > 0:
+            if not hasattr(self,'df_comb_sc'):
+                self.df_comb_sc = self.df_dr.merge(self.df_samples)
+            self.df_comb_sc = pd.merge(left=self.df_sc, right=self.df_samples, how= 'left', on='sample_id')
+            self.df_comb_sc = pd.merge(left=self.df_comb_sc, right=self.df_assays, how= 'left', on='assay_id')
 
+            
         if self.n_dr > 0:
             if not hasattr(self,'df_comb_dr'):
                 self.df_comb_dr = self.df_dr.merge(self.df_samples)
             self.df_comb_dr = pd.merge(left=self.df_dr, right=self.df_samples, how= 'left', on='sample_id')
             self.df_comb_dr = pd.merge(left=self.df_comb_dr, right=self.df_assays, how= 'left', on='assay_id')
+            if self.n_vitek > 0:
+                self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_vitek])
+
+        # pivCol = ['assay_id','result_type','run_id']
+        # pivRow = ['sample_class','sample_code','sample_id']
+
+        pivCol = ['assay_type','result_type','run_id']
+        pivRow = ['sample_class','sample_code']
+
+        # -------------------------------------------------------------------------------------------------
+        if 'Values' in PivTables:
+            if self.n_sc > 0:
+                self.piv_sc_ave_inhib = self.df_comb_sc.pivot_table(index=pivRow, 
+                                                            columns=pivCol, 
+                                                            values='inhibition',
+                                                            aggfunc='mean',
+                                                            )
+                                                            #aggfunc=lambda x: Value_Range(x,floatPrec=1,strSep=";\n")['StrList'])
+
+            if self.n_dr> 0:
+                self.piv_dr_drmax = self.df_comb_dr.pivot_table(index=pivRow, 
+                                                            columns=pivCol, 
+                                                            values='dr_max',
+                                                            aggfunc=lambda x: "; ".join(x),
+                                                            )
+            
+            if self.n_dr> 0 and self.n_sc > 0:                                           
+                self.piv_values = pd.merge(self.piv_sc_ave_inhib, self.piv_dr_drmax, 'left', on = pivRow )
+                self.dict_pivtables['piv-Values'] = resort_pivtable(self.piv_values,0)
+            elif self.n_sc > 0 :
+                self.dict_pivtables['piv-Values'] = self.piv_sc_ave_inhib
+            elif self.n_dr > 0 :
+                self.dict_pivtables['piv-Values'] = self.piv_dr_drmax
 
 
-        drMedian = self.df_comb_dr.pivot_table(index=['sample_class','sample_code'], columns=['organism_name','result_type','assay_id'], values='dr',aggfunc=lambda x: DR_Range(list(x))['Median'])
-#        drList = dfMIC_sel.pivot_table(index=['COMPOUND_CODE','COMPOUND'], columns=['ASSAYTYPE_CODE','ASSAY'], values='pDR',aggfunc=lambda x: list(x))
-        # if 'L' in Analysis:
-        #     print('[sumDR] pivot Data : List DR by [Assay]')
-        #     drDList = dfDR_sel.pivot_table(index=['CompoundName','Compound'], columns=['RESULT_TYPE','ASSAYTYPE_CODE','ASSAY'], values='pDR',aggfunc=lambda x: list(x))
-        #     drAList = dfDR_sel.pivot_table(index=['CompoundName','Compound'], columns=['RESULT_TYPE','ASSAYTYPE_CODE','ASSAY'], values='ACTIVE',aggfunc=lambda x: list(x))
-        # if 'P' in Analysis:
-        #     print('[sumDR] pivot Data : DR by [TestPlate]')
-        #     drPlateList = dfDR_sel.pivot_table(index=['CompoundName','Compound','TESTWELL_ID'], columns=['RESULT_TYPE','ASSAYTYPE_CODE','ASSAY','TESTPLATE_ID'], values='pDR_LONG',aggfunc=lambda x: x)
-        # if 'O' in Analysis:
-        #     print('[sumDR] pivot Data : Range DR by [Organism]')
-        #     drOrgMedian = dfDR_sel.pivot_table(index=['CompoundCode'], columns=['RESULT_TYPE','ORGANISM'], values='pDR',aggfunc=lambda x: DR_Range(list(x))['Range'])
+        # -------------------------------------------------------------------------------------------------
+        if 'Act' in PivTables:
+            if self.n_sc > 0:
+                self.piv_sc_act = self.df_comb_sc.pivot_table(index=pivRow, 
+                                                            columns=pivCol, 
+                                                            values='act_type',
+                                                            aggfunc=lambda x: " ".join(x),
+                                                            )
+            if self.n_dr > 0:
+                self.piv_dr_act = self.df_comb_dr.pivot_table(index=pivRow, 
+                                                            columns=pivCol, 
+                                                            values='act_type',
+                                                            aggfunc=lambda x: " ".join(x),
+                                                            )
 
-        # xlFile = os.path.join(OutDir,XlsFileName)
+            if self.n_dr> 0 and self.n_sc > 0:                                           
+                self.piv_act = pd.merge(self.piv_sc_act, self.piv_dr_act, 'left', on = pivRow )
+                self.dict_pivtables['piv-Actives'] = resort_pivtable(self.piv_act,0) 
+            elif self.n_sc > 0 :
+                self.dict_pivtables['piv-Actives'] = self.piv_sc_act
+            elif self.n_dr > 0 :
+                self.dict_pivtables['piv-Actives'] = self.piv_dr_act
+    
+    # --------------------------------------------------------------------------------------
+    def to_excel(self,XlFile=None,Outputs = ['Pivot']):
+    # --------------------------------------------------------------------------------------
+
+        if XlFile is None:
+            XlFile = f"Sum_{self.file_name}.xlsx"
+
         logger.info(f" [Analysis] Excel : {XlFile}")
 
         with pd.ExcelWriter(XlFile) as writer:
-            # print(f"Datapoints   : {len(dfDR)}") 
-            # dfDR.to_excel(writer, sheet_name='DR-Data')
-
-            # print(f"Testplates   : {len(dfTestPlates)}") 
-            # dfTestPlates.to_excel(writer, sheet_name='TestPlates')
-
-            # print(f"Compounds    : {len(dfCompounds)}") 
-            # dfCompounds.to_excel(writer, sheet_name='Cmpd')
-
-            # print(f"Assays       : {len(dfAssays)}") 
-            # dfAssays.to_excel(writer, sheet_name='Assays')
             if self.n_samples > 0:
                 logger.info(f" [Analysis] Excel - Samples: {self.df_assays.shape}")
                 self.df_samples.to_excel(writer, sheet_name='Samples')
@@ -352,29 +525,30 @@ class Analysis_Screening():
                 logger.info(f" [Analysis] Excel - Assays: {self.df_assays.shape}")
                 self.df_assays.to_excel(writer, sheet_name='Assays')
             
+            if self.n_testplates > 0:
+                COL_EXCLUDE = ['poscontrol_stats','negcontrol_stats','sample_stats']
+                _exp_columns = [c for c in self.df_testplates.columns if c not in COL_EXCLUDE]
+                logger.info(f" [Analysis] Excel - TestPlates: {self.df_testplates.shape}")
+                self.df_testplates.to_excel(writer, sheet_name='Testplates',columns=_exp_columns)
+
             if self.n_vitek > 0:
                 logger.info(f" [Analysis] Excel - Vitek AST: {self.df_vitek.shape}")
                 self.df_vitek.to_excel(writer, sheet_name='Vitek')
 
+            if self.n_sc > 0:
+                COL_EXCLUDE = ['cmpbatch_lst','conc_lst','conc_unit_lst']
+                _exp_columns = [c for c in self.df_sc.columns if c not in COL_EXCLUDE]
+                _shape = self.df_sc.shape
+                logger.info(f" [Analysis] Excel - SC-Data: {_shape}")
+                self.df_sc.to_excel(writer, sheet_name='SC-Data',columns=_exp_columns)
 
             if self.n_dr > 0:
-                _shape = drMedian.shape
-                logger.info(f" [Analysis] Excel - DR-Median: {_shape}")
-                # if _shape[1]>_shape[0]:
-                #     drMedian.T.to_excel(writer, sheet_name='DR-Median')
-                # else:
-                drMedian.to_excel(writer, sheet_name='DR-Median')
-
-            #micList.to_excel(writer, sheet_name='MIC-List')
-            # if 'P' in Analysis:
-            #     drPlateList.to_excel(writer, sheet_name='DR-PlateList')
-            # if 'O' in Analysis:
-            #     drOrgMedian.to_excel(writer, sheet_name='DR-Organism')
-            # if 'L' in Analysis:
-            #     drDList.to_excel(writer, sheet_name='DR-List')
-            #     drAList.to_excel(writer, sheet_name='Active-List')        
-
-
-
-
-
+                COL_EXCLUDE = ['cmpbatch_lst']
+                _exp_columns = [c for c in self.df_dr.columns if c not in COL_EXCLUDE]
+                _shape = self.df_dr.shape
+                logger.info(f" [Analysis] Excel - DR-Data: {_shape}")
+                self.df_dr.to_excel(writer, sheet_name='DR-Data',columns=_exp_columns)
+            
+            for k in self.dict_pivtables:
+                logger.info(f" [Analysis] Excel - pivTable {k}")
+                self.dict_pivtables[k].to_excel(writer, sheet_name=k)

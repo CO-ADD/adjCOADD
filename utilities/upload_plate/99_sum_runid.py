@@ -60,10 +60,12 @@ def main(prgArgs,djDir):
         cAnalysis.get_dataframe()
         cAnalysis.get_sample_info()
         cAnalysis.get_assay_info()
+        #cAnalysis.get_testplate_info()
         cAnalysis.add_Vitek_AST()
+        #if prgArgs.pivot:
+        cAnalysis.gen_pivot_tables(PivTables = ['Values'])
 
-        if prgArgs.excelfile:
-            cAnalysis.to_excel(prgArgs.excelfile)
+        cAnalysis.to_excel(prgArgs.excelfile)
 
 
 #==============================================================================
@@ -85,7 +87,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    # prgParser.add_argument("-p","--plate",default=None,required=False, dest="plateid", action='store', help="Single File to calculate")
+    prgParser.add_argument("-p","--pivot",default=None,required=False, dest="pivot", action='store', help="Pivot tables")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
