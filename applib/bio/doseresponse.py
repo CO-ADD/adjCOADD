@@ -39,45 +39,69 @@ class DoseResponse():
     #   CmpBatches - string of cmpbatches
     #   dfDR - dataframe of dosereponse data
     #   djTestPlate - TestPlate instance
-    
-    def init_data(self,CmpBatches, dfDR, djTestPlate):
 
+    @staticmethod
+    def apply_conc(s):
+        if s['conc_lst']:
+            s['conc'] = s['conc_lst'][0]
+        else:
+            logger.warning(" [DoseResponse] No concentrations ")
+        if s['conc_unit_lst']:
+            s['conc_unit'] = s['conc_unit_lst'][0]
+        else:
+            logger.warning(" [DoseResponse] No concentration unit ")
+        return(s)
+
+    def init_data(self,CmpBatches, dfDR, djTestPlate):
+        dfValid = True
         self.required_columns = ['well_id','conc_lst', 'inhibition','conc_unit_lst']
         # Prepare Data DF
         if set(self.required_columns).issubset(dfDR.columns) :
-            
+            dfValid = True
             self.df = dfDR.sort_values(by='conc_lst',ascending=True).reset_index(drop=True)
-            self.df = self.df.apply(self.apply_conc,axis=1)
-            
-            self.dmax = self.df['inhibition'].max(axis=0)
-            self.dmin = self.df['inhibition'].min(axis=0)
-            self.dave = self.df['inhibition'].mean(axis=0)
 
-            self.cmax = self.df['conc_lst'].max(axis=0)
-            self.cmin = self.df['conc_lst'].min(axis=0)
+            #self.df = self.df.apply(self.apply_conc,axis=1)
+            for index, row in self.df.iterrows():
+                if row.conc_lst:
+                    self.df.at[index,'conc'] = row.conc_lst[0]
+                else:
+                    dfValid = False
+                if row.conc_unit_lst:
+                    self.df.at[index,'conc_unit'] = row.conc_unit_lst[0]
+                else:
+                    dfValid = False
+
+            if dfValid:
+
+                self.dmax = self.df['inhibition'].max(axis=0)
+                self.dmin = self.df['inhibition'].min(axis=0)
+                self.dave = self.df['inhibition'].mean(axis=0)
+
+                self.cmax = self.df['conc_lst'].max(axis=0)
+                self.cmin = self.df['conc_lst'].min(axis=0)
+                
+                self.n_wells = len(self.df)
+                self.n_conc = len(self.df['conc'].unique())
+                
+                # CmpBatch information - MW of 1st CmpBatch
+                self.cmpbatch_lst = CmpBatches.split(COMPOUND_SEP)
+                self.n_cmpbatches = len(self.cmpbatch_lst)
+                self.cmpbatch_id = Compound_Batch.get(self.cmpbatch_lst[0])
+                if self.cmpbatch_id:
+                    self.full_mw = self.cmpbatch_id.full_mw
+                else:
+                    self.full_mw = 0
             
-            self.n_wells = len(self.df)
-            self.n_conc = len(self.df['conc'].unique())
-            
-            # CmpBatch information - MW of 1st CmpBatch
-            self.cmpbatch_lst = CmpBatches.split(COMPOUND_SEP)
-            self.n_cmpbatches = len(self.cmpbatch_lst)
-            self.cmpbatch_id = Compound_Batch.get(self.cmpbatch_lst[0])
-            if self.cmpbatch_id:
-                self.full_mw = self.cmpbatch_id.full_mw
-            else:
-                self.full_mw = 0
-            
-            
-            
-            # TestPlate and Well information
-            self.testplate = djTestPlate
-            self.testwell_id = min(dfDR['well_id'])
-            
+                # TestPlate and Well information
+                self.testplate = djTestPlate
+                self.testwell_id = min(dfDR['well_id'])
+                return(self)
         else:
             logger.warning(f" [DoseResponse] Missing columns ({dfDR.columns}) [{self.required_columns}]")
+            dfValid = True
             self.df = None
-        return(self)
+
+        return(None)
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -202,17 +226,6 @@ class DoseResponse():
 
     # -- Apply function for Well Activity
     #--------------------------------------------------------------
-    @staticmethod
-    def apply_conc(s):
-        if s['conc_lst']:
-            s['conc'] = s['conc_lst'][0]
-        else:
-            logger.warning(" [DoseResponse] No concentrations ")
-        if s['conc_unit_lst']:
-            s['conc_unit'] = s['conc_unit_lst'][0]
-        else:
-            logger.warning(" [DoseResponse] No concentration unit ")
-        return(s)
     
     #--------------------------------------------------------------
     @staticmethod
@@ -505,12 +518,13 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                     if CmpBatch:
                         djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                        djDR.calc_doseresponse()
-                        djTP.n_doseresponses += 1
-                        #print(f" [{djDR.testwell_id}] {str(djDR)}")
-                        djDR.doseresponse_to_assaydata()
-                        if upload:
-                            djDR.save_assaydata(overwrite=overwrite)
+                        if djDR:
+                            djDR.calc_doseresponse()
+                            djTP.n_doseresponses += 1
+                            #print(f" [{djDR.testwell_id}] {str(djDR)}")
+                            djDR.doseresponse_to_assaydata()
+                            if upload:
+                                djDR.save_assaydata(overwrite=overwrite)
 
                 if upload:
                     djTP.save()

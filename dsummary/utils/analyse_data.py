@@ -435,7 +435,7 @@ class Analysis_Screening():
                 logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
 
     # --------------------------------------------------------------------------------------
-    def add_reference_data(self):
+    def add_antibiogram_data(self):
     # --------------------------------------------------------------------------------------
 
         if len(self.list_organism_ids)>0:
