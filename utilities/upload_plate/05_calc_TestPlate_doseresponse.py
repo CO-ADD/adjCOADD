@@ -74,12 +74,12 @@ def main(prgArgs,djDir):
         elif prgArgs.new:
             qryTP = TestPlate.objects.filter(n_doseresponses__lt = 0).values('plate_id')
             lst_TestPlates = [q['plate_id'] for q in qryTP]
-            logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {len(lst_TestPlates)}")
+            logger.info(f" [{prgArgs.table}] NEW : {len(lst_TestPlates)}")
 
         if len(lst_TestPlates) > 0:
             for tp in tqdm(lst_TestPlates, desc='Testplates'):
                 OutNumbers['Processed Plates'] += 1
-                process_testplate(prgArgs.plateid,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
+                process_testplate(tp,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")
 
     
