@@ -431,6 +431,10 @@ def format_DR(prefix,value_lst):
                 _prec = 1
             elif float(_v) > 10:
                 _prec = 2
+            elif float(_v) > 1:
+                _prec = 3
+            elif float(_v) > 0.1:
+                _prec = 4
             else:
                 _prec = 5
                     
