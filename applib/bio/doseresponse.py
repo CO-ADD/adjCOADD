@@ -115,7 +115,7 @@ class DoseResponse():
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
         elif 'HC50' in str(self.testplate.result_type):
-            self.MIC(cutoff=10)
+            self.MIC(Inhibition_Cutoff=10)
             self.IC50()
         else:
             logger.warning(f" [DoseResponse] Unknonw ResultType [{self.testplate.result_type}]")
