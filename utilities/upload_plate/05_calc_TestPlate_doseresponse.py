@@ -42,7 +42,7 @@ def main(prgArgs,djDir):
     from dsample.models import Compound_Batch
     from dcell.models import Cell, Cell_Batch
     from applib.plate.multimode_reader import multimodereader_xls
-    from applib.bio.doseresponse import DoseResponse
+    from applib.bio.doseresponse import DoseResponse,process_testplate
     from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
@@ -55,53 +55,31 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-
-    # Process TestPlate -------------------------------------------------------------
-    def process_testplate(PlateID):
-        djTP = TestPlate.get(PlateID,WellData=True)
-        if djTP:
-            if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-                logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
-                
-                djTP.conv_list_to_string()
-                djTP.make_wells_df(ListToString=True)
-
-                grpData = djTP.wells_df.groupby('cmpbatch_sets')
-                for CmpBatch,DRData in grpData:
-                    if CmpBatch:
-                        djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                        # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                        djDR.calc_doseresponse()
-
-                        #print(f" [{djDR.testwell_id}] {str(djDR)}")
-                        djDR.doseresponse_to_assaydata()
-                        if prgArgs.upload:
-                            djDR.save_assaydata(overwrite=prgArgs.overwrite)
-            else:
-                logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
-
-
-
-
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'TestPlateDoseresponse':
+
+        lst_TestPlates = []
+        OutNumbers = {'Processed Plates':0,'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0}
+        Verbose = 0
+
         if prgArgs.plateid:
-            process_testplate(prgArgs.plateid)
+            lst_TestPlates.append(prgArgs.plateid)
+            Verbose = 1
  
         elif prgArgs.runid:
-
-            OutNumbers = {'Processed Plates':0,'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0}
-
             qryTP = TestPlate.objects.filter(run_id = prgArgs.runid).values('plate_id')
-            # qryTP = TestPlate.objects.filter(run_id = prgArgs.runid)
-            nCnt = qryTP.count()
-            logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {nCnt}")
+            lst_TestPlates = [q['plate_id'] for q in qryTP]
+            logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {len(lst_TestPlates)}")
 
-            for tp in tqdm(qryTP, desc='Testplates'):
+        elif prgArgs.new:
+            qryTP = TestPlate.objects.filter(n_doseresponses__lt = 0).values('plate_id')
+            lst_TestPlates = [q['plate_id'] for q in qryTP]
+            logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {len(lst_TestPlates)}")
+
+        if len(lst_TestPlates) > 0:
+            for tp in tqdm(lst_TestPlates, desc='Testplates'):
                 OutNumbers['Processed Plates'] += 1
-                process_testplate(tp['plate_id'])
-
-
+                process_testplate(prgArgs.plateid,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")
 
     
@@ -121,7 +99,7 @@ if __name__ == "__main__":
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
-#    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
+    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-p","--plate",default=None,required=False, dest="plateid", action='store', help="Single File to calculate")
