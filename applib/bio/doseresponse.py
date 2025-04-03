@@ -492,7 +492,8 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
     if djTP:
         if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
             djTP.n_doseresponses = 0
-            logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
+            if verbose > 0:
+                logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
             
             djTP.conv_list_to_string()
             djTP.make_wells_df(ListToString=True)
