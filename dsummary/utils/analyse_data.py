@@ -10,7 +10,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
 from dchem.models import Chem_Structure
 from dplate.models import TestWell, TestPlate
 from dsample.models import Project, COADD_Compound, Library_Compound
-from ddrug.models import Drug, VITEK_AST
+from ddrug.models import Drug, VITEK_AST, MIC_COADD
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, agg_Inhib, agg_DR, agg_Lst, dr_max_quality, conv_Conc, split_DR, format_DR, DR_GeoMean
 from applib.data.df import resort_pivtable
@@ -438,18 +438,27 @@ class Analysis_Screening():
     def add_antibiogram_data(self):
     # --------------------------------------------------------------------------------------
 
+        self.COL_ABMIC = ['drug_id__drug_name','drug_id__antimicro_class',
+                         'card_barcode__orgbatch_id','card_barcode__card_code',
+                         'mic','bp_profile',
+                        ]
+        self.DF_COL_ABMIC = ['sample_code','sample_class',
+                         'orgbatch_id','card_code',
+                         'mic','bp',
+                        ]
+
         if len(self.list_organism_ids)>0:
-            self.qryVAST = (VITEK_AST
+            self.qryAntiBio = (MIC_COADD
                             .objects
-                            .filter(card_barcode__orgbatch_id__organism_id__in=self.list_organism_ids)
+                            .filter(orgbatch_id__organism_id__in=self.list_organism_ids)
                             .exclude(mic__exact='')
-                            .values_list(*self.COL_VAST)
+                            .values_list(*self.COL_ABMIC)
                             )
-            self.n_vitek = self.qryVAST.count()
-            if self.n_vitek > 0:
-                self.df_vitek = pd.DataFrame(list(self.qryVAST), columns=self.DF_COL_VAST).fillna('-')
-                self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
-                logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
+            self.n_antibio = self.qryAntiBio.count()
+            if self.n_antibio > 0:
+                self.df_antibio = pd.DataFrame(list(self.qryAntiBio), columns=self.DF_COL_ABMIC).fillna('-')
+                #self.df_antibio = self.df_antibio.apply(self.apply_vitek,axis=1)
+                logger.info(f" [Analysis] Antibiogram : {self.df_antibio.shape}  [{self.n_antibio}] ")
 
 
     # --------------------------------------------------------------------------------------

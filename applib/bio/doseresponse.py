@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class DoseResponse():
     
     #--------------------------------------------------------------
-    def __init__(self, cutoff=80, 
+    def __init__(self, inhibition_cutoff=80, 
                  min_dilutions=6,  inhib_limit = 500, 
                  inhib_correction = True, inhib_correct_limit = 20,
                  ic50_dmax_cutoff = 40,
@@ -26,7 +26,7 @@ class DoseResponse():
         self.dr_type = None
         self.dr_dmax = ''
 
-        self.cutoff = cutoff
+        self.inhibition_cutoff = inhibition_cutoff
         self.min_dilutions = min_dilutions
         self.breakpoint = breakpoint
         self.inhib_limit = inhib_limit
@@ -115,7 +115,7 @@ class DoseResponse():
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
         elif 'HC50' in str(self.testplate.result_type):
-            self.MIC(Inhibition_Cutoff=10)
+            self.MIC(Inhibition_Cutoff=10,MScore_Cutoff=2.5)
             self.IC50()
         else:
             logger.warning(f" [DoseResponse] Unknonw ResultType [{self.testplate.result_type}]")
@@ -228,46 +228,32 @@ class DoseResponse():
     #--------------------------------------------------------------
     
     #--------------------------------------------------------------
+
+    #--------------------------------------------------------------
     @staticmethod
-    def apply_active(s, cutoff=80):
-        if s['inhibition'] >= cutoff:
-            s['active'] = 'A'
+    def apply_active(s, Inhibition_Cutoff=80, MScore_Cutoff=None):
+        if MScore_Cutoff:
+            if s['inhibition'] >= Inhibition_Cutoff and abs(s['mscore']) >= MScore_Cutoff:
+                s['active'] = 'A'
+            else:
+                s['active'] = 'I'
         else:
-            s['active'] = 'I'
+            if s['inhibition'] >= Inhibition_Cutoff:
+                s['active'] = 'A'
+            else:
+                s['active'] = 'I'
         return(s)
 
-    #-----------------------------------------------------------------------------
-    @staticmethod
-    def Func_EC50(x, a, b, c, d):
-        '''
-        Four-parameter log-logistic function
-        - a: min response; - b: max response; - c: logEC50; - d: hill slope
-        '''
-        return(a+(b-a)/(1+np.exp(d*(np.log(x)-np.log(c)))))
-    #-----------------------------------------------------------------------------
-    @staticmethod
-    def Func_IC50(x, c, d):
-        '''
-        Four-parameter log-logistic function
-        - a: 100; - b: 0; - c: logEC50; - d: hill slope
-        '''
-        a = 100
-        b = 0
-        return (a+(b-a)/(1+np.exp(d*(np.log(x)-np.log(c)))))
- 
-    #--------------------------------------------------------------
-
-    #--------------------------------------------------------------
 
     #===================================================================        
-    def MIC(self, Inhibition_Cutoff=80):     
+    def MIC(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
     #===================================================================
     
         if self.df is None:
             logger.warning(" [DoseResponse] MIC no data")
             return(None)   
              
-        self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,),axis=1)
+        self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,MScore_Cutoff,),axis=1)
 
         #----------------------------------------------------------------
         # Evaluate the Well for MIC 
@@ -375,9 +361,30 @@ class DoseResponse():
         # print(f" [MIC] MIC  : {self.mic_dmax} {self.mic_act} {self.mic_act_score} {self.pmic}")  
         # print(f" [MIC]      Skips: {self.skips_active} {self.skips_total}")
 
+    #-----------------------------------------------------------------------------
+    @staticmethod
+    def Func_EC50(x, a, b, c, d):
+        '''
+        Four-parameter log-logistic function
+        - a: min response; - b: max response; - c: logEC50; - d: hill slope
+        '''
+        return(a+(b-a)/(1+np.exp(d*(np.log(x)-np.log(c)))))
+    #-----------------------------------------------------------------------------
+    @staticmethod
+    def Func_IC50(x, c, d):
+        '''
+        Four-parameter log-logistic function
+        - a: 100; - b: 0; - c: logEC50; - d: hill slope
+        '''
+        a = 100
+        b = 0
+        return (a+(b-a)/(1+np.exp(d*(np.log(x)-np.log(c)))))
+ 
+    #--------------------------------------------------------------
+
 
     #===================================================================        
-    def IC50(self, cutoff=80):     
+    def IC50(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
     #===================================================================
 
         npConc = np.array(self.df['conc'].to_list(), dtype=float)
@@ -516,7 +523,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                 grpData = djTP.wells_df.groupby('cmpbatch_sets')
                 for CmpBatch,DRData in grpData:
                     if CmpBatch:
-                        djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                        djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
                         if djDR:
                             djDR.calc_doseresponse()

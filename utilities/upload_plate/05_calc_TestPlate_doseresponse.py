@@ -79,6 +79,8 @@ def main(prgArgs,djDir):
 
         if len(lst_TestPlates) > 0:
             for tp in tqdm(lst_TestPlates, desc='Testplates'):
+                if Verbose>0:
+                    logger.info(" ")
                 OutNumbers['Processed Plates'] += 1
                 process_testplate(tp,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")

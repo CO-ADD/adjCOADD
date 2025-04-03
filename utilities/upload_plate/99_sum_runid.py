@@ -61,7 +61,8 @@ def main(prgArgs,djDir):
         cAnalysis.get_sample_info()
         cAnalysis.get_assay_info()
         #cAnalysis.get_testplate_info()
-        cAnalysis.add_Vitek_AST()
+        cAnalysis.add_vitek_ast()
+        cAnalysis.add_antibiogram_data()
         #if prgArgs.pivot:
         cAnalysis.gen_pivot_tables(PivTables = ['Values'])
 
