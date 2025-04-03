@@ -434,16 +434,29 @@ class Analysis_Screening():
                 self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
                 logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
 
+    @staticmethod
+    def apply_antibio(s):
+        s['assay_type'] = s['orgbatch_id'][:7]
+        return(s)
+
+    @staticmethod
+    def apply_antibio_agg(s):
+        s['result_type'] = 'BMD'
+        s['run_id'] = 'AntiBio'
+        # s['assay_type'] = s['orgbatch_id'][:7]
+        s['dr_max'] = f"{s['mic']} "
+        return(s)
+
     # --------------------------------------------------------------------------------------
     def add_antibiogram_data(self):
     # --------------------------------------------------------------------------------------
 
         self.COL_ABMIC = ['drug_id__drug_name','drug_id__antimicro_class',
-                         'card_barcode__orgbatch_id','card_barcode__card_code',
+                         'orgbatch_id',
                          'mic','bp_profile',
                         ]
         self.DF_COL_ABMIC = ['sample_code','sample_class',
-                         'orgbatch_id','card_code',
+                         'orgbatch_id',
                          'mic','bp',
                         ]
 
@@ -456,8 +469,19 @@ class Analysis_Screening():
                             )
             self.n_antibio = self.qryAntiBio.count()
             if self.n_antibio > 0:
-                self.df_antibio = pd.DataFrame(list(self.qryAntiBio), columns=self.DF_COL_ABMIC).fillna('-')
-                #self.df_antibio = self.df_antibio.apply(self.apply_vitek,axis=1)
+                _df_antibio = pd.DataFrame(list(self.qryAntiBio), columns=self.DF_COL_ABMIC).fillna('-')
+                _df_antibio = _df_antibio.apply(self.apply_antibio,axis=1)
+
+                showCol = ['sample_code','sample_class','assay_type','mic','bp']
+                grbyCol = ['sample_code','sample_class','assay_type']
+
+                agg_df = (_df_antibio[showCol]
+                            .groupby(grbyCol,as_index=False)
+                            .agg({'mic':lambda x:DR_Range(x)['Range']})
+                            #.aggregate(lambda x: ", ".join(list(np.unique(x)))).sort_values(by=['sample_class'],ascending=True)
+                        )
+
+                self.df_antibio = agg_df.apply(self.apply_antibio_agg,axis=1)
                 logger.info(f" [Analysis] Antibiogram : {self.df_antibio.shape}  [{self.n_antibio}] ")
 
 
@@ -478,6 +502,8 @@ class Analysis_Screening():
             self.df_comb_dr = pd.merge(left=self.df_comb_dr, right=self.df_assays, how= 'left', on='assay_id')
             if self.n_vitek > 0:
                 self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_vitek])
+            if self.n_antibio > 0:
+                self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_antibio])
 
         # pivCol = ['assay_id','result_type','run_id']
         # pivRow = ['sample_class','sample_code','sample_id']

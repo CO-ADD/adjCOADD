@@ -432,7 +432,7 @@ def format_DR(prefix,value_lst):
             elif float(_v) > 10:
                 _prec = 2
             else:
-                _prec = 3
+                _prec = 5
                     
             # Apply precision 
             _str = f"{_v:.{_prec}f}"
