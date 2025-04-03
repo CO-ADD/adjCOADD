@@ -968,10 +968,10 @@ class TestWell(Sample_Base):
 
         self.sets = ''
         if self.set_lst:
-            self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst != ""])
+            self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst])
         self.cmpbatch_sets = ''
         if self.set_lst:
-            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}_{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) != ""])
+            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}_{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) ])
         else:
             self.cmpbatch_sets = self.cmpbatches
             

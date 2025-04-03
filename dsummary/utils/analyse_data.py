@@ -409,7 +409,7 @@ class Analysis_Screening():
         return(s)
 
     # --------------------------------------------------------------------------------------
-    def add_Vitek_AST(self):
+    def add_vitek_ast(self):
     # --------------------------------------------------------------------------------------
         # - Vitek AST Data ------------
         self.COL_VAST = ['drug_id__drug_name','drug_id__antimicro_class',
@@ -433,6 +433,24 @@ class Analysis_Screening():
                 self.df_vitek = pd.DataFrame(list(self.qryVAST), columns=self.DF_COL_VAST).fillna('-')
                 self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
                 logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
+
+    # --------------------------------------------------------------------------------------
+    def add_reference_data(self):
+    # --------------------------------------------------------------------------------------
+
+        if len(self.list_organism_ids)>0:
+            self.qryVAST = (VITEK_AST
+                            .objects
+                            .filter(card_barcode__orgbatch_id__organism_id__in=self.list_organism_ids)
+                            .exclude(mic__exact='')
+                            .values_list(*self.COL_VAST)
+                            )
+            self.n_vitek = self.qryVAST.count()
+            if self.n_vitek > 0:
+                self.df_vitek = pd.DataFrame(list(self.qryVAST), columns=self.DF_COL_VAST).fillna('-')
+                self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
+                logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
+
 
     # --------------------------------------------------------------------------------------
     def gen_pivot_tables(self, PivTables = ['Values','Act']):
