@@ -490,31 +490,32 @@ class DoseResponse():
 def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
     djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
-        if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-            djTP.n_doseresponses = 0
-            if verbose > 0:
-                logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
-            
-            djTP.conv_list_to_string()
-            djTP.make_wells_df(ListToString=True)
+        if djTP.readout_type in ['MIC','CC50','HC50']:
+            if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
+                djTP.n_doseresponses = 0
+                if verbose > 0:
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
+                
+                djTP.conv_list_to_string()
+                djTP.make_wells_df(ListToString=True)
 
-            grpData = djTP.wells_df.groupby('cmpbatch_sets')
-            for CmpBatch,DRData in grpData:
-                if CmpBatch:
-                    djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                    # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                    djDR.calc_doseresponse()
-                    djTP.n_doseresponses += 1
-                    #print(f" [{djDR.testwell_id}] {str(djDR)}")
-                    djDR.doseresponse_to_assaydata()
-                    if upload:
-                        djDR.save_assaydata(overwrite=overwrite)
+                grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                for CmpBatch,DRData in grpData:
+                    if CmpBatch:
+                        djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                        # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
+                        djDR.calc_doseresponse()
+                        djTP.n_doseresponses += 1
+                        #print(f" [{djDR.testwell_id}] {str(djDR)}")
+                        djDR.doseresponse_to_assaydata()
+                        if upload:
+                            djDR.save_assaydata(overwrite=overwrite)
 
-            if upload:
-                djTP.save()
-            
-            if verbose>0:
-                logger.info(f" [{djTP.plate_id}] {djTP.result_type} -> {djTP.n_doseresponses}")
-        else:
-            logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
+                if upload:
+                    djTP.save()
+                
+                if verbose>0:
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} -> {djTP.n_doseresponses}")
+            else:
+                logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
 
