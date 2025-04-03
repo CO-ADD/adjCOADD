@@ -490,7 +490,8 @@ class DoseResponse():
 def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
     djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
-        if djTP.result_type in ['MIC','CC50','HC50']:
+        
+        if str(djTP.result_type) in ['MIC','CC50','HC50']:
             if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
                 djTP.n_doseresponses = 0
                 if verbose > 0:
