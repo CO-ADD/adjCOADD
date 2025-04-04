@@ -262,25 +262,31 @@ def Value_Range(lstValue,aggType='Mean',floatPrec=2,maxLst=10):
 def DR_Range(lstDR,maxLst=10):
     df = {}
     sortLst = DR2Sort_lst(lstDR)
-    if len(sortLst) > 0:
+    n_sortLst = len(sortLst)
+    if n_sortLst > 0:
         sortLst.sort()
 
         sortDR = Sort2DR_lst(sortLst)
 
         df['Min'] = sortDR[0]
         df['Max'] = sortDR[-1]
-        df['Median'] =sortDR[(int((len(sortLst)-1)/2))]
+        df['LowerQ'] =sortDR[(int(1*((n_sortLst-1))/4))]
+        df['Median'] =sortDR[(int((n_sortLst-1)/2))]
+        df['UpperQ'] =sortDR[(int(3*((n_sortLst-1))/4))]
         df['nDR'] = len(sortDR)
         df['nValues'] = len(sortDR)
         df['ValueList'] = limit_lst(sortDR,maxLst)
         df['DRList'] = "; ".join(df['ValueList'])
 
         if len(sortLst) == 1:
-            df['Range'] = df['Median'] + " " + " (" + str(df['nDR']) + ")"
+            df['Range'] = f"{df['Median']} ({df['nDR']})"
+            #df['Range'] = df['Median'] + " " + " (" + str(df['nDR']) + ")"
         elif len(sortLst) == 2:
-            df['Range'] = df['Min'] + "; " + df['Max'] + " (" + str(df['nDR']) + ")"
+            #df['Range'] = df['Min'] + "; " + df['Max'] + " (" + str(df['nDR']) + ")"
+            df['Range'] = f"{df['Min']}; {df['Max']} ({df['nDR']})"
         else:
-            df['Range'] = df['Min'] + " [" + df['Median'] + "] " + df['Max'] + " (" + str(df['nDR']) + ")"
+            #df['Range'] = df['LowerQ'] + " [" + df['Median'] + "] " + df['UpperQ'] + " (" + str(df['nDR']) + ")"
+            df['Range'] = f"[{df['LowerQ']}] {df['Median']} [{df['UpperQ']}] ({df['nDR']})" 
     else:
         df['Min'] = '-'
         df['Max'] = '-'
@@ -437,7 +443,9 @@ def format_DR(prefix,value_lst):
                 _prec = 4
             else:
                 _prec = 5
-                    
+
+            # if _v != 0:
+            #   p = int(abs(math.log10(abs(_v)) - 3 ))         
             # Apply precision 
             _str = f"{_v:.{_prec}f}"
             

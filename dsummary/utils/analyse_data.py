@@ -63,7 +63,9 @@ class Analysis_Screening():
                         'data_quality',
                         ]
 
-        
+        # - Organisms ---------
+        self.ORGANISMS ={ 'COADD' : ['GN_0001','GN_0003','GN_0034','GN_0042','GP_0020','FG_0001','FG_0002'],
+                        }
         # - Summary -----------
         self.n_tw = 0
         self.n_mic = 0
@@ -256,15 +258,15 @@ class Analysis_Screening():
     def get_sample_info(self):
     # --------------------------------------------------------------------------------------
         # - Compounds Data ------------
-        self.COL_CMP = ['cmpbatch_id', 'full_mw','full_mf',
-                        'batch_source', 'batch_notes']
-        self.DF_COL_CMP = [ 'cmpbatch_id', 'full_mw','full_mf',
-                        'batch_source', 'batch_notes']
+        # self.COL_CMP = ['cmpbatch_id', 'full_mw','full_mf',
+        #                 'batch_source', 'batch_notes']
+        # self.DF_COL_CMP = [ 'cmpbatch_id', 'full_mw','full_mf',
+        #                 'batch_source', 'batch_notes']
 
-        self.COL_MCC = ['assay_id','sum_assay_id', 'assay_type',
-                        'organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
-                        'cell_id__organism_name','cell_id__cell_line',
-                        ]
+        # self.COL_MCC = ['assay_id','sum_assay_id', 'assay_type',
+        #                 'organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
+        #                 'cell_id__organism_name','cell_id__cell_line',
+        #                 ]
         
         _n_samples = [0,0,0]
         _sample_lst = []
@@ -327,6 +329,15 @@ class Analysis_Screening():
         else:
             logger.warning(f" [Analysis] No Samples found")
             
+    @staticmethod
+    def apply_assays(s):
+        if 'organism_name' in s:
+            s['assay_org'] = s['organism_name']
+        elif 'cell_organism' in s:
+            s['assay_org'] = s['cell_organism']
+        else:
+            s['assay_org'] = '-'
+        return(s)
 
     # --------------------------------------------------------------------------------------
     def get_assay_info(self):
@@ -336,7 +347,7 @@ class Analysis_Screening():
                         'organism_id','organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
                         'cell_id','cell_id__organism_name','cell_id__cell_line',
                         ]
-        self.DF_COL_ASS = [ 'assay_id','sum_assay_id', 'assay_type',
+        self.DF_COL_ASS = ['assay_id','sum_assay_id', 'assay_type',
                         'organism_id','organism_name','strain_ids','strain_code',
                         'cell_id','cell_organism','cell_line',
                         ]
@@ -346,6 +357,8 @@ class Analysis_Screening():
         self.n_assays = self.qryAss.count()
         if self.n_assays > 0:
             self.df_assays = pd.DataFrame(list(self.qryAss), columns=self.DF_COL_ASS).fillna('-')
+            self.df_assays = self.df_assays.apply(self.apply_assays,axis=1)
+
             self.list_organism_ids = self.df_assays['organism_id'].unique()
             self.n_organism_ids = len(self.list_organism_ids)
             self.list_cell_ids = self.df_assays['cell_id'].unique()
@@ -405,6 +418,7 @@ class Analysis_Screening():
         elif '<=' in s['mic']:
             s['mic'] = s['mic'].replace('<= ','<=')
         s['assay_type'] = s['orgbatch_id'][:7]
+        s['assay_org'] =s['organism_name']
         s['dr_max'] = f"{s['mic']} ({s['bp']})"
         return(s)
 
@@ -413,11 +427,11 @@ class Analysis_Screening():
     # --------------------------------------------------------------------------------------
         # - Vitek AST Data ------------
         self.COL_VAST = ['drug_id__drug_name','drug_id__antimicro_class',
-                         'card_barcode__orgbatch_id','card_barcode__card_code',
+                         'card_barcode__orgbatch_id','card_barcode__orgbatch_id__organism_id__organism_name','card_barcode__card_code',
                          'mic','bp_profile',
                         ]
         self.DF_COL_VAST = ['sample_code','sample_class',
-                         'orgbatch_id','card_code',
+                         'orgbatch_id','organism_name','card_code',
                          'mic','bp',
                         ]
 
@@ -434,9 +448,11 @@ class Analysis_Screening():
                 self.df_vitek = self.df_vitek.apply(self.apply_vitek,axis=1)
                 logger.info(f" [Analysis] Vitek AST: {self.df_vitek.shape}  [{self.n_vitek}] ")
 
+    # --------------------------------------------------------------------------------------
     @staticmethod
     def apply_antibio(s):
         s['assay_type'] = s['orgbatch_id'][:7]
+        s['assay_org'] = s['organism_name']
         return(s)
 
     @staticmethod
@@ -448,18 +464,22 @@ class Analysis_Screening():
         return(s)
 
     # --------------------------------------------------------------------------------------
-    def add_antibiogram_data(self):
+    def add_antibiogram_data(self, RefOrganisms=[]):
     # --------------------------------------------------------------------------------------
 
         self.COL_ABMIC = ['drug_id__drug_name','drug_id__antimicro_class',
-                         'orgbatch_id',
+                         'orgbatch_id','orgbatch_id__organism_id__organism_name',
                          'mic','bp_profile',
                         ]
         self.DF_COL_ABMIC = ['sample_code','sample_class',
-                         'orgbatch_id',
+                         'orgbatch_id','organism_name',
                          'mic','bp',
                         ]
-
+        if len(RefOrganisms)>0:
+            _cList = list(self.list_organism_ids) + list(RefOrganisms)
+            self.list_organism_ids = list(set(_cList))
+            self.n_organism_ids = len(self.list_organism_ids)
+        
         if len(self.list_organism_ids)>0:
             self.qryAntiBio = (MIC_COADD
                             .objects
@@ -472,8 +492,8 @@ class Analysis_Screening():
                 _df_antibio = pd.DataFrame(list(self.qryAntiBio), columns=self.DF_COL_ABMIC).fillna('-')
                 _df_antibio = _df_antibio.apply(self.apply_antibio,axis=1)
 
-                showCol = ['sample_code','sample_class','assay_type','mic','bp']
-                grbyCol = ['sample_code','sample_class','assay_type']
+                showCol = ['sample_code','sample_class','assay_type','assay_org','mic','bp']
+                grbyCol = ['sample_code','sample_class','assay_type','assay_org']
 
                 agg_df = (_df_antibio[showCol]
                             .groupby(grbyCol,as_index=False)
@@ -500,6 +520,7 @@ class Analysis_Screening():
                 self.df_comb_dr = self.df_dr.merge(self.df_samples)
             self.df_comb_dr = pd.merge(left=self.df_dr, right=self.df_samples, how= 'left', on='sample_id')
             self.df_comb_dr = pd.merge(left=self.df_comb_dr, right=self.df_assays, how= 'left', on='assay_id')
+
             if self.n_vitek > 0:
                 self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_vitek])
             if self.n_antibio > 0:
@@ -508,7 +529,7 @@ class Analysis_Screening():
         # pivCol = ['assay_id','result_type','run_id']
         # pivRow = ['sample_class','sample_code','sample_id']
 
-        pivCol = ['assay_type','result_type','run_id']
+        pivCol = ['assay_org','assay_type','result_type','run_id']
         pivRow = ['sample_class','sample_code']
 
         # -------------------------------------------------------------------------------------------------
@@ -567,41 +588,45 @@ class Analysis_Screening():
         if XlFile is None:
             XlFile = f"Sum_{self.file_name}.xlsx"
 
-        logger.info(f" [Analysis] Excel : {XlFile}")
+        logger.info(f" [Analysis] Excel --> {XlFile}")
 
         with pd.ExcelWriter(XlFile) as writer:
             if self.n_samples > 0:
-                logger.info(f" [Analysis] Excel - Samples: {self.df_assays.shape}")
+                logger.info(f" [Analysis]     [Samples] {self.df_assays.shape}")
                 self.df_samples.to_excel(writer, sheet_name='Samples')
 
             if self.n_assays > 0:
-                logger.info(f" [Analysis] Excel - Assays: {self.df_assays.shape}")
+                logger.info(f" [Analysis]     [Assays] {self.df_assays.shape}")
                 self.df_assays.to_excel(writer, sheet_name='Assays')
             
             if self.n_testplates > 0:
                 COL_EXCLUDE = ['poscontrol_stats','negcontrol_stats','sample_stats']
                 _exp_columns = [c for c in self.df_testplates.columns if c not in COL_EXCLUDE]
-                logger.info(f" [Analysis] Excel - TestPlates: {self.df_testplates.shape}")
+                logger.info(f" [Analysis]     [TestPlates] {self.df_testplates.shape}")
                 self.df_testplates.to_excel(writer, sheet_name='Testplates',columns=_exp_columns)
 
             if self.n_vitek > 0:
-                logger.info(f" [Analysis] Excel - Vitek AST: {self.df_vitek.shape}")
+                logger.info(f" [Analysis]     [Vitek AST] {self.df_vitek.shape}")
                 self.df_vitek.to_excel(writer, sheet_name='Vitek')
+
+            if self.n_antibio > 0:
+                logger.info(f" [Analysis]     [AntiBio] {self.df_vitek.shape}")
+                self.df_antibio.to_excel(writer, sheet_name='AntiBio')
 
             if self.n_sc > 0:
                 COL_EXCLUDE = ['cmpbatch_lst','conc_lst','conc_unit_lst']
                 _exp_columns = [c for c in self.df_sc.columns if c not in COL_EXCLUDE]
                 _shape = self.df_sc.shape
-                logger.info(f" [Analysis] Excel - SC-Data: {_shape}")
+                logger.info(f" [Analysis]     [SC-Data] {_shape}")
                 self.df_sc.to_excel(writer, sheet_name='SC-Data',columns=_exp_columns)
 
             if self.n_dr > 0:
                 COL_EXCLUDE = ['cmpbatch_lst']
                 _exp_columns = [c for c in self.df_dr.columns if c not in COL_EXCLUDE]
                 _shape = self.df_dr.shape
-                logger.info(f" [Analysis] Excel - DR-Data: {_shape}")
+                logger.info(f" [Analysis]     [DR-Data] {_shape}")
                 self.df_dr.to_excel(writer, sheet_name='DR-Data',columns=_exp_columns)
             
             for k in self.dict_pivtables:
-                logger.info(f" [Analysis] Excel - pivTable {k}")
+                logger.info(f" [Analysis]     [pivTable] {k}")
                 self.dict_pivtables[k].to_excel(writer, sheet_name=k)

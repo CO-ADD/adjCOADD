@@ -62,7 +62,7 @@ def main(prgArgs,djDir):
         cAnalysis.get_assay_info()
         #cAnalysis.get_testplate_info()
         cAnalysis.add_vitek_ast()
-        cAnalysis.add_antibiogram_data()
+        cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
         #if prgArgs.pivot:
         cAnalysis.gen_pivot_tables(PivTables = ['Values'])
 
@@ -88,10 +88,11 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    prgParser.add_argument("-p","--pivot",default=None,required=False, dest="pivot", action='store', help="Pivot tables")
+    #prgParser.add_argument("-p","--pivot",default=None,required=False, dest="pivot", action='store', help="Pivot tables")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
+    prgParser.add_argument("-f","--format",default='Check',required=False, dest="pivot", action='store', help="Format of output EXcel")
     prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
     #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 
