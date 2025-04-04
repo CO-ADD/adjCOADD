@@ -155,6 +155,7 @@ class Assay(AuditModel):
     ora_assay_id = models.CharField(max_length=100,blank=True, verbose_name = "Ora Assay ID")
     assay_type = models.CharField(max_length=30, verbose_name = "AssayType" )
     assay_subtype = models.CharField(max_length=50, verbose_name = "AssaySubType" )
+    assay_panel = ArrayField(models.CharField(max_length=20, blank=True),size=30, null=True, blank=True, verbose_name = "Assay Panel")
     sum_assay_id  = models.CharField(max_length=100, blank=True, verbose_name = "Assay ID for Summary")
     coadd_assay_id  = models.CharField(max_length=15, blank=True, verbose_name = "COADD Assay ID")
     assay_note = models.CharField(max_length=150, blank=True, verbose_name = "Assay Note")
@@ -186,6 +187,7 @@ class Assay(AuditModel):
             models.Index(name="ass_aid_idx", fields=['assay_id']),
             models.Index(name="ass_aty_idx", fields=['assay_type']),
             models.Index(name="ass_sid_idx", fields=['sum_assay_id']),
+            GinIndex(name="ass_pnl_idx", fields=['assay_panel']),
         ]
 
     # #------------------------------------------------

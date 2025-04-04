@@ -75,6 +75,7 @@ class Analysis_Screening():
         self.n_sc = 0
 
         self.n_vitek = 0
+        self.n_antibio = 0
 
         self.n_compounds = 0
         self.n_samples = 0
@@ -88,6 +89,7 @@ class Analysis_Screening():
 
         self.n_testplates = 0
         self.dict_testplates = {}
+        self.n_screenruns = 0
         
         self.n_organism_ids = 0
         self.n_cell_ids = 0
@@ -329,11 +331,12 @@ class Analysis_Screening():
         else:
             logger.warning(f" [Analysis] No Samples found")
             
+    # --------------------------------------------------------------------------------------
     @staticmethod
     def apply_assays(s):
-        if 'organism_name' in s:
+        if 'organism_name' != '-':
             s['assay_org'] = s['organism_name']
-        elif 'cell_organism' in s:
+        elif 'cell_organism' != '-':
             s['assay_org'] = s['cell_organism']
         else:
             s['assay_org'] = '-'
@@ -385,7 +388,7 @@ class Analysis_Screening():
         return(s)
             
     # --------------------------------------------------------------------------------------
-    def get_testplate_info(self,WithStats=False):
+    def get_testplate_info(self,WithStats=False,WithRunID=True):
     # --------------------------------------------------------------------------------------
         # - Assay Data ------------
         self.COL_TP = ['plate_id','assay_id','run_id','result_type','readout_type',
@@ -396,12 +399,25 @@ class Analysis_Screening():
                        'zfactor','plate_quality','poscontrol_stats','negcontrol_stats','sample_stats',
                        'labware_name','material','reader',
                         ]
-        
+
+        self.COL_RUN = ['run_id','run_name','run_date','run_conditions','run_type',
+                        ]
+        self.DF_COL_RUN = ['run_id','run_name','run_date','run_conditions','run_type'
+                        ]
+
         _plate_lst = list(self.dict_testplates.keys())
         self.qryTP = TestPlate.objects.filter(plate_id__in=_plate_lst).values_list(*self.COL_TP)
         self.n_testplates = self.qryTP.count()
         if self.n_testplates > 0:
             self.df_testplates = pd.DataFrame(list(self.qryTP), columns=self.DF_COL_TP).fillna('-')
+
+            if WithRunID:
+                _runid_lst = self.df_testplates['run_id'].unique()
+                self.qryRun = Screen_Run.objects.filter(run_id__in=_runid_lst).values_list(*self.COL_RUN)
+                self.n_screenruns = self.qryRun.count()
+                self.df_screenruns = pd.DataFrame(list(self.qryRun), columns=self.DF_COL_RUN).fillna('-')
+                logger.info(f" [Analysis] RunIDs: {self.n_screenruns}  ")
+
             if WithStats:
                 self.df_testplates = self.df_testplates.apply(self.apply_testplates,axis=1)
             logger.info(f" [Analysis] Testplates: {self.n_testplates}  ")
@@ -510,7 +526,7 @@ class Analysis_Screening():
     # --------------------------------------------------------------------------------------
         if self.n_sc > 0:
             if not hasattr(self,'df_comb_sc'):
-                self.df_comb_sc = self.df_dr.merge(self.df_samples)
+                self.df_comb_sc = self.df_sc.merge(self.df_samples)
             self.df_comb_sc = pd.merge(left=self.df_sc, right=self.df_samples, how= 'left', on='sample_id')
             self.df_comb_sc = pd.merge(left=self.df_comb_sc, right=self.df_assays, how= 'left', on='assay_id')
 
@@ -604,6 +620,10 @@ class Analysis_Screening():
                 _exp_columns = [c for c in self.df_testplates.columns if c not in COL_EXCLUDE]
                 logger.info(f" [Analysis]     [TestPlates] {self.df_testplates.shape}")
                 self.df_testplates.to_excel(writer, sheet_name='Testplates',columns=_exp_columns)
+
+            if self.n_screenruns > 0:
+                logger.info(f" [Analysis]     [Runs] {self.df_screenruns.shape}")
+                self.df_screenruns.to_excel(writer, sheet_name='Assays')
 
             if self.n_vitek > 0:
                 logger.info(f" [Analysis]     [Vitek AST] {self.df_vitek.shape}")

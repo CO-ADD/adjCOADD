@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     prgParser.add_argument("-p","--project",default=None,required=True, dest="projectid", action='store', help="Project ID")
-#    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
+    prgParser.add_argument("-f","--format",default=None,required=False, dest="format", action='store', help="Report Format [COADD/Total]")
 #    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
     prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
