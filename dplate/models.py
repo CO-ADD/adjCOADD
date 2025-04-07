@@ -1197,37 +1197,54 @@ class MasterPlate(Plate):
         if self.wells:
             for w in self.wells:
                 if self.wells[w].dilution_lst:
-                    #logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w_id}] {self.wells[w_id].dilution_lst}")
-                    for i in range(len(self.wells[w].dilution_lst)):
-                        w_dil =self.wells[w].dilution_lst[i]
-                        if w_dil in DILUTION_DICT:
-                            nConc,dConc,dRow,dCol  = DILUTION_DICT[w_dil]
-                            wR,wC = self.well_rowcol(w)
-                            wConc = self.wells[w].test_conc_lst[i]
-                            #print(f"{self.plate_id} {w_id} {wConc}")
+                    logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst}")
+
+                    for i_dil in range(len(self.wells[w].dilution_lst)):
+
+                        d =self.wells[w].dilution_lst[i_dil]
+
+                        if d in DILUTION_DICT:
+                            nConc,dConc,dRow,dCol  = DILUTION_DICT[d]
+                            w_R,w_C = self.well_rowcol(w)
+                            w_Conc = self.wells[w].test_conc_lst[i_dil]
+
+                            #print(f"{self.wells[w].plate_id} {self.wells[w].well_id} {self.wells[w].test_conc_lst} [{i_dil}] {d} -> {w_Conc}  ")
+
                             for n in range(nConc-1):
                                 if dConc > 0:
-                                    wConc = wConc / dConc
+                                    w_Conc = w_Conc / dConc
                                 if dRow:
-                                    wR += 1
+                                    w_R += 1
                                 elif dCol:
-                                    wC += 1
-                                dw_id = self.well_id((wR,wC))
+                                    w_C += 1
+                                w_d = self.well_id((w_R,w_C))
                                 
                                 # Set Dilution Well if empty
-                                if self.wells[dw_id].n_cmpbatches == 0:
-                                    self.wells[dw_id].cmpbatch_lst = self.wells[w].cmpbatch_lst
-                                    self.wells[dw_id].n_cmpbatches = self.wells[w].n_cmpbatches
-                                    self.wells[dw_id].test_conc_lst = self.wells[w].test_conc_lst
-                                    self.wells[dw_id].test_conc_unit_lst = self.wells[w].test_conc_unit_lst
-                                    self.wells[dw_id].set_lst = self.wells[w].set_lst
+                                if self.wells[w_d].n_cmpbatches == 0:
+                                    #print(f"{self.plate_id} - {w_d} {i_dil} Reset")
+                                    self.wells[w_d].cmpbatch_lst = self.wells[w].cmpbatch_lst
+                                    self.wells[w_d].n_cmpbatches = self.wells[w].n_cmpbatches
+                                    _conc = list(getattr(self.wells[w],'test_conc_lst'))
+                                    setattr(self.wells[w_d],'test_conc_lst',_conc)
+                                    #self.wells[w_d].test_conc_lst = self.wells[w].test_conc_lst
+                                    self.wells[w_d].test_conc_unit_lst = self.wells[w].test_conc_unit_lst
+                                    self.wells[w_d].set_lst = self.wells[w].set_lst
                                     
                                 # Set test_conc of i-th cmpbatch to wconc
-                                self.wells[dw_id].test_conc_lst[i] = wConc
+                                # _wconc_lst = getattr(self.wells[w_d],'test_conc_lst')
+                                # _wconc_lst[i_dil] = w_Conc
+                                # print(_wconc_lst)
+                                # setattr(,'test_conc_lst',_wconc_lst)
+                                self.wells[w_d].test_conc_lst[i_dil] = w_Conc
+
+                                #print(f"{self.wells[w_d].plate_id} {self.wells[w_d].well_id} : [{w_d}] {self.wells[w_d].test_conc_lst} <--  [{w}] {self.wells[w].test_conc_lst} ")
+
+                                # for x in ['A19','B19','C19','D19']:
+                                #     print(f" xxx  {self.plate_id}  {self.wells[x].well_id} {self.wells[x].test_conc_lst}")
 
                                 #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
                         else:
-                            logger.warning(f"[MasterPlate] Unknown dilution {w_dil} [{self.plate_id} {w_id}]")
+                            logger.warning(f"[MasterPlate] Unknown dilution {d} [{self.plate_id} {w}]")
 
                     
 

@@ -44,13 +44,11 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
         else:
             djMP.load_wells(WellModel=MasterWell)
 
-
         djMP.plating = mpwells['plating'].unique()[0]
         djMP.dilution_layout = 'Dilution'
         for idx,row in mpwells.iterrows():
             #print(row['motherwell_id'])
             djWell = djMP.get_well(row['motherwell_id'])
-
             set_model_fields(djWell,row,djWell.COPY_FIELDS)
             set_model_arrayfields(djWell,row,djWell.ARRAY_FIELDS)
             set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()))
@@ -62,7 +60,7 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
                 dictPl['valid_status'] = False    
                 logger.warning(validDict)
                 row.update(validDict)
-            
+  
         djMP.add_dilutions()
         djMP.set_defaults_model()
 
