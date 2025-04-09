@@ -60,13 +60,17 @@ def main(prgArgs,djDir):
         cAnalysis.get_dataframe()
         cAnalysis.get_sample_info()
         cAnalysis.get_assay_info()
-        #cAnalysis.get_testplate_info()
-        cAnalysis.add_vitek_ast()
-        cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
-        #if prgArgs.pivot:
+
+        if 'TestPlates' in prgArgs.adddata:
+            cAnalysis.get_testplate_info()
+        if 'Vitek' in prgArgs.adddata:
+            cAnalysis.add_vitek_ast()
+        if 'COADD' in prgArgs.adddata:
+            cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
+
         cAnalysis.gen_pivot_tables(PivTables = ['Values'])
 
-        cAnalysis.to_excel(prgArgs.excelfile)
+        cAnalysis.to_excel(prgArgs.excelfile, Transpose_PivTables=prgArgs.transpose)
 
 
 #==============================================================================
@@ -90,12 +94,16 @@ if __name__ == "__main__":
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
     #prgParser.add_argument("-p","--pivot",default=None,required=False, dest="pivot", action='store', help="Pivot tables")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
+    prgParser.add_argument("-r","--runid",default=[],required=True, dest="runid", action='store', help="RunID's as list [,]",
+                type=lambda s: [item for item in s.split(',')])
+    prgParser.add_argument("-a","--adddata",default=[],required=False, dest="adddata", action='store', help="Add data [Vitek/COADD] as list [,]",
+                type=lambda s: [item for item in s.split(',')])
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
-    prgParser.add_argument("-f","--format",default='Check',required=False, dest="pivot", action='store', help="Format of output EXcel")
+    # prgParser.add_argument("-f","--format",default='Check',required=False, dest="pivot", action='store', help="Format of output EXcel")
     prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
     #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 
+    prgParser.add_argument("-t",default=False,required=False, dest="transpose", action='store_true', help="Transpose pivTable")
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 

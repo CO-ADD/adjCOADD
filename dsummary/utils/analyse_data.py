@@ -136,28 +136,31 @@ class Analysis_Screening():
         
         
     # --------------------------------------------------------------------------------------
-    def qry_by_RunID(self,RunID):
+    def qry_by_RunID(self,RunID_Lst):
     # --------------------------------------------------------------------------------------
-        logger.info(f" [Analysis] RunID: {RunID} ")
+        logger.info(f" [Analysis] RunID: {RunID_Lst} ")
         self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                run_id = RunID,
+                                run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_MIC)
         self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                run_id = RunID,
+                                run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_CC50)
         self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                run_id = RunID,
+                                run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_HC50)
         
         self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
-                                plate_id__run_id = RunID,
+                                plate_id__run_id__in = RunID_Lst,
                                 plate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_TW)
         
-        self.file_name = RunID
+        if len(RunID_Lst) == 1:
+            self.file_name = RunID_Lst[0]
+        elif len(RunID_Lst) > 1:
+            self.file_name = f"{RunID_Lst[0]}_{RunID_Lst[-1]}"
 
     # --------------------------------------------------------------------------------------
     @staticmethod
@@ -598,7 +601,7 @@ class Analysis_Screening():
                 self.dict_pivtables['piv-Actives'] = self.piv_dr_act
     
     # --------------------------------------------------------------------------------------
-    def to_excel(self,XlFile=None,Outputs = ['Pivot']):
+    def to_excel(self,XlFile=None, Transpose_PivTables=False):
     # --------------------------------------------------------------------------------------
 
         if XlFile is None:
@@ -649,4 +652,7 @@ class Analysis_Screening():
             
             for k in self.dict_pivtables:
                 logger.info(f" [Analysis]     [pivTable] {k}")
-                self.dict_pivtables[k].to_excel(writer, sheet_name=k)
+                if Transpose_PivTables:
+                    self.dict_pivtables[k].T.to_excel(writer, sheet_name=k)
+                else:
+                    self.dict_pivtables[k].to_excel(writer, sheet_name=k)
