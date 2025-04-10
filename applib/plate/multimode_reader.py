@@ -30,7 +30,7 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
                 djTP,_status = read_iControl_xlsheet(xSheet,xDF,prefix=prefix)
                 
             elif xDF[0][0] == "Experiment" or xDF[0][1] == "Experiment":
-                xPl = read_Gen5_sheet(xSheet,xDF,prefix=prefix)
+                djTP,_status = read_Gen5_sheet(xSheet,xDF,prefix=prefix)
             
             # elif "CLARIOstar" in xDF[0][3]:
             #     xPl = readPlate_BMG_sheet(xSheet,xDF,prefix=prefix)
@@ -288,7 +288,7 @@ def read_Gen5_sheet(xSheet,xDF,prefix=None,):
 
     # Read XLS Sheet into plateDict ------------------------------------------------
     plateDict = {}
-    plateDict['READOUTS'] = []
+    plateDict['READS'] = []
 
     paramLst = ['Experiment File Path','Protocol File Path','Plate Number','Plate ID','Barcode',
                 'Reader Type','Plate Type',
@@ -322,7 +322,7 @@ def read_Gen5_sheet(xSheet,xDF,prefix=None,):
         # MatrixRead - Row 
         if _flMatrix > 0 :
             _row = []
-            if str(xDF[1][r]) in Plate.rowLabels:
+            if str(xDF[1][r]) in TestPlate.ROW_LABELS:
                 for c in range(_ncol):
                     _row.append(xDF[c+2][r])
                 _matrix.append(_row)
@@ -361,8 +361,11 @@ def read_Gen5_sheet(xSheet,xDF,prefix=None,):
                 plateDict.pop('BARCODE')
         
         # Set PlateID ---------------------------------------------------------
+        #print(plateDict)
         if 'BARCODE' in plateDict:
             plateDict['PLATE_ID'] =  plateDict['BARCODE']
+        elif 'PLATE ID' in plateDict:
+            plateDict['PLATE_ID'] =  plateDict['PLATE ID']
         else:   
             if prefix:
                 plateDict['PLATE_ID'] = prefix+"_"+xSheet
