@@ -68,7 +68,7 @@ def main(prgArgs,djDir):
         if 'COADD' in prgArgs.adddata:
             cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
 
-        cAnalysis.gen_pivot_tables(PivTables = ['Values'])
+        cAnalysis.gen_pivot_tables(PivTables = ['Values','AssayID'])
 
         cAnalysis.to_excel(prgArgs.excelfile, Transpose_PivTables=prgArgs.transpose)
 

@@ -45,7 +45,7 @@ def get_PlatePrep_xlsx(xlsFile, sheets=[]):
             sheets = [PlatePrep_Sheets.keys()]
         for key in sheets:
             if key in PlatePrep_Sheets:
-                PlatePrep_Sheets[key] = pd.read_excel(xls, key)
+                PlatePrep_Sheets[key] = pd.read_excel(xls, key).fillna('-')
                 PlatePrep_Sheets[key].columns = [c.lower() for c in PlatePrep_Sheets[key].columns]
                 
     return(PlatePrep_Sheets)
@@ -119,7 +119,7 @@ def main(prgArgs,djDir):
             logger.info(f"[Assays]")
 
             # TestPlates  ------------------------------------------------------------------------
-            PrepSheets['TestPlateList'].rename(columns={"test_strain": "test_orgbatch_id", "test_cellline": "test_cellbatch_id"},inplace=True)
+            PrepSheets['TestPlateList'].rename(columns={"test_strain": "test_orgbatch_id", "test_cell": "test_cellbatch_id"},inplace=True)
             print( PrepSheets['TestPlateList'].columns)
             TestPlateDict = {}
             tp_Fields = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues','control_layout' ]

@@ -1,5 +1,6 @@
 #
 import pandas as pd
+import numpy as np
 import logging
 logger = logging.getLogger(__name__)
 
@@ -24,13 +25,15 @@ def set_model_fkeys(djModel, rowDict, dict_FKeys):
     valid = True
     for f in dict_FKeys:
         if f in rowDict:
-            _obj = dict_FKeys[f].get(rowDict[f])
-            if _obj is not None:
-                setattr(djModel,f,_obj)
-            else:
-                logger.warning(f" [set_fkeys] {f} = {rowDict[f]} not found in [{dict_FKeys[f].__name__}]" )
-                setattr(djModel,f,None)
-                valid = False
+            if rowDict[f] != '-':
+                #print(f"{rowDict[f]} {type(rowDict[f])}")
+                _obj = dict_FKeys[f].get(rowDict[f])
+                if _obj is not None:
+                    setattr(djModel,f,_obj)
+                else:
+                    logger.warning(f" [set_fkeys] {f} = '{rowDict[f]}' not found in [{dict_FKeys[f].__name__}]" )
+                    setattr(djModel,f,None)
+                    valid = False
     return valid           
         
 #------------------------------------------------------------------------------------
@@ -127,10 +130,11 @@ def set_model_fkeyarrayfields(djModel,rowDict,dict_ArrayFKeys):
         if _array:
             _valid = True
             for _a in _array:
-                _obj = _model.get(_a)
-                if _obj is None:
-                    logger.warning(f" [set_fkeys] {f} = {_a} not found in [{_model.__name__}]" )
-                    _valid = False
+                if _a != '-':
+                    _obj = _model.get(_a)
+                    if _obj is None:
+                        logger.warning(f" [set_fkeyarrays] {f} = '{_a}' not found in [{_model.__name__}]" )
+                        _valid = False
             if _valid:
                 setattr(djModel,f,_array)
 

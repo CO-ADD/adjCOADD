@@ -337,10 +337,10 @@ class Analysis_Screening():
     # --------------------------------------------------------------------------------------
     @staticmethod
     def apply_assays(s):
-        if 'organism_name' != '-':
+        if s['organism_name'] != '-':
             s['assay_org'] = s['organism_name']
-        elif 'cell_organism' != '-':
-            s['assay_org'] = s['cell_organism']
+        elif s['cell_organism'] != '-':
+            s['assay_org'] = s['cell_line']
         else:
             s['assay_org'] = '-'
         return(s)
@@ -364,6 +364,7 @@ class Analysis_Screening():
         if self.n_assays > 0:
             self.df_assays = pd.DataFrame(list(self.qryAss), columns=self.DF_COL_ASS).fillna('-')
             self.df_assays = self.df_assays.apply(self.apply_assays,axis=1)
+
 
             self.list_organism_ids = self.df_assays['organism_id'].unique()
             self.n_organism_ids = len(self.list_organism_ids)
@@ -549,6 +550,8 @@ class Analysis_Screening():
         # pivRow = ['sample_class','sample_code','sample_id']
 
         pivCol = ['assay_org','assay_type','result_type','run_id']
+        if 'AssayID' in PivTables:
+            pivCol = ['assay_org','assay_type','assay_id','result_type','run_id']
         pivRow = ['sample_class','sample_code']
 
         # -------------------------------------------------------------------------------------------------
