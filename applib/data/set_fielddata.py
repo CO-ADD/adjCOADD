@@ -25,7 +25,7 @@ def set_model_fkeys(djModel, rowDict, dict_FKeys):
     valid = True
     for f in dict_FKeys:
         if f in rowDict:
-            if rowDict[f] != '-' or rowDict[f] is not None:
+            if rowDict[f] != '-' and rowDict[f] is not None:
                 #print(f"{rowDict[f]} {type(rowDict[f])}")
                 _obj = dict_FKeys[f].get(rowDict[f])
                 if _obj is not None:
