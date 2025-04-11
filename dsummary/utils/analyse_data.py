@@ -603,7 +603,7 @@ class Analysis_Screening():
 
 
     # --------------------------------------------------------------------------------------
-    def gen_pivot_tables(self, PivTables = ['Values','Act']):
+    def gen_pivot_tables(self, PivTables = ['Values','Act'], PivColumns = None):
     # --------------------------------------------------------------------------------------
         if self.n_sc > 0:
             if not hasattr(self,'df_comb_sc'):
@@ -626,10 +626,13 @@ class Analysis_Screening():
         # pivCol = ['assay_id','result_type','run_id']
         # pivRow = ['sample_class','sample_code','sample_id']
 
-        pivCol = ['assay_org','assay_type','result_type','run_id']
-        if 'AssayID' in PivTables:
-            pivCol = ['assay_org','assay_type','assay_id','result_type','run_id']
-        pivRow = ['sample_class','sample_code']
+        if PivColumns:
+            pivCol = PivColumns
+        else:
+            pivCol = ['assay_org','assay_type','result_type','run_id']
+            if 'AssayID' in PivTables:
+                pivCol = ['assay_org','assay_type','assay_id','result_type','run_id']
+            pivRow = ['sample_class','sample_code']
 
         # -------------------------------------------------------------------------------------------------
         if 'Values' in PivTables:

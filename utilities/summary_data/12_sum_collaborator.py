@@ -63,7 +63,7 @@ def main(prgArgs,djDir):
             cAnalysis.get_sample_info()
             cAnalysis.get_assay_info()
             cAnalysis.get_testplate_info()
-            cAnalysis.gen_pivot_tables()
+            cAnalysis.gen_pivot_tables(PivColumns=['assay_org','assay_type','result_type'])
             # # cAnalysis.add_Vitek_AST()
 
             cAnalysis.to_excel(prgArgs.excelfile)
