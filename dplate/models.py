@@ -1160,7 +1160,7 @@ class MasterPlate(Plate):
         retDict = []
         super(MasterPlate, self).set_defaults_model()
 
-        if self.wells and WellData:
+        if hasattr(self,'wells') and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
                     super(MasterWell,self.wells[w]).set_defaults_model(ignore_fields=['barcode'])
