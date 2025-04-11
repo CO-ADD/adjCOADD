@@ -60,10 +60,10 @@ def main(prgArgs,djDir):
         #cAnalysis.qry_by_ProjectID(prgArgs.projectid)
         if cAnalysis.n_compounds>0:
             cAnalysis.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
-            cAnalysis.get_sample_info()
+            cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=True)
             cAnalysis.get_assay_info()
             cAnalysis.get_testplate_info()
-            cAnalysis.gen_pivot_tables(PivColumns=['assay_org','assay_type','result_type'])
+            cAnalysis.gen_pivot_tables(PivTables = ['Values','Act'], PivColumns=['assay_org','assay_type','result_type'], PivRows=None)
             # # cAnalysis.add_Vitek_AST()
 
             cAnalysis.to_excel(prgArgs.excelfile)

@@ -243,9 +243,11 @@ def get_oraMasterWells(test=0):
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
+
+    # sys.path.append(djDir)
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
+    # django.setup()
 
     from apputil.models import Dictionary
     from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts, set_model_fkeys
@@ -486,11 +488,10 @@ if __name__ == "__main__":
     print("Running : ",sys.argv)
     print("-------------------------------------------------------------------")
 
-
     # ArgParser -------------------------------------------------------------
     prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [CompoundID]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [Labware/MasterPlates/TestPlates]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
@@ -510,23 +511,13 @@ if __name__ == "__main__":
         prgParser.print_help()
         sys.exit(0)
 
+    from zDjango.djUtils import init_django_dir
 
     # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
-
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
+
 
 #==============================================================================

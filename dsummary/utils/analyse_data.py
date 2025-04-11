@@ -48,18 +48,18 @@ class Analysis_Screening():
                         'data_quality',
                         ]
         self.COL_CC50 = ['cmpbatch_lst','n_cmpbatches',
-                         'testplate_id__assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
+                        'testplate_id__assay_id','cc50','cc50_unit','act_type','act_score','pscore','inhibit_max',
                         'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
                         'data_quality',
                         ]
         self.COL_HC50 = ['cmpbatch_lst','n_cmpbatches',
-                         'testplate_id__assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max',
+                         'testplate_id__assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max', 'hc10',
                         'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
                         'data_quality',
                         ]
 
         self.DF_COL_DR = ['cmpbatch_lst','n_cmpbatches',
-                       'assay_id','dr','dr_unit','act_type','act_score','pscore','inhibit_max',
+                       'assay_id','dr','dr_unit','act_type','act_score','pscore','inhibit_max','tox_dr',
                         'testplate_id','testwell_id','result_type','run_id',
                         'data_quality',
                         ]
@@ -337,7 +337,7 @@ class Analysis_Screening():
                         self.dict_testplates[_p] = {'plate_id':_p}
 
     # --------------------------------------------------------------------------------------
-    def get_sample_info(self):
+    def get_sample_info(self, Storage_Info=False, Structure_Info=False):
     # --------------------------------------------------------------------------------------
         # - Compounds Data ------------
         # self.COL_CMP = ['cmpbatch_id', 'full_mw','full_mf',
@@ -356,7 +356,7 @@ class Analysis_Screening():
             _dict = {'sample_id':k}
 
             if k.startswith('MCC_'):
-                # MCC sample, check for Drug Info
+                # MCC sample, check for Drug Info ----------------------------------
                 _n_samples[1] += 1
                 _lst = []
                 for batch in self.dict_samples[k]['cmpbatch_lst']:
@@ -364,6 +364,7 @@ class Analysis_Screening():
                     _lst.append("_".join(_l[:2]))
                 sample_id = "|".join(_lst)
                 self.dict_samples[k]['sample_id'] = sample_id
+
                 if Drug.objects.filter(uq_imb=sample_id).exists():
                     djDrug =   Drug.objects.get(uq_imb=sample_id)               
                     _dict['sample_code'] = djDrug.drug_name
@@ -375,13 +376,32 @@ class Analysis_Screening():
                     _dict['project_id'] = '-'
 
             elif k.startswith('C'):
-                # CO-ADD  sample
+                # CO-ADD  sample ---------------------------------------------------
                 _n_samples[0] += 1
                 if COADD_Compound.objects.filter(compound_id = k).exists():
                     djCmp = COADD_Compound.get(k)
                     _dict['sample_code'] = djCmp.compound_code
                     _dict['sample_class'] = 'CO-ADD'
                     _dict['project_id'] = djCmp.project_id
+
+                    if Storage_Info:
+                        _dict['stock_barcode'] = ''
+                        _dict['stock_plateid'] = ''
+                        _dict['stock_wellid'] = ''
+                        _dict['stock_conc'] = 0
+                        _dict['stock_conc_unit'] = ''
+
+                    # Add Structure Info
+                    if Structure_Info:
+                        if djCmp.std_smiles != '':
+                            _dict['structure_id'] = djCmp.cmpbatch_id.structure_id
+                            _dict['smiles'] = djCmp.std_smiles
+                        elif djCmp.reg_smiles != '':
+                            _dict['structure_id'] = 'REG'
+                            _dict['smiles'] = djCmp.reg_smiles
+                        else: 
+                            _dict['structure_id'] = 'EMPTY'
+                            _dict['smiles'] = ''
                 else:
                     _dict['sample_code'] = "-"
                     _dict['sample_class'] = 'Screen'
@@ -389,7 +409,7 @@ class Analysis_Screening():
                 
 
             elif k.startswith('LC'):
-                # Library sample
+                # Library sample --------------------------------------------------
                 _n_samples[2] += 1
 
                 if Library_Compound.objects.filter(compound_id = k).exists():
