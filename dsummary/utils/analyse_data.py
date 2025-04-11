@@ -603,7 +603,7 @@ class Analysis_Screening():
 
 
     # --------------------------------------------------------------------------------------
-    def gen_pivot_tables(self, PivTables = ['Values','Act'], PivColumns = None):
+    def gen_pivot_tables(self, PivTables = ['Values','Act'], PivColumns=None, PovRows=None):
     # --------------------------------------------------------------------------------------
         if self.n_sc > 0:
             if not hasattr(self,'df_comb_sc'):
@@ -623,9 +623,7 @@ class Analysis_Screening():
             if self.n_antibio > 0:
                 self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_antibio])
 
-        # pivCol = ['assay_id','result_type','run_id']
-        # pivRow = ['sample_class','sample_code','sample_id']
-
+        # Setting pivot Rows and Columns
         if PivColumns:
             pivCol = PivColumns
         else:
@@ -633,6 +631,12 @@ class Analysis_Screening():
             if 'AssayID' in PivTables:
                 pivCol = ['assay_org','assay_type','assay_id','result_type','run_id']
             pivRow = ['sample_class','sample_code']
+
+        if PovRows:
+            pivRow = PovRows
+        else:
+            pivRow = ['sample_class','sample_code']
+
 
         # -------------------------------------------------------------------------------------------------
         if 'Values' in PivTables:
@@ -694,7 +698,7 @@ class Analysis_Screening():
 
         with pd.ExcelWriter(XlFile) as writer:
             if self.n_samples > 0:
-                logger.info(f" [Analysis]     [Samples] {self.df_assays.shape}")
+                logger.info(f" [Analysis]     [Samples] {self.df_samples.shape}")
                 self.df_samples.to_excel(writer, sheet_name='Samples')
 
             if self.n_assays > 0:
