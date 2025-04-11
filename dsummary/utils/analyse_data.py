@@ -9,6 +9,7 @@ from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summ
                              Summary_Structure, Summary_Structure_Doseresp, Summary_Structure_Inhib,)
 from dchem.models import Chem_Structure
 from dplate.models import TestWell, TestPlate
+from dcollab.models import Collab_Group
 from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST, MIC_COADD
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
@@ -116,23 +117,23 @@ class Analysis_Screening():
                     self.list_cmpbatch_ids.append(qry['compound_id'])
             self.file_name = ProjectID
             
-        self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                testplate_id__plate_quality = 'Valid'                                            
-                                ).values_list(*self.COL_MIC)
-        self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                testplate_id__plate_quality = 'Valid'                                            
-                                ).values_list(*self.COL_CC50)
-        self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                testplate_id__plate_quality = 'Valid'                                            
-                                ).values_list(*self.COL_HC50)
+            self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_MIC)
+            self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_CC50)
+            self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_HC50)
 
-        self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
-                                cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                plate_id__plate_quality = 'Valid'                                            
-                                ).values_list(*self.COL_TW)
+            self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    plate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_TW)
         
         
     # --------------------------------------------------------------------------------------
@@ -163,6 +164,50 @@ class Analysis_Screening():
             self.file_name = f"{RunID_Lst[0]}_{RunID_Lst[-1]}"
 
     # --------------------------------------------------------------------------------------
+    def qry_by_Collaborator(self,CollabGroup):
+    # --------------------------------------------------------------------------------------
+
+        if CollabGroup.startswith('CGRP'):
+            djGrp = Collab_Group.get(CollabGroup,Code=None, PI_ID=None, Organisation_ID=None)
+        else:
+            djGrp = Collab_Group.get(None, Code=CollabGroup, PI_ID=None, Organisation_ID=None)
+
+        self.n_compounds = 0
+        if djGrp:
+            qryCmpd = COADD_Compound.objects.filter(project_id__group_id = djGrp).values('compound_id','compound_code',)
+            self.n_compounds = qryCmpd.count()
+
+        logger.info(f" [Analysis] Collaborator: {CollabGroup} ({self.n_compounds})")
+
+        if self.n_compounds > 0:
+            self.dict_compounds = {}
+            self.list_cmpbatch_ids = []
+            for qry in qryCmpd:
+                if qry['compound_id'] not in self.dict_compounds:
+                    self.dict_compounds[qry['compound_id']] = qry
+                    self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
+                    self.list_cmpbatch_ids.append(qry['compound_id'])
+            self.file_name = CollabGroup
+            
+            self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_MIC)
+            self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_CC50)
+            self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    testplate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_HC50)
+
+            self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
+                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                    plate_id__plate_quality = 'Valid'                                            
+                                    ).values_list(*self.COL_TW)
+
+    # --------------------------------------------------------------------------------------
     @staticmethod
     def apply_samples(s):
         s['sample_id'] = COMPOUND_SEP.join(s['cmpbatch_lst'])
@@ -185,7 +230,7 @@ class Analysis_Screening():
         return(s)
         
     # --------------------------------------------------------------------------------------
-    def get_dataframe(self):
+    def get_dataframe(self,SC_Only=False, DR_Only=False):
     # --------------------------------------------------------------------------------------
         self.n_samples = 0
         self.n_assays = 0
@@ -193,71 +238,80 @@ class Analysis_Screening():
         self.dict_samples = {}
         self.dict_assays = {}
 
+        _sc = True
+        _dr = True
+        if DR_Only:
+            _sc = False
+        elif SC_Only:
+            _dr = False
+
         # - SC Data -------------------------------------------------------
         self.df_sc = None
-        self.n_tw = self.qryTW.count()
-        if self.n_tw > 0:
-            self.df_sc = pd.DataFrame(list(self.qryTW), columns=self.DF_COL_SC)
-            self.df_sc = self.df_sc.apply(self.apply_samples,axis=1)
-            logger.info(f" [Analysis] SC {self.df_sc.shape} [{self.n_tw}] ")
-            self.n_sc = self.df_sc.size 
-            # - Getting Samples
-            for _s in self.df_sc['sample_id'].unique():
-                if _s not in self.dict_samples:
-                    self.dict_samples[_s] = {'cmpbatch_lst':_s.split(COMPOUND_SEP)}
+        if _sc:
+            self.n_tw = self.qryTW.count()
+            if self.n_tw > 0:
+                self.df_sc = pd.DataFrame(list(self.qryTW), columns=self.DF_COL_SC)
+                self.df_sc = self.df_sc.apply(self.apply_samples,axis=1)
+                logger.info(f" [Analysis] SC {self.df_sc.shape} [{self.n_tw}] ")
+                self.n_sc = self.df_sc.size 
 
-            # - Getting Assays
-            for _a in self.df_sc['assay_id'].unique():
-                if _a not in self.dict_assays:
-                    self.dict_assays[_a] = {'assay_id':_a}
+                # - Getting Samples
+                for _s in self.df_sc['sample_id'].unique():
+                    if _s not in self.dict_samples:
+                        self.dict_samples[_s] = {'cmpbatch_lst':_s.split(COMPOUND_SEP)}
 
-            # - Getting Testplates
-            for _p in self.df_sc['plate_id'].unique():
-                if _p not in self.dict_testplates:
-                    self.dict_testplates[_p] = {'plate_id':_p}
+                # - Getting Assays
+                for _a in self.df_sc['assay_id'].unique():
+                    if _a not in self.dict_assays:
+                        self.dict_assays[_a] = {'assay_id':_a}
+
+                # - Getting Testplates
+                for _p in self.df_sc['plate_id'].unique():
+                    if _p not in self.dict_testplates:
+                        self.dict_testplates[_p] = {'plate_id':_p}
 
 
         # - DR Data -------------------------------------------------------
         dfList = []
         self.df_dr = None
+        if _dr:
+            self.n_mic = self.qryMIC.count()
+            self.n_cc50 = self.qryCC50.count()
+            self.n_hc50 = self.qryHC50.count()
+            if self.n_mic > 0:
+                dfMIC = pd.DataFrame(list(self.qryMIC), columns=self.DF_COL_DR)
+                dfMIC['dr_type'] = 'MIC'
+                dfList.append(dfMIC)
+            if self.n_cc50 > 0:
+                dfCC50 = pd.DataFrame(list(self.qryCC50), columns=self.DF_COL_DR)
+                dfCC50['dr_type'] = 'CC50'
+                dfList.append(dfCC50)
+            if self.n_hc50 > 0:
+                dfHC50 = pd.DataFrame(list(self.qryHC50), columns=self.DF_COL_DR)
+                dfHC50['dr_type'] = 'HC50'
+                dfList.append(dfHC50)
+                
+            if dfList:
+                self.df_dr = pd.concat(dfList)
+                self.df_dr = self.df_dr.apply(self.apply_samples,axis=1)
+                self.df_dr = self.df_dr.apply(self.apply_dr,axis=1)
+                self.n_dr = self.df_dr.size
+                logger.info(f" [Analysis] DR: {self.df_dr.shape}  [{self.n_mic} {self.n_cc50} {self.n_hc50}] ")
 
-        self.n_mic = self.qryMIC.count()
-        self.n_cc50 = self.qryCC50.count()
-        self.n_hc50 = self.qryHC50.count()
-        if self.n_mic > 0:
-            dfMIC = pd.DataFrame(list(self.qryMIC), columns=self.DF_COL_DR)
-            dfMIC['dr_type'] = 'MIC'
-            dfList.append(dfMIC)
-        if self.n_cc50 > 0:
-            dfCC50 = pd.DataFrame(list(self.qryCC50), columns=self.DF_COL_DR)
-            dfCC50['dr_type'] = 'CC50'
-            dfList.append(dfCC50)
-        if self.n_hc50 > 0:
-            dfHC50 = pd.DataFrame(list(self.qryHC50), columns=self.DF_COL_DR)
-            dfHC50['dr_type'] = 'HC50'
-            dfList.append(dfHC50)
-            
-        if dfList:
-            self.df_dr = pd.concat(dfList)
-            self.df_dr = self.df_dr.apply(self.apply_samples,axis=1)
-            self.df_dr = self.df_dr.apply(self.apply_dr,axis=1)
-            self.n_dr = self.df_dr.size
-            logger.info(f" [Analysis] DR: {self.df_dr.shape}  [{self.n_mic} {self.n_cc50} {self.n_hc50}] ")
+                # - Getting Samples
+                for _s in self.df_dr['sample_id'].unique():
+                    if _s not in self.dict_samples:
+                        self.dict_samples[_s] = {'cmpbatch_lst':_s.split(COMPOUND_SEP)}
 
-            # - Getting Samples
-            for _s in self.df_dr['sample_id'].unique():
-                if _s not in self.dict_samples:
-                    self.dict_samples[_s] = {'cmpbatch_lst':_s.split(COMPOUND_SEP)}
+                # - Getting Assays
+                for _a in self.df_dr['assay_id'].unique():
+                    if _a not in self.dict_assays:
+                        self.dict_assays[_a] = {'assay_id':_a}
 
-            # - Getting Assays
-            for _a in self.df_dr['assay_id'].unique():
-                if _a not in self.dict_assays:
-                    self.dict_assays[_a] = {'assay_id':_a}
-
-            # - Getting Testplates
-            for _p in self.df_dr['testplate_id'].unique():
-                if _p not in self.dict_testplates:
-                    self.dict_testplates[_p] = {'plate_id':_p}
+                # - Getting Testplates
+                for _p in self.df_dr['testplate_id'].unique():
+                    if _p not in self.dict_testplates:
+                        self.dict_testplates[_p] = {'plate_id':_p}
 
     # --------------------------------------------------------------------------------------
     def get_sample_info(self):

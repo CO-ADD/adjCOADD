@@ -15,7 +15,7 @@ import django
 # Logger ----------------------------------------------------------------
 import logging
 logTime= datetime.datetime.now()
-logName = "SumCollaborator"
+logName = "SumProject"
 logFileName = os.path.join("log",f"x{logName}_{logTime:%Y%m%d_%H%M%S}.log")
 logLevel = logging.INFO 
 
@@ -55,17 +55,18 @@ def main(prgArgs,djDir):
 
     cAnalysis = Analysis_Screening()
     # Process TestPlate -----------------------------------------------------------
-    if prgArgs.projectid:
-        cAnalysis.qry_by_ProjectID(prgArgs.projectid)
+    if prgArgs.collaborator:
+        cAnalysis.qry_by_Collaborator(prgArgs.collaborator)
+        #cAnalysis.qry_by_ProjectID(prgArgs.projectid)
         if cAnalysis.n_compounds>0:
             cAnalysis.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
-            cAnalysis.get_sample_info()
-            cAnalysis.get_assay_info()
-            cAnalysis.get_testplate_info()
-            cAnalysis.gen_pivot_tables()
-            # cAnalysis.add_Vitek_AST()
+            # cAnalysis.get_sample_info()
+            # cAnalysis.get_assay_info()
+            # cAnalysis.get_testplate_info()
+            # cAnalysis.gen_pivot_tables()
+            # # cAnalysis.add_Vitek_AST()
 
-            cAnalysis.to_excel(prgArgs.excelfile)
+            # cAnalysis.to_excel(prgArgs.excelfile)
 
 
 #==============================================================================
@@ -87,7 +88,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
 
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
-    prgParser.add_argument("-p","--project",default=None,required=True, dest="projectid", action='store', help="Project ID")
+    prgParser.add_argument("-c","--collab",default=None,required=True, dest="collaborator", action='store', help="Collaborator Code or ID")
     prgParser.add_argument("-f","--format",default=None,required=False, dest="format", action='store', help="Report Format [COADD/Total]")
 #    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
@@ -95,7 +96,7 @@ if __name__ == "__main__":
     #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
-    prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
+    #prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
     prgParser.add_argument("--sc",default=False,required=False, dest="sc_only", action='store_true', help="Only Single Concentration data")
     prgParser.add_argument("--dr",default=False,required=False, dest="dr_only", action='store_true', help="Only DoseResponse data")
