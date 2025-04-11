@@ -83,7 +83,6 @@ def main(prgArgs,djDir):
     from dsample.models import Project, COADD_Compound, Compound_Batch
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
-    
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
     #logger.info(f"LogFile        : {logFileName}")
