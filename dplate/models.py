@@ -1145,7 +1145,7 @@ class MasterPlate(Plate):
         for wd in PlateDict:
             retDict.append(wd)
 
-        if self.wells and WellData:
+        if hasattr(self,'wells') and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
                     WellDict = super(MasterWell,self.wells[w]).validate_model(verbose=verbose)
