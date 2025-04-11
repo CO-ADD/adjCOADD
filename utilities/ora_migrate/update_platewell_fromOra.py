@@ -307,7 +307,7 @@ def main(prgArgs,djDir):
                        'dilution_lst':['dilution','dilution2','dilution3','dilution4'], 
                        }
         
-        copyFields = [ 'solvent', 'solvent_conc', 'amount','volume',
+        copyFields = [ 'barcode','solvent', 'solvent_conc', 'amount','volume',
                     #   'zscore','mscore','act_type',
                     #   'inhibition','active','pscore',
                     #   'is_skip','is_sample', 'is_negcontrol', 'is_poscontrol','is_control','is_valid',
