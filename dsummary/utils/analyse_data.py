@@ -713,7 +713,7 @@ class Analysis_Screening():
 
             if self.n_screenruns > 0:
                 logger.info(f" [Analysis]     [Runs] {self.df_screenruns.shape}")
-                self.df_screenruns.to_excel(writer, sheet_name='Assays')
+                self.df_screenruns.to_excel(writer, sheet_name='ScreenRuns')
 
             if self.n_vitek > 0:
                 logger.info(f" [Analysis]     [Vitek AST] {self.df_vitek.shape}")
