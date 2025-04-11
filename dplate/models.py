@@ -213,7 +213,7 @@ class Plate(AuditModel):
             loc = f"{res[0]}{int(res[1]):02d}"
             if check:
                 if not loc in self.well_check['wellID']:
-                    raise Exception(f"{self.plate_id} Invalid Well ID: {loc}")
+                    raise Exception(f"{self.plate_id} Invalid Well ID: {loc} for a {self.n_wells}w plate ({self.n_rows} x {self.n_cols})")
             row = self.ROW_LABELS.index(loc[0])
             col = int(loc[1:]) - 1
         else:
