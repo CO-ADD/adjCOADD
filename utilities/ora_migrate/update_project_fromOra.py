@@ -117,12 +117,12 @@ def get_oraProject():
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
+    # sys.path.append(djDir)
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
     from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
+    from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts
     from dsample.models import Project
     from dsample.models import Convert_ProjectID, Convert_CompoundID
 
@@ -178,7 +178,7 @@ def main(prgArgs,djDir):
                 else:
                     row['Issue'] = f"Exists"
 
-                set_dictFields(djPrj,row,cpyFields)
+                set_model_fields(djPrj,row,cpyFields)
                 set_model_arrayfields(djPrj,row,arrayFields)
                 set_model_dicts(djPrj,row,dictFields)
 
@@ -236,22 +236,18 @@ if __name__ == "__main__":
 
     prgArgs = prgParser.parse_args()
 
-    # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
 
+    from zDjango.djUtils import init_django_dir
+
+    # Django -------------------------------------------------------------
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
 
 #==============================================================================

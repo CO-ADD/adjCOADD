@@ -61,7 +61,7 @@ class Screen_Run(AuditModel):
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
     run_date = models.DateField(null=True, blank=True, verbose_name = "Run Date")
-    run_project = models.CharField(max_length=50, verbose_name = "Project")
+    run_project = models.CharField(max_length=50, blank=True, verbose_name = "Project")
     run_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Status", on_delete=models.DO_NOTHING,
         db_column="run_status", related_name="%(class)s_run_status+")
     
