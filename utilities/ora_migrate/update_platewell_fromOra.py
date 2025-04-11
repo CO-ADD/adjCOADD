@@ -349,7 +349,7 @@ def main(prgArgs,djDir):
             #     chk_PlateID[row['plate_id']] = 1
             #     logger.info(f" [Plate] Processing {row['plate_id']} ")
             
-            djPlate = MasterPlate.get(row['plate_id'])
+            djPlate = MasterPlate.get(row['plate_id'], WellData=False)
             if djPlate:
                 djWell = MasterWell.get(djPlate,row['well_id'])
                 if djWell is None:
