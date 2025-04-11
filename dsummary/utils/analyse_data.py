@@ -164,7 +164,7 @@ class Analysis_Screening():
             self.file_name = f"{RunID_Lst[0]}_{RunID_Lst[-1]}"
 
     # --------------------------------------------------------------------------------------
-    def qry_by_Collaborator(self,CollabGroup):
+    def qry_by_Collaborator(self,CollabGroup,Include_Combination=False):
     # --------------------------------------------------------------------------------------
 
         if CollabGroup.startswith('CGRP'):
@@ -179,6 +179,7 @@ class Analysis_Screening():
 
         logger.info(f" [Analysis] Collaborator: {CollabGroup} ({self.n_compounds})")
 
+
         if self.n_compounds > 0:
             self.dict_compounds = {}
             self.list_cmpbatch_ids = []
@@ -188,24 +189,46 @@ class Analysis_Screening():
                     self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
                     self.list_cmpbatch_ids.append(qry['compound_id'])
             self.file_name = CollabGroup
-            
-            self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values_list(*self.COL_MIC)
-            self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values_list(*self.COL_CC50)
-            self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                    testplate_id__plate_quality = 'Valid'                                            
-                                    ).values_list(*self.COL_HC50)
+            print(f" [list_cmpbatch_ids] {len(self.list_cmpbatch_ids)}")
+            if Include_Combination:
+                # Include any Combinations - SLOW
+                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_MIC)
+                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_CC50)
+                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_HC50)
 
-            self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
-                                    cmpbatch_lst__overlap=self.list_cmpbatch_ids,
-                                    plate_id__plate_quality = 'Valid'                                            
-                                    ).values_list(*self.COL_TW)
+                self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
+                                        cmpbatch_lst__overlap=self.list_cmpbatch_ids,
+                                        plate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_TW)
+            else:
+                # Only single compounds
+                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_id__in=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_MIC)
+                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_id__in=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_CC50)
+                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                                        cmpbatch_id__in=self.list_cmpbatch_ids,
+                                        testplate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_HC50)
+
+                self.qryTW = TestWell.objects.filter(plate_id__result_type='Inhibition', n_cmpbatches__gt = 0,
+                                        cmpbatch_id__in=self.list_cmpbatch_ids,
+                                        plate_id__plate_quality = 'Valid'                                            
+                                        ).values_list(*self.COL_TW)
+
 
     # --------------------------------------------------------------------------------------
     @staticmethod
