@@ -396,7 +396,7 @@ def main(prgArgs,djDir):
             NewEntry = False
             validStatus = True
 
-            djObj = MasterPlate.get(row['plate_id'])
+            djObj = MasterPlate.get(row['plate_id'], WellData=False)
             if djObj is None:
                 djObj = MasterPlate()
                 djObj.plate_id = row['plate_id']
