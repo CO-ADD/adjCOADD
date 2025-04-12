@@ -8,7 +8,7 @@ from django.db.models import Q
 from dsummary.models import (Summary_CmpBatch,  Summary_CmpBatch_Doseresp,  Summary_CmpBatch_Inhib,
                              Summary_Structure, Summary_Structure_Doseresp, Summary_Structure_Inhib,)
 from dchem.models import Chem_Structure
-from dplate.models import TestWell, TestPlate
+from dplate.models import TestWell, TestPlate, MasterWell
 from dcollab.models import Collab_Group
 from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST, MIC_COADD
@@ -53,13 +53,13 @@ class Analysis_Screening():
                         'data_quality',
                         ]
         self.COL_HC50 = ['cmpbatch_lst','n_cmpbatches',
-                         'testplate_id__assay_id','hc50','hc50_unit','act_type','act_score','pscore','inhibit_max', 'hc10',
+                         'testplate_id__assay_id','hc10','hc50_unit','act_type','act_score','pscore','inhibit_max',
                         'testplate_id','testwell_id','testplate_id__result_type','testplate_id__run_id',
                         'data_quality',
                         ]
 
         self.DF_COL_DR = ['cmpbatch_lst','n_cmpbatches',
-                       'assay_id','dr','dr_unit','act_type','act_score','pscore','inhibit_max','tox_dr',
+                       'assay_id','dr','dr_unit','act_type','act_score','pscore','inhibit_max',
                         'testplate_id','testwell_id','result_type','run_id',
                         'data_quality',
                         ]
@@ -189,7 +189,7 @@ class Analysis_Screening():
                     self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
                     self.list_cmpbatch_ids.append(qry['compound_id'])
             self.file_name = CollabGroup
-            print(f" [list_cmpbatch_ids] {len(self.list_cmpbatch_ids)}")
+            #print(f" [list_cmpbatch_ids] {len(self.list_cmpbatch_ids)}")
             if Include_Combination:
                 # Include any Combinations - SLOW
                 self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
@@ -339,7 +339,10 @@ class Analysis_Screening():
     # --------------------------------------------------------------------------------------
     def get_sample_info(self, Storage_Info=False, Structure_Info=False):
     # --------------------------------------------------------------------------------------
-        # - Compounds Data ------------
+        # - Storage Data ------------
+        # self.COL_STORAGE    = ['plate_id','well_id', 'barcode','conc_lst','conc_unit_lst']
+        # self.DF_COL_STORAGE = ['plate_id','well_id', 'barcode','conc_lst','conc_unit_lst']
+        # # - Compounds Data ------------
         # self.COL_CMP = ['cmpbatch_id', 'full_mw','full_mf',
         #                 'batch_source', 'batch_notes']
         # self.DF_COL_CMP = [ 'cmpbatch_id', 'full_mw','full_mf',
@@ -384,12 +387,33 @@ class Analysis_Screening():
                     _dict['sample_class'] = 'CO-ADD'
                     _dict['project_id'] = djCmp.project_id
 
+                    # Add Structure Info
                     if Storage_Info:
-                        _dict['stock_barcode'] = ''
-                        _dict['stock_plateid'] = ''
-                        _dict['stock_wellid'] = ''
-                        _dict['stock_conc'] = 0
-                        _dict['stock_conc_unit'] = ''
+                        qryStorage = MasterWell.objects.filter(cmpbatch_id=k,plate_id__plate_type__in = ['Storage','Master'])
+                        n_storage = qryStorage.count()
+                        if n_storage > 0:
+                            _storage = {'plate_id':[],'well_id':[],'barcode':[],'concs':[],'conc_units':[]}
+                            for q in qryStorage:
+                                _concs        = COMPOUND_SEP.join([str(x) for x in q.conc_lst if x > 0])
+                                _conc_units   = COMPOUND_SEP.join([str(x) for x in q.conc_unit_lst if x != ""])
+
+                                _storage['plate_id'].append(str(q.plate_id))
+                                _storage['well_id'].append(q.well_id)
+                                _storage['barcode'].append(q.barcode)
+                                _storage['concs'].append(_concs)
+                                _storage['conc_units'].append(_conc_units)
+                            
+                            _dict['stock_plateid'] = ';'.join(_storage['plate_id'])
+                            _dict['stock_wellid'] = ';'.join(_storage['well_id'])
+                            _dict['stock_barcode'] = ';'.join(_storage['barcode'])
+                            _dict['stock_conc'] = ';'.join(_storage['concs'])
+                            _dict['stock_conc_unit'] = ';'.join(_storage['conc_units'])
+                        else:
+                            _dict['stock_barcode'] = ''
+                            _dict['stock_plateid'] = ''
+                            _dict['stock_wellid'] = ''
+                            _dict['stock_conc'] = 0
+                            _dict['stock_conc_unit'] = ''
 
                     # Add Structure Info
                     if Structure_Info:
@@ -402,6 +426,7 @@ class Analysis_Screening():
                         else: 
                             _dict['structure_id'] = 'EMPTY'
                             _dict['smiles'] = ''
+                                                    
                 else:
                     _dict['sample_code'] = "-"
                     _dict['sample_class'] = 'Screen'
@@ -623,7 +648,7 @@ class Analysis_Screening():
 
 
     # --------------------------------------------------------------------------------------
-    def gen_pivot_tables(self, PivTables = ['Values','Act'], PivColumns=None, PovRows=None):
+    def gen_pivot_tables(self, PivTables = ['Values','Act'], PivColumns=None, PivRows=None):
     # --------------------------------------------------------------------------------------
         if self.n_sc > 0:
             if not hasattr(self,'df_comb_sc'):
@@ -652,8 +677,8 @@ class Analysis_Screening():
                 pivCol = ['assay_org','assay_type','assay_id','result_type','run_id']
             pivRow = ['sample_class','sample_code']
 
-        if PovRows:
-            pivRow = PovRows
+        if PivRows:
+            pivRow = PivRows
         else:
             pivRow = ['sample_class','sample_code']
 
