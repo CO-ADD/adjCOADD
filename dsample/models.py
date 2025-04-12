@@ -512,7 +512,6 @@ class ABase_Compound(AuditModel):
     structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure ID", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
 
-
     class Meta:
         app_label = 'dsample'
         db_table = 'abase_compound'
@@ -544,12 +543,17 @@ class ABase_Compound_Batch(AuditModel):
                                         db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
     compound_id = models.ForeignKey(ABase_Compound, null=True, blank=True, verbose_name = "Compound ID", on_delete=models.DO_NOTHING,
         db_column="compound_id", related_name="%(class)s_compound_id")
+
+    library_id = models.CharField(max_length=20, blank=True, verbose_name = "Library ID")
+    project_id = models.ForeignKey(Project, null=True, blank=True, verbose_name = "Project ID", on_delete=models.DO_NOTHING,
+            db_column="project_id", related_name="%(class)s_project_id")
+
     full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
     full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
     salt_code = models.CharField(max_length=50, blank=True, verbose_name = "Salt Code")
     salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
-    solvent_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvent Code")
-    solvent_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvent Eq")
+    solvate_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvate Code")
+    solvate_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvate Eq")
     supplier = models.CharField(max_length=50, blank=True, verbose_name = "Supplier")
     supplier_code = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Code")
     supplier_batch = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Batch")
@@ -572,9 +576,10 @@ class ABase_Compound_Batch(AuditModel):
         indexes = [
             models.Index(name="abcmpb_cmpb_idx", fields=['cmpbatch_id']),
             models.Index(name="abcmpb_salt_idx", fields=['salt_code']),
-            models.Index(name="abcmpb_solv_idx", fields=['solvent_code']),
+            models.Index(name="abcmpb_solv_idx", fields=['solvate_code']),
             models.Index(name="abcmpb_fmw_idx", fields=['full_mw']),
             models.Index(name="abcmpb_sup_idx", fields=['supplier']),
+            models.Index(name="abcmpb_lid_idx", fields=['library_id']),
         ]
 
     #------------------------------------------------

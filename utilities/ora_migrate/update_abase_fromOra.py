@@ -46,7 +46,7 @@ def main(prgArgs,djDir):
 
     logging.getLogger().addHandler(logging.FileHandler(logFileName,mode='w'))
 
-    from apputil.models import Dictionary
+    from apputil.models import Dictionary,ApplicationUser
     from applib.data.set_fielddata import set_model_arrayfields, set_model_fields, set_model_dicts, set_model_fkeys, set_model_dictarrayfields
     from dplate.models import Labware, TestPlate, TestWell,MasterPlate, MasterWell
     from dsample.models import Convert_ProjectID, Convert_CompoundID
@@ -167,8 +167,11 @@ def main(prgArgs,djDir):
                 ,A.RGSTSUPPLIEROBJID Supplier
                 ,A.RGSTSUPPLIEROBJID Supplier_CatNo
                 ,A.RGSTSUPPLIERBATCHREF Supplier_Batch
+                ,A.RGSTDATERECEIVED Date_Received
                 ,B.DICTID_OBJDTYPE ObjdType
-                ,B.OBJDDATEREGISTERED REGISTERED_DATE
+                ,B.OBJDDATEREGISTERED Registered_Date
+                ,B.OBJDQTYINITVALUE Init_Value
+                ,B.DICTID_QTYUNIT Init_Value_Unit
                 -- ,A.RGSTSTATUS RGSTSTATUS ,A.RGSTOBJSOURCETYPE RGSTOBJSOURCETYPE ,A.DICTTABLECODE_RGSTPURPOSE DICTTABLECODE_RGSTPURPOSE
                 -- ,A.DICTID_RGSTPURPOSE DICTID_RGSTPURPOSE ,A.DICTMOLIND_SALT DICTMOLIND_SALT,A.DICTMOLIND_SOLVATE DICTMOLIND_SOLVATE
                 -- ,A.RGSTFULLMOLMASSDECPLCSENTRD RGSTFULLMOLMASSDECPLCSENTRD,A.DICTTABLECODE_RGSTCONTAINER DICTTABLECODE_RGSTCONTAINER
@@ -192,20 +195,19 @@ def main(prgArgs,djDir):
             cbid = f"{row['OBJDID']}_{row['OBJDBATCHREF']}"
             
             # ABase Compound -------------------------------------
-            djCmp = ABase_Compound.get(row['OBJDID'])
+            djAbaseCmp = ABase_Compound.get(row['OBJDID'])
             NewCompound = False
-            if djCmp is None:
+            if djAbaseCmp is None:
                 NewCompound = True
-                djCmp = ABase_Compound()
-                djCmp.compound_id = row['OBJDID']
+                djAbaseCmp = ABase_Compound()
+                djAbaseCmp.compound_id = row['OBJDID']
                 OutNumbers['New ABaseCompounds'] += 1
             
             if row['MOLFILE']:
                 _molblock = row['MOLFILE'].read()
-                djCmp.reg_molfile = _molblock
-                djCmp.reg_mw = row['MW']
-                djCmp.reg_mf = row['MF']
-
+                djAbaseCmp.reg_molfile = _molblock
+                djAbaseCmp.reg_mw = row['MW']
+                djAbaseCmp.reg_mf = row['MF']
 
             # try:
             #     _aMol = Chem.MolFromMolBlock(_molblock)
@@ -219,24 +221,24 @@ def main(prgArgs,djDir):
             #     _mass_rdkit = Descriptors.ExactMolWt(_aMol)
             #     _mw_rdkit = Descriptors.MolWt(_aMol)
 
-            djCmp.set_defaults_model()
-            validDict = djCmp.validate_model(verbose=0)
+            djAbaseCmp.set_defaults_model()
+            validDict = djAbaseCmp.validate_model(verbose=0)
                 
             if prgArgs.upload:
                 if NewCompound or prgArgs.overwrite:
                     OutNumbers['Uploaded ABaseCompounds'] += 1
-                    djCmp.save()
+                    djAbaseCmp.save()
 
 
             # CmpBatch -------------------------------------
-            djCmpBatch = Compound_Batch(cbid)
+            djCmpBatch = Compound_Batch.get(cbid)
             NewCmpBatch = False
             if djCmpBatch is None:
                 NewCmpBatch = True
                 OutNumbers['New CmpBatches'] += 1
                 djCmpBatch = Compound_Batch()
                 djCmpBatch.cmpbatch_id = cbid
-            
+                            
             djCmpBatch.batch_notes = row['DRUGNAME']
             djCmpBatch.batch_id = row['OBJDBATCHREF']
             # djCmpBatch.salt_code
@@ -246,8 +248,7 @@ def main(prgArgs,djDir):
             djCmpBatch.batch_source = 'ABASE'
 
             djCmpBatch.set_defaults_model()
-            print(f" {djCmpBatch.astatus} {NewCmpBatch} ")
-            validDict = djCmpBatch.validate_model(verbose=1)
+            validDict = djCmpBatch.validate_model(verbose=0)
             
             if prgArgs.upload:
                 if NewCmpBatch or prgArgs.overwrite:
@@ -255,19 +256,63 @@ def main(prgArgs,djDir):
                     djCmpBatch.save()
 
             # ABase Compound Batch -------------------------------------
-            djAbase = ABase_Compound_Batch.get(cbid)
+            djAbaseBatch = ABase_Compound_Batch.get(cbid)
             NewABase = False
-            if djAbase is None:
+            if djAbaseBatch is None:
                 NewABase = True
                 OutNumbers['New ABaseBatches'] += 1
-                djAbase = ABase_Compound_Batch()
-                djAbase.cmpbatch_id = djCmpBatch
-                djAbase.compound_id = djCmp
-                
+                djAbaseBatch = ABase_Compound_Batch()
+                djAbaseBatch.cmpbatch_id = djCmpBatch
+                djAbaseBatch.compound_id = djAbaseCmp
+        
+            #djPrj = Project.get()
+            #djAbaseBatch.project_id = djPrj
+            djAbaseBatch.library_id = row['LIBRARY_ID']
+            
+            djAbaseBatch.full_mw = row['FULL_MW']
+            djAbaseBatch.full_mf = row['FULL_MF']   
+            djAbaseBatch.salt_code = row['SALT_ID']   
+            djAbaseBatch.salt_equivalents  = row['SALT_EQUIV']     
+            # djAbaseBatch.solvate_code = row['SOLVATE_ID']      
+            # djAbaseBatch.solvate_equivalents = row['SOLVATE_EQUIV']      
+
+            djAbaseBatch.supplier = row['SUPPLIER']        
+            djAbaseBatch.supplier_code  = row['SUPPLIER_CATNO']       
+            djAbaseBatch.supplier_batch = row['SUPPLIER_BATCH']        
+            djAbaseBatch.date_recieved   = row['DATE_RECEIVED']
+            
+            djAbaseBatch.init_amount = row['INIT_VALUE']   
+            djAbaseBatch.init_amount_unit = Dictionary.get(djAbaseBatch.DICTIONARY_FIELDS['init_amount_unit'],row['INIT_VALUE_UNIT'])
+            
+            
+            # Chemist ---------------------------
+            USER_RENAME = {
+               'X.Chemist': 'orgdb',
+               'A.BadilloVega': 'A.Kavanagh' 
+            }
+            djUser = ApplicationUser.get(row['ORIGINATOR'])
+            if djUser is None:
+                for k in USER_RENAME:
+                    if row['ORIGINATOR'] == k:
+                        djUser = ApplicationUser.get(USER_RENAME[k])           
+            if djUser is None:
+                logger.error(f" [Chemist] {row['ORIGINATOR']} not found")
+            else:
+                djAbaseBatch.chemist = djUser
+
+            if row['LAB_NOTEBOOK_NUMBER'] is not None:
+                _lab = row['LAB_NOTEBOOK_NUMBER'].split(chr(160))    
+                djAbaseBatch.labbook_no = _lab[0]  
+                djAbaseBatch.labbook_page = _lab[1]   
+                djAbaseBatch.labbook_page_line = _lab[2]  
+                 
+            djAbaseBatch.set_defaults_model()
+            validDict = djAbaseBatch.validate_model(verbose=1)
+
             if prgArgs.upload:
                 if NewABase or prgArgs.overwrite:
                     OutNumbers['Uploaded ABaseBatches'] += 1
-                    djAbase.save()
+                    djAbaseBatch.save()
                 
                 
         ABaseDB.close()
