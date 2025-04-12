@@ -273,8 +273,8 @@ def main(prgArgs,djDir):
             djAbaseBatch.full_mf = row['FULL_MF']   
             djAbaseBatch.salt_code = row['SALT_ID']   
             djAbaseBatch.salt_equivalents  = row['SALT_EQUIV']     
-            # djAbaseBatch.solvate_code = row['SOLVATE_ID']      
-            # djAbaseBatch.solvate_equivalents = row['SOLVATE_EQUIV']      
+            djAbaseBatch.solvate_code = row['SOLVATE_ID']      
+            djAbaseBatch.solvate_equivalents = row['SOLVATE_EQUIV']      
 
             djAbaseBatch.supplier = row['SUPPLIER']        
             djAbaseBatch.supplier_code  = row['SUPPLIER_CATNO']       
