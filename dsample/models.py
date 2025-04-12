@@ -502,6 +502,7 @@ class ABase_Compound(AuditModel):
     compound_name = models.CharField(max_length=250, blank=True, verbose_name = "Name")
     compound_desc = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
 
+    reg_smiles = models.CharField(max_length=2048, blank=True, verbose_name = "Reg Smiles")
     reg_molfile = models.TextField(max_length=15, blank=True, verbose_name = "Reg Molfile")
     reg_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Reg MW")
     reg_mf = models.CharField(max_length=100, blank=True, verbose_name = "Reg MF")
