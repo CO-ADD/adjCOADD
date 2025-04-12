@@ -399,7 +399,10 @@ class Analysis_Screening():
 
                                 _storage['plate_id'].append(str(q.plate_id))
                                 _storage['well_id'].append(q.well_id)
-                                _storage['barcode'].append(q.barcode)
+                                if q.barcode is None:
+                                    _storage['barcode'].append('-')
+                                else:
+                                    _storage['barcode'].append(q.barcode)
                                 _storage['concs'].append(_concs)
                                 _storage['conc_units'].append(_conc_units)
                             
@@ -409,11 +412,11 @@ class Analysis_Screening():
                             _dict['stock_conc'] = ';'.join(_storage['concs'])
                             _dict['stock_conc_unit'] = ';'.join(_storage['conc_units'])
                         else:
-                            _dict['stock_barcode'] = ''
-                            _dict['stock_plateid'] = ''
-                            _dict['stock_wellid'] = ''
+                            _dict['stock_barcode'] = '-'
+                            _dict['stock_plateid'] = '-'
+                            _dict['stock_wellid'] = '-'
                             _dict['stock_conc'] = 0
-                            _dict['stock_conc_unit'] = ''
+                            _dict['stock_conc_unit'] = '-'
 
                     # Add Structure Info
                     if Structure_Info:
