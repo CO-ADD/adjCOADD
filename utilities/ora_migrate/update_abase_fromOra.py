@@ -281,8 +281,10 @@ def main(prgArgs,djDir):
             djAbaseBatch.supplier_batch = row['SUPPLIER_BATCH']        
             djAbaseBatch.date_recieved   = row['DATE_RECEIVED']
             
-            djAbaseBatch.init_amount = row['INIT_VALUE']   
-            djAbaseBatch.init_amount_unit = Dictionary.get(djAbaseBatch.DICTIONARY_FIELDS['init_amount_unit'],row['INIT_VALUE_UNIT'])
+            djAbaseBatch.init_amount = row['INIT_VALUE']
+            djUnit = Dictionary.get(djAbaseBatch.DICTIONARY_FIELDS['init_amount_unit'],row['INIT_VALUE_UNIT'])
+            if djUnit:   
+                djAbaseBatch.init_amount_unit = djUnit
             
             
             # Chemist ---------------------------
