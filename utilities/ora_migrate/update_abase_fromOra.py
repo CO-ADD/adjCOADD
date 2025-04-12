@@ -288,7 +288,8 @@ def main(prgArgs,djDir):
             # Chemist ---------------------------
             USER_RENAME = {
                'X.Chemist': 'orgdb',
-               'A.BadilloVega': 'A.Kavanagh' 
+               'A.BadilloVega': 'A.Kavanagh',
+               'Ciara.Davis':'C.Davis' 
             }
             djUser = ApplicationUser.get(row['ORIGINATOR'])
             if djUser is None:
