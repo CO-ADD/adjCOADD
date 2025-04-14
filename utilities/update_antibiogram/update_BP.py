@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # ArgParser -------------------------------------------------------------
     prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [CompoundID]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [MIC_COADD]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
