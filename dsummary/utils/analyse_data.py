@@ -422,8 +422,9 @@ class Analysis_Screening():
                         #qryTP = TestWell.objects.filter(cmpbatch_id=k)
                         #lstRun_ID = list(TestWell.objects.filter(cmpbatch_id=k).order_by('plate_id__run_id','plate_id__acreated_at').values('plate_id__run_id').distinct())
                         lstRun_ID = list(TestWell.objects.filter(cmpbatch_id=k).order_by('-plate_id__acreated_at').values('plate_id__run_id').distinct())
-                        if len(lstRun_ID) >0:
-                            _dict['last_runid'] = lstRun_ID[0]['plate_id__run_id']
+                        _x = [r for r in lstRun_ID if r['plate_id__run_id'].startswith('H')]
+                        if len(_x) >0:
+                            _dict['last_runid'] = _x[0]['plate_id__run_id']
                         else:
                             _dict['last_runid'] = '-'
 
