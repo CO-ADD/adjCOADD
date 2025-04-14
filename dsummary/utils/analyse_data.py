@@ -337,7 +337,7 @@ class Analysis_Screening():
                         self.dict_testplates[_p] = {'plate_id':_p}
 
     # --------------------------------------------------------------------------------------
-    def get_sample_info(self, Storage_Info=False, Structure_Info=False):
+    def get_sample_info(self, Storage_Info=False, Structure_Info=False, Run_Info = False):
     # --------------------------------------------------------------------------------------
         # - Storage Data ------------
         # self.COL_STORAGE    = ['plate_id','well_id', 'barcode','conc_lst','conc_unit_lst']
@@ -387,7 +387,7 @@ class Analysis_Screening():
                     _dict['sample_class'] = 'CO-ADD'
                     _dict['project_id'] = djCmp.project_id
 
-                    # Add Structure Info
+                    # Add Storage Info
                     if Storage_Info:
                         qryStorage = MasterWell.objects.filter(cmpbatch_id=k,plate_id__plate_type__in = ['Storage','Master'])
                         n_storage = qryStorage.count()
@@ -417,6 +417,15 @@ class Analysis_Screening():
                             _dict['stock_wellid'] = '-'
                             _dict['stock_conc'] = 0
                             _dict['stock_conc_unit'] = '-'
+
+                    if Run_Info:
+                        #qryTP = TestWell.objects.filter(cmpbatch_id=k)
+                        #lstRun_ID = list(TestWell.objects.filter(cmpbatch_id=k).order_by('plate_id__run_id','plate_id__acreated_at').values('plate_id__run_id').distinct())
+                        lstRun_ID = list(TestWell.objects.filter(cmpbatch_id=k).order_by('-plate_id__acreated_at').values('plate_id__run_id').distinct())
+                        if len(lstRun_ID) >0:
+                            _dict['last_runid'] = lstRun_ID[0]['plate_id__run_id']
+                        else:
+                            _dict['last_runid'] = '-'
 
                     # Add Structure Info
                     if Structure_Info:
