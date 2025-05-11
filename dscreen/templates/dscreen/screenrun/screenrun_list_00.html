@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title%}COADD{% endblock %}
+<!--  -->
+{% block content %}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  {% url 'pivoted-table' app_model='dscreen-Screen_Run' as url_pivotedtable%}
+  {% include 'utils/leftbar.html' with list_url='org_list' card_url='org_card' create_object='createScreenRun' create_objectModal='createScreenRunModal' url_pivotedtable=url_pivotedtable %}
+  <!-- Sidebar View -->
+  {% include "utils/sidebar.html" %}
+  
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100"> 
+
+    <!-- prettier-ignore -->
+    {% include 'utils/main_horizalbar.html' with title='ScreenRun'  model_name='Screen_Run' application='dscreen' %}
+    <!-- prettier-ignore -->
+    <!--  -->
+
+
+    <!-- list View Content -->
+   <div class="contain-fluid data-contain">
+      <!-- prettier-ignore --> <!-- Here include datatable_general --> 
+      {% include 'utils/datatable_general.html' with run_id='RunID' url_name='run_detail' modelname='Screen_Run' %}
+    </div>
+    </div>
+
+</div>
+{% endblock %}

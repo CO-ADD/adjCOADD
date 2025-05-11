@@ -14,11 +14,11 @@ def count_filtered_org_stock(object_batch):
 def count_filtered_cell_stock(object_batch):
     return CellBatch_Stock.objects.filter(cellbatch_id=object_batch, astatus__gte=0, n_left__gt=0).count()
 
-@register.filter
+@register.filter(name = 'is_dict')
 def is_dict(value):
     return isinstance(value, dict)
 
-@register.filter
+@register.filter(name = 'is_list')
 def is_list(value):
     return isinstance(value, list)
 
