@@ -22,9 +22,9 @@
     </thead>
 
     <tbody>
-      <tr>
-        {% if page_obj %} <!-- Pagination  -->
-          {% for object in page_obj%}
+      {% if page_obj %} <!-- Pagination  -->
+        {% for object in page_obj%}
+         <tr>
             {% for item in object.get_values %}
               <td>
                 {% if item|is_dict %}     
@@ -36,22 +36,25 @@
                 {% endif %}
               </td>
             {% endfor %}
-          {% endfor %}
-
-        {% else %} <!-- NO Pagination  -->
-          {% for item in object.get_values %}
-            <td>
-              {% if item|is_dict %}     
-                {% for key, value in item.items %}      
-                  <a href="{{value}}" target="_blank">{{ key }}</a>
-                {% endfor %}
-              {% else %}
-                {{item}}
-              {% endif %}
-            </td>
-          {% endfor %}
-        {% endif %}       
-      </tr>
+          </tr>
+        {% endfor %}
+      {% else %} <!-- NO Pagination  -->
+        {% for object in objects %}
+          <tr>
+            {% for item in object.get_values %}
+              <td>
+                {% if item|is_dict %}     
+                  {% for key, value in item.items %}      
+                    <a href="{{value}}" target="_blank">{{ key }}</a>
+                  {% endfor %}
+                {% else %}
+                  {{item}}
+                {% endif %}
+              </td>
+            {% endfor %}       
+          </tr>
+        {% endfor %}
+      {% endif %}
     </tbody>
   </table>
 
