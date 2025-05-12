@@ -3,6 +3,7 @@ import json
 from rdkit import Chem
 from django_filters.views import FilterView
 
+from django.views.generic import ListView
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -41,6 +42,12 @@ class ScreenRun_ListView(LoginRequiredMixin, FilteredListView):
     model_name = 'Screen_Run'
     app_name = 'dscreen'
     ordering=['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['base_template'] = 'coadd_base.html'
+        print(context)
+        return context
 
 # -----------------------------------------------------------------
 @login_required

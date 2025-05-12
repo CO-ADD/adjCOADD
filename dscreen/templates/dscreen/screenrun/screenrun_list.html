@@ -1,12 +1,14 @@
-{% extends "base.html" %}
-<!--  -->
-{% block title%}COADD{% endblock %}
-<!--  -->
+
+{% extends base_template %}
+
+{% comment %}
+{% block title %}COADD{% endblock %}
+{% endcomment %}
 {% load custom_filters %}
 
-{% block content %}
+ {% block content %}
 
-  <table >
+  <table id="coadd_datatable" class="table table-striped table-hover dt-responsive compact nowrap">
     <thead> <!-- Header -->
       <tr>
         {% for field in fields %}
@@ -39,7 +41,7 @@
           </tr>
         {% endfor %}
       {% else %} <!-- NO Pagination  -->
-        {% for object in objects %}
+        {% for object in object_list %}
           <tr>
             {% for item in object.get_values %}
               <td>
@@ -58,7 +60,7 @@
     </tbody>
   </table>
 
-{% endblock content %}
+{% endblock content %}  
 
 <!--  -->
 {% comment %} <div class="d-flex flex-row vh-100">
@@ -85,3 +87,15 @@
     </div>
 
 </div> {% endcomment %}
+
+<script>
+$(document).ready( function () {
+    $('#coadd_datatable').DataTable({
+      // DataTables options (optional)
+      "paging": true,
+      "ordering": true,
+      "searching": true,
+
+    });
+} );
+</script>
