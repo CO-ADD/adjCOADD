@@ -1,0 +1,15 @@
+<form id="ScreenUpdateForm" method="POST" action="{% url 'screenrun_update' object.pk %}">
+  {% csrf_token %}
+  <!-- <table> {{ form.as_table}} </table> -->
+  <table> {{ form.as_table}} </table>
+
+      <div class="col-md-3 updateformshow not-visible">
+        <div class="d-flex justify-content-evenly align-baseline ">
+          {% include 'utils/miscellaneous/save_btn.html' %}
+          <!--  -->
+          {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
+
+        </div>
+      </div>
+
+</form>

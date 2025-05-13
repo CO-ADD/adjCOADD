@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Local - Devlopment using local PostgrSQL database  
 #               Meran - Devlopment using Schlern PostgrSQL database  
 DEVELOPMENT=None
-#DEVELOPMENT='Work'
+DEVELOPMENT='Work'
 
 #........................................................................
 if DEVELOPMENT:
@@ -109,6 +109,8 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     'django_rdkit',
     'django_filters',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'dbbackup',
     "sequences.apps.SequencesConfig",
     'apputil.apps.ApputilConfig',
@@ -191,6 +193,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'adjcoadd.wsgi.application'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+# Cripsy Form Templates
+#
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap", "bootstrap5",)
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

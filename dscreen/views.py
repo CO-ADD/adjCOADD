@@ -20,14 +20,15 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+from apputil.utils.views_base import SimplecreateView, SimpleupdateView,  SimpledeleteView
+#from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView, CreateFileView
 
 from adjcoadd.constants import *
 
 #DScreen
 from dscreen.models import  Screen_Run, Assay, AssayData_MIC, AssayData_CC50, AssayData_HC50
-from dscreen.forms import (ScreenRun_Filter, 
-                           #ScreenRun_DetailForm, ScreenRun_UpdateForm, ScreenRun_CreateForm,
+from dscreen.forms import (ScreenRun_Filter, ScreenRun_DetailForm,
+                           #ScreenRun_UpdateForm, ScreenRun_CreateForm,
                         )
 
 #=================================================================================================
@@ -46,7 +47,6 @@ class ScreenRun_ListView(LoginRequiredMixin, FilteredListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['base_template'] = 'coadd_base.html'
-        print(context)
         return context
 
 # -----------------------------------------------------------------
@@ -55,22 +55,23 @@ def ScreenRun_DetailView(req, pk):
     context={}
     object_=get_object_or_404(Screen_Run, pk=pk)
 
-#    smol_initial = Chem.MolToMolBlock(object_.smol) if object_.smol else None
-#    form=Drug_form(instance=object_, initial={"smol":smol_initial},)
     form=ScreenRun_DetailForm(instance=object_,)
     context["object"]=object_
     context["form"]=form
     context["Links"]=LinkList
 
-    #context['mol_img_url'] = settings.MOL_IMG_URL
-    # try:
-    #     context["object_mol"]=Chem.MolToMolBlock(object_.smol)
-    #     m="\\n".join(context["object_mol"].split("\n"))
-    #     context["object_mol"]=m
-    # except Exception as err:
-    #     context["object_mol"]=""
-    return render(req, "ddrug/drug/drug_detail.html", context)
+    return render(req, "dscreen/screenrun/screenrun_detail.html", context)
 
+# -----------------------------------------------------------------
+class ScreenRun_CreateView(SimplecreateView):
+    form_class=ScreenRun_DetailForm
+    template_name='dscreen/screenrun/screenrun_create.html'
+
+# -----------------------------------------------------------------
+class ScreenRun_UpdateView(SimpleupdateView):
+    form_class=Screen_Run
+    template_name='dscreen/screenrun/screenrun_update.html'
+    model=Screen_Run
 
 # -----------------------------------------------------------------
 class ScreenRun_DeleteView(SimpledeleteView):

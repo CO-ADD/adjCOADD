@@ -33,6 +33,11 @@ SAMPLE_SEP = "_"
 SAMPLEBATCH_SEP = "_"
 COMPOUND_SEP = '|'
 
+# -dScreen Settings ---------------------------------------------------
+RUN_CLASSES = ['PSR','HCR','QCR']
+RUN_SEP = ""
+
+
 AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
 # column name can be edited here 
@@ -44,8 +49,9 @@ LinkList={
     "urlname":      '/dorganism/taxonomy/{VALUE1}',
     'tax_id':       'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={VALUE1}',
     'organism_id':  '/dorganism/organism/{VALUE1}',
-    'cell_id':  '/dcell/cell/{VALUE1}',
+    'cell_id':      '/dcell/cell/{VALUE1}',
     'drug_id':      '/ddrug/drug/{VALUE1}',
+    'screenrun_id': '/dscreen/screenrun/{VALUE1}',
     'cas':          'https://commonchemistry.cas.org/detail?cas_rn={VALUE1}',
     'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/{VALUE1}',
     'drugbank' :    'https://www.drugbank.ca/drugs/{VALUE1}',

@@ -62,9 +62,12 @@ class SimplecreateView(LoginRequiredMixin, View):
     template_name = None
     transaction_use = 'default'
 
+    # -----------------------------------------------------------
     def get(self, request, *args, **kwargs):
         form=self.form_class()
         return render(request, self.template_name, {'form':form})
+    
+    # -----------------------------------------------------------
     def post(self, request, *args, **kwargs):
         
         form =self.form_class(request.POST, request.FILES)
@@ -81,10 +84,6 @@ class SimplecreateView(LoginRequiredMixin, View):
             messages.error(request, form.errors)
             return redirect(request.META['HTTP_REFERER'])
 
-## create view with searching input:
-
-
-
 # -----------------------------------------------------------------
 # --update view class--
 # -----------------------------------------------------------------
@@ -94,12 +93,15 @@ class SimpleupdateView(LoginRequiredMixin, View):
     model = None
     transaction_use = 'default'
 
+    # -----------------------------------------------------------
     def get_object_byurlname(self, slug):
         return get_object_or_404(self.model, urlname=slug)
     
+    # -----------------------------------------------------------
     def get_object(self, pk):
         return get_object_or_404(self.model, pk=pk)
 
+    # -----------------------------------------------------------
     def get(self, request, *args, **kwargs):
         if 'slug' in kwargs:
             slug=kwargs.get("slug")
@@ -111,6 +113,7 @@ class SimpleupdateView(LoginRequiredMixin, View):
         form=self.form_class(instance=object_)
         return render(request, self.template_name, {'form':form})
 
+    # -----------------------------------------------------------
     def post(self, request, *args, **kwargs):
         if 'slug' in kwargs:
             slug=kwargs.get("slug")
@@ -131,12 +134,11 @@ class SimpleupdateView(LoginRequiredMixin, View):
             return redirect(request.META['HTTP_REFERER'])
 
 # -----------------------------------------------------------------
-# -----------------------------------------------------------------
 class SimpledeleteView(SuperUserRequiredMixin, SimpleupdateView):
     model=None
     transaction_use = 'default'
     
-
+    # -----------------------------------------------------------
     def post(self, request, *args, **kwargs):
         if 'slug' in kwargs:
             slug=kwargs.get("slug")

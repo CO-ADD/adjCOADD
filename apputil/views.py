@@ -20,6 +20,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 from dscreen.models import Screen_Run
+from dsample.models import Project
 from dcell.models import Cell
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
@@ -39,24 +40,14 @@ from apputil.utils.views_base import DataExportBaseView
 @login_required(login_url='/')
 def index(req):
     nDict = {
-         
+         # OrgDB
         'nOrg':    str(Organism.objects.count()) + ' Microorganisms',
-        'nCell':   Cell.objects.count(),
-        'nTax':    Taxonomy.objects.count(),
-        'nDrug':   str(Drug.objects.count()) + ' Drugs',
-        'nVCard':  VITEK_Card.objects.count(),
-        'nVID':    VITEK_ID.objects.count(),
-        'nVAST':   VITEK_AST.objects.count(),
-        'nMICC':   MIC_COADD.objects.count(),
-        'nMICP':   MIC_Pub.objects.count(),
-        'nBP':     Breakpoint.objects.count(),
+        'nCell':   str(Cell.objects.count()) + ' Cells',
         'nSeq':    str(Genome_Sequence.objects.count()) + ' Sequences',
-        'nGene':   Gene.objects.count(),
-        'nCheckM': WGS_CheckM.objects.count(),
-        'nFastQC': WGS_FastQC.objects.count(),
-        'nIDP':    ID_Pub.objects.count(),
-        'nIDS':    ID_Sequence.objects.count(),
-        'nRun':    str(Screen_Run.objects.count()) + ' Runs'
+        'nDrug':   str(Drug.objects.count()) + ' Drugs',
+        # CastDB
+        'nRun':    str(Screen_Run.objects.count()) + ' Runs',
+        'nProject':    str(Project.objects.count()) + ' Projects'
     }
     return render(req, 'home.html', nDict)
 

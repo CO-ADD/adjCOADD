@@ -37,7 +37,7 @@ class Screen_Run(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     HEADER_FIELDS = {
-        "run_id":"Run ID",
+        "run_id":{'Run ID': {'run_id':LinkList['screenrun_id']}},
         "run_type":"Run Type",
         "assay_note":"Assay",
         "run_status":"Status",
@@ -55,6 +55,8 @@ class Screen_Run(AuditModel):
 
     CALCULATED_FIELDS = ['n_compounds', 'n_qc','n_structure','n_motherplates','n_testplates',
                          'n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','screen_date']
+
+    
 
     run_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Run ID")
     run_name = models.CharField(max_length=500, blank=True, verbose_name = "Run Name")
@@ -130,6 +132,40 @@ class Screen_Run(AuditModel):
         # self.n_hc50 = 
         # self.n_synmic = 
         # self.screen_date = 
+
+    #------------------------------------------------
+    @classmethod
+    def str_RunID(cls,RunClass,RunNo) -> str:
+    #
+    # Input:    RunClass PSR, HCR, QCR,...
+    #           RunNo 
+    # Output:   Run_ID as string like PSR00001 
+    #
+        return(f"{RunClass}{RUN_SEP}{RunNo:05d}")
+
+    #------------------------------------------------
+    @classmethod
+    def find_Next_RunID(cls,RunType,RunClassTypes = RUN_CLASSES) -> str:
+        if RunType in RunClassTypes:
+            Run_IDSq=Sequence(RunType)
+            Run_nextID = next(Run_IDSq)
+            Run_strID = cls.str_RunID(RunClassTypes,Run_nextID)
+            while cls.exists(Run_IDSq):
+                Run_nextID = next(Run_IDSq)
+                Run_strID = cls.str_RunID(RunClassTypes,Run_nextID)
+            return(Run_strID)    
+        else:
+            return(None)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.run_id: 
+            self.run_id = self.find_Next_RunID(str(self.run_type.dict_value))
+            if self.run_id: 
+                super(Screen_Run, self).save(*args, **kwargs)
+        else:
+            super(Screen_Run, self).save(*args, **kwargs) 
+
 
 #-------------------------------------------------------------------------------------------------
 class Assay(AuditModel):

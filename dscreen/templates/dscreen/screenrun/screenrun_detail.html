@@ -1,0 +1,121 @@
+{% extends 'base.html'%}
+{% block title%}COADD{% endblock %}
+
+{% block content%}
+<div class="d-flex vh-100">
+
+  <!-- <div class="border border-2 w-100"> -->
+
+    <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
+  {% include 'utils/lefticons.html' with title="ScreenRun" %}
+
+        <button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
+            title="Update Object" ><i class="fa-regular fa-pen-to-square"></i>
+        </button>
+    </div>
+
+    <div class="w-100">
+
+        <!-- Screening Run -->
+        <div class="accordion bg-transparent" id="run-detail">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_00">
+                <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
+                    <h5 class="fs-4 my-0">{{object.pk}}
+                    </h5>
+                </button>
+                </h2>
+
+                <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
+                        data-bs-parent="#run-detail">
+                <div class="accordion-body bg-transparent">
+                    <b> {% include 'utils/message.html' %} </b>
+                    {% include 'dscreen/screenrun/screenrun_update.html' %}
+                    <hr>
+                    {% include 'detailview/audit_status.html' %}
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="accordion bg-transparent w-100" id="screenrun-process">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_01">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRunProcess" aria-expanded="true" aria-controls="collapse_01">
+                <h5 class="fs-6 my-0">
+                    Processing
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapseRunProcess" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_01"
+                data-bs-parent="#screenrun-process">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    Bottons
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Plates -->
+        <div class="accordion bg-transparent w-100" id="screenrun-plates">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_02">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRunPlates" aria-expanded="true" aria-controls="collapse_02">
+                <h5 class="fs-6 my-0">
+                    Plates
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapseRunPlates" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_02"
+                data-bs-parent="#screenrun-plates">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    Master/TestPlates
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_03">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRunProjects" aria-expanded="true" aria-controls="collapse_04">
+                <h5 class="fs-6 my-0">
+                    Projects
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapseRunProjects" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_04"
+                data-bs-parent="#screenrun-projects">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    Project Table
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

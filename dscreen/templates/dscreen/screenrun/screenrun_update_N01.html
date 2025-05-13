@@ -1,0 +1,6 @@
+{% load crispy_forms_tags %}
+<form id="ScreenUpdateForm" method="POST" >
+  {% csrf_token %}
+  <!-- <table> {{ form.as_table}} </table> -->
+  {% crispy form %}
+</form>
