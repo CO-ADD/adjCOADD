@@ -38,12 +38,13 @@ class ScreenRun_Filter(BaseStatus_Filter):
 # -----------------------------------------------------------------
 class ScreenRun_CreateForm(forms.ModelForm):
 
+    run_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next PSR/HCR/.. number")
     run_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=True,queryset=Dictionary.objects.all())
     run_status=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
-    assay_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    run_conditions= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    run_issues= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    run_project= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    assay_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+    run_conditions= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+    run_issues= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+    run_project= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     run_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
 
     def __init__(self, *args, **kwargs): 
@@ -55,6 +56,10 @@ class ScreenRun_CreateForm(forms.ModelForm):
         # Set Dictionary values
         self.fields['run_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
         self.fields['run_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
+
+        # Additional attributes
+        # self.fields["run_id"].widget.attrs.update({"class":"special"})
+        # self.fields["run_id"].widget.attrs.update(size=40)
 
         # Create groups of fields for View 
         self.create_field_groups()
