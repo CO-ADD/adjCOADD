@@ -120,13 +120,13 @@ def detailDrug(req, pk):
 #--  DrugCreate --------------------------------------------------------------
 class DrugCreateView(SimplecreateView):
     form_class=Drug_form
-    template_name='ddrug/drug/drug_c.html'
+    template_name='ddrug/drug/drug_create.html'
     
 ##
 #--  DrugUpdate --------------------------------------------------------------
 class DrugUpdateView(SimpleupdateView):
     form_class=Drug_form
-    template_name='ddrug/drug/drug_u.html'
+    template_name='ddrug/drug/drug_update.html'
     model=Drug
 
 

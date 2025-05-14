@@ -35,6 +35,7 @@
    django-auth-ldap <br>
    djangorestframework-simplejwt<br>
    clamd<br>
+   crispy-bootstrap5<br>
 
    [win] django-model-utils django-sequences django-formtools
    [win] djangorestframework-simplejwt
