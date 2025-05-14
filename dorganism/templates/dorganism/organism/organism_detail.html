@@ -15,8 +15,7 @@
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" style="max-height: 20px" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseOrgDetail" aria-expanded="true" aria-controls="collapseOne">
-              <h5 class="fs-4 my-0">
-                {{object.pk}} | {{object.organism_name}}
+              <h5 class="fs-4 my-0"> <b>{{object.pk}} </b> | <i>{{object.organism_name}}</i>
               </h5>
             </button>
           </h2>
@@ -24,7 +23,7 @@
             data-bs-parent="#organism-detail">
             <div class="accordion-body bg-transparent">
               <b> {% include 'utils/message.html' %} </b>
-              {% include 'dorganism/organism/organism_u.html' %}
+              {% include 'dorganism/organism/organism_update.html' %}
               <br>           
               <hr>
               <!-- prettier-ignore -->

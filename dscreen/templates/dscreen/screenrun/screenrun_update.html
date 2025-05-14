@@ -1,15 +1,30 @@
 <form id="ScreenUpdateForm" method="POST" action="{% url 'screenrun_update' object.pk %}">
   {% csrf_token %}
   <!-- <table> {{ form.as_table}} </table> -->
-  <table> {{ form.as_table}} </table>
 
-      <div class="col-md-3 updateformshow not-visible">
-        <div class="d-flex justify-content-evenly align-baseline ">
-          {% include 'utils/miscellaneous/save_btn.html' %}
-          <!--  -->
-          {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
+  <div class="row">
 
-        </div>
+    {% for group in form.groups %}
+      <div class="col-md-3">
+        <table class="table table-hover table-sm align-middle table-bordered">
+          <tbody>
+            {% for field in group %}
+              <tr>
+                {% include 'utils/row_editabletable.html' with form_label=field.label_tag data_type=field.label_tag form_field=field %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
+    {% endfor %}
+  </div>
 
+  <div class="row">
+    <div class="col-md-3 updateformshow not-visible">
+      <div class="d-flex justify-content-evenly align-baseline ">
+        {% include 'utils/miscellaneous/save_btn.html' %}
+        {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
+      </div>
+    </div>
+  </div>
 </form>

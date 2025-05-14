@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
 
-from adjcoadd.constants import *
+from adjcoadd.constants import LinkList
 from apputil.utils.filters_base import FilteredListView
 from apputil.utils.api_class import API_ListView
 from apputil.utils.views_base import SimplecreateView, SimpleupdateView

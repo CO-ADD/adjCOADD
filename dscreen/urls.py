@@ -12,8 +12,8 @@ urlpatterns = [
     # path('screenrun_card', ScreenRun_CardView.as_view(), name="screenrun_card"),
     path('screenrun_list', ScreenRun_ListView.as_view(), name="screenrun_list"),
     path('screenrun/<str:pk>', ScreenRun_DetailView, name="screenrun_detail"),
-    path('createScreenrun/', ScreenRun_CreateView.as_view(), name="screenrun_create"),
-    path('updateScreenrun/<str:pk>', ScreenRun_UpdateView.as_view(), name="screenrun_update"),
+    path('createScreenrun/', ScreenRun_CreateView, name="screenrun_create"),
+    path('updateScreenrun/<str:pk>', ScreenRun_UpdateView, name="screenrun_update"),
     path('deleteScreenrun/<str:pk>', ScreenRun_DeleteView.as_view(), name="screenrun_delete"),
 
 ]

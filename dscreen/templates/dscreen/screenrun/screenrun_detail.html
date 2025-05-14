@@ -4,14 +4,10 @@
 {% block content%}
 <div class="d-flex vh-100">
 
-  <!-- <div class="border border-2 w-100"> -->
-
     <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
-  {% include 'utils/lefticons.html' with title="ScreenRun" %}
-
-        <button class="edit_detailtable border-0 text-success bg-transparent" data-bs-toggle="tooltip" data-bs-placement="right"
-            title="Update Object" ><i class="fa-regular fa-pen-to-square"></i>
-        </button>
+        <div class="d-flex flex-column p-0">          
+            {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name %}
+        </div>
     </div>
 
     <div class="w-100">
@@ -22,7 +18,7 @@
                 <h2 class="accordion-header" id="heading_00">
                 <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
-                    <h5 class="fs-4 my-0">{{object.pk}}
+                    <h5 class="fs-4 my-0"><b>{{object.pk}}</b>
                     </h5>
                 </button>
                 </h2>
@@ -57,7 +53,7 @@
                 <div class="accordion-body">
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    Bottons
+                    {{ form.n_compounds.label }}: {{ form.n_compounds.initial}} 
                 </div>
                 </div>
             </div>

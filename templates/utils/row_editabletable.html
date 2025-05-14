@@ -30,7 +30,7 @@
    
     $(".object_value").each(function () {
       var text = $(this).text();
-      text = text.replace(/\[|\]/g, "");
+      //text = text.replace(/\[|\]/g, "");
       text = text.replace(/'/g, "");
       $(this).text(text);
     });

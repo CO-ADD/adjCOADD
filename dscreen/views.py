@@ -1,9 +1,9 @@
+
 import os
 import json
 from rdkit import Chem
 from django_filters.views import FilterView
 
-from django.views.generic import ListView
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -16,22 +16,22 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
-# Create your views here.
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from applib.django.views import Filtered_ListView, Base_CreateView, Base_UpdateView,  Base_DeleteView
-#from applib.django.views import permission_not_granted, Htmx_UpdateView
+from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
+ 
+# from apputil.utils.filters_base import FilteredListView
+# from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
 
-from adjcoadd.constants import *
+# from adjcoadd.constants import *
 
-#DScreen
-from dscreen.models import  Screen_Run, Assay, AssayData_MIC, AssayData_CC50, AssayData_HC50
-from dscreen.forms import (ScreenRun_Filter, ScreenRun_DetailForm,
-                           #ScreenRun_UpdateForm, ScreenRun_CreateForm,
-                        )
+from dscreen.models import Screen_Run
+from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+from dsample.models import Project
+from dplate.models import MasterPlate, TestPlate
 
 #=================================================================================================
-# Screen_Run
+# ScreenRun
 #=================================================================================================
 class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
@@ -49,28 +49,101 @@ class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
         return context
 
 # -----------------------------------------------------------------
+# class ScreenRun_CardView(ScreenRun_ListView):
+#     template_name = 'dscreen/screenrun/screenrun_card.html'
+#     model = Screen_Run  
+#     model_fields = model.CARDS_FIELDS
+
+# -----------------------------------------------------------------
 @login_required
-def ScreenRun_DetailView(req, pk):
+def ScreenRun_CreateView(req):
+    '''
+    View to Create new ScreenRun foreignkey: Dictionary. 
+    '''  
+    kwargs={}
+    kwargs['user']=req.user
+    form=ScreenRun_CreateForm()
+    if req.method=='POST':
+        form=ScreenRun_CreateForm(req.POST) 
+        if form.is_valid():
+            print('ScreenRun_CreateView Valid')
+            try:
+                with transaction.atomic(using='dscreen'):
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Screen Run','Completed')
+                    return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            messages.warning(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])          
+    return render(req, 'dscreen/screenrun/screenrun_create.html', { 'form':form, }) 
+
+# -----------------------------------------------------------------
+@login_required
+def ScreenRun_DetailView(request, pk):
+    """
+    - Detail view handle ScreenRun entry display,update and delete.
+    - related table overview display.
+    - related table are: testplate, masterplate, Processing.
+    - data visual table: dataframe and pivot- table
+    """
     context={}
-    object_=get_object_or_404(Screen_Run, pk=pk)
-
-    form=ScreenRun_DetailForm(instance=object_,)
-    context["object"]=object_
+    # try:
+    _object=get_object_or_404(Screen_Run, run_id=pk)
+    form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
+                                      'run_status':_object.run_status,}, 
+                                    instance=_object)
+    context["object"]=_object
     context["form"]=form
-    context["Links"]=LinkList
 
-    return render(req, "dscreen/screenrun/screenrun_detail.html", context)
+    # plate_data_df = get_screenrun_plates(_object.run_id)
+    # context["org_id_obj_count"] = len(id_data_df)
+    # context["org_id_obj"] = id_data_df.values.tolist()
+    # context["org_id_fields"] = list(id_data_df.columns)
+
+    # project_data_df = get_screenrun_projects(_object.run_id)
+    # context["org_id_obj_count"] = len(id_data_df)
+    # context["org_id_obj"] = id_data_df.values.tolist()
+    # context["org_id_fields"] = list(id_data_df.columns)
+
+    return render(request, "dscreen/screenrun/screenrun_detail.html", context)
 
 # -----------------------------------------------------------------
-class ScreenRun_CreateView(Base_CreateView):
-    form_class=ScreenRun_DetailForm
-    template_name='dscreen/screenrun/screenrun_create.html'
+@login_required
+def ScreenRun_UpdateView(req, pk):
+    _object=get_object_or_404(Screen_Run, run_id=pk)
+    kwargs={}
+    kwargs['user']=req.user
+    form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
+                                      'run_status':_object.run_status,}, 
+                                    instance=_object)
+    if req.method=='POST':
+        try:
+            with transaction.atomic(using='dscreen'):
+                obj = Screen_Run.objects.select_for_update().get(run_id=pk)
+                form=ScreenRun_UpdateForm(req.POST, instance=obj)    
+                if form.is_valid():       
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Screen_Run','Completed')
+                    # form.save_m2m() 
+                    return redirect(req.META['HTTP_REFERER'])
+                else:
+                    messages.warning(req, f'Update failed due to {form.errors} error')
+                    
+        except Exception as err:
+            print(err)
+            messages.warning(req, f'Update failed due to {err} error')
+            return redirect(req.META['HTTP_REFERER'])
 
-# -----------------------------------------------------------------
-class ScreenRun_UpdateView(Base_UpdateView):
-    form_class=Screen_Run
-    template_name='dscreen/screenrun/screenrun_update.html'
-    model=Screen_Run
+    context={}
+    context["object"]=_object
+    context["form"]=form
+   
+    return render(req, "dscreen/screenrun/screenrun_update.html", context)
 
 # -----------------------------------------------------------------
 class ScreenRun_DeleteView(Base_DeleteView):

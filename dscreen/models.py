@@ -56,12 +56,17 @@ class Screen_Run(AuditModel):
     CALCULATED_FIELDS = ['n_compounds', 'n_qc','n_structure','n_motherplates','n_testplates',
                          'n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','screen_date']
 
-    
+    VIEW_GROUPS = [
+        ['run_type','run_status','run_name','run_project','run_date'],
+        ['run_conditions','assay_note','run_issues'],
+        # ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_qc',
+        #   'n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','screen_date']
+    ]
 
-    run_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Run ID")
-    run_name = models.CharField(max_length=500, blank=True, verbose_name = "Run Name")
+    run_id = models.CharField(max_length=15, primary_key=True, blank=True, verbose_name = "Run ID")
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
+    run_name = models.CharField(max_length=500, blank=True, verbose_name = "Run Name")
     assay_note = models.CharField(max_length=250, blank=True, verbose_name = "Assay Note")
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
@@ -135,13 +140,13 @@ class Screen_Run(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def str_RunID(cls,RunClass,RunNo) -> str:
+    def str_RunID(cls,RunType,RunNo) -> str:
     #
     # Input:    RunClass PSR, HCR, QCR,...
     #           RunNo 
     # Output:   Run_ID as string like PSR00001 
     #
-        return(f"{RunClass}{RUN_SEP}{RunNo:05d}")
+        return(f"{RunType}{RUN_SEP}{RunNo:05d}")
 
     #------------------------------------------------
     @classmethod
@@ -149,16 +154,17 @@ class Screen_Run(AuditModel):
         if RunType in RunClassTypes:
             Run_IDSq=Sequence(RunType)
             Run_nextID = next(Run_IDSq)
-            Run_strID = cls.str_RunID(RunClassTypes,Run_nextID)
-            while cls.exists(Run_IDSq):
+            Run_strID = cls.str_RunID(RunType,Run_nextID)
+            while cls.exists(Run_strID):
                 Run_nextID = next(Run_IDSq)
-                Run_strID = cls.str_RunID(RunClassTypes,Run_nextID)
+                Run_strID = cls.str_RunID(RunType,Run_nextID)
             return(Run_strID)    
         else:
             return(None)
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        print(f'Saving ScreenRun {self.run_id} {self.run_type.dict_value}')
         if not self.run_id: 
             self.run_id = self.find_Next_RunID(str(self.run_type.dict_value))
             if self.run_id: 

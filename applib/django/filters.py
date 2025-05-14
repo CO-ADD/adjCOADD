@@ -152,19 +152,19 @@ class BaseStatus_Filter(Base_Filter):
 
 
     
-# utils for filteredListView method def ordered_by
-#--------------------------------------------------------------------------
-def find_item_index(lst, item):
-#--------------------------------------------------------------------------
+# # utils for filteredListView method def ordered_by
+# #--------------------------------------------------------------------------
+# def find_item_index(lst, item):
+# #--------------------------------------------------------------------------
 
-    for i, element in enumerate(lst):
-        if isinstance(element, dict):
-            if item in element.keys():
-                return i
-        elif element == item:
-            return i
+#     for i, element in enumerate(lst):
+#         if isinstance(element, dict):
+#             if item in element.keys():
+#                 return i
+#         elif element == item:
+#             return i
         
-    return -1
+#     return -1
 
 # --Filter view base class--
 

@@ -126,7 +126,7 @@ def Organism_CreateView(req):
         else:
             messages.warning(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])          
-    return render(req, 'dorganism/organism/organism_c.html', { 'form':form, }) 
+    return render(req, 'dorganism/organism/organism_create.html', { 'form':form, }) 
 
 # -----------------------------------------------------------------
 @login_required
@@ -262,7 +262,7 @@ def Organism_UpdateView(req, pk):
         "object":object_,
     }
    
-    return render(req, "dorganism/organism/organism_u.html", context)
+    return render(req, "dorganism/organism/organism_update.html", context)
 
 # -----------------------------------------------------------------
 class Organism_DeleteView(SimpledeleteView):
@@ -304,12 +304,12 @@ def OrgBatch_CreateView(req, organism_id):
                     return redirect(req.META['HTTP_REFERER'])                
         else:
             return redirect(req.META['HTTP_REFERER'])      
-    return render(req, 'dorganism/orgbatch/orgbatch_c.html', { 'form':form, 'organism_id':organism_id}) 
+    return render(req, 'dorganism/orgbatch/orgbatch_create.html', { 'form':form, 'organism_id':organism_id}) 
 
 # -----------------------------------------------------------------
 class OrgBatch_UpdateView(HtmxupdateView):
     form_class=OrgBatch_UpdateForm
-    template_name="dorganism/orgbatch/orgbatch_u.html"
+    template_name="dorganism/orgbatch/orgbatch_update.html"
     template_partial="dorganism/orgbatch/orgbatch_tr.html"
     model=Organism_Batch
     transaction_use = 'dorganism'

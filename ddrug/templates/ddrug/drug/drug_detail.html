@@ -16,8 +16,8 @@
         <h2 class="accordion-header" id="headingOne">
           <button class="accordion-button" style="max-height:20px;" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <h5 class="fs-6 my-0">{{object.pk}} |
-              {{object.drug_name}}
+            <h5 class="fs-4 my-0">
+              <b>{{object.drug_name}}</b> | <i>{{object.pk}}</i>
             </h5>
           </button>
         </h2>
@@ -33,7 +33,6 @@
       </div>
     </div>
 
-
     <!--
     <div>
       {% include 'utils/piediagram.html' %}
@@ -42,6 +41,5 @@
 
   </div>
 </div>
-
 
 {% endblock %}

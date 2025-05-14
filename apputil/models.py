@@ -637,9 +637,9 @@ class Dictionary(AuditModel):
     #
     def get_filterobj(cls,DictClass,showDeleted=False):
         if showDeleted:
-            return cls.objects.filter(dict_class=DictClass)
+            return cls.objects.filter(dict_class=DictClass).order_by("dict_sort")
         else:
-            return cls.objects.filter(dict_class=DictClass, astatus__gte=0)
+            return cls.objects.filter(dict_class=DictClass, astatus__gte=0).order_by("dict_sort")
 
     #------------------------------------------------
     @classmethod

@@ -13,7 +13,7 @@ from django_filters import CharFilter, ChoiceFilter
 
 from apputil.models import Dictionary, ApplicationUser
 from apputil.utils.filters_base import Filterbase
-from .models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
+from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from adjcoadd.constants import *
 
 

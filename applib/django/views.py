@@ -54,7 +54,6 @@ class WriteUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def handle_no_permission(self):
         return HttpResponse( 'Only users with WRITE permission have access to this view')
 
-
 # -----------------------------------------------------------------
 # -- Create View class--
 # -----------------------------------------------------------------
