@@ -12,7 +12,6 @@ from dorganism.views import  (Taxonomy_ListView,Taxonomy_CardView,Taxonomy_Detai
                     ) 
 from dorganism.utils.utils import search_organism, search_organism_id
 
-
 urlpatterns = [
     # Taxonomy
     path('taxonomy_card', Taxonomy_CardView.as_view(), name="taxo_card"),

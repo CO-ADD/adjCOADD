@@ -1,0 +1,8 @@
+
+TestPlates: {{ object.n_testplates}}
+MotherPlates: {{ object.n_motherplates}}
+[Url: {{url}} ]
+<button type="submit" id="add_readout" class="btn btn-primary", form="ScreenUpdateForm" formmethod="post" name="action" value="add_readout">Add Readouts</button> 
+
+<button hx-post="/clicked" hx-swap="outerHTML" form="ScreenUpdateForm"> X Add Readouts </button>
+

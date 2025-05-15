@@ -48,12 +48,13 @@
                 <!-- prettier-ignore -->
                 </button>
             </h2>
-            <div id="collapseRunProcess" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_01"
+            <div id="collapseRunProcess" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
                 data-bs-parent="#screenrun-process">
                 <div class="accordion-body">
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    {{ form.n_compounds.label }}: {{ form.n_compounds.initial}} 
+                    {% include 'dscreen/screenrun/screenrun_process.html' with process_status="" %}
+                    
                 </div>
                 </div>
             </div>

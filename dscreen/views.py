@@ -83,7 +83,7 @@ def ScreenRun_CreateView(req):
 
 # -----------------------------------------------------------------
 @login_required
-def ScreenRun_DetailView(request, pk):
+def ScreenRun_DetailView(req, pk):
     """
     - Detail view handle ScreenRun entry display,update and delete.
     - related table overview display.
@@ -96,6 +96,10 @@ def ScreenRun_DetailView(request, pk):
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
+    print(f"[ScreenRun_DetailView] {req.method}")
+    if req.method == 'POST':
+        print(f"[ScreenRun_DetailView] {req.POST}")
+
     context["object"]=_object
     context["form"]=form
 
@@ -109,7 +113,7 @@ def ScreenRun_DetailView(request, pk):
     # context["org_id_obj"] = id_data_df.values.tolist()
     # context["org_id_fields"] = list(id_data_df.columns)
 
-    return render(request, "dscreen/screenrun/screenrun_detail.html", context)
+    return render(req, "dscreen/screenrun/screenrun_detail.html", context)
 
 # -----------------------------------------------------------------
 @login_required
@@ -120,7 +124,10 @@ def ScreenRun_UpdateView(req, pk):
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
+    print(f"[ScreenRun_UpdateView] {req.method}")
+    print(f"[ScreenRun_UpdateView] {req.session}")
     if req.method=='POST':
+        print(f"[ScreenRun_UpdateView] {req.POST}")
         try:
             with transaction.atomic(using='dscreen'):
                 obj = Screen_Run.objects.select_for_update().get(run_id=pk)
@@ -135,7 +142,6 @@ def ScreenRun_UpdateView(req, pk):
                     messages.warning(req, f'Update failed due to {form.errors} error')
                     
         except Exception as err:
-            print(err)
             messages.warning(req, f'Update failed due to {err} error')
             return redirect(req.META['HTTP_REFERER'])
 

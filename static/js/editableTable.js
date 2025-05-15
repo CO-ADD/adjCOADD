@@ -8,7 +8,6 @@ $(document).ready(function () {
         detail.addClass("not-visible")
         $('.editablechoices').removeClass("editablechoices")
         $('.editable').removeClass("editable")
-
     });
 
     // $(document).keypress(

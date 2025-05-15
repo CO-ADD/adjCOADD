@@ -1,0 +1,37 @@
+/* COADD base */
+
+/* Theme Color */
+/* 
+  How to use theme colors:
+  var(--body-bg): body background, input background, 
+  var(--plain-text): description object-fields 
+  var(--brand-text): Nav, filter type, big title, border
+  var(--info): button hover bg, current page bt_bg, button text  
+  var(--plain-text-bg):  body background, card, table background, 
+  var(--brand-bg): nav background text-info title 
+  var(--info-bg): button bg,  button hover text
+
+  */
+:root {
+  --body-bg: #ebebeb;
+  --plain-text: black;
+  --plain-text-bg: #bdcaca;
+  --info: #ff6e00;
+  --info-bg: #bdcaca;
+  --brand-text: #fff;
+  --brand-bg: #2c7a84;
+  --border-color: #a6b6b6;
+  --bs-table-hover-bg: #ebebeb !important;
+}
+
+:root .darkMode {
+  --body-bg: #2e2e2e;
+  --plain-text: #a3a3a3;
+  --plain-text-bg: #484e4e;
+  --info: #ad4b00;
+  --info-bg: #7d8585;
+  --brand-text: #ebebeb;
+  --brand-bg: #324547;
+  --border-color: #3f4444;
+  --bs-table-hover-bg: #8b8b8b !important;
+}

@@ -19,6 +19,7 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List, split_StrList
 from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
 from dsample.models import CmpBatchList_Base, Compound_Batch
+
 from dcell.models import Cell
 from dorganism.models import Organism
 from adjcoadd.constants import *
@@ -124,12 +125,12 @@ class Screen_Run(AuditModel):
     
     #------------------------------------------------
     def update_summary(self):
-        print('To be implemented')
+
         # self.n_compounds = 
         # self.n_qc = 
         # self.n_structure = 
-        # self.n_motherplates = 
-        # self.n_testplates = 
+        self.n_motherplates = MasterPlate.objects.filter(run_id=self).count()
+        self.n_testplates = TestPlate.objects.filter(run_id=self).count()
         # self.n_assays = 
         # self.n_inhibitions = 
         # self.n_mic = 
