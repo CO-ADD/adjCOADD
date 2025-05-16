@@ -22,30 +22,40 @@ from dscreen.models import  Screen_Run, Assay, AssayData_MIC, AssayData_CC50, As
 #=================================================================================================
 class ScreenRun_Filter(BaseStatus_Filter):
     
-    Run_Type=ChoiceFilter(field_name='run_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    Run_Status=ChoiceFilter(field_name='run_status',widget=forms.RadioSelect, choices=[], empty_label=None)
+    run_type=ChoiceFilter(field_name='run_type',widget=forms.RadioSelect, choices=[], empty_label=None)
+    run_status=ChoiceFilter(field_name='run_status',widget=forms.RadioSelect, choices=[], empty_label=None)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Run_Type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
-        self.filters["Run_Status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
-        # for i in self.filters:
-        #     self.filters[i].label=i
+        self.filters["run_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
+        self.filters["run_status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
+
+        # Set Filter label to the Fields VerboseName or Filter Name
+        for i in self.filters:
+            try:
+                self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except:
+                self.filters[i].label=i
     class Meta:
         model=Screen_Run
-        fields=[ 'run_id', 'run_name','Run_Type','Run_Status']
+        fields=[ 'run_id', 'run_name','run_type','run_status']
 
 # -----------------------------------------------------------------
 class ScreenRun_CreateForm(forms.ModelForm):
 
+    # PK to add help text
     run_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next PSR/HCR/.. number")
-    run_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=True,queryset=Dictionary.objects.all())
-    run_status=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
+    #run_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=True,queryset=Dictionary.objects.all())
+    #run_status=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
+
+    # DateFields
+    run_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
+
+    # TextFields - 2 rows (Normal,short CharFields do not need definition)
     assay_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     run_conditions= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     run_issues= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     run_project= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    run_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
 
     def __init__(self, *args, **kwargs): 
         super(ScreenRun_CreateForm, self).__init__(*args, **kwargs)

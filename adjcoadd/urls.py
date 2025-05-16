@@ -35,6 +35,7 @@ urlpatterns = [
     path('dcell/', include('dcell.urls')),
     #========================CastDB model views URL====View, Create, Updata, Delete================================
     path('dscreen/', include('dscreen.urls')),
+    path('dsample/', include('dsample.urls')),
 ]
 
 if settings.DEBUG:

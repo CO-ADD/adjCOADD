@@ -20,29 +20,34 @@ from dcell.models import Cell, Cell_Batch, CellBatch_Stock
 #=================================================================================================
 class Cell_Filter(Filterbase):
     
-    ID = CharFilter(field_name='cell_id', lookup_expr='icontains')
-    Name = CharFilter(field_name='cell_names__cell_names', lookup_expr='icontains')
+    cell_id = CharFilter(field_name='cell_id', lookup_expr='icontains')
+    cell_names = CharFilter(field_name='cell_names', lookup_expr='icontains')
     # Class = ChoiceFilter(field_name='cell_name__org_class__dict_value',  
     #                                   widget=forms.RadioSelect, 
     #                                   choices=(("GN","GN"),("GP","GP"),("FG","FG"),("MB","MB"))) <not needed due to lack of cell classes>
-    Line = CharFilter(field_name='cell_line', lookup_expr='icontains')
-    Notes = CharFilter(field_name='cell_notes', lookup_expr='icontains')
-    Type = MultipleChoiceFilter(field_name='cell_type', method='multichoices_filter', 
+    cell_line = CharFilter(field_name='cell_line', lookup_expr='icontains')
+    cell_notes = CharFilter(field_name='cell_notes', lookup_expr='icontains')
+    cell_type = MultipleChoiceFilter(field_name='cell_type', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    MTA = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Cell.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
-    Panel = MultipleChoiceFilter(field_name='cell_panel', method='multichoices_filter', 
+    mta_status = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Cell.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
+    cell_panel = MultipleChoiceFilter(field_name='cell_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["Type"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_type'], showDesc = False)
-        self.filters["Panel"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_panel'], showDesc = False)
+        self.filters["cell_type"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_type'], showDesc = False)
+        self.filters["cell_panel"].extra["choices"]=Dictionary.get_aschoices(Cell.DICTIONARY_FIELDS['cell_panel'], showDesc = False)
+
+        # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
-            self.filters[i].label=i
-   
+            try:
+                self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except:
+                self.filters[i].label=i
+
     class Meta:
         model=Cell
-        fields=[ 'ID', 'Name','Line',  'Notes', 'Type', 'MTA', 'Panel', ]
+        fields=[ 'cell_id', 'cell_names','cell_line',  'cell_notes', 'cell_type', 'cell_panel', 'mta_status' ]
 
 # -----------------------------------------------------------------
 class Cell_CreateForm(forms.ModelForm):

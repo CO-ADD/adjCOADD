@@ -37,6 +37,12 @@ COMPOUND_SEP = '|'
 RUN_CLASSES = ['PSR','HCR','QCR']
 RUN_SEP = ""
 
+# -dSample Settings ---------------------------------------------------
+PROJECT_COMPOUND_STATUS = ['MissingStructureData','NoStructureData','ToImportStructureData',
+                           'NoCompoundData','NoCompoundReceived',]   
+PROJECT_SCREEN_STATUS   = ['PS','HC','HV']
+PROJECT_DATA_STATUS     = ['NoScreenData','DoNotYet_makePublic','DoNot_makePublic','Limited','Confidential']
+PROJECT_REPORT_STATUS   = ['PS','HC','HV']
 
 AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
@@ -52,6 +58,7 @@ LinkList={
     'cell_id':      '/dcell/cell/{VALUE1}',
     'drug_id':      '/ddrug/drug/{VALUE1}',
     'screenrun_id': '/dscreen/screenrun/{VALUE1}',
+    'project_id':   '/dsample/project/{VALUE1}',
     'cas':          'https://commonchemistry.cas.org/detail?cas_rn={VALUE1}',
     'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/{VALUE1}',
     'drugbank' :    'https://www.drugbank.ca/drugs/{VALUE1}',

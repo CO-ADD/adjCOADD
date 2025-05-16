@@ -34,8 +34,8 @@
 <div class="container d-flex flex-wrap justify-content-around">
 
     <div id="Label-Projects" class="card-body d-flex justify-content-center">
-        {% url 'seq_list' as seq_url %}
-        {% include 'button/land_btn_secondary.html' with title='PROJECT' url=seq_url totalnumber=nProject %}
+        {% url 'project_list' as prj_url %}
+        {% include 'button/land_btn_secondary.html' with title='PROJECT' url=prj_url totalnumber=nProject %}
     </div>
 
     <div id="Label-Screens" class="card-body d-flex justify-content-center">

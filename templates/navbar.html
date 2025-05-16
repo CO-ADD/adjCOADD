@@ -117,12 +117,62 @@
           </ul>
         </div>
 
-        <!-- OrgDB Menu -->
+        <!-- CastDB Menu -->
         <div class="dropdown d-inline-block">
           <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <p class="nav-title">CastDB</p>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  Project &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <a class="dropdown-item " href="{% url 'project_list' %}"> Project</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> Groups</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> Collaborators</a>
+                </ul>
+              </div>
+              </li>
+
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  Screen &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <a class="dropdown-item " href="{% url 'screenrun_list' %}"> Screen</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> Assay</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> MIC</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> CC50</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> HC50</a>
+                </ul>
+              </div>
+              </li>
+
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  Plate &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <a class="dropdown-item " href="{% url 'screenrun_list' %}"> TestPlate</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> MasterPlate</a>
+                  <a class="dropdown-item " href="{% url 'org_stock_list_overview' %}"> Labware</a>
+                </ul>
+              </div>
+              </li>
+
+              <li><div class="dropdown2 d-inline-block">
+                <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  Compound &raquo;
+                </a>
+                <ul class="dropdown-menu2">
+                  <a class="dropdown-item " href="{% url 'screenrun_list' %}"> Compound</a>
+                  <a class="dropdown-item " href="{% url 'taxo_card' %}"> MCC Compound</a>
+                </ul>
+              </div>
+              </li>
+
           </ul>
         </div>
 

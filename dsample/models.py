@@ -32,6 +32,17 @@ class Project(AuditModel):
     List of Projects
     """
 #=================================================================================================
+    HEADER_FIELDS = {
+        "project_id":{'Project ID': {'project_id':LinkList['project_id']}},
+        "group_id.group_code":"Group",
+        "group_id.country.name":"Country",
+        "project_type":"Type",
+        "project_status":"Status",
+        "project_name":"Project Name",
+        #"group_id":"Group",
+        # "group_id.group_code":"Group",
+    }
+
     DICTIONARY_FIELDS = {
         'project_type':'Project_Type',
         'project_status':'Project_Status',
@@ -44,20 +55,29 @@ class Project(AuditModel):
     ID_PREFIX = 'P'
     ID_PAD = 5
 
+    VIEW_GROUPS = [
+        ['project_type','project_name','process_status','project_status','project_comment','received','completed',],
+        ['provided_container','provided_comment','stock_status','stock_comment','stock_container','stock_conc','stock_conc_unit', ],
+        ['compound_status','compound_comment','screen_status','screen_comment','data_status','data_comment',],
+        ['report_status','report_comment','pub_status','pub_date','pub_name','source','source_code','reference']
+    ]
+
+    ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
+
     project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
-    project_name = models.CharField(max_length=150, blank=True, verbose_name = "Name")
-    project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    project_name = models.CharField(max_length=150, blank=True, verbose_name = "Project Name")
+    project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Type", on_delete=models.DO_NOTHING,
         db_column="project_type", related_name="%(class)s_project_type")
     cpoz_id = models.CharField(max_length=50, blank=True, verbose_name = "CpOz ID")
     
     process_status = models.CharField(max_length=250, blank=True, verbose_name = "Process")
     project_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Status", on_delete=models.DO_NOTHING,
         db_column="project_status", related_name="%(class)s_project_status")
-    project_comment = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+    project_comment = models.CharField(max_length=250, blank=True, verbose_name = "Project Comment")
     
     provided_container = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Provided Container", on_delete=models.DO_NOTHING,
         db_column="provided_container", related_name="%(class)s_provided_container")
-    provided_comment = models.CharField(max_length=250, blank=True, verbose_name = "Comment")
+    provided_comment = models.CharField(max_length=250, blank=True, verbose_name = "Provided Comment")
     
     received = models.DateField(null=True, blank=True, verbose_name = "Received")
     completed = models.DateField(null=True, blank=True, verbose_name = "Completed")
@@ -71,6 +91,7 @@ class Project(AuditModel):
                                  size=20, verbose_name = "Stock Status", null=True, blank=True)
     
     compound_comment = models.CharField(max_length=150, blank=True, verbose_name = "Compound Comment")
+    # Make Single Dictionary
     compound_status = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
                                  size=20, verbose_name = "Compound Status", null=True, blank=True)
     
@@ -78,6 +99,7 @@ class Project(AuditModel):
     screen_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
                                  size=20, verbose_name = "Screen Status", null=True, blank=True)
 
+    # Make Single Dictionary
     data_comment = models.CharField(max_length=150, blank=True, verbose_name = "Data Comment")
     data_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
                                  size=20, verbose_name = "Data Status", null=True, blank=True)
@@ -106,7 +128,7 @@ class Project(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
     pub_name = models.CharField(max_length=150, blank=True, verbose_name = "Public Name")
-    oldpub_status = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Pub Status")
+    oldpub_status = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Old Pub Status")
     # oldpub_status = ArrayField(models.CharField(max_length=20, null=True, blank=True), 
     #                               size=20, verbose_name = "Public Status", null=True, blank=True)
     pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,

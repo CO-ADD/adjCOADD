@@ -66,7 +66,6 @@ def ScreenRun_CreateView(req):
     if req.method=='POST':
         form=ScreenRun_CreateForm(req.POST) 
         if form.is_valid():
-            print('ScreenRun_CreateView Valid')
             try:
                 with transaction.atomic(using='dscreen'):
                     instance=form.save(commit=False) 
