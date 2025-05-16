@@ -64,6 +64,8 @@ class Project(AuditModel):
 
     ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
 
+    # Add Project Upload File Name
+
     project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
     project_name = models.CharField(max_length=150, blank=True, verbose_name = "Project Name")
     project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Type", on_delete=models.DO_NOTHING,

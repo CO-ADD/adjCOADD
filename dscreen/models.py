@@ -64,6 +64,9 @@ class Screen_Run(AuditModel):
         #   'n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','screen_date']
     ]
 
+
+    # Add PlatePrep FileName 
+
     run_id = models.CharField(max_length=15, primary_key=True, blank=True, verbose_name = "Run ID")
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
