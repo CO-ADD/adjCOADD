@@ -161,7 +161,9 @@ def Add_Readouts(req, pk):
     context = {}
     _object = get_object_or_404(Screen_Run, run_id=pk)
 
+    form=ScreenRun_UpdateForm(instance=_object)
     context["object"]=_object
+    context["form"] = form
     return render(req,'dscreen/screenrun/add_readouts.html',context)
 
 
