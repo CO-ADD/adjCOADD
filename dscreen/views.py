@@ -19,7 +19,8 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
- 
+from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
+
 # from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
 
@@ -154,3 +155,43 @@ def ScreenRun_UpdateView(req, pk):
 class ScreenRun_DeleteView(Base_DeleteView):
     model = Screen_Run
     transaction_use = 'dscreen'
+
+@login_required
+def Add_Readouts(req, pk):
+    context = {}
+    _object = get_object_or_404(Screen_Run, run_id=pk)
+
+    context["object"]=_object
+    return render(req,'dscreen/screenrun/add_readouts.html',context)
+
+
+# -----------------------------------------------------------------
+# class Add_Readouts(ImportHandler_View):
+#     model = Screen_Run
+
+#     name_step1="Upload"
+#     form_list = [
+#         ('select_file', SelectMultipleFiles_StepForm),
+#         #('upload', VitekValidation_StepForm),
+#         ('finalize', Finalize_StepForm),
+#     ]
+#     template_name = 'dscreen/screenrun_add_readouts.html'
+
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.run_id=None
+    
+    # # customize util functions to validate files:
+    # # vitek -- upload_VitekPDF_Process
+    # def file_process_handler(self, request, *args, **kwargs):
+    #     try:
+    #         form_data=kwargs.get('form_data', None)
+    #     except Exception as err:
+    #         print(err)
+    #         return (err)
+    #     if 'upload-orgbatch_id' in form_data.keys():
+    #         self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
+    #         print(self.organism_batch)   
+    #     valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
+    #     return(valLog)

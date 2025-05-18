@@ -1,8 +1,23 @@
 
-TestPlates: {{ object.n_testplates}}
+{% comment %} TestPlates: {{ object.n_testplates}}
 MotherPlates: {{ object.n_motherplates}}
-[Url: {{url}} ]
-<button type="submit" id="add_readout" class="btn btn-primary", form="ScreenUpdateForm" formmethod="post" name="action" value="add_readout">Add Readouts</button> 
+[Url: {{url}} ] 
+<button type="submit" id="add_readouts" class="btn btn-primary", 
+   form="ScreenUpdateForm" formmethod="post" name="action" value="add_readouts">Add Readouts</button> 
+{% endcomment %}
 
-<button hx-post="/clicked" hx-swap="outerHTML" form="ScreenUpdateForm"> X Add Readouts </button>
+ <a type="button" 
+    class="btn-sm border-0 bg-transparent" 
+    data-bs-toggle="modal" 
+    data-bs-placement="right"
+    title="Add Readouts" data-bs-target="#addReadoutsModal">
+  </a>
+
+<script>
+  $(document).ready(function () {
+    const csrftoken = getCookie("csrftoken");
+    loadModal("#addReadoutsModal", "#addReadouts", "{% url 'add_readouts' %}");
+  });
+</script>
+
 

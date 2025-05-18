@@ -1,0 +1,24 @@
+<div class="modal-dialog modal-lg">
+  <!--prettier-ignore-->
+
+    <div class="modal-content card-bg">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Readouts</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <div class="modal-body">
+            <hr />
+        
+            <form method="POST" class="post-form" action="add_readouts" id="{{form_id}}">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-center align-center">
+                    {% include 'utils/miscellaneous/save_btn.html' %}
+                    {% include 'utils/miscellaneous/cancel_btn.html' %}
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
