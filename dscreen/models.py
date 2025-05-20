@@ -126,21 +126,21 @@ class Screen_Run(AuditModel):
     def exists(cls,RunID,verbose=0):
         return cls.objects.filter(run_id=RunID.strip()).exists()
     
-    #------------------------------------------------
-    def update_summary(self):
+    # #------------------------------------------------
+    # def update_summary(self):
 
-        # self.n_compounds = 
-        # self.n_qc = 
-        # self.n_structure = 
-        self.n_motherplates = MasterPlate.objects.filter(run_id=self).count()
-        self.n_testplates = TestPlate.objects.filter(run_id=self).count()
-        # self.n_assays = 
-        # self.n_inhibitions = 
-        # self.n_mic = 
-        # self.n_cc50 = 
-        # self.n_hc50 = 
-        # self.n_synmic = 
-        # self.screen_date = 
+    #     # self.n_compounds = 
+    #     # self.n_qc = 
+    #     # self.n_structure = 
+    #     self.n_motherplates = MasterPlate.objects.filter(run_id=self).count()
+    #     self.n_testplates = TestPlate.objects.filter(run_id=self).count()
+    #     # self.n_assays = 
+    #     # self.n_inhibitions = 
+    #     # self.n_mic = 
+    #     # self.n_cc50 = 
+    #     # self.n_hc50 = 
+    #     # self.n_synmic = 
+    #     # self.screen_date = 
 
     #------------------------------------------------
     @classmethod

@@ -61,8 +61,8 @@ def main(prgArgs,djDir):
             cAnalysis.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
             cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
             cAnalysis.get_assay_info()
-            cAnalysis.get_testplate_info()
-            cAnalysis.gen_pivot_tables(WithStats=False,WithRunID=True)
+            cAnalysis.get_testplate_info(WithStats=False,WithRunID=True)
+            cAnalysis.gen_pivot_tables()
             # cAnalysis.add_Vitek_AST()
 
             cAnalysis.to_excel(prgArgs.excelfile)

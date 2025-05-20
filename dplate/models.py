@@ -57,7 +57,6 @@ class Labware(AuditModel):
     WELL_TYPE = Choices('Well','Tube','Vial')
     WELL_SIZE = Choices('Shallow','Deep','Storage')
     
-    
     DICTIONARY_FIELDS = {
         'plate_material':'Plate_Material',
     }

@@ -17,13 +17,83 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
 from dsample.models import CmpBatchList_Base
+from dplate.models import MasterPlate, TestPlate
 from dchem.models import Chem_Structure
+from dscreen.models import Screen_Run
 from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
 
 from adjcoadd.constants import *
 
 import logging
 logger = logging.getLogger(__name__)
+
+#-------------------------------------------------------------------------------------------------
+# Summary Screen Run
+#-------------------------------------------------------------------------------------------------
+
+class Summary_ScreenRun(AuditModel):
+    """
+    List of Summary for each ScreenRun
+    """
+
+    #---------------------------------------------------------------------------------------------
+    run_id = models.OneToOneField(Screen_Run, primary_key=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+                                        db_column="run_id", related_name="%(class)s_run_id")
+    
+    n_compounds = models.SmallIntegerField(default=0, verbose_name = "#Cpmds")
+    n_qc = models.SmallIntegerField(default=0, verbose_name = "#QC")
+    n_structure = models.SmallIntegerField(default=0, verbose_name = "#Struc")
+    n_motherplates = models.SmallIntegerField(default=0, verbose_name = "#MP")
+    n_testplates = models.SmallIntegerField(default=0, verbose_name = "#TP")
+    n_assays = models.SmallIntegerField(default=0, verbose_name = "#Assays")
+    n_inhibitions = models.SmallIntegerField(default=0, verbose_name = "#Inhib")
+    n_mic = models.SmallIntegerField(default=0, verbose_name = "#MIC")
+    n_cc50 = models.SmallIntegerField(default=0, verbose_name = "#CC50")
+    n_hc50 = models.SmallIntegerField(default=0, verbose_name = "#HC50")
+    n_synmic = models.SmallIntegerField(default=0, verbose_name = "#synMIC")
+    screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dsummary'
+        db_table = 'sum_screenrun'
+        ordering=['run_id']
+        indexes = [
+            models.Index(name="srun_ncmp_idx", fields=['n_compounds']),
+            models.Index(name="srun_nstr_idx", fields=['n_structure']),
+            models.Index(name="srun_nmp_idx", fields=['n_motherplates']),
+            models.Index(name="srun_nctp_idx", fields=['n_testplates']),
+            # models.Index(name="scmpsc_ascr_idx", fields=['act_score_ave']),
+            # models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
+            # models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,RunID, verbose=0):
+        try:
+            retInstance = cls.objects.get(run_id=RunID)
+        except:
+            if verbose:
+                logger.warning(f"[Summary ScreenRun Not Found] {RunID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    def update_summary(self):
+
+        # self.n_compounds = 
+        # self.n_qc = 
+        # self.n_structure = 
+        self.n_motherplates = MasterPlate.objects.filter(run_id=self).count()
+        self.n_testplates = TestPlate.objects.filter(run_id=self).count()
+        # self.n_assays = 
+        # self.n_inhibitions = 
+        # self.n_mic = 
+        # self.n_cc50 = 
+        # self.n_hc50 = 
+        # self.n_synmic = 
+        # self.screen_date = 
 
 #-------------------------------------------------------------------------------------------------
 # Summary Screening Data Models

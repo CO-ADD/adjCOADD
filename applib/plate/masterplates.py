@@ -47,19 +47,21 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
         djMP.plating = mpwells['plating'].unique()[0]
         djMP.dilution_layout = 'Dilution'
         for idx,row in mpwells.iterrows():
-            #print(row['motherwell_id'])
-            djWell = djMP.get_well(row['motherwell_id'])
-            set_model_fields(djWell,row,djWell.COPY_FIELDS)
-            set_model_arrayfields(djWell,row,djWell.ARRAY_FIELDS)
-            set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()))
-            djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
-            validDict = djWell.check_cmpbatch_id()
+            #print(row['compound_id'])
+            if not pd.isna(row['compound_id']) and not pd.isna(row['motherwell_id']):
+                # Check if at least compound_id and motherwell_id
+                djWell = djMP.get_well(row['motherwell_id'])
+                set_model_fields(djWell,row,djWell.COPY_FIELDS)
+                set_model_arrayfields(djWell,row,djWell.ARRAY_FIELDS)
+                set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()))
+                djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
+                validDict = djWell.check_cmpbatch_id()
 
-            if validDict:
-                validStatus = False
-                dictPl['valid_status'] = False    
-                logger.warning(validDict)
-                row.update(validDict)
+                if validDict:
+                    validStatus = False
+                    dictPl['valid_status'] = False    
+                    logger.warning(validDict)
+                    row.update(validDict)
   
         djMP.add_dilutions()
         djMP.set_defaults_model()
