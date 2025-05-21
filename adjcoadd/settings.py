@@ -32,6 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Meran - Devlopment using Schlern PostgrSQL database  
 DEVELOPMENT=None
 #DEVELOPMENT='Work'
+#
 
 #........................................................................
 if DEVELOPMENT:
