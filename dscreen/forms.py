@@ -83,7 +83,7 @@ class ScreenRun_CreateForm(forms.ModelForm):
         
     class Meta:
         model=Screen_Run
-        exclude=Screen_Run.CALCULATED_FIELDS 
+        exclude=[]
 
     def create_field_groups(self):
         if len(Screen_Run.VIEW_GROUPS) > 0:
@@ -95,4 +95,4 @@ class ScreenRun_CreateForm(forms.ModelForm):
 class ScreenRun_UpdateForm(ScreenRun_CreateForm):     
     class Meta:
         model=Screen_Run
-        exclude=['run_id'] + Screen_Run.CALCULATED_FIELDS 
+        exclude=['run_id'] 

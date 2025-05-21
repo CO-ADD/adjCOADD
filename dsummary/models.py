@@ -17,9 +17,9 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
 from dsample.models import CmpBatchList_Base
-from dplate.models import MasterPlate, TestPlate
+from dplate.models import MasterPlate, TestPlate, TestWell
 from dchem.models import Chem_Structure
-from dscreen.models import Screen_Run
+from dscreen.models import Screen_Run, AssayData_MIC, AssayData_CC50, AssayData_HC50
 from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
 
 from adjcoadd.constants import *
@@ -41,6 +41,7 @@ class Summary_ScreenRun(AuditModel):
                                         db_column="run_id", related_name="%(class)s_run_id")
     
     n_compounds = models.SmallIntegerField(default=0, verbose_name = "#Cpmds")
+    #n_projects = models.SmallIntegerField(default=0, verbose_name = "#Projects")
     n_qc = models.SmallIntegerField(default=0, verbose_name = "#QC")
     n_structure = models.SmallIntegerField(default=0, verbose_name = "#Struc")
     n_motherplates = models.SmallIntegerField(default=0, verbose_name = "#MP")
@@ -69,6 +70,10 @@ class Summary_ScreenRun(AuditModel):
         ]
 
     #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.run_id}"
+
+    #------------------------------------------------
     @classmethod
     def get(cls,RunID, verbose=0):
         try:
@@ -80,20 +85,54 @@ class Summary_ScreenRun(AuditModel):
         return(retInstance)
 
     #------------------------------------------------
+    @classmethod
+    def update(cls,RunID, to_save=False,verbose=0):
+        retObj = cls.get(RunID)
+        if retObj is None:
+            retObj = cls()
+            retObj.run_id = Screen_Run.get(RunID)
+            
+        if retObj.run_id:
+            retObj.update_summary()            
+            if to_save:
+                retObj.save()
+        
+    #------------------------------------------------
     def update_summary(self):
 
-        # self.n_compounds = 
+        self.n_compounds = TestWell.objects.filter(plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+                                                ).values('cmpbatch_lst').distinct().count()
         # self.n_qc = 
         # self.n_structure = 
-        self.n_motherplates = MasterPlate.objects.filter(run_id=self).count()
-        self.n_testplates = TestPlate.objects.filter(run_id=self).count()
-        # self.n_assays = 
-        # self.n_inhibitions = 
-        # self.n_mic = 
-        # self.n_cc50 = 
-        # self.n_hc50 = 
-        # self.n_synmic = 
-        # self.screen_date = 
+        #self.n_projects = 
+        self.n_motherplates = MasterPlate.objects.filter(run_id=self.run_id).count()
+        self.n_testplates = TestPlate.objects.filter(run_id=self.run_id).count()
+        self.n_assays = TestPlate.objects.filter(run_id = self.run_id
+                                                ).values('assay_id').distinct().count()
+        self.n_inhibitions = TestWell.objects.filter(plate_id__result_type='Inhibition', 
+                                                plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+                                                ).values('cmpbatch_lst').distinct().count()
+        self.n_mic  = AssayData_MIC.objects.filter(run_id = self.run_id).count()
+        self.n_cc50 = AssayData_CC50.objects.filter(run_id = self.run_id).count()
+        self.n_hc50 = AssayData_HC50.objects.filter(run_id = self.run_id).count()
+        
+        # self.n_mic = TestWell.objects.filter(plate_id__result_type='MIC', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.n_cc50 = TestWell.objects.filter(plate_id__result_type='CC50', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.n_hc50 = TestWell.objects.filter(plate_id__result_type='HC50', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        
+        self.n_synmic = TestWell.objects.filter(plate_id__result_type='synMIC', 
+                                                plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+                                                ).values('cmpbatch_lst').distinct().count()
+        self.screen_date = TestPlate.objects.filter(run_id = self.run_id).values('test_date').latest('test_date')['test_date']
+        
+
+
 
 #-------------------------------------------------------------------------------------------------
 # Summary Screening Data Models

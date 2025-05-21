@@ -1,19 +1,22 @@
-<div class="modal fade" id="{{ modal_id }}" tabindex="-1">
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" aria-labelledby="{{ modal_title }}"
+        aria-hidden="true" role="dialog">
+
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ modal_title }}</h5>
+        <h5 class="modal-title">{{ modal_title }} - {{entry}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="POST" class="post-form" action="{{ modal_url }}">
-
-        <div class="modal-body">
-            {% csrf_token %}
-            {{ form }}
+        <div class="modal-body" id="{{ modal_id }}-body">
+          <p>One fine body…</p>
         </div>
       <div class="modal-footer">
-
+          <button class="btn" data-bs-dismiss="modal" aria-hidden="true">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $("#{{ modal_id }}-body").load("{{modal_url}}");
+</script>

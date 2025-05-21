@@ -1,11 +1,53 @@
-#TestPlates: {{ object.n_testplates }}
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddReadouts" data-popup-url="{% url 'add_readouts' pk=object.run_id %}">
-  Add Readouts
-</button>
+<div>
+  <div class="container text-center">
+   <div class="row">
+      <div class="col">Upload TestPlates</div>
+      <div class="col">Process Data</div>
+    </div>
+    <div class="row">
+      <div class="col">ReadOuts</div>
+      <div class="col">Assays and Layout </div>
+      <div class="col">MotherPlates</div>
+    </div>
+    <div class="row">
+      <div class="col">#Testplates: {{summary.n_testplates}}</div>
+      <div class="col">#Assays: {{summary.n_assays}}</div>
+      <div class="col">#Motherplates: {{summary.n_motherplates}}</div>
+    </div>
 
-{% url 'add_readouts' pk=object.pk as modal_url %}
-{% include 'dscreen/screenrun/modal_process.html' with modal_id='AddReadouts' modal_title='Add Readouts' modal_url=modal_url entry=object.pk %}
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-secondary" 
+        data-bs-toggle="modal" data-bs-target="#LoadReadouts_Mdl">
+          Load Readouts
+        </button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-secondary" 
+        {% if summary.n_testplates == 0 %}disabled{% endif %} 
+        data-bs-toggle="modal" data-bs-target="#LoadTestplates_Mdl">
+          Load TestPlates
+        </button>
+      </div>
+
+      <div class="col">
+        <button type="button" class="btn btn-secondary" 
+        data-bs-toggle="modal" data-bs-target="#LoadMotherplates_Mdl">
+          Load MotherPlates
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% url 'load_readouts' pk=object.pk as loadreadouts_url %}
+{% url 'load_readouts' pk=object.pk as loadtestplates_url %}
+
+{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadReadouts_Mdl' modal_title='Load Readouts' modal_url=loadreadouts_url entry=object.pk %} 
+{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadTestplates_Mdl' modal_title='Load TestPlates' modal_url=loadtestplates_url entry=object.pk %}
+{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadMotherplates_Mdl' modal_title='Load MotherPlates' modal_url=loadtestplates_url entry=object.pk %}
 
 {% comment %} <!--
 {% url 'import-vitek' as reset_url %}

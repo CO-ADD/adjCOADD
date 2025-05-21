@@ -54,9 +54,6 @@ class Screen_Run(AuditModel):
         'run_status':'Process_Status',
     }
 
-    CALCULATED_FIELDS = ['n_compounds', 'n_qc','n_structure','n_motherplates','n_testplates',
-                         'n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','screen_date']
-
     VIEW_GROUPS = [
         ['run_type','run_status','run_name','run_project','run_date'],
         ['run_conditions','assay_note','run_issues'],

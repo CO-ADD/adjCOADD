@@ -46,7 +46,7 @@ def get_oraCollaborator(test=0):
     CastDB = openCastDB()
     logger.info(f"[Collaborator] ... ")
     collabDict = {}
-    #collabDict['User'] = pd.DataFrame(CastDB.get_dict_list(usrSQL))
+    collabDict['User'] = pd.DataFrame(CastDB.get_dict_list(usrSQL))
     collabDict['Group'] = pd.DataFrame(CastDB.get_dict_list(grpSQL))
 
     uploadDir = 'C:/Code/zdjCode/adjCOADD/utilities/upload_data/Data'
@@ -70,7 +70,7 @@ def get_oraCollaborator(test=0):
 
     logger.info(f"[Collaborators] {len(collabDict['User'])} ")
     logger.info(f"[Groups       ] {len(collabDict['Group'])} ")
-    logger.info(f"[Organisation ] {len(collabDict['Organisation'])} ")
+    #logger.info(f"[Organisation ] {len(collabDict['Organisation'])} ")
     CastDB.close()
 
 
@@ -83,12 +83,10 @@ def get_oraCollaborator(test=0):
 #-----------------------------------------------------------------------------
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
     from apputil.models import Dictionary
-    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
+    #from applib.data.set_fielddata import set_model_arrayfields, set_model_dicts
     from dcollab.models import Organisation, Collab_User, Collab_Group
 
     from django_countries import countries
@@ -243,7 +241,7 @@ if __name__ == "__main__":
     # ArgParser -------------------------------------------------------------
     prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")
-    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [CompoundID]")
+    prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [Collaborator]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
@@ -259,22 +257,18 @@ if __name__ == "__main__":
 
     prgArgs = prgParser.parse_args()
 
-    # Django -------------------------------------------------------------
-    if prgArgs.django == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.django == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.django == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
 
+    from zDjango.djUtils import init_django_dir
+
+    # Django -------------------------------------------------------------
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
 
 #==============================================================================

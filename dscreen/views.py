@@ -27,6 +27,7 @@ from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFi
 # from adjcoadd.constants import *
 
 from dscreen.models import Screen_Run
+from dsummary.models import Summary_ScreenRun
 from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
@@ -93,6 +94,7 @@ def ScreenRun_DetailView(req, pk):
     context={}
     # try:
     _object=get_object_or_404(Screen_Run, run_id=pk)
+    _summary = get_object_or_404(Summary_ScreenRun, run_id=pk)
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
@@ -101,6 +103,7 @@ def ScreenRun_DetailView(req, pk):
         print(f"[ScreenRun_DetailView] {req.POST}")
 
     context["object"]=_object
+    context["summary"]=_summary
     context["form"]=form
 
     # plate_data_df = get_screenrun_plates(_object.run_id)
@@ -157,14 +160,13 @@ class ScreenRun_DeleteView(Base_DeleteView):
     transaction_use = 'dscreen'
 
 @login_required
-def Add_Readouts(req, pk):
+def Load_Readouts(req, pk):
     context = {}
     _object = get_object_or_404(Screen_Run, run_id=pk)
-
     form=ScreenRun_UpdateForm(instance=_object)
     context["object"]=_object
     context["form"] = form
-    return render(req,'dscreen/screenrun/add_readouts.html',context)
+    return render(req,'dscreen/screenrun/load_readouts.html',context)
 
 
 # -----------------------------------------------------------------
