@@ -74,9 +74,7 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
             
             uploadfiles.extend(files)
 
-            for file in files:
-                for validator in self.fields[field].validators:
-                    try:
+            for file in files: 
                         validator(file)
                     except ValidationError as e:
                         self.add_error(field, f"{file.name}: {str(e)}")
