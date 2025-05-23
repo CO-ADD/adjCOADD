@@ -5,9 +5,10 @@ from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDict
+from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+
 from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import validate_file,file_location, OverwriteStorage
-
 
 # =================================================================
 # Utilities Forms
@@ -75,6 +76,8 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
             uploadfiles.extend(files)
 
             for file in files: 
+                for validator in self.fields[field].validators:
+                    try:
                         validator(file)
                     except ValidationError as e:
                         self.add_error(field, f"{file.name}: {str(e)}")
@@ -153,6 +156,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     ]
     # define template
     template_name = None
+    model = None
 
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
@@ -164,6 +168,11 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.valLog=None
         self.upload=False
         #self.html_columns = ['Type','Note','Item','Filename','Help']
+
+    def get_object(self, queryset=None):
+        self.pk = self.kwargs.get('pk')
+        self.object = get_object_or_404(self.model, pk=self.pk)
+
 
     # File Processing and Validation and Upload 
     def file_process_handler(self, request, *args, **kwargs):
@@ -185,9 +194,12 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         current_step = self.steps.current
         request = self.request
 
+        print(f'[Process_View] {current_step} ')
+        
         # Step 1 - Select File and Validate Data
         #---------------------------------------
         if current_step == 'select_files':
+            
             context={}
             self.storage.extra_data['validation_result']="-"
             

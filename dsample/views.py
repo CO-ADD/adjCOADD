@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 from rdkit import Chem
 from django_filters.views import FilterView
 
@@ -28,6 +29,7 @@ from dsample.models import Project
 from dsample.forms import Project_Filter, Project_CreateForm, Project_UpdateForm
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
+from dsummary.utils.analyse_data import Analysis_Screening
 
 
 #=================================================================================================
@@ -143,3 +145,31 @@ def Project_UpdateView(req, pk):
 class Project_DeleteView(Base_DeleteView):
     model = Project
     transaction_use = 'dsample'
+
+# -----------------------------------------------------------------
+@login_required
+def Project_ReportView(req, pk):
+    _object=get_object_or_404(Project, project_id=pk)
+
+    _now = datetime.datetime.now()
+    print(req.method)
+    if req.method=='GET':
+        print(pk)
+        cAnalysis = Analysis_Screening()
+        cAnalysis.qry_by_ProjectID(_object)
+        print(cAnalysis.n_compounds)
+        if cAnalysis.n_compounds>0:
+            cAnalysis.get_dataframe()
+            cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+            cAnalysis.get_assay_info()
+            cAnalysis.get_testplate_info(WithStats=False,WithRunID=True)
+            cAnalysis.gen_pivot_tables()
+
+
+            req = HttpResponse(content_type='application/vnd.ms-excel')
+            req['Content-Disposition'] = f'attachment; filename=Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+            cAnalysis.to_excel(req)
+    
+    return req
+
+# -----------------------------------------------------------------

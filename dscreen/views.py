@@ -1,8 +1,10 @@
 
 import os
 import json
-from rdkit import Chem
-from django_filters.views import FilterView
+import datetime
+
+#from rdkit import Chem
+#from django_filters.views import FilterView
 
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +22,7 @@ from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
 from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
+from applib.process.process_forms import Process_View
 
 # from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
@@ -31,6 +34,7 @@ from dsummary.models import Summary_ScreenRun
 from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
+from dsummary.utils.analyse_data import Analysis_Screening
 
 #=================================================================================================
 # ScreenRun
@@ -98,9 +102,10 @@ def ScreenRun_DetailView(req, pk):
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
-    print(f"[ScreenRun_DetailView] {req.method}")
+    if req.method == 'GET':
+        print(f"[ScreenRun_DetailView] GET {req.GET}")
     if req.method == 'POST':
-        print(f"[ScreenRun_DetailView] {req.POST}")
+        print(f"[ScreenRun_DetailView] POST: {req.POST}")
 
     context["object"]=_object
     context["summary"]=_summary
@@ -159,6 +164,38 @@ class ScreenRun_DeleteView(Base_DeleteView):
     model = Screen_Run
     transaction_use = 'dscreen'
 
+
+# -----------------------------------------------------------------
+@login_required
+def ScreenRun_ReportView(req, pk):
+    _object=get_object_or_404(Screen_Run, run_id_id=pk)
+
+    _now = datetime.datetime.now()
+    print(req.method)
+    if req.method=='GET':
+        print(pk)
+        cAnalysis = Analysis_Screening()
+
+        cAnalysis.qry_by_RunID(_object)
+        cAnalysis.get_dataframe()
+        cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+        cAnalysis.get_assay_info()
+        cAnalysis.get_testplate_info(WithStats=False,WithRunID=True)
+
+        # if 'Vitek' in prgArgs.adddata:
+        #     cAnalysis.add_vitek_ast()
+        # if 'COADD' in prgArgs.adddata:
+        #     cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
+
+        cAnalysis.gen_pivot_tables(PivTables = ['Values','AssayID'])
+
+        req = HttpResponse(content_type='application/vnd.ms-excel')
+        req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+        cAnalysis.to_excel(req)
+    
+    return req
+
+# -----------------------------------------------------------------
 @login_required
 def Load_Readouts(req, pk):
     context = {}
@@ -170,32 +207,45 @@ def Load_Readouts(req, pk):
 
 
 # -----------------------------------------------------------------
-# class Add_Readouts(ImportHandler_View):
-#     model = Screen_Run
+class Add_Readouts(Process_View):
+    model = Screen_Run
 
-#     name_step1="Upload"
-#     form_list = [
-#         ('select_file', SelectMultipleFiles_StepForm),
-#         #('upload', VitekValidation_StepForm),
-#         ('finalize', Finalize_StepForm),
-#     ]
-#     template_name = 'dscreen/screenrun_add_readouts.html'
+    name_step1="Upload"
+    form_list = [
+        ('select_file', SelectMultipleFiles_StepForm),
+        #('upload', VitekValidation_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+    template_name = 'dscreen/screenrun/load_readouts.html'
 
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.run_id=None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.run_id=None
     
-    # # customize util functions to validate files:
-    # # vitek -- upload_VitekPDF_Process
-    # def file_process_handler(self, request, *args, **kwargs):
-    #     try:
-    #         form_data=kwargs.get('form_data', None)
-    #     except Exception as err:
-    #         print(err)
-    #         return (err)
-    #     if 'upload-orgbatch_id' in form_data.keys():
-    #         self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
-    #         print(self.organism_batch)   
-    #     valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
-    #     return(valLog)
+
+    def get_object(self, queryset=None):
+        self.pk = self.kwargs.get('pk')
+        self.object = get_object_or_404(Screen_Run, pk=self.pk)
+
+
+    # def get(self, request, *args, **kwargs):
+    #     # self.kwargs will contain pk as a string
+    #     self.object = self.get_object() #this uses pk_str or pk_int indistinctly
+    #     context = self.get_context_data(object=self.object)
+    #     return HttpResponse(context)
+
+
+    # customize util functions to validate files:
+    # vitek -- upload_VitekPDF_Process
+    def file_process_handler(self, request, *args, **kwargs):
+        try:
+            form_data=kwargs.get('form_data', None)
+        except Exception as err:
+            print(err)
+            return (err)
+        if 'upload-orgbatch_id' in form_data.keys():
+            self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
+            print(self.organism_batch)   
+        valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
+        return(valLog)

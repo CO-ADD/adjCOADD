@@ -1,0 +1,72 @@
+<div class="m-2" style="height: fit-content;">
+  <form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center">
+    {% csrf_token %}
+
+    {{ wizard.management_form }}
+    Current Step: {{wizard.steps.current}}
+
+      <div class="step-line">
+        <div class="step {% if wizard.steps.current == 'select_file' %}active{% endif %}">
+          Select Files
+        </div>
+        <div class="step {% if wizard.steps.current == 'upload' %}active{% endif %}">
+          {{step1}}
+        </div>
+        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
+          Finalise
+        </div>
+
+        {% if wizard.steps.current == 'select_file' %}
+        <div class="p-3 m-auto">
+          {% for field in wizard.form %}
+          <p class="p-auto m-auto">
+            <!--prettier-ignore-->
+            {{ field.label_tag }}
+            <strong>{{ field.help_text }}</strong>{{field }}
+          </p>
+          {% endfor %}
+        {% endif %}
+        </div>
+
+
+        {% if wizard.steps.prev %}
+            <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>
+            <button class="btn-active" name="wizard_goto_step" type="submit"
+                value="{{ wizard.steps.prev }}"> Previous </button>
+        {% else %}
+            <button class="btn-disabled" disabled> Cancel </button>
+            <button class="btn-disabled" disabled> Previous</button>
+        {% endif %}
+
+        {% if wizard.steps.prev and wizard.steps.next %}
+            <button class="btn-active" type="submit" value="Next"> Next</button>
+        {% elif wizard.steps.next %}
+            <button class="btn-active" type="submit" value="Click to start"> Next</button>
+        {% else %}
+            <button class="btn-active" type="submit" value="Finalize"> Finish</button>
+        {% endif %}
+
+  </form>
+</div>
+
+<script>
+$(document).ready(function() {
+      $('#processForm').submit(function(e) {
+        e.preventDefault(); // Prevent the default form submission
+        
+        $.ajax({
+          type: 'POST',
+          url: $(this).attr('action'), // Get form action URL
+          data: $(this).serialize(), // Serialize form data
+          success: function(response) {
+            // Handle success (e.g., display message, update content)
+            $('{{modal_id}}-body').html(response); // Update modal content with response
+          },
+          error: function(response) {
+             // Handle error if needed
+             alert("Error submitting form");
+          }
+        });
+      });
+    });
+</script>

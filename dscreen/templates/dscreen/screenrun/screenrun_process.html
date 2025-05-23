@@ -24,11 +24,13 @@
         </button>
       </div>
       <div class="col">
-        <button type="button" class="btn btn-secondary" 
-        {% if summary.n_testplates == 0 %}disabled{% endif %} 
-        data-bs-toggle="modal" data-bs-target="#LoadTestplates_Mdl">
+        {% if summary.n_testplates == 0 %}
+          <a href="{% url 'load_readouts' pk=object.pk%}" class="btn btn-secondary disabled">
+        {% else %}
+          <a href="{% url 'load_readouts' pk=object.pk%}" class="btn btn-secondary ">
+        {% endif %}
           Load TestPlates
-        </button>
+        </a>
       </div>
 
       <div class="col">

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from dsample.views import  (Project_ListView, Project_CreateView, Project_DetailView, Project_UpdateView,
+from dsample.views import  (Project_ListView, Project_CreateView, Project_DetailView, Project_UpdateView, Project_ReportView,
                             # Project_DeleteView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_DeleteView,
@@ -15,5 +15,6 @@ urlpatterns = [
     path('createProject/', Project_CreateView, name="project_create"),
     path('updateProject/<str:pk>', Project_UpdateView, name="project_update"),
     #path('deleteProject/<str:pk>', Project_DeleteView.as_view(), name="project_delete"),
+    path('project/report/<str:pk>', Project_ReportView, name="project_report"),
 
 ]

@@ -16,7 +16,7 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
-from dsample.models import CmpBatchList_Base
+from dsample.models import CmpBatchList_Base, Project, COADD_Compound, ABase_Compound_Batch
 from dplate.models import MasterPlate, TestPlate, TestWell
 from dchem.models import Chem_Structure
 from dscreen.models import Screen_Run, AssayData_MIC, AssayData_CC50, AssayData_HC50
@@ -36,22 +36,39 @@ class Summary_ScreenRun(AuditModel):
     List of Summary for each ScreenRun
     """
 
+    HEADER_FIELDS = {
+        "run_id":{'Run ID': {'run_id':LinkList['screenrun_id']}},
+        "run_id.run_type":"Run Type",
+        "run_id.assay_note":"Assay",
+        "run_id.run_status":"Status",
+        "run_id.run_project":"Project",
+        "run_id.run_name":"Name",
+        "run_id.run_date":"Run Date",
+        "run_id.run_conditions":"Conditions",
+        "run_id.run_issues":"Issues",     
+    }
+
+    DICTIONARY_FIELDS = {
+        'run_type':'Run_Type',
+        'run_status':'Process_Status',
+    }
+
     #---------------------------------------------------------------------------------------------
     run_id = models.OneToOneField(Screen_Run, primary_key=True, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
                                         db_column="run_id", related_name="%(class)s_run_id")
     
-    n_compounds = models.SmallIntegerField(default=0, verbose_name = "#Cpmds")
+    n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
     #n_projects = models.SmallIntegerField(default=0, verbose_name = "#Projects")
-    n_qc = models.SmallIntegerField(default=0, verbose_name = "#QC")
-    n_structure = models.SmallIntegerField(default=0, verbose_name = "#Struc")
-    n_motherplates = models.SmallIntegerField(default=0, verbose_name = "#MP")
-    n_testplates = models.SmallIntegerField(default=0, verbose_name = "#TP")
-    n_assays = models.SmallIntegerField(default=0, verbose_name = "#Assays")
-    n_inhibitions = models.SmallIntegerField(default=0, verbose_name = "#Inhib")
-    n_mic = models.SmallIntegerField(default=0, verbose_name = "#MIC")
-    n_cc50 = models.SmallIntegerField(default=0, verbose_name = "#CC50")
-    n_hc50 = models.SmallIntegerField(default=0, verbose_name = "#HC50")
-    n_synmic = models.SmallIntegerField(default=0, verbose_name = "#synMIC")
+    n_qc = models.IntegerField(default=0, verbose_name = "#QC")
+    n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
+    n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
+    n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
+    n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
+    n_inhibitions = models.IntegerField(default=0, verbose_name = "#Inhib")
+    n_mic = models.IntegerField(default=0, verbose_name = "#MIC")
+    n_cc50 = models.IntegerField(default=0, verbose_name = "#CC50")
+    n_hc50 = models.IntegerField(default=0, verbose_name = "#HC50")
+    n_synmic = models.IntegerField(default=0, verbose_name = "#synMIC")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
 
     #------------------------------------------------
@@ -129,11 +146,108 @@ class Summary_ScreenRun(AuditModel):
         self.n_synmic = TestWell.objects.filter(plate_id__result_type='synMIC', 
                                                 plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
                                                 ).values('cmpbatch_lst').distinct().count()
-        self.screen_date = TestPlate.objects.filter(run_id = self.run_id).values('test_date').latest('test_date')['test_date']
+        if self.n_testplates > 0:
+            self.screen_date = TestPlate.objects.filter(run_id = self.run_id).values('test_date').latest('test_date')['test_date']
         
+#-------------------------------------------------------------------------------------------------
+# Summary Project
+#-------------------------------------------------------------------------------------------------
 
+class Summary_Project(AuditModel):
+    """
+    List of Summary for each ScreenRun
+    """
 
+    #---------------------------------------------------------------------------------------------
+    project_id = models.OneToOneField(Project, primary_key=True, verbose_name = "Project ID", on_delete=models.DO_NOTHING,
+                                        db_column="project_id", related_name="%(class)s_project_id")
 
+    n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
+    n_mcc_compounds = models.IntegerField(default=0, verbose_name = "#MCC")
+    n_barcode = models.IntegerField(default=0, verbose_name = "#BCode")
+    n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
+    n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
+    # n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
+    n_runids = models.IntegerField(default=0, verbose_name = "#Runs")
+    n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
+    n_ps_compounds = models.IntegerField(default=0, verbose_name = "#PS")
+    n_dr_compounds = models.IntegerField(default=0, verbose_name = "#DR")
+    n_syn_compounds = models.IntegerField(default=0, verbose_name = "#SYN")
+    screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
+    n_sc_hits = models.IntegerField(default=0, verbose_name = "#Inhib Hits")
+    n_mic_hits = models.IntegerField(default=0, verbose_name = "#MIC Hits")
+    n_tox_hits = models.IntegerField(default=0, verbose_name = "#Tox Hits")
+
+    #------------------------------------------------
+    class Meta:
+        app_label = 'dsummary'
+        db_table = 'sum_project'
+        ordering=['project_id']
+        indexes = [
+            models.Index(name="sprj_ncmp_idx", fields=['n_compounds']),
+            models.Index(name="sprj_nstr_idx", fields=['n_structure']),
+            models.Index(name="sprj_nsh_idx", fields=['n_sc_hits']),
+            models.Index(name="sprj_nmh_idx", fields=['n_mic_hits']),
+            models.Index(name="sprj_nth_idx", fields=['n_tox_hits']),
+            # models.Index(name="scmpsc_ascr_idx", fields=['act_score_ave']),
+            # models.Index(name="scmpsc_inhin_idx", fields=['inhibition_ave']),
+            # models.Index(name="scmpsc_mscr_idx", fields=['mscore_ave']),
+        ]
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.project_id}"
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.project_id} {self.n_compounds}"
+
+    #------------------------------------------------
+    @classmethod
+    def update(cls,ProjectID, to_save=False,verbose=0):
+        retObj = cls.get(ProjectID)
+        if retObj is None:
+            retObj = cls()
+            retObj.project_id = Project.get(ProjectID)
+            
+        if retObj.project_id:
+            retObj.update_summary()            
+            if to_save:
+                retObj.save()
+        
+    #------------------------------------------------
+    def update_summary(self):
+
+        self.n_compounds = COADD_Compound.objects.filter(project_id = self.project_id).count()
+        self.n_mcc_compounds = ABase_Compound_Batch.objects.filter(project_id = self.project_id).count()
+        # self.n_qc = 
+        # self.n_structure = 
+        #self.n_projects = 
+        # self.n_motherplates = MasterPlate.objects.filter(run_id=self.run_id).count()
+        # self.n_testplates = TestPlate.objects.filter(run_id=self.run_id).count()
+        # self.n_assays = TestPlate.objects.filter(run_id = self.run_id
+        #                                         ).values('assay_id').distinct().count()
+        # self.n_inhibitions = TestWell.objects.filter(plate_id__result_type='Inhibition', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.n_mic  = AssayData_MIC.objects.filter(run_id = self.run_id).count()
+        # self.n_cc50 = AssayData_CC50.objects.filter(run_id = self.run_id).count()
+        # self.n_hc50 = AssayData_HC50.objects.filter(run_id = self.run_id).count()
+        
+        # self.n_mic = TestWell.objects.filter(plate_id__result_type='MIC', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.n_cc50 = TestWell.objects.filter(plate_id__result_type='CC50', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.n_hc50 = TestWell.objects.filter(plate_id__result_type='HC50', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        
+        # self.n_synmic = TestWell.objects.filter(plate_id__result_type='synMIC', 
+        #                                         plate_id__run_id = self.run_id, n_cmpbatches__gt = 0
+        #                                         ).values('cmpbatch_lst').distinct().count()
+        # self.screen_date = TestPlate.objects.filter(run_id = self.run_id).values('test_date').latest('test_date')['test_date']
 #-------------------------------------------------------------------------------------------------
 # Summary Screening Data Models
 #-------------------------------------------------------------------------------------------------

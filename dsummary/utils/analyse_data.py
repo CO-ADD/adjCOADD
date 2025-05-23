@@ -746,13 +746,14 @@ class Analysis_Screening():
                 self.dict_pivtables['piv-Actives'] = self.piv_dr_act
     
     # --------------------------------------------------------------------------------------
-    def to_excel(self,XlFile=None, Transpose_PivTables=False):
+    def to_excel(self,XlFile=None, Transpose_PivTables=False, verbose=0):
     # --------------------------------------------------------------------------------------
 
         if XlFile is None:
             XlFile = f"Sum_{self.file_name}.xlsx"
 
-        logger.info(f" [Analysis] Excel --> {XlFile}")
+        if verbose>0:
+            logger.info(f" [Analysis] Excel --> {XlFile}")
 
         with pd.ExcelWriter(XlFile) as writer:
             if self.n_samples > 0:
