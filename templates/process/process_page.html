@@ -3,17 +3,16 @@
     {% csrf_token %}
 
     {{ wizard.management_form }}
-    Current Step: {{wizard.steps.current}}
 
       <div class="step-line">
         <div class="step {% if wizard.steps.current == 'select_file' %}active{% endif %}">
           Select Files
         </div>
         <div class="step {% if wizard.steps.current == 'upload' %}active{% endif %}">
-          {{step1}}
+          Upload Files
         </div>
         <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
-          Finalise
+          Finalise Data
         </div>
 
         {% if wizard.steps.current == 'select_file' %}
@@ -49,24 +48,3 @@
   </form>
 </div>
 
-<script>
-$(document).ready(function() {
-      $('#processForm').submit(function(e) {
-        e.preventDefault(); // Prevent the default form submission
-        
-        $.ajax({
-          type: 'POST',
-          url: $(this).attr('action'), // Get form action URL
-          data: $(this).serialize(), // Serialize form data
-          success: function(response) {
-            // Handle success (e.g., display message, update content)
-            $('{{modal_id}}-body').html(response); // Update modal content with response
-          },
-          error: function(response) {
-             // Handle error if needed
-             alert("Error submitting form");
-          }
-        });
-      });
-    });
-</script>

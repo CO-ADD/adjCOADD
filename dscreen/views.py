@@ -21,8 +21,8 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
-from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
-from applib.process.process_forms import Process_View
+#from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
+from applib.process.process_forms import Process_View, SelectSingleFile_StepForm,Finalize_StepForm
 
 # from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
@@ -32,9 +32,11 @@ from applib.process.process_forms import Process_View
 from dscreen.models import Screen_Run
 from dsummary.models import Summary_ScreenRun
 from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
 from dsummary.utils.analyse_data import Analysis_Screening
+
 
 #=================================================================================================
 # ScreenRun
@@ -196,37 +198,38 @@ def ScreenRun_ReportView(req, pk):
     return req
 
 # -----------------------------------------------------------------
-@login_required
-def Load_Readouts(req, pk):
-    context = {}
-    _object = get_object_or_404(Screen_Run, run_id=pk)
-    form=ScreenRun_UpdateForm(instance=_object)
-    context["object"]=_object
-    context["form"] = form
-    return render(req,'dscreen/screenrun/load_readouts.html',context)
+# @login_required
+# def Load_Readouts(req, pk):
+#     context = {}
+#     _object = get_object_or_404(Screen_Run, run_id=pk)
+#     form=ScreenRun_UpdateForm(instance=_object)
+#     context["object"]=_object
+#     context["form"] = form
+#     return render(req,'dscreen/screenrun/load_readouts.html',context)
 
 
 # -----------------------------------------------------------------
 class Add_Readouts(Process_View):
+    process_name = 'Upload_ReadOuts'
     model = Screen_Run
 
     name_step1="Upload"
     form_list = [
-        ('select_file', SelectMultipleFiles_StepForm),
-        #('upload', VitekValidation_StepForm),
+        ('select_file', SelectSingleFile_StepForm),
+        #('upload', LoadReadouts_StepForm),
         ('finalize', Finalize_StepForm),
     ]
-    template_name = 'dscreen/screenrun/load_readouts.html'
+    template_name = 'dscreen/screenrun_process/load_readouts.html'
 
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.run_id=None
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.run_id=None
     
 
-    def get_object(self, queryset=None):
-        self.pk = self.kwargs.get('pk')
-        self.object = get_object_or_404(Screen_Run, pk=self.pk)
+    # def get_object(self, queryset=None):
+    #     self.pk = self.kwargs.get('pk')
+    #     self.object = get_object_or_404(Screen_Run, pk=self.pk)
 
 
     # def get(self, request, *args, **kwargs):
@@ -239,13 +242,15 @@ class Add_Readouts(Process_View):
     # customize util functions to validate files:
     # vitek -- upload_VitekPDF_Process
     def file_process_handler(self, request, *args, **kwargs):
+        self.get_object()
         try:
             form_data=kwargs.get('form_data', None)
         except Exception as err:
             print(err)
             return (err)
-        if 'upload-orgbatch_id' in form_data.keys():
-            self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
-            print(self.organism_batch)   
-        valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
+        # if 'upload-orgbatch_id' in form_data.keys():
+        #     self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
+        #     print(self.organism_batch)   
+
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user) 
         return(valLog)

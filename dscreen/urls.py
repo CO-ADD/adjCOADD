@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_DetailView,ScreenRun_UpdateView, ScreenRun_DeleteView,
-                            Load_Readouts,Add_Readouts
+                            Add_Readouts
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_DeleteView,
                     ) 
@@ -19,6 +19,9 @@ urlpatterns = [
 
     #path('screenrun/load_readouts/<str:pk>', Load_Readouts, name='load_readouts'),
     path('screenrun/load_readouts/<str:pk>', Add_Readouts.as_view(), name='load_readouts'),
+    path('screenrun/load_testplates/<str:pk>', Add_Readouts.as_view(), name='load_testplates'),
+    path('screenrun/load_motherplates/<str:pk>', Add_Readouts.as_view(), name='load_motherplates'),
+    #path('screenrun/load_readouts/<str:pk>', Add_Readouts.as_view(), name='load_readouts'),
 
 ]
 
