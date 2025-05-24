@@ -22,7 +22,7 @@ from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
 #from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
-from applib.process.process_forms import Process_View, SelectSingleFile_StepForm,Finalize_StepForm
+from applib.process.process_forms import Process_View, SelectSingleFile_StepForm,Finalize_StepForm,Upload_StepForm
 
 # from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
@@ -216,28 +216,12 @@ class Add_Readouts(Process_View):
     name_step1="Upload"
     form_list = [
         ('select_file', SelectSingleFile_StepForm),
-        #('upload', LoadReadouts_StepForm),
+        ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
     template_name = 'dscreen/screenrun_process/load_readouts.html'
 
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.run_id=None
-    
-
-    # def get_object(self, queryset=None):
-    #     self.pk = self.kwargs.get('pk')
-    #     self.object = get_object_or_404(Screen_Run, pk=self.pk)
-
-
-    # def get(self, request, *args, **kwargs):
-    #     # self.kwargs will contain pk as a string
-    #     self.object = self.get_object() #this uses pk_str or pk_int indistinctly
-    #     context = self.get_context_data(object=self.object)
-    #     return HttpResponse(context)
-
+    #template_name = 'dscreen/screenrun_process/wizard_load_readouts.html'
 
     # customize util functions to validate files:
     # vitek -- upload_VitekPDF_Process

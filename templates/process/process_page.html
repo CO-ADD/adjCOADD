@@ -1,9 +1,14 @@
 <div class="m-2" style="height: fit-content;">
+  <h2 class="m-5 text-center">{{data_model}} Data Import for <b>{{pk}}</b> </h2>
   <form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center">
     {% csrf_token %}
 
     {{ wizard.management_form }}
 
+    <div class="col-md-5 border border-2 rounded" style="position: relative;">
+      <span class="labeltext px-4 py-1"> Process </span>
+
+      <!-- Process Line -->
       <div class="step-line">
         <div class="step {% if wizard.steps.current == 'select_file' %}active{% endif %}">
           Select Files
@@ -14,37 +19,76 @@
         <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
           Finalise Data
         </div>
+      </div>
 
-        {% if wizard.steps.current == 'select_file' %}
+      <!-- Process Steps -->
+      <div class="row bg-transparent" style="height: 20em">
+
+        <!-- Step 0 Select_File -->
+        {% comment %} {% if wizard.steps.current == 'select_file' %} {% endcomment %}
         <div class="p-3 m-auto">
           {% for field in wizard.form %}
           <p class="p-auto m-auto">
-            <!--prettier-ignore-->
             {{ field.label_tag }}
             <strong>{{ field.help_text }}</strong>{{field }}
           </p>
           {% endfor %}
-        {% endif %}
         </div>
+        {% comment %} {% endif %} {% endcomment %}
 
 
+      </div>
+
+      <!-- Button Actions --> 
         {% if wizard.steps.prev %}
-            <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>
-            <button class="btn-active" name="wizard_goto_step" type="submit"
-                value="{{ wizard.steps.prev }}"> Previous </button>
+        <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>
+        <button class="btn-active" name="wizard_goto_step" type="submit"
+          value="{{ wizard.steps.prev }}"> Previous
+        </button>
         {% else %}
-            <button class="btn-disabled" disabled> Cancel </button>
-            <button class="btn-disabled" disabled> Previous</button>
+        <button class="btn-disabled" disabled> Cancel
+        </button>
+        <button class="btn-disabled" disabled> Previous
+        </button>
         {% endif %}
 
+        <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-            <button class="btn-active" type="submit" value="Next"> Next</button>
+        <button class="btn-active" type="submit" value="Next"> Next
+        </button>
         {% elif wizard.steps.next %}
-            <button class="btn-active" type="submit" value="Click to start"> Next</button>
+        <button class="btn-active" type="submit" value="Click to start"> Next
+        </button>
         {% else %}
-            <button class="btn-active" type="submit" value="Finalize"> Finish</button>
+        <button class="btn-active" type="submit" value="Finalize"> Finish
+        </button>
         {% endif %}
 
+
+      {% comment %} <div class="row bg-transparent">
+        {% if wizard.steps.current == 'select_file' %}
+          <div class="col"> <button class="btn-disabled" disabled>Select File</button> </div>
+          <div class="col"> <button class="btn-active" type="submit" value="Click to start">Validate Data</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> </div>
+        {% elif wizard.steps.current == 'upload_file' %}
+          <div class="col"> <button class="btn-active" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Select File</button> </div>
+          <div class="col"> <button class="btn-active" type="submit" value="Next">Upload Data</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> </div>
+        {% elif wizard.steps.current == 'finalize' %}
+          <div class="col"> <button class="btn-active" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Select File</button> </div>
+          <div class="col"> <button class="btn-disabled" disabled>Upload Data</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
+          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Finish</button> </div>
+        {% endif %} {% endcomment %}
+
+      </div>
+    </div>
+
+    <div class="col-md-7 border border-2 rounded" style="position: relative">
+      <span class="labeltext px-4 py-1"> Message </span>
+    </div>
   </form>
 </div>
 
