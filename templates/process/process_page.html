@@ -28,10 +28,11 @@
         {% comment %} {% if wizard.steps.current == 'select_file' %} {% endcomment %}
         <div class="p-3 m-auto">
           {% for field in wizard.form %}
-          <p class="p-auto m-auto">
-            {{ field.label_tag }}
-            <strong>{{ field.help_text }}</strong>{{field }}
-          </p>
+            <div class="row bg-transparent">
+              <div class="col-3 text-end"><strong>{{ field.help_text }}</strong></div>
+              <div class="col text-start">{{ field }}</div>
+              
+            </div>
           {% endfor %}
         </div>
         {% comment %} {% endif %} {% endcomment %}
@@ -40,28 +41,23 @@
       </div>
 
       <!-- Button Actions --> 
+
         {% if wizard.steps.prev %}
-        <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>
-        <button class="btn-active" name="wizard_goto_step" type="submit"
-          value="{{ wizard.steps.prev }}"> Previous
-        </button>
+          <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> 
+          <button class="btn-active" name="wizard_goto_step" type="submit"
+            value="{{ wizard.steps.prev }}"> Previous</button>
         {% else %}
-        <button class="btn-disabled" disabled> Cancel
-        </button>
-        <button class="btn-disabled" disabled> Previous
-        </button>
+          <button class="btn-disabled" disabled> Cancel</button> 
+          <button class="btn-disabled" disabled> Previous</button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-        <button class="btn-active" type="submit" value="Next"> Next
-        </button>
+          <button class="btn-active" type="submit" value="Next">Next</button>
         {% elif wizard.steps.next %}
-        <button class="btn-active" type="submit" value="Click to start"> Next
-        </button>
+          <button class="btn-active" type="submit" value="Click to start">Next</button>
         {% else %}
-        <button class="btn-active" type="submit" value="Finalize"> Finish
-        </button>
+          <button class="btn-active" type="submit" value="Finalize">Finish</button>
         {% endif %}
 
 
@@ -81,9 +77,9 @@
           <div class="col"> <button class="btn-disabled" disabled>Upload Data</button> </div>
           <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
           <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Finish</button> </div>
-        {% endif %} {% endcomment %}
-
-      </div>
+        {% endif %} 
+      </div> {% endcomment %}
+      
     </div>
 
     <div class="col-md-7 border border-2 rounded" style="position: relative">

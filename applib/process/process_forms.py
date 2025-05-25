@@ -57,11 +57,10 @@ class SingleFileField(forms.FileField):
 # -----------------------------------------------------------------
 class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-# 
-#
-    single_file = SingleFileField(label='Select one file', 
+    multi_files = SingleFileField(label='Single File', 
                                   validators=[validate_file], 
-                                  required=False)
+                                  required=False,
+                                  help_text="Select single file")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -78,7 +77,7 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
             
             uploadfiles.extend(files)
 
-            for file in files: 
+            for file in files:
                 for validator in self.fields[field].validators:
                     try:
                         validator(file)
@@ -88,15 +87,15 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
         if len(uploadfiles)<1: 
             self.add_error('single_file', "Select one file")
             raise forms.ValidationError("No files selected")
-        
         return cleaned_data
 
 # --------------------------------------------------------------------------------------------------
 class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = MultipleFileField(label='Select one or multiple files', 
+    multi_files = MultipleFileField(label='Multiple Files', 
                                   validators=[validate_file], 
-                                  required=False)
+                                  required=False,
+                                  help_text="Select one or multiple files")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -128,10 +127,13 @@ class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
 class Upload_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
-    confirm = forms.BooleanField(required=True, help_text="Confirm to upload Data")
+    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
+    overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite existing Data")
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['confirm'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        self.fields['overwrite'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
 
 # --------------------------------------------------------------------------------------------------
 class Finalize_StepForm(forms.Form):
@@ -191,11 +193,12 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         if current_step == 'select_file':
             context={}
             self.storage.extra_data['validation_result']="-"
-            self.storage.extra_data['object_pk']=self.pk
             self.file_dir = file_location(instance=request.user)  # define file store path during file process
             files = []
+            
+            self.pk = self.storage.extra_data['object_pk']
             if form.is_valid():
-                print(" [Process_View.process_step] Valid")
+                #print(f" [Process_View.process_step] Valid Form {self.pk}")
 
                 if 'select_file-multi_files' in request.FILES:
                     files.extend(request.FILES.getlist('select_file-multi_files'))
@@ -212,8 +215,9 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                                                       form_data=form.cleaned_data, 
                                                       upload=self.upload, appuser=request.user) 
                 
+                #convert result in a table
                 if self.valLog.nLogs['Error'] >0 :
-                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
+                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)
                     self.storage.extra_data['confirm_to_upload'] = False
                     
                 elif self.valLog.nLogs['Error'] <=0:
@@ -235,28 +239,33 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 self.storage.extra_data['file_dir'] = self.file_dir
             else:
                 self.storage.extra_data['validation_result']="No files selected"
-                print(" [Process_View.process_step] Not Valid")
+                #print(" [Process_View.process_step] Not Valid")
                 return render(request, self.template_name, context)
 
         elif current_step == 'upload': # recheck and save to DB
             form =self.form_list['upload'](request.POST)
-            self.upload=True
-            self.file_dir=self.storage.extra_data['file_dir'] #get file path
-            self.file_list=self.storage.extra_data['file_list'] #get files' name  
-            self.pk = self.storage.extra_data['object_pk']
-            
-            self.valLog=self.file_process_handler(request, 
-                                                  self.file_dir, self.file_list, 
-                                                  form_data=request.POST, 
-                                                  upload=self.upload, appuser=request.user)
-            
-            if self.valLog.nLogs['Error'] >0 :
-                dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
-            else:
-                dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+            print(f" [Process_View.process_step] {request.POST} {form}")
+            if form.is_valid():
+                print(f" [Process_View.process_step] Valid Form {self.pk}")
+                form.cleaned_data
 
-            self.storage.extra_data['validation_result'] = dfLog  
-            self.storage.extra_data['validation_message']= f" {len(self.file_list)} file(s) Uploaded." 
+                self.file_dir=self.storage.extra_data['file_dir'] #get file path
+                self.file_list=self.storage.extra_data['file_list'] #get files' name  
+                self.pk = self.storage.extra_data['object_pk']
+                
+                self.valLog=self.file_process_handler(request, 
+                                                    self.file_dir, self.file_list, 
+                                                    form_data=form.cleaned_data, 
+                                                    upload=self.upload, appuser=request.user)
+                
+                if self.valLog.nLogs['Error'] >0 :
+                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
+                else:
+                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+
+                self.storage.extra_data['validation_result'] = dfLog  
+                self.storage.extra_data['validation_message']= f" {len(self.file_list)} file(s) Uploaded." 
+                
         return self.get_form_step_data(form)
 
     # ----------------------------------------------------
@@ -280,8 +289,11 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
         
-        self.pk = self.kwargs.get('pk')
-        print(f" [Process_View.get_context_data] {self.pk}")
+        self.pk = self.kwargs.get('pk',None)
+        if self.pk:
+            self.storage.extra_data['object_pk'] = self.pk
+        
+        print(f" [Process_View.get_context_data] PK: {self.pk} ")
         # save information to context,
         # then display in templates
           
@@ -289,17 +301,19 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         current_step = self.steps.current
         context['validation_message'] = self.storage.extra_data.get('validation_message', None)
 
-        print(f" [Process_View.get_context_data] [{current_step}] PK:{self.pk} {self.storage.extra_data.get('object_pk', None)}")
+        print(f" [Process_View.get_context_data] [{current_step}] PK:{self.pk} ")
+        
+        context['pk'] = self.storage.extra_data.get('object_pk', None)
         if current_step == 'select_file':
             context['validation_result']=""
-            context['pk'] = self.pk
+            #context['pk'] = self.pk
         elif current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
-            context['pk'] = self.storage.extra_data.get('object_pk', None)
+            #context['pk'] = self.storage.extra_data.get('object_pk', None)
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
             context['confirm_to_upload'] = self.storage.extra_data.get('confirm_to_upload', None)
-            context['pk'] = self.storage.extra_data.get('object_pk', None)
+            #context['pk'] = self.storage.extra_data.get('object_pk', None)
             
         print(f" [Process_View.get_context_data] {current_step} validation_result: {context['validation_result']}")
         return context

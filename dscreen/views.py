@@ -21,8 +21,6 @@ from django.utils.functional import SimpleLazyObject
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
-#from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
-from applib.process.process_forms import Process_View, SelectSingleFile_StepForm,Finalize_StepForm,Upload_StepForm
 
 # from apputil.utils.filters_base import FilteredListView
 # from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
@@ -207,8 +205,15 @@ def ScreenRun_ReportView(req, pk):
 #     context["form"] = form
 #     return render(req,'dscreen/screenrun/load_readouts.html',context)
 
-
 # -----------------------------------------------------------------
+
+from applib.process.process_forms import Process_View
+from apputil.utils.form_wizard_tools import ImportHandler_View
+
+from applib.process.process_forms import SelectSingleFile_StepForm,Finalize_StepForm,Upload_StepForm
+#from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
+
+
 class Add_Readouts(Process_View):
     process_name = 'Upload_ReadOuts'
     model = Screen_Run
@@ -226,15 +231,38 @@ class Add_Readouts(Process_View):
     # customize util functions to validate files:
     # vitek -- upload_VitekPDF_Process
     def file_process_handler(self, request, *args, **kwargs):
-        self.get_object()
+        
+        print(" [Add_Readouts.file_process_handler]")
+        form_data=kwargs.get('form_data', None)
+        
+        _upload = False
+        _overwrite=False
+        
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user) 
+
+        return(valLog)
+
+# -----------------------------------------------------------------
+class xAdd_Readouts(ImportHandler_View):
+# -----------------------------------------------------------------    
+    name_step1="Upload"
+    form_list = [
+        ('select_file', SelectSingleFile_StepForm),
+        ('upload', Upload_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+    template_name = 'ddrug/importhandler_vitek.html'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    # customize util functions to validate files:
+    # vitek -- upload_VitekPDF_Process
+    def file_process_handler(self, request, *args, **kwargs):
         try:
             form_data=kwargs.get('form_data', None)
         except Exception as err:
             print(err)
             return (err)
-        # if 'upload-orgbatch_id' in form_data.keys():
-        #     self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
-        #     print(self.organism_batch)   
-
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user) 
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user)  
         return(valLog)
