@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 
 from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import validate_file, file_location, OverwriteStorage
+from apputil.utils.validation_log import Validation_Log
 
 # =================================================================
 # Utilities Forms
@@ -42,7 +43,8 @@ class SingleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("widget", SingleFileInput())
         super().__init__(*args, **kwargs)
-
+       
+        
     def clean(self, data, initial=None):
         single_file_clean = super().clean
         if isinstance(data, (list, tuple)):
@@ -57,11 +59,11 @@ class SingleFileField(forms.FileField):
 # -----------------------------------------------------------------
 class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = SingleFileField(label='Single File', 
+    multi_files = SingleFileField(label='Upload File', 
                                   validators=[validate_file], 
                                   required=False,
-                                  help_text="Select single file")
-
+                                  help_text="Select a single file")
+        
     def clean(self):
         cleaned_data = super().clean()
         uploadfiles=[]
@@ -85,14 +87,15 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
                         self.add_error(field, f"{file.name}: {str(e)}")
                         
         if len(uploadfiles)<1: 
-            self.add_error('single_file', "Select one file")
+            self.add_error('multi_files', "No file selected. Please select a file")
             raise forms.ValidationError("No files selected")
+        
         return cleaned_data
 
 # --------------------------------------------------------------------------------------------------
 class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = MultipleFileField(label='Multiple Files', 
+    multi_files = MultipleFileField(label='Upload Files', 
                                   validators=[validate_file], 
                                   required=False,
                                   help_text="Select one or multiple files")
@@ -120,7 +123,7 @@ class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
                         self.add_error(field, f"{file.name}: {str(e)}")
                         
         if len(uploadfiles)<1: 
-            self.add_error('multi_files', "Select at least one file")
+            self.add_error('multi_files', "No file(s) selected. Please select at least one file")
             raise forms.ValidationError("No files selected")
         return cleaned_data
 
@@ -171,7 +174,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.pk = None
         self.valLog=None
         self.upload=False
-        self.html_columns = ['Type','Note','Item','Filename','Help']
+        self.html_columns = Validation_Log.LOG_FIELDS
     
     # ----------------------------------------------------
     def get_object(self):
@@ -244,7 +247,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
         elif current_step == 'upload': # recheck and save to DB
             form =self.form_list['upload'](request.POST)
-            print(f" [Process_View.process_step] {request.POST} {form}")
+            print(f" [Process_View.process_step] {request.POST}")
             if form.is_valid():
                 print(f" [Process_View.process_step] Valid Form {self.pk}")
                 form.cleaned_data
@@ -416,7 +419,7 @@ class XProcess_View(WriteUserRequiredMixin,SessionWizardView):
                                                       self.file_dir, self.file_list, 
                                                       form_data=form.cleaned_data, 
                                                       upload=self.upload, appuser=request.user) 
-                
+                print(f" [Process_Step] valLog : {self.valLog.nLogs}") 
                 # Validation output Error
                 if self.valLog.nLogs['Error'] >0 :
                     # Converts valLog Result into a table - no upload allowed
@@ -425,7 +428,6 @@ class XProcess_View(WriteUserRequiredMixin,SessionWizardView):
                     
                 # Validation output Warnings and Info - upload possible
                 elif self.valLog.nLogs['Error'] <=0:
-                    print(f"error is : {self.valLog.nLogs}")
                     try:
                         dfLog = self.valLog.get_ashtml(columns=self.html_columns)
                         self.storage.extra_data['confirm_to_upload'] = True

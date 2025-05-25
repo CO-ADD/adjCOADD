@@ -28,11 +28,12 @@
         {% comment %} {% if wizard.steps.current == 'select_file' %} {% endcomment %}
         <div class="p-3 m-auto">
           {% for field in wizard.form %}
-            <div class="row bg-transparent">
-              <div class="col-3 text-end"><strong>{{ field.help_text }}</strong></div>
-              <div class="col text-start">{{ field }}</div>
-              
-            </div>
+              <div class="row p-1 text-start"><strong>{{ field.label_tag }}</strong></div>
+              <div class="row p-1 text-start">{{ field }}</div>
+              <div class="row p-1 text-start">{{ field.help_text }} </div>
+              {% if field.errors %}
+                <div class="row p-1 text-start">{{ field.errors }} </div>
+              {% endif %}
           {% endfor %}
         </div>
         {% comment %} {% endif %} {% endcomment %}
@@ -84,6 +85,22 @@
 
     <div class="col-md-7 border border-2 rounded" style="position: relative">
       <span class="labeltext px-4 py-1"> Message </span>
+
+      <!-- Process Line -->
+      <div class="row bg-transparent">
+        {% if validation_message != None %}
+          <h3> {{validation_message}}</h3>
+        {% endif %}
+      </div>
+      <div class="row bg-transparent">
+        {% if validation_result != None %}
+          <div class="col">
+            {% include 'process/process_vlogtable.html' %}
+          </div>
+        {% endif %}
+      </div>
+
+
     </div>
   </form>
 </div>

@@ -17,6 +17,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
+from django.utils.safestring import mark_safe
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
@@ -214,19 +215,30 @@ from applib.process.process_forms import SelectSingleFile_StepForm,Finalize_Step
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
+class Readout_StepForm(SelectSingleFile_StepForm):
+# --------------------------------------------------------------------------------------------------
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['multi_files'].label = 'Xlsx file from Tecan/BioTek readers'
+
+class PlatePrep_StepForm(SelectSingleFile_StepForm):
+# --------------------------------------------------------------------------------------------------
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['multi_files'].label = 'PlatePrep Xlsx Workbook'
+        self.fields['multi_files'].help_text = mark_safe("Xlsx Workbook containing: <li> [TestPlateList] <li> [MotherPlates]")
+        
 class Add_Readouts(Process_View):
     process_name = 'Upload_ReadOuts'
     model = Screen_Run
 
-    name_step1="Upload"
+    #name_step1="Upload"
     form_list = [
-        ('select_file', SelectSingleFile_StepForm),
+        ('select_file', Readout_StepForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
     template_name = 'dscreen/screenrun_process/load_readouts.html'
-
-    #template_name = 'dscreen/screenrun_process/wizard_load_readouts.html'
 
     # customize util functions to validate files:
     # vitek -- upload_VitekPDF_Process

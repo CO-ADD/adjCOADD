@@ -32,8 +32,11 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
 
     valLog = Validation_Log("Upload_ReadOuts")
 
+
     if nFiles > 0:
         for i in range(nFiles):
+            valLog.add_log('Info', 'Read File', FileList[i]) 
+            
             print(f" [Upload_ReadOuts] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
             #lstTP = multimodereader_xls(os.path.join(DirName,FileList[i]))
             

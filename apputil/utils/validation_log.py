@@ -11,6 +11,9 @@ class Validation_Log():
     In-process Logging class to capture outcomes of validation and processing tasks
         as logTypes = ['Error','Warning','Info']
     """
+    
+    LOG_FIELDS = ['Process','Note','Item','Filename','Help']
+    
 # ---------------------------------------------------------------------------
 
     #-----------------------------------------------------
@@ -22,7 +25,7 @@ class Validation_Log():
         self.nLogs = {}
         self.Logs  = {}
         self.Info  = {}
-        self.logInfo = ['Process','Filename','Item','Note','Help']
+        #self.logInfo = ['Process','Filename','Item','Note','Help']
 
         for t in self.logTypes:
             self.nLogs[t] = 0
