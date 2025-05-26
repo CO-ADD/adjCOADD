@@ -40,7 +40,7 @@ def main(prgArgs,djDir):
     from applib.plate.multimode_reader import multimodereader_xls
     from applib.bio.doseresponse import DoseResponse
     from applib.data.set_fielddata import set_model_from_dict
-    from dsummary.utils.analyse_data import Analysis_Screening
+    from applib.report.screen_data import Report_Screening
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -53,24 +53,24 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
 
-    cAnalysis = Analysis_Screening()
+    cReport = Report_Screening()
     # Process TestPlate -----------------------------------------------------------
     if prgArgs.runid:
-        cAnalysis.qry_by_RunID(prgArgs.runid)
-        cAnalysis.get_dataframe()
-        cAnalysis.get_sample_info()
-        cAnalysis.get_assay_info()
+        cReport.qry_by_RunID(prgArgs.runid)
+        cReport.get_dataframe()
+        cReport.get_sample_info()
+        cReport.get_assay_info()
 
         if 'TestPlates' in prgArgs.adddata:
-            cAnalysis.get_testplate_info()
+            cReport.get_testplate_info()
         if 'Vitek' in prgArgs.adddata:
-            cAnalysis.add_vitek_ast()
+            cReport.add_vitek_ast()
         if 'COADD' in prgArgs.adddata:
-            cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
+            cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
 
-        cAnalysis.gen_pivot_tables(PivTables = ['Values','AssayID'])
+        cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
 
-        cAnalysis.to_excel(prgArgs.excelfile, Transpose_PivTables=prgArgs.transpose)
+        cReport.to_excel(prgArgs.excelfile, Transpose_PivTables=prgArgs.transpose)
 
 
 #==============================================================================

@@ -40,7 +40,7 @@ def main(prgArgs,djDir):
     from applib.plate.multimode_reader import multimodereader_xls
     from applib.bio.doseresponse import DoseResponse
     from applib.data.set_fielddata import set_model_from_dict
-    from dsummary.utils.analyse_data import Analysis_Screening
+    from applib.report.screen_data import Report_Screening
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -53,20 +53,20 @@ def main(prgArgs,djDir):
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
 
-    cAnalysis = Analysis_Screening()
+    cReport = Report_Screening()
     # Process TestPlate -----------------------------------------------------------
     if prgArgs.collaborator:
-        cAnalysis.qry_by_Collaborator(prgArgs.collaborator)
-        #cAnalysis.qry_by_ProjectID(prgArgs.projectid)
-        if cAnalysis.n_compounds>0:
-            cAnalysis.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
-            cAnalysis.get_sample_info(Storage_Info=True, Structure_Info=True, Run_Info=True)
-            cAnalysis.get_assay_info()
-            cAnalysis.get_testplate_info()
-            cAnalysis.gen_pivot_tables(PivTables = ['Values','Act'], PivColumns=['assay_org','assay_type','result_type'], PivRows=None)
-            # # cAnalysis.add_Vitek_AST()
+        cReport.qry_by_Collaborator(prgArgs.collaborator)
+        #cReport.qry_by_ProjectID(prgArgs.projectid)
+        if cReport.n_compounds>0:
+            cReport.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
+            cReport.get_sample_info(Storage_Info=True, Structure_Info=True, Run_Info=True)
+            cReport.get_assay_info()
+            cReport.get_testplate_info()
+            cReport.gen_pivot_tables(PivTables = ['Values','Act'], PivColumns=['assay_org','assay_type','result_type'], PivRows=None)
+            # # cReport.add_Vitek_AST()
 
-            cAnalysis.to_excel(prgArgs.excelfile)
+            cReport.to_excel(prgArgs.excelfile)
 
 
 #==============================================================================

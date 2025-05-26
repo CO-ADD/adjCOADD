@@ -14,8 +14,11 @@ from dplate.models import TestPlate
 from decimal import Decimal
 
 # --------------------------------------------------------------------------------
-def multimodereader_xls(xlFile, prefix=None, as_is=False):
+def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
 # --------------------------------------------------------------------------------
+
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
 
     xlWB = pd.ExcelFile(xlFile)
     lstPl = []
@@ -43,9 +46,29 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False):
                 dictPl['new'] = _status == 'New'
                 
                 lstPl.append(dictPl)
-                logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type} [{_status}]")
+
+                # Output Verbose/valLog
+                if verbose>0:
+                    logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type} [{_status}]")
+                if valLog:
+                    if _status == 'New':
+                        valLog.add("Info",
+                                   "New Testplate",
+                                   f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                   "Select Upload to upload data")
+                    else:
+                        valLog.add("Warning",
+                                   "Existing Testplate",f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                   "Select Overwrite to overwrite existing data")
+
             else:
-                logger.info(f"[{xSheet}] - Unknown PlateReader Format")
+                if verbose>0:
+                    logger.info(f"[{xSheet}] - Unknown PlateReader Format")
+                if valLog:
+                    valLog.add("Warning",
+                               "Unknown PlateReader Format",
+                               f" Xls.Sheet: {xSheet}",
+                               "Check Xls.Sheet if correct")
     return(lstPl)
 
 

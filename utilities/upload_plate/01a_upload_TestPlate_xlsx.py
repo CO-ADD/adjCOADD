@@ -63,7 +63,7 @@ def main(prgArgs,djDir):
 
         if os.path.isfile(prgArgs.excelfile):
             logger.info(f"[Reading XLSX: {prgArgs.excelfile} ({prgArgs.runid}) ")
-            lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix)
+            lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix, verbose=1)
 
             if prgArgs.upload:
                 _desc = 'TestPlates Saving'

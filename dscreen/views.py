@@ -34,7 +34,7 @@ from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_Upda
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
-from dsummary.utils.analyse_data import Analysis_Screening
+from applib.report.screen_data import Report_Screening
 
 
 #=================================================================================================
@@ -175,24 +175,25 @@ def ScreenRun_ReportView(req, pk):
     print(req.method)
     if req.method=='GET':
         print(pk)
-        cAnalysis = Analysis_Screening()
+        cReport = Report_Screening()
 
-        cAnalysis.qry_by_RunID(_object)
-        cAnalysis.get_dataframe()
-        cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
-        cAnalysis.get_assay_info()
-        cAnalysis.get_testplate_info(WithStats=False,WithRunID=True)
+        cReport.qry_by_RunID(_object)
+        cReport.get_dataframe()
+        cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+        cReport.get_assay_info()
+        cReport.get_testplate_info(WithStats=False,WithRunID=True)
 
         # if 'Vitek' in prgArgs.adddata:
-        #     cAnalysis.add_vitek_ast()
+        #     cReport.add_vitek_ast()
         # if 'COADD' in prgArgs.adddata:
-        #     cAnalysis.add_antibiogram_data(cAnalysis.ORGANISMS['COADD'])
+        #     cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
 
-        cAnalysis.gen_pivot_tables(PivTables = ['Values','AssayID'])
-
-        req = HttpResponse(content_type='application/vnd.ms-excel')
-        req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}.xlsx'
-        cAnalysis.to_excel(req)
+        cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
+        if cReport.n_samples>0:
+            
+            req = HttpResponse(content_type='application/vnd.ms-excel')
+            req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+            cReport.to_excel(req)
     
     return req
 

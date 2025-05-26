@@ -13,7 +13,7 @@ from django.db import transaction, IntegrityError
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.functional import SimpleLazyObject
 
 from apputil.models import ApplicationLog
@@ -29,7 +29,7 @@ from dsample.models import Project
 from dsample.forms import Project_Filter, Project_CreateForm, Project_UpdateForm
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
-from dsummary.utils.analyse_data import Analysis_Screening
+from applib.report.screen_data import Report_Screening
 
 
 #=================================================================================================
@@ -152,24 +152,32 @@ def Project_ReportView(req, pk):
     _object=get_object_or_404(Project, project_id=pk)
 
     _now = datetime.datetime.now()
-    print(req.method)
+    _xls_name = f'Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+
     if req.method=='GET':
-        print(pk)
-        cAnalysis = Analysis_Screening()
-        cAnalysis.qry_by_ProjectID(_object)
-        print(cAnalysis.n_compounds)
-        if cAnalysis.n_compounds>0:
-            cAnalysis.get_dataframe()
-            cAnalysis.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
-            cAnalysis.get_assay_info()
-            cAnalysis.get_testplate_info(WithStats=False,WithRunID=True)
-            cAnalysis.gen_pivot_tables()
+        cReport = Report_Screening()
+        cReport.qry_by_ProjectID(_object)
+        if cReport.n_compounds>0:
+            print(f" [Report] Project: {pk} [{cReport.n_compounds} . . . . . ]")
+            cReport.get_dataframe()
+            cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+            cReport.get_assay_info()
+            cReport.get_testplate_info(WithStats=False,WithRunID=True)
+            cReport.gen_pivot_tables()
 
+            print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
 
-            req = HttpResponse(content_type='application/vnd.ms-excel')
-            req['Content-Disposition'] = f'attachment; filename=Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
-            cAnalysis.to_excel(req)
-    
+            if cReport.n_samples>0:
+                req = HttpResponse(content_type='application/vnd.ms-excel')
+                req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+                cReport.to_excel(req)
+                return(req)
+            #else:
+            #return redirect(reverse("project_detail",kwargs={'pk':pk}))
+
+    context={}
+    context["object"]=_object
+
     return req
 
 # -----------------------------------------------------------------
