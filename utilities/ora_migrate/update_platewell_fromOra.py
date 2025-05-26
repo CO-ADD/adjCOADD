@@ -250,33 +250,38 @@ def main(prgArgs,djDir):
 #        print(f"{OutName} {tpDF.columns} ")
 
     # MasterWells -------------------------------------------------------------
-    if prgArgs.table == "MasterWells" :
+    if prgArgs.table == "MasterWells" or prgArgs.table == "StockWells":
 
         OutName = "[MasterWells]"
         OutDict = []
-        OutFile = f"UpdateMasterWells_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
+        OutFile = f"Update{prgArgs.table}_fromORA_{logTime:%Y%m%d_%H%M%S}.xlsx"
         OutNumbers = {'Processed':0,'New Entry':0, 'Upload Entries':0}
 
         logger.info(f"{OutName} ---------------------------------------------------------")
         CastDB = openCastDB()
 
-        mwSQL = ""
-        if prgArgs.plateid:
-            mwSQL = f"Select * From MasterWell Where plate_id = '{prgArgs.plateid}' "
-            nWells = CastDB.nCount(f"Select count(1) From MasterWell Where plate_id = '{prgArgs.plateid}' " )
-        elif prgArgs.new:
-            mwSQL = "Select * From MasterWell Where is_migrated < 1 "
-            nWells = CastDB.nCount("Select count(1) From MasterWell Where is_migrated < 1 " )
+        if prgArgs.table == "MasterWells":
+            mwSQL = ""
+            if prgArgs.plateid:
+                mwSQL = f"Select * From MasterWell Where plate_id = '{prgArgs.plateid}' "
+                nWells = CastDB.nCount(f"Select count(1) From MasterWell Where plate_id = '{prgArgs.plateid}' " )
+            elif prgArgs.new:
+                mwSQL = "Select * From MasterWell Where is_migrated < 1 "
+                nWells = CastDB.nCount("Select count(1) From MasterWell Where is_migrated < 1 " )
 
-        elif int(prgArgs.test) > 0:
-            mwSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
-            nWells = int(prgArgs.test)
-        else:
-            # Just as Test
-            # mwSQL = "Select * From MasterWell Where Dilution is not Null Order By plate_id, well_id"
-            # nWells = CastDB.nCount("Select count(1) From Masterwell Where Dilution is not Null" )
-            mwSQL = "Select * From MasterWell Order By plate_id, well_id"
-            nWells = CastDB.nCount("Select count(1) From Masterwell " )
+            elif int(prgArgs.test) > 0:
+                mwSQL += f" Fetch First {int(prgArgs.test)} Rows Only "
+                nWells = int(prgArgs.test)
+            else:
+                # Just as Test
+                # mwSQL = "Select * From MasterWell Where Dilution is not Null Order By plate_id, well_id"
+                # nWells = CastDB.nCount("Select count(1) From Masterwell Where Dilution is not Null" )
+                mwSQL = "Select * From MasterWell Order By plate_id, well_id"
+                nWells = CastDB.nCount("Select count(1) From Masterwell " )
+        elif prgArgs.table == "StockWells":
+            mwSQL = ""
+            mwSQL = "Select mw.* From MasterWell mw Left Join Masterplate mp on mp.plate_id = mw.plate_id Where mp.plate_type = 'Stock' Order By mw.plate_id, mw.well_id"
+            nWells = CastDB.nCount("Select count(1) From Masterwell mw Left Join Masterplate mp on mp.plate_id = mw.plate_id Where mp.plate_type = 'Stock' " )
         logger.info(f"{OutName} {nWells} ")
 
         # ---------------------------------------------------------------------------------
