@@ -21,13 +21,13 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
     verbose = kwargs.get('verbose',0)
 
     xlWB = pd.ExcelFile(xlFile)
-    lstPl = []
+    dictPlates = {}
     for xSheet in xlWB.sheet_names:
         
         xDF = xlWB.parse(xSheet, header = None)
 
         if len(xDF)>0:
-            dictPl = {}
+            sng_plate = {}
             djTP = None
             if xDF[0][0] == "Application: Tecan i-control":
                 djTP,_status = read_iControl_xlsheet(xSheet,xDF,prefix=prefix)
@@ -41,11 +41,15 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
             if djTP:
                 djTP.input_file = os.path.split(xlFile)[1]
 
-                dictPl['plate_id'] = djTP.plate_id
-                dictPl['plate'] = djTP
-                dictPl['new'] = _status == 'New'
+                sng_plate['plate_id'] = djTP.plate_id
+                sng_plate['plate'] = djTP
+                sng_plate['new'] = _status == 'New'
                 
-                lstPl.append(dictPl)
+                if djTP.plate_id in dictPlates:
+                    sng_plate['new'] = 'Duplicate'
+                    _status = "Duplicate"
+                else:
+                    dictPlates[djTP.plate_id] = sng_plate
 
                 # Output Verbose/valLog
                 if verbose>0:
@@ -56,10 +60,14 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
                                    "New Testplate",
                                    f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
                                    "Select Upload to upload data")
-                    else:
+                    elif _status == 'Exists':
                         valLog.add("Warning",
                                    "Existing Testplate",f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
                                    "Select Overwrite to overwrite existing data")
+                    elif _status == 'Duplicate':
+                        valLog.add("Warning",
+                                   "Duplicate Testplate",f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                   "Correct PlateID in  Xlsx file")
 
             else:
                 if verbose>0:
@@ -69,7 +77,9 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
                                "Unknown PlateReader Format",
                                f" Xls.Sheet: {xSheet}",
                                "Check Xls.Sheet if correct")
-    return(lstPl)
+                    
+    
+    return(list(dictPlates.values()))
 
 
 #--------------------------------------------------------------------------------------------------------------

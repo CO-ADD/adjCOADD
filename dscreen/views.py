@@ -29,31 +29,45 @@ from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteVie
 # from adjcoadd.constants import *
 
 from dscreen.models import Screen_Run
-from dsummary.models import Summary_ScreenRun
-from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+from dsummary.models import Summary_ScreenRun 
+from dscreen.forms import SumScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
-
 
 #=================================================================================================
 # ScreenRun
 #=================================================================================================
 class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
-    model = Screen_Run  
+    model = Summary_ScreenRun  
     template_name = 'dscreen/screenrun/screenrun_list.html'
-    filterset_class = ScreenRun_Filter
+    filterset_class = SumScreenRun_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'Screen_Run'
     app_name = 'dscreen'
-    ordering=['-acreated_at']
+    ordering=['-run_id__acreated_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['base_template'] = 'coadd_base.html'
         return context
+
+# class XX_ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
+#     login_url = '/'
+#     model = Screen_Run  
+#     template_name = 'dscreen/screenrun/screenrun_list.html'
+#     filterset_class = ScreenRun_Filter
+#     model_fields = model.HEADER_FIELDS
+#     model_name = 'Screen_Run'
+#     app_name = 'dscreen'
+#     ordering=['-acreated_at']
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['base_template'] = 'coadd_base.html'
+#         return context
 
 # -----------------------------------------------------------------
 # class ScreenRun_CardView(ScreenRun_ListView):
@@ -77,6 +91,7 @@ def ScreenRun_CreateView(req):
                 with transaction.atomic(using='dscreen'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
+                    Summary_ScreenRun.update(instance, to_save=True)
                     ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Screen Run','Completed')
                     return redirect(req.META['HTTP_REFERER'])
             except IntegrityError as err:
@@ -144,6 +159,7 @@ def ScreenRun_UpdateView(req, pk):
                 if form.is_valid():       
                     instance=form.save(commit=False)
                     instance.save(**kwargs)
+                    Summary_ScreenRun.update(instance, to_save=True)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Screen_Run','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])
@@ -192,7 +208,7 @@ def ScreenRun_ReportView(req, pk):
         if cReport.n_samples>0:
             
             req = HttpResponse(content_type='application/vnd.ms-excel')
-            req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+            req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}'
             cReport.to_excel(req)
     
     return req
@@ -229,6 +245,7 @@ class PlatePrep_StepForm(SelectSingleFile_StepForm):
         self.fields['multi_files'].label = 'PlatePrep Xlsx Workbook'
         self.fields['multi_files'].help_text = mark_safe("Xlsx Workbook containing: <li> [TestPlateList] <li> [MotherPlates]")
         
+# --------------------------------------------------------------------------------------------------
 class Add_Readouts(Process_View):
     process_name = 'Upload_ReadOuts'
     model = Screen_Run
@@ -256,7 +273,7 @@ class Add_Readouts(Process_View):
         return(valLog)
 
 # -----------------------------------------------------------------
-class xAdd_Readouts(ImportHandler_View):
+class XX_Add_Readouts(ImportHandler_View):
 # -----------------------------------------------------------------    
     name_step1="Upload"
     form_list = [

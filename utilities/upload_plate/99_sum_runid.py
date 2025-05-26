@@ -61,8 +61,11 @@ def main(prgArgs,djDir):
         cReport.get_sample_info()
         cReport.get_assay_info()
 
-        if 'TestPlates' in prgArgs.adddata:
-            cReport.get_testplate_info()
+        cReport.get_testplate_info()
+
+        if 'HCR_Selection' in prgArgs.adddata:
+            cReport.add_hcr_selection()
+
         if 'Vitek' in prgArgs.adddata:
             cReport.add_vitek_ast()
         if 'COADD' in prgArgs.adddata:

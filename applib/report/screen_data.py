@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import datetime
 
 #from django_pandas.io import read_frame
 
@@ -75,6 +76,8 @@ class Report_Screening():
         self.n_dr = 0
         self.n_sc = 0
 
+        self.n_hcr_sel = 0
+
         self.n_vitek = 0
         self.n_antibio = 0
 
@@ -118,7 +121,9 @@ class Report_Screening():
                     self.dict_compounds[qry['compound_id']] = qry
                     self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
                     self.list_cmpbatch_ids.append(qry['compound_id'])
-            self.file_name = ProjectID
+
+            _now = datetime.datetime.now()
+            self.file_name = f"Project_{ProjectID}_Summary_{_now:%Y%m%d}"
             
             self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
                                     cmpbatch_lst__overlap=self.list_cmpbatch_ids,
@@ -161,10 +166,11 @@ class Report_Screening():
                                 plate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_TW)
         
+        _now = datetime.datetime.now()
         if len(RunID_Lst) == 1:
-            self.file_name = RunID_Lst[0]
+            self.file_name = self.file_name = f"Run_{RunID_Lst[0]}_Summary_{_now:%Y%m%d}"
         elif len(RunID_Lst) > 1:
-            self.file_name = f"{RunID_Lst[0]}_{RunID_Lst[-1]}"
+            self.file_name = f"Run_{RunID_Lst[0]}_{RunID_Lst[-1]}_Summary_{_now:%Y%m%d}"
 
     # --------------------------------------------------------------------------------------
     def qry_by_Collaborator(self,CollabGroup,Include_Combination=False):
@@ -191,7 +197,10 @@ class Report_Screening():
                     self.dict_compounds[qry['compound_id']] = qry
                     self.dict_compounds[qry['compound_id']]['Source'] = 'COADD'
                     self.list_cmpbatch_ids.append(qry['compound_id'])
-            self.file_name = CollabGroup
+            
+            _now = datetime.datetime.now()
+            self.file_name = self.file_name = f"Collab_{CollabGroup}_Summary_{_now:%Y%m%d}"
+
             #print(f" [list_cmpbatch_ids] {len(self.list_cmpbatch_ids)}")
             if Include_Combination:
                 # Include any Combinations - SLOW
@@ -622,6 +631,14 @@ class Report_Screening():
         return(s)
 
     # --------------------------------------------------------------------------------------
+    def add_hcr_selection(self):
+    # --------------------------------------------------------------------------------------
+        if self.n_sc > 0:
+            # Filter for 'Active' Samples
+            self.n_hcr_sel = 0
+            self.df_hcr_sel = None
+
+    # --------------------------------------------------------------------------------------
     def add_antibiogram_data(self, RefOrganisms=[]):
     # --------------------------------------------------------------------------------------
 
@@ -756,14 +773,14 @@ class Report_Screening():
             'piv-Actives': 'Sum-ActScore'
         }
 
-        if XlFile is None:
-            XlFile = f"Sum_{self.file_name}.xlsx"
+        if XlFile:
+            self.file_name = XlFile
 
         if verbose>0:
-            logger.info(f" [Report] Excel --> {XlFile}")
+            logger.info(f" [Report] Excel --> {self.file_name}.xlsx")
 
         if self.n_samples > 0:
-            with pd.ExcelWriter(XlFile) as writer:
+            with pd.ExcelWriter(f"{self.file_name}.xlsx") as writer:
                 if self.n_samples > 0:
                     logger.info(f" [Report]     [Samples] {self.df_samples.shape}")
                     self.df_samples.to_excel(writer, sheet_name='Samples')
@@ -796,6 +813,10 @@ class Report_Screening():
                     _shape = self.df_sc.shape
                     logger.info(f" [Report]     [SC-Data] {_shape}")
                     self.df_sc.to_excel(writer, sheet_name='SC-Data',columns=_exp_columns)
+
+                if self.n_hcr_sel > 0:
+                    logger.info(f" [Report]     [HCR Selection] {self.df_hcr_sel.shape}")
+                    self.df_hcr_sel.to_excel(writer, sheet_name='HCR Selection')
 
                 if self.n_dr > 0:
                     COL_EXCLUDE = ['cmpbatch_lst']

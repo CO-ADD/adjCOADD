@@ -15,15 +15,12 @@ from decimal import Decimal
 
 
 # --------------------------------------------------------------------------------
-def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None, as_is=False):
+def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None, as_is=False, **kwargs):
 # --------------------------------------------------------------------------------
     xlWB = pd.ExcelFile(xlFile)
     xDF = xlWB.parse(SheetName)
     xDF.columns = [c.lower() for c in xDF.columns]
 
-    PropertyList = ['PLATING',
-                    'COMPOUND_ID','SET_ID','DILUTION','TEST_CONC','TEST_CONC_UNIT','TEST_SOLVENT_CONC',
-                    'COMPOUND2_ID','SET2_ID','DILUTION2','TEST2_CONC','TEST2_CONC_UNIT','TEST2_SOLVENT_CONC']
     lstPl = []
     lstMP = xDF['motherplate_id'].unique()
 
@@ -46,6 +43,7 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
 
         djMP.plating = mpwells['plating'].unique()[0]
         djMP.dilution_layout = 'Dilution'
+
         for idx,row in mpwells.iterrows():
             #print(row['compound_id'])
             if not pd.isna(row['compound_id']) and not pd.isna(row['motherwell_id']):

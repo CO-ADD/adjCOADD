@@ -16,29 +16,52 @@ from applib.django.filters import BaseStatus_Filter
 
 #DScreen
 from dscreen.models import  Screen_Run, Assay, AssayData_MIC, AssayData_CC50, AssayData_HC50
+from dsummary.models import Summary_ScreenRun
 
 #=================================================================================================
 # Screen_Run
 #=================================================================================================
-class ScreenRun_Filter(BaseStatus_Filter):
+class SumScreenRun_Filter(BaseStatus_Filter):
     
-    run_type=ChoiceFilter(field_name='run_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    run_status=ChoiceFilter(field_name='run_status',widget=forms.RadioSelect, choices=[], empty_label=None)
+    f_RunID = CharFilter(field_name='run_id__run_id', lookup_expr='icontains', label="Run ID")
+    f_RunName = CharFilter(field_name='run_id__run_name', lookup_expr='icontains', label="Run Name")
+    f_RunType=ChoiceFilter(field_name='run_id__run_type',widget=forms.RadioSelect, choices=[], label="Run Type")
+    f_RunStatus=ChoiceFilter(field_name='run_id__run_status',widget=forms.RadioSelect, choices=[], label="Run Status")
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["run_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
-        self.filters["run_status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
+        self.filters["f_RunType"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
+        self.filters["f_RunStatus"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
 
         # Set Filter label to the Fields VerboseName or Filter Name
-        for i in self.filters:
-            try:
-                self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
-            except:
-                self.filters[i].label=i
+        # for i in self.filters:
+        #     try:
+        #         self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+        #     except:
+        #         self.filters[i].label=i
     class Meta:
-        model=Screen_Run
-        fields=[ 'run_id', 'run_name','run_type','run_status']
+        model=Summary_ScreenRun
+        fields=[ 'f_RunID', 'f_RunName','f_RunType','f_RunStatus']
+
+# class ScreenRun_Filter(BaseStatus_Filter):
+    
+#     run_type=ChoiceFilter(field_name='run_type',widget=forms.RadioSelect, choices=[], empty_label=None)
+#     run_status=ChoiceFilter(field_name='run_status',widget=forms.RadioSelect, choices=[], empty_label=None)
+    
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.filters["run_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
+#         self.filters["run_status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
+
+#         # Set Filter label to the Fields VerboseName or Filter Name
+#         for i in self.filters:
+#             try:
+#                 self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+#             except:
+#                 self.filters[i].label=i
+#     class Meta:
+#         model=Screen_Run
+#         fields=[ 'run_id', 'run_name','run_type','run_status']
 
 # -----------------------------------------------------------------
 class ScreenRun_CreateForm(forms.ModelForm):

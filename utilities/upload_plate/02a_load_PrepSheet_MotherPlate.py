@@ -60,7 +60,7 @@ def main(prgArgs,djDir):
             djRun.save()    
 
         if os.path.isfile(prgArgs.excelfile):
-            lstMP = read_motherplate_prepsheet_xls(prgArgs.excelfile)
+            lstMP = read_motherplate_prepsheet_xls(prgArgs.excelfile, verbose=1)
 
             if prgArgs.upload:
                 _desc = 'MotherPlates Saving NEW'

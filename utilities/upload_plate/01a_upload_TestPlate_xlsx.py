@@ -36,6 +36,8 @@ def main(prgArgs,djDir):
     from dplate.models import Labware, TestPlate, TestWell
     from applib.plate.multimode_reader import multimodereader_xls
     from dscreen.models import Screen_Run
+    from dsummary.models import Summary_ScreenRun 
+
     from adjcoadd.constants import COMPOUND_SEP
 
     logger.info(f"Python         : {sys.version.split('|')[0]}")
@@ -49,43 +51,47 @@ def main(prgArgs,djDir):
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'TestPlate':
     
-       if prgArgs.runid and prgArgs.excelfile:
-        new_runid = False
+        if prgArgs.runid and prgArgs.excelfile:
+            new_runid = False
+            n_uploads = 0
 
-        djRun = Screen_Run.get(prgArgs.runid)
-        if djRun is None:
-            djRun = Screen_Run()
-            djRun.run_id = prgArgs.runid
-            new_runid = True
-        
-        if new_runid and prgArgs.upload:
-            djRun.save()    
+            djRun = Screen_Run.get(prgArgs.runid)
+            if djRun is None:
+                djRun = Screen_Run()
+                djRun.run_id = prgArgs.runid
+                new_runid = True
+            
+            if new_runid and prgArgs.upload:
+                djRun.save()    
 
-        if os.path.isfile(prgArgs.excelfile):
-            logger.info(f"[Reading XLSX: {prgArgs.excelfile} ({prgArgs.runid}) ")
-            lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix, verbose=1)
+            if os.path.isfile(prgArgs.excelfile):
+                logger.info(f"[Reading XLSX: {prgArgs.excelfile} ({prgArgs.runid}) ")
+                lstTP = multimodereader_xls(prgArgs.excelfile,prgArgs.prefix, verbose=1)
 
-            if prgArgs.upload:
-                _desc = 'TestPlates Saving'
-            else:
-                _desc = 'TestPlates Validating'
+                if prgArgs.upload:
+                    _desc = 'TestPlates Saving'
+                else:
+                    _desc = 'TestPlates Validating'
 
-            for tpDict in tqdm(lstTP, desc=_desc):
-                validStatus = True
-                validDict = {}
-                tpDict['plate'].run_id = djRun
-                
-                tpDict['plate'].set_defaults_model()
-                validDict = tpDict['plate'].validate_model(WellData=False, verbose = 0)
-                if validDict:
-                    validStatus = False
-                    validDF = pd.DataFrame(validDict)
-                    for c in validDF.columns:
-                        print(validDF[c].unique())
+                for tpDict in tqdm(lstTP, desc=_desc):
+                    validStatus = True
+                    validDict = {}
+                    tpDict['plate'].run_id = djRun
                     
-                if prgArgs.upload and validStatus:
-                    if tpDict['new'] or prgArgs.overwrite:
-                        tpDict['plate'].save(verbose=0)
+                    tpDict['plate'].set_defaults_model()
+                    validDict = tpDict['plate'].validate_model(WellData=False, verbose = 0)
+                    if validDict:
+                        validStatus = False
+                        validDF = pd.DataFrame(validDict)
+                        for c in validDF.columns:
+                            print(validDF[c].unique())
+                        
+                    if prgArgs.upload and validStatus:
+                        if tpDict['new'] or prgArgs.overwrite:
+                            tpDict['plate'].save(verbose=0)
+                            n_uploads += 1
+            if n_uploads> 0:
+                Summary_ScreenRun.update(djRun, to_save=True)
 
 #==============================================================================
 if __name__ == "__main__":

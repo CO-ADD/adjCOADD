@@ -86,7 +86,7 @@ def main(prgArgs,djDir):
 
                 else:
                     OutNumbers['Failed Plates'] += 1
-                    logger.warning(f" FAILED: {djTP.plate_id} only {djTP.n_wells} wells found")
+                    logger.warning(f" FAILED: {djTP.plate_id} only [Wells: {djTP.n_wells} Reads: {djTP.n_reads} or {djTP.control_layout}]")
 
 
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")

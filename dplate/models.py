@@ -1228,6 +1228,7 @@ class MasterPlate(Plate):
                                     #self.wells[w_d].test_conc_lst = self.wells[w].test_conc_lst
                                     self.wells[w_d].test_conc_unit_lst = self.wells[w].test_conc_unit_lst
                                     self.wells[w_d].set_lst = self.wells[w].set_lst
+                                    #self.wells[w_d].dilution_lst = []
                                     
                                 # Set test_conc of i-th cmpbatch to wconc
                                 # _wconc_lst = getattr(self.wells[w_d],'test_conc_lst')

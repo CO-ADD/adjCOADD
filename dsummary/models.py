@@ -43,9 +43,18 @@ class Summary_ScreenRun(AuditModel):
         "run_id.run_status":"Status",
         "run_id.run_project":"Project",
         "run_id.run_name":"Name",
-        "run_id.run_date":"Run Date",
+        "screen_date":"Run Date",
         "run_id.run_conditions":"Conditions",
-        "run_id.run_issues":"Issues",     
+        "run_id.run_issues":"Issues",
+        "n_compounds":"#Cmpds",     
+        "n_motherplates":"#MP",     
+        "n_testplates":"#TP",     
+        "n_assays":"#Ass",     
+        "n_inhibitions":"#Inhib",     
+        "n_mic":"#MIC",     
+        "n_cc50":"#CC50",     
+        "n_hc50":"#HC50",
+        "n_synmic":"#Syn",     
     }
 
     DICTIONARY_FIELDS = {
@@ -75,7 +84,7 @@ class Summary_ScreenRun(AuditModel):
     class Meta:
         app_label = 'dsummary'
         db_table = 'sum_screenrun'
-        ordering=['run_id']
+        ordering=['run_id__acreated_at']
         indexes = [
             models.Index(name="srun_ncmp_idx", fields=['n_compounds']),
             models.Index(name="srun_nstr_idx", fields=['n_structure']),
