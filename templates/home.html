@@ -33,13 +33,14 @@
 </div>
 <div class="container d-flex flex-wrap justify-content-around">
 
+    {% comment %} 
     <div id="Label-Projects" class="card-body d-flex justify-content-center">
         {% url 'project_list' as prj_url %}
-        {% include 'button/land_btn_secondary.html' with title='PROJECT' url=prj_url totalnumber=nProject %}
-    </div>
+        {% include 'button/land_btn_secondary.html' with title='PROJECT' url=prj_url totalnumber=nProject %} 
+    </div> 
+    {% endcomment %}
 
-    <div id="Label-Screens" class="card-body d-flex justify-content-center">
-        
+    <div id="Label-Screens" class="card-body d-flex justify-content-center">        
         {% url 'screenrun_list' as seq_url %}
         {% include 'button/land_btn_secondary.html' with title='SCREEN' url=seq_url totalnumber=nRun %}
     </div>

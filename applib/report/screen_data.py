@@ -148,6 +148,7 @@ class Report_Screening():
     def qry_by_RunID(self,RunID_Lst):
     # --------------------------------------------------------------------------------------
         logger.info(f" [Report] RunID: {RunID_Lst} ")
+        #print(f" [Report] RunID: {RunID_Lst} ")
         self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
                                 run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
@@ -773,14 +774,14 @@ class Report_Screening():
             'piv-Actives': 'Sum-ActScore'
         }
 
-        if XlFile:
-            self.file_name = XlFile
+        if XlFile is None:
+            XlFile = f"{self.file_name}.xlsx" 
 
         if verbose>0:
-            logger.info(f" [Report] Excel --> {self.file_name}.xlsx")
+            logger.info(f" [Report] Excel --> {XlFile}")
 
         if self.n_samples > 0:
-            with pd.ExcelWriter(f"{self.file_name}.xlsx") as writer:
+            with pd.ExcelWriter(XlFile) as writer:
                 if self.n_samples > 0:
                     logger.info(f" [Report]     [Samples] {self.df_samples.shape}")
                     self.df_samples.to_excel(writer, sheet_name='Samples')

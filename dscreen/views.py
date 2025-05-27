@@ -185,33 +185,89 @@ class ScreenRun_DeleteView(Base_DeleteView):
 # -----------------------------------------------------------------
 @login_required
 def ScreenRun_ReportView(req, pk):
-    _object=get_object_or_404(Screen_Run, run_id_id=pk)
 
     _now = datetime.datetime.now()
-    print(req.method)
-    if req.method=='GET':
-        print(pk)
-        cReport = Report_Screening()
+    _xls_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d}.xlsx'
 
-        cReport.qry_by_RunID(_object)
-        cReport.get_dataframe()
-        cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
-        cReport.get_assay_info()
-        cReport.get_testplate_info(WithStats=False,WithRunID=True)
-
-        # if 'Vitek' in prgArgs.adddata:
-        #     cReport.add_vitek_ast()
-        # if 'COADD' in prgArgs.adddata:
-        #     cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
-
-        cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
-        if cReport.n_samples>0:
-            
-            req = HttpResponse(content_type='application/vnd.ms-excel')
-            req['Content-Disposition'] = f'attachment; filename=Run_{pk}_Summary_{_now:%Y%m%d}'
-            cReport.to_excel(req)
-    
+    cReport = Report_Screening()
+    cReport.qry_by_RunID([pk])
+    cReport.get_dataframe()
+    cReport.get_sample_info()
+    cReport.get_assay_info()
+    cReport.get_testplate_info()
+    cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
+    if cReport.n_samples>0:
+        req = HttpResponse(content_type='application/vnd.ms-excel')
+        req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+        cReport.to_excel(req)
     return req
+
+
+    # if req.method=='GET':
+
+    #     _object=get_object_or_404(Screen_Run, run_id=pk)
+    #     _now = datetime.datetime.now()
+    #     _xls_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+
+    #     cReport = Report_Screening()
+    #     cReport.qry_by_RunID([pk])
+
+    #     cReport.get_dataframe()
+    #     cReport.get_sample_info()
+    #     cReport.get_assay_info()
+
+    #     cReport.get_testplate_info()
+
+    #     cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
+
+    #     print(f" [Report] Run: {pk} [{cReport.n_samples} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
+
+    #     if cReport.n_samples>0:
+    #         req = HttpResponse(content_type='application/vnd.ms-excel')
+    #         req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+    #         cReport.to_excel(req)
+    #         return(req)
+    #     # else:
+    #     #     return redirect(reverse("screenrun_detail",kwargs={'pk':pk}))
+
+    # context={}
+    # context["object"]=_object
+
+    # _object=get_object_or_404(Screen_Run, run_id=pk)
+    # print(pk)
+    # print(_object)
+    # print(req.method)
+
+    # if req.method == 'GET':
+    #     _now = datetime.datetime.now()
+    #     _xls_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+    #     print(f" [Report] ScreenRun: {_xls_name}")
+
+    #     cReport = Report_Screening()
+    #     cReport.qry_by_RunID([_object])
+    #     print(f" [Report] ScreenRun: {cReport.n_compounds}")
+    #     if cReport.n_compounds>0:
+    #         cReport.get_dataframe()
+    #         cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+    #         cReport.get_assay_info()
+    #         cReport.get_testplate_info(WithStats=False,WithRunID=True)
+    #         cReport.gen_pivot_tables()
+
+    #         print(f" [Report] ScreenRun: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
+
+    #         if cReport.n_samples>0:
+    #             req = HttpResponse(content_type='application/vnd.ms-excel')
+    #             req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+    #             cReport.to_excel(excel_writer=req)
+    #             return(req)
+    #         #else:
+    #         #return redirect(reverse("project_detail",kwargs={'pk':pk}))
+
+    # context={}
+    # #context["object"]=_object
+
+    # return req
+
 
 # -----------------------------------------------------------------
 # @login_required
@@ -272,27 +328,27 @@ class Add_Readouts(Process_View):
 
         return(valLog)
 
-# -----------------------------------------------------------------
-class XX_Add_Readouts(ImportHandler_View):
-# -----------------------------------------------------------------    
-    name_step1="Upload"
-    form_list = [
-        ('select_file', SelectSingleFile_StepForm),
-        ('upload', Upload_StepForm),
-        ('finalize', Finalize_StepForm),
-    ]
-    template_name = 'ddrug/importhandler_vitek.html'
+# # -----------------------------------------------------------------
+# class XX_Add_Readouts(ImportHandler_View):
+# # -----------------------------------------------------------------    
+#     name_step1="Upload"
+#     form_list = [
+#         ('select_file', SelectSingleFile_StepForm),
+#         ('upload', Upload_StepForm),
+#         ('finalize', Finalize_StepForm),
+#     ]
+#     template_name = 'ddrug/importhandler_vitek.html'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
     
-    # customize util functions to validate files:
-    # vitek -- upload_VitekPDF_Process
-    def file_process_handler(self, request, *args, **kwargs):
-        try:
-            form_data=kwargs.get('form_data', None)
-        except Exception as err:
-            print(err)
-            return (err)
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user)  
-        return(valLog)
+#     # customize util functions to validate files:
+#     # vitek -- upload_VitekPDF_Process
+#     def file_process_handler(self, request, *args, **kwargs):
+#         try:
+#             form_data=kwargs.get('form_data', None)
+#         except Exception as err:
+#             print(err)
+#             return (err)
+#         valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user)  
+#         return(valLog)

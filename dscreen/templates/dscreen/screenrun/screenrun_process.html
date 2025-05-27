@@ -1,57 +1,6 @@
 
 <div>
-  <div class="container text-center">
-   <div class="row">
-      <div class="col">Upload TestPlates</div>
-      <div class="col">Process Data</div>
-    </div>
-    <div class="row">
-      <div class="col">ReadOuts</div>
-      <div class="col">Assays and Layout </div>
-      <div class="col">MotherPlates</div>
-    </div>
-    <div class="row">
-      <div class="col">#Testplates: {{summary.n_testplates}}</div>
-      <div class="col">#Assays: {{summary.n_assays}}</div>
-      <div class="col">#Motherplates: {{summary.n_motherplates}}</div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <button type="button" class="btn btn-secondary" 
-        data-bs-toggle="modal" data-bs-target="#LoadReadouts_Mdl">
-          Load Readouts
-        </button>
-      </div>
-      <div class="col">
-        {% if summary.n_testplates == 0 %}
-          <a href="{% url 'load_readouts' pk=object.pk%}" class="btn btn-secondary disabled">
-        {% else %}
-          <a href="{% url 'load_readouts' pk=object.pk%}" class="btn btn-secondary ">
-        {% endif %}
-          Load TestPlates
-        </a>
-      </div>
-
-      <div class="col">
-        <button type="button" class="btn btn-secondary" 
-        data-bs-toggle="modal" data-bs-target="#LoadMotherplates_Mdl">
-          Load MotherPlates
-        </button>
-      </div>
-    </div>
-
-  </div>
+  <button type="button" class="btn btn-outline-success "> 
+    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Report </a>
+  </button>
 </div>
-
-{% url 'load_readouts' pk=object.pk as loadreadouts_url %}
-{% url 'load_readouts' pk=object.pk as loadtestplates_url %}
-
-{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadReadouts_Mdl' modal_title='Load Readouts' modal_url=loadreadouts_url entry=object.pk %} 
-{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadTestplates_Mdl' modal_title='Load TestPlates' modal_url=loadtestplates_url entry=object.pk %}
-{% include 'dscreen/screenrun/modal_process.html' with modal_id='LoadMotherplates_Mdl' modal_title='Load MotherPlates' modal_url=loadtestplates_url entry=object.pk %}
-
-{% comment %} <!--
-{% url 'import-vitek' as reset_url %}
-{% include 'utils/wizard_single_page.html' with data_model='Vitek' reset_url=reset_url %}
---> {% endcomment %}

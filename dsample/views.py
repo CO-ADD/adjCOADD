@@ -1,6 +1,8 @@
 import os
 import json
 import datetime
+from io import BytesIO as IO
+
 from rdkit import Chem
 from django_filters.views import FilterView
 
@@ -146,19 +148,21 @@ class Project_DeleteView(Base_DeleteView):
     model = Project
     transaction_use = 'dsample'
 
+
 # -----------------------------------------------------------------
 @login_required
 def Project_ReportView(req, pk):
-    _object=get_object_or_404(Project, project_id=pk)
-
-    _now = datetime.datetime.now()
-    _xls_name = f'Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+    
 
     if req.method=='GET':
+
+        _object=get_object_or_404(Project, project_id=pk)
+        _now = datetime.datetime.now()
+        _xls_name = f'Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+
         cReport = Report_Screening()
         cReport.qry_by_ProjectID(_object)
         if cReport.n_compounds>0:
-            print(f" [Report] Project: {pk} [{cReport.n_compounds} . . . . . ]")
             cReport.get_dataframe()
             cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
             cReport.get_assay_info()
@@ -166,12 +170,12 @@ def Project_ReportView(req, pk):
             cReport.gen_pivot_tables()
 
             print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
-
+            
             if cReport.n_samples>0:
                 req = HttpResponse(content_type='application/vnd.ms-excel')
                 req['Content-Disposition'] = f'attachment; filename={_xls_name}'
                 cReport.to_excel(req)
-                return(req)
+                #return(req)
             #else:
             #return redirect(reverse("project_detail",kwargs={'pk':pk}))
 
