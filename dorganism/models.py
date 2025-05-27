@@ -107,6 +107,7 @@ class Organism(AuditModel):
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
         'organism_name':'Organism Name',
+        'pub_id':'Pub ID',
         'strain_ids':'Strain IDs',
         'source':"Source",
         'source_code':"Source Code",
@@ -149,6 +150,7 @@ class Organism(AuditModel):
     organism_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Organism ID") 
     organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
         db_column="organism_name", related_name="%(class)s_organism_name")
+    pub_id= models.CharField(max_length=30, blank=True, verbose_name = "Pub ID")
     strain_ids = models.CharField(max_length=200, blank=True, verbose_name = "Strain IDs") 
     strain_code= models.CharField(max_length=30, blank=True, verbose_name = "Strain Code")
     strain_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)

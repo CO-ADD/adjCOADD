@@ -18,6 +18,7 @@
 - (dj42py311) django> <b>conda</b> install ..<br>
       django-filter django-pandas psycopg2 python-ldap requests djangorestframework <br>
       pdfplumber python-magic openpyxl  ipython CairoSVG<br>
+      seaborn<br>
       rdkit -c rdkit<br>
       gunicorn<br>
       postgresql<br>
@@ -33,6 +34,7 @@
    django-model-utils django-sequences django-formtools<br>
    django-dbbackup django-crontab django-pgtrigger django-countries<br>
    django-auth-ldap <br>
+   django_countries <br>
    djangorestframework-simplejwt<br>
    clamd<br>
    crispy-bootstrap5<br>

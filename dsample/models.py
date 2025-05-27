@@ -578,6 +578,7 @@ class ABase_Compound_Batch(AuditModel):
     salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
     solvate_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvate Code")
     solvate_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvate Eq")
+    conv_factor = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Conv Factor")
     supplier = models.CharField(max_length=50, blank=True, verbose_name = "Supplier")
     supplier_code = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Code")
     supplier_batch = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Batch")
