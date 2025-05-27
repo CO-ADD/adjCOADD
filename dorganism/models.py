@@ -130,7 +130,7 @@ class Organism(AuditModel):
     }
 
     FORM_GROUPS={
-       'Group1': ["strain_ids", "sero_clone", "strain_code", "strain_type", "strain_panel", "strain_origin", "strain_notes"],
+       'Group1': ["strain_ids", "pub_id", "sero_clone", "strain_code", "strain_type", "strain_panel", "strain_origin", "strain_notes"],
        'Group2': ["strain_identification", 'res_property','gen_property','oxygen_pref', 'source', 'source_code','reference','tax_id'],
        'Group3': ['mta_status','mta_notes','mta_document','risk_group','pathogen_group','lab_restriction','biologist'],
        'Group4': ['collect_date', 'collect_region', 'collect_country', 'collect_site', 'collect_specie', 'collect_tissue', 'patient_diagnosis', 'patient']
