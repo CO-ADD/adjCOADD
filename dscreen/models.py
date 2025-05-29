@@ -165,13 +165,14 @@ class Screen_Run(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        print(f'Saving ScreenRun {self.run_id} {self.run_type.dict_value}')
-        if not self.run_id: 
+        
+        if not self.run_id:
             self.run_id = self.find_Next_RunID(str(self.run_type.dict_value))
-            if self.run_id: 
-                super(Screen_Run, self).save(*args, **kwargs)
-        else:
-            super(Screen_Run, self).save(*args, **kwargs) 
+        if self.run_id:
+            print(f'Saving ScreenRun [{self.run_id}] [{self.run_type.dict_value}]')
+            super(Screen_Run, self).save(*args, **kwargs)
+        # else:
+        #     super(Screen_Run, self).save(*args, **kwargs) 
 
 
 #-------------------------------------------------------------------------------------------------

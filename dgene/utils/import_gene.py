@@ -138,7 +138,7 @@ def imp_FastQC_fromDict(iDict, valLog, objSeq = None):
 
 
 # ----------------------------------------------------------------------------------------------------
-def imp_CheckM_fromDict(iDict,valLog, objSeq = None):
+def imp_CheckM_fromDict(iDict, valLog, objSeq = None):
     """
     Create CheckM instance from zAssembly Parser
     """
@@ -152,8 +152,8 @@ def imp_CheckM_fromDict(iDict,valLog, objSeq = None):
             iDict[c] = None
 
     validStatus = True
-    OrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
-    if OrgBatch is None:
+    djOrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
+    if djOrgBatch is None:
         valLog.add_log('Error','Organism Batch does not Exists',iDict['orgbatch_id'],'Use existing OrganismBatch ID')
         validStatus = False
 
@@ -162,17 +162,15 @@ def imp_CheckM_fromDict(iDict,valLog, objSeq = None):
     if objSeq is None:
         valLog.add_log('Error','Sequence does not Exists',iDict['seq_name'],'Use existing Sequence')
         validStatus = False
-    else:
-        iDict['seq_id'] = str(objSeq)
 
     # Find Instance if exist
-    djInst = WGS_CheckM.get(OrgBatch,iDict['seq_id'],iDict['assembly'])
+    djInst = WGS_CheckM.get(djOrgBatch,objSeq,iDict['assembly'],verbose=1)
     if djInst is None:
         djInst = WGS_CheckM()
-        djInst.orgbatch_id = OrgBatch
+        djInst.orgbatch_id = djOrgBatch
         djInst.seq_id = objSeq
         djInst.assembly = iDict['assembly']
-        valLog.add_log('Info','New CheckM',f"{iDict['orgbatch_id']} {iDict['seq_id']} {iDict['assembly']}",'-')
+        valLog.add_log('Info','New CheckM',f"{djOrgBatch} {objSeq} {iDict['assembly']}",'-')
 
     djInst.assembly_qc = iDict['assembly_qc']
     djInst.marker_lineage = iDict['marker_lineage']

@@ -67,27 +67,27 @@ def main(prgArgs,djDir):
         RDM['base'] = prgArgs.directory
         AssemblyBase = os.path.join(RDM['base'],RDM['assembly'])
 
-        vLog = validation_log.Validation_Log('WGS-Assembly')
+        # vLog = validation_log.Validation_Log('WGS-Assembly')
         
-        for subDir in listFolders(AssemblyBase):
-            zAssemblyFolder = os.path.join(AssemblyBase,subDir)
-            for BatchRunID in listFolders(zAssemblyFolder):
-                dirAss = os.path.join(zAssemblyFolder,f"{BatchRunID}")
-                if os.path.exists(dirAss):
+        # for subDir in listFolders(AssemblyBase):
+        #     zAssemblyFolder = os.path.join(AssemblyBase,subDir)
+        #     for BatchRunID in listFolders(zAssemblyFolder):
+        #         dirAss = os.path.join(zAssemblyFolder,f"{BatchRunID}")
+        #         if os.path.exists(dirAss):
 
-                    OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
-                    if prgArgs.runid:
-                        fProcess = prgArgs.runid == RunID
-                    else:
-                        fProcess = True
+        #             OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
+        #             if prgArgs.runid:
+        #                 fProcess = prgArgs.runid == RunID
+        #             else:
+        #                 fProcess = True
                     
-                    if fProcess:
-                        print(f"[WGS-Assembly] {OrgBatchID} {RunID}")
-                        upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+        #             if fProcess:
+        #                 print(f"[WGS-Assembly] {OrgBatchID} {RunID}")
+        #                 upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
 
                         
-    print(f"[WGS-Assembly] {nProc} ")
+    # print(f"[WGS-Assembly] {nProc} ")
 
     # if prgArgs.orgbatch and prgArgs.runid:
     #     dGene.update_WGSCOADD_Assembly_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)

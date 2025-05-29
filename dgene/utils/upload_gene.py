@@ -21,6 +21,134 @@ from apputil.models import ApplicationUser, Dictionary
 #from apputil.utils.data import *
 
 #-----------------------------------------------------------------------------
+class WGS_RDM():
+#-----------------------------------------------------------------------------
+
+    def __init__(self,BaseWGS,OrgbatchID,RunID,SeqMethod='Illumina',Source='CO-ADD',valLog=None):
+        
+        WGS_RDM_FOLDERS = {
+            'fastq':'01_FastQ',
+            'trim':'01_FastQ_Trim',
+            'assembly':'02_Assembly',
+            'fasta':'03_FastA',
+        }
+
+        self.wgs_base = BaseWGS
+        self.orgbatch_id = OrgbatchID
+        self.run_id = RunID
+        self.seq_id = None
+        self.seq_type = 'WGS'
+        self.seq_method =SeqMethod
+        self.seq_dir = self.get_subdir(self.orgbatch_id)
+        self.seq_code = f"{OrgbatchID}_{RunID}"
+        self.seq_file = 'Contigs'
+        self.val_log = valLog
+
+        self.seq_dict =  {
+                    'seq_name'   : self.seq_code,
+                    'orgbatch_id': self.orgbatch_id,
+                    'run_id'     : self.run_id,
+                    'seq_type'   : self.seq_type,
+                    'seq_method' : self.seq_method,
+                    'source'     : Source,
+                    'source_code': self.seq_code,
+                    'source_link': f"RDM {self.seq_type}: {self.orgbatch_id}_{self.run_id}",
+                    'seq_file'   : self.seq_file,
+                    'reference'  : ''
+                }
+       
+        
+        self.fastq_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['fastq'],self.seq_dir)
+        self.trim_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['trim'],self.seq_dir,self.seq_code)
+        self.assembly_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['assembly'],self.seq_dir,self.seq_code)
+        self.fasta_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['fasta'],self.seq_dir,self.seq_code)
+
+        self.fastq_files = {}
+
+    #-------------------------------------------
+    def __str__(self):
+        return(self.seq_code)
+
+    #-------------------------------------------
+    def get_fastq_files(self):
+        CHECK_FASTQ = {'pe1':'R1.fastq.gz','pe2':'R2.fastq.gz','se':'S.fastq.gz'}
+        for ft in CHECK_FASTQ:
+            #print(os.path.join(self.fastq_dir, f"{self.seq_code}_{CHECK_FASTQ[ft]}"))
+            if os.path.isfile(os.path.join(self.fastq_dir, f"{self.seq_code}_{CHECK_FASTQ[ft]}")):
+                self.fastq_files[ft] = f"{self.seq_code}_{CHECK_FASTQ[ft]}"                              
+
+
+    #-------------------------------------------
+    @staticmethod
+    def get_subdir(OrgBatchID,binsize=200):
+        """
+        Gets the SubFolder name based on the XX_NNNN with splits into 200
+        GN_0000, GN_0200, GN_0400, ... ,GN_1200, GN_1400, GN_1600
+        """
+        _org = OrgBatchID.split('_')
+        return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
+
+
+
+    def upload_GenomeSequence(self,upload=False,uploaduser=None):
+    #-----------------------------------------------------------------------------------
+        # check user
+        self.get_fastq_files()
+        #print(self)
+        if len(self.fastq_files) > 0:
+            appuser = None
+            if uploaduser:
+                appuser = ApplicationUser.get(uploaduser)
+
+            self.seq_id = imp_Sequence_fromDict(self.seq_dict,self.val_log) 
+            print(self.seq_id)
+            if self.seq_id.VALID_STATUS:
+                if upload:
+                    self.seq_id.save(user=appuser)
+            else:
+                self.val_log.show(logTypes= ['Error'])
+
+    #-----------------------------------------------------------------------------------
+    def upload_CheckM(self, upload=False,uploaduser=None):
+    #    vLog, upload=False,uploaduser=None,verbose=False):  
+    #-----------------------------------------------------------------------------
+
+        lstCheckM = []
+
+        #vLog = validation_log.Validation_Log('WGS-Assembly')
+
+        # check user
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
+
+        if os.path.exists(self.assembly_dir):
+
+            # SeqDict = gen_SeqDict(WGS.orgbatch_id, WGS.run_id,'WGS',WGS.wgs_method,'CO-ADD')
+
+            # Sequences -----------------------------
+            #upload_GenomeSequence(WGS)
+            print(f"[WGS-Assembly] {self.assembly_dir} {self.orgbatch_id} {self.run_id} {self.seq_id}")
+
+            #sDict = {'seq_name':f"{WGS.orgbatch_id}_{WGS.run_id}"}
+
+            # CheckM -----------------------------
+            lCheckM=get_CheckM_Info(self.assembly_dir,self.orgbatch_id,self.run_id, 
+                                    Assemblies = ['spades','shovill'], 
+                                    outType = 'contigs_filtered', 
+                                    Contamination_cutOff = 5.0)
+            for row in lCheckM:
+                djCheckM = imp_CheckM_fromDict(row, self.val_log, self.seq_id)
+                #print(djCheckM.VALID_STATUS)
+                if djCheckM.VALID_STATUS:
+                    
+                    if upload:
+                        djCheckM.save(user=appuser)
+                    else:
+                        self.val_log.show(logTypes= ['Error'])
+                #lstCheckM.append(dict(sDict,**row))
+
+#-----------------------------------------------------------------------------
 def get_RDM(MicroOrgDB):
 #-----------------------------------------------------------------------------
     RDM = {
@@ -51,40 +179,39 @@ def get_subdir(OrgBatchID,binsize=200):
     _org = OrgBatchID.split('_')
     return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
 
-#-----------------------------------------------------------------------------------
-def gen_SeqDict(OrgBatchID,RunID,SeqType,SeqMethod,Source):
-#-----------------------------------------------------------------------------------
-    SeqDict = {
-        'seq_name'   : f"{OrgBatchID}_{RunID}",
-        'orgbatch_id': OrgBatchID,
-        'run_id'     : RunID,
-        'seq_type'   : SeqType,
-        'seq_method' : SeqMethod,
-        'source'     : Source,
-        'source_code': f"{OrgBatchID}_{RunID}",
-        'source_link': f"RDM {SeqType}: {OrgBatchID}_{RunID}",
-        'seq_file'   : 'Contigs',
-        'reference'  : ''
-    }
-    return(SeqDict)
+# #-----------------------------------------------------------------------------------
+# def gen_SeqDict(OrgBatchID,RunID,SeqType,SeqMethod,Source):
+# #-----------------------------------------------------------------------------------
+#     SeqDict = {
+#         'seq_name'   : f"{OrgBatchID}_{RunID}",
+#         'orgbatch_id': OrgBatchID,
+#         'run_id'     : RunID,
+#         'seq_type'   : SeqType,
+#         'seq_method' : SeqMethod,
+#         'source'     : Source,
+#         'source_code': f"{OrgBatchID}_{RunID}",
+#         'source_link': f"RDM {SeqType}: {OrgBatchID}_{RunID}",
+#         'seq_file'   : 'Contigs',
+#         'reference'  : ''
+#     }
+#     return(SeqDict)
 
 #-----------------------------------------------------------------------------------
-def upload_GenomeSequence(OrgBatchID, RunID, SeqDict,
-                          vLog,upload=False,uploaduser=None):
+def upload_GenomeSequence(WGS,valLog=None, upload=False,uploaduser=None):
 #-----------------------------------------------------------------------------------
     # check user
     appuser = None
     if uploaduser:
         appuser = ApplicationUser.get(uploaduser)
 
-    djSeq = imp_Sequence_fromDict(SeqDict,vLog) 
+    djSeq = imp_Sequence_fromDict(WGS.seq_dict,vLog) 
     if djSeq.VALID_STATUS:
         if upload:
-            djSeq.save(user=appuser)    
+            djSeq.save(user=appuser)
+        WGS.seq_id = djSeq    
     else:
-        vLog.show(logTypes= ['Error'])
-    return(djSeq)
-
+        valLog.show(logTypes= ['Error'])
+ 
 #-----------------------------------------------------------------------------------
 def upload_Gene(GeneDict,vLog,upload=False,uploaduser=None):
 #-----------------------------------------------------------------------------------
@@ -104,7 +231,7 @@ def upload_Gene(GeneDict,vLog,upload=False,uploaduser=None):
     return(djGene)
 
 #-----------------------------------------------------------------------------------
-def upload_Trim(OrgBatchID, RunID, TrimDir, vLog, upload=False,uploaduser=None,verbose=False):  
+def upload_Trim(WGS, valLog=None, upload=False, uploaduser=None, verbose=False):  
 #-----------------------------------------------------------------------------
     lstFastQC = []
     appuser = None
@@ -113,11 +240,11 @@ def upload_Trim(OrgBatchID, RunID, TrimDir, vLog, upload=False,uploaduser=None,v
 
     if os.path.exists(TrimDir):
 
-        SeqDict = gen_SeqDict(OrgBatchID, RunID,'WGS','Illumina','CO-ADD')
+        #SeqDict = gen_SeqDict(OrgBatchID, RunID,'WGS','Illumina','CO-ADD')
 
         # Sequences -----------------------------
-        SeqDict['seq_id'] = upload_GenomeSequence(OrgBatchID, RunID, SeqDict,
-                                        vLog,upload=upload,uploaduser=uploaduser)
+        SeqDict['seq_id'] = upload_GenomeSequence(WGS)
+                                        # valLog=valLog,upload=upload,uploaduser=uploaduser)
 
         if verbose:
             print(f"[WGS-Trim] {TrimDir} {OrgBatchID} {RunID} ")
@@ -138,8 +265,13 @@ def upload_Trim(OrgBatchID, RunID, TrimDir, vLog, upload=False,uploaduser=None,v
             lstFastQC.append(dict(sDict,**row))
 
 #-----------------------------------------------------------------------------------
-def upload_CheckM(OrgBatchID, RunID, AssemblyDir, vLog, upload=False,uploaduser=None,verbose=False):  
+def upload_CheckM(WGS, **kwargs):
+#    vLog, upload=False,uploaduser=None,verbose=False):  
 #-----------------------------------------------------------------------------
+    upload = kwargs.get('upload',False)
+    overwrite = kwargs.get('overwrite',False)
+    uploaduser = kwargs.get('uploaduser',None)
+    valLog = kwargs.get('valLog',None)
 
     lstCheckM = []
 
@@ -150,23 +282,22 @@ def upload_CheckM(OrgBatchID, RunID, AssemblyDir, vLog, upload=False,uploaduser=
     if uploaduser:
         appuser = ApplicationUser.get(uploaduser)
 
-    if os.path.exists(AssemblyDir):
+    if os.path.exists(WGS.assembly_dir):
 
-        SeqDict = gen_SeqDict(OrgBatchID, RunID,'WGS','Illumina','CO-ADD')
+        # SeqDict = gen_SeqDict(WGS.orgbatch_id, WGS.run_id,'WGS',WGS.wgs_method,'CO-ADD')
 
         # Sequences -----------------------------
-        SeqDict['seq_id'] = upload_GenomeSequence(OrgBatchID, RunID, SeqDict,
-                                        vLog,upload=upload,uploaduser=uploaduser)
+        upload_GenomeSequence(WGS,)
 
         if verbose:
-            print(f"[WGS-Assembly] {AssemblyDir} {OrgBatchID} {RunID} ")
+            print(f"[WGS-Assembly] {WGS.assembly_dir} {WGS.orgbatch_id} {WGS.run_id} ")
 
-        sDict = {'seq_name':f"{OrgBatchID}_{RunID}"}
+        #sDict = {'seq_name':f"{WGS.orgbatch_id}_{WGS.run_id}"}
 
         # CheckM -----------------------------
-        lCheckM=get_CheckM_Info(AssemblyDir,SeqDict['orgbatch_id'],SeqDict['run_id'])
+        lCheckM=get_CheckM_Info(WGS)
         for row in lCheckM:
-            djCheckM = imp_CheckM_fromDict(row,vLog, objSeq = SeqDict['seq_id'])
+            djCheckM = imp_CheckM_fromDict(row, vLog, WGS.seq_id)
             #print(djCheckM.VALID_STATUS)
             if djCheckM.VALID_STATUS:
                 
