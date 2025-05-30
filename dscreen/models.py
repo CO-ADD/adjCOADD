@@ -57,6 +57,7 @@ class Screen_Run(AuditModel):
         "n_cc50":"#CC50",     
         "n_hc50":"#HC50",
         "n_synmic":"#Syn",     
+        "n_seq":"#Seq",     
     }
 
     DICTIONARY_FIELDS = {
