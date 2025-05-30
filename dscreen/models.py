@@ -44,10 +44,11 @@ class Screen_Run(AuditModel):
         "run_status":"Status",
         "run_project":"Project",
         "run_name":"Name",
-        "run_date":"Run Date",
+        #"run_date":"Run Date",
         "run_conditions":"Conditions",
         "run_issues":"Issues",
         # Calculated Fields
+        "screen_date": "Screen Date",
         "n_compounds":"#Cmpds",     
         "n_motherplates":"#MP",     
         "n_testplates":"#TP",     
