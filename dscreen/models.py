@@ -56,7 +56,7 @@ class Screen_Run(AuditModel):
         "n_mic":"#MIC",     
         "n_cc50":"#CC50",     
         "n_hc50":"#HC50",
-        "n_synmic":"#Syn",     
+        "n_synmic":"#micSyn",     
         "n_seq":"#Seq",     
     }
 
@@ -105,7 +105,7 @@ class Screen_Run(AuditModel):
     n_mic = models.IntegerField(default=0, verbose_name = "#MIC")
     n_cc50 = models.IntegerField(default=0, verbose_name = "#CC50")
     n_hc50 = models.IntegerField(default=0, verbose_name = "#HC50")
-    n_synmic = models.IntegerField(default=0, verbose_name = "#synMIC")
+    n_synmic = models.IntegerField(default=0, verbose_name = "#micSyn")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
 
 
