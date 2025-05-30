@@ -261,13 +261,13 @@ class ID_Sequence(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,SeqFile,SeqID,verbose=0):
+    def get(cls,SeqFile,SeqID,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(seq_id__orgbatch_id=OrgBatchID,seq_file=SeqFile,seq_id=SeqID)
+            retInstance = cls.objects.get(seq_file=SeqFile,seq_id=SeqID)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqFile}")
+                print(f"[ID-WGS Not Found] {SeqID} {SeqFile}")
             retInstance = None
         return(retInstance)
 
@@ -373,6 +373,7 @@ class WGS_CheckM(AuditModel):
         "seq_id":"SeqID",
         #"seq_id.run_id":'Run ID',
         "assembly":"Assembly",
+        "fasta":"FastA",
         "assembly_qc":"QC",
         "marker_lineage" :"Marker lineage",
         "completeness" :"Completeness",
@@ -398,6 +399,7 @@ class WGS_CheckM(AuditModel):
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
     assembly = models.CharField(max_length=25, blank=True, verbose_name = "Assembly")
+    fasta = models.CharField(max_length=55, blank=True, verbose_name = "Fasta")
     assembly_qc = models.CharField(max_length=15, blank=True, verbose_name = "Assembly QC") 
     marker_lineage = models.CharField(max_length=25, blank=True, verbose_name = "Linage")
     n_genomes = models.IntegerField(default=0, blank=True, verbose_name ="n_genomes")
@@ -426,33 +428,34 @@ class WGS_CheckM(AuditModel):
         indexes = [
         #     models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
              models.Index(name="checkqc_seqid_idx",fields=['seq_id']),
+             models.Index(name="checkqc_ass_idx",fields=['assembly']),
+             models.Index(name="checkqc_fa_idx",fields=['fasta']),
              models.Index(name="checkqc_comp_idx",fields=['completeness']),
              models.Index(name="checkqc_cont_idx",fields=['contamination']),
-             models.Index(name="checkqc_ass_idx",fields=['assembly']),
              models.Index(name="checkqc_qc_idx",fields=['assembly_qc']),
              models.Index(name="checkqc_ml_idx",fields=['marker_lineage']),
         ]
 
     #------------------------------------------------
-    def __str__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(self.seq_id)}"
-        return(retStr)
+    # def __str__(self) -> str:
+    #     retStr = f"{self.orgbatch_id} {str(self.seq_id)}"
+    #     return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.orgbatch_id} {str(str(self.seq_id))}"
+        retStr = f"{self.seq_id} [{self.assembly} - {self.fasta}]"
         return(retStr)
 
 
    #------------------------------------------------
     @classmethod
-    def get(cls,OrgBatchID,SeqID,Assembly,verbose=0):
+    def get(cls,SeqID,Assembly,FastA,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
         try:
-            retInstance = cls.objects.get(orgbatch_id=OrgBatchID,seq_id=SeqID,assembly=Assembly)
+            retInstance = cls.objects.get(seq_id=SeqID,assembly=Assembly,fasta=FastA)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {OrgBatchID} {SeqID} {Assembly}")
+                print(f"[ID-WGS Not Found] {SeqID} - {Assembly} - {FastA}")
             retInstance = None
         return(retInstance)
 

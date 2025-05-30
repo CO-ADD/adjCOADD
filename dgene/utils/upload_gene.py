@@ -24,59 +24,84 @@ from apputil.models import ApplicationUser, Dictionary
 class WGS_RDM():
 #-----------------------------------------------------------------------------
 
+    WGS_RDM_FOLDERS = {
+        'fastq':'01_FastQ',
+        'trim':'01_FastQ_Trim',
+        'assembly':'02_Assembly',
+        'fasta':'03_FastA',
+    }
+
     def __init__(self,BaseWGS,OrgbatchID,RunID,SeqMethod='Illumina',Source='CO-ADD',valLog=None):
         
-        WGS_RDM_FOLDERS = {
-            'fastq':'01_FastQ',
-            'trim':'01_FastQ_Trim',
-            'assembly':'02_Assembly',
-            'fasta':'03_FastA',
-        }
 
         self.wgs_base = BaseWGS
-        self.orgbatch_id = OrgbatchID
+        self.seq_name = f"{OrgbatchID}_{RunID}"
+
+        if '-' in OrgbatchID:
+            self.orgbatch_id = OrgbatchID.split('-')[0]
+        else:
+            self.orgbatch_id = OrgbatchID
         self.run_id = RunID
-        self.seq_id = None
         self.seq_type = 'WGS'
         self.seq_method =SeqMethod
         self.seq_dir = self.get_subdir(self.orgbatch_id)
-        self.seq_code = f"{OrgbatchID}_{RunID}"
         self.seq_file = 'Contigs'
         self.val_log = valLog
+        self.kraken_organism =None
 
         self.seq_dict =  {
-                    'seq_name'   : self.seq_code,
+                    'seq_name'   : self.seq_name,
                     'orgbatch_id': self.orgbatch_id,
                     'run_id'     : self.run_id,
                     'seq_type'   : self.seq_type,
                     'seq_method' : self.seq_method,
                     'source'     : Source,
-                    'source_code': self.seq_code,
+                    'source_code': self.seq_name,
                     'source_link': f"RDM {self.seq_type}: {self.orgbatch_id}_{self.run_id}",
                     'seq_file'   : self.seq_file,
                     'reference'  : ''
                 }
        
         
-        self.fastq_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['fastq'],self.seq_dir)
-        self.trim_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['trim'],self.seq_dir,self.seq_code)
-        self.assembly_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['assembly'],self.seq_dir,self.seq_code)
-        self.fasta_dir = os.path.join(self.wgs_base,WGS_RDM_FOLDERS['fasta'],self.seq_dir,self.seq_code)
+        self.fastq_dir = os.path.join(self.wgs_base,self.WGS_RDM_FOLDERS['fastq'],self.seq_dir)
+        self.trim_dir = os.path.join(self.wgs_base,self.WGS_RDM_FOLDERS['trim'],self.seq_dir,self.seq_name)
+        self.assembly_dir = os.path.join(self.wgs_base,self.WGS_RDM_FOLDERS['assembly'],self.seq_dir,self.seq_name)
+        self.fasta_dir = os.path.join(self.wgs_base,self.WGS_RDM_FOLDERS['fasta'],self.seq_dir,self.seq_name)
 
+        # FastQ Files ----------------------
         self.fastq_files = {}
+        self.trim_files = {}
+        self.n_fastq = 0
+        self.get_fastq_files()
+
+        # FastQ Files ----------------------
+        self.seq_id = Genome_Sequence.get(None,self.seq_name)
+
 
     #-------------------------------------------
     def __str__(self):
-        return(self.seq_code)
+        return(self.seq_name)
 
     #-------------------------------------------
     def get_fastq_files(self):
         CHECK_FASTQ = {'pe1':'R1.fastq.gz','pe2':'R2.fastq.gz','se':'S.fastq.gz'}
         for ft in CHECK_FASTQ:
-            #print(os.path.join(self.fastq_dir, f"{self.seq_code}_{CHECK_FASTQ[ft]}"))
-            if os.path.isfile(os.path.join(self.fastq_dir, f"{self.seq_code}_{CHECK_FASTQ[ft]}")):
-                self.fastq_files[ft] = f"{self.seq_code}_{CHECK_FASTQ[ft]}"                              
+            #print(os.path.join(self.fastq_dir, f"{self.seq_name}_{CHECK_FASTQ[ft]}"))
+            if os.path.isfile(os.path.join(self.fastq_dir, f"{self.seq_name}_{CHECK_FASTQ[ft]}")):
+                self.fastq_files[ft] = f"{self.seq_name}_{CHECK_FASTQ[ft]}"
 
+        CHECK_TRIM = {'pe1':'P1.fastq.gz','pe2':'P2.fastq.gz','se':'S.fastq.gz'}
+        for ft in CHECK_TRIM:
+            #print(os.path.join(self.fastq_dir, f"{self.seq_name}_{CHECK_FASTQ[ft]}"))
+            if os.path.isfile(os.path.join(self.trim_dir, f"{self.seq_name}_{CHECK_TRIM[ft]}")):
+                self.trim_files[ft] = f"{self.seq_name}_{CHECK_TRIM[ft]}"
+
+        self.n_fastq = len(self.trim_files)+len(self.fastq_files)
+
+    #-------------------------------------------
+    @staticmethod
+    def listFolders(Path):
+        return([ name for name in os.listdir(Path) if os.path.isdir(os.path.join(Path, name)) ])
 
     #-------------------------------------------
     @staticmethod
@@ -88,6 +113,14 @@ class WGS_RDM():
         _org = OrgBatchID.split('_')
         return(f"{_org[0]}_{int(int(_org[1])/binsize)*binsize:04d}")
 
+    #-----------------------------------------------------------------------------
+    @staticmethod
+    def split_BatchID_RunID(batch_run_id):
+        arrStr = batch_run_id.split("_")
+        batchID = '_'.join(arrStr[0:3])
+        runID = '_'.join(arrStr[3:])
+        return batchID, runID
+
 
 
     def upload_GenomeSequence(self,upload=False,uploaduser=None):
@@ -95,18 +128,21 @@ class WGS_RDM():
         # check user
         self.get_fastq_files()
         #print(self)
-        if len(self.fastq_files) > 0:
+        if self.n_fastq > 0:
             appuser = None
             if uploaduser:
                 appuser = ApplicationUser.get(uploaduser)
 
             self.seq_id = imp_Sequence_fromDict(self.seq_dict,self.val_log) 
-            print(self.seq_id)
-            if self.seq_id.VALID_STATUS:
-                if upload:
-                    self.seq_id.save(user=appuser)
+            #print(f" [upload_GenomeSequence] {self.seq_id}")
+            if self.seq_id:
+                if self.seq_id.VALID_STATUS:
+                    if upload:
+                        self.seq_id.save(user=appuser)
             else:
                 self.val_log.show(logTypes= ['Error'])
+        else:
+            print(f" [upload_GenomeSequence] No FastQ files found")
 
     #-----------------------------------------------------------------------------------
     def upload_CheckM(self, upload=False,uploaduser=None):
@@ -124,29 +160,121 @@ class WGS_RDM():
 
         if os.path.exists(self.assembly_dir):
 
-            # SeqDict = gen_SeqDict(WGS.orgbatch_id, WGS.run_id,'WGS',WGS.wgs_method,'CO-ADD')
-
-            # Sequences -----------------------------
-            #upload_GenomeSequence(WGS)
-            print(f"[WGS-Assembly] {self.assembly_dir} {self.orgbatch_id} {self.run_id} {self.seq_id}")
-
-            #sDict = {'seq_name':f"{WGS.orgbatch_id}_{WGS.run_id}"}
-
-            # CheckM -----------------------------
             lCheckM=get_CheckM_Info(self.assembly_dir,self.orgbatch_id,self.run_id, 
                                     Assemblies = ['spades','shovill'], 
                                     outType = 'contigs_filtered', 
                                     Contamination_cutOff = 5.0)
+            
             for row in lCheckM:
-                djCheckM = imp_CheckM_fromDict(row, self.val_log, self.seq_id)
-                #print(djCheckM.VALID_STATUS)
-                if djCheckM.VALID_STATUS:
-                    
-                    if upload:
-                        djCheckM.save(user=appuser)
+                if self.seq_id:
+                    djCheckM = imp_CheckM_fromDict(row, self.val_log, self.seq_id)
+                    # #print(djCheckM.VALID_STATUS)
+                    if djCheckM.VALID_STATUS:
+                        
+                        if upload:
+                            djCheckM.save(user=appuser)
+                        else:
+                            self.val_log.show(logTypes= ['Error'])
+                #lstCheckM.append(dict(sDict,**row))
+
+    #-----------------------------------------------------------------------------------
+    def upload_FastA_ID(self, upload=False,uploaduser=None,verbose=False):  
+    #-----------------------------------------------------------------------------
+
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
+
+        if os.path.exists(self.fasta_dir):
+
+            # Kraken2 -----------------------------
+            lKraken=get_Kraken_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
+            self.seq_dict['kraken_organisms'] = []
+            if len(lKraken) >0 :
+                self.kraken_organism = lKraken[0]['org_name']
+                for v in lKraken:
+                    self.seq_dict['kraken_organisms'].append(f"{v['org_name']} ({v['tax_id']}) [{v['pct']:.1f} pct]")
+
+            #print(self.kraken_organism)
+            #SeqDict['kraken_organisms'] = merge_kraken(lKraken)
+
+            # MLST -----------------------------
+            lMLST=get_MLST_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
+            if len(lMLST) >0:
+                self.seq_dict['mlst_scheme'] = lMLST[0]['mlst_scheme']
+                self.seq_dict['mlst_seqtype'] = lMLST[0]['mlst_seqtype']
+                self.seq_dict['mlst_alleles'] = lMLST[0]['mlst_alleles']
+
+            # GTDBTK -----------------------------
+            lGT=get_GTDBTK_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
+            if len(lGT) >0:
+                self.seq_dict['gtdbtk_class'] = lGT[0]['gtdbtk_class']
+                self.seq_dict['gtdbtk_fastani'] = f"{lGT[0]['gtdbtk_fastani_ref']} ({lGT[0]['gtdbtk_fastani_ani']})"
+
+            #print(SeqDict)
+            if self.seq_id:
+                djIDSeq = imp_IDSeq_fromDict(self.seq_dict, self.val_log, objSeq = self.seq_id)
+                if djIDSeq:
+                    if djIDSeq.VALID_STATUS:
+                        #print(djIDSeq.VALID_STATUS)
+                        if upload:
+                            djIDSeq.save(user=appuser)
                     else:
                         self.val_log.show(logTypes= ['Error'])
-                #lstCheckM.append(dict(sDict,**row))
+
+    #-----------------------------------------------------------------------------------
+    def upload_AMR(self, Methods= ['AMR Finder'], upload=False,uploaduser=None,verbose=False):
+    #-----------------------------------------------------------------------------------
+
+        appuser = None
+        if uploaduser:
+            appuser = ApplicationUser.get(uploaduser)
+
+        
+        if os.path.exists(self.fasta_dir):
+
+            # SeqDict = gen_SeqDict(OrgBatchID, RunID,'WGS','Illumina','CO-ADD')
+            # # Sequences -----------------------------
+            # SeqDict['seq_id'] = upload_GenomeSequence(OrgBatchID, RunID, SeqDict,
+            #                                 vLog,upload=upload,uploaduser=uploaduser)
+
+            # if verbose:
+            #     print(f"[WGS-AMR] {FastaDir} {OrgBatchID} {RunID} ")
+            #             # Sequences -----------------------------
+
+            # AMR Finder -----------------------------
+            if 'AMR Finder' in Methods:
+                lAmrFinder=get_AMRFinder_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
+                for row in lAmrFinder:
+                    row['gene_id'] = upload_Gene(row,self.val_log,upload=upload,uploaduser=uploaduser)
+                    row['seq_id'] = self.seq_id
+
+                    djAMRgt = imp_AMRGenotype_fromDict(row,self.val_log)
+                    if djAMRgt.VALID_STATUS:
+                        if upload:
+                            djAMRgt.save(user=appuser)
+                    else:
+                        self.val_log.show(logTypes= ['Error'])
+
+            # Abricate CARD -----------------------------
+            if 'Abricate card' in Methods:
+                lAbCard=get_Abricate_Info(self.fasta_dir,self.orgbatch_id, self.run_id,DB='card')
+                for row in lAbCard:
+
+                    row['gene_id'] = upload_Gene(row,self.val_log,upload=upload,uploaduser=uploaduser)
+                    row['seq_id'] = self.seq_id
+
+                    djAMRgt = imp_AMRGenotype_fromDict(row,self.val_log)
+                    if djAMRgt.VALID_STATUS:
+                        if upload:
+                            djAMRgt.save(user=appuser)
+                    else:
+                        self.val_log.show(logTypes= ['Error'])
+
+            # CARD RGI -----------------------------
+            if 'RGI' in Methods:
+                lRGI = []
+
 
 #-----------------------------------------------------------------------------
 def get_RDM(MicroOrgDB):

@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(
 #    format="[%(name)-20s] %(message)s ",
     format="%(message)s",
-    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
-#    handlers=[logging.StreamHandler()],
+#    handlers=[logging.FileHandler(logFileName,mode='w'),logging.StreamHandler()],
+    handlers=[logging.StreamHandler()],
     level=logLevel)
 
 #-----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ def main(prgArgs,djDir):
     django.setup()
 
     from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
-    from dgene.utils.upload_gene import (WGS_RDM, split_BatchID_RunID, get_subdir,
+    from dgene.utils.upload_gene import (WGS_RDM, get_subdir,
                                         upload_Trim, upload_FastA, upload_AMR)
     
     from apputil.utils.validation_log import Validation_Log
@@ -59,27 +59,32 @@ def main(prgArgs,djDir):
                           valLog=Validation_Log('WGS-Upload'))
 
             #print(WGS.assembly_dir)
-
+            logger.info(f" {WGS.seq_name} : {WGS.orgbatch_id} {WGS.run_id} [{WGS.seq_id}] ({WGS.n_fastq})")
             WGS.upload_GenomeSequence(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
             WGS.upload_CheckM(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            WGS.upload_FastA_ID(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            WGS.upload_AMR(Methods=['AMR Finder'], upload=prgArgs.upload,uploaduser=prgArgs.appuser)
 
-            # 
-        
-            # for subDir in listFolders(AssemblyBase):
-            #     zAssemblyFolder = os.path.join(AssemblyBase,subDir)
-            #     for BatchRunID in listFolders(zAssemblyFolder):
-            #         dirAss = os.path.join(zAssemblyFolder,f"{BatchRunID}")
-            #         if os.path.exists(dirAss):
+        elif prgArgs.all_folder:
+            AssemblyBase = os.path.join(djDir['rdmDir_WGS'],WGS_RDM.WGS_RDM_FOLDERS['assembly'])
+            valLog=Validation_Log('WGS-Upload')
 
-            #             OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
-            #             if prgArgs.runid:
-            #                 fProcess = prgArgs.runid == RunID
-            #             else:
-            #                 fProcess = True
-                        
-            #             if fProcess:
-            #                 print(f"[WGS-Assembly] {OrgBatchID} {RunID}")
-            #                 upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+            for subDir in WGS_RDM.listFolders(AssemblyBase):
+                for SeqID in WGS_RDM.listFolders(os.path.join(AssemblyBase,subDir)):
+                    # Ignore Folder with _ at the beginning
+                    if SeqID[0] != '_':
+                        OrgBatchID, RunID = WGS_RDM.split_BatchID_RunID(SeqID)
+
+                        WGS = WGS_RDM(djDir['rdmDir_WGS'],OrgBatchID,RunID,
+                                    SeqMethod='Illumina',
+                                    valLog=valLog)
+
+                        logger.info(f" {WGS.seq_name} : {WGS.orgbatch_id} {WGS.run_id} [{WGS.seq_id}] ({WGS.n_fastq})")
+                        WGS.upload_GenomeSequence(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                        WGS.upload_CheckM(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                        WGS.upload_FastA_ID(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+                        WGS.upload_AMR(Methods=['AMR Finder'], upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
 
 #==============================================================================
 if __name__ == "__main__":
@@ -102,8 +107,9 @@ if __name__ == "__main__":
 #    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
 #    prgParser.add_argument("--plate",default=None,required=False, dest="plateid", action='store', help="Single File to parse")
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("-b","--orgbatch",default=None,required=True, dest="orgbatchid", action='store', help="OrgBatch ID")
-    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
+    prgParser.add_argument("-b","--orgbatch",default=None,required=False, dest="orgbatchid", action='store', help="OrgBatch ID")
+    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="RunID")
+    prgParser.add_argument("--all",default=False, required=False, dest="all_folder", action='store_true', help="Parse for all folders")
     # prgParser.add_argument("-e","--excel",default=None,required=True, dest="excelfile", action='store', help="Excel File")
     # prgParser.add_argument("--prefix",default=None,required=False, dest="prefix", action='store', help="Prefix to add to PlateID")
 

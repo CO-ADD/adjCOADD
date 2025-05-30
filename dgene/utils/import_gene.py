@@ -47,34 +47,38 @@ def imp_Sequence_fromDict(iDict,valLog):
         valLog.add_log('Error','RunID does not Exists',iDict['run_id'])
         validStatus = False
 
-    # Find Instance if exist
-    djSeq = Genome_Sequence.get(None,iDict['seq_name'])
-    if djSeq is None:
-        djSeq = Genome_Sequence()
-        djSeq.orgbatch_id = OrgBatch
-        djSeq.seq_type = SeqType
-        djSeq.seq_method = SeqMethod
-        djSeq.run_id = RunID
-        djSeq.seq_name = iDict['seq_name']
-        valLog.add_log('Info','New Sequence',f"{iDict['seq_name']} ")
+    if validStatus:
+        # Find Instance if exist
+        djSeq = Genome_Sequence.get(SeqID=None, SeqName=iDict['seq_name'],verbose=1)
+        if djSeq is None:
+            djSeq = Genome_Sequence()
+            djSeq.orgbatch_id = OrgBatch
+            djSeq.seq_type = SeqType
+            djSeq.seq_method = SeqMethod
+            djSeq.run_id = RunID
+            djSeq.seq_name = iDict['seq_name']
+            print(f" [imp_Sequence_fromDict] New Sequence {iDict['seq_name']}")
+            valLog.add_log('Info','New Sequence',f"{iDict['seq_name']} ")
 
-    if 'seq_date' in iDict:
-        djSeq.seq_date = iDict['seq_date']
-    djSeq.source = iDict['source']
-    djSeq.source_code = iDict['source_code']
-    djSeq.source_link = iDict['source_link']
-    djSeq.reference = iDict['reference']
+        if 'seq_date' in iDict:
+            djSeq.seq_date = iDict['seq_date']
+        djSeq.source = iDict['source']
+        djSeq.source_code = iDict['source_code']
+        djSeq.source_link = iDict['source_link']
+        djSeq.reference = iDict['reference']
 
-    djSeq.set_defaults_model()
-    validDict = djSeq.validate_fields()
-    if validDict:
-        #validStatus = False
-        for k in validDict:
-            valLog.add_log('Warning',validDict[k],k)
+        djSeq.set_defaults_model()
+        validDict = djSeq.validate_fields()
+        if validDict:
+            #validStatus = False
+            for k in validDict:
+                valLog.add_log('Warning',validDict[k],k)
 
-    djSeq.VALID_STATUS = validStatus
+        djSeq.VALID_STATUS = validStatus
 
-    return(djSeq)
+        return(djSeq)
+    else:
+        return(None)
 
 # ----------------------------------------------------------------------------------------------------
 def imp_FastQC_fromDict(iDict, valLog, objSeq = None):
@@ -152,10 +156,10 @@ def imp_CheckM_fromDict(iDict, valLog, objSeq = None):
             iDict[c] = None
 
     validStatus = True
-    djOrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
-    if djOrgBatch is None:
-        valLog.add_log('Error','Organism Batch does not Exists',iDict['orgbatch_id'],'Use existing OrganismBatch ID')
-        validStatus = False
+    # djOrgBatch = Organism_Batch.get(iDict['orgbatch_id']) 
+    # if djOrgBatch is None:
+    #     valLog.add_log('Error','Organism Batch does not Exists',iDict['orgbatch_id'],'Use existing OrganismBatch ID')
+    #     validStatus = False
 
     if objSeq is None:
         objSeq = Genome_Sequence.get(None,iDict['seq_name'])
@@ -164,13 +168,14 @@ def imp_CheckM_fromDict(iDict, valLog, objSeq = None):
         validStatus = False
 
     # Find Instance if exist
-    djInst = WGS_CheckM.get(djOrgBatch,objSeq,iDict['assembly'],verbose=1)
+    djInst = WGS_CheckM.get(objSeq,iDict['assembly'],iDict['fasta'],verbose=0)
     if djInst is None:
         djInst = WGS_CheckM()
-        djInst.orgbatch_id = djOrgBatch
+        #djInst.orgbatch_id = djOrgBatch
         djInst.seq_id = objSeq
         djInst.assembly = iDict['assembly']
-        valLog.add_log('Info','New CheckM',f"{djOrgBatch} {objSeq} {iDict['assembly']}",'-')
+        djInst.fasta = iDict['fasta']
+        valLog.add_log('Info','New CheckM',f"{objSeq} {iDict['assembly']} {iDict['fasta']}",'-')
 
     djInst.assembly_qc = iDict['assembly_qc']
     djInst.marker_lineage = iDict['marker_lineage']
@@ -231,14 +236,14 @@ def imp_IDSeq_fromDict(iDict,valLog, objSeq = None):
         valLog.add_log('Error','Sequence does not Exists',iDict['seq_name'],'Use existing Sequence')
         validStatus = False
     else:
-        iDict['seq_id'] = str(objSeq)
+        iDict['seq_id'] = objSeq
 
     SeqFile = Dictionary.get(ID_Sequence.DICTIONARY_FIELDS["seq_file"],iDict['seq_file'])
     if SeqFile is None:
         valLog.add_log('Error','ID Type not Correct',iDict['seq_file'],'-')
         validStatus = False
 
-    djInst = ID_Sequence.get(OrgBatch,iDict['seq_file'],iDict['seq_id'])
+    djInst = ID_Sequence.get(iDict['seq_file'],iDict['seq_id'])
     if djInst is None:
         djInst = ID_Sequence()
         djInst.orgbatch_id = OrgBatch
@@ -368,6 +373,7 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
         validStatus = False
 
     djAMRGt = AMR_Genotype.get(iDict['gene_id'],iDict['amr_method'],iDict['seq_id'],None)
+ 
     if djAMRGt is None:
         djAMRGt = AMR_Genotype()
         djAMRGt.gene_id  = iDict['gene_id']
@@ -392,5 +398,4 @@ def imp_AMRGenotype_fromDict(iDict,valLog):
             valLog.add_log('Warning',validDict[k],k)
 
     djAMRGt.VALID_STATUS = validStatus
-
     return(djAMRGt)

@@ -113,11 +113,13 @@ def get_CheckM_Info(AssemblyFolder,OrgBID,RunID, Assemblies = ['spades','shovill
                     if 'type' in line:
                         if line['type'] == outType:
                             checkmcDict = line
-                            checkmcDict['seq_name'] = f"{OrgBID}_{RunID}"
-                            checkmcDict['orgbatch_id'] = OrgBID
-                            checkmcDict['run_id'] = RunID
+                            # checkmcDict['seq_name'] = f"{OrgBID}_{RunID}"
+                            # checkmcDict['orgbatch_id'] = OrgBID
+                            # checkmcDict['run_id'] = RunID
                             checkmcDict['assembly'] = Assembly
                             checkmcDict["assembly_qc"] = line['status']
+                            checkmcDict["fasta"] = line['type']
+                            
                             # if float(checkmcDict["contamination"]) >= Contamination_cutOff:
                             #     checkmcDict["assembly_qc"] = 'Failed'
                             # else:
@@ -164,6 +166,9 @@ def get_Kraken_Info(FastAFolder,OrgBID,RunID, inType = 'fasta',outType="S",pctCu
 #-----------------------------------------------------------------------------
     KrakenDir = os.path.join(FastAFolder,"kraken")
     KrakenF = os.path.join(KrakenDir,f"{OrgBID}_{RunID}_{inType}.report")
+    if not os.path.exists(KrakenF):
+        KrakenF = os.path.join(KrakenDir,f"{OrgBID}_{inType}.report")
+
     outLst = []
     if os.path.exists(KrakenF):
         with open(KrakenF) as file:
@@ -174,6 +179,7 @@ def get_Kraken_Info(FastAFolder,OrgBID,RunID, inType = 'fasta',outType="S",pctCu
                     if pctSeq >= pctCutOff:
                         org_name = line[5].strip()
                         outLst.append({'org_name': org_name, 'tax_id': line[4], 'pct': pctSeq})
+    outLst = sorted(outLst, key=lambda d: d['pct'], reverse=True)
     return(outLst)
 
 
@@ -201,6 +207,9 @@ def get_MLST_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     MlstDir = os.path.join(FastAFolder,"mlst")
     MlstF = os.path.join(MlstDir,f"{OrgBID}_{RunID}_{inType}_mlst.tsv")
+    if not os.path.exists(MlstF):
+        MlstF = os.path.join(MlstDir,f"{OrgBID}_{inType}_mlst.tsv")
+
     outLst = []
     if os.path.exists(MlstF):
         with open(MlstF) as file:
@@ -214,6 +223,9 @@ def get_GTDBTK_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     GTDir = os.path.join(FastAFolder,"gtdbtk")
     GTF = os.path.join(GTDir,f"{OrgBID}_{RunID}_{inType}_gtdbtk.tsv")
+    if not os.path.exists(GTF):
+        GTF = os.path.join(GTDir,f"{OrgBID}_{inType}_gtdbtk.tsv")
+
     outLst = []
     if os.path.exists(GTF):
         with open(GTF) as file:
@@ -234,6 +246,9 @@ def get_AMRFinder_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
     AmrFinderDir = os.path.join(FastAFolder,"amrfinder")
     AmrFinderF = os.path.join(AmrFinderDir,f"{OrgBID}_{RunID}_{inType}_amrfinder.tsv")
+    if not os.path.exists(AmrFinderF):
+        AmrFinderF = os.path.join(AmrFinderDir,f"{OrgBID}_{inType}_amrfinder.tsv")
+
     outLst = []
     if os.path.exists(AmrFinderF):
         with open(AmrFinderF) as file:
@@ -260,6 +275,8 @@ def get_Abricate_Info(FastAFolder,OrgBID,RunID,inType="fasta",DB='card',pctCutOf
 #-----------------------------------------------------------------------------
     AbricateFinderDir = os.path.join(FastAFolder,"abricate")
     AbricateFinderF = os.path.join(AbricateFinderDir,f"{OrgBID}_{RunID}_{inType}_{DB}.tsv")
+    if not os.path.exists(AbricateFinderF):
+        AbricateFinderF = os.path.join(AbricateFinderDir,f"{OrgBID}_{inType}_{DB}.tsv")
 
     AbricateType = {
         'card':{'amr_class':'AMR'}
@@ -295,7 +312,20 @@ def get_Abricate_Info(FastAFolder,OrgBID,RunID,inType="fasta",DB='card',pctCutOf
 
 
 
+#-----------------------------------------------------------------------------
+def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
+#-----------------------------------------------------------------------------
+    RGIDir = os.path.join(FastAFolder,"rgi")
+    RgiF = os.path.join(RGIDir,f"{OrgBID}_{RunID}_{inType}_rgi.tsv")
+    if not os.path.exists(GTF):
+        RgiF = os.path.join(RGIDir,f"{OrgBID}_{inType}_rgi.tsv")
 
+    outLst = []
+    if os.path.exists(RgiF):
+        with open(RgiF) as file:
+            tsv_file = csv.reader(file,delimiter="\t",)
+    #         for line in tsv_file:
+    return(outLst)
 
 
 # #-----------------------------------------------------------------------------

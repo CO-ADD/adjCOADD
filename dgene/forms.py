@@ -203,7 +203,8 @@ class WGS_CheckM_Filter(Filterbase):
 
     f_OrgBatchID = CharFilter(field_name='seq_id__orgbatch_id__orgbatch_id', lookup_expr='icontains',label="OrgBatch ID")
     f_OrgName = ChoiceFilter(field_name='seq_id__orgbatch_id__organism_id__organism_name', choices=[], label="Organism Name")
-  
+
+    # --------------------------------------
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for _key, _item in self.FilterSet_Dict.items():
