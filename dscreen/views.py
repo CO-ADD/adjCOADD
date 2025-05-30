@@ -29,9 +29,10 @@ from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteVie
 # from adjcoadd.constants import *
 
 from dscreen.models import Screen_Run
-from dsummary.models import Summary_ScreenRun 
-from dscreen.forms import SumScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+#from dsummary.models import Summary_ScreenRun 
+from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
+from dscreen.utils.summary import update_screenrun_summary
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
@@ -41,13 +42,13 @@ from applib.report.screen_data import Report_Screening
 #=================================================================================================
 class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
-    model = Summary_ScreenRun  
+    model = Screen_Run  
     template_name = 'dscreen/screenrun/screenrun_list.html'
-    filterset_class = SumScreenRun_Filter
+    filterset_class = ScreenRun_Filter
     model_fields = model.HEADER_FIELDS
     model_name = 'Screen_Run'
     app_name = 'dscreen'
-    ordering=['-run_id__acreated_at']
+    ordering=['-acreated_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -91,9 +92,9 @@ def ScreenRun_CreateView(req):
                 with transaction.atomic(using='dscreen'):
                     instance=form.save(commit=False) 
                     instance.save(**kwargs)
-                    Summary_ScreenRun.update(instance, to_save=True)
                     ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Screen Run','Completed')
                     return redirect(req.META['HTTP_REFERER'])
+
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     return redirect(req.META['HTTP_REFERER'])                
@@ -114,7 +115,6 @@ def ScreenRun_DetailView(req, pk):
     context={}
     # try:
     _object=get_object_or_404(Screen_Run, run_id=pk)
-    _summary = get_object_or_404(Summary_ScreenRun, run_id=pk)
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
@@ -124,7 +124,6 @@ def ScreenRun_DetailView(req, pk):
         print(f"[ScreenRun_DetailView] POST: {req.POST}")
 
     context["object"]=_object
-    context["summary"]=_summary
     context["form"]=form
 
     # plate_data_df = get_screenrun_plates(_object.run_id)
@@ -158,8 +157,9 @@ def ScreenRun_UpdateView(req, pk):
                 form=ScreenRun_UpdateForm(req.POST, instance=obj)    
                 if form.is_valid():       
                     instance=form.save(commit=False)
+                    update_screenrun_summary(instance)
                     instance.save(**kwargs)
-                    Summary_ScreenRun.update(instance, to_save=True)
+                    #update_screenrun_summary.update(instance, to_save=True)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Screen_Run','Completed')
                     # form.save_m2m() 
                     return redirect(req.META['HTTP_REFERER'])

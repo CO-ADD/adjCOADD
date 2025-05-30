@@ -62,8 +62,6 @@ class Project(AuditModel):
         ['report_status','report_comment','pub_status','pub_date','pub_name','source','source_code','reference']
     ]
 
-    ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
-
     # Add Project Upload File Name
 
     project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
@@ -115,15 +113,6 @@ class Project(AuditModel):
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
     #owner_users = models.ManyToManyField(Collab_User)
-
-    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
-    ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
-    ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
-                                 verbose_name = "Old ContactsUser", null=True, blank=True)
-    ora_organisation = models.CharField(max_length=100, blank=True, verbose_name = "Old Organisation")
-    ora_psreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="PS Report")
-    ora_hcreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HC Report")
-    ora_hvreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HV Report")
          
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
@@ -137,6 +126,43 @@ class Project(AuditModel):
         db_column="pub_status", related_name="%(class)s_pub_statust")
     pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
 
+    # -- Oracle-CastDB data ------------------------------------------------------------
+    ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
+
+    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
+    ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
+    ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
+                                 verbose_name = "Old ContactsUser", null=True, blank=True)
+    ora_organisation = models.CharField(max_length=100, blank=True, verbose_name = "Old Organisation")
+    ora_psreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="PS Report")
+    ora_hcreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HC Report")
+    ora_hvreport_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="HV Report")
+
+
+    # -- Calculated Fields - No View/Update ------------------------------------------
+    CALCULATED_FIELDS = ['n_compounds','n_mcc_compounds','n_structure','n_barcode',
+                         'n_motherplates','n_testplates','n_runids','n_assays',
+                         'n_ps_compounds','n_dr_compounds','n_syn_compounds',
+                         'n_sc_hits','n_mic_hits','n_tox_hits',
+                         'screen_date']
+
+    n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
+    n_mcc_compounds = models.IntegerField(default=0, verbose_name = "#MCC")
+    n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
+    n_barcode = models.IntegerField(default=0, verbose_name = "#BCode")
+    n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
+    n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
+    n_runids = models.IntegerField(default=0, verbose_name = "#Runs")
+    n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
+    n_ps_compounds = models.IntegerField(default=0, verbose_name = "#PS")
+    n_dr_compounds = models.IntegerField(default=0, verbose_name = "#DR")
+    n_syn_compounds = models.IntegerField(default=0, verbose_name = "#SYN")
+    n_sc_hits = models.IntegerField(default=0, verbose_name = "#Inhib Hits")
+    n_mic_hits = models.IntegerField(default=0, verbose_name = "#MIC Hits")
+    n_tox_hits = models.IntegerField(default=0, verbose_name = "#Tox Hits")
+    screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
+
+
     class Meta:
         app_label = 'dsample'
         db_table = 'project'
@@ -144,6 +170,11 @@ class Project(AuditModel):
         indexes = [
             models.Index(name="prj_pname_idx", fields=['project_name']),
             models.Index(name="prj_opid_idx", fields=['ora_project_id']),
+            models.Index(name="prj_ncmp_idx", fields=['n_compounds']),
+            models.Index(name="prj_nstr_idx", fields=['n_structure']),
+            models.Index(name="prj_nsh_idx", fields=['n_sc_hits']),
+            models.Index(name="prj_nmh_idx", fields=['n_mic_hits']),
+            models.Index(name="prj_nth_idx", fields=['n_tox_hits']),
         ]
 
     #------------------------------------------------
