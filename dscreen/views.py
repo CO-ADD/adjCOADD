@@ -111,6 +111,13 @@ def ScreenRun_DetailView(req, pk):
     context["object"]=_object
     context["form"]=form
 
+    if str(_object.run_type) in ['HCR','PSR']:
+        context["process"] = {"type":"Screening"}
+    elif str(_object.run_type) in ['SEQ']:
+        context["process"] = {"type":"Sequencing"}
+    else:
+        context["process"] = {"type":"Undefined"}
+
     # plate_data_df = get_screenrun_plates(_object.run_id)
     # context["org_id_obj_count"] = len(id_data_df)
     # context["org_id_obj"] = id_data_df.values.tolist()

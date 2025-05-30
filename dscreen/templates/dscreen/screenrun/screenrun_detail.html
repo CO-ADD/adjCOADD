@@ -35,55 +35,84 @@
             </div>
         </div>
 
-        <!-- Processing -->
-        <div class="accordion bg-transparent w-100" id="screenrun-process">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_01">
-                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRunProcess" aria-expanded="true" aria-controls="collapse_01">
-                <h5 class="fs-6 my-0">
-                    Processing
-                </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
-                <!-- prettier-ignore -->
-                </button>
-            </h2>
-            <div id="collapseRunProcess" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
-                data-bs-parent="#screenrun-process">
-                <div class="accordion-body">
-                <div class="table-responsive">
-                    {% include 'dscreen/screenrun/screenrun_process.html' with summary=summary process_status="" %}
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
+        {% if process.type == "Screening" %}
 
-        <!-- Plates -->
-        <div class="accordion bg-transparent w-100" id="screenrun-plates">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_02">
-                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRunPlates" aria-expanded="true" aria-controls="collapse_02">
-                <h5 class="fs-6 my-0">
-                    Plates
-                </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
-                <!-- prettier-ignore -->
-                </button>
-            </h2>
-            <div id="collapseRunPlates" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_02"
-                data-bs-parent="#screenrun-plates">
-                <div class="accordion-body">
-                <div class="table-responsive">
+            <!-- Processing -->
+            <div class="accordion bg-transparent w-100" id="screenrun-process">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_01">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunProcess" aria-expanded="true" aria-controls="collapse_01">
+                    <h5 class="fs-6 my-0">
+                        Processing
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
                     <!-- prettier-ignore -->
-                    Master/TestPlates
+                    </button>
+                </h2>
+                <div id="collapseRunProcess" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
+                    data-bs-parent="#screenrun-process">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        {% include 'dscreen/screenrun/screenrun_process.html' with summary=summary process_status="" %}
+                    </div>
+                    </div>
                 </div>
                 </div>
             </div>
-            </div>
-        </div>
 
+            <!-- Plates -->
+            <div class="accordion bg-transparent w-100" id="screenrun-plates">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_02">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunPlates" aria-expanded="true" aria-controls="collapse_02">
+                    <h5 class="fs-6 my-0">
+                        Plates
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunPlates" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_02"
+                    data-bs-parent="#screenrun-plates">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        Master/TestPlates
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {% elif process.type == "Sequence" %}
+
+            <!-- Processing -->
+            <div class="accordion bg-transparent w-100" id="screenrun-process">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_01">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunProcess" aria-expanded="true" aria-controls="collapse_01">
+                    <h5 class="fs-6 my-0">
+                        Processing
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunProcess" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
+                    data-bs-parent="#screenrun-process">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        {% comment %} {% include 'dscreen/screenrun/screenrun_process.html' with summary=summary process_status="" %} {% endcomment %}
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {% endif %}
         <!-- Projects -->
         <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
             <div class="accordion-item">
