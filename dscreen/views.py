@@ -55,21 +55,6 @@ class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
         context['base_template'] = 'coadd_base.html'
         return context
 
-# class XX_ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
-#     login_url = '/'
-#     model = Screen_Run  
-#     template_name = 'dscreen/screenrun/screenrun_list.html'
-#     filterset_class = ScreenRun_Filter
-#     model_fields = model.HEADER_FIELDS
-#     model_name = 'Screen_Run'
-#     app_name = 'dscreen'
-#     ordering=['-acreated_at']
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['base_template'] = 'coadd_base.html'
-#         return context
-
 # -----------------------------------------------------------------
 # class ScreenRun_CardView(ScreenRun_ListView):
 #     template_name = 'dscreen/screenrun/screenrun_card.html'
@@ -118,10 +103,10 @@ def ScreenRun_DetailView(req, pk):
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
-    if req.method == 'GET':
-        print(f"[ScreenRun_DetailView] GET {req.GET}")
-    if req.method == 'POST':
-        print(f"[ScreenRun_DetailView] POST: {req.POST}")
+    # if req.method == 'GET':
+    #     print(f"[ScreenRun_DetailView] GET {req.GET}")
+    # if req.method == 'POST':
+    #     print(f"[ScreenRun_DetailView] POST: {req.POST}")
 
     context["object"]=_object
     context["form"]=form
@@ -147,21 +132,18 @@ def ScreenRun_UpdateView(req, pk):
     form=ScreenRun_UpdateForm(initial={'run_type':_object.run_type, 
                                       'run_status':_object.run_status,}, 
                                     instance=_object)
-    print(f"[ScreenRun_UpdateView] {req.method}")
-    print(f"[ScreenRun_UpdateView] {req.session}")
     if req.method=='POST':
-        print(f"[ScreenRun_UpdateView] {req.POST}")
         try:
             with transaction.atomic(using='dscreen'):
                 obj = Screen_Run.objects.select_for_update().get(run_id=pk)
-                form=ScreenRun_UpdateForm(req.POST, instance=obj)    
-                if form.is_valid():       
+                form= ScreenRun_UpdateForm(req.POST, instance=obj)    
+                if form.is_valid():
                     instance=form.save(commit=False)
                     update_screenrun_summary(instance)
                     instance.save(**kwargs)
-                    #update_screenrun_summary.update(instance, to_save=True)
+
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Screen_Run','Completed')
-                    # form.save_m2m() 
+
                     return redirect(req.META['HTTP_REFERER'])
                 else:
                     messages.warning(req, f'Update failed due to {form.errors} error')

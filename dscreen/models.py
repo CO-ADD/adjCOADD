@@ -92,6 +92,7 @@ class Screen_Run(AuditModel):
     CALCULATED_FIELDS = ['n_compounds','n_qc','n_structure',
                          'n_motherplates','n_testplates','n_assays',
                          'n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',
+                         'n_seq',
                          'screen_date']
 
     n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")

@@ -30,12 +30,13 @@ class Genome_Sequence(AuditModel):
         'seq_name':'SeqName',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
+        'run_id':'Run ID',
         'source':'Source',
     #    'source_code':'Source Code',
         'source_link':'Link',
     #    'reference':'Reference',
-        'run_id':'Run ID',
     #     'seq_date':'Seq Date'
+        'seq_files':"Seq Files",
      }
 
     DICTIONARY_FIELDS = {
@@ -62,6 +63,7 @@ class Genome_Sequence(AuditModel):
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
     seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
+    seq_files = models.CharField(max_length=150, blank=True, verbose_name = "Seq Files")
 
     class Meta:
         app_label = 'dgene'
