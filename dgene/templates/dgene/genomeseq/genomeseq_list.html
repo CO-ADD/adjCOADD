@@ -11,11 +11,11 @@
   {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='Genome Sequence'  model_name='Genome_Sequence' application='dgene'%}
+    {% include 'datatable/base/datatable_div.html' with title='Genome Sequence'  model_name='Genome_Sequence' application='dgene'%}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {% include 'utils/datatable_general.html' with modelname='Genome_Sequence' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Genome_Sequence' %}
     </div>
   </div>
 </div>

@@ -15,7 +15,7 @@
   <div class="d-flex flex-column w-100"> 
 
     <!-- prettier-ignore -->
-    {% include 'utils/main_horizalbar.html' with title='ScreenRun'  model_name='Screen_Run' application='dscreen' %}
+    {% include 'datatable/base/datatable_div.html' with title='ScreenRun'  model_name='Screen_Run' application='dscreen' %}
     <!-- prettier-ignore -->
     <!--  -->
 
@@ -23,7 +23,7 @@
     <!-- list View Content -->
    <div class="contain-fluid data-contain">
       <!-- prettier-ignore --> <!-- Here include datatable_general --> 
-      {% include 'utils/datatable_general.html' with modelname='Screen_Run' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Screen_Run' %}
     </div>
     </div>
 

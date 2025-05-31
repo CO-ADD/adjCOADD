@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%}COADD{% endblock %}
+<!--prettier-ignore-->
+{% block content%}
+
+  <div class="d-flex flex-row vh-100">
+    {% url 'excel-import' process_name='WGS_CheckM' as urlname %}
+    <!--prettier-ignore-->
+    {% include 'utils/leftbar.html' with list_url='wgs_checkm_list' %}
+    <!-- Sidebar View -->
+    {% include "utils/sidebar.html" %}
+    <!-- Main View -->
+
+    <div class="d-flex flex-column w-100">
+      {% comment %} {% include 'datatable/base/datatable_div.html' with title='WGS FastA CheckM' model_name='WGS_CheckM' application='dgene' %} {% endcomment %}
+
+      <!-- list View Content -->
+      <div class="fixTableHead">
+        <!--prettier-ignore-->
+
+        {% include 'datatable/datatable_simple.html' with modelname='WGS_CheckM' %}
+        {% comment %} {% include 'datatable/base/datatable_base.html' with modelname='WGS_CheckM' %} {% endcomment %}
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock%}

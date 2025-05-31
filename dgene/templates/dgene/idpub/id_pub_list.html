@@ -11,11 +11,11 @@
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='ID_Pub' model_name='ID_Pub' application='dgene'%}
+    {% include 'datatable/base/datatable_div.html' with title='ID_Pub' model_name='ID_Pub' application='dgene'%}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {%include 'utils/datatable_filter.html' with modelname='ID_Pub' url_name='id_pub_update' %}
+      {%include 'datatable/base/datatable_colfilter.html' with modelname='ID_Pub' url_name='id_pub_update' %}
     </div>
   </div>
 </div>

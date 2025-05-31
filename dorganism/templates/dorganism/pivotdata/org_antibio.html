@@ -8,7 +8,7 @@
     {% include "utils/sidebar.html" %}
      <!-- Main View -->
     <div class="d-flex flex-column w-100">
-      {% include 'utils/main_horizalbar.html' with title='Antibiogram for {{organism_id}}' application='dorganism' %}
+      {% include 'datatable/base/datatable_div.html' with title='Antibiogram for {{organism_id}}' application='dorganism' %}
         <!--  -->
         <div class="contain-fluid data-contain">
 
@@ -35,7 +35,7 @@
                     
                     <div class="tab-pane fade" id="v-pills-datatable-tab" role="tabpanel"
                         aria-labelledby="v-pills-datatable-tab">
-                        {% include 'utils/data_download_form.html' with model_name='Organism' application='dorganism' related_pk=object.pk %}
+                        {% include 'datatable/base/datatable_download.html' with model_name='Organism' application='dorganism' related_pk=object.pk %}
                         <div style="height: 100vh;overflow: auto;" class="w-100">
                             {{antibio_table | safe}}
                         </div>

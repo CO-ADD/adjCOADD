@@ -11,11 +11,11 @@
   {% include "utils/sidebar.html" %}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='WGS FastQ QC' model_name='WGS_FastQC' application='dgene'%}
+    {% include 'datatable/base/datatable_div.html' with title='WGS FastQ QC' model_name='WGS_FastQC' application='dgene'%}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {% include 'utils/datatable_filter.html' with modelname='WGS_FastQC' %}
+      {% include 'datatable/base/datatable_colfilter.html' with modelname='WGS_FastQC' %}
     </div>
   </div>
 </div>

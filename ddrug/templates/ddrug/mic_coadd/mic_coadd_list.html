@@ -12,11 +12,11 @@
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='Antibiogram MIC (COADD)' model_name='MIC_COADD' application='ddrug' %}
+    {% include 'datatable/base/datatable_div.html' with title='Antibiogram MIC (COADD)' model_name='MIC_COADD' application='ddrug' %}
     <!-- list View Content -->
     <div class="contain-fluid data-contain">
       <!--prettier-ignore-->
-      {% include 'utils/datatable_filter.html' with modelname='MIC_COADD' %}
+      {% include 'datatable/base/datatable_colfilter.html' with modelname='MIC_COADD' %}
       
     </div>
   </div>

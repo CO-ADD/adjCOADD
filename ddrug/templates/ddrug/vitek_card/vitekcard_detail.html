@@ -50,7 +50,7 @@
           <h5>{%include 'utils/message.html'%}</h5>
           <div class="table-responsive">
             <!-- prettier-ignore -->
-            {%include 'utils/datatable_sm.html' with table_id='datatable_vitekid' objects=vitekid_obj data_fields=vitekid_fields %}
+            {%include 'datatable/base/datatable_subtable.html' with table_id='datatable_vitekid' objects=vitekid_obj data_fields=vitekid_fields %}
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
           <h5>{%include 'utils/message.html'%}</h5>
           <div class="table-responsive">
             <!-- prettier-ignore -->
-            {%include 'utils/datatable_sm.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
+            {%include 'datatable/base/datatable_subtable.html'  with table_id='datatable_vitekast' objects=vitekast_obj data_fields=vitekast_fields %}
           </div>
         </div>
       </div>

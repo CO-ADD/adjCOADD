@@ -62,7 +62,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {%include 'utils/datatable_sm.html' with table_id='datatable_batch' objects=submain_model_obj data_fields=submain_model_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
+                {%include 'datatable/base/datatable_subtable.html' with table_id='datatable_batch' objects=submain_model_obj data_fields=submain_model_fields html_name='dorganism/organism/batch/batch_tr.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {% include 'utils/datatable_sm.html' with table_id='datatable_submain_model' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
+                {% include 'datatable/base/datatable_subtable.html' with table_id='datatable_submain_model' html_name='dorganism/organism/culture/culture_tr.html' objects=cultr_obj data_fields=cultr_fields%}
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@
   <div class="d-flex flex-column w-100"> 
 
     <!-- prettier-ignore -->
-    {% include 'utils/main_horizalbar.html' with title='Project'  model_name='Project' application='dsample' %}
+    {% include 'datatable/base/datatable_div.html' with title='Project'  model_name='Project' application='dsample' %}
     <!-- prettier-ignore -->
     <!--  -->
 
@@ -23,7 +23,7 @@
     <!-- list View Content -->
    <div class="contain-fluid data-contain">
       <!-- prettier-ignore --> <!-- Here include datatable_general --> 
-      {% include 'utils/datatable_general.html' with modelname='Project' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Project' %}
     </div>
     </div>
 

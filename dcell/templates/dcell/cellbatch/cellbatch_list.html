@@ -12,11 +12,11 @@
   {% include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'utils/main_horizalbar.html' with title='Cell_Batch' model_name='Cell_Batch' application='dcell' %}
+    {% include 'datatable/base/datatable_div.html' with title='Cell_Batch' model_name='Cell_Batch' application='dcell' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->
-      {% include 'utils/datatable_general.html' with modelname='Cell_Batch' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Cell_Batch' %}
     </div>
     
   </div>

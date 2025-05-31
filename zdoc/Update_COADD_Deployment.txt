@@ -35,6 +35,7 @@
 #------------------------------------------------------
 # 3. Create new project file
 (base)>git clone https://github.com/CO-ADD/adjCOADD
+or git clone https://github.com/CO-ADD/adjCOADD --branch jzg_local_castdb
 Usually development branch 
 
 #------------------------------------------------------

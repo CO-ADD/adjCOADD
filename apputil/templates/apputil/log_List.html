@@ -15,8 +15,8 @@
   <div class="d-flex flex-column w-100">
     <!-- prettier-ignore -->
 
-    {% include 'utils/main_horizalbar.html' with model_name='ApplicationLog' application='apputil' title='Application Log' %}
-    {% include 'utils/datatable_filter.html' with table_id='ApplicationLog' %}
+    {% include 'datatable/base/datatable_div.html' with model_name='ApplicationLog' application='apputil' title='Application Log' %}
+    {% include 'datatable/base/datatable_colfilter.html' with table_id='ApplicationLog' %}
   </div>
 </div>
 {% endblock %}

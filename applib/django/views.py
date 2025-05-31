@@ -217,7 +217,6 @@ class Filtered_ListView(ListView):
     filter_Count = None
     app_name = None
     model_name = None
-  
 
     #--------------------------------------------------------------------------
     @staticmethod

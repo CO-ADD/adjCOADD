@@ -1,0 +1,49 @@
+{% load custom_filters %}
+<div>
+
+  <table id="datatable" class="table table-striped">
+
+    <thead>
+      <tr>
+        {% for field in fields %}
+          {% if field|is_dict %}
+            <!-- Field contains a link as well- as Dict -->
+            {% for key in field.keys %}
+              <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
+            {% endfor %}
+          {% else %}
+            <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    </thead>
+    
+    <tbody>
+
+      {% for object in objects %}
+        <tr>
+          {% for item in object.get_values %}
+            <td>
+              {% if item|is_dict %}    
+                {% for key, value in item.items %}      
+                  <a href="{{value}}" target="_blank">{{ key }}</a>
+                {% endfor %}
+              {% else %}
+                {{item}}
+              {% endif %}
+            </td>
+          {% endfor %}      
+        </tr>
+
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+
+
+</div>
+
+<script>
+new DataTable('#datatable');
+</script>

@@ -13,12 +13,14 @@
     <!-- Main View -->
 
     <div class="d-flex flex-column w-100">
-      {% include 'utils/main_horizalbar.html' with title='WGS FastA CheckM' model_name='WGS_CheckM' application='dgene' %}
+      {% include 'datatable/base/datatable_div.html' with title='WGS FastA CheckM' model_name='WGS_CheckM' application='dgene' %}
 
       <!-- list View Content -->
       <div class="fixTableHead">
         <!--prettier-ignore-->
-        {% include 'utils/datatable_general.html' with modelname='WGS_CheckM' %}
+
+        {% include 'datatable/base/datatable_base.html' with modelname='WGS_CheckM' %} 
+
       </div>
 
     </div>
