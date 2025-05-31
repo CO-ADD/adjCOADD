@@ -186,10 +186,25 @@
               <a class="dropdown-item" href="{% url 'import-cell' %}" target="_blank"> Cell</a>
           </ul>
         </div>
+        
+        <!-- Admin Menu -->
+        {% if user.is_superuser %}
+          <div class="dropdown d-inline-block">
+            <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <p class="nav-title">Admin</p>
+            </a>
+            <ul class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'userslist' %}">Users</a>
+              <a class="dropdown-item" href="{% url 'dict_view'%}">Dictionary</a>
+              <a class="dropdown-item" href="{% url 'loglist' %}"> Logs</a>
+            </ul>
+          </div>
+        {% endif %}
 
       </div>
       {% endif %}
 
+      <!-- User Menu -->
       <ul class="navbar-nav ms-auto fs-5">
         <li class="nav-item d-flex">
 
@@ -197,12 +212,15 @@
             <a class="d-flex align-items-center p-0 nav-link active" data-bs-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
               <img class="rounded-circle header-profile-user" src="{% static 'images/app/avatar.png' %}" alt="Avatar" />
-              <p class="nav-title ms-3 me-1 p-0">{{user.username}}</p>
+              <p class="nav-title ms-3 me-1 p-0">{{ user.username }}</p>
 
             </a>
             <div class="dropdown-menu dropdown-menu-end">
               <a class="dropdown-item" href="{% url 'userprofile' user.pk %}">
-                  Profile: <span class="text-info">{{user.permission}}</span>
+                  Profile <span class="text-info">[{{ user.permission }}]</span>
+              </a>
+              <a class="dropdown-item" href="{% url 'userprofile' user.pk %}">
+                  About </span>
               </a>
 
               <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->
@@ -212,22 +230,8 @@
                 </label>
               </a>
 
-              {% if user.is_superuser %}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{%url 'userslist' %}">Users</a>
-                <a class="dropdown-item" href="{%url 'dict_view'%}">Dictionary</a>
-                <a class="dropdown-item" href="{%url 'loglist' %}"> Logs</a>
-              {% endif %}
-
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" href="{%url 'logout'%}"> Logout</a>
-
-                <a class="dropdown-item version" style="font-size: x-small"
-                  href="https://co-add.github.io/README/html/index.html" data-bs-toggle="tooltip"
-                  data-bs-placement="bottom" title="Readme"target="_blank">
-                  <i class="fa fa-info-circle" aria-hidden="true"></i> Readme
-                </a>
-              
+                <a class="dropdown-item text-danger" href="{% url 'logout' %}"> Logout</a>              
             </div>
           </div>
 
