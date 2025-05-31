@@ -6,7 +6,7 @@
 <div class="d-flex flex-row vh-100">
   {% url 'excel-import' process_name='Genome_Sequence' as urlname %}
   <!--prettier-ignore-->
-  {% include 'utils/leftbar.html' with list_url='genomeseq_list' create_object='createSequence' create_objectModal='createSequenceModal'%}
+  {% include 'grid/base/left_navbar.html' with list_url='genomeseq_list' create_object='createSequence' create_objectModal='createSequenceModal'%}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   <!-- Main View -->

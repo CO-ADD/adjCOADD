@@ -6,7 +6,7 @@
 <!--  -->
 <div class="d-flex flex-row vh-100">
   {% url 'pivoted-table' app_model='dcell-Cell' as url_pivotedtable%}
-  {% include 'utils/leftbar.html' with list_url='cell_list' card_url='cell_card' create_object='createCell' create_objectModal='createCellModal' url_pivotedtable=url_pivotedtable %}
+  {% include 'grid/base/left_navbar.html' with list_url='cell_list' card_url='cell_card' create_object='createCell' create_objectModal='createCellModal' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   

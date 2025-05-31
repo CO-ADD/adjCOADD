@@ -8,7 +8,7 @@
   <div class="w-100">
     <!-- 1. Main Model single object -->
     <div class="d-flex m-0 p-0">
-      {% include 'utils/lefticons.html' with title="Organism" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="Organism" %}
       <div class="accordion bg-transparent w-100" id="main_model-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -44,7 +44,7 @@
     <!--3. submain_model and sub_model as ChildTable -->
     <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
-      {% include 'utils/lefticons.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
       <div class="accordion bg-transparent w-100" id="submain_model-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
@@ -75,7 +75,7 @@
     <!--4. Submain_model -->
     <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
-      {% include 'utils/lefticons.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="createsubmain_model" modal="createsubmain_modelModal" %}
       <div class="accordion w-100" id="submain_model-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingThree">
@@ -103,12 +103,12 @@
     
     <!--5. Image -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
+    {% include 'grid/base/btn_left_navbar.html' with title='Add_Image_OrgBatch' model_name="OrgBatch_Image" %}
     {% include 'dorganism/organism/orgbatch_image.html' %}
     </div>
     <!--6. Files -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+    {% include 'grid/base/btn_left_navbar.html' with title='Add_document' model_name="Document" %}
      <!--  -->
     {% include 'dorganism/organism/organism_file.html' %}
     </div>

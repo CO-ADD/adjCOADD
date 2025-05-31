@@ -9,7 +9,7 @@
 
     <!-- Cell -->
     <div class="d-flex m-0 p-0">
-      {% include 'utils/lefticons.html' with title="Cell" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="Cell" %}
       <div class="accordion bg-transparent w-100" id="cell-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -40,7 +40,7 @@
     <!-- Batch and Stock as ChildTable -->
     <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
-      {% include 'utils/lefticons.html' with title="createBatch" modal="createBatchModal" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="createBatch" modal="createBatchModal" %}
       <div class="accordion bg-transparent w-100" id="cell-batch-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
@@ -70,7 +70,7 @@
 
     <!-- Files -->
     <div class="d-flex m-0 p-0">
-    {% include 'utils/lefticons.html' with title='Add_document' model_name="Document" %}
+    {% include 'grid/base/btn_left_navbar.html' with title='Add_document' model_name="Document" %}
     {% include 'dcell/cell/cell_file.html' %}
     </div>
 

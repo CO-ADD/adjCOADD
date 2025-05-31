@@ -7,7 +7,7 @@
 <div class="d-flex flex-row vh-100">
   <!-- prettier-ignore -->
     {% url 'pivoted-table' app_model='apputil-ApplicationLog' as url_pivotedtable%}
-    {% include 'utils/leftbar.html' with list_url='loglist' url_pivotedtable=url_pivotedtable %}
+    {% include 'grid/base/left_navbar.html' with list_url='loglist' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
 
   {% include "utils/sidebar.html" %}

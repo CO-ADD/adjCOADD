@@ -7,7 +7,7 @@
 
   <!--prettier-ignore-->
   {% url 'pivoted-table' app_model='ddrug-MIC_COADD' as url_pivotedtable%}
-  {%include 'utils/leftbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
+  {%include 'grid/base/left_navbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->

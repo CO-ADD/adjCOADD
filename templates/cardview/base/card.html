@@ -1,0 +1,122 @@
+<div class="col-md-2 m-0 p-1">
+  <div class="card card-bg ms-3 px-1 rounded-3 h-100">
+    <div class="d-flex justify-content-between border-bottom border-dark">
+      <p class="card-title px-1 fw-bold mb-0 ">
+        <!-- link to Detail View -->
+        <a class="card-link" href="{{url_name}}"> {{object_name}}</a>
+      </p>
+      <p class="card-title px-1 fw-bold mb-0">
+        <a class="card-link" href="{{url_name}}"> {{object_name_ita}}</a>
+      </p>
+      <!-- Select Box -->
+      {% include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk %}
+    </div>
+
+    <p class="card-text m-auto" style="font-size: xx-small; width: 95%">
+      {%if object_img%}
+      <a id="drug_detail{{object.pk}}" class="card-link">
+        {% load static %}
+        {% comment %} 
+        <img src="/{{mol_img_url}}/{{object_img}}.svg" alt="structure" width="100%" class="lazyload" loading="lazy"
+          style="background-color: transparent !important" /> 
+        {% endcomment %}
+      </a>
+    <div id="drug_detail_structure{{object.pk}}" class="modal fade" data-bs-backdrop="static" role="dialog"></div>
+    <!-- call drug structure editor modal -->
+
+    <script>
+
+      $(document).ready(function () {
+        let my_modal = $("#drug_detail_structure{{object.pk}}");
+
+        $("#drug_detail{{object.pk}}").click(function () {
+          my_modal.load("{% url 'smartsquery' object.pk%}", function (response) {
+            if (response == "Permission Not Granted") {
+              alert("permission!");
+            } else {
+              my_modal.modal("show"); // Open Modal
+            }
+          });
+
+        });
+
+      });
+
+    </script>
+    {%endif%}
+  </p>
+  <p class="card-text m-0 fst-normal"> <strong>{{object_var2_label}}</strong> {{object_var2}}</p>
+  <p class="card-text m-0 fst-normal"> <strong>{{object_var2b_label}}</strong> {{object_var2b}}</p>
+  <p class="card-text m-0 fst-normal"> <strong>{{object_var3_label}}</strong>{{object_var3}}</p>
+  <p class="card-text m-0 fst-normal">
+    <strong> {{object_var_link_label}} </strong>
+    <a class="card-link" style="float: right"
+    href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{object_var_link}}" target="_blank">
+    {{object_var_link}}
+  </a>
+</p>
+
+<br />
+<p class="card-text m-0 fst-normal" style="font-size: small">
+  <strong>{{object_var5_label}}</strong> <br />
+  
+  <!--  -->
+  {{object_var5 | join:","}}
+  <!--  -->
+</p>
+
+<br />
+<div class="text-center" type="button" data-bs-toggle="collapse" data-bs-target="#_{{object_id_slug}}"
+aria-expanded="false" aria-controls="{{object_id_slug}}">
+<i class="bi bi-chevron-bar-down"></i><i class="bi bi-chevron-bar-up"></i>
+</div>
+
+<div class="collapse" id="_{{object_id_slug}}">
+  <!-- if fields provided  -->
+  <div>
+  
+    {% include 'utils/piediagram.html' %}
+  </div>
+  <br />
+  {%if fields%}
+  {% for name, value in object.get_fieldsandvalues %}
+  <div class='d-flex'>
+    <!-- <p class='fw-bold'>{{name}}: </p> -->
+    <p style="font-size:small">{{value}}</p>
+  </div>
+  {%endfor%}
+  
+  {%else%}
+  
+  <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var6_label}}</strong><br />
+        {{object_var6}}
+      </p>
+
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var7_label}}</strong> <br />
+        {{object_var7}}
+      </p>
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var8_label}}</strong> <br />
+        <!--  -->
+        {{object_var8 | join:","}}
+        <!--  -->
+      </p>
+      <p class="card-text m-0 fst-normal" style="font-size: small">
+        <strong>{{object_var9_label}}</strong> <br />
+        {{object_var9}}
+      </p>
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<script>
+
+  $("#drug_detail_structure{{object.pk}}").draggable({
+    handle: ".modal-header"
+  });
+</script>

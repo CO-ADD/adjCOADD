@@ -7,7 +7,7 @@
   <div class="d-flex flex-row vh-100">
     {% url 'excel-import' process_name='WGS_CheckM' as urlname %}
     <!--prettier-ignore-->
-    {% include 'utils/leftbar.html' with list_url='wgs_checkm_list' %}
+    {% include 'grid/base/left_navbar.html' with list_url='wgs_checkm_list' %}
     <!-- Sidebar View -->
     {% include "utils/sidebar.html" %}
     <!-- Main View -->

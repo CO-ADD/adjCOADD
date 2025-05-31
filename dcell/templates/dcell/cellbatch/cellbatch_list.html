@@ -7,7 +7,7 @@
 
   <!--prettier-ignore-->
   {% url 'pivoted-table' app_model='dcell-Cell_Batch' as url_pivotedtable%}
-  {% include 'utils/leftbar.html' with list_url='cellbatch_list' url_pivotedtable=url_pivotedtable %}
+  {% include 'grid/base/left_navbar.html' with list_url='cellbatch_list' url_pivotedtable=url_pivotedtable %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html"%}
   <!-- Main View -->

@@ -6,7 +6,7 @@
 <div class="d-flex flex-row vh-100">
   {% url 'excel-import' process_name='Drug' as urlname %}
   <!--prettier-ignore-->
-  {% include 'utils/leftbar.html' with import_module=urlname list_url='drug_list' card_url='drug_card' create_object='createDrug' create_objectModal='createDrugModal' %}
+  {% include 'grid/base/left_navbar.html' with import_module=urlname list_url='drug_list' card_url='drug_card' create_object='createDrug' create_objectModal='createDrugModal' %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   <!-- Main View -->
