@@ -9,7 +9,7 @@ from django.shortcuts import render,redirect
 from formtools.wizard.views import SessionWizardView
 
 from apputil.utils.validation_log import Validation_Log
-from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
+from applib.django.base.views import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import FileValidator,file_location, OverwriteStorage
 
 """

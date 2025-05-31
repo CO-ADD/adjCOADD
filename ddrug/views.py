@@ -17,10 +17,11 @@ from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
 
 from adjcoadd.constants import LinkList
-from apputil.utils.filters_base import FilteredListView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Filtered_ListView
+
 from apputil.utils.api_class import API_ListView
-from apputil.utils.views_base import SimplecreateView, SimpleupdateView
-from adjcoadd.constants import *
+
+#from adjcoadd.constants import *
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import molecule_to_svg, get_mfp2_neighbors
 from ddrug.forms import Drug_form, Drug_filter, VitekCard_Filter, VitekAST_Filter, VitekID_Filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
@@ -63,7 +64,7 @@ def ketcher_test(req):
 
 #==  Drug View =============================================================
 #--  DrugList --------------------------------------------------------------
-class DrugListView(LoginRequiredMixin, FilteredListView):
+class DrugListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=Drug  
     template_name = 'ddrug/drug/drug_list.html' 
@@ -118,13 +119,13 @@ def detailDrug(req, pk):
 
 ##
 #--  DrugCreate --------------------------------------------------------------
-class DrugCreateView(SimplecreateView):
+class DrugCreateView(Base_CreateView):
     form_class=Drug_form
     template_name='ddrug/drug/drug_create.html'
     
 ##
 #--  DrugUpdate --------------------------------------------------------------
-class DrugUpdateView(SimpleupdateView):
+class DrugUpdateView(Base_UpdateView):
     form_class=Drug_form
     template_name='ddrug/drug/drug_update.html'
     model=Drug
@@ -137,7 +138,7 @@ class DrugUpdateView(SimpleupdateView):
 # -----------------------------------------------------------------
 # VitekCard
 # -----------------------------------------------------------------
-class VitekCard_ListView(LoginRequiredMixin, FilteredListView):
+class VitekCard_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=VITEK_Card  
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
@@ -153,7 +154,7 @@ class VitekCard_ListView(LoginRequiredMixin, FilteredListView):
 # -----------------------------------------------------------------
 # Vitek AST
 # -----------------------------------------------------------------
-class VitekAST_ListView(LoginRequiredMixin, FilteredListView):
+class VitekAST_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=VITEK_AST  
     template_name = 'ddrug/vitek_ast/vitekast_list.html' 
@@ -165,7 +166,7 @@ class VitekAST_ListView(LoginRequiredMixin, FilteredListView):
 # -----------------------------------------------------------------
 # Vitek ID
 # -----------------------------------------------------------------
-class VitekID_ListView(LoginRequiredMixin, FilteredListView):
+class VitekID_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=VITEK_ID 
     template_name = 'ddrug/vitek_id/vitekid_list.html' 
@@ -174,7 +175,7 @@ class VitekID_ListView(LoginRequiredMixin, FilteredListView):
 
     
 ## -----------
-class MIC_COADDListView(LoginRequiredMixin, FilteredListView):
+class MIC_COADDListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=MIC_COADD  
     template_name = 'ddrug/mic_coadd/mic_coadd_list.html' 
@@ -187,7 +188,7 @@ class MIC_COADDCardView(MIC_COADDListView):
   
 
 ## -----------
-class MIC_PubListView(LoginRequiredMixin, FilteredListView):
+class MIC_PubListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=MIC_Pub  
     template_name = 'ddrug/mic_pub/mic_pub_list.html' 
@@ -200,7 +201,7 @@ class MIC_PubCardView(MIC_PubListView):
 
 
 ## -------------
-class BreakpointListView(LoginRequiredMixin, FilteredListView):
+class BreakpointListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=Breakpoint  
     template_name = 'ddrug/breakpoint/breakpoint_list.html' 

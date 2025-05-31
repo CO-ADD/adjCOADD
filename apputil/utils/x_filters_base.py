@@ -91,7 +91,7 @@ def get_all_fields_q_object_deep(model, search_value, exclude_fields=None, prefi
 # from django.contrib import messages
 
 #--------------------------------------------------------------------------
-class Filterbase_base(FilterSet):
+class FilterXbase_base(FilterSet):
 #--------------------------------------------------------------------------
 
     Search_all_fields = CharFilter(method='filter_all_fields', 
@@ -116,7 +116,7 @@ class Filterbase_base(FilterSet):
         #         self.filters[str(field)].extra["choices"] = ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
 
     def update_choice_filters(self):
-        print(f"Filterbase_base.update_choice_filters")
+        print(f"Filtebase_base.update_choice_filters")
     
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
@@ -140,7 +140,7 @@ class Filterbase_base(FilterSet):
 
           
 #--------------------------------------------------------------------------
-class Filterbase(Filterbase_base):
+class FilterXbase(FilterXbase_base):
 #--------------------------------------------------------------------------
 
     # Filter primary queryset for valid (not deleted) entries with aStatus >= 0 
@@ -165,9 +165,9 @@ def find_item_index(lst, item):
 
 # --Filter view base class--
 #--------------------------------------------------------------------------
-class FilteredListView(ListView):
+class FilteredXListView(ListView):
     
-    filterset_class = None #each filterset class based on class Filterbase
+    filterset_class = None #each filterset class based on class BaseStatus_Filter
     paginate_by = 50
     model_fields = None
     order_by = None

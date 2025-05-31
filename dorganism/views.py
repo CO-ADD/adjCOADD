@@ -15,12 +15,11 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
-from apputil.models import ApplicationLog
-from apputil.forms import Document_Form
-from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
-
 from adjcoadd.constants import *
+from apputil.models import ApplicationLog
+from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView,
+                                      Filtered_ListView, permission_not_granted, Htmx_UpdateView)
+from apputil.forms import Document_Form
 
 from dorganism.models import  Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
@@ -39,7 +38,7 @@ from dorganism.utils.orgid_table import get_org_identification_summary
 # Taxonomy
 #=================================================================================================
 
-class Taxonomy_ListView(LoginRequiredMixin, FilteredListView):
+class Taxonomy_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
@@ -63,20 +62,20 @@ def Taxonomy_DetailView(req, slug=None):
     return render(req, "dorganism/taxonomy/taxonomy_detail.html", context)
 
 # -----------------------------------------------------------------
-class Taxonomy_CreateView(SimplecreateView):
+class Taxonomy_CreateView(Base_CreateView):
     form_class=Taxonomy_Form
     template_name='dorganism/taxonomy/taxonomy_c.html'
     transaction_use = 'dorganism'
         
 # -----------------------------------------------------------------
-class Taxonomy_UpdateView(SimpleupdateView):
+class Taxonomy_UpdateView(Base_UpdateView):
     form_class=Taxonomy_Form
     template_name='dorganism/taxonomy/taxonomy_u.html'
     model=Taxonomy
     transaction_use = 'dorganism'
 
 # -----------------------------------------------------------------
-class Taxonomy_DeleteView(SimpledeleteView):
+class Taxonomy_DeleteView(Base_DeleteView):
     model = Taxonomy
     transaction_use = 'dorganism'
 
@@ -84,7 +83,7 @@ class Taxonomy_DeleteView(SimpledeleteView):
 # Organism
 #=================================================================================================
 
-class Organism_ListView(LoginRequiredMixin, FilteredListView):
+class Organism_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Organism  
     template_name = 'dorganism/organism/organism_list.html'
@@ -265,7 +264,7 @@ def Organism_UpdateView(req, pk):
     return render(req, "dorganism/organism/organism_update.html", context)
 
 # -----------------------------------------------------------------
-class Organism_DeleteView(SimpledeleteView):
+class Organism_DeleteView(Base_DeleteView):
     model = Organism
     transaction_use = 'dorganism'
 
@@ -273,7 +272,7 @@ class Organism_DeleteView(SimpledeleteView):
 # OrgBatch  
 #=================================================================================================
 
-class OrgBatch_ListView(LoginRequiredMixin, FilteredListView):
+class OrgBatch_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=Organism_Batch 
     template_name = 'dorganism/orgbatch/orgbatch_list.html' 
@@ -307,7 +306,7 @@ def OrgBatch_CreateView(req, organism_id):
     return render(req, 'dorganism/orgbatch/orgbatch_create.html', { 'form':form, 'organism_id':organism_id}) 
 
 # -----------------------------------------------------------------
-class OrgBatch_UpdateView(HtmxupdateView):
+class OrgBatch_UpdateView(Htmx_UpdateView):
     form_class=OrgBatch_UpdateForm
     template_name="dorganism/orgbatch/orgbatch_update.html"
     template_partial="dorganism/orgbatch/orgbatch_tr.html"
@@ -315,14 +314,14 @@ class OrgBatch_UpdateView(HtmxupdateView):
     transaction_use = 'dorganism'
 
 # -----------------------------------------------------------------
-class OrgBatch_DeleteView(SimpledeleteView):
+class OrgBatch_DeleteView(Base_DeleteView):
     model = Organism_Batch
     transaction_use = 'dorganism'
 
 #=================================================================================================
 # OrgBatch Stock  
 #=================================================================================================
-class OrgBatchStock_ListView(LoginRequiredMixin, FilteredListView):
+class OrgBatchStock_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = OrgBatch_Stock  
     template_name = 'dorganism/orgbatchstock/orgbatchstock_list.html'
@@ -430,7 +429,7 @@ def OrgBatchStock_UpdateView(req, pk):
     return render(req, "dorganism/orgbatchstock/orgbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
-class OrgBatchStock_DeleteView(SimpledeleteView):
+class OrgBatchStock_DeleteView(Base_DeleteView):
     model = OrgBatch_Stock
     transaction_use = 'dorganism'
 
@@ -463,7 +462,7 @@ def OrgCulture_CreateView(req, organism_id):
     return render(req, 'dorganism/orgculture/orgculture_c.html', { 'form':form, 'organism_id':organism_id}) 
 
 #-------------------------------------------------------------------------------
-class OrgCulture_UpdateView(HtmxupdateView):
+class OrgCulture_UpdateView(Htmx_UpdateView):
     form_class=OrgCulture_UpdateForm
     template_name="dorganism/orgculture/orgculture_u.html"
     #template_partial="dorganism/orgculture/orgculture_tr.html"
@@ -471,19 +470,19 @@ class OrgCulture_UpdateView(HtmxupdateView):
     transaction_use = 'dorganism'
 
 #-------------------------------------------------------------------------------
-class OrgCulture_DeleteView(SimpledeleteView):
+class OrgCulture_DeleteView(Base_DeleteView):
     model = Organism_Culture
     transaction_use = 'dorganism'
 
 #=================================================================================================
 # OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage
 #=================================================================================================
-class OrgBatchImg_DeleteView(SimpledeleteView):
+class OrgBatchImg_DeleteView(Base_DeleteView):
     model = OrgBatch_Image
     transaction_use = 'dorganism'
 
 #-------------------------------------------------------------------------------
-class OrgBatchImg_CreateView(CreateFileView):
+class OrgBatchImg_CreateView(File_CreateView):
     form_class=OrgBatchImg_Form
     model = Organism
     file_field = 'image_file' #this is uploading field name of Orgbatchimg

@@ -15,11 +15,12 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
+from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView,
+                                      Filtered_ListView, permission_not_granted, Htmx_UpdateView)
+ 
+from apputil.utils.upload_steps import UploadHandler_View, SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from apputil.utils.filters_base import FilteredListView
-from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
-from apputil.utils.upload_steps import UploadHandler_View, SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm
 
 from adjcoadd.constants import *
 
@@ -39,7 +40,7 @@ from dcell.utils.upload_cell import upload_Cells_Process
 # Cell
 #=================================================================================================
 
-class Cell_ListView(LoginRequiredMixin, FilteredListView):
+class Cell_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Cell
     template_name = 'dcell/cell/cell_list.html'
@@ -196,7 +197,7 @@ def Cell_UpdateView(req, pk):
     return render(req, "dcell/cell/cell_u.html", context)
 
 # -----------------------------------------------------------------
-class Cell_DeleteView(SimpledeleteView):
+class Cell_DeleteView(Base_DeleteView):
     model = Cell
     transaction_use = 'dcell'
 
@@ -228,7 +229,7 @@ class Cell_Upload_HandlerView(UploadHandler_View):
 # CellBatch  
 #=================================================================================================
 
-class CellBatch_ListView(LoginRequiredMixin, FilteredListView):
+class CellBatch_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model=Cell_Batch 
     template_name = 'dcell/cellbatch/cellbatch_list.html' 
@@ -262,7 +263,7 @@ def CellBatch_CreateView(req, cell_id):
     return render(req, 'dcell/cellbatch/cellbatch_c.html', { 'form':form, 'cell_id':cell_id}) 
 
 # -----------------------------------------------------------------
-class CellBatch_UpdateView(HtmxupdateView):
+class CellBatch_UpdateView(Htmx_UpdateView):
     form_class=CellBatch_UpdateForm
     template_name="dcell/cellbatch/cellbatch_u.html"
     template_partial="dcell/cellbatch/cellbatch_tr.html"
@@ -270,14 +271,14 @@ class CellBatch_UpdateView(HtmxupdateView):
     transaction_use = 'dcell'
 
 # -----------------------------------------------------------------
-class CellBatch_DeleteView(SimpledeleteView):
+class CellBatch_DeleteView(Base_DeleteView):
     model = Cell_Batch
     transaction_use = 'dcell'
 
 #=================================================================================================
 # CellBatch Stock  
 #=================================================================================================
-class CellBatchStock_ListView(LoginRequiredMixin, FilteredListView):
+class CellBatchStock_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = CellBatch_Stock  
     template_name = 'dcell/cellbatchstock/cellbatchstock_list.html'
@@ -385,6 +386,6 @@ def CellBatchStock_UpdateView(req, pk):
     return render(req, "dcell/cellbatchstock/cellbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
-class CellBatchStock_DeleteView(SimpledeleteView):
+class CellBatchStock_DeleteView(Base_DeleteView):
     model = CellBatch_Stock
     transaction_use = 'dcell'

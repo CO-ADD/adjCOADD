@@ -15,8 +15,8 @@ from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
 # from apputil.models import Dictionary, ApplicationUser
-# from apputil.utils.filters_base import FilteredListView
-# from apputil.utils.views_base import permission_not_granted, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+# from applib.django.base.filters import Filtered_ListView
+# from applib.django.base.views import permission_not_granted, Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView
 # from apputil.models import ApplicationLog
 # from adjcoadd.constants import *
 # from dorganism.models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
@@ -28,7 +28,7 @@ from django.utils.functional import SimpleLazyObject
 
 
 # -----------------upload Image / File view:
-class NewimgCreateView(CreateFileView):
+class NewimgCreateView(File_CreateView):
     pass
     # form_class=Newimg_form
     # model = NewimgModel
@@ -47,7 +47,7 @@ class NewimgCreateView(CreateFileView):
    
 
 
-class NewimgDeleteView(SimpledeleteView):
+class NewimgDeleteView(Base_DeleteView):
     pass
     # model = NewimgModel
     # transaction_use = 'schema of the model'
@@ -55,7 +55,7 @@ class NewimgDeleteView(SimpledeleteView):
 # -----------------New Model with class View--
 # General type: for model like Taxanomy, Gene, without Ajax call to update name
 
-class NewmodelListView(LoginRequiredMixin, FilteredListView):
+class NewmodelListView(LoginRequiredMixin, Filtered_ListView):
     '''
     General Type
     '''
@@ -77,7 +77,7 @@ class NewmodelCardView(NewmodelListView):
     # template_name = 'dorganism/taxonomy/taxonomy_card.html' # path of template card
     
 ##
-class NewmodelCreateView(SimplecreateView):
+class NewmodelCreateView(Base_CreateView):
     '''
     General Type
     '''
@@ -87,7 +87,7 @@ class NewmodelCreateView(SimplecreateView):
     # transaction_use = 'dorganism'
         
 ##
-class NewmodelUpdateView(SimpleupdateView):
+class NewmodelUpdateView(Base_UpdateView):
     '''
     General Type
     '''
@@ -98,7 +98,7 @@ class NewmodelUpdateView(SimpleupdateView):
     # transaction_use = 'dorganism'
 
 ##
-class NewmodelDeleteView(SimpledeleteView):
+class NewmodelDeleteView(Base_DeleteView):
     '''
     General Type
     '''
@@ -287,8 +287,8 @@ def updateNew(req, pk):
     # return render(req, "dorganism/organism/organism_u.html", context)
 
 ## 2. HTMX
-from apputil.utils.views_base import HtmxupdateView
-class BatchUpdateView(HtmxupdateView):
+from applib.django.base.views import Htmx_UpdateView
+class BatchUpdateView(Htmx_UpdateView):
     '''
     ## Update used HTMX, table is inside a detail view:
     '''

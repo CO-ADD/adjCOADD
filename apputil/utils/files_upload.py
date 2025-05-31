@@ -23,7 +23,7 @@ from django.views import View
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-#from apputil.utils.views_base import SuperUserRequiredMixin
+#from applib.django.base.views import SuperUserRequiredMixin
 from apputil.utils.validation_log import Validation_Log
 from applib.data.str_lists import Timer
 

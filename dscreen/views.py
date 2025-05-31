@@ -21,10 +21,7 @@ from django.utils.safestring import mark_safe
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
-
-# from apputil.utils.filters_base import FilteredListView
-# from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
 
 # from adjcoadd.constants import *
 

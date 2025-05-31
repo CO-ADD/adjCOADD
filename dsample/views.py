@@ -20,10 +20,10 @@ from django.utils.functional import SimpleLazyObject
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from applib.django.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
  
-# from apputil.utils.filters_base import FilteredListView
-# from apputil.utils.views_base import permission_not_granted, HtmxupdateView, SimplecreateView, SimpleupdateView,  SimpledeleteView, CreateFileView
+# from applib.django.base.filters import Filtered_ListView
+# from applib.django.base.views import permission_not_granted, Htmx_UpdateView, Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView
 
 # from adjcoadd.constants import *
 

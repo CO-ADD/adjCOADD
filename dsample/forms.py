@@ -13,7 +13,7 @@ from django_countries.fields import CountryField
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, PROJECT_DATA_STATUS, PROJECT_REPORT_STATUS
-from applib.django.filters import BaseStatus_Filter
+from applib.django.base.filters import BaseStatus_Filter
  
 #dSample
 from dsample.models import  Project

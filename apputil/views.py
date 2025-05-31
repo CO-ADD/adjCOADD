@@ -25,13 +25,15 @@ from dcell.models import Cell
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
-from apputil.utils.views_base import HtmxupdateView, SuperUserRequiredMixin, permission_not_granted, SimplecreateView, SimpleupdateView,SimpledeleteView, HtmxupdateView, CreateFileView
-from apputil.utils.filters_base import FilteredListView
+from applib.django.base.views import (SuperUserRequiredMixin, permission_not_granted, 
+                                      Base_CreateView, Base_UpdateView, Base_DeleteView,
+                                      Filtered_ListView, 
+                                      Htmx_UpdateView, File_CreateView, Base_DataExportView)
+
 from apputil.utils.files_upload import Importhandler, OverwriteStorage, file_location
 from apputil.utils.data_style import convert_heatmap
 from apputil.utils.form_wizard_tools import SelectMultipleFiles_StepForm,SelectSingleFile_StepForm
 from apputil.utils.validation_log import Validation_Log
-from apputil.utils.views_base import DataExportBaseView
 
 
 #=================================================================================================
@@ -104,7 +106,7 @@ def logout_user(req):
 # Application User
 #=================================================================================================
 
-class AppUser_ListView(LoginRequiredMixin, FilteredListView):
+class AppUser_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = ApplicationUser
     template_name = 'apputil/appUsers.html'  
@@ -130,7 +132,7 @@ def userprofile(req, id):
     return render(req, 'apputil/appUserProfile.html', {'currentUser': current_user})
 
 #-------------------------------------------------------------------------------------------------
-class AppUser_CreateView(SuperUserRequiredMixin, SimplecreateView):
+class AppUser_CreateView(SuperUserRequiredMixin, Base_CreateView):
     
     form_class = AppUser_Form
     template_name = 'apputil/appUsersCreate.html'
@@ -145,7 +147,7 @@ class AppUser_CreateView(SuperUserRequiredMixin, SimplecreateView):
             return redirect(request.META['HTTP_REFERER'])
 
 #-------------------------------------------------------------------------------------------------
-class AppUser_UpdateView(HtmxupdateView):
+class AppUser_UpdateView(Htmx_UpdateView):
     form_class = AppUser_Form
     template_name = "apputil/appUsersUpdate.html"
     template_partial = "apputil/appuser_tr.html"
@@ -182,7 +184,7 @@ class AppUser_DeleteView(SuperUserRequiredMixin, UpdateView):
 # Application log 
 #=================================================================================================
 
-class AppLog_ListView(SuperUserRequiredMixin, FilteredListView):
+class AppLog_ListView(SuperUserRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = ApplicationLog
     template_name = 'apputil/log_List.html'
@@ -193,7 +195,7 @@ class AppLog_ListView(SuperUserRequiredMixin, FilteredListView):
 # Dictionary
 #=================================================================================================
 
-class Dictionary_ListView(LoginRequiredMixin, FilteredListView):
+class Dictionary_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Dictionary
     template_name = 'apputil/dictList.html'
@@ -202,7 +204,7 @@ class Dictionary_ListView(LoginRequiredMixin, FilteredListView):
 
     
 #-------------------------------------------------------------------------------------------------
-class Dictionary_CreateView(SuperUserRequiredMixin, SimplecreateView):
+class Dictionary_CreateView(SuperUserRequiredMixin, Base_CreateView):
     form_class = Dictionary_Form
     template_name = 'apputil/dictCreate.html'
 
@@ -256,20 +258,20 @@ def deleteDictionary(req):
 #=================================================================================================
 # Document  
 #=================================================================================================
-class CreatedocumentView(CreateFileView):
+class CreatedocumentView(File_CreateView):
     form_class = Document_Form
     model = Organism
     file_field = 'doc_file'
     related_name = 'assoc_documents'
     transaction_use_manytomany = 'dorganism'
     
-class DocDeleteView(SimpledeleteView):
+class DocDeleteView(Base_DeleteView):
     model = Document
 
 #=================================================================================================
 # Export 
 #=================================================================================================
-class DataExportView(DataExportBaseView):
+class DataExportView(Base_DataExportView):
     pass
 
 #=================================================================================================
@@ -344,10 +346,10 @@ def deleteImage(req, pk):
         print(err)
     return redirect(req.META['HTTP_REFERER'])
 
-# class ImageDeleteView(SimpledeleteView):
+# class ImageDeleteView(Base_DeleteView):
 #     model = Image
 
-# class CreateimageView(CreateFileView):
+# class CreateimageView(File_CreateView):
 #     form_class = Image_form
 #     model = Organism
 #     file_field = 'image_file'

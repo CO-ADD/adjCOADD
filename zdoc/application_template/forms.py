@@ -8,7 +8,7 @@ from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField
 
 # from apputil.models import Dictionary, ApplicationUser, Document
-# from apputil.utils.filters_base import Filterbase
+# from applib.django.base.filters import BaseStatus_Filter
 # from .models import Newmodel ...
 # from adjcoadd.constants import *
 
@@ -120,7 +120,7 @@ class UpdateNewModel_form(CreateNewModel_form):
 
 # --Filterset Forms--
 ## NewModelfilter
-class NewModelfilter(Filterbase):
+class NewModelfilter(BaseStatus_Filter):
     pass
     # organism_name = django_filters.CharFilter(lookup_expr='icontains')
     # lineage = django_filters.CharFilter(lookup_expr='icontains')

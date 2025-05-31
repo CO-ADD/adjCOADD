@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django_filters import DateRangeFilter, CharFilter, BooleanFilter, ChoiceFilter, DateFromToRangeFilter, DateFilter
 
-from apputil.utils.filters_base import Filterbase, Filterbase_base
+from applib.django.base.filters import BaseStatus_Filter, Base_Filter
 
 
 #------------------------------------------------------------------------
@@ -58,7 +58,7 @@ class AppUser_Form(forms.ModelForm):
         fields=['first_name','last_name','email', 'is_active', 'username', 'name', 'initials','permission','is_appuser']
 
 #------------------------------------------------------------------------
-class AppUser_Filter(Filterbase_base):
+class AppUser_Filter(Base_Filter):
 
     Search_all_fields = CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
 
@@ -89,7 +89,7 @@ class Dictionary_Form(forms.ModelForm):
         fields='__all__'
 
 #------------------------------------------------------------------------
-class Dictionary_Filter(Filterbase):
+class Dictionary_Filter(BaseStatus_Filter):
     dict_class = ChoiceFilter(choices=[])
     dict_value = CharFilter(lookup_expr='icontains')
 
@@ -115,47 +115,11 @@ class Document_Form(forms.ModelForm):
         fields='__all__'
    
 
-#------------------------------------------------------------------------
-## Image
-#from .utils.form_wizard_tools import SelectFile_StepForm, MultipleFileField
-#from .utils.files_upload import validate_file
-
-# class Image_form(forms.ModelForm):
-#     image_file = forms.ImageField(label='Select an image', 
-#                                 #   validators=[validate_file], 
-#                                   required=True)
-    
-#     class Meta:
-#         model=Image
-#         fields='__all__'
-
-
-#===================================================================
-# --Filterset Form--
-#===================================================================
-
-#------------------------------------------------------------------------
-## Application User
-
-    # @property
-    # def qs(self):
-    #     parent = super().qs
-    #     print(parent)
-    #     return parent.filter(is_appuser=True,is_active=True)
-    
-    # def filter_all_fields(self, queryset, name, value):
-    #     if value:
-    #         exclude_fields = ['password',]
-    #         q_object = get_all_fields_q_object(self._meta.model, value,exclude_fields=exclude_fields)
-    #         return queryset.filter(q_object)
-    #     return queryset
-
-
 #=================================================================================================
 # Application log 
 #=================================================================================================
 
-class AppLog_Filter(Filterbase_base):
+class AppLog_Filter(Base_Filter):
     Search_all_fields = CharFilter(method='filter_all_fields', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Search in All Fields'}),)
     log_code = ChoiceFilter(choices=[])
     # start_date = DateFilter(field_name='log_time',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'}), label = 'Log date start from') 

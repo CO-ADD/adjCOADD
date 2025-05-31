@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from django.utils.datastructures import MultiValueDict
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 
-from apputil.utils.views_base import SuperUserRequiredMixin, WriteUserRequiredMixin
+from applib.django.base.views import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import validate_file, file_location, OverwriteStorage
 from apputil.utils.validation_log import Validation_Log
 

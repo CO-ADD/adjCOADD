@@ -8,7 +8,7 @@ from django.contrib.postgres.forms import SimpleArrayField
 from django_filters import DateRangeFilter, CharFilter, ModelChoiceFilter, ChoiceFilter, MultipleChoiceFilter, IsoDateTimeFilter, DateFromToRangeFilter, DateFilter
 
 from apputil.models import Dictionary, ApplicationUser, Document
-from apputil.utils.filters_base import Filterbase
+from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES
 from dorganism.models import Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
 
@@ -43,7 +43,7 @@ class Taxonomy_Form(forms.ModelForm):
         fields=["organism_name","other_names", "code", "org_class", "tax_id", "parent_tax_id", "tax_rank", "division", "lineage" ]
 
 
-class Taxonomy_Filter(Filterbase):
+class Taxonomy_Filter(BaseStatus_Filter):
     organism_name = CharFilter(lookup_expr='icontains')
     lineage = CharFilter(lookup_expr='icontains')
     org_class=ModelChoiceFilter(queryset=Dictionary.objects.filter(dict_class=Taxonomy.DICTIONARY_FIELDS['org_class']))
@@ -66,7 +66,7 @@ class Taxonomy_Filter(Filterbase):
 #=================================================================================================
 # Organism
 #=================================================================================================
-class Organism_Filter(Filterbase):
+class Organism_Filter(BaseStatus_Filter):
     
     ID = CharFilter(field_name='organism_id', lookup_expr='icontains')
     Name = CharFilter(field_name='organism_name__organism_name', lookup_expr='icontains')
@@ -222,7 +222,7 @@ class OrgBatch_UpdateForm(forms.ModelForm):
         exclude=['stock_level']
 
 # -----------------------------------------------------------------------------------    
-class OrgBatch_Filter(Filterbase):
+class OrgBatch_Filter(BaseStatus_Filter):
     Stock_Date = IsoDateTimeFilter(field_name='stock_date')
     class Meta:
         model = Organism_Batch
@@ -267,7 +267,7 @@ class OrgBatchStock_Form(OrgBatchStock_CreateForm):
         fields="__all__"
     
 # -----------------------------------------------------------------------------------    
-class OrgBatchStock_Filter(Filterbase):
+class OrgBatchStock_Filter(BaseStatus_Filter):
     start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
     end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
     Stock_Date = DateRangeFilter(field_name='stock_date')

@@ -119,7 +119,7 @@ class Base_Filter(FilterSet):
         #         self.filters[str(field)].extra["choices"] = ChoiceFilter(choices=self.Meta.model.get_field_choices(field_name=str(field)))
 
     def update_choice_filters(self):
-        print(f"Filterbase_base.update_choice_filters")
+        print(f"Base_Filter.update_choice_filters")
     
     def multichoices_filter(self, queryset, name, value):
         lookup='__'.join([name, 'overlap'])
@@ -152,7 +152,7 @@ class BaseStatus_Filter(Base_Filter):
 
 
     
-# # utils for filteredListView method def ordered_by
+# # utils for Filtered_ListView method def ordered_by
 # #--------------------------------------------------------------------------
 # def find_item_index(lst, item):
 # #--------------------------------------------------------------------------

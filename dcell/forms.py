@@ -9,7 +9,7 @@ from django_filters import DateRangeFilter, CharFilter, ModelChoiceFilter, Choic
 from dorganism.models import  Taxonomy
 
 from apputil.models import Dictionary, ApplicationUser, Document
-from apputil.utils.filters_base import Filterbase
+from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES #<not needed due to lack of cell classes>
 from dcell.models import Cell, Cell_Batch, CellBatch_Stock
 
@@ -18,7 +18,7 @@ from dcell.models import Cell, Cell_Batch, CellBatch_Stock
 #=================================================================================================
 # Cell
 #=================================================================================================
-class Cell_Filter(Filterbase):
+class Cell_Filter(BaseStatus_Filter):
     
     cell_id = CharFilter(field_name='cell_id', lookup_expr='icontains')
     cell_names = CharFilter(field_name='cell_names', lookup_expr='icontains')
@@ -177,7 +177,7 @@ class CellBatch_UpdateForm(forms.ModelForm):
         exclude=['stock_level']
 
 # -----------------------------------------------------------------------------------    
-class CellBatch_Filter(Filterbase):
+class CellBatch_Filter(BaseStatus_Filter):
     Stock_Date = IsoDateTimeFilter(field_name='stock_date')
     class Meta:
         model = Cell_Batch
@@ -222,7 +222,7 @@ class CellBatchStock_Form(CellBatchStock_CreateForm):
         fields="__all__"
     
 # -----------------------------------------------------------------------------------    
-class CellBatchStock_Filter(Filterbase):
+class CellBatchStock_Filter(BaseStatus_Filter):
     start_date = DateFilter(field_name='stock_date',lookup_expr=('gt'), widget=forms.DateInput(attrs={'type': 'date'})) 
     end_date = DateFilter(field_name='stock_date',lookup_expr=('lt'), widget=forms.DateInput(attrs={'type': 'date'}))
     Stock_Date = DateRangeFilter(field_name='stock_date')

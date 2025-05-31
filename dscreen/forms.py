@@ -11,7 +11,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 
 from apputil.models import Dictionary, ApplicationUser, Document
-from applib.django.filters import BaseStatus_Filter
+from applib.django.base.filters import BaseStatus_Filter
  
 
 #DScreen

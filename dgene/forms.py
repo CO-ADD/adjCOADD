@@ -10,7 +10,7 @@ from django.contrib.postgres.forms import SimpleArrayField
 from django_filters import CharFilter, ChoiceFilter
 
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils.filters_base import Filterbase
+from applib.django.base.filters import BaseStatus_Filter
 from dorganism.models import Organism_Batch
 from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_CheckM, Gene, AMR_Genotype  
 
@@ -18,7 +18,7 @@ from dgene.models import Genome_Sequence, ID_Pub, ID_Sequence, WGS_FastQC, WGS_C
 #=================================================================================================
 # Genome Sequences
 #=================================================================================================
-class GenomeSeq_Filter(Filterbase):
+class GenomeSeq_Filter(BaseStatus_Filter):
 
     FilterSet_Dict = {
         'f_OrgBatchID':   {'lookup':'contains','field_name':'orgbatch_id__orgbatch_id'},
@@ -99,7 +99,7 @@ class IDPub_Form(ModelForm):
         fields= ['id_type']
  
 ## filter forms
-class IDPub_Filter(Filterbase):
+class IDPub_Filter(BaseStatus_Filter):
     #id_organisms=CharFilter(method='filter_arrayfields')
 
     def __init__(self, *args, **kwargs):
@@ -113,7 +113,7 @@ class IDPub_Filter(Filterbase):
 #=================================================================================================
 # ID_Seq - Identification from Sequence
 #=================================================================================================
-class IDSeq_Filter(Filterbase):
+class IDSeq_Filter(BaseStatus_Filter):
 
     ChoiceFilter_Dict = {
         'f_OrgName':    {'label':"Organism Name",   'field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
@@ -172,7 +172,7 @@ class IDSeq_Form(ModelForm):
 #=================================================================================================
 # WGS_FastQC - FastQ QC
 #=================================================================================================
-class WGS_FastQC_Filter(Filterbase):
+class WGS_FastQC_Filter(BaseStatus_Filter):
     FilterSet_Dict = {
         'f_OrgName':    {'lookup':'choice','field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
     }
@@ -196,7 +196,7 @@ class WGS_FastQC_Filter(Filterbase):
 #=================================================================================================
 # WGS_CheckM - FastA CheckM
 #=================================================================================================
-class WGS_CheckM_Filter(Filterbase):
+class WGS_CheckM_Filter(BaseStatus_Filter):
     FilterSet_Dict = {
         'f_OrgName':    {'lookup':'choice','field_name':'seq_id__orgbatch_id__organism_id__organism_name'},
     }
@@ -226,7 +226,7 @@ class WGS_CheckM_Filter(Filterbase):
 # List of Genes
 #=================================================================================================
 #
-class Gene_Filter(Filterbase):
+class Gene_Filter(BaseStatus_Filter):
 
     FilterSet_Dict = {
         'gene_type':    {'lookup':'choice','field_name':'gene_type'},
@@ -292,7 +292,7 @@ class Gene_Form(ModelForm):
  
 
 #=================================================================================================
-class AMRGenotype_Filter(Filterbase):
+class AMRGenotype_Filter(BaseStatus_Filter):
     
     FilterSet_Dict = {
         #'f_OrgBatchID':   {'lookup':'contains','field_name':'orgbatch_id__orgbatch_id'},

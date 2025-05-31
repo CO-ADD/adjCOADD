@@ -11,9 +11,8 @@ from django.core.files.storage import default_storage
 from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
-from django.http import JsonResponse, QueryDict
+from django.http import JsonResponse
 from django.views import View
-from django.views.generic import ListView
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -54,8 +53,9 @@ class WriteUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def handle_no_permission(self):
         return HttpResponse( 'Only users with WRITE permission have access to this view')
 
+
 # -----------------------------------------------------------------
-# -- Create View class--
+# --create view class--
 # -----------------------------------------------------------------
 class Base_CreateView(LoginRequiredMixin, View):
     form_class = None
@@ -85,7 +85,7 @@ class Base_CreateView(LoginRequiredMixin, View):
             return redirect(request.META['HTTP_REFERER'])
 
 # -----------------------------------------------------------------
-# -- Update View class --
+# --update view class--
 # -----------------------------------------------------------------
 class Base_UpdateView(LoginRequiredMixin, View):
     form_class = None
@@ -134,8 +134,6 @@ class Base_UpdateView(LoginRequiredMixin, View):
             return redirect(request.META['HTTP_REFERER'])
 
 # -----------------------------------------------------------------
-# -- Delete View class --
-# -----------------------------------------------------------------
 class Base_DeleteView(SuperUserRequiredMixin, Base_UpdateView):
     model=None
     transaction_use = 'default'
@@ -158,9 +156,12 @@ class Base_DeleteView(SuperUserRequiredMixin, Base_UpdateView):
 
         return redirect(request.META['HTTP_REFERER'])
     
+
+
 # -----------------------------------------------------------------
 # --update view class with htmx put request--
 # -----------------------------------------------------------------
+from django.http import QueryDict
 class Htmx_UpdateView(LoginRequiredMixin, View):
     form_class = None
     template_name = None
@@ -204,130 +205,8 @@ class Htmx_UpdateView(LoginRequiredMixin, View):
             # messages.error(request, form.errors)
             return render(request, self.template_partial, context)
 
-
 # -----------------------------------------------------------------
-# -- View class for Filtered List
-# -----------------------------------------------------------------
-class Filtered_ListView(ListView):
-    
-    filterset_class = None #each filterset class based on class Filterbase
-    paginate_by = 50
-    model_fields = None
-    order_by = None
-    filter_Count = None
-    app_name = None
-    model_name = None
-
-    #--------------------------------------------------------------------------
-    @staticmethod
-    def find_item_index(lst, item):
-        for i, element in enumerate(lst):
-            if isinstance(element, dict):
-                if item in element.keys():
-                    return i
-            elif element == item:
-                return i
-        return -1
-  
-  
-    #--------------------------------------------------------------------------
-    def get_queryset(self):
- 
-        # Get the queryset however you usually would.  For example:
-        queryset = super().get_queryset()
-        kwargs={'deep': False}      
-
-        # Check if the reset request is submitted
-        # Remove the stored queryset from the session
-        if self.request.GET.get('reset')=='True':
-            if 'cached_queryset' in self.request.session:
-                del self.request.session[f'{self.model}_cached_queryset'] 
-                
-        # Instantiate the filterset with either the stored queryset from the session or the default queryset
-        # ---- Switch off cache queryset
-        # if self.request.session.get('cached_queryset'):
-        #     stored_queryset_pks = self.request.session['cached_queryset']
-        #     stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
-        # ----
-        
-        # filter_record_dict = {}
-        # _Excluded_Keys = ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]
-        # for key in self.request.GET:
-        #     if key not in _Excluded_Keys:
-        #         if self.request.GET.getlist(key)!=[""] :
-        #             filter_record_dict[key] = self.request.GET.getlist(key)
-                
-        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
-        
-        if 'applymulti' in self.request.GET:
-            kwargs={'deep': True}
-            self.filterset = self.filterset_class(self.request.GET,  queryset = queryset, filterset_dict= filter_record_dict, **kwargs)
-        else:
-            self.filterset = self.filterset_class(self.request.GET, queryset = queryset, filterset_dict= filter_record_dict, **kwargs)
-            
-        # Cache the filtered queryset in the session
-        filtered_queryset_pks = self.filterset.qs.distinct().values_list('pk', flat = True)
-        self.request.session[f'{self.model}_cached_queryset'] = list(filtered_queryset_pks) if filtered_queryset_pks else None  
-
-        # Then use the query parameters and the queryset to
-        # instantiate a filterset and save it as an attribute
-        # on the view instance for later.
-        # Return the filtered queryset
-        order=self.get_order_by()
-        self.filter_count = self.filterset.qs.distinct().count()
-        if order:           
-            order = order.replace(".", "__")
-            return self.filterset.qs.distinct().order_by(order)
-    
-        return self.filterset.qs.distinct()
-
-    #--------------------------------------------------------------------------
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        self.context_list = context['object_list']
-        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
-        filter_record = "Selected: "+ str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
-
-        # Pass the filterset to the template - it provides the form.
-        #self.filterset.update_choice_filters(filter_record_dict)
-        
-        context['filter'] = self.filterset
-        context['paginate_by'] = self.get_paginate_by(self, **kwargs)
-        context['fields'] = self.model.get_fields(fields = self.model_fields)
-        context['filterset'] = filter_record
-        context['Count'] = self.model.objects.count()
-        context['querycount'] = self.filter_count
-
-        return context
-    
-    #--------------------------------------------------------------------------
-    def get_paginate_by(self, queryset):
-        qs=super().get_queryset()
-        paginate_by= self.request.GET.get("paginate_by", self.paginate_by)
-
-        return paginate_by
- 
-    #--------------------------------------------------------------------------
-    def get_order_by(self):   
-
-        order_by=self.request.GET.get("order_by", self.order_by) or None
-        acs_decs=""
-        if order_by:
-            order_field=""
-            if order_by[0]=="-":
-                acs_decs=order_by[0]
-                order_field=order_by[1:]
-            else:
-                order_field=order_by              
-            index=self.find_item_index(list(self.model_fields.values()), order_field)
-            order_by=acs_decs+ list(self.model_fields.keys())[index]
-            return order_by
-        
-        return order_by 
-    
-
-# -----------------------------------------------------------------
-# -- View for simple update files and images to database--
+# --View for simple update files and images to database--
 # -----------------------------------------------------------------
 class File_CreateView(LoginRequiredMixin,FormView):
     form_class = None
@@ -381,7 +260,7 @@ class File_CreateView(LoginRequiredMixin,FormView):
         return context
     
 # -----------------------------------------------------------------
-# -- Export View class--
+# --export view--
 # -----------------------------------------------------------------
 
 class Base_DataExportView(LoginRequiredMixin, View):
@@ -449,3 +328,4 @@ class Base_DataExportView(LoginRequiredMixin, View):
             df.to_excel(excel_writer=response, index=False)
 
         return response
+ 

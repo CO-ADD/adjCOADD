@@ -12,7 +12,7 @@ from django.db.models.functions import Greatest
 from django_filters import CharFilter, ChoiceFilter
 
 from apputil.models import Dictionary, ApplicationUser
-from apputil.utils.filters_base import Filterbase
+from applib.django.base.filters import BaseStatus_Filter
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from adjcoadd.constants import *
 
@@ -76,7 +76,7 @@ class Drug_form(forms.ModelForm):
 
 # -------------fitlerset Forms---------------------------------------------------------------
 
-class Drug_filter(Filterbase):
+class Drug_filter(BaseStatus_Filter):
     Drug_Name = django_filters.CharFilter(field_name='drug_name', lookup_expr='icontains')
     Drug_Type=django_filters.ChoiceFilter(field_name='drug_type',widget=forms.RadioSelect, choices=[], empty_label=None)
     Target=django_filters.ChoiceFilter(field_name='drug_target', choices=[])
@@ -109,7 +109,7 @@ class Drug_filter(Filterbase):
 # -----------------------------------------------------------------
 # VitekCard
 # -----------------------------------------------------------------
-class VitekCard_Filter(Filterbase):
+class VitekCard_Filter(BaseStatus_Filter):
     f_OrgID = CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
     #card_barcode = django_filters.CharFilter(lookup_expr='icontains')
     card_code = ChoiceFilter(field_name='card_code', choices=[], label="Card Code")
@@ -131,7 +131,7 @@ class VitekCard_Filter(Filterbase):
 # -----------------------------------------------------------------
 # Vitek AST
 # -----------------------------------------------------------------
-class VitekAST_Filter(Filterbase):
+class VitekAST_Filter(BaseStatus_Filter):
 # -----------------------------------------------------------------
     f_OrgID = CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
     f_OrgName = ChoiceFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_name', choices=[],label='Organism Name')
@@ -170,7 +170,7 @@ class VitekAST_Filter(Filterbase):
 # -----------------------------------------------------------------
 # Vitek ID
 # -----------------------------------------------------------------
-class VitekID_Filter(Filterbase):
+class VitekID_Filter(BaseStatus_Filter):
 # -----------------------------------------------------------------
     f_OrgID = CharFilter(field_name='card_barcode__orgbatch_id__organism_id__organism_id', lookup_expr='icontains',label="Organism ID")
     f_BatchID = CharFilter(field_name='card_barcode__orgbatch_id__batch_id', lookup_expr='icontains',label="Batch")
@@ -200,7 +200,7 @@ class VitekID_Filter(Filterbase):
 #=================================================================================================
 
 # -----------------------------------------------------------------
-class MIC_COADDfilter(Filterbase):
+class MIC_COADDfilter(BaseStatus_Filter):
     ChoiceFilter_Dict = {
         'f_OrgName':    {'label':"Organism Name",   'field_name':'orgbatch_id__organism_id__organism_name'},
         'f_DrugName':   {'label':"Drug Name",   'field_name':'drug_id__drug_name'},
@@ -263,7 +263,7 @@ class MIC_COADDfilter(Filterbase):
     
     
 # -----------------------------------------------------------------
-class MIC_Pubfilter(Filterbase):
+class MIC_Pubfilter(BaseStatus_Filter):
 # -----------------------------------------------------------------
  
 
@@ -322,7 +322,7 @@ class MIC_Pubfilter(Filterbase):
     
 
 # -----------------------------------------------------------------
-class Breakpointfilter(Filterbase):
+class Breakpointfilter(BaseStatus_Filter):
 # -----------------------------------------------------------------
     drug_name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains', label="Drug")
     bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
