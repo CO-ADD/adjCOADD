@@ -295,7 +295,7 @@ class BatchUpdateView(Htmx_UpdateView):
     pass
     # form_class=Batchupdate_form
     # template_name="dorganism/organism/batch/batch_u.html"
-    # template_partial="dorganism/organism/batch/batch_tr.html"
+    # template_htmx="dorganism/organism/batch/batch_tr.html"
     # model=Organism_Batch
     # transaction_use = 'dorganism'
    

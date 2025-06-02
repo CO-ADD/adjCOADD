@@ -164,7 +164,7 @@ class Base_DeleteView(SuperUserRequiredMixin, Base_UpdateView):
 class Htmx_UpdateView(LoginRequiredMixin, View):
     form_class = None
     template_name = None
-    template_partial = None
+    template_htmx = None
     model = None
     transaction_use = 'default'
     
@@ -189,7 +189,8 @@ class Htmx_UpdateView(LoginRequiredMixin, View):
                 "object":object_,
                 }        
         if request.GET.get('_value') == 'cancel':
-            return render(request, self.template_partial, context)
+            return render(request, self.template_htmx, context)
+        
         elif form.is_valid():
             with transaction.atomic(using=self.transaction_use):
                 object_new=form.save(commit=False)
@@ -197,12 +198,13 @@ class Htmx_UpdateView(LoginRequiredMixin, View):
                 object_new.save(**kwargs)
                 ApplicationLog.add('Update',str(object_new.pk),'Info', request.user, str(object_new.pk),f'Update an {object_new._meta.model}','Completed')              
                 #print(f'Update an {object_new._meta.model} : {str(object_new.pk)}')
-            return render(request, self.template_partial, context)
+            return render(request, self.template_htmx, context)
+        
         else:
             # raise ValidationError
             context["form_errors"] = form.errors
             # messages.error(request, form.errors)
-            return render(request, self.template_partial, context)
+            return render(request, self.template_htmx, context)
 
 
 # -----------------------------------------------------------------

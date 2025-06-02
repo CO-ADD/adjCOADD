@@ -39,7 +39,7 @@
     <!-- Batch and Stock as ChildTable -->
     <div class="d-flex m-0 p-0">
       <!-- prettier-ignore -->
-      {% include 'grid/base/btn_left_navbar.html' with title="createBatch" modal="createBatchModal" %}
+      {% include 'grid/base/btn_left_navbar.html' with title="createOrgBatch" modal="createOrgBatchModal" %}
       <div class="accordion bg-transparent w-100" id="organism-batch-detail">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
@@ -57,7 +57,7 @@
             <div class="accordion-body">
               <div class="table-responsive">
                 <!-- prettier-ignore -->
-                {% include 'datatable/base/datatable_subtable.html' with table_id='datatable_org_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/orgbatch/orgbatch_tr.html' hiddenfield='Batch ID'%}
+                {% include 'datatable/base/datatable_subtable.html' with table_id='datatable_org_batch' objects=batch_obj data_fields=batch_fields html_name='dorganism/orgbatch/orgbatch_htmx.html' hiddenfield='Batch ID'%}
               </div>
             </div>
           </div>
@@ -127,7 +127,6 @@
     <div style="min-height: 100px;"></div>
   </div>
 
-
   {% load static %}
   <script src="{% static 'js/ajax_simpleupload.js' %}"></script>
   <script>
@@ -136,7 +135,7 @@
       let url_culture = `{% url 'culture_create' object.pk %}`;
       console.log(url_batch);
       loadModal("#createCultureModal", "#createCulture", url_culture);
-      loadModal("#createBatchModal", "#createBatch", url_batch);
+      loadModal("#createOrgBatchModal", "#createOrgBatch", url_batch);
 
       let url_doc= `{% url 'adddoc' object.pk %}`;
       let url_img_orgbatch= `{% url 'batchimg_create' object.pk %}`;

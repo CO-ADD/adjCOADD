@@ -150,7 +150,7 @@ class AppUser_CreateView(SuperUserRequiredMixin, Base_CreateView):
 class AppUser_UpdateView(Htmx_UpdateView):
     form_class = AppUser_Form
     template_name = "apputil/appUsersUpdate.html"
-    template_partial = "apputil/appuser_tr.html"
+    template_htmx = "apputil/appuser_tr.html"
     model = ApplicationUser
 
     def put(self, request, *args, **kwargs):
@@ -164,10 +164,10 @@ class AppUser_UpdateView(Htmx_UpdateView):
     }
         if form.is_valid():           
             form.save()                
-            return render(request, self.template_partial, context)
+            return render(request, self.template_htmx, context)
         else:
             messages.error(request, form.errors)
-            return render(request, self.template_partial, context)
+            return render(request, self.template_htmx, context)
 
 #-------------------------------------------------------------------------------------------------
 class AppUser_DeleteView(SuperUserRequiredMixin, UpdateView):

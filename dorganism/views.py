@@ -309,7 +309,7 @@ def OrgBatch_CreateView(req, organism_id):
 class OrgBatch_UpdateView(Htmx_UpdateView):
     form_class=OrgBatch_UpdateForm
     template_name="dorganism/orgbatch/orgbatch_update.html"
-    template_partial="dorganism/orgbatch/orgbatch_tr.html"
+    template_htmx="dorganism/orgbatch/orgbatch_htmx.html"
     model=Organism_Batch
     transaction_use = 'dorganism'
 
@@ -465,7 +465,7 @@ def OrgCulture_CreateView(req, organism_id):
 class OrgCulture_UpdateView(Htmx_UpdateView):
     form_class=OrgCulture_UpdateForm
     template_name="dorganism/orgculture/orgculture_u.html"
-    #template_partial="dorganism/orgculture/orgculture_tr.html"
+    #template_htmx="dorganism/orgculture/orgculture_tr.html"
     model=Organism_Culture
     transaction_use = 'dorganism'
 

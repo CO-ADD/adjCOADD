@@ -266,7 +266,7 @@ def CellBatch_CreateView(req, cell_id):
 class CellBatch_UpdateView(Htmx_UpdateView):
     form_class=CellBatch_UpdateForm
     template_name="dcell/cellbatch/cellbatch_u.html"
-    template_partial="dcell/cellbatch/cellbatch_tr.html"
+    template_htmx="dcell/cellbatch/cellbatch_tr.html"
     model=Cell_Batch
     transaction_use = 'dcell'
 
