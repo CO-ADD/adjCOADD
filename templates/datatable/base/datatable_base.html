@@ -25,7 +25,7 @@
         <!--prettier-ignore  -->
         {% for object in page_obj%}
           {% if table_id == 'ApplicationUser' %}
-            {% include 'apputil/appuser_tr.html' with table_id='ApplicationUser'%}
+            {% include 'apputil/appuser_htmx.html' with table_id='ApplicationUser'%}
           {% else %}
             <tr>
               <td>

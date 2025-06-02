@@ -150,7 +150,7 @@ class AppUser_CreateView(SuperUserRequiredMixin, Base_CreateView):
 class AppUser_UpdateView(Htmx_UpdateView):
     form_class = AppUser_Form
     template_name = "apputil/appUsersUpdate.html"
-    template_htmx = "apputil/appuser_tr.html"
+    template_htmx = "apputil/appuser_htmx.html"
     model = ApplicationUser
 
     def put(self, request, *args, **kwargs):
