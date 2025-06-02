@@ -28,13 +28,13 @@ def get_org_identification_summary(OrgID):
         aDict['Batch ID'] = s.seq_id.orgbatch_id.batch_id
         aDict['Identification'] = '; '.join(s.kraken_organisms)
         aDict['Method'] = "WGS Kraken"
-        aDict['Run'] = s.seq_id.run_id
+        aDict['Run'] = f"{s.seq_id.run_id} [{s.seq_id}]"
         orgID.append(aDict)
         aDict = {}
         aDict['Batch ID'] = s.seq_id.orgbatch_id.batch_id
         aDict['Identification'] = f"{s.gtdbtk_class} - {s.gtdbtk_fastani}"
         aDict['Method'] = "WGS GTDB-TK"
-        aDict['Run'] = s.seq_id.run_id
+        aDict['Run'] = f"{s.seq_id.run_id} [{s.seq_id}]"
         orgID.append(aDict)
 
         if s.mlst_scheme != '-':
@@ -42,7 +42,7 @@ def get_org_identification_summary(OrgID):
             aDict['Batch ID'] = s.seq_id.orgbatch_id.batch_id
             aDict['Identification'] = f"{s.mlst_scheme} (MLST: {s.mlst_seqtype})"
             aDict['Method'] = "WGS MLST"
-            aDict['Run'] = s.seq_id.run_id
+            aDict['Run'] =f"{s.seq_id.run_id} [{s.seq_id}]"
             orgID.append(aDict)
             nIdx += 1
 
@@ -52,7 +52,7 @@ def get_org_identification_summary(OrgID):
         aDict['Batch ID'] = c.seq_id.orgbatch_id.batch_id
         aDict['Identification'] = f"{c.marker_lineage} (completness: {c.completeness}% contamination: {c.contamination}%)"
         aDict['Method'] = f"WGS CheckM {c.assembly}"
-        aDict['Run'] = c.seq_id.run_id
+        aDict['Run'] = f"{c.seq_id.run_id} [{c.seq_id}]"
         orgID.append(aDict)
 
 
