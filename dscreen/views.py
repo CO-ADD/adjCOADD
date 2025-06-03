@@ -178,10 +178,18 @@ def ScreenRun_ReportView(req, pk):
     cReport = Report_Screening()
     cReport.qry_by_RunID([pk])
     cReport.get_dataframe()
-    cReport.get_sample_info()
+    cReport.get_sample_info(Storage_Info=True)
     cReport.get_assay_info()
+
     cReport.get_testplate_info()
-    cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
+
+    cReport.add_hcr_selection()
+
+    #cReport.add_vitek_ast()
+    #cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
+
+    cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'])
+
     if cReport.n_samples>0:
         req = HttpResponse(content_type='application/vnd.ms-excel')
         req['Content-Disposition'] = f'attachment; filename={_xls_name}'

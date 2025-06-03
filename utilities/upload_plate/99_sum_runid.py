@@ -58,7 +58,7 @@ def main(prgArgs,djDir):
     if prgArgs.runid:
         cReport.qry_by_RunID(prgArgs.runid)
         cReport.get_dataframe()
-        cReport.get_sample_info()
+        cReport.get_sample_info(Storage_Info=True)
         cReport.get_assay_info()
 
         cReport.get_testplate_info()
@@ -71,7 +71,7 @@ def main(prgArgs,djDir):
         if 'COADD' in prgArgs.adddata:
             cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
 
-        cReport.gen_pivot_tables(PivTables = ['Values','AssayID'])
+        cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'])
 
         cReport.to_excel(prgArgs.excelfile, Transpose_PivTables=prgArgs.transpose)
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 #    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
     prgParser.add_argument("-r","--runid",default=[],required=True, dest="runid", action='store', help="RunID's as list [,]",
                 type=lambda s: [item for item in s.split(',')])
-    prgParser.add_argument("-a","--adddata",default=[],required=False, dest="adddata", action='store', help="Add data [Vitek/COADD] as list [,]",
+    prgParser.add_argument("-a","--adddata",default=[],required=False, dest="adddata", action='store', help="Add data [Vitek/COADD/HCR_Selection] as list [,]",
                 type=lambda s: [item for item in s.split(',')])
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
     # prgParser.add_argument("-f","--format",default='Check',required=False, dest="pivot", action='store', help="Format of output EXcel")

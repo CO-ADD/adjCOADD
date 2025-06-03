@@ -638,6 +638,38 @@ class Report_Screening():
             # Filter for 'Active' Samples
             self.n_hcr_sel = 0
             self.df_hcr_sel = None
+            _sel_samples = {}
+
+            # Get Sample_ID for ('A') or ('P' & 'GN_')
+            for idx,row in self.df_sc.iterrows():
+                _sid = row['sample_id']
+                if row['act_type'] == 'A':
+                    _sel_samples[_sid] = 'A'
+                elif row['act_type'] == 'P' and 'GN_' in row['assay_id']:
+                    if _sid not in _sel_samples:
+                        _sel_samples[_sid] = 'P'
+            
+            logger.info(f" [SelectHCR] Samples: {len(_sel_samples)}  ")
+
+            # Get pivotSC data for selected samples
+            _df_sel_sc = self.df_sc[self.df_sc['sample_id' ].isin([*_sel_samples])]
+            _piv_sel_sc = _df_sel_sc.pivot_table(index='sample_id', columns='assay_id', 
+                                                        values='act_type',
+                                                        aggfunc=lambda x: " ".join(x),
+                                    )
+
+            # Generate DF for Selected HCR , from df_samples and pivotSC
+            _sel_hcr_lst = []
+            for _sid in _sel_samples:
+                _sample_dict = self.df_samples[self.df_samples['sample_id'] == _sid].to_dict('records')[0]
+                _sample_dict['SEL'] = _sel_samples[_sid]
+                _sample_piv = _piv_sel_sc.loc[_sid].to_dict()
+                _sample_dict.update(_sample_piv)
+                _sel_hcr_lst.append(_sample_dict)
+            self.n_hcr_sel = len(_sel_hcr_lst)
+            self.df_hcr_sel = pd.DataFrame(_sel_hcr_lst)
+
+
 
     # --------------------------------------------------------------------------------------
     def add_antibiogram_data(self, RefOrganisms=[]):
@@ -807,6 +839,10 @@ class Report_Screening():
                 if self.n_antibio > 0:
                     logger.info(f" [Report]     [AntiBio] {self.df_vitek.shape}")
                     self.df_antibio.to_excel(writer, sheet_name='AntiBio')
+
+                if self.n_hcr_sel > 0:
+                    logger.info(f" [Report]     [SelectHCR] {self.df_hcr_sel.shape}")
+                    self.df_hcr_sel.to_excel(writer, sheet_name='SelectHCR')
 
                 if self.n_sc > 0:
                     COL_EXCLUDE = ['cmpbatch_lst','conc_lst','conc_unit_lst']
