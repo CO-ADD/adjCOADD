@@ -634,13 +634,14 @@ class Report_Screening():
     # --------------------------------------------------------------------------------------
     def add_hcr_selection(self):
     # --------------------------------------------------------------------------------------
-        if self.n_sc > 0:
+        # Generate Selection for HCR only if SC data but no DR data 
+        if self.n_sc > 0 and self.n_dr == 0:
             # Filter for 'Active' Samples
             self.n_hcr_sel = 0
             self.df_hcr_sel = None
-            _sel_samples = {}
 
-            # Get Sample_ID for ('A') or ('P' & 'GN_')
+            _sel_samples = {}
+            # Get Sample_ID's for (act_type='A') or (act_type='P' & assay_id like 'GN_')
             for idx,row in self.df_sc.iterrows():
                 _sid = row['sample_id']
                 if row['act_type'] == 'A':
@@ -655,8 +656,7 @@ class Report_Screening():
             _df_sel_sc = self.df_sc[self.df_sc['sample_id' ].isin([*_sel_samples])]
             _piv_sel_sc = _df_sel_sc.pivot_table(index='sample_id', columns='assay_id', 
                                                         values='act_type',
-                                                        aggfunc=lambda x: " ".join(x),
-                                    )
+                                                        aggfunc=lambda x: " ".join(x),)
 
             # Generate DF for Selected HCR , from df_samples and pivotSC
             _sel_hcr_lst = []
@@ -666,10 +666,9 @@ class Report_Screening():
                 _sample_piv = _piv_sel_sc.loc[_sid].to_dict()
                 _sample_dict.update(_sample_piv)
                 _sel_hcr_lst.append(_sample_dict)
+                
             self.n_hcr_sel = len(_sel_hcr_lst)
             self.df_hcr_sel = pd.DataFrame(_sel_hcr_lst)
-
-
 
     # --------------------------------------------------------------------------------------
     def add_antibiogram_data(self, RefOrganisms=[]):
