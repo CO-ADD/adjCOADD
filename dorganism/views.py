@@ -141,6 +141,8 @@ def Organism_DetailView(request, pk):
     context={}
     # try:
     object_=get_object_or_404(Organism, organism_id=pk)
+
+    print(f" [Organism_DetailView] {object_.strain_panel} {type(object_.strain_panel)}")
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 
                                       'strain_panel':object_.strain_panel,}, 
                                        instance=object_)
@@ -219,9 +221,11 @@ def Organism_UpdateView(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
+    print(f" [Organism_UpdateView] {object_.strain_panel} {type(object_.strain_panel)}")
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 
                                       'strain_panel':object_.strain_panel, 
-                                      'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, 
+                                      'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]
+                                      }, 
                                       instance=object_)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
