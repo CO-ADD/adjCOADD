@@ -110,6 +110,11 @@ def ScreenRun_DetailView(req, pk):
 
     if str(_object.run_type) in ['HCR','PSR']:
         context["process"] = {"type":"Screening"}
+        
+        _testplates = TestPlate.objects.filter(run_id=_object, )
+        context["testplate_obj"] = _testplates
+        context["testplate_count"] = _testplates.count()
+        
     elif str(_object.run_type) in ['SEQ']:
         context["process"] = {"type":"Sequencing"}
     else:

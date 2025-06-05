@@ -107,16 +107,19 @@ class CreateOrganism_form(forms.ModelForm):
     organism_name=forms.ModelChoiceField(queryset=Taxonomy.objects.all(), widget=forms.HiddenInput(),required=False,)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
     collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
-   
+       
     def __init__(self, organism_name=None, *args, **kwargs): 
         self.organism_name=organism_name
         super(CreateOrganism_form, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
+
         self.fields['strain_type'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_type'], showDesc=False),)
         self.fields['strain_type'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true',})
         self.fields['strain_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Organism.DICTIONARY_FIELDS['strain_panel'], showDesc=False),)
         self.fields['strain_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
+
+
         self.fields['oxygen_pref'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['oxygen_pref'])]
         self.fields['risk_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['risk_group'])]
         self.fields['pathogen_group'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organism.DICTIONARY_FIELDS['pathogen_group'])]

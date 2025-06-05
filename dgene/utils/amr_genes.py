@@ -22,7 +22,7 @@ def get_AMRGenes_byOrgID_Html(pk, with_style = False):
 
         #print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_AMRGenes_byOrgID(df)
-        print(f"[get_AMRGenes_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
+        #print(f" [get_AMRGenes_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
 
         if with_style:
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
