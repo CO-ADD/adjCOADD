@@ -69,7 +69,8 @@ class Genome_Sequence(AuditModel):
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
     seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
-    seq_files = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=4, verbose_name = "Files", null=True, blank=True)
+    seq_files = models.CharField(max_length=150, blank=True, verbose_name = "Files")
+    #seq_files = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=4, verbose_name = "Files", null=True, blank=True)
 
     class Meta:
         app_label = 'dgene'
