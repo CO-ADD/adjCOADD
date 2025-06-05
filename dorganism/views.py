@@ -223,6 +223,7 @@ def Organism_UpdateView(req, pk):
                                       'strain_panel':object_.strain_panel, 
                                       'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]}, 
                                       instance=object_)
+    print(object_.strain_type)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:

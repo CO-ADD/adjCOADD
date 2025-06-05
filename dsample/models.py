@@ -1016,9 +1016,10 @@ class Sample_Base(CmpBatchList_Base):
     #------------------------------------------------  
     def check_conc_unit_dictionary(self):
         _missing = []
-        for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
-            if not Dictionary.exists(self.DICTIONARY_FIELDS['conc_unit_lst'],conc_unit):
-                _missing.append(conc_unit)
+        if self.conc_unit_lst:
+            for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
+                if not Dictionary.exists(self.DICTIONARY_FIELDS['conc_unit_lst'],conc_unit):
+                    _missing.append(conc_unit)
         if len(_missing) > 0:
             return({'Error': f"Conc_Unit not found {', '.join(_missing)}"})
         else:
