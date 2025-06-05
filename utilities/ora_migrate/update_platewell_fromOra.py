@@ -331,9 +331,9 @@ def main(prgArgs,djDir):
 
         if prgArgs.table == "StockWells":
             # Reset Barcodes 
-            qryMP = MasterWell.objects.exclude(barcode=None)
+            qryMP = MasterWell.objects.exclude(barcode=None).iterator()
             n_qryMP = qryMP.count()
-            for bw in tqdm(qryMP, total=n_qryMP, desc='Reset Barcodes'):
+            for bw in tqdm(qryMP, total=MasterWell.objects.exclude(barcode=None).count(), desc='Reset Barcodes'):
                 bw.barcode = None
                 if prgArgs.upload and prgArgs.overwrite:
                     bw.save()
