@@ -329,6 +329,17 @@ def main(prgArgs,djDir):
 
         chk_PlateID = {}
 
+        if prgArgs.table == "StockWells":
+            # Reset Barcodes 
+            qryMP = MasterWell.objects.exclude(barcode=None)
+            n_qryMP = qryMP.count()
+            for bw in tqdm(qryMP, total=n_qryMP, desc='Reset Barcodes'):
+                bw.barcode = None
+                if prgArgs.upload and prgArgs.overwrite:
+                    bw.save()
+
+
+
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
 #        for crow in CastDB.cursor:
             #print(f"{crow}")
