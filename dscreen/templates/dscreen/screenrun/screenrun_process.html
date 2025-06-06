@@ -1,6 +1,10 @@
 
 <div>
   <button type="button" class="btn btn-outline-success "> 
+    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Upload Reads </a>
+  </button>
+
+  <button type="button" class="btn btn-outline-success "> 
     <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Report </a>
   </button>
 </div>

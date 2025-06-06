@@ -1,0 +1,13 @@
+<tr>
+  <td style="width: 6%">
+    {% url 'culture_update' object.pk as culture_url %}
+    <!--  -->
+    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=culture_url %}
+    <!--  -->
+    {% include 'dorganism/orgculture/orgculture_d.html' with object_cultr=object.pk %}
+    
+  </td>
+  {% for value in object.get_values %}
+    <td>{{value}}</td>
+  {% endfor %}
+</tr>

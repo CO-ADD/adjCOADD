@@ -349,6 +349,25 @@ class TestPlate(Plate):
     """
 #=================================================================================================
 
+    HEADER_FIELDS = {
+        #"plate_id":{'Plate ID': {'plate_id':LinkList['plate_id']}},
+        "plate_id":"Plate ID",
+        "run_id":"Run ID",
+        "assay_id":"Assay ID",
+        "result_type":"Type",
+        "test_date":"Test Date",
+        "plate_quality":"Quality",
+        "zfactor":"ZFactor",
+        'n_reads' :"#R",
+        'n_samples' : "#S",
+        'n_layout' : "L",
+        'n_inhibitions' : "#SC",
+        'n_doseresponses' : "#DR",
+        'n_synergies'  : "#Syn",
+        #"group_id":"Group",
+        # "group_id.group_code":"Group",
+    }
+
     WELL_CLASS = 'TestWell'
     
     RESULT_TYPES = Choices('MIC','CC50','HC50','SYN-MIC')

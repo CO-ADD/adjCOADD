@@ -407,18 +407,23 @@ class Report_Screening():
                         if n_storage > 0:
                             _storage = {'plate_id':[],'well_id':[],'barcode':[],'concs':[],'conc_units':[]}
                             for q in qryStorage:
-                                _concs        = COMPOUND_SEP.join([str(x) for x in q.conc_lst if x > 0])
-                                _conc_units   = COMPOUND_SEP.join([str(x) for x in q.conc_unit_lst if x != ""])
-
                                 _storage['plate_id'].append(str(q.plate_id))
                                 _storage['well_id'].append(q.well_id)
+
+                                _concs        = COMPOUND_SEP.join([str(x) for x in q.conc_lst if x > 0])
+                                _storage['concs'].append(_concs)
+
+                                if q.conc_unit_lst:
+                                    _conc_units   = COMPOUND_SEP.join([str(x) for x in q.conc_unit_lst if x != ""])
+                                    _storage['conc_units'].append(_conc_units)
+                                else:
+                                    _storage['conc_units'].append('-')
+
                                 if q.barcode is None:
                                     _storage['barcode'].append('-')
                                 else:
                                     _storage['barcode'].append(q.barcode)
-                                _storage['concs'].append(_concs)
-                                _storage['conc_units'].append(_conc_units)
-                            
+                                
                             _dict['stock_plateid'] = ';'.join(_storage['plate_id'])
                             _dict['stock_wellid'] = ';'.join(_storage['well_id'])
                             _dict['stock_barcode'] = ';'.join(_storage['barcode'])
