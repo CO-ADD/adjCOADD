@@ -329,7 +329,7 @@ def main(prgArgs,djDir):
 
         chk_PlateID = {}
 
-        if prgArgs.table == "StockWells":
+        if prgArgs.table == "StockWells" and prgArgs.resetbarcodes:
             # Reset Barcodes 
             qryMP = MasterWell.objects.exclude(barcode=None).iterator()
             #n_qryMP = qryMP.count()
@@ -337,8 +337,6 @@ def main(prgArgs,djDir):
                 bw.barcode = None
                 if prgArgs.upload and prgArgs.overwrite:
                     bw.save()
-
-
 
         for crow in tqdm(CastDB.cursor, total=nWells, desc=OutName):
 #        for crow in CastDB.cursor:
@@ -473,6 +471,7 @@ if __name__ == "__main__":
     prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [TestWells/MasterWells/StockWells]")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
+    prgParser.add_argument("--resetbarcodes",default=False,required=False, dest="resetbarcodes", action='store_true', help="Reset Barcodes")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
     prgParser.add_argument("--test",default=0,required=False, dest="test", action='store', help="Number of entries to test")
     prgParser.add_argument("--new",default=False,required=False, dest="new", action='store_true', help="Not migrated entries only")
