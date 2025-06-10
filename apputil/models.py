@@ -128,6 +128,7 @@ class AuditModel(models.Model):
 #-------------------------------------------------------------------------------------------------
     # object status -> indicated by number in database:
     DELETED   = -9
+    REMOVED   = -9
     INVALID   = -1
     UNDEFINED =  0
     VALID     =  1
@@ -150,12 +151,16 @@ class AuditModel(models.Model):
     acreated_at = models.DateTimeField(null=False, editable=False, verbose_name="Created at")
     aupdated_at = models.DateTimeField(null=True,  editable=False, verbose_name="Updated at")
     adeleted_at = models.DateTimeField(null=True,  editable=False, verbose_name="Deleted at",)
+    # aremoved_at = models.DateTimeField(null=True,  editable=False, verbose_name="Removed at",)
+
     acreated = models.ForeignKey(ApplicationUser, null=False, verbose_name = "Created by", 
         related_name="%(class)s_acreated_by", editable=False, on_delete=models.DO_NOTHING)
     aupdated = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Updated by", 
         related_name="%(class)s_aupdated_by", editable=False, on_delete=models.DO_NOTHING)
     adeleted = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Deleted by", 
         related_name="%(class)s_adeleted_by", editable=False, on_delete=models.DO_NOTHING)
+    # aremoved = models.ForeignKey(ApplicationUser, null=True,  verbose_name = "Removed by", 
+    #     related_name="%(class)s_aremoved_by", editable=False, on_delete=models.DO_NOTHING)
 
     #------------------------------------------------
     class Meta:
@@ -391,6 +396,18 @@ class AuditModel(models.Model):
             cls_nextNo = next(cls_IDSq)
             cls_strID = cls.str_id(cls_nextNo)
         return(cls_strID)    
+
+    #------------------------------------------------
+    # def remove(self,**kwargs):
+    #     appuser=kwargs.get("user")
+    #     kwargs.pop("user",None)
+    #     if appuser is None:
+    #         appuser = ApplicationUser.objects.get(name=self.OWNER)
+
+    #     self.astatus = self.REMOVED
+    #     self.aremoved_id = appuser
+    #     self.aremoved_at = timezone.now()
+    #     super(AuditModel,self).save(**kwargs)
 
     #------------------------------------------------
     def delete(self,**kwargs):

@@ -34,6 +34,7 @@ def agg_ListStr(x,unique_only=True):
 #-----------------------------------------------------------------------------------
 def export_OrgBatch(OutDir):
 #-----------------------------------------------------------------------------------
+#    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','aremoved_at','aremoved_id']
     AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id']
 
     vOrgBatch = Organism_Batch.objects.filter(astatus__gte=0).values().annotate(
@@ -65,6 +66,7 @@ def export_OrgBatch(OutDir):
 def export_Vitek(OutDir):
 #-----------------------------------------------------------------------------------
 
+#    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','aremoved_at','aremoved_id']
     AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id']
 
     vIDs = VITEK_ID.objects.filter(astatus__gte=0).values().annotate(
@@ -123,6 +125,7 @@ def export_Antibiogram(OutDir):
 #-----------------------------------------------------------------------------------
 
     AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id','id']
+#    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','aremoved_at','aremoved_id','id']
 
     vCOADDs = MIC_COADD.objects.filter(astatus__gte=0).values().annotate(
         batch_id = F("orgbatch_id__batch_id"),
@@ -189,7 +192,7 @@ def export_Antibiogram(OutDir):
 #-----------------------------------------------------------------------------------
 def export_wgsFastA(OutDir):
 #-----------------------------------------------------------------------------------
-    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','adeleted_at','adeleted_id','id']
+    AuditFields = ['astatus','acreated_at','acreated_id','aupdated_at','aupdated_id','aremoved_at','aremoved_id','id']
 
     vSEQs = ID_Sequence.objects.filter(astatus__gte=0).values().annotate(
         batch_id = F("seq_id__orgbatch_id__batch_id"),

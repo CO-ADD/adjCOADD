@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
-from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
 
 # from adjcoadd.constants import *

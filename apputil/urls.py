@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from apputil.views import (index, userprofile, 
-                           AppUser_ListView, AppUser_CreateView, AppUser_UpdateView,  AppUser_DetailView, AppUser_DeleteView, 
+                           AppUser_ListView, AppUser_CreateView, AppUser_UpdateView,  AppUser_DetailView, AppUser_RemoveView, 
                            AppLog_ListView, 
                            Dictionary_ListView, Dictionary_CreateView,updateDictionary, deleteDictionary,
                             DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView)
@@ -18,7 +18,7 @@ urlpatterns = [
     path('user_list/', AppUser_ListView.as_view(), name="userslist"),
     path('user_create/', AppUser_CreateView.as_view(), name="createAppUser"),
     path('user_update/<str:pk>', AppUser_UpdateView.as_view(), name="updateAppUser"),
-    path('user_delete/<str:pk>', AppUser_DeleteView.as_view(), name="deleteAppUser"),
+    path('user_delete/<str:pk>', AppUser_RemoveView.as_view(), name="deleteAppUser"),
     path('user_profile/<str:pk>', AppUser_DetailView.as_view(), name='userprofile' ),
     
     path('log_list/', AppLog_ListView.as_view(), name='loglist' ),

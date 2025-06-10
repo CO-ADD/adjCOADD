@@ -16,7 +16,7 @@ from django.utils.functional import SimpleLazyObject
 
 # from apputil.models import Dictionary, ApplicationUser
 # from applib.django.base.filters import Filtered_ListView
-# from applib.django.base.views import permission_not_granted, Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView
+# from applib.django.base.views import permission_not_granted, Base_CreateView, Base_UpdateView,  Base_RemoveView, File_CreateView
 # from apputil.models import ApplicationLog
 # from adjcoadd.constants import *
 # from dorganism.models import  Organism, Taxonomy, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
@@ -47,7 +47,7 @@ class NewimgCreateView(File_CreateView):
    
 
 
-class NewimgDeleteView(Base_DeleteView):
+class NewimgDeleteView(Base_RemoveView):
     pass
     # model = NewimgModel
     # transaction_use = 'schema of the model'
@@ -98,7 +98,7 @@ class NewmodelUpdateView(Base_UpdateView):
     # transaction_use = 'dorganism'
 
 ##
-class NewmodelDeleteView(Base_DeleteView):
+class NewmodelDeleteView(Base_RemoveView):
     '''
     General Type
     '''

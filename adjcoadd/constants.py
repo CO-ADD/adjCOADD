@@ -59,6 +59,8 @@ LinkList={
     'drug_id':      '/ddrug/drug/{VALUE1}',
     'screenrun_id': '/dscreen/screenrun/{VALUE1}',
     'project_id':   '/dsample/project/{VALUE1}',
+    'testplate_id':  '/dplate/testplate/{VALUE1}',
+    'masterplate_id':'/dplate/masterplate/{VALUE1}',
     'cas':          'https://commonchemistry.cas.org/detail?cas_rn={VALUE1}',
     'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/{VALUE1}',
     'drugbank' :    'https://www.drugbank.ca/drugs/{VALUE1}',

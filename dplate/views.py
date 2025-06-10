@@ -20,7 +20,7 @@ from django.utils.safestring import mark_safe
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 # Create your views here.
 
 from dplate.models import TestPlate

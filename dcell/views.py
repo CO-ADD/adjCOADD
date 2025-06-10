@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
-from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView,
+from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_RemoveView, File_CreateView,
                                       Filtered_ListView, permission_not_granted, Htmx_UpdateView)
  
 from apputil.utils.upload_steps import UploadHandler_View, SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm
@@ -197,7 +197,7 @@ def Cell_UpdateView(req, pk):
     return render(req, "dcell/cell/cell_u.html", context)
 
 # -----------------------------------------------------------------
-class Cell_DeleteView(Base_DeleteView):
+class Cell_RemoveView(Base_RemoveView):
     model = Cell
     transaction_use = 'dcell'
 
@@ -271,7 +271,7 @@ class CellBatch_UpdateView(Htmx_UpdateView):
     transaction_use = 'dcell'
 
 # -----------------------------------------------------------------
-class CellBatch_DeleteView(Base_DeleteView):
+class CellBatch_RemoveView(Base_RemoveView):
     model = Cell_Batch
     transaction_use = 'dcell'
 
@@ -386,6 +386,6 @@ def CellBatchStock_UpdateView(req, pk):
     return render(req, "dcell/cellbatchstock/cellbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
-class CellBatchStock_DeleteView(Base_DeleteView):
+class CellBatchStock_RemoveView(Base_RemoveView):
     model = CellBatch_Stock
     transaction_use = 'dcell'

@@ -21,7 +21,7 @@ from django.utils.safestring import mark_safe
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
-from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_DeleteView, Filtered_ListView
+from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 
 # from adjcoadd.constants import *
 
@@ -169,7 +169,7 @@ def ScreenRun_UpdateView(req, pk):
     return render(req, "dscreen/screenrun/screenrun_update.html", context)
 
 # -----------------------------------------------------------------
-class ScreenRun_DeleteView(Base_DeleteView):
+class ScreenRun_RemoveView(Base_RemoveView):
     model = Screen_Run
     transaction_use = 'dscreen'
 

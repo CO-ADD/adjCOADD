@@ -350,7 +350,7 @@ class TestPlate(Plate):
 #=================================================================================================
 
     HEADER_FIELDS = {
-        #"plate_id":{'Plate ID': {'plate_id':LinkList['plate_id']}},
+        #"plate_id":{'Plate ID': {'plate_id':LinkList['testplate_id']}},
         "plate_id":"Plate ID",
         "run_id":"Run ID",
         "assay_id":"Assay ID",
@@ -358,9 +358,9 @@ class TestPlate(Plate):
         "test_date":"Test Date",
         "plate_quality":"Quality",
         "zfactor":"ZFactor",
-        'n_reads' :"#R",
-        'n_samples' : "#S",
-        'n_layout' : "L",
+        'n_reads' :"nR",
+        'n_samples' : "nS",
+        'n_layout' : "nL",
         'n_inhibitions' : "#SC",
         'n_doseresponses' : "#DR",
         'n_synergies'  : "#Syn",

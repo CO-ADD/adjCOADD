@@ -26,7 +26,7 @@ from dcell.models import Cell
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
 from applib.django.base.views import (SuperUserRequiredMixin, permission_not_granted, 
-                                      Base_CreateView, Base_UpdateView, Base_DeleteView,
+                                      Base_CreateView, Base_UpdateView, Base_RemoveView,
                                       Filtered_ListView, 
                                       Htmx_UpdateView, File_CreateView, Base_DataExportView)
 
@@ -170,7 +170,7 @@ class AppUser_UpdateView(Htmx_UpdateView):
             return render(request, self.template_htmx, context)
 
 #-------------------------------------------------------------------------------------------------
-class AppUser_DeleteView(SuperUserRequiredMixin, UpdateView):
+class AppUser_RemoveView(SuperUserRequiredMixin, UpdateView):
     model = ApplicationUser
     template_name = 'apputil/appUsersDel.html'
     success_url = reverse_lazy('userslist')
@@ -265,7 +265,7 @@ class CreatedocumentView(File_CreateView):
     related_name = 'assoc_documents'
     transaction_use_manytomany = 'dorganism'
     
-class DocDeleteView(Base_DeleteView):
+class DocDeleteView(Base_RemoveView):
     model = Document
 
 #=================================================================================================
@@ -346,7 +346,7 @@ def deleteImage(req, pk):
         print(err)
     return redirect(req.META['HTTP_REFERER'])
 
-# class ImageDeleteView(Base_DeleteView):
+# class ImageDeleteView(Base_RemoveView):
 #     model = Image
 
 # class CreateimageView(File_CreateView):

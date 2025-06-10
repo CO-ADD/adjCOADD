@@ -17,7 +17,7 @@ from django.utils.functional import SimpleLazyObject
 
 from adjcoadd.constants import *
 from apputil.models import ApplicationLog
-from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_DeleteView, File_CreateView,
+from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_RemoveView, File_CreateView,
                                       Filtered_ListView, permission_not_granted, Htmx_UpdateView)
 from apputil.forms import Document_Form
 
@@ -75,7 +75,7 @@ class Taxonomy_UpdateView(Base_UpdateView):
     transaction_use = 'dorganism'
 
 # -----------------------------------------------------------------
-class Taxonomy_DeleteView(Base_DeleteView):
+class Taxonomy_RemoveView(Base_RemoveView):
     model = Taxonomy
     transaction_use = 'dorganism'
 
@@ -269,7 +269,7 @@ def Organism_UpdateView(req, pk):
     return render(req, "dorganism/organism/organism_update.html", context)
 
 # -----------------------------------------------------------------
-class Organism_DeleteView(Base_DeleteView):
+class Organism_RemoveView(Base_RemoveView):
     model = Organism
     transaction_use = 'dorganism'
 
@@ -319,7 +319,7 @@ class OrgBatch_UpdateView(Htmx_UpdateView):
     transaction_use = 'dorganism'
 
 # -----------------------------------------------------------------
-class OrgBatch_DeleteView(Base_DeleteView):
+class OrgBatch_RemoveView(Base_RemoveView):
     model = Organism_Batch
     transaction_use = 'dorganism'
 
@@ -434,7 +434,7 @@ def OrgBatchStock_UpdateView(req, pk):
     return render(req, "dorganism/orgbatchstock/orgbatchstock_u.html", context)
 
 #-------------------------------------------------------------------------------
-class OrgBatchStock_DeleteView(Base_DeleteView):
+class OrgBatchStock_RemoveView(Base_RemoveView):
     model = OrgBatch_Stock
     transaction_use = 'dorganism'
 
@@ -475,14 +475,14 @@ class OrgCulture_UpdateView(Htmx_UpdateView):
     transaction_use = 'dorganism'
 
 #-------------------------------------------------------------------------------
-class OrgCulture_DeleteView(Base_DeleteView):
+class OrgCulture_RemoveView(Base_RemoveView):
     model = Organism_Culture
     transaction_use = 'dorganism'
 
 #=================================================================================================
 # OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage OrgBatchImage
 #=================================================================================================
-class OrgBatchImg_DeleteView(Base_DeleteView):
+class OrgBatchImg_RemoveView(Base_RemoveView):
     model = OrgBatch_Image
     transaction_use = 'dorganism'
 

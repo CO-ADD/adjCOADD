@@ -134,9 +134,9 @@ class Base_UpdateView(LoginRequiredMixin, View):
             return redirect(request.META['HTTP_REFERER'])
 
 # -----------------------------------------------------------------
-# -- Delete View class --
+# -- Remove View class --
 # -----------------------------------------------------------------
-class Base_DeleteView(SuperUserRequiredMixin, Base_UpdateView):
+class Base_RemoveView(SuperUserRequiredMixin, Base_UpdateView):
     model=None
     transaction_use = 'default'
     
