@@ -18,7 +18,7 @@ def get_org_identification_summary(OrgID):
         aDict['Batch ID'] = v.card_barcode.orgbatch_id.batch_id
         aDict['Identification'] = f"{v.id_organism} ({v.id_probability})"
         aDict['Method'] = f"Vitek {v.card_barcode.card_code}"
-        aDict['Run'] = v.card_barcode.proc_date [{v.card_barcode}]
+        aDict['Run'] = f"{v.card_barcode.proc_date} [{v.card_barcode}]"
         orgID.append(aDict)
         nIdx += 1
 
