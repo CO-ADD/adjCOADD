@@ -77,7 +77,7 @@ def get_AMRGenes_byOrgID(OrgID):
     orgGene = []
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
-    vAMR = AMR_Genotype.objects.filter(seq_id__orgbatch_id__organism_id=OrgObj)
+    vAMR = AMR_Genotype.objects.filter(seq_id__orgbatch_id__organism_id=OrgObj, astatus__gte=0 )
     #print(f"Getting {len(vMIC)} Vitek AST data for {OrgID} ")
     for m in vAMR:
         aDict = {}
