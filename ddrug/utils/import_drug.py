@@ -86,6 +86,18 @@ def imp_Drug_fromDict(iDict,valLog):
 def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
     """
     Create Breakpoint instance from a {Dict}
+        drug_name
+        org_name
+        org_rank
+        notorg_name
+        notorg_rank
+        medical_application     (uncomplicated UTI only) / iv / oral
+        bp_resistant_gt
+        bp_sensitive_le
+        bp_unit                 mg/L / mm
+        bp_type                 MIC/ZONE
+        bp_source               EUCAST/CLSI
+        bp_source_version       v15.0 2025-01-01 / v11.0 2024-12-02
     """
 # ----------------------------------------------------------------------------------------------------
     # Change Key names to Lowercase
