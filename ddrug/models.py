@@ -803,4 +803,10 @@ class MIC_Pub(AuditModel):
     # Returns an instance if found by OrgBatchID and DrugID
         return cls.objects.filter(organism_id=OrgID,drug_id=DrugID,source=Source).exists()
 
-   
+   #------------------------------------------------
+    def calc_breakpoint(self):
+        if self.mic != '':
+            djBP = Breakpoint.get_byDrugTax(self.drug_id,self.organism_id.organism_name,BPType='MIC')
+            if djBP:
+                self.bp_profile = djBP.calc_bp(self.mic)
+                self.bp_source = djBP.bp_source

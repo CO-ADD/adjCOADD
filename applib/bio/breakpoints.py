@@ -8,7 +8,7 @@ from django.conf import settings
 from ddrug.models import Drug, Breakpoint
 from apputil.models import ApplicationUser, Dictionary
 from applib.logging.validation_log import Validation_Log
-from ddrug.models import MIC_COADD
+from ddrug.models import MIC_COADD, MIC_Pub
 
 
 # ----------------------------------------------------------------------------------------------------
@@ -17,6 +17,18 @@ def reset_MIC_COADD(upload=False):
     qry = MIC_COADD.objects.all()
     n_qry = qry.count()
     print(f" [Reset MIC_COADD BP] : {n_qry}")
+    for q in tqdm(qry, total=n_qry):
+        q.calc_breakpoint()
+        if upload:
+            q.save()
+
+# ----------------------------------------------------------------------------------------------------
+def reset_MIC_Pub(upload=False):
+# ----------------------------------------------------------------------------------------------------
+    djBMD = Dictionary.get(MIC_Pub.DICTIONARY_FIELDS['mic_type'], DictValue='BMD')
+    qry = MIC_Pub.objects.filter(mic_type = djBMD).exclude(mic='')
+    n_qry = qry.count()
+    print(f" [Reset MIC_Pub BP] : {n_qry}")
     for q in tqdm(qry, total=n_qry):
         q.calc_breakpoint()
         if upload:
@@ -139,6 +151,10 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
 #----------------------------------------------------------------------------
 class EUCAST():
 #----------------------------------------------------------------------------
+    """
+        EUCAST - Import EUCAST Breakpoint XLS
+            process_sheets(Sheet List) -> Dataframe
+    """
     BP_COLUMN_NAME  = "BP_INDEX"
 
     EUCAST_SHEETS = {
