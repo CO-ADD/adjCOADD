@@ -722,8 +722,8 @@ class MIC_COADD(AuditModel):
             self.bp_profile = djBP.calc_bp(self.mic)
             self.bp_source = djBP.bp_source
         else:
-            self.bp_profile = "-"    
-            self.bp_source = "no BP"
+            self.bp_profile = ""    
+            self.bp_source = ""
 
 
 #=================================================================================================
