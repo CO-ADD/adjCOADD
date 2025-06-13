@@ -325,14 +325,14 @@ class MIC_Pubfilter(BaseStatus_Filter):
 class Breakpointfilter(BaseStatus_Filter):
 # -----------------------------------------------------------------
     drug_name = django_filters.CharFilter(field_name='drug_id__drug_name', lookup_expr='icontains', label="Drug")
-    bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
-    notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
+    #bp_type=django_filters.ChoiceFilter(field_name='bp_type', choices=[], empty_label=None)
+    #notorg_rank=django_filters.ChoiceFilter(field_name='notorg_rank', choices=[], empty_label=None)
     org_rank=django_filters.ChoiceFilter(field_name='org_rank', choices=[], empty_label=None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['bp_type'])]
-        self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['notorg_rank'])]
+        #self.filters["bp_type"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['bp_type'])]
+        #self.filters["notorg_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['notorg_rank'])]
         self.filters["org_rank"].extra['choices']=[('', ''),] + [(obj.dict_value, obj) for obj in Dictionary.get_filterobj(Breakpoint.DICTIONARY_FIELDS['org_rank'])]
 
     class Meta:

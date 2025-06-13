@@ -134,16 +134,16 @@ class Validation_Log():
         return(table_dict)
 
 
-    #-----------------------------------------------------
-    def info(self,logTypes= ['Error','Warning', 'Info']):
-    #-----------------------------------------------------
-        self.info={}
-        for t in logTypes:
-            self.info[t]=[]
-            for l in self.Logs[t]:
-                note=str(l['note']).replace("'", "").replace('"', '')
-                print_info=f"{l['Process']}_{note}_{l['Item']}_{l['Help']}"
-                self.info[t].append(print_info) 
+    # #-----------------------------------------------------
+    # def info(self,logTypes= ['Error','Warning', 'Info']):
+    # #-----------------------------------------------------
+    #     self.info={}
+    #     for t in logTypes:
+    #         self.info[t]=[]
+    #         for l in self.Logs[t]:
+    #             note=str(l['note']).replace("'", "").replace('"', '')
+    #             print_info=f"{l['Process']}_{note}_{l['Item']}_{l['Help']}"
+    #             self.info[t].append(print_info) 
 
     
     #-----------------------------------------------------

@@ -224,16 +224,17 @@ class Breakpoint(AuditModel):
 #=================================================================================================
     HEADER_FIELDS = {
        'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':LinkList["drug_id"]}},
-       'org_name':'org_name', 
-       'org_rank':'org_rank', 
-       'notorg_name':'notorg_name', 
-       'notorg_rank':'notorg_rank',
-       'med_application':'med_application',
-        'bp_type':'bp_type', 
-        'bp_res_gt':'bp_res_gt', 
-        'bp_sens_le':'bp_sens_le',
-        'bp_unit':'bp_unit', 
         'bp_comb':'bp_comb', 
+        'org_name':'org_name', 
+        'org_rank':'org_rank', 
+        #'notorg_name':'notorg_name', 
+        #'notorg_rank':'notorg_rank',
+        #'med_application':'med_application',
+        'bp_type':'bp_type', 
+        'bp_mic_res_gt':'>R MIC', 
+        'bp_mic_sens_le':'<=S MIC',
+        'bp_zone_res_gt':'>R Zone', 
+        'bp_zone_sens_le':'<=S Zone',
         'bp_source':'bp_source', 
         'bp_source_version':'bp_source_version',
     }
@@ -241,7 +242,7 @@ class Breakpoint(AuditModel):
     DICTIONARY_FIELDS= {
         'org_rank':'Tax_Rank',
         'notorg_rank':'Tax_Rank',
-        'bp_type':'Result_Type',
+        #'bp_type':'Result_Type',
     }
 
     drug_id = models.ForeignKey(Drug, null=False, blank=False, verbose_name = "Drug ID", on_delete=models.DO_NOTHING,
@@ -252,12 +253,18 @@ class Breakpoint(AuditModel):
     notorg_name = models.CharField(max_length=50, blank=True, verbose_name = "Not(Organism)") 
     notorg_rank = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Not(Rank)", on_delete=models.DO_NOTHING,
         db_column="notorg_rank", related_name="%(class)s_notorgtype")
+    
     med_application = models.CharField(max_length=50, blank=True, verbose_name = "Application")
-    bp_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "BP Type", on_delete=models.DO_NOTHING,
-        db_column="bp_type", related_name="%(class)s_bptype")
-    bp_res_gt = models.DecimalField(max_digits=9, decimal_places=3, blank=False, verbose_name = ">Res") 
-    bp_sens_le = models.DecimalField(max_digits=9, decimal_places=3, blank=False, verbose_name = "<=Sens") 
-    bp_unit = models.CharField(max_length=5, blank=False, verbose_name = "Unit") 
+    # bp_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "BP Type", on_delete=models.DO_NOTHING,
+    #     db_column="bp_type", related_name="%(class)s_bptype")
+    bp_type = models.CharField(max_length=10, blank=True, verbose_name = "Type") 
+    bp_mic_res_gt = models.DecimalField(max_digits=9, decimal_places=3, null=True, blank=True, verbose_name = "MIC >Res") 
+    bp_mic_sens_le = models.DecimalField(max_digits=9, decimal_places=3, null=True, blank=True, verbose_name = "MIC <=Sens") 
+    #bp_unit = models.CharField(max_length=5, blank=False, verbose_name = "Unit") 
+    bp_zone_conc = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Zone Conc") 
+    bp_zone_res_gt = models.DecimalField(max_digits=9, decimal_places=3, null=True, blank=True, verbose_name = "Zone >Res") 
+    bp_zone_sens_le = models.DecimalField(max_digits=9, decimal_places=3, null=True, blank=True, verbose_name = "Zone <=Sens") 
+
     bp_comb = models.CharField(max_length=20, blank=True, verbose_name = "Combination") 
     bp_source = models.CharField(max_length=50, blank=False, verbose_name = "BP Source") 
     bp_source_version = models.CharField(max_length=50, blank=False, verbose_name = "BP Version") 
@@ -286,25 +293,28 @@ class Breakpoint(AuditModel):
         return f"{self.drug_id} : {self.org_name} ({self.org_rank}) Not: {self.notorg_name} ({self.notorg_rank}) Med: {self.med_application} BP: {self.bp_type} {self.bp_source}"
 
     #------------------------------------------------
-    def info(self) -> str:
-        if self.org_rank:
-            return(f"{self.bp_source} ({self.org_rank})")
-        elif self.notorg_rank:
-            return(f"{self.bp_source} (Not({self.notorg_rank}))")
-        else:
-            return(f"{self.bp_source}")
+    # def info(self) -> str:
+    #     if self.org_rank:
+    #         return(f"{self.bp_source} ({self.org_rank})")
+    #     elif self.notorg_rank:
+    #         return(f"{self.bp_source} (Not({self.notorg_rank}))")
+    #     else:
+    #         return(f"{self.bp_source}")
 
    #------------------------------------------------
     @classmethod
-    def get(cls,DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank, MedAppl, BPType, BPSource, verbose=0):
+#    def get(cls,DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank, MedAppl, BPType, BPSource, verbose=0):
+    def get(cls,DrugID, OrgName, OrgRank, BPSource, verbose=0):
     # Returns an instance if found 
         try:
-            retInstance = cls.objects.get(drug_id=DrugID, 
-                                          org_name=OrgName, org_rank=OrgRank, notorg_name=NotOrgName, notorg_rank=NotOrgRank, med_application = MedAppl,  
-                                          bp_type=BPType, bp_source=BPSource)
+            # retInstance = cls.objects.get(drug_id=DrugID, 
+            #                               org_name=OrgName, org_rank=OrgRank, notorg_name=NotOrgName, notorg_rank=NotOrgRank, med_application = MedAppl,  
+            #                               bp_type=BPType, bp_source=BPSource)
+            retInstance = cls.objects.get(drug_id=DrugID, org_name=OrgName, org_rank=OrgRank, bp_source=BPSource)
         except:
             if verbose:
-                print(f"[Breakpoint  Not Found] {DrugID} {OrgName} {OrgRank} Not: {NotOrgName} {NotOrgRank} Med: {MedAppl} BP: {BPType} {BPSource}")
+                # print(f"[Breakpoint  Not Found] {DrugID} {OrgName} {OrgRank} Not: {NotOrgName} {NotOrgRank} Med: {MedAppl} BP: {BPType} {BPSource}")
+                print(f"[Breakpoint  Not Found] {DrugID} {OrgName} {OrgRank} {BPSource}")
             retInstance = None
         return(retInstance)
 
@@ -321,9 +331,9 @@ class Breakpoint(AuditModel):
     @classmethod
     def get_byDrugTax(cls, djDrug, djTaxonomy, BPType = 'MIC', Source = ['EUCAST','CLSI'],verbose=0):
 
-        djBPType = Dictionary.get(cls.DICTIONARY_FIELDS["bp_type"],BPType)
+        #djBPType = Dictionary.get(cls.DICTIONARY_FIELDS["bp_type"],BPType)
         if djDrug and djTaxonomy:
-            qryBP = cls.objects.filter(drug_id=djDrug, bp_type=djBPType)
+            qryBP = cls.objects.filter(drug_id=djDrug).exclude(bp_mic_res_gt=0).exclude(bp_mic_sens_le=0)
             TaxLineage = djTaxonomy.lineage
             TaxNameLst = djTaxonomy.organism_name.split(' ')
 
@@ -332,6 +342,8 @@ class Breakpoint(AuditModel):
             for djBP in qryBP:
                 _notRank = str(djBP.notorg_rank)
                 _orgRank = str(djBP.org_rank)
+
+                # Score/Prioritize Breakpoints according to [Specie > Genus > Family] and [EUCAST > CSLI]
                 if djBP.bp_source == 'EUCAST':
                     if _orgRank == 'Specie' and djBP.org_name == djTaxonomy.organism_name and selBP[0] < 10:
                         selBP = (10,djBP)
@@ -360,24 +372,23 @@ class Breakpoint(AuditModel):
         return(None)
     
    #------------------------------------------------
-    def calc_bp(self,DR):
+    def calc_bp(self,DR,BPType='MIC'):
         """
         Calculate the Breakpoint profile from MIC/Zone value and Breakpoint object
         """
-        _bpType = str(self.bp_type)
         _prefix,_val,_sval = split_DR(DR)
-        if _bpType == 'MIC':
+        if BPType == 'MIC':
             _bp = 'I'
-            if _val <= self.bp_sens_le :
+            if _val <= self.bp_mic_sens_le :
                 _bp = 'S'
-            elif _val > self.bp_res_gt :
+            elif _val > self.bp_mic_res_gt :
                 _bp = 'R'
             return _bp
-        if _bpType == 'Zone':
+        if BPType == 'Zone':
             _bp = 'I'
-            if _val <= self.bp_sens_le :
+            if _val <= self.bp_zone_sens_le :
                 _bp = 'S'
-            elif _val > self.bp_res_gt :
+            elif _val > self.bp_zone_res_gt :
                 _bp = 'R'
             return _bp
         return(None)

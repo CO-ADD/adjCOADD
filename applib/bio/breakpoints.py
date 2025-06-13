@@ -1,12 +1,45 @@
 import re
 from openpyxl import load_workbook
 import pandas as pd
+from tqdm import tqdm
 
 from django.conf import settings
 
 from ddrug.models import Drug, Breakpoint
 from apputil.models import ApplicationUser, Dictionary
+from applib.logging.validation_log import Validation_Log
+from ddrug.models import MIC_COADD
 
+
+# ----------------------------------------------------------------------------------------------------
+def reset_MIC_COADD(upload=False):
+# ----------------------------------------------------------------------------------------------------
+    qry = MIC_COADD.objects.all()
+    n_qry = qry.count()
+    print(f" [Reset MIC_COADD BP] : {n_qry}")
+    for q in tqdm(qry, total=n_qry):
+        q.calc_breakpoint()
+        if upload:
+            q.save()
+
+# ----------------------------------------------------------------------------------------------------
+def imp_Breakpoint_fromExcel(XlsName,SheetName,upload=False):
+# ----------------------------------------------------------------------------------------------------
+
+    valLog = Validation_Log("BreakPoints")
+    valCount = {'Processed':0,'New':0,'Uploaded':0,'Failed':0}
+    df = pd.read_excel(XlsName,sheet_name=SheetName)
+    df.columns = [c.lower() for c in df.columns]
+    df = df.replace({float('nan'): None})
+
+    for idx,row in tqdm(df.iterrows(), total=df.shape[0]):
+        #print(f" [BP] {row['drug_name']} {row['org_name']} {row['bp_source']}")
+        djBP = imp_Breakpoint_fromDict(row, valLog)
+
+        if upload and djBP.VALID_STATUS:
+            djBP.save()
+
+    valLog.show(logTypes=[valLog.LOG_ERROR,valLog.LOG_WARNING])
 
 # ----------------------------------------------------------------------------------------------------
 def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
@@ -29,19 +62,20 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
     # Change Key names to Lowercase
     iDict =  {k.lower(): v for k, v in iDict.items()} 
 
+    #print(iDict)
     validStatus = True
 
     DrugID = Drug.get(iDict['drug_name'])
     if DrugID is None:
         validStatus = False
-        valLog.add_log('Error','oraOrgDB',f"{iDict['drug_name']} ",'BP Drug does not Exists','-')
+        valLog.add_error("BP Drug does not Exists",f"{iDict['drug_name']}")
 
 
     if 'org_name' in iDict:
         OrgName = iDict['org_name']
         OrgRank = Dictionary.get(Breakpoint.DICTIONARY_FIELDS["org_rank"],iDict['org_rank'])
         if OrgRank is None:
-            valLog.add_log('Error','oraOrgDB',iDict['org_rank'],'Tax Rank not correct','-')
+            valLog.add_error('Tax Rank not correct',iDict['org_rank'])
             validStatus = False
     else:
         OrgName = None
@@ -51,14 +85,16 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
         NotOrgName = iDict['notorg_name']
         NotOrgRank = Dictionary.get(Breakpoint.DICTIONARY_FIELDS["notorg_rank"],iDict['notorg_rank'])
         if NotOrgRank is None:
-            valLog.add_log('Error','oraOrgDB',iDict['notorg_rank'],'(Not) Tax Rank not correct','-')
+            valLog.add_error('(Not) Tax Rank not correct',iDict['notorg_rank'])
             validStatus = False
     else:
         NotOrgName = None
         NotOrgRank = None
 
-    djBP = Breakpoint.get(DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank,
-                        iDict['medical_application'], iDict['bp_type'], iDict['bp_source'])
+    # djBP = Breakpoint.get(DrugID, OrgName, OrgRank, NotOrgName, NotOrgRank,
+    #                     iDict['medical_application'], iDict['bp_type'], iDict['bp_source'])
+    djBP = Breakpoint.get(DrugID, OrgName, OrgRank, iDict['bp_source'])
+
     if djBP is None:
         djBP = Breakpoint()
         djBP.drug_id = DrugID
@@ -67,18 +103,21 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
         djBP.notorg_name = NotOrgName
         djBP.notorg_rank = NotOrgRank
 
-        valLog.add_log('Info',"",f"{iDict['drug_name']} {OrgRank} {OrgName} {NotOrgRank} {NotOrgName}",'New BP','-')
+        valLog.add_info('New BP',f"{iDict['drug_name']} {OrgRank} {OrgName} {NotOrgRank} {NotOrgName}")
 
-    djBP.bp_type = Dictionary.get(djBP.DICTIONARY_FIELDS["bp_type"],iDict['bp_type'])
-    if djBP.bp_type is None:
-        valLog.add_log('Error','oraOrgDB',iDict['bp_type'],'BP Type not correct','-')
-        validStatus = False
-
-    djBP.med_application = iDict['medical_application']
-    djBP.bp_res_gt = iDict['bp_resistant_gt']
-    djBP.bp_sens_le = iDict['bp_sensitive_le']
-    djBP.bp_unit = iDict['bp_unit']
-    djBP.bp_comb = iDict['combination_type']
+    # djBP.bp_type = Dictionary.get(djBP.DICTIONARY_FIELDS["bp_type"],iDict['bp_type'])
+    # if djBP.bp_type is None:
+    #     valLog.add_log('Error','oraOrgDB',iDict['bp_type'],'BP Type not correct','-')
+    #     validStatus = False
+    #print(type(iDict) )
+    djBP.med_application = iDict.get('medical_application')
+    djBP.bp_mic_res_gt = iDict['bp_mic_res_gt']
+    djBP.bp_mic_sens_le = iDict['bp_mic_sens_le']
+    djBP.bp_zone_res_gt = iDict['bp_zone_res_gt']
+    djBP.bp_zone_sens_le = iDict['bp_zone_sens_le']
+    djBP.bp_zone_conc = iDict['bp_zone_conc']
+    djBP.bp_type = iDict['bp_type']
+    djBP.bp_comb = iDict['bp_comb']
     djBP.bp_source = iDict['bp_source']
     djBP.bp_source_version = iDict['bp_source_version']
 
@@ -88,9 +127,11 @@ def imp_Breakpoint_fromDict(iDict,valLog,upload=False):
     if validDict:
         validStatus = False
         for k in validDict:
-            valLog.add_log('Warning','',k,validDict[k],'-')
-            #print(f"Warning : {k} {validDict[k]}")
+            valLog.add_warning(k,validDict[k])
+            print(f"Warning : {k} {validDict[k]}")
+
     djBP.VALID_STATUS = validStatus
+    djBP.VALID_DICT = validDict
 
     return(djBP)
 

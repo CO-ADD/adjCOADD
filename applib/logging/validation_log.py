@@ -11,32 +11,36 @@ class Validation_Log():
     In-process Logging class to capture outcomes of validation and processing tasks
         as logTypes = ['Error','Warning','Info']
     """
-    
+    LOG_ERROR   = 'Error'
+    LOG_WARNING = 'Warning'
+    LOG_INFO    = 'Info'
+
     LOG_FIELDS = ['Process','Text','Item','Note','Help']
-    LOG_TYPES = ['Error','Warning','Info']
+    LOG_TYPES = [LOG_ERROR,LOG_WARNING,LOG_INFO]
 # ---------------------------------------------------------------------------
 
     #-----------------------------------------------------
     # Inits the log with a logProcess as Name
     #-----------------------------------------------------
-    def __init__(self,logProcess,logTypes= LOG_TYPES):
-        self.logProcess = logProcess
-        self.logTypes = logTypes
-        self.nLogs = {}
-        self.Logs  = {}
-        self.Info  = {}
+    def __init__(self,logProcess,logTypes= LOG_TYPES, verbose=0):
+        self.log_process = logProcess
+        self.log_types = logTypes
+        self.n_logs = {}
+        self.logs  = {}
+        #self.info  = {}
+        self.verbose = verbose
         #self.logInfo = ['Process','Filename','Item','Note','Help']
 
-        for t in self.logTypes:
-            self.nLogs[t] = 0
-            self.Logs[t] = []
+        for t in self.log_types:
+            self.n_logs[t] = 0
+            self.logs[t] = []
            
     #-----------------------------------------------------
     # Adds a standard entry in the Log
     #-----------------------------------------------------
     def add_log(self, logType, logText, logItem, logNote, logHelp):
         lDict = {
-            'Process': self.logProcess, 
+            'Process': self.log_process, 
             'Text': logText, 
             'Item': str(logItem), 
             'Note': logNote, 
@@ -44,18 +48,18 @@ class Validation_Log():
 #            'Time': datetime.now() 
             }
         logType = logType[0].upper()+logType[1:].lower()
-        if logType in self.logTypes:
-            self.Logs[logType].append(lDict)
-            self.nLogs[logType] = self.nLogs[logType] + 1
+        if logType in self.log_types:
+            self.logs[logType].append(lDict)
+            self.n_logs[logType] = self.n_logs[logType] + 1
 
     #-----------------------------------------------------
-    def error(self,logText, logItem, logNote=None, logHelp=None):
+    def add_error(self,logText, logItem, logNote=None, logHelp=None):
         self.add_log('Error',logText,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def warning(self,logText,logItem, logNote=None, logHelp=None):
+    def add_warning(self,logText,logItem, logNote=None, logHelp=None):
         self.add_log('Warning',logText,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def info(self,logText,logItem, logNote=None, logHelp=None):
+    def add_info(self,logText,logItem, logNote=None, logHelp=None):
         self.add_log('Info',logText,logItem,logNote,logHelp)
 
 
@@ -66,7 +70,7 @@ class Validation_Log():
         uLogs={}
         for t in logTypes:
             uLogs[t]=[]
-            for l in self.Logs[t]:
+            for l in self.logs[t]:
                 flAdd=False
                 if len(uLogs[t])<1:
                     flAdd=True
@@ -77,43 +81,49 @@ class Validation_Log():
                             flAdd=False
                 if flAdd:
                     uLogs[t].append(l)
-        self.Logs = uLogs
+        self.logs = uLogs
 
     #-----------------------------------------------------
     # Reset the log entries to 0
     #-----------------------------------------------------
     def reset(self):
-        self.nLogs = {}
-        self.Logs  = {}
-        self.Info  = {}
+        self.n_logs = {}
+        self.logs  = {}
+        self.info  = {}
 
-        for t in self.logTypes:
-            self.nLogs[t] = 0
-            self.Logs[t] = []        
+        for t in self.log_types:
+            self.n_logs[t] = 0
+            self.logs[t] = []        
 
     #-----------------------------------------------------
     def __str__(self):
-        return(f"{self.logProcess}")
+        return(f"{self.log_process}")
 
     #-----------------------------------------------------
     def __repr__(self):
-        return(f"{self.logProcess} {self.nLogs}")
+        return(f"{self.log_process} {self.n_logs}")
 
     #-----------------------------------------------------
     # Show log entries in logger.info
     #-----------------------------------------------------
     def show(self,logTypes=LOG_TYPES):
         for t in logTypes:
-            for l in self.Logs[t]:
-                logger.info(f"[{t:7s}] {l['Process']} : {l['Text']} {l['Item']} {l['Note']} () {l['Help']} ")
-
+            if self.n_logs[t] > 0:
+                for l in self.logs[t]:
+                    _note = l['Note'] if l['Note'] else ""
+                    _help = l['Help'] if l['Help'] else ""
+                    _repr = f"[{t:7s}] {l['Process']} : {l['Text']} {l['Item']} {_note} {_help}"
+                    logger.info(_repr)
+                    print(_repr)
+            else:
+                print(f"{self.log_process}: No {t} ")    
     #-----------------------------------------------------
     # Show log entries in logger.info
     #-----------------------------------------------------
     def get_nlog(self,logTypes=LOG_TYPES):
         nLog = 0
         for t in logTypes:
-            nLog += self.nLogs[t]
+            nLog += self.n_logs[t]
         return(nLog)
 
     #-----------------------------------------------------
@@ -121,7 +131,7 @@ class Validation_Log():
     #-----------------------------------------------------
         retLst = []
         for t in logTypes:
-            for l in self.Logs[t]:
+            for l in self.logs[t]:
                 retLst.append({'Type': t, } | l)
         return(retLst)
 
@@ -153,16 +163,16 @@ class Validation_Log():
         return(table_dict)
 
 
-    #-----------------------------------------------------
-    def info(self,logTypes=LOG_TYPES):
-    #-----------------------------------------------------
-        self.info={}
-        for t in logTypes:
-            self.info[t]=[]
-            for l in self.Logs[t]:
-                note=str(l['note']).replace("'", "").replace('"', '')
-                print_info=f"{l['Process']}_{note}_{l['Item']}_{l['Help']}"
-                self.info[t].append(print_info) 
+    # #-----------------------------------------------------
+    # def info(self,logTypes=LOG_TYPES):
+    # #-----------------------------------------------------
+    #     self.info={}
+    #     for t in logTypes:
+    #         self.info[t]=[]
+    #         for l in self.logs[t]:
+    #             note=str(l['note']).replace("'", "").replace('"', '')
+    #             print_info=f"{l['Process']}_{note}_{l['Item']}_{l['Help']}"
+    #             self.info[t].append(print_info) 
 
     
     #-----------------------------------------------------
@@ -170,9 +180,9 @@ class Validation_Log():
     #-----------------------------------------------------
         info={} #info=[]
         for t in logTypes:
-            # print(f"-- {t.upper():8} ({self.nLogs[t]:3}) ------------------------------------------------------")
+            # print(f"-- {t.upper():8} ({self.n_logs[t]:3}) ------------------------------------------------------")
             info[t]=[]
-            for l in self.Logs[t]:
+            for l in self.logs[t]:
                 print(f"{l['Process']}-{l['Note']} ({l['Item']}) {l['Help']} ")
                 description=str(l['Note']).replace("'", "").replace('"', '')
                 print_info=f"{l['Process']}_{description}_{l['Item']}_{l['Help']}"
