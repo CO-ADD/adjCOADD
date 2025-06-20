@@ -1,7 +1,6 @@
 #
 #
 # 
-
 1. Drop (Cascade) all tables from apputil, dorganism, ddrug, dgene, ... 
 2. Remove all migration folders from applications (apputil, dorganism, ddrug, dgene, ...)
 3. Makemigrations and Migrate each application separately, starting with apputil, and finish with general migration
