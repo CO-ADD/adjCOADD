@@ -131,8 +131,8 @@ class Organism(AuditModel):
 
     FORM_GROUPS={
        'Group1': ["strain_ids", "pub_id", "sero_clone", "strain_code", "strain_type", "strain_panel", "strain_origin", "strain_notes"],
-       'Group2': ["strain_identification", 'res_property','gen_property','oxygen_pref', 'source', 'source_code','reference','tax_id'],
-       'Group3': ['mta_status','mta_notes','mta_document','risk_group','pathogen_group','lab_restriction','biologist'],
+       'Group2': ["strain_identification", 'res_property','gen_property','seq_name','tax_id','oxygen_pref','risk_group'],
+       'Group3': ['source', 'source_code','reference', 'mta_status','mta_notes','mta_document','pathogen_group','lab_restriction','biologist'],
        'Group4': ['collect_date', 'collect_region', 'collect_country', 'collect_site', 'collect_specie', 'collect_tissue', 'patient_diagnosis', 'patient']
     }
 
@@ -166,7 +166,7 @@ class Organism(AuditModel):
     tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 #    growth_preference = models.CharField(max_length=250, blank=True, verbose_name = "Growth/Screen Preference")
-#    sequence_link = models.CharField(max_length=500, blank=True, verbose_name = "Sequence Link")
+    seq_name = models.CharField(max_length=120, blank=True, verbose_name = "Seq Name")
 
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
