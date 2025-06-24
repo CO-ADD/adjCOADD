@@ -28,6 +28,11 @@ CELL_CLASSES = ['MA']
 CELL_SEP = "_"
 CELLBATCH_SEP = "_"
 
+# -dPeptide Settings 
+PEPTIDE_CLASSES = ['MA']
+PEPTIDE_SEP = "_"
+PEPBATCH_SEP = "_"
+
 # -dChem Settings ---------------------------------------------------
 SAMPLE_SEP = "_"
 SAMPLEBATCH_SEP = "_"
@@ -61,6 +66,7 @@ LinkList={
     'project_id':   '/dsample/project/{VALUE1}',
     'testplate_id':  '/dplate/testplate/{VALUE1}',
     'masterplate_id':'/dplate/masterplate/{VALUE1}',
+    'peptide_id':   '/dpeptide/peptide/{VALUE1}',
     'cas':          'https://commonchemistry.cas.org/detail?cas_rn={VALUE1}',
     'pubchem':      'https://pubchem.ncbi.nlm.nih.gov/compound/{VALUE1}',
     'drugbank' :    'https://www.drugbank.ca/drugs/{VALUE1}',

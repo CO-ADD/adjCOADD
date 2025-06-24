@@ -254,7 +254,7 @@ class Cell_Batch(AuditModel):
     @classmethod
     # Formats CellID:str,BatchID:str -> CellBatchID:str
     def str_CellBatchID(self,CellID:str,BatchID:str) -> str:
-        return(f"{CellID}{ORGBATCH_SEP}{BatchID}")
+        return(f"{CellID}{CELLBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
     def find_Next_BatchID(self, CellID:str, BatchID:str=None) -> str:
