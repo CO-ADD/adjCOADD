@@ -315,15 +315,52 @@ def get_Abricate_Info(FastAFolder,OrgBID,RunID,inType="fasta",DB='card',pctCutOf
 #-----------------------------------------------------------------------------
 def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 #-----------------------------------------------------------------------------
+# ORF_ID	Contig	Start	Stop	Orientation	Cut_Off	Pass_Bitscore	Best_Hit_Bitscore	Best_Hit_ARO	Best_Identities	ARO	Model_type	SNPs_in_Best_Hit_ARO	Other_SNPs	Drug Class	Resistance Mechanism	AMR Gene Family	Predicted_DNA	Predicted_Protein	CARD_Protein_Sequence	Percentage Length of Reference Sequence	ID	Model_ID	Nudged	Note	Hit_Start	Hit_End	Antibiotic
+# True_1_359 # 390510 # 391610 # 1 # ID=1_359;partial=00;start_type=ATG;rbs_motif=GGA/GAG/AGG;rbs_spacer=5-10bp;gc_cont=0.428	True_1_359	390510	391610	+	Strict	700	740.725	LpsB	97.81	3005051	protein homolog model	n/a	n/a	peptide antibiotic	reduced permeability to antibiotic	Intrinsic peptide antibiotic resistant Lps	DNA-Seq	Prot-Seq	Prot-Seq	100	gnl|BL_ORD_ID|2798|hsp_num:0	3793			0	1098	colistin A; colistin B; defensin
+
+    RGI_GENCODE = {
+        'Acinetobacter baumannii':'Ab',
+        'conferring resistance to fluoroquinolones':'FQ',
+    }
+
     RGIDir = os.path.join(FastAFolder,"rgi")
-    RgiF = os.path.join(RGIDir,f"{OrgBID}_{RunID}_{inType}_rgi.tsv")
-    if not os.path.exists(GTF):
-        RgiF = os.path.join(RGIDir,f"{OrgBID}_{inType}_rgi.tsv")
+    RgiF = os.path.join(RGIDir,f"{OrgBID}_{RunID}_{inType}_rgi.txt")
+    if not os.path.exists(RgiF):
+        RgiF = os.path.join(RGIDir,f"{OrgBID}_{inType}_rgi.txt")
 
     outLst = []
     if os.path.exists(RgiF):
         with open(RgiF) as file:
             tsv_file = csv.reader(file,delimiter="\t",)
+            for line in tsv_file:
+                if 'ORF_ID' not in line:
+                    _code = line[8]
+                    _subcode = []
+                    for _orgname in RGI_GENCODE:
+                        if _orgname in _code:
+                            _code = _code.replace(_orgname,'').strip()
+                            _subcode.append(RGI_GENCODE[_orgname])
+                    if len(_subcode) > 0:
+                        _code += f" ({' '.join(_subcode)})"
+
+                    outLst.append({'seqid': f"{OrgBID}_{RunID}",
+                                   'orgbatch_id' :OrgBID,
+                                   'run_id':RunID,
+                                'contigid': line[1],
+                                'cut_off' : line[5],                                 
+                                'gene_code': _code,
+                                'gene_note': line[16], #AMR Gene Family
+                                'gene_type': line[15], #Resistance Mechanism
+                                'amr_class': line[14], #Drug Class
+                                'amr_subclass': line[27], #Antibiotic
+                                'coverage': line[20], #Pct length of ResSeq
+                                'identitiy': line[9], #Best_Identities
+                                'snp': line[12], #SNPs_in_Best_Hit_ARO
+                                'amr_method':'RGI'
+
+                                })
+
+
     #         for line in tsv_file:
     return(outLst)
 

@@ -6,7 +6,8 @@ import datetime
 import csv
 import pandas as pd
 import numpy as np
-import argparse
+import configargparse
+from pathlib import Path
 
 from tqdm import tqdm
 # from zUtils import zData
@@ -33,17 +34,15 @@ logging.basicConfig(
 
 def main(prgArgs,djDir):
 
-    sys.path.append(djDir)
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "adjcoadd.settings")
     django.setup()
 
     from apputil.models import ApplicationUser, Dictionary
-    from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
+    #from applib.data.set_fielddata import set_model_arrayfields, set_dictFields, set_model_dicts
     from applib.data.str_lists import listFolders
     from apputil.utils import validation_log
     
     from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
-    from dgene.utils.upload_gene import (get_RDM, split_BatchID_RunID, get_subdir,
+    from dgene.utils.upload_gene import (WGS_RDM, get_RDM, split_BatchID_RunID, get_subdir,
                                         upload_Trim, upload_CheckM, upload_FastA, upload_AMR)
     #from dgene.utils.import_gene import (imp_Sequence_fromDict)
     #from dgene.utils.parse_wgs import ()
@@ -62,8 +61,17 @@ def main(prgArgs,djDir):
     nProc['Assembly'] = 0
     nProc['FastA'] = 0
 
-    if prgArgs.directory:
-        RDM = get_RDM(prgArgs.directory)
+
+    if (prgArgs.orgbatchid and prgArgs.runid):
+        print(f"=[UPLOAD] Single - [{prgArgs.orgbatchid} {prgArgs.runid}]  {prgArgs.process}")
+        # RDM = get_RDM(djDir['rdmDir_WGS'])
+        # FastABase = os.path.join(RDM['base'],RDM['fasta'])
+
+        WGS = WGS_RDM(djDir['rdmDir_WGS'],prgArgs.orgbatchid,prgArgs.runid)
+        WGS.upload_AMR(Methods=['RGI'], upload=prgArgs.upload,uploaduser=prgArgs.appuser)
+
+    elif prgArgs.directory:
+        RDM = get_RDM(djDir['rdmDir_WGS'])
         RDM['base'] = prgArgs.directory
         
         AssemblyBase = os.path.join(RDM['base'],RDM['assembly'])
@@ -88,7 +96,6 @@ def main(prgArgs,djDir):
         #                 print(f"[WGS-Assembly] {OrgBatchID} {RunID} {dirAss} ")                       
         #                 upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
                         
-
         Methods= ['AMR Finder']
         for subDir in listFolders(FastABase):
             zFastAFolder = os.path.join(FastABase,subDir)
@@ -129,37 +136,46 @@ if __name__ == "__main__":
 
 
     # ArgParser -------------------------------------------------------------
-    prgParser = argparse.ArgumentParser(prog='upload_Django_Data', 
+    prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading WGS Assembly to adjCOADD from RDM")
+
+    prgParser = configargparse.ArgumentParser()
+    prgParser.add_argument("-o","--orgbatch", default=None,required=False, dest="orgbatchid", action='store', help="OrgBatch_ID")
+    prgParser.add_argument("-r","--runid", default=None,required=False, dest="runid", action='store', help="Seq RunID")
+
+    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
+
+    prgParser.add_argument("-c","--csvfile", default=None,required=False, dest="csvfile", action='store', help="CSVFile")
+    prgParser.add_argument("-e","--excel", default=None,required=False, dest="excelfile", action='store', help="ExcelFile")
+    prgParser.add_argument("-s","--sheetname", default=None,required=False, dest="sheetname", action='store', help="ExcelSheet")
+
+    prgParser.add_argument("-p","--process", default=None,required=False, dest="process", action='store', help="List of Processes [,] ",
+                type=lambda s: [item for item in s.split(',')])
+
     #prgParser.add_argument("-t",default=None,required=True, dest="table", action='store', help="Table to upload [User]")
     #prgParser.add_argument("-l",default=None,required=True, dest="library", action='store', help="Library")
     prgParser.add_argument("--upload",default=False,required=False, dest="upload", action='store_true', help="Upload data to dj Database")
     prgParser.add_argument("--overwrite",default=False,required=False, dest="overwrite", action='store_true', help="Overwrite existing data")
     prgParser.add_argument("--user",default='J.Zuegg',required=False, dest="appuser", action='store', help="AppUser to Upload data")
 #    prgParser.add_argument("--excel",default=None,required=False, dest="excel", action='store', help="Excel file to upload")
-    prgParser.add_argument("-d","--directory",default=None,required=False, dest="directory", action='store', help="Directory or Folder to parse")
 #    prgParser.add_argument("-f","--file",default=None,required=False, dest="file", action='store', help="Single File to parse")
-    prgParser.add_argument("--config",default='Local',required=False, dest="config", action='store', help="Configuration [Meran/Laptop/Work]")
-#    prgParser.add_argument("--db",default='Local',required=False, dest="database", action='store', help="Database [Local/Work/WorkLinux]")
-    prgParser.add_argument("-r","--runid",default=None,required=False, dest="runid", action='store', help="Antibiogram RunID")
-    prgArgs = prgParser.parse_args()
+
+    prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
+    prgParser.add_argument("--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
+
+
+    try:
+        prgArgs = prgParser.parse_args()
+    except:
+        prgParser.print_help()
+        sys.exit(0)
+
+    from zDjango.djUtils import init_django_dir
 
     # Django -------------------------------------------------------------
-    if prgArgs.config == 'Meran':
-        djDir = "D:/Code/zdjCode/adjCOADD"
-    #   uploadDir = "C:/Code/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    #   orgdbDir = "C:/Users/uqjzuegg/The University of Queensland/IMB CO-ADD - OrgDB"
-    elif prgArgs.config == 'Work':
-        djDir = "/home/uqjzuegg/xhome/Code/zdjCode/adjCOADD"
-    #     uploadDir = "C:/Data/A02_WorkDB/03_Django/adjCOADD/utilities/upload_data/Data"
-    elif prgArgs.config == 'Laptop':
-        djDir = "C:/Code/zdjCode/adjCOADD"
-    #     uploadDir = "/home/uqjzuegg/DeepMicroB/Code/Python/Django/adjCOADD/utilities/upload_data/Data"
-    else:
-        djDir = None
-
+    djDir = init_django_dir(prgArgs,"adjCOADD")
     if djDir:
+        print(djDir)
         main(prgArgs,djDir)
-        print("-------------------------------------------------------------------")
-
+        
 #==============================================================================

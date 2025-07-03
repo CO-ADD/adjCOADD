@@ -15,7 +15,7 @@ from dgene.utils.import_gene import (imp_Sequence_fromDict,
                                      imp_Gene_fromDict, imp_AMRGenotype_fromDict)
 from dgene.utils.parse_wgs import (get_FastQC_Info, get_CheckM_Info, 
                                    get_Kraken_Info, get_MLST_Info, get_GTDBTK_Info, 
-                                   get_AMRFinder_Info, get_Abricate_Info)
+                                   get_AMRFinder_Info, get_Abricate_Info, get_RGI_Info)
  
 from apputil.models import ApplicationUser, Dictionary
 #from apputil.utils.data import *
@@ -273,7 +273,17 @@ class WGS_RDM():
 
             # CARD RGI -----------------------------
             if 'RGI' in Methods:
-                lRGI = []
+                lRGI = get_RGI_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
+                print(lRGI)
+                for row in lRGI:
+                    row['gene_id'] = upload_Gene(row,self.val_log,upload=upload,uploaduser=uploaduser)
+                    row['seq_id'] = self.seq_id
+                    djAMRgt = imp_AMRGenotype_fromDict(row,self.val_log)
+                    if djAMRgt.VALID_STATUS:
+                        if upload:
+                            djAMRgt.save(user=appuser)
+                    else:
+                        self.val_log.show(logTypes= ['Error'])
 
 
 #-----------------------------------------------------------------------------
