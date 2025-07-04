@@ -319,32 +319,44 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 # True_1_359 # 390510 # 391610 # 1 # ID=1_359;partial=00;start_type=ATG;rbs_motif=GGA/GAG/AGG;rbs_spacer=5-10bp;gc_cont=0.428	True_1_359	390510	391610	+	Strict	700	740.725	LpsB	97.81	3005051	protein homolog model	n/a	n/a	peptide antibiotic	reduced permeability to antibiotic	Intrinsic peptide antibiotic resistant Lps	DNA-Seq	Prot-Seq	Prot-Seq	100	gnl|BL_ORD_ID|2798|hsp_num:0	3793			0	1098	colistin A; colistin B; defensin
 
     RGI_GENCODE = {
+        'from Escherichia coli K-12':'Ec K-12',
+
         'Acinetobacter baumannii':'Ab',
         'Enterobacter cloacae':'En.cl',
         'Escherichia coli':'Ec',
         'Haemophilus influenzae':'Ha.in',
         'Klebsiella pneumoniae':'Kp',
-        'Neisseria gonorrhoeae':'NG',
+        'Morganella morganii':'Mo.mo',
+        'Neisseria gonorrhoeae':'Ng',
         'Pseudomonas aeruginosa':'Pa',
         'Shigella flexneri':'Sh.fl',
         'Salmonella isangi':'Sa.is',
         'Salmonella serovars':'Sa.sv',
         'Salmonella enterica' : 'Sa.en',
-        'from Escherichia coli K-12':'Ec K-12',
-        'with mutation conferring resistance to azithromycin':'AZM',
-        'with mutation conferring resistance to fosfomycin':'FOF',
-        'conferring resistance to beta-lactam antibiotics':'BL',
-        'conferring resistance to colistin':'COL',
-        'conferring resistance to fluoroquinolones':'FQ',
-        'conferring resistance to triclosan':'TRI',
+
+        'with mutation conferring resistance to azithromycin':'R:AZM',
+        'with mutation conferring resistance to fosfomycin':'R:FOF',
+        'conferring resistance to beta-lactam antibiotics':'R:BL',
+        'conferring antibiotic resistance to colistin':'R:COL',
+        'mutations conferring resistance to nitrofurantoin':'R:NIT',
+        'conferring resistance to colistin':'R:COL',
+        'conferring resistance to fluoroquinolones':'R:FQ',
+        'conferring resistance to triclosan':'R:TRI',
+        'conferring resistance to Pulvomycin':'R:PUL',
+        'with mutation conferring antibiotic resistance':'R',
         'with mutation conferring resistance':'R',
         'with mutation conferring multidrug antibiotic resistance':'MDR',
+        'with AcrR mutation conferring resistance to ciprofloxacin, tetracycline, and ceftazidime':'AcrR',
+        'with MarR mutations conferring resistance to ciprofloxacin and tetracycline' :'MarR',
     }
     
     RGI_EMPTY= [
         'with mutations',
         'mutants',
         'mutant',
+        'with mutation',
+        'gene in vanB cluster',
+        'gene in vanG cluster',
     ]
 
     RGIDir = os.path.join(FastAFolder,"rgi")
