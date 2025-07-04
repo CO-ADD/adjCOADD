@@ -326,6 +326,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
         'Escherichia coli':'Ec',
         'Haemophilus influenzae':'Ha.in',
         'Klebsiella pneumoniae':'Kp',
+        'Klebsiella mutant':'Kp',
         'Morganella morganii':'Mo.mo',
         'Neisseria gonorrhoeae':'Ng',
         'Pseudomonas aeruginosa':'Pa',
@@ -358,6 +359,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
         'with mutation',
         'gene in vanB cluster',
         'gene in vanG cluster',
+        'beta-lactamase',
     ]
 
     RGIDir = os.path.join(FastAFolder,"rgi")
@@ -395,7 +397,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                                 'contigid': line[1],
                                 'cut_off' : line[5],                                 
                                 'orig_code':line[8],
-                                'gene_code': _code,
+                                'gene_code': _code.replace('  ',' '),
                                 'gene_note': _note, #AMR Gene Family (SNP)
                                 'gene_type': "Resistance",
                                 'gene_subtype': line[15], #Resistance Mechanism
