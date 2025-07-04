@@ -7,7 +7,7 @@ from pathlib import Path
 
 # ----------------------------------------------------
 RDM_DIR = 'M:/Sequence/WGS'
-RDM_DIR = '/home/uqjzuegg/RDM/MICROORGDB/Sequence'
+RDM_DIR = '/home/uqjzuegg/RDM/MICROORGDB/Sequence/WGS'
 
 AssemblyBase = os.path.join(RDM_DIR,'03_Fasta')
 CSV_FiLE = 'RDM_FastA_List.csv'
