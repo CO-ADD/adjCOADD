@@ -394,7 +394,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                                    'run_id':RunID,
                                 'contigid': line[1],
                                 'cut_off' : line[5],                                 
-                                'orig_code':line[8]
+                                'orig_code':line[8],
                                 'gene_code': _code,
                                 'gene_note': _note, #AMR Gene Family (SNP)
                                 'gene_type': "Resistance",
@@ -403,7 +403,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                                 'amr_subclass': line[27], #Antibiotic
                                 'coverage': line[20], #Pct length of ResSeq
                                 'identitiy': line[9], #Best_Identities
-                                'amr_method':'RGI'
+                                'amr_method':'RGI',
                                 'snp': line[12], #SNPs_in_Best_Hit_ARO
                                 })
 
