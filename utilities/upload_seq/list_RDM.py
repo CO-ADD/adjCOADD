@@ -9,7 +9,9 @@ from pathlib import Path
 RDM_DIR = 'M:/Sequence/WGS'
 RDM_DIR = '/home/uqjzuegg/RDM/MICROORGDB/Sequence/WGS'
 
-AssemblyBase = os.path.join(RDM_DIR,'03_Fasta')
+FAST_EXT = ".fasta"
+
+DirBase = os.path.join(RDM_DIR,'03_Fasta')
 CSV_FiLE = 'RDM_FastA_List.csv'
 # ----------------------------------------------------
 def listFolders(Path):
@@ -33,14 +35,14 @@ def split_BatchID_RunID(batch_run_id):
 #===========================================================================
 lst_WGS = []
 
-for subDir in listFolders(AssemblyBase):
-    for SeqID in listFolders(os.path.join(AssemblyBase,subDir)):
+for subDir in listFolders(DirBase):
+    for SeqID in listFolders(os.path.join(DirBase,subDir)):
         # Ignore Folder with _ at the beginning
         if SeqID[0] != '_':
-            seqDir = os.path.join(AssemblyBase,subDir,SeqID)
+            seqDir = os.path.join(DirBase,subDir,SeqID)
             OrgBatchID, RunID = split_BatchID_RunID(SeqID)
-            nFasta = len(listFiles(seqDir,Extension=".fasta"))
-            _WGS = {'ORGBATCH_ID':OrgBatchID, 'SEQRUN_ID':RunID,'N_FASTA':nFasta,'SUB_DIR':subDir,'SEQ_DIR':seqDir}
+            nFiles = len(listFiles(seqDir,Extension=FAST_EXT))
+            _WGS = {'ORGBATCH_ID':OrgBatchID, 'SEQRUN_ID':RunID,'N_FILES':nFiles,'SUB_DIR':subDir,'SEQ_ID':SeqID}
             lst_WGS.append(_WGS)
 
 df_WGS = pd.DataFrame(lst_WGS)
