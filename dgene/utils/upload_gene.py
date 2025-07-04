@@ -274,7 +274,7 @@ class WGS_RDM():
             # CARD RGI -----------------------------
             if 'RGI' in Methods:
                 lRGI = get_RGI_Info(self.fasta_dir,self.orgbatch_id, self.run_id)
-                print(lRGI)
+                #print(lRGI)
                 for row in lRGI:
                     row['gene_id'] = upload_Gene(row,self.val_log,upload=upload,uploaduser=uploaduser)
                     row['seq_id'] = self.seq_id
@@ -284,7 +284,6 @@ class WGS_RDM():
                             djAMRgt.save(user=appuser)
                     else:
                         self.val_log.show(logTypes= ['Error'])
-
 
 #-----------------------------------------------------------------------------
 def get_RDM(MicroOrgDB):

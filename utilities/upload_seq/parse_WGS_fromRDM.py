@@ -44,6 +44,10 @@ def main(prgArgs,djDir):
     from dgene.models import Gene,ID_Pub,ID_Sequence,WGS_FastQC,WGS_CheckM
     from dgene.utils.upload_gene import (WGS_RDM, get_RDM, split_BatchID_RunID, get_subdir,
                                         upload_Trim, upload_CheckM, upload_FastA, upload_AMR)
+    from dgene.utils.parse_wgs import (get_FastQC_Info, get_CheckM_Info, 
+                                   get_Kraken_Info, get_MLST_Info, get_GTDBTK_Info, 
+                                   get_AMRFinder_Info, get_Abricate_Info, get_RGI_Info)
+ 
     #from dgene.utils.import_gene import (imp_Sequence_fromDict)
     #from dgene.utils.parse_wgs import ()
     
@@ -61,74 +65,35 @@ def main(prgArgs,djDir):
     nProc['Assembly'] = 0
     nProc['FastA'] = 0
 
-
     if (prgArgs.orgbatchid and prgArgs.runid):
-        print(f"=[UPLOAD] Single - [{prgArgs.orgbatchid} {prgArgs.runid}]  {prgArgs.process}")
+        print(f"=[PARSE] Single - [{prgArgs.orgbatchid} {prgArgs.runid}]  {prgArgs.process}")
         # RDM = get_RDM(djDir['rdmDir_WGS'])
         # FastABase = os.path.join(RDM['base'],RDM['fasta'])
 
         WGS = WGS_RDM(djDir['rdmDir_WGS'],prgArgs.orgbatchid,prgArgs.runid,
                       SeqMethod='Illumina',
                       valLog=Validation_Log('WGS-Upload'))
-        WGS.upload_AMR(Methods=['RGI'], upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-        
-        
+        lRGI = get_RGI_Info(WGS.fasta_dir,WGS.orgbatch_id, WGS.run_id)
+        nProc['Processed'] += 1
+        dfRGI = pd.DataFrame(lRGI)
+        dfRGI.to_excel(f"{WGS.seq_name}.xlsx")
 
-    elif prgArgs.directory:
-        RDM = get_RDM(djDir['rdmDir_WGS'])
-        RDM['base'] = prgArgs.directory
-        
-        AssemblyBase = os.path.join(RDM['base'],RDM['assembly'])
-        FastABase = os.path.join(RDM['base'],RDM['fasta'])
+    elif prgArgs.csvfile :
+        logger.info(f"=[PROCESS] Multiple - {prgArgs.csvfile} [SEQ_VALID>0]")
+        SEQ = pd.read_csv(prgArgs.csvfile)
+        lstData = []
+        for idx,row in SEQ.iterrows():
+            
+            if row['SEQ_VALID'] > 0 :
+                logger.info(f"=[PROCESS] RGI - {row['ORGBATCH_ID']} {row['SEQRUN_ID']}")
+                WGS = WGS_RDM(djDir['rdmDir_WGS'],row['ORGBATCH_ID'],row['SEQRUN_ID'])
+                lstData += get_RGI_Info(WGS.fasta_dir,WGS.orgbatch_id, WGS.run_id)
+                nProc['Processed'] += 1
 
-        vLog = Validation_Log('WGS-Assembly')
-        
-        # for subDir in listFolders(AssemblyBase):
-        #     zAssemblyFolder = os.path.join(AssemblyBase,subDir)
-        #     for BatchRunID in listFolders(zAssemblyFolder):
-        #         dirAss = os.path.join(zAssemblyFolder,f"{BatchRunID}")
-        #         if os.path.exists(dirAss):
+        dfRGI = pd.DataFrame(lstData)
+        dfRGI.to_excel(f"RGI_Data.xlsx")
 
-        #             #nProcessed = nProcessed + 1
-        #             OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
-        #             if prgArgs.runid:
-        #                 fProcess = prgArgs.runid == RunID
-        #             else:
-        #                 fProcess = True
-                    
-        #             if fProcess:
-        #                 print(f"[WGS-Assembly] {OrgBatchID} {RunID} {dirAss} ")                       
-        #                 upload_CheckM(OrgBatchID, RunID, dirAss, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-                        
-        Methods= ['AMR Finder']
-        for subDir in listFolders(FastABase):
-            zFastAFolder = os.path.join(FastABase,subDir)
-            for BatchRunID in listFolders(zFastAFolder):
-                dirFA = os.path.join(zFastAFolder,f"{BatchRunID}")
-                if os.path.exists(dirFA):
-
-                    OrgBatchID, RunID = split_BatchID_RunID(BatchRunID)
-
-                    if prgArgs.runid:
-                        fProcess = prgArgs.runid == RunID
-                    else:
-                        fProcess = True
-                    
-                    if fProcess:
-                        print(f"[WGS-FastA] {OrgBatchID} {RunID} ")                       
-                        upload_FastA(OrgBatchID, RunID, dirFA, vLog, upload=prgArgs.upload,uploaduser=prgArgs.appuser) 
-                        upload_AMR(OrgBatchID, RunID, dirFA, vLog, Methods, upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-                                           
     print(f"[WGS-Assembly] {nProc} ")
-
-    # if prgArgs.orgbatch and prgArgs.runid:
-    #     dGene.update_WGSCOADD_Assembly_single(prgArgs.orgbatch,prgArgs.runid,upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-    # else:   
-    #     logger.info(f"[Upd_djCOADD] {prgArgs.table} from 02_Assembly {prgArgs.runid} [Upload: {prgArgs.upload}]")
-    #     #dGene.update_WGSCOADD_Trim(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-    #     dGene.update_WGSCOADD_Assembly(upload=prgArgs.upload,uploaduser=prgArgs.appuser)
-
-
 
 
 #==============================================================================

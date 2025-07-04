@@ -333,7 +333,7 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
         with open(RgiF) as file:
             tsv_file = csv.reader(file,delimiter="\t",)
             for line in tsv_file:
-                if 'ORF_ID' not in line:
+                if 'ORF_ID' not in line and len(line)>0:
                     _code = line[8]
                     _subcode = []
                     for _orgname in RGI_GENCODE:
@@ -350,14 +350,14 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                                 'cut_off' : line[5],                                 
                                 'gene_code': _code,
                                 'gene_note': line[16], #AMR Gene Family
-                                'gene_type': line[15], #Resistance Mechanism
-                                'amr_class': line[14], #Drug Class
+                                'gene_type': "Resistance",
+                                'gene_subtype': line[15], #Resistance Mechanism
+                                'amr_class': line[14].replace(" antibiotic",""), #Drug Class
                                 'amr_subclass': line[27], #Antibiotic
                                 'coverage': line[20], #Pct length of ResSeq
                                 'identitiy': line[9], #Best_Identities
                                 'snp': line[12], #SNPs_in_Best_Hit_ARO
                                 'amr_method':'RGI'
-
                                 })
 
 
