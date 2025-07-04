@@ -320,8 +320,32 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
 
     RGI_GENCODE = {
         'Acinetobacter baumannii':'Ab',
+        'Enterobacter cloacae':'En.cl',
+        'Escherichia coli':'Ec',
+        'Haemophilus influenzae':'Ha.in',
+        'Klebsiella pneumoniae':'Kp',
+        'Neisseria gonorrhoeae':'NG',
+        'Pseudomonas aeruginosa':'Pa',
+        'Shigella flexneri':'Sh.fl',
+        'Salmonella isangi':'Sa.is',
+        'Salmonella serovars':'Sa.sv',
+        'Salmonella enterica' : 'Sa.en',
+        'from Escherichia coli K-12':'Ec K-12',
+        'with mutation conferring resistance to azithromycin':'AZM',
+        'with mutation conferring resistance to fosfomycin':'FOF',
+        'conferring resistance to beta-lactam antibiotics':'BL',
+        'conferring resistance to colistin':'COL',
         'conferring resistance to fluoroquinolones':'FQ',
+        'conferring resistance to triclosan':'TRI',
+        'with mutation conferring resistance':'R',
+        'with mutation conferring multidrug antibiotic resistance':'MDR',
     }
+    
+    RGI_EMPTY= [
+        'with mutations',
+        'mutants',
+        'mutant',
+    ]
 
     RGIDir = os.path.join(FastAFolder,"rgi")
     RgiF = os.path.join(RGIDir,f"{OrgBID}_{RunID}_{inType}_rgi.txt")
@@ -343,13 +367,22 @@ def get_RGI_Info(FastAFolder,OrgBID,RunID,inType="fasta",pctCutOff=1.0):
                     if len(_subcode) > 0:
                         _code += f" ({' '.join(_subcode)})"
 
+                    for _empty in RGI_EMPTY:
+                        if _empty in _code:
+                            _code = _code.replace(_empty,'').strip()
+                            
+                    if line[12] != 'n/a':
+                        _note = f"{line[16]} (SNP: {line[12]})"
+                    else:
+                        _note = line[16]       
+                            
                     outLst.append({'seqid': f"{OrgBID}_{RunID}",
                                    'orgbatch_id' :OrgBID,
                                    'run_id':RunID,
                                 'contigid': line[1],
                                 'cut_off' : line[5],                                 
                                 'gene_code': _code,
-                                'gene_note': line[16], #AMR Gene Family
+                                'gene_note': _note, #AMR Gene Family (SNP)
                                 'gene_type': "Resistance",
                                 'gene_subtype': line[15], #Resistance Mechanism
                                 'amr_class': line[14].replace(" antibiotic",""), #Drug Class
