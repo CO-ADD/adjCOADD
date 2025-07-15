@@ -28,7 +28,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 # from adjcoadd.constants import *
 
 from dcollab.models import Organisation, Collab_Group, Collab_User
-from dcollab.forms import Organisation_Filter, Project_CreateForm, Project_UpdateForm
+from dcollab.forms import Organisation_Filter, Organisation_CreateForm
 # from dscreen.models import Screen_Run
 # from dplate.models import MasterPlate, TestPlate
 # from applib.report.screen_data import Report_Screening
@@ -51,3 +51,29 @@ class Organisation_ListView(LoginRequiredMixin, Filtered_ListView):
         context['base_template'] = 'coadd_base.html'
         return context
 
+# -----------------------------------------------------------------
+@login_required
+def Organisation_CreateView(req):
+    '''
+    View to Create new Organisation foreignkey: Dictionary. 
+    '''  
+    kwargs={}
+    kwargs['user']=req.user
+    form=Organisation_CreateForm()
+    if req.method=='POST':
+        form=Organisation_CreateForm(req.POST) 
+        if form.is_valid():
+            print('Organisation_CreateView Valid')
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Organisation','Completed')
+                    return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            messages.warning(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])          
+    return render(req, 'dcollab/organisation/organisation_create.html', { 'form':form, }) 

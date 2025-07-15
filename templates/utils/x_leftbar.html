@@ -19,9 +19,9 @@
     title="Card View"><i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted{% endif %}"></i></a>
     
    
-    <a class="{% if url_pivotedtable %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+    <a class="{% if pivot_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Pivot Table View" href="{{url_pivotedtable}}" target="_blank"><i class="bi bi-file-ppt fs-5"></i>
+      title="Pivot Table View" href="{{pivot_url}}" target="_blank"><i class="bi bi-file-ppt fs-5"></i>
   </a>
   </div>
   

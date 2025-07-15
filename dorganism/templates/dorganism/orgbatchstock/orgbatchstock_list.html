@@ -6,13 +6,13 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
-  {% url 'pivoted-table' app_model='dorganism-OrgBatch_Stock' as url_pivotedtable%}
-  {% include 'grid/base/left_navbar.html' with list_url='org_stock_list_overview' url_pivotedtable=url_pivotedtable %}
+  {% url 'pivoted-table' app_model='dorganism-OrgBatch_Stock' as pivot_url%}
+  {% include 'grid/base/left_navbar.html' with list_url='org_stock_list_overview' pivot_url=pivot_url %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'datatable/base/datatable_div.html' with title='OrgBatch_Stock' model_name='OrgBatch_Stock' application='dorganism' %}
+    {% include 'datatable/base/datatable_top.html' with title='OrgBatch_Stock' model_name='OrgBatch_Stock' application='dorganism' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->

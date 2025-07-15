@@ -8,12 +8,17 @@
     </h2>
   </button>
 </h2>
+
 <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
   <!-- <div class="d-flex align-items-baseline"> -->
+
+  <!-- Pagination buttons -->
   {% include 'datatable/base/pagination.html'%}
-  <!--  -->
+
+  <!-- Select all buttons -->
   {% include 'datatable/base/btn_select_all.html' %}
 
+  <!-- Export buttons buttons -->
   {% include 'datatable/base/datatable_download.html' %}
 
 </div>

@@ -5,8 +5,8 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row vh-100">
-  {% url 'pivoted-table' app_model='dsample-Project' as url_pivotedtable%}
-  {% include 'grid/base/left_navbar.html' with list_url='project_list' card_url='' create_object='createProject' create_objectModal='createProjectModal' url_pivotedtable='' %}
+  {% url 'pivoted-table' app_model='dsample-Project' as pivot_url%}
+  {% include 'grid/base/left_navbar.html' with list_url='project_list' card_url='' create_object='createProject' create_objectModal='createProjectModal' pivot_url='' %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   
@@ -15,7 +15,7 @@
   <div class="d-flex flex-column w-100"> 
 
     <!-- prettier-ignore -->
-    {% include 'datatable/base/datatable_div.html' with title='Project'  model_name='Project' application='dsample' %}
+    {% include 'datatable/base/datatable_top.html' with title='Project'  model_name='Project' application='dsample' %}
     <!-- prettier-ignore -->
     <!--  -->
 

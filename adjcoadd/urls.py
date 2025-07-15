@@ -36,6 +36,7 @@ urlpatterns = [
     #========================CastDB model views URL====View, Create, Updata, Delete================================
     path('dscreen/', include('dscreen.urls')),
     path('dsample/', include('dsample.urls')),
+    path('dcollab/', include('dcollab.urls')),
 ]
 
 if settings.DEBUG:

@@ -20,13 +20,10 @@ class Organisation(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
         "organisation_id":{'Organisation ID': {'organisation_id':LinkList['organisation_id']}},
-        # "group_id.group_code":"Group",
-        # "group_id.country.name":"Country",
-        "organisation_code":"Code",
         "organisation_name":"Name",
-        "organisation_type":"Type",
         "country.name":"Country",
-        
+        "organisation_code":"Code",
+        "organisation_type":"Type",        
     }
     
     DICTIONARY_FIELDS = {

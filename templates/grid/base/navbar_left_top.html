@@ -13,7 +13,7 @@
       title="Table View">
       <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted{% endif %}"></i></a>
     
-    <!-- Card View {card_url}--> 
+    <!-- Card View {card_url} --> 
     <a href="{% if card_url %} {% url card_url %} {% else %} # {% endif %}" 
       class=" {% if card_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
@@ -22,7 +22,7 @@
     </a>
     
     <!-- Export View {export_url} --> 
-    <a href="{% if export_url %} {% url export_url %} {% else %} # {% endif %}"
+    <a href="{% if export_url %} {{export_url}} {% else %} # {% endif %}"
       class="{% if export_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Export Table"  target="_blank">
@@ -33,7 +33,7 @@
     <a href="{% if pivot_url %} {{pivot_url}} {% else %} # {% endif %}" 
       class="{% if pivot_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Pivot Table"  target="_blank">
+      title="Pivot Table" target="_blank">
       <i class="bi bi-file-ppt fs-5"></i>
     </a>
 

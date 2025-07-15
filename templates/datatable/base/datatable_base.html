@@ -5,15 +5,18 @@
   <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%">
     <thead>
       <tr>
-        <!-- spare for seleting or editing -->
+        <!-- 1st Column for action items -->
         <th style="width: 1rem"></th>
-        <!-- customized/verbose model fields name -->
+
+        <!-- Nth Columns for fields -->
         {% for field in fields %}
           {% if field|is_dict %}
+            <!-- If field isdict - use field.key -->
             {% for key in field.keys %}
               <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
             {% endfor %}
           {% else %}
+            <!-- use field -->
             <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
           {% endif %}
         {% endfor %}
@@ -21,6 +24,7 @@
     </thead>
 
     <tbody hx-target="closest tr" hx-swap="outerHTML">
+      <!-- For Paginated tables -->
       {% if page_obj %}
         <!--prettier-ignore  -->
         {% for object in page_obj%}
@@ -29,18 +33,19 @@
           {% else %}
             <tr>
               <td>
-                <!--prettier-ignore  -->
+                <!--1st Column for action items  -->
                 {% include 'utils/miscellaneous/selectbox.html' with datatype=modelname object_id=object.pk %}
-                <!--  -->
               </td>
+
               {% for item in object.get_values %}
                 <td>
-                {% if item|is_dict %} 
-                  
+                {% if item|is_dict %}                   
+                  <!-- If item isdict - display item.key and use  item.value as link -->
                   {% for key, value in item.items %}      
                     <a href="{{value}}" target="_blank">{{ key }}</a>
                   {% endfor %}
                 {% else %}
+                 <!-- Display item -->
                   {{item}}
                 {% endif %}
                 </td>
@@ -50,7 +55,10 @@
         {% endfor %}
         <!--  -->
       {% else %}
-       {% for object in objects %}
+      
+      <!-- For Non-Paginated Single tables -->
+
+        {% for object in objects %}
 
         <tr>
           <td>
