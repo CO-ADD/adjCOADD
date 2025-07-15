@@ -18,7 +18,17 @@ class Organisation(AuditModel):
     List of Organisation
     """
 #=================================================================================================
-    HEADER_FIELDS   = {}
+    LIST_VIEW_FIELDS   = {
+        "organisation_id":{'Organisation ID': {'organisation_id':LinkList['organisation_id']}},
+        # "group_id.group_code":"Group",
+        # "group_id.country.name":"Country",
+        "organisation_code":"Code",
+        "organisation_name":"Name",
+        "organisation_type":"Type",
+        "country.name":"Country",
+        
+    }
+    
     DICTIONARY_FIELDS = {
         'organisation_type':'Organisation_Type',
     }
@@ -88,7 +98,7 @@ class Collab_User(AuditModel):
     List of Collaborative Groups
     """
 #=================================================================================================
-    HEADER_FIELDS = {}
+    LIST_VIEW_FIELDS = {}
     DICTIONARY_FIELDS = {}
 
     ID_SEQUENCE = 'Collab_User'
@@ -166,7 +176,7 @@ class Collab_Group(AuditModel):
     List of Collaborative Groups
     """
 #=================================================================================================
-    HEADER_FIELDS = {}
+    LIST_VIEW_FIELDS = {}
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
     }
@@ -236,7 +246,7 @@ class Data_Source(AuditModel):
     List of Data sources
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
 
     }
     DICTIONARY_FIELDS = {

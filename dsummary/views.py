@@ -34,7 +34,7 @@ class ScreenRun_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Summary_ScreenRun  
     template_name = 'dscreen/screenrun/screenrun_list.html'
     filterset_class = ScreenRun_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Screen_Run'
     app_name = 'dscreen'
     ordering=['-acreated_at']

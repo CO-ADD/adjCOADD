@@ -69,7 +69,7 @@ class DrugListView(LoginRequiredMixin, Filtered_ListView):
     model=Drug  
     template_name = 'ddrug/drug/drug_list.html' 
     filterset_class=Drug_filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 #--  DrugCard --------------------------------------------------------------
 class DrugCardView(DrugListView):
@@ -143,7 +143,7 @@ class VitekCard_ListView(LoginRequiredMixin, Filtered_ListView):
     model=VITEK_Card  
     template_name = 'ddrug/vitek_card/vitekcard_list.html' 
     filterset_class=VitekCard_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     #context_list=''
     
     # def get_context_data(self,  **kwargs):
@@ -159,7 +159,7 @@ class VitekAST_ListView(LoginRequiredMixin, Filtered_ListView):
     model=VITEK_AST  
     template_name = 'ddrug/vitek_ast/vitekast_list.html' 
     filterset_class=VitekAST_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     #context_list=''
 
       
@@ -171,7 +171,7 @@ class VitekID_ListView(LoginRequiredMixin, Filtered_ListView):
     model=VITEK_ID 
     template_name = 'ddrug/vitek_id/vitekid_list.html' 
     filterset_class=VitekID_Filter
-    model_fields=model.HEADER_FIELDS  
+    model_fields=model.LIST_VIEW_FIELDS  
 
     
 ## -----------
@@ -180,7 +180,7 @@ class MIC_COADDListView(LoginRequiredMixin, Filtered_ListView):
     model=MIC_COADD  
     template_name = 'ddrug/mic_coadd/mic_coadd_list.html' 
     filterset_class=MIC_COADDfilter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 ## -------------
 class MIC_COADDCardView(MIC_COADDListView):
@@ -193,7 +193,7 @@ class MIC_PubListView(LoginRequiredMixin, Filtered_ListView):
     model=MIC_Pub  
     template_name = 'ddrug/mic_pub/mic_pub_list.html' 
     filterset_class=MIC_Pubfilter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 ## -------------
 class MIC_PubCardView(MIC_PubListView):
@@ -206,7 +206,7 @@ class BreakpointListView(LoginRequiredMixin, Filtered_ListView):
     model=Breakpoint  
     template_name = 'ddrug/breakpoint/breakpoint_list.html' 
     filterset_class=Breakpointfilter
-    model_fields=model.HEADER_FIELDS  
+    model_fields=model.LIST_VIEW_FIELDS  
 
 # --API Views--
 ## Drug

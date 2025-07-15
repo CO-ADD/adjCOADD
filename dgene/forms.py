@@ -54,7 +54,7 @@ class GenomeSeq_Filter(BaseStatus_Filter):
     class Meta:
         model=Genome_Sequence
         fields = ['f_OrgBatchID','f_OrgName','f_RunID']
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         #exclude = []
         exclude = ['orgbatch_id.orgbatch_id',
                    'orgbatch_id.organism_id.organism_name',
@@ -108,7 +108,7 @@ class IDPub_Filter(BaseStatus_Filter):
     class Meta:
         model=ID_Pub
         fields= ['id_type']
-        #fields=list(model.HEADER_FIELDS.keys())
+        #fields=list(model.LIST_VIEW_FIELDS.keys())
 
 #=================================================================================================
 # ID_Seq - Identification from Sequence
@@ -136,7 +136,7 @@ class IDSeq_Filter(BaseStatus_Filter):
     class Meta:
         model = ID_Sequence
         fields = ['f_OrgBatchID','f_OrgName','f_SeqRunID']
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['seq_id.orgbatch_id.orgbatch_id',
                    'seq_id.orgbatch_id.organism_id.organism_name',
                    'seq_id.run_id'
@@ -188,7 +188,7 @@ class WGS_FastQC_Filter(BaseStatus_Filter):
     class Meta:
         model=WGS_FastQC
         fields = ['f_OrgBatchID','f_OrgName']
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['seq_id.orgbatch_id.orgbatch_id',
                    'seq_id.orgbatch_id.organism_id.organism_name',
                    ]
@@ -211,13 +211,13 @@ class WGS_CheckM_Filter(BaseStatus_Filter):
             self.filters[_key].extra["choices"] = self.Meta.model.get_field_choices(field_name=_item['field_name'])
 
     def create_field_groups(self):
-        self.group1 = [self.filters[name] for name in list(WGS_CheckM.HEADER_FIELDS.keys())]
+        self.group1 = [self.filters[name] for name in list(WGS_CheckM.LIST_VIEW_FIELDS.keys())]
         print(self.group1[0].label)
 
     class Meta:
         model = WGS_CheckM
         fields = ['f_OrgBatchID','f_OrgName']
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['seq_id.orgbatch_id.orgbatch_id',
                    'seq_id.orgbatch_id.organism_id.organism_name',
                    ]
@@ -262,7 +262,7 @@ class Gene_Filter(BaseStatus_Filter):
     class Meta:
         model=Gene
         #fields = ['f_GeneType']
-        fields = list(model.HEADER_FIELDS.keys())
+        fields = list(model.LIST_VIEW_FIELDS.keys())
         # exclude = ['gene_type',
         #            ]
 
@@ -336,7 +336,7 @@ class AMRGenotype_Filter(BaseStatus_Filter):
             'f_OrgBatchID',
             'f_OrgName','f_GeneCode','f_GeneType','f_GeneClass','f_GeneSClass'
             ]
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         exclude = [ 'seq_id.orgbatch_id.orgbatch_id',
                     'seq_id.orgbatch_id.organism_id.organism_name',
                     'gene_id.gene_code',

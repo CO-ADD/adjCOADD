@@ -220,7 +220,7 @@ class OrgBatch_UpdateForm(forms.ModelForm):
         
     class Meta:
         model =Organism_Batch
-        fields=list(model.HEADER_FIELDS.keys())
+        fields=list(model.LIST_VIEW_FIELDS.keys())
         fields+=['orgbatch_id']
         exclude=['stock_level']
 
@@ -297,7 +297,7 @@ class OrgCulture_Form(forms.ModelForm):
 
     class Meta:
         model =Organism_Culture
-        fields=list(model.HEADER_FIELDS.keys())
+        fields=list(model.LIST_VIEW_FIELDS.keys())
 
 # -----------------------------------------------------------------------------------    
 class OrgCulture_UpdateForm(forms.ModelForm):
@@ -316,7 +316,7 @@ class OrgCulture_UpdateForm(forms.ModelForm):
 
     class Meta:
         model =Organism_Culture
-        fields=list(model.HEADER_FIELDS.keys()) 
+        fields=list(model.LIST_VIEW_FIELDS.keys()) 
         #exclude=['culture_type', 'culture_source',]
         exclude=[]
 

@@ -42,7 +42,7 @@ class Project_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Project  
     template_name = 'dsample/project/project_list.html'
     filterset_class = Project_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Project'
     app_name = 'dsample'
     ordering=['-acreated_at']

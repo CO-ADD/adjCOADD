@@ -28,7 +28,7 @@ class Drug(AuditModel):
     List of Drugs, DrugCombinations, DrugScreens 
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "drug_id":{"Drug ID": {"drug_id": LinkList["drug_id"] } },
         "drug_name":"Drug Name",
         "drug_othernames":"Other Names",
@@ -222,7 +222,7 @@ class Breakpoint(AuditModel):
     List of Breakpoints 
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
        'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':LinkList["drug_id"]}},
         'bp_comb':'bp_comb', 
         'org_name':'org_name', 
@@ -399,7 +399,7 @@ class VITEK_Card(AuditModel):
 #     List of VITEK Cards
 #     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.batch_id":"Batch",
         #"orgbatch_id":"Orgbatch",
@@ -471,7 +471,7 @@ class VITEK_AST(AuditModel):
       Antimicrobial Suceptibility Testing (AST) data from VITEK Cards
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "card_barcode.orgbatch_id.organism_id.organism_id":{'Organism ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism Name",
@@ -554,7 +554,7 @@ class VITEK_ID(AuditModel):
       Identification Testing (ID) data from VITEK Cards
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
@@ -622,7 +622,7 @@ class MIC_COADD(AuditModel):
      Antibiogram from CO-ADD screening    
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.batch_id":"Batch",
         "orgbatch_id.organism_id.organism_name":"Organism Name",
@@ -732,7 +732,7 @@ class MIC_Pub(AuditModel):
      Antibiogram from Public sources    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {   
+    LIST_VIEW_FIELDS   = {   
         "organism_id.organism_id":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
         "organism_id.organism_name":"Organism",
         "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},

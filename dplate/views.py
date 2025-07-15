@@ -36,7 +36,7 @@ class TestPlate_ListView(LoginRequiredMixin, Filtered_ListView):
     model=TestPlate 
     template_name = 'dplate/testplate/testplate_list.html' 
     filterset_class=TestPlate_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     model_name = 'TestPlate'
     app_name = 'dplate'
 

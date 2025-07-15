@@ -64,7 +64,7 @@ class NewmodelListView(LoginRequiredMixin, Filtered_ListView):
     # model=Taxonomy  
     # template_name = 'dorganism/taxonomy/taxonomy_list.html'  # path of template list
     # filterset_class=Taxonomyfilter
-    # model_fields=model.HEADER_FIELDS
+    # model_fields=model.LIST_VIEW_FIELDS
     # model_name = 'Taxonomy'
     # app_name = 'dorganism'
 
@@ -157,10 +157,10 @@ def detailTaxonomy(request, slug=None):
     # context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
     # context["cultr_fields"]=Organism_Culture.get_fields() 
     # if 'organism_id' in context["cultr_fields"]:
-    #     context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
+    #     context["cultr_fields"].remove('organism_id')    # customize LIST_VIEW_FIELDS
     # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.LIST_VIEW_FIELDS)
 
     # # data in pivotted and highlighted Tables
     # if request.method == 'POST':

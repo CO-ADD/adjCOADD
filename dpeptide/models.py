@@ -27,7 +27,7 @@ class Peptide(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
         'peptide_id':{'Peptide ID': {'peptide_id':LinkList['peptide_id']}}, 
         'peptide_seq':'Peptide Sequence',
@@ -186,7 +186,7 @@ class Peptide_Batch(AuditModel):
     """
 #=================================================================================================
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
         "previous_batch_id":"Prev ID",

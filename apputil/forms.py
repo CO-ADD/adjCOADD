@@ -131,6 +131,6 @@ class AppLog_Filter(Base_Filter):
       
     class Meta:
         model=ApplicationLog
-        fields=list(model.HEADER_FIELDS.keys())
+        fields=list(model.LIST_VIEW_FIELDS.keys())
 
 

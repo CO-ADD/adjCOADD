@@ -349,7 +349,7 @@ class TestPlate(Plate):
     """
 #=================================================================================================
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         #"plate_id":{'Plate ID': {'plate_id':LinkList['testplate_id']}},
         "plate_id":"Plate ID",
         "run_id":"Run ID",

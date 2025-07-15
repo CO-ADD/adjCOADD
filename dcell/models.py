@@ -27,7 +27,7 @@ class Cell(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Cell Name','Updatable':False}
         'cell_id':{'Cell ID': {'cell_id':LinkList['cell_id']}}, 
         'cell_line':'Cell Line',
@@ -186,7 +186,7 @@ class Cell_Batch(AuditModel):
     """
 #=================================================================================================
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
         "previous_batch_id":"Prev ID",
@@ -323,7 +323,7 @@ class CellBatch_Stock(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS={
+    LIST_VIEW_FIELDS={
         "cellbatch_id.cellbatch_id":{'CellBatch ID': {'cellbatch_id.cell_id.cell_id':LinkList["cell_id"]}},
         "cellbatch_id.cell_id.cell_names":"Cell",
         #"cellbatch_id.cell_id.cell_name":{'Cell ID': {'cell_id.cell_id.cell_id':LinkList['cell_id']}},
@@ -386,7 +386,7 @@ class Cell_Culture(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "organism_id":"Organism ID",
         "culture_type":"Type",
         "culture_source":"Source",

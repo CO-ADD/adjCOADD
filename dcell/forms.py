@@ -172,7 +172,7 @@ class CellBatch_UpdateForm(forms.ModelForm):
         
     class Meta:
         model =Cell_Batch
-        fields=list(model.HEADER_FIELDS.keys())
+        fields=list(model.LIST_VIEW_FIELDS.keys())
         fields+=['cellbatch_id']
         exclude=['stock_level']
 
