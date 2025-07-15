@@ -1,0 +1,18 @@
+<tr class="editing">
+  <td class="text-center p-0">
+
+    <button hx-get="{% url 'organisation_update' object.pk %}" hx-trigger="click" class="border-0 text-success bg-transparent">
+      <i class="fa-regular fa-pen-to-square"></i>
+    </button>
+   
+    {% comment %} {% if user.permission == 'Admin' %}
+      <span>
+        {% include 'apputil/appUsersDel.html' %}
+      </span>
+    {% endif %} {% endcomment %}
+  </td>
+
+  {% for item in object.get_values %}
+    <td>{{item}}</td>
+  {% endfor%}
+</tr>

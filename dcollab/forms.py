@@ -10,6 +10,7 @@ from django_filters import DateRangeFilter, CharFilter, ModelChoiceFilter, Choic
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from django_countries.fields import CountryField
+from django_countries.data import COUNTRIES 
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, PROJECT_DATA_STATUS, PROJECT_REPORT_STATUS
@@ -24,12 +25,13 @@ from dcollab.models import Organisation, Collab_Group, Collab_User
 class Organisation_Filter(BaseStatus_Filter):
     
     organisation_type=ChoiceFilter(field_name='organisation_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    Country = ChoiceFilter(field_name='organisation_id__country', choices=CountryField().choices,)
+    Country = ChoiceFilter(field_name='country', choices=CountryField().choices)
+    #Country = ChoiceFilter(field_name='country', choices=sorted(COUNTRIES.items()))
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["organisation_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Organisation.DICTIONARY_FIELDS['organisation_type'])]
-        #self.filters['Country'].extra["choices"] = self.Meta.model.get_field_choices(field_name='group_id__country')
+        #self.filters['Country'].extra["choices"] = self.Meta.model.get_field_choices(field_name='country__name')
 
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
@@ -45,12 +47,14 @@ class Organisation_Filter(BaseStatus_Filter):
 class Organisation_CreateForm(forms.ModelForm):
 
     # PK to add help text
-    organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+    organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     country = CountryField()
+    organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
 
     def __init__(self, *args, **kwargs): 
         super(Organisation_CreateForm, self).__init__(*args, **kwargs)
+        
         # Set Labels from Model Definitions
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
@@ -69,3 +73,13 @@ class Organisation_CreateForm(forms.ModelForm):
             self.groups = []
             for grp in Organisation.VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
+
+# -----------------------------------------------------------------
+class Organisation_UpdateForm(Organisation_CreateForm): 
+    organisation_id = forms.CharField(disabled=True)  
+    
+    class Meta:
+        model=Organisation
+        exclude=[]
+
+    field_order = Organisation.LIST_VIEW_FIELDS

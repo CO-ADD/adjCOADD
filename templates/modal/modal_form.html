@@ -1,0 +1,28 @@
+<!-- 
+  Model Form used for all model create / update via pop up modal, if implemented new model, please add new models name into if conditions:
+  e.g. if title == 'Create Organism' or title == 'Create <New Model name>'
+
+-->
+<div class="modal-content card-bg">
+  <div class="modal-header">
+    <h5 class="modal-title"><b>{{title}}</b></h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+
+    <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
+      {% csrf_token %}
+      {% include 'utils/django_form_lgtable.html' %}
+
+      <hr>
+      <div class="d-flex justify-content-center align-center">
+        {% include 'utils/miscellaneous/save_btn.html' %}
+        {% include 'utils/miscellaneous/cancel_btn.html' %}
+      </div>
+
+    </form>
+
+
+  </div>
+</div>

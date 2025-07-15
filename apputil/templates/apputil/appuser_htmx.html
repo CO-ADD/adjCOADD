@@ -1,18 +1,16 @@
 <tr class="editing">
   <td width="5%" class="p-0">
-    {%if user.permission == 'Admin' %}
-     
-   
-    {% url 'updateAppUser' object.name as appuser_url %}
-    <!--  -->
-    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=appuser_url %}
-   
-   <span>
+    {% if user.permission == 'Admin' %}
 
-     {%include 'apputil/appUsersDel.html' %}
-   </span>
-    {%endif%}
+      {% url 'updateAppUser' object.name as appuser_url %}
+      {% include 'utils/miscellaneous/update_btn_htmx.html' with url=appuser_url %}
+   
+      <span>
+        {% include 'apputil/appUsersDel.html' %}
+      </span>
+    {% endif %}
   </td>
+
   <td>{{object.first_name}}</td>
   <td>{{object.last_name}}</td>
   <td>{{object.email}}</td>
