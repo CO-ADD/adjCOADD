@@ -173,9 +173,10 @@ class AuditModel(models.Model):
     #
     # Validates the instance using full_clean
     # 
+        verbose = kwargs.get('verbose',0)
         retValid = {}
         try:
-            self.full_clean(**kwargs)
+            self.full_clean()
         except ValidationError as e:
             for key in e.message_dict:
                 _field = self._meta.get_field(key)
@@ -211,15 +212,18 @@ class AuditModel(models.Model):
                 #     retValid[key] = ", ".join(e.message_dict[key])
         except AttributeError as e:
             logger.error(f"AttributeError: {e}")
-
+        except TypeError as e:
+            logger.error(f"TypeError: {e}")
         return(retValid)
 
     #-------------------------------------------------------------------
-    def validate_model(self, verbose = 0):
+    def validate_model(self, **kwargs):
         validDict = []
 
+        verbose =kwargs.get('verbose',0)
+
         #self.set_defaults_model()
-        _valDict = self.validate_fields()
+        _valDict = self.validate_fields(**kwargs)
         if _valDict:
             if self._meta.pk.name not in _valDict:
                 validDict.append(_valDict)

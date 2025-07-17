@@ -64,9 +64,10 @@ def main(prgArgs,djDir):
                     djTP.clear_cmpbatch_data()
                     mp_ids = getattr(djTP,'motherplate_ids')
                     for mp in mp_ids:
-                        if mp not in djMPS:
-                            djMPS[mp] = MasterPlate.get(mp,WellData=True)
-                        add_mother_to_testplate(djMPS[mp],djTP)
+                        if mp != '-':
+                            if mp not in djMPS:
+                                djMPS[mp] = MasterPlate.get(mp,WellData=True)
+                            add_mother_to_testplate(djMPS[mp],djTP)
                     
                     djTP.update_n('n_samples')    
                         

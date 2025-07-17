@@ -53,8 +53,7 @@
     href="{% static 'css/table_wrap.css' %}"
   />
   
-
-    {% include 'utils/scripts.html' %}
+  {% include 'utils/scripts.html' %}
   </head>
 
   <body>
@@ -132,21 +131,34 @@
         }
 
         // Add click event listeners to all links
-        for (let link of links) {
-          link.addEventListener("click", function (event) {
-            // Only show the preloader if the target is not "_blank"
-            if (link.getAttribute("target") !== "_blank") {
-              showPreloader();
-            }
-          });
-        }
+        // for (let link of links) {
+        //   link.addEventListener("click", function (event) {
+        //   console.log('document click');
+          // Only show the preloader if the target is not "_blank"
+        //     if (link.getAttribute("target") !== "_blank") {
+        //       console.log('document click not blank');
+        //       showPreloader();
+        //     }
+        //   });
+        // } 
 
         // Hide the preloader when the cached page is shown
         window.addEventListener("pageshow", function (event) {
+          console.log('document pageshow');
           if (event.persisted) {
+            console.log('document pageshow presisted');
             hidePreloader();
           }
         });
+
+        window.addEventListener("load", function (event) {
+          console.log('document loaded');
+          if (event.persisted) {
+            console.log('document loaded presisted');
+            hidePreloader();
+          }
+        });
+
       });
     </script>
     <!-- get version -->

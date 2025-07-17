@@ -2,11 +2,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_DetailView,ScreenRun_UpdateView, ScreenRun_RemoveView, ScreenRun_ReportView,
-                            Add_Readouts
+from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_DetailView,ScreenRun_UpdateView, ScreenRun_RemoveView, ScreenRun_ReportView,                         
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
+from dscreen.process import (Add_Readout_ProcessView, Add_Testplate_ProcessView, Add_Motherplate_ProcessView,)
 
 urlpatterns = [
     # ScreenRun 
@@ -18,9 +18,9 @@ urlpatterns = [
     path('deleteScreenrun/<str:pk>', ScreenRun_RemoveView.as_view(), name="screenrun_delete"),
 
     #path('screenrun/load_readouts/<str:pk>', Load_Readouts, name='load_readouts'),
-    path('screenrun/load_readouts/<str:pk>', Add_Readouts.as_view(), name='load_readouts'),
-    path('screenrun/load_testplates/<str:pk>', Add_Readouts.as_view(), name='load_testplates'),
-    path('screenrun/load_motherplates/<str:pk>', Add_Readouts.as_view(), name='load_motherplates'),
+    path('screenrun/load_readouts/<str:pk>', Add_Readout_ProcessView.as_view(), name='load_readouts'),
+    path('screenrun/load_motherplates/<str:pk>', Add_Motherplate_ProcessView.as_view(), name='load_motherplates'),
+    #path('screenrun/load_testplates/<str:pk>', Add_Testplates_ProcessView.as_view(), name='load_testplates'),
     #path('screenrun/load_readouts/<str:pk>', Add_Readouts.as_view(), name='load_readouts'),
     path('screenrun/report/<str:pk>', ScreenRun_ReportView, name="screenrun_report"),
 

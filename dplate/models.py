@@ -355,6 +355,7 @@ class TestPlate(Plate):
         "run_id":"Run ID",
         "assay_id":"Assay ID",
         "result_type":"Type",
+        "control_layout":"Layout (N_P_R_S)",
         "test_date":"Test Date",
         "plate_quality":"Quality",
         "zfactor":"ZFactor",
@@ -515,16 +516,16 @@ class TestPlate(Plate):
             return(_plate)
 
     #------------------------------------------------
-    def validate_model(self, WellData=True, verbose = 0):
+    def validate_model(self, WellData=True, **kwargs):
         retDict = []
-        PlateDict = super(TestPlate, self).validate_model(verbose=verbose)
+        PlateDict = super(TestPlate, self).validate_model(**kwargs)
         for wd in PlateDict:
             retDict.append(wd)
 
         if self.wells and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    WellDict = super(TestWell,self.wells[w]).validate_model(verbose=verbose)
+                    WellDict = super(TestWell,self.wells[w]).validate_model(**kwargs)
                     for wd in WellDict:
                         if 'plate_id' not in wd :
                             retDict.append(wd)
@@ -1157,16 +1158,16 @@ class MasterPlate(Plate):
         return(lWells)
 
     #------------------------------------------------
-    def validate_model(self, WellData=True, verbose = 0):
+    def validate_model(self, WellData=True, **kwargs):
         retDict = []
-        PlateDict = super(MasterPlate, self).validate_model(verbose=verbose)
+        PlateDict = super(MasterPlate, self).validate_model(**kwargs)
         for wd in PlateDict:
             retDict.append(wd)
 
         if hasattr(self,'wells') and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
-                    WellDict = super(MasterWell,self.wells[w]).validate_model(verbose=verbose)
+                    WellDict = super(MasterWell,self.wells[w]).validate_model(**kwargs)
                     for wd in WellDict:
                         if 'plate_id' not in wd :
                             retDict.append(wd)
@@ -1202,7 +1203,7 @@ class MasterPlate(Plate):
             logger.warning(f"[MasterPlate] SAVE has no PlateID ")
 
     #------------------------------------------------
-    def add_dilutions(self):
+    def add_dilutions(self, **kwargs):
         DILUTION_DICT = {
             'Col8':     ( 8, 2, True, False),
             'Col16':    (16, 2, True, False),
@@ -1212,10 +1213,12 @@ class MasterPlate(Plate):
             'Row10':    (10, 2, False, True),
         }
 
+        verbose = kwargs.get('verbose',0)
         if self.wells:
             for w in self.wells:
                 if self.wells[w].dilution_lst:
-                    logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst}")
+                    if verbose > 0:
+                        logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst}")
 
                     for i_dil in range(len(self.wells[w].dilution_lst)):
 

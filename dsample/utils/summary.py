@@ -2,7 +2,7 @@ from dplate.models import MasterPlate, TestPlate, TestWell
 from dsample.models import COADD_Compound, ABase_Compound_Batch
 
 #------------------------------------------------
-def update_sproject_summary(djPrj):
+def update_project_summary(djPrj):
     """
      Update Calculated fields in Project
     """

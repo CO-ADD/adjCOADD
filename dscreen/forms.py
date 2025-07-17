@@ -115,7 +115,13 @@ class ScreenRun_CreateForm(forms.ModelForm):
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
-class ScreenRun_UpdateForm(ScreenRun_CreateForm):     
+class ScreenRun_UpdateForm(ScreenRun_CreateForm):
+
+    def __init__(self, *args, **kwargs): 
+        super(ScreenRun_UpdateForm, self).__init__(*args, **kwargs)
+
+        for field in Screen_Run.CALCULATED_FIELDS:
+            self.fields[field].widget.attrs['readonly'] = True
     class Meta:
         model=Screen_Run
-        exclude=['run_id']+Screen_Run.CALCULATED_FIELDS
+        exclude=['run_id']
