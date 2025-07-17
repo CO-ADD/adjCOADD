@@ -56,7 +56,7 @@ def flex_pivottable(request, app_model):
     except LookupError:
         # Handle the case where the model does not exist.
         return HttpResponse("Model not found.")
-    model_fields = [f.replace(".", "__") for f in list(Model.HEADER_FIELDS.keys())] 
+    model_fields = [f.replace(".", "__") for f in list(Model.LIST_VIEW_FIELDS.keys())] 
     verbose_fields = Model.get_fields()
     for i in range(len(model_fields)):
         fields_dict = {model_fields[i]: verbose_fields[i] for i in range(len(verbose_fields)) }

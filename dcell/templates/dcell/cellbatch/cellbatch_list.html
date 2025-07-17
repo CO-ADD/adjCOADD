@@ -6,13 +6,13 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
-  {% url 'pivoted-table' app_model='dcell-Cell_Batch' as url_pivotedtable%}
-  {% include 'grid/base/left_navbar.html' with list_url='cellbatch_list' url_pivotedtable=url_pivotedtable %}
+  {% url 'pivoted-table' app_model='dcell-Cell_Batch' as pivot_url%}
+  {% include 'grid/base/left_navbar.html' with list_url='cellbatch_list' pivot_url=pivot_url %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'datatable/base/datatable_div.html' with title='Cell_Batch' model_name='Cell_Batch' application='dcell' %}
+    {% include 'datatable/base/datatable_top.html' with title='Cell_Batch' model_name='Cell_Batch' application='dcell' %}
     <!-- list View Content -->
     <div class="fixTableHead">
       <!--prettier-ignore-->

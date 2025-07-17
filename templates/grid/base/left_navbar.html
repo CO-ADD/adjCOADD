@@ -1,33 +1,44 @@
 <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
   <div class="d-flex flex-column p-0">
+
+    <!-- Filter Show Switch -->
     <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
       <i class="bi bi-funnel fs-5"></i>
     </a>
-  </div>
-  <div class="d-flex flex-column p-0">
 
+    <!-- Table View {list_url} -->
     <a href="{% if list_url %} {% url list_url %} {% else %} # {% endif %}" 
       class="{% if list_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Table View">
       <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted{% endif %}"></i></a>
     
- 
-    <a href="{% if card_url%} {% url card_url %} {%else%} # {% endif %}" 
-    class=" {% if card_url %}btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
-    data-bs-toggle="tooltip" data-bs-placement="right"
-    title="Card View"><i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted{% endif %}"></i></a>
-    
-   
-    <a class="{% if url_pivotedtable %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+    <!-- Card View {card_url}--> 
+    <a href="{% if card_url %} {% url card_url %} {% else %} # {% endif %}" 
+      class=" {% if card_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
-      title="Pivot Table View" href="{{url_pivotedtable}}" target="_blank"><i class="bi bi-file-ppt fs-5"></i>
-  </a>
-  </div>
-  
-  <!-- Create New Entry Modal-->
-  <div class="d-flex flex-column p-0">
-    <!-- prettier-ignore -->
+      title="Card View"> 
+      <i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted{% endif %}"></i>
+    </a>
+    
+    <!-- Export View {export_url} --> 
+    <a href="{% if export_url %} {% url export_url %} {% else %} # {% endif %}"
+      class="{% if export_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Export Table"  target="_blank">
+      <i class="bi bi-file-earmark-spreadsheet fs-5"></i>
+    </a>
+   
+    <!-- Pivot View {pivot_url} --> 
+    <a href="{% if pivot_url %} {{pivot_url}} {% else %} # {% endif %}" 
+      class="{% if pivot_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Pivot Table"  target="_blank">
+      <i class="bi bi-file-ppt fs-5"></i>
+    </a>
+
+    <!-- Create New Entry Modal-->
     {% include 'utils/modal/create_modal.html' with create_object=create_object create_objectModal=create_objectModal model_name=model_name %}
-  </div>
+
+  </div>  
 </div>

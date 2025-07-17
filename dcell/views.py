@@ -45,7 +45,7 @@ class Cell_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Cell
     template_name = 'dcell/cell/cell_list.html'
     filterset_class = Cell_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Cell'
     app_name = 'dcell'
     ordering=['-acreated_at']
@@ -128,10 +128,10 @@ def Cell_DetailView(request, pk):
     #context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
     #context["cultr_fields"]=Cell_Culture.get_fields() 
     # if 'cell_id' in context["cultr_fields"]:
-    #     context["cultr_fields"].remove('cell_id')    # customize HEADER_FIELDS
+    #     context["cultr_fields"].remove('cell_id')    # customize LIST_VIEW_FIELDS
     # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.LIST_VIEW_FIELDS)
 
     # data in pivotted and highlighted Tables
     
@@ -234,7 +234,7 @@ class CellBatch_ListView(LoginRequiredMixin, Filtered_ListView):
     model=Cell_Batch 
     template_name = 'dcell/cellbatch/cellbatch_list.html' 
     filterset_class=CellBatch_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     model_name = 'Cell_Batch'
     app_name = 'dcell'
 
@@ -283,7 +283,7 @@ class CellBatchStock_ListView(LoginRequiredMixin, Filtered_ListView):
     model = CellBatch_Stock  
     template_name = 'dcell/cellbatchstock/cellbatchstock_list.html'
     filterset_class = CellBatchStock_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'CellBatch_Stock'
     app_name = 'dcell'
 

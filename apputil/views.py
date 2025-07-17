@@ -111,7 +111,7 @@ class AppUser_ListView(LoginRequiredMixin, Filtered_ListView):
     model = ApplicationUser
     template_name = 'apputil/appUsers.html'  
     filterset_class = AppUser_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     ordering =['-is_active','-is_appuser','first_name','last_name']
 
 
@@ -189,7 +189,7 @@ class AppLog_ListView(SuperUserRequiredMixin, Filtered_ListView):
     model = ApplicationLog
     template_name = 'apputil/log_List.html'
     filterset_class = AppLog_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
 
 #=================================================================================================
 # Dictionary
@@ -200,7 +200,7 @@ class Dictionary_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Dictionary
     template_name = 'apputil/dictList.html'
     filterset_class = Dictionary_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
 
     
 #-------------------------------------------------------------------------------------------------

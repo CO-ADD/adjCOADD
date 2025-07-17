@@ -6,13 +6,13 @@
 <div class="d-flex flex-row vh-100">
 
   <!--prettier-ignore-->
-  {% url 'pivoted-table' app_model='ddrug-MIC_COADD' as url_pivotedtable%}
+  {% url 'pivoted-table' app_model='ddrug-MIC_COADD' as pivot_url%}
   {%include 'grid/base/left_navbar.html' with list_url='mic_coadd_list' card_url='mic_coadd_card' %}
   <!-- Sidebar View -->
   {%include "utils/sidebar.html"%}
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'datatable/base/datatable_div.html' with title='Antibiogram MIC (COADD)' model_name='MIC_COADD' application='ddrug' %}
+    {% include 'datatable/base/datatable_top.html' with title='Antibiogram MIC (COADD)' model_name='MIC_COADD' application='ddrug' %}
     <!-- list View Content -->
     <div class="contain-fluid data-contain">
       <!--prettier-ignore-->

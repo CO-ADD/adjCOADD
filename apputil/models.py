@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 #-------------------------------------------------------------------------------------------------
 class ApplicationUser(AbstractUser):    
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'name':'Name',
         'username':'Username', 
         'first_name':'First Name',  
@@ -103,7 +103,7 @@ class ApplicationUser(AbstractUser):
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
-            fields = cls.HEADER_FIELDS
+            fields = cls.LIST_VIEW_FIELDS
         if fields:
             select_fields=[fields[f.name] for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -113,7 +113,7 @@ class ApplicationUser(AbstractUser):
 
     # get field name in model Class in the order provided by constants.py
     @classmethod
-    def get_modelfields(cls, fields=HEADER_FIELDS):
+    def get_modelfields(cls, fields=LIST_VIEW_FIELDS):
         if fields:
             model_fields=[f.name for f in cls._meta.fields if f.name in fields.keys()]
         else:
@@ -141,7 +141,7 @@ class AuditModel(models.Model):
 
     VALID_STATUS    = False
     VALID_DICT      = {}
-    HEADER_FIELDS   = {}
+    LIST_VIEW_FIELDS   = {}
     CARDS_FIELDS   = {}
 
     ID_SEQUENCE = "General"
@@ -461,7 +461,7 @@ class AuditModel(models.Model):
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
-            fields = cls.HEADER_FIELDS
+            fields = cls.LIST_VIEW_FIELDS
         if fields:
             fieldsname=[field.name for field in cls._meta.fields]
             select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
@@ -488,7 +488,7 @@ class AuditModel(models.Model):
         
         from django.db.models import Model
         if fields is None:
-            fields = self.HEADER_FIELDS
+            fields = self.LIST_VIEW_FIELDS
 
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
@@ -498,7 +498,7 @@ class AuditModel(models.Model):
             if n>1 and nameArray[0] in fieldsname:
                 obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
                 if isinstance(fields[name], dict):
-                    #if HEADER_FIELDS contains a dictionary for link/url information
+                    #if LIST_VIEW_FIELDS contains a dictionary for link/url information
                     # for foreignkey link not equal field values
                     url_name = list(list(fields[name].values())[0].keys())[0]
                     if url_name != name:
@@ -569,7 +569,7 @@ class AuditModel(models.Model):
 #-------------------------------------------------------------------------------------------------
 class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'dict_value':'Value', 
         'dict_class':'Class',  
         'dict_desc':'Description',
@@ -755,7 +755,7 @@ class Dictionary(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class ApplicationLog(models.Model):
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'log_code':'Code', 
         'log_proc':'Procedure',  
         'log_type':'Type',
@@ -813,7 +813,7 @@ class ApplicationLog(models.Model):
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
-            fields = cls.HEADER_FIELDS
+            fields = cls.LIST_VIEW_FIELDS
         if fields:
             fieldsname=[field.name for field in cls._meta.fields]
             select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
@@ -840,7 +840,7 @@ class ApplicationLog(models.Model):
         
         from django.db.models import Model
         if fields is None:
-            fields = self.HEADER_FIELDS
+            fields = self.LIST_VIEW_FIELDS
 
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
@@ -850,7 +850,7 @@ class ApplicationLog(models.Model):
             if n>1 and nameArray[0] in fieldsname:
                 obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
                 if isinstance(fields[name], dict):
-                    #if HEADER_FIELDS contains a dictionary for link/url information
+                    #if LIST_VIEW_FIELDS contains a dictionary for link/url information
                     # for foreignkey link not equal field values
                     url_name = list(list(fields[name].values())[0].keys())[0]
                     if url_name != name:
@@ -901,7 +901,7 @@ class ApplicationLog(models.Model):
 # #-------------------------------------------------------------------------------------------------
 # class Image(AuditModel):
 # #-------------------------------------------------------------------------------------------------
-#     HEADER_FIELDS = {
+#     LIST_VIEW_FIELDS = {
 #         'image_name':'Name', 
 #         'image_file':'Image',  
 #         'image_type':'Type',  
@@ -978,7 +978,7 @@ class ApplicationLog(models.Model):
 #-------------------------------------------------------------------------------------------------
 class Document(AuditModel):
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'doc_name':'Name', 
         'doc_file':'Document',  
         'doc_type':'Type',  

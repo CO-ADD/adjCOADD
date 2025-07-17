@@ -1,0 +1,123 @@
+<div class="sidebar card-text panel me-2 ps-3">
+    <form id="django-filter-siderbar" method="get" class="form-group mx-2">
+        {% csrf_token %}
+
+                <!-- Search Icon -  -->
+        <div class="input-group input-group-sm my-2 p-1 w-100">
+            <div>
+            </div>
+            <button class="input-group-text btn m-auto border" type="submit" name="applysingle" value="Apply">
+                {% include 'utils/miscellaneous/load_search.html' %}
+                <!-- <i class="fa-solid fa-magnifying-glass fs-4"></i> -->
+            </button>
+            {{ filter.form.Search_all_fields }} 
+            <br>
+        </div>
+        {{filter.form.Search_all_fields.errors}} 
+
+        <!-- Text Search Setting (into related tables) -->
+        <div class="d-flex align-items-baseline mt-2">
+            <!-- <input id="filter-apply" class="btn m-auto" type="submit" name="applysingle" value="Apply" /> -->
+            <input data-name="submit-reset" type="text" name="reset" value="False" hidden>
+            <input data-name="pivot" type="text" name="pivot" value="False" hidden>
+            <div class="d-flex mt-3">
+                <input class="btn mx-2" type="checkbox" name="applymulti" value="search including related tables" />
+                <label for="" class="text-info">
+                    <!-- <span> -->
+                    including related tables
+                    <!-- </span>  -->
+                </label>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Pagination Setting -->
+        <div class="d-flex justify-content-center">
+            <span>
+                <select class="border text-info" style="width: fit-content;" name="paginate_by" id="pages_set">
+                    <option value=50> {{paginate_by}}</option>
+                    <option value=10>10</option>
+                    <option value=50>50 </option>
+                    <option value=100>100 </option>
+                    <option value=200>200 </option>
+                    <option value=500>500 </option>
+                </select>
+            </span>
+            <span class="text-info">
+                &nbsp; entries per page
+            </span>
+        </div>
+
+        <hr>
+
+        <!-- Display current filters  -->
+        {% if filterset %}
+            <div class="d-flex flex-column card-bg" style="height:fit-content; max-width: 18em;">
+                {{filterset | default_if_none:"&nbsp;"}}
+                <button class="btn btn-danger my-2" type="reset" onclick="myfun()">Clear Condidtions</button>
+            </div>  
+        {% endif %}
+
+
+        <input id="order_input" type="text" name="order_by" class="not-visible" aria-label="sorting">
+        <div class="d-flex flex-column mb-3" id="Django-form-filter-items">
+
+            <label for="smiles_query" class="not-visible">Substructure Query</label>
+            <input id="smiles_input" type="text" name="substructure" class="not-visible" aria-label="smiles">
+            <hr>
+            <!-- Filter items  -->
+            {% for field in filter.form %}
+                {% if field.name != 'Search_all_fields' %}
+                <button id="btn_{{field.name|safe}}"
+                    class="collapsed accordion-button text-start bg-transparent border-bottom" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#{{field.name|safe}}" aria-expanded="false"
+                    aria-controls="{{field.label}}">
+                    {{field.label}}
+                </button>
+                <div id="{{field.name|safe}}" class="accordion-collapse collapse card-bg">
+                    <p class="accordion-body m-2 px-1 py-1">
+                        {{field}}
+                    </p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </form>
+
+</div>
+
+</script>
+{% load static %}
+<script src="{%static 'js/filter_toggle.js'%}"></script>
+
+<script>
+    // reset/clear filter 
+    function myfun() {
+        form = document.getElementById("django-filter-siderbar")
+        form.querySelectorAll('input').forEach(item => item.removeAttribute("value"));
+        // form.querySelectorAll('p input').forEach(item => item.removeAttribute("value"))
+        form.querySelector('[data-name="submit-reset"]').setAttribute("value", "True");
+        form.querySelectorAll('select option').forEach(item => item.removeAttribute("selected"));
+        form.querySelectorAll('input[type=radio]').forEach(item => item.removeAttribute("checked"));
+        form.querySelectorAll('input[type=checkbox]').forEach(item => item.removeAttribute("checked"));
+        form.submit();
+    }
+</script>
+
+<script>
+// special render choice options for organism class field
+    $(document).ready(function () {
+        $('input[data-name="pivot"]').val('False')
+        $("label[for='id_Class_0']").addClass('not-visible');//for radio type select value == "----------""
+
+        $("#Class").addClass('show');
+        $("#btn_Class").removeClass('collapsed');
+
+    })
+</script>
+
+<script>
+    load_Indicator( $('form'), $('.beforeloadtable'), $('.loadtable'), initial_switch = 'off')
+</script>

@@ -1,0 +1,17 @@
+<tr class="editing">
+  <td class="text-center">
+    <button class="btn-active-small"
+      type="submit"
+      value="update"
+      hx-put="{%url 'organisation_update' pk=object.pk%}"
+      hx-include="closest tr"
+      hx-trigger="click">
+        <i>Save</i>
+    </button>
+    {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
+  </td>
+  {% for field in form %}
+    <td>{{field}}</td>
+  {% endfor%}
+</tr>
+

@@ -34,7 +34,7 @@ class GenomeSeq_ListView(LoginRequiredMixin, Filtered_ListView):
     model= Genome_Sequence
     template_name = 'dgene/genomeseq/genomeseq_list.html' 
     filterset_class=GenomeSeq_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     ordering = ['seq_id']
 
 ##
@@ -63,7 +63,7 @@ class IDSeq_ListView(LoginRequiredMixin, Filtered_ListView):
     model= ID_Sequence
     template_name = 'dgene/idseq/idseq_list.html' 
     filterset_class=IDSeq_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 #=================================================================================================
 # ID Public
@@ -73,7 +73,7 @@ class IDPub_ListView(LoginRequiredMixin, Filtered_ListView):
     model= ID_Pub
     template_name = 'dgene/idpub/idpub_list.html' 
     filterset_class=IDPub_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 ##
 class IDPub_CreateView(Base_CreateView):
@@ -95,7 +95,7 @@ class WGS_FastQC_ListView(LoginRequiredMixin, Filtered_ListView):
     model= WGS_FastQC
     template_name = 'dgene/wgs_fastqc/fastqc_list.html' 
     filterset_class=WGS_FastQC_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     #ordering = []
 
 #=================================================================================================
@@ -106,7 +106,7 @@ class WGS_CheckM_ListView(LoginRequiredMixin, Filtered_ListView):
     model= WGS_CheckM
     template_name = 'dgene/wgs_checkm/checkm_list.html' 
     filterset_class=WGS_CheckM_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     #ordering = []
 
 
@@ -119,7 +119,7 @@ class Gene_ListView(LoginRequiredMixin, Filtered_ListView):
     model= Gene
     template_name = 'dgene/gene/gene_list.html' 
     filterset_class=Gene_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
 
 ##
 class Gene_CardView(Gene_ListView):
@@ -153,5 +153,5 @@ class AMRGenotype_ListView(LoginRequiredMixin, Filtered_ListView):
     model= AMR_Genotype
     template_name = 'dgene/amrgenotype/amrgenotype_list.html' 
     filterset_class=AMRGenotype_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     ordering = ['orgbatch_id']

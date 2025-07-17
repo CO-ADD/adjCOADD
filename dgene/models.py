@@ -22,7 +22,7 @@ from dscreen.models import Screen_Run
 #=================================================================================================
 class Genome_Sequence(AuditModel):
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         #'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
         'seq_id':"Seq ID", 
         'seq_type':'Type',  
@@ -141,7 +141,7 @@ class ID_Pub(AuditModel):
      Identification from Public or Collaborative sources    
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
+    LIST_VIEW_FIELDS   = {
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "id_type":"ID Type",
@@ -212,7 +212,7 @@ class ID_Sequence(AuditModel):
      Identification from Whole Genome Sequencing using Kraken, MLST and GTDBTK   
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
+    LIST_VIEW_FIELDS   = {
         "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
@@ -294,7 +294,7 @@ class WGS_FastQC(AuditModel):
      FastQC outcome from Trimming - Import only   
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
+    LIST_VIEW_FIELDS   = {
         "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq":"Seq",
@@ -376,7 +376,7 @@ class WGS_CheckM(AuditModel):
      CheckM outcome of Assemblies- Import only   
     """
 #=================================================================================================
-    HEADER_FIELDS   = {
+    LIST_VIEW_FIELDS   = {
         "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
@@ -482,7 +482,7 @@ class Gene(AuditModel):
     List of Genes
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
         "gene_id":"Gene ID",
         "gene_code":"Gene Code",
@@ -603,7 +603,7 @@ class AMR_Genotype(AuditModel):
     """
 #=================================================================================================
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",

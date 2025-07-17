@@ -3,17 +3,21 @@
 <h2 class="accordion-header" id="headingOne">
   <button class="collapsed accordion-button mt-0" style="max-height: fit-content" type="button" data-bs-toggle="collapse"
     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-    <h2 class="fs-5">
-      <b>{{title}}</b>
-    </h2>
+    <h5 class="fs-4 my-0"><b>{{title}}</b>
+    </h5>
   </button>
 </h2>
+
 <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
   <!-- <div class="d-flex align-items-baseline"> -->
-  {% include 'datatable/base/pagination.html'%}
-  <!--  -->
+
+  <!-- Pagination buttons -->
+  {% include 'grid/base/pagination.html'%}
+
+  <!-- Select all buttons -->
   {% include 'datatable/base/btn_select_all.html' %}
 
+  <!-- Export buttons buttons -->
   {% include 'datatable/base/datatable_download.html' %}
 
 </div>

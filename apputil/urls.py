@@ -10,9 +10,6 @@ from apputil.views import (index, userprofile,
 
 from apputil.utils.flex_pivottable import flex_pivottable
 
-
-
-
 urlpatterns = [
     path('index/', index, name="index"),
     path('user_list/', AppUser_ListView.as_view(), name="userslist"),

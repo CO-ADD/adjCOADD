@@ -37,7 +37,7 @@ class Screen_Run(AuditModel):
     List of Screening runs
     """
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "run_id":{'Run ID': {'run_id':LinkList['screenrun_id']}},
         "run_type":"Run Type",
         "assay_note":"Assay",
@@ -194,7 +194,7 @@ class Assay(AuditModel):
     List of Assays
     """
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "run_id":"Run ID",
         # "run_type":"Run Type",
         # "assay_note":"Assay",
@@ -283,7 +283,7 @@ class AssayData_MIC(CmpBatchList_Base):
     from dplate.models import TestPlate
 #    from dorganism.models import Organism, Organism_Batch
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "run_id":"Run ID",
         # "run_type":"Run Type",
         # "assay_note":"Assay",
@@ -427,7 +427,7 @@ class AssayData_CC50(CmpBatchList_Base):
 #-------------------------------------------------------------------------------------------------
     from dplate.models import TestPlate
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "run_id":"Run ID",
     }
 
@@ -539,7 +539,7 @@ class AssayData_HC50(CmpBatchList_Base):
 #-------------------------------------------------------------------------------------------------
     from dplate.models import TestPlate
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "run_id":"Run ID",
     }
 

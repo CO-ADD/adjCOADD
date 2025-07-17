@@ -124,18 +124,21 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
+              <!-- Project / Groups / Collaborators -->
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
                   Project &raquo;
                 </a>
                 <ul class="dropdown-menu2">
-                  <a class="dropdown-item disabled" href="{% url 'project_list' %}"> Project</a>
+                  <a class="dropdown-item " href="{% url 'project_list' %}"> Project</a>
                   <a class="dropdown-item disabled" href="{% url 'taxo_card' %}" > Groups</a>
                   <a class="dropdown-item disabled" href="{% url 'org_stock_list_overview' %}"> Collaborators</a>
+                  <a class="dropdown-item " href="{% url 'organisation_list' %}"> Organisations</a>
                 </ul>
               </div>
               </li>
 
+              <!-- Screen -->
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
                   Screen &raquo;
@@ -150,6 +153,7 @@
               </div>
               </li>
 
+              <!-- Plate -->
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
                   Plate &raquo;
@@ -162,6 +166,7 @@
               </div>
               </li>
 
+              <!-- Compound -->
               <li><div class="dropdown2 d-inline-block">
                 <a class="dropdown-item" data-bs-toggle="dropdown" aria-expanded="false"> 
                   Compound &raquo;

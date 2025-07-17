@@ -42,7 +42,7 @@ class Project_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Project  
     template_name = 'dsample/project/project_list.html'
     filterset_class = Project_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Project'
     app_name = 'dsample'
     ordering=['-acreated_at']
@@ -78,6 +78,7 @@ def Project_CreateView(req):
             messages.warning(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])          
     return render(req, 'dsample/project/project_create.html', { 'form':form, }) 
+
 
 # -----------------------------------------------------------------
 @login_required
@@ -152,8 +153,8 @@ class Project_RemoveView(Base_RemoveView):
 # -----------------------------------------------------------------
 @login_required
 def Project_ReportView(req, pk):
+    print(f" [Report] Project: {req}")
     
-
     if req.method=='GET':
 
         _object=get_object_or_404(Project, project_id=pk)
@@ -172,16 +173,13 @@ def Project_ReportView(req, pk):
             print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
             
             if cReport.n_samples>0:
+                print(f" [Report] Project: {cReport.n_samples}")
                 req = HttpResponse(content_type='application/vnd.ms-excel')
                 req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+                print(f" [Report] Project: {req['Content-Disposition']}")
                 cReport.to_excel(req)
-                #return(req)
-            #else:
-            #return redirect(reverse("project_detail",kwargs={'pk':pk}))
+                print(f" [Report] Project: done {req}")
 
-    context={}
-    context["object"]=_object
-
-    return req
-
+        return(req)
+    
 # -----------------------------------------------------------------

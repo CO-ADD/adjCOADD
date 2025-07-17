@@ -43,7 +43,7 @@ class Taxonomy_ListView(LoginRequiredMixin, Filtered_ListView):
     model=Taxonomy  
     template_name = 'dorganism/taxonomy/taxonomy_list.html' 
     filterset_class=Taxonomy_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     model_name = 'Taxonomy'
     app_name = 'dorganism'
     ordering = ['org_class']
@@ -88,7 +88,7 @@ class Organism_ListView(LoginRequiredMixin, Filtered_ListView):
     model = Organism  
     template_name = 'dorganism/organism/organism_list.html'
     filterset_class = Organism_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Organism'
     app_name = 'dorganism'
     ordering=['-acreated_at']
@@ -175,7 +175,7 @@ def Organism_DetailView(request, pk):
     context["cultr_obj_count"]=context["cultr_obj"].count() if context["cultr_obj"].count()!=0 else None
     context["cultr_fields"]=Organism_Culture.get_fields() 
     if 'organism_id' in context["cultr_fields"]:
-        context["cultr_fields"].remove('organism_id')    # customize HEADER_FIELDS
+        context["cultr_fields"].remove('organism_id')    # customize LIST_VIEW_FIELDS
     
     id_data_df = get_org_identification_summary(object_.organism_id)
     context["org_id_obj_count"] = len(id_data_df)
@@ -188,12 +188,12 @@ def Organism_DetailView(request, pk):
     context["org_amr_pivtable"] = amrDict['pivot_table']
 
     # if 'Index' in context["org_id_fields"]:
-    #     context["org_id_fields"].remove('Index')    # customize HEADER_FIELDS
+    #     context["org_id_fields"].remove('Index')    # customize LIST_VIEW_FIELDS
 
 
     # context["vitekast_obj"]=SimpleLazyObject(lambda: VITEK_AST.objects.filter(organism=object_.organism_name, astatus__gte=0))
     # context["vitekast_obj_count"]=context["vitekast_obj"].count() if context["vitekast_obj"].count()!=0 else None
-    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.HEADER_FIELDS)
+    # context["vitekast_fields"]=VITEK_AST.get_fields(fields=VITEK_AST.LIST_VIEW_FIELDS)
 
     context["n_entries"] = 0
 
@@ -282,7 +282,7 @@ class OrgBatch_ListView(LoginRequiredMixin, Filtered_ListView):
     model=Organism_Batch 
     template_name = 'dorganism/orgbatch/orgbatch_list.html' 
     filterset_class=OrgBatch_Filter
-    model_fields=model.HEADER_FIELDS
+    model_fields=model.LIST_VIEW_FIELDS
     model_name = 'Organism_Batch'
     app_name = 'dorganism'
 
@@ -331,7 +331,7 @@ class OrgBatchStock_ListView(LoginRequiredMixin, Filtered_ListView):
     model = OrgBatch_Stock  
     template_name = 'dorganism/orgbatchstock/orgbatchstock_list.html'
     filterset_class = OrgBatchStock_Filter
-    model_fields = model.HEADER_FIELDS
+    model_fields = model.LIST_VIEW_FIELDS
     model_name = 'OrgBatch_Stock'
     app_name = 'dorganism'
 
@@ -542,6 +542,6 @@ def Organism_AntBio_PivotView(request, pk):
 def Organism_AMRGene_PivotView(request, pk):
     template_name = 'dorganism/pivotdata/org_amrgene.html'
     # filterset_class = OrgBatchStock_Filter
-    # model_fields = model.HEADER_FIELDS
+    # model_fields = model.LIST_VIEW_FIELDS
     # model_name = 'OrgBatch_Stock'
     app_name = 'dorganism'

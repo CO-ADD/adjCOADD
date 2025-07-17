@@ -36,7 +36,7 @@ class Taxonomy(AuditModel):
         'division':'Organism_Division',
     }
 
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'organism_name':{'Organism Name': {'urlname': LinkList['taxonomny']}},  
         'tax_rank':'Rank',
         'org_class':'Class',
@@ -103,7 +103,7 @@ class Organism(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
         'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
         'organism_name':'Organism Name',
@@ -296,7 +296,7 @@ class Organism_Batch(AuditModel):
     Organism/Isolate Batch Collection
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
         "qc_status":"QC",
@@ -424,7 +424,7 @@ class Organism_Batch(AuditModel):
 #-------------------------------------------------------------------------------------------------
 class OrgBatch_Image(AuditModel):
 #-------------------------------------------------------------------------------------------------
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         'orgbatch_id': 'OrgBatch ID',
         'image_name':'Name', 
         'image_file':'Image',  
@@ -484,7 +484,7 @@ class OrgBatch_Stock(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS={
+    LIST_VIEW_FIELDS={
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         #"orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
@@ -598,7 +598,7 @@ class Organism_Culture(AuditModel):
     
     """
 #=================================================================================================
-    HEADER_FIELDS = {
+    LIST_VIEW_FIELDS = {
         # "organism_id":"Organism ID",
         "culture_type":"Type",
         "culture_source":"Source",

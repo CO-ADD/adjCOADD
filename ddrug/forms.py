@@ -99,7 +99,7 @@ class Drug_filter(BaseStatus_Filter):
     class Meta:
         model=Drug
         fields=['Drug_Name', 'Drug_Type', 'Target', 'Drug_Class', 'Antimicro', 'Other_Name']
-        # fields=list(model.HEADER_FIELDS.keys())
+        # fields=list(model.LIST_VIEW_FIELDS.keys())
 
 
 #=================================================================================================
@@ -122,7 +122,7 @@ class VitekCard_Filter(BaseStatus_Filter):
     class Meta:
         model=VITEK_Card
         fields=['f_OrgID']
-        fields += list(model.HEADER_FIELDS.keys())
+        fields += list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['orgbatch_id.organism_id.organism_id',
                    'orgbatch_id.batch_id',
                    ]
@@ -159,7 +159,7 @@ class VitekAST_Filter(BaseStatus_Filter):
     class Meta:
         model=VITEK_AST
         fields=['f_OrgID','f_OrgBatchID','f_OrgName','f_DrugName', 'codes']
-        fields +=list(model.HEADER_FIELDS.keys())
+        fields +=list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['card_barcode.orgbatch_id.organism_id.organism_id',
                    'card_barcode.orgbatch_id.batch_id',
                    'card_barcode.orgbatch_id.organism_id.organism_name',
@@ -181,7 +181,7 @@ class VitekID_Filter(BaseStatus_Filter):
     class Meta:
         model=VITEK_ID
         fields = ['f_OrgID','f_BatchID','f_OrgName']
-        fields +=list(model.HEADER_FIELDS.keys())
+        fields +=list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['card_barcode.orgbatch_id.organism_id.organism_id',
                    'card_barcode.orgbatch_id.batch_id',
                    'card_barcode.orgbatch_id.organism_id.organism_name',
@@ -218,7 +218,7 @@ class MIC_COADDfilter(BaseStatus_Filter):
     class Meta:
         model=MIC_COADD
         fields = ['f_OrgBatchID','f_BatchID','f_OrgName','f_DrugName']
-        fields +=list(model.HEADER_FIELDS.keys())
+        fields +=list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['orgbatch_id.organism_id.organism_id',
                    'orgbatch_id.batch_id',
                    'orgbatch_id.organism_id.organism_name',
@@ -277,7 +277,7 @@ class MIC_Pubfilter(BaseStatus_Filter):
     class Meta:
         model=MIC_Pub
         fields=["f_OrgID", "f_OrgName", "f_DrugName"]
-        fields +=list(model.HEADER_FIELDS.keys())
+        fields +=list(model.LIST_VIEW_FIELDS.keys())
         exclude = ['organism_id.organism_id',
                    'organism_id.organism_name',
                    'drug_id.drug_name',
@@ -338,6 +338,6 @@ class Breakpointfilter(BaseStatus_Filter):
     class Meta:
         model=Breakpoint
         fields = ['drug_name',]
-        fields += list(model.HEADER_FIELDS.keys()) 
+        fields += list(model.LIST_VIEW_FIELDS.keys()) 
         exclude=['drug_id.drug_name']
  
