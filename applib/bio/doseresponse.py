@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 class DoseResponse():
     
+    
     #--------------------------------------------------------------
     def __init__(self, inhibition_cutoff=80, 
                  min_dilutions=6,  inhib_limit = 500, 
@@ -33,7 +34,8 @@ class DoseResponse():
         self.inhib_correct = inhib_correction 
         self.inhib_correct_limit = inhib_correct_limit
         self.ic50_dmax_cutoff = ic50_dmax_cutoff
- 
+
+
     #--------------------------------------------------------------
     # Initialise DoseRepsonse with
     #   CmpBatches - string of cmpbatches
@@ -102,6 +104,10 @@ class DoseResponse():
             self.df = None
 
         return(None)
+
+    #--------------------------------------------------------------
+    def __repr__(self):
+        return(f"{self.cmpbatch_lst} {self.n_wells} {self.n_conc}")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -521,9 +527,12 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                 djTP.make_wells_df(ListToString=True)
 
                 grpData = djTP.wells_df.groupby('cmpbatch_sets')
-                for CmpBatch,DRData in grpData:
-                    if CmpBatch:
+                for CmpBatchSet,DRData in grpData:
+                    if CmpBatchSet:
+                        # Use CmpBatch w/o SetID
+                        CmpBatch = DRData['cmpbatches'].unique()[0]
                         djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
+                        
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
                         if djDR:
                             djDR.calc_doseresponse()
@@ -532,6 +541,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                             djDR.doseresponse_to_assaydata()
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
+                            #print(repr(djDR))
 
                 if upload:
                     djTP.save()
