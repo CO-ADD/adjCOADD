@@ -24,8 +24,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 # Create your views here.
 
 from dplate.models import TestPlate
-#from dsummary.models import Summary_ScreenRun 
-from dplate.forms import TestPlate_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+from dplate.forms import TestPlate_Filter
 
 #=================================================================================================
 # TestPlates  
@@ -40,3 +39,14 @@ class TestPlate_ListView(LoginRequiredMixin, Filtered_ListView):
     model_name = 'TestPlate'
     app_name = 'dplate'
 
+#-------------------------------------------------------------------------------------------------
+def TestPlate_MapView(req,pk):
+    print(f" [Testplate] MapView {pk}  {req}")
+    
+    context = {}
+    if req.method=='GET':
+        _object=get_object_or_404(TestPlate, plate_id=pk)
+        _now = datetime.datetime.now()
+        _xls_name = f'Testplate_{pk}_{_now:%Y%m%d}.xlsx'
+        
+        return render(req,'dplate/testplate/testplate_map.html',context)

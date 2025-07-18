@@ -5,10 +5,11 @@ from django.urls import path, include, re_path
 from apputil.views import (index, userprofile, 
                            AppUser_ListView, AppUser_CreateView, AppUser_UpdateView,  AppUser_DetailView, AppUser_RemoveView, 
                            AppLog_ListView, 
-                           Dictionary_ListView, Dictionary_CreateView,updateDictionary, deleteDictionary,
+                           Dictionary_ListView, Dictionary_CreateView,updateDictionary, removeDictionary,
                             DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView)
 
 from apputil.utils.flex_pivottable import flex_pivottable
+from apputil.test_app import Test_View
 
 urlpatterns = [
     path('index/', index, name="index"),
@@ -23,7 +24,7 @@ urlpatterns = [
     path('dict/', Dictionary_ListView.as_view(), name='dict_view' ),
     path('dict_create/', Dictionary_CreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
-    path('dict_delete/', deleteDictionary, name='dict_delete' ),
+    path('dict_delete/', removeDictionary, name='dict_delete' ),
  
     # path('img/<str:pk>', CreateimageView.as_view(), name="addimg"),
     path('doc/<str:pk>', CreatedocumentView.as_view(), name="adddoc"),
@@ -34,4 +35,6 @@ urlpatterns = [
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
     path('pivotedtableview/<str:app_model>',flex_pivottable, name="pivoted-table"),
+    
+    path('test',Test_View,name='test-view'),
 ]

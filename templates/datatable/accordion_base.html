@@ -1,0 +1,31 @@
+
+<div class="accordion bg-transparent w-100" id="{{obj_title}}">
+    <div class="accordion-item">
+    <h2 class="accordion-header" id="heading_02">
+        <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+            data-bs-target="#collapseRunPlates" aria-expanded="true" aria-controls="collapse_02">
+        <h5 class="fs-6 my-0">
+            {{obj_title}}
+        </h5>
+
+        <!-- Entrie badge -->
+        {% if obj_count %}
+            <span class="badge text-light bg-info m-0 ms-1 p-1"> {{obj_count}} entries</span>
+        {% else %}
+            <span class="badge text-light bg-secondary m-0 ms-2 p-1"> 0 entries</span>
+        {% endif %}
+
+        </button>
+    </h2>
+    <div id="collapseRunPlates" class="accordion-collapse collapse show bg-transparent" 
+        aria-labelledby="heading_02"
+        data-bs-parent="#{{obj_title}}">
+        <div class="accordion-body">
+        <div class="table-responsive">
+            <!-- prettier-ignore -->
+            {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields %}
+        </div>
+        </div>
+    </div>
+    </div>
+</div>

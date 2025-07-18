@@ -127,7 +127,7 @@ class AuditModel(models.Model):
     """
 #-------------------------------------------------------------------------------------------------
     # object status -> indicated by number in database:
-    DELETED   = -9
+    #DELETED   = -9
     REMOVED   = -9
     INVALID   = -1
     UNDEFINED =  0
@@ -403,28 +403,31 @@ class AuditModel(models.Model):
         return(cls_strID)    
 
     #------------------------------------------------
-    # def remove(self,**kwargs):
-    #     appuser=kwargs.get("user")
-    #     kwargs.pop("user",None)
-    #     if appuser is None:
-    #         appuser = ApplicationUser.objects.get(name=self.OWNER)
-
-    #     self.astatus = self.REMOVED
-    #     self.aremoved_id = appuser
-    #     self.aremoved_at = timezone.now()
-    #     super(AuditModel,self).save(**kwargs)
-
-    #------------------------------------------------
-    def delete(self,**kwargs):
+    def remove(self,**kwargs):
+        #
+        # 
+        #
         appuser=kwargs.get("user")
         kwargs.pop("user",None)
         if appuser is None:
             appuser = ApplicationUser.objects.get(name=self.OWNER)
 
-        self.astatus = self.DELETED
-        self.adeleted_id = appuser
-        self.adeleted_at = timezone.now()
+        self.astatus = self.REMOVED
+        self.aremoved_id = appuser
+        self.aremoved_at = timezone.now()
         super(AuditModel,self).save(**kwargs)
+
+    #------------------------------------------------
+    # def delete(self,**kwargs):
+    #     appuser=kwargs.get("user")
+    #     kwargs.pop("user",None)
+    #     if appuser is None:
+    #         appuser = ApplicationUser.objects.get(name=self.OWNER)
+
+    #     self.astatus = self.DELETED
+    #     self.adeleted_id = appuser
+    #     self.adeleted_at = timezone.now()
+    #     super(AuditModel,self).save(**kwargs)
 
     #------------------------------------------------
     def save(self, *args, **kwargs):

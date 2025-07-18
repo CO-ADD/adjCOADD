@@ -240,7 +240,7 @@ def updateDictionary(req):
 
 #-------------------------------------------------------------------------------------------------
 @user_passes_test(lambda u: u.has_permission('Admin'), redirect_field_name=None)
-def deleteDictionary(req):
+def removeDictionary(req):
     kwargs = {}
     kwargs['user'] = req.user
     if req.headers.get('x-requested-with') == 'XMLHttpRequest' and req.method == "POST":
@@ -248,7 +248,7 @@ def deleteDictionary(req):
         object_ = get_object_or_404(Dictionary, dict_value=dict_value)
         try:
             if object_:
-                object_.delete(**kwargs)
+                object_.remove(**kwargs)
                 return JsonResponse({"success": 'data deleted'})
         except Exception as err:
             return JsonResponse({"error": err})
@@ -340,7 +340,7 @@ def deleteImage(req, pk):
     kwargs['user']=req.user
     object_=get_object_or_404(Image, id=pk)
     try:
-        object_.delete(**kwargs)
+        object_.remove(**kwargs)
         print('deleted')
     except Exception as err:
         print(err)

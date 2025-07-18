@@ -18,7 +18,6 @@ from applib.django.base.filters import BaseStatus_Filter
 #dSample
 from dplate.models import  TestPlate
 
-
 #=================================================================================================
 # TestPlate
 #=================================================================================================

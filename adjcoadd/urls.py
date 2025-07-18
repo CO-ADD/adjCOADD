@@ -34,6 +34,7 @@ urlpatterns = [
     path('dgene/', include('dgene.urls')),
     path('dcell/', include('dcell.urls')),
     #========================CastDB model views URL====View, Create, Updata, Delete================================
+    path('dplate/',  include('dplate.urls')),
     path('dscreen/', include('dscreen.urls')),
     path('dsample/', include('dsample.urls')),
     path('dcollab/', include('dcollab.urls')),

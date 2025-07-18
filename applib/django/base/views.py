@@ -151,8 +151,8 @@ class Base_RemoveView(SuperUserRequiredMixin, Base_UpdateView):
         with transaction.atomic(using=self.transaction_use):
             kwargs={'user': request.user}
             try:
-                object_.delete(**kwargs)
-                ApplicationLog.add('Delete','log_proc','Warning',request.user, str(object_.pk), 'switch entry_astatus -9','Completed')            
+                object_.remove(**kwargs)
+                ApplicationLog.add('Removed','log_proc','Warning',request.user, str(object_.pk), 'switch entry_astatus -9','Completed')            
             except Exception as err:
                 messages.error(request, err)
 
