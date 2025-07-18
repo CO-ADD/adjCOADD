@@ -79,7 +79,7 @@
                     <div class="accordion-body">
                     <div class="table-responsive">
                         <!-- prettier-ignore -->
-                        {% include 'datatable/base/datatable_subtable.html' with table_id='datatable_testplate' html_name='dscreen/plate/testplate_subrow.html' objects=testplate_obj data_fields=testplate_fields %}
+                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields %}
                     </div>
                     </div>
                 </div>
@@ -113,6 +113,7 @@
             </div>
 
         {% endif %}
+
         <!-- Projects -->
         <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
             <div class="accordion-item">
@@ -122,16 +123,17 @@
                 <h5 class="fs-6 my-0">
                     Projects
                 </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=project_count %}
                 <!-- prettier-ignore -->
                 </button>
             </h2>
-            <div id="collapseRunProjects" class="accordion-collapse collapse bg-transparent" aria-labelledby="heading_04"
+            <div id="collapseRunProjects" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
                 data-bs-parent="#screenrun-projects">
                 <div class="accordion-body">
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    Project Table
+                    {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_projects' objects=project_objs data_fields=project_fields %}
+                    
                 </div>
                 </div>
             </div>

@@ -1,0 +1,51 @@
+<!-- for is_dict -->
+{% load custom_filters %}
+
+<div class="d-flex flex-column w-100">
+
+    <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+      {% include 'grid/base/pagination.html'%}
+    </div>
+
+  <table id="{{table_id}}" class="table-bg" style="width: 100%">
+    <thead>
+      <tr>
+        <th class="text-center" style="width: 0%" ><i class="bi bi-app-indicator text-body "></i></th>
+
+        {% for field in data_fields %}
+          {% if field|is_dict %}
+            <!-- If field isdict - use field.key -->
+            {% for key in field.keys %}
+              <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
+            {% endfor %}
+          {% else %}
+            <th>{{field}}</th>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in objects %}
+        <tr>
+          {% if data_url %}
+            <td> data_url </td>
+          {% else %}
+            <td> </td>
+          {% endif %}
+          {% for item in object.get_values %}
+            <td>
+              {% if item|is_dict %}                   
+                  <!-- If item isdict - display item.key and use  item.value as link -->
+                  {% for key, value in item.items %}      
+                  <a href="{{value}}" target="_blank">{{ key }}</a>
+                  {% endfor %}
+              {% else %}
+                {{item}}
+              {% endif %}
+            </td>
+          {% endfor%}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

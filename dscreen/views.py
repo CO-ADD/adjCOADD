@@ -29,9 +29,9 @@ from dscreen.models import Screen_Run
 #from dsummary.models import Summary_ScreenRun 
 from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
-from dscreen.utils.summary import update_screenrun_summary
+from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
 from dsample.models import Project
-from dplate.models import MasterPlate, TestPlate
+from dplate.models import MasterPlate, TestPlate, TestWell
 from applib.report.screen_data import Report_Screening
 
 #=================================================================================================
@@ -111,10 +111,20 @@ def ScreenRun_DetailView(req, pk):
     if str(_object.run_type) in ['HCR','PSR']:
         context["process"] = {"type":"Screening"}
         
+        # Paginated and filtered list
+        paginate_by = 50
         _testplates = TestPlate.objects.filter(run_id=_object, )
-        context["testplate_obj"] = _testplates
+        context["testplate_objs"] = _testplates
         context["testplate_count"] = _testplates.count()
         context["testplate_fields"]=TestPlate.get_fields()
+        
+        # Single page list
+        _prj_dict = get_projects_screenrun(_object)
+        _projects = [p['project_id'] for p in _prj_dict]
+        _projects = Project.objects.filter(project_id__in=_projects, )
+        context["project_objs"] = _projects
+        context["project_count"] = _projects.count()
+        context["project_fields"]= Project.get_fields()
         
     elif str(_object.run_type) in ['SEQ']:
         context["process"] = {"type":"Sequencing"}
