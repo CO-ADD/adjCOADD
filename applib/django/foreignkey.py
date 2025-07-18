@@ -33,13 +33,41 @@ def get_Models_byForeignKey(fkModel):
 
 
 #-----------------------------------------------------------------------------------
-def rename_ForeignKey(fkModel, oldPK, newPK, use_temp_pk=False):
+def rename_ForeignKey(fkModel, oldPK, newPK, use_temp_pk=False, upload=False, remove=True):
 #-----------------------------------------------------------------------------------
-    print(f" {oldPK} -> {newPK}")
+    print(f" [rename_ForeignKey] {fkModel.__name__} {oldPK} -> {newPK} [Upload:{upload} Remove:{remove}]")
     djOld = fkModel.get(oldPK)
+    djNew = fkModel.get(newPK)
+    
     if djOld:
-        fkmodel_lst = get_Models_byForeignKey(fkModel)
-        for fk in fkmodel_lst:
-            filter_params = {fk['Field']: oldPK}
-            qryFK = fk['Model'].objects.filter(**filter_params)
-            print(f" {fk['Model']} {qryFK.count()}")
+        if djNew is None:
+            # Get list of Models with fkModel as ForeignKey
+            fkModel_Lst = get_Models_byForeignKey(fkModel)
+            
+            # Create NewPK
+            djNew = fkModel.get(oldPK)
+            djNew.pk = newPK
+            if upload:
+                djNew.save()
+                
+            for fkModel in fkModel_Lst:
+                # For each fkModel get objects with foreignkey = oldPK
+                filter_params = {fkModel['Field']: oldPK}
+                qryFK = fkModel['Model'].objects.filter(**filter_params)
+                print(f" [rename_ForeignKey] { fkModel['Model'].__name__} -> {qryFK.count()} ") 
+                for fkObj in qryFK:
+                    setattr(fkObj,fkModel['Field'],djNew)
+                    if upload:
+                        fkObj.save()
+                        
+            # Remove/Delete OldPK
+            if upload:
+                if remove:
+                    djOld.remove()
+                else:
+                    djOld.delete()
+                    
+        else:
+            print(f' [rename_ForeignKey] Error: NewPK {newPK} Exists')
+    else:
+        print(f' [rename_ForeignKey] Error: OldPK {oldPK} Dose NOT Exists')
