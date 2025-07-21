@@ -32,7 +32,6 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-
 def get_oraCollaborator(test=0):
     from oraCastDB.oraCastDB import openCastDB
 

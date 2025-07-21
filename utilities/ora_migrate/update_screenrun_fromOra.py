@@ -32,8 +32,6 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-
-
 def get_oraScreenRun():
     from oraCastDB.oraCastDB import openCastDB
 
@@ -69,6 +67,7 @@ def get_oraScreenRun():
             run_type run_project, screen_type, run_status, 
             project_lst, stock_format, cpoz_id, pub_status
      From ScreenRun
+     Where is_migrated < 0
     """
     CastDB = openCastDB()
     logger.info(f"[ScreenRuns] ... ")
@@ -125,7 +124,8 @@ def main(prgArgs,djDir):
 
         outNumbers = {'Proc':0,'New':0,'Upload':0}
         outDict = []    
-        for idx,row in tqdm(runDF.iterrows(), total=runDF.shape[0]):
+#        for idx,row in tqdm(runDF.iterrows(), total=runDF.shape[0]):
+        for idx,row in runDF.iterrows():
             new_entry = False
             outNumbers['Proc'] += 1
             
@@ -146,6 +146,7 @@ def main(prgArgs,djDir):
                 row['Issue'] = f"Exists"
 
             
+            print(f"[oraScreenRun] Ora {row['run_id']} --> {djRun} [NEW: {new_entry}]")
             # set_dictFields(djPrj,row,cpyFields)
             # set_model_arrayfields(djPrj,row,arrayFields)
             # set_model_dicts(djPrj,row,dictFields)

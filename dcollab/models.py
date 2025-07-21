@@ -98,8 +98,18 @@ class Collab_User(AuditModel):
     List of Collaborative Groups
     """
 #=================================================================================================
-    LIST_VIEW_FIELDS = {}
-    DICTIONARY_FIELDS = {}
+    LIST_VIEW_FIELDS = {
+        'user_id':'ID',
+        'title':'Title',
+        'first_name':'First Name',
+        'last_name':'Last Name',
+        'email1':'E-Mail',
+        'organisation_id.organisation_name':'Organisation',
+        'department':'Department',
+        'country.name':'Country',
+    }
+    DICTIONARY_FIELDS = {
+    }
 
     ID_SEQUENCE = 'Collab_User'
     ID_PREFIX = 'CUSR'
@@ -107,12 +117,12 @@ class Collab_User(AuditModel):
 
     user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "User ID")
     title = models.CharField(max_length=15, blank=True, verbose_name = "Title")
-    first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Code")
-    last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Code")
+    first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Name")
+    last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Name")
     position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
 
-    email1 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 1")
-    email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2")
+    email1 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
+    email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2nd")
     active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
 
     phone = models.CharField(max_length=50, blank=True, verbose_name = "Phone")
@@ -176,7 +186,20 @@ class Collab_Group(AuditModel):
     List of Collaborative Groups
     """
 #=================================================================================================
-    LIST_VIEW_FIELDS = {}
+    LIST_VIEW_FIELDS = {
+        'group_id':'ID',
+        'group_code':'Code',
+        # 'first_name':'First Name',
+        # 'last_name':'Last Name',
+        #'email':'E-Mail',
+        'organisation_id.organisation_name':'Organisation',
+        'department':'Department',
+        'city':'City',
+        'country.name':'Country',
+        'mta_status':'MTA Status',
+        'mta_document':'MTA Document'
+
+    }
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
     }

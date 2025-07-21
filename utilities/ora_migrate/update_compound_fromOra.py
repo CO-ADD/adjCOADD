@@ -239,7 +239,6 @@ if __name__ == "__main__":
     print("Running : ",sys.argv)
     print("-------------------------------------------------------------------")
 
-
     # ArgParser -------------------------------------------------------------
     prgParser = configargparse.ArgumentParser(prog='upload_Django_Data', 
                                 description="Uploading data to adjCOADD from Oracle/Excel/CSV")

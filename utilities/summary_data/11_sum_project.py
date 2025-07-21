@@ -58,11 +58,11 @@ def main(prgArgs,djDir):
     if prgArgs.projectid:
         cReport.qry_by_ProjectID(prgArgs.projectid)
         if cReport.n_compounds>0:
-            cReport.get_dataframe(SC_Only=prgArgs.sc_only, DR_Only=prgArgs.dr_only)
+            cReport.get_dataframe()
             cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
             cReport.get_assay_info()
             cReport.get_testplate_info(WithStats=False,WithRunID=True)
-            cReport.gen_pivot_tables()
+            cReport.gen_pivot_tables(PivRows=['sample_class','sample_code','sample_id'])
             # cAnalysis.add_Vitek_AST()
 
             cReport.to_excel(prgArgs.excelfile)

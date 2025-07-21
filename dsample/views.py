@@ -168,7 +168,7 @@ def Project_ReportView(req, pk):
             cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
             cReport.get_assay_info()
             cReport.get_testplate_info(WithStats=False,WithRunID=True)
-            cReport.gen_pivot_tables()
+            cReport.gen_pivot_tables(PivRows=['sample_class','sample_code','sample_id'])
 
             print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
             

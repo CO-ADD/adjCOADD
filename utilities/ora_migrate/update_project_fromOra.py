@@ -56,8 +56,6 @@ def set_logger(logName='Log',logDir='log',logFile=False):
     return logging.getLogger(__name__)
 #-----------------------------------------------------------------------------
 
-
-
 def get_oraProject():
     from oraCastDB.oraCastDB import openCastDB
 
@@ -96,6 +94,7 @@ def get_oraProject():
             provided_comment, provided_container,
             pub_date, pub_status
      From Project
+     Where is_migrated < 0
     -- Where Organism_Name like 'Klebsiella%'
     """
     CastDB = openCastDB()
@@ -159,7 +158,8 @@ def main(prgArgs,djDir):
 
         outNumbers = {'Proc':0,'New':0,'Upload':0}
         outDict = []    
-        for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
+#        for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
+        for idx,row in prjDF.iterrows():
             new_entry = False
             outNumbers['Proc'] += 1
             cvPrj = Convert_ProjectID.get(row['ora_project_id'])
@@ -178,6 +178,7 @@ def main(prgArgs,djDir):
                 else:
                     row['Issue'] = f"Exists"
 
+                print(f"[oraProject] Ora {row['ora_project_id']} --> {cvPrj} [NEW: {new_entry}]")
                 set_model_fields(djPrj,row,cpyFields)
                 set_model_arrayfields(djPrj,row,arrayFields)
                 set_model_dicts(djPrj,row,dictFields)

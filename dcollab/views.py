@@ -28,7 +28,10 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 # from adjcoadd.constants import *
 
 from dcollab.models import Organisation, Collab_Group, Collab_User
-from dcollab.forms import Organisation_Filter, Organisation_CreateForm, Organisation_UpdateForm
+from dcollab.forms import (Organisation_Filter, Organisation_CreateForm, Organisation_UpdateForm,
+                        CollabGroup_Filter,
+                        CollabUser_Filter
+                        )
 # from dscreen.models import Screen_Run
 # from dplate.models import MasterPlate, TestPlate
 # from applib.report.screen_data import Report_Screening
@@ -87,3 +90,94 @@ class Organisation_UpdateView(Htmx_UpdateView):
     template_htmx = "dcollab/organisation/organisation_update_htmx.html"
     model = Organisation
 
+#=================================================================================================
+# Collaborator Group
+#=================================================================================================
+class CollabGroup_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Collab_Group  
+    template_name = 'dcollab/collabgroup/collabgroup_list.html'
+    filterset_class = CollabGroup_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Collab_Group'
+    app_name = 'dcollab'
+    ordering=['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['base_template'] = 'coadd_base.html'
+        return context
+
+# -----------------------------------------------------------------
+@login_required
+def CollabGroup_CreateView(req):
+    '''
+    View to Create new Organisation foreignkey: Dictionary. 
+    '''
+    print('CollabGroup_CreateView')  
+    kwargs={}
+    kwargs['user']=req.user
+    form=CollabGroup_CreateForm()
+    if req.method=='POST':
+        form=CollabGroup_CreateForm(req.POST) 
+        if form.is_valid():
+            print('CollabGroup_CreateView Valid')
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Collab Group','Completed')
+                    return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            messages.warning(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])          
+    return render(req, 'dcollab/collabgroup/collabgroup_create.html', { 'form':form, }) 
+
+#=================================================================================================
+# Collaborator User
+#=================================================================================================
+class CollabUser_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Collab_User 
+    template_name = 'dcollab/collabuser/collabuser_list.html'
+    filterset_class = CollabUser_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Collab_User'
+    app_name = 'dcollab'
+    ordering=['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['base_template'] = 'coadd_base.html'
+        return context
+
+# -----------------------------------------------------------------
+@login_required
+def CollabUser_CreateView(req):
+    '''
+    View to Create new Organisation foreignkey: Dictionary. 
+    '''
+    print('CollabGroup_CreateView')  
+    kwargs={}
+    kwargs['user']=req.user
+    form=CollabUser_CreateForm()
+    if req.method=='POST':
+        form=CollabUser_CreateForm(req.POST) 
+        if form.is_valid():
+            print('CollabUser_CreateView Valid')
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance=form.save(commit=False) 
+                    instance.save(**kwargs)
+                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Collab User','Completed')
+                    return redirect(req.META['HTTP_REFERER'])
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    return redirect(req.META['HTTP_REFERER'])                
+        else:
+            messages.warning(req, form.errors)
+            return redirect(req.META['HTTP_REFERER'])          
+    return render(req, 'dcollab/collabuser/collabuser_create.html', { 'form':form, }) 

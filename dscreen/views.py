@@ -205,7 +205,7 @@ def ScreenRun_ReportView(req, pk):
         #cReport.add_vitek_ast()
         #cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
 
-        cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'])
+        cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'], PivRows=['sample_class','sample_code','sample_id'])
 
         if cReport.n_samples>0:
             req = HttpResponse(content_type='application/vnd.ms-excel')
