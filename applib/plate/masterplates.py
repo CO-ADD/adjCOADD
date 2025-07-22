@@ -89,8 +89,8 @@ def read_barcode_csv(csvFile, add_current_location=True, **kwargs):
 
                 if ((s['CURRENT_PLATE_ID'] == s['PLATE_ID']) and (s['CURRENT_WELL_ID'] == s['WELL_ID'])):
                     s['ACTION'] = 'SAME'
-                # elif (s['CURRENT_PLATE_ID'] == s['PLATE_ID']):
-                #     s['ACTION'] = 'SWAP'
+                elif (s['CURRENT_PLATE_ID'] == s['PLATE_ID']):
+                    s['ACTION'] = 'SWAP'
                 else:
                     s['ACTION'] = 'MOVE'
             else:
@@ -125,6 +125,17 @@ def get_dummy_rack(RackID='MP_DUMMY', PlateSize=96, LabewareID='FLUIDX_10mL',upl
 
 # --------------------------------------------------------------------------------
 def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0, debug_step=0):
+# --------------------------------------------------------------------------------
+    RACK_SIZE = 96
+    RACK_TYPE = 'Storage'
+
+    dfBC = read_barcode_csv(csvFile)
+
+    DummyRack = get_dummy_rack(upload=upload)
+    DummyRackID = str(DummyRack.plate_id)
+
+# --------------------------------------------------------------------------------
+def x_update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0, debug_step=0):
 # --------------------------------------------------------------------------------
     RACK_SIZE = 96
     RACK_TYPE = 'Storage'
