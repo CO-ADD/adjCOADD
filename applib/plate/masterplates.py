@@ -124,7 +124,7 @@ def get_dummy_rack(RackID='MP_DUMMY', PlateSize=96, LabewareID='FLUIDX_10mL',upl
         return(_MP)
 
 # --------------------------------------------------------------------------------
-def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0):
+def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0, debug_step=0):
 # --------------------------------------------------------------------------------
     RACK_SIZE = 96
     RACK_TYPE = 'Storage'
@@ -205,10 +205,12 @@ def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, v
                 print(f" [{row['ACTION']}] --> [{row['PLATE_ID']}:{row['WELL_ID']}]")
 
             _tube_bc = Racks[row['PLATE_ID']].get_well(row['WELL_ID'])
+
             if _tube_bc.barcode:
                 print(f" ERROR [{row['PLATE_ID']}:{row['WELL_ID']}] has existing barcode {_tube_bc.barcode}")
             if _tube_bc.n_cmpbatches > 0:
-                print(f" ERROR [{row['PLATE_ID']}:{row['WELL_ID']}] has existing compounds {_tube_bc.cmpbatch_id}")               
+                print(f" ERROR [{row['PLATE_ID']}:{row['WELL_ID']}] has existing compounds {_tube_bc.cmpbatch_id}")  
+                             
             _tube_bc.plate_id = DummyRack
             _tube_bc.barcode = None
 
@@ -216,13 +218,14 @@ def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, v
                 _tube_bc.save()
 
     # Move Dummy Tubes to Target
-    DummyRack = MasterPlate.get(DummyRackID)
-    if verbose>0:
-        print(f" [Save] {TargetRackID}")
-    for w in DummyRack.wells:
-        DummyRack.wells[w].plate_id = Racks[TargetRackID]
-        if upload:
-            DummyRack.wells[w].save()
+    if debug_step > 1:  
+        DummyRack = MasterPlate.get(DummyRackID)
+        if verbose>0:   
+            print(f" [Save] {TargetRackID}")
+        for w in DummyRack.wells:
+            DummyRack.wells[w].plate_id = Racks[TargetRackID]
+            if upload:
+                DummyRack.wells[w].save()
 
 
 
