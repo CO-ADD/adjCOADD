@@ -98,7 +98,7 @@ class Plate(AuditModel):
 
     #WELL_CLASS = Well
     
-    PLATE_SIZES = {24:(4,6), 48:(6,8), 96:(8,12), 384:(16,24), 1536:(32,48)}
+    PLATE_SIZES = {24:(4,6), 48:(6,8), 96:(8,12), 384:(16,24), 1536:(32,48), 400:(20,20)}
     ROW_LABELS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
                  'Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF']
     MAP_POSITIONS = {'wellID':0,'pos2D':1,'pos1D':2}
@@ -571,6 +571,7 @@ class TestPlate(Plate):
 
     #--------------------------------------------------------------
     def get_wells(self, fill_missing=True) -> int:
+        
         # Create None Wells
         self.init_wells(WellModel=None, PlateInstance=None)
 
