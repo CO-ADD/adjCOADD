@@ -72,6 +72,23 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
     return(lstPl)
 
 # --------------------------------------------------------------------------------
+def get_barcode_storage(Storage_ID="ORPHAN_BARCODES", PlateSize=400):
+# --------------------------------------------------------------------------------
+    RACK_TYPE = 'Storage'
+    _storage_id = f"{Storage_ID}_{PlateSize}"
+    if MasterPlate.exists(_storage_id):
+        return(MasterPlate.get(_storage_id))
+    else:
+        _MP = MasterPlate().new(_storage_id,PlateSize,RACK_TYPE, WellData=False)
+        if upload:
+            _MP.set_defaults_model()
+            _MP.save()
+    
+
+
+
+    return(StorageRack,BarcodeLoc)
+# --------------------------------------------------------------------------------
 def read_barcode_csv(csvFile, add_current_location=True, **kwargs):
 # --------------------------------------------------------------------------------
 
@@ -107,10 +124,10 @@ def read_barcode_csv(csvFile, add_current_location=True, **kwargs):
 
 
 # --------------------------------------------------------------------------------
-def get_dummy_rack(RackID='MP_DUMMY', PlateSize=96, LabewareID='FLUIDX_10mL',upload=False):
+def get_dummy_rack(DummyID='MP_DUMMY_MOVE', PlateSize=96, LabewareID='FLUIDX_10mL',upload=False):
 # --------------------------------------------------------------------------------
     RACK_TYPE = 'Storage'
-    _plate_id = f"{RackID}_{PlateSize}"
+    _plate_id = f"{DummyID}_{PlateSize}"
     if MasterPlate.exists(_plate_id):
         return(MasterPlate.get(_plate_id))
     else:
@@ -123,19 +140,81 @@ def get_dummy_rack(RackID='MP_DUMMY', PlateSize=96, LabewareID='FLUIDX_10mL',upl
         return(_MP)
 
 # --------------------------------------------------------------------------------
+def move_rack(RackID,DummyID='MP_DUMMY_COPY', PlateSize=96, LabewareID='FLUIDX_10mL',upload=False):
+# --------------------------------------------------------------------------------
+    RACK_TYPE = 'Storage'
+    _plate_id = f"{DummyID}_{PlateSize}"
+    
+
+# --------------------------------------------------------------------------------
 def update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0, debug_step=0):
 # --------------------------------------------------------------------------------
     RACK_SIZE = 96
     RACK_TYPE = 'Storage'
 
-    dfBC = read_barcode_csv(csvFile)
 
     DummyRack = get_dummy_rack(upload=upload)
     DummyRackID = str(DummyRack.plate_id)
 
+    dfBC = read_barcode_csv(csvFile)
+
+    # Get all Target Rack ----------------------------------------
+    TargetRackID = dfBC['PLATE_ID'].unique()[0]
+    if MasterPlate.exists(TargetRackID):
+        Racks = {TargetRackID:MasterPlate.get(TargetRackID)}
+        target_is_empty = False
+    else:
+        Racks = {TargetRackID:MasterPlate().new(TargetRackID,RACK_SIZE,RACK_TYPE, WellData=True)}
+        Racks[TargetRackID].labware_id = Labware.get(LabewareID)
+        target_is_empty = True
+        if upload:
+            Racks[TargetRackID].save()
+
+    # Get all Source Racks ----------------------------------------
+    RackIDs = dfBC['CURRENT_PLATE_ID'].unique()
+    for _rackid in RackIDs:
+        if _rackid != '-' and _rackid not in Racks:
+           Racks[_rackid] = MasterPlate.get(_rackid) 
+
+    # Get Action values
+    Actions = dfBC['ACTION'].unique()
+
+    # Move Existing Barcodes to DummyRack
+    for idx,row in dfBC.iterrows():
+        if (row['ACTION'] in  ['SAME','SWAP']):
+            if verbose>0:
+                print(f" [{row['ACTION']}] --> [{row['PLATE_ID']}:{row['WELL_ID']}]")
+
+            _tube_bc = Racks[row['PLATE_ID']].get_well(row['WELL_ID'])
+            _tube_bc.plate_id = DummyRack
+
+            if upload:
+                _tube_bc.save()
+
+        if (row['ACTION'] in  ['MOVE']):
+            if verbose>0:
+                print(f" [{row['ACTION']}] {row['BARCODE']} [{row['CURRENT_PLATE_ID']}:{row['CURRENT_WELL_ID']}] --> [{row['PLATE_ID']}:{row['WELL_ID']}]")
+
+            # Move Source Barcodes to DUMMY
+            _tube_bc = Racks[row['CURRENT_PLATE_ID']].get_well(row['CURRENT_WELL_ID'])
+            _tube_bc.prev_plate_id = str(Racks[row['CURRENT_PLATE_ID']].plate_id)  
+            _tube_bc.prev_well_id = row['CURRENT_WELL_ID']  
+            _tube_bc.plate_id = DummyRack 
+            _tube_bc.well_id = row['WELL_ID']  
+            if upload:
+                _tube_bc.save()
+
+            # Move Destination Tubes to fill Source Racks, unless same Plate
+            if row['PLATE_ID'] != row['CURRENT_PLATE_ID']:
+                _tube_mv = Racks[row['PLATE_ID']].get_well(row['WELL_ID'])
+                _tube_mv.plate_id = Racks[row['CURRENT_PLATE_ID']] 
+                _tube_mv.well_id = row['CURRENT_WELL_ID']
+                if upload:
+                    _tube_mv.save()
+        
 # --------------------------------------------------------------------------------
 def x_update_barcode_location(csvFile, LabewareID = 'FLUIDX_10mL', upload=False, verbose=0, debug_step=0):
-# --------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------- 
     RACK_SIZE = 96
     RACK_TYPE = 'Storage'
 
