@@ -71,7 +71,6 @@ def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None
 
     return(lstPl)
 
-
 # --------------------------------------------------------------------------------
 def read_barcode_csv(csvFile, add_current_location=True, **kwargs):
 # --------------------------------------------------------------------------------
