@@ -103,7 +103,7 @@ class Collab_User(AuditModel):
         'title':'Title',
         'first_name':'First Name',
         'last_name':'Last Name',
-        'email1':'E-Mail',
+        'email':'EMail',
         'organisation_id.organisation_name':'Organisation',
         'department':'Department',
         'country.name':'Country',
@@ -121,7 +121,7 @@ class Collab_User(AuditModel):
     last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Name")
     position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
 
-    email1 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
+    email = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
     email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2nd")
     active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
 
@@ -149,6 +149,11 @@ class Collab_User(AuditModel):
     class Meta:
         app_label = 'dcollab'
         db_table = 'collab_user'
+        indexes = [
+            models.Index(name="cuser_name_idx",fields=['first_name','last_name']),
+            models.Index(name="cuser_email_idx",fields=['email']),
+        ]
+
 
     #------------------------------------------------
     def __repr__(self) -> str:
@@ -162,7 +167,7 @@ class Collab_User(AuditModel):
             if ID is not None:
                 retInstance = cls.objects.get(user_id=ID)
             elif EMail is not None:
-                retInstance = cls.objects.get(email1=EMail)
+                retInstance = cls.objects.get(email=EMail)
             elif LastName is not None:
                 retInstance = cls.objects.get(first_name=FirstName, last_name=LastName)
         except:
@@ -210,6 +215,9 @@ class Collab_Group(AuditModel):
 
     group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
     group_code = models.CharField(max_length=50, unique=True, verbose_name = "Group Code")
+
+    group_members = models.ManyToManyField(Collab_User, through='Collab_Membership')
+
     organisation_id = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation ID", on_delete=models.DO_NOTHING,
         db_column="organisation_id", related_name="%(class)s_organisation_id")    
     email = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
@@ -231,6 +239,10 @@ class Collab_Group(AuditModel):
     class Meta:
         app_label = 'dcollab'
         db_table = 'collab_group'
+        indexes = [
+            models.Index(name="cgrp_code_idx",fields=['group_code']),
+            models.Index(name="cgrp_email_idx",fields=['email']),
+        ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
@@ -262,6 +274,33 @@ class Collab_Group(AuditModel):
                 super(Collab_Group, self).save(*args, **kwargs)
         else:
             super(Collab_Group, self).save(*args, **kwargs) 
+
+
+
+#=================================================================================================
+class Collab_Membership(models.Model):
+    """
+    List of Group Membership
+    """
+    MEMBERSHIP_CHOICES = [ 
+            ("LI","Lead Investigator"),
+            ("PC","Primary Contact"),
+            ("M","Member")
+        ]
+
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE)
+    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE)
+    #date_joined = models.DateField()
+    role = models.CharField(max_length=2,
+            choices=MEMBERSHIP_CHOICES,
+            default='M')
+
+    class Meta:
+        app_label = 'dcollab'
+        db_table = 'collab_membership'
+        indexes = [
+            models.Index(name="cmem_role_idx",fields=['role']),
+        ]
 
 #=================================================================================================
 class Data_Source(AuditModel):

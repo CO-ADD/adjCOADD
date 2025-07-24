@@ -143,7 +143,7 @@ def main(prgArgs,djDir):
             UserLst = [{k:v for k,v in m.items() if pd.notnull(v)} for m in CollabData["User"].to_dict(orient='records')]
             cpyFields = ['ora_user_id', 'ora_group_id', 'title', 'first_name', 'last_name',
                         'position', 'department', 'postal_address',
-                        'country', 'phone',  'email1', 'email2', 'active_email']
+                        'country', 'phone',  'email', 'email2', 'active_email']
             
             nProcessed = 0
             for user in tqdm(UserLst):
@@ -151,8 +151,8 @@ def main(prgArgs,djDir):
                 #print(stock)
 
                 newEntry = False
-                if 'email1' in user:
-                    djUser = Collab_User.get(None,user['email1'],None,None)
+                if 'email' in user:
+                    djUser = Collab_User.get(None,user['email'],None,None)
                 else:
                     djUser = Collab_User.get(None,None,user['first_name'],user['last_name'])
                 if djUser is None:

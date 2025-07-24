@@ -47,11 +47,17 @@ class Login_Form(AuthenticationForm):
 #=================================================================================================
 
 #------------------------------------------------------------------------
-Permission_Choices=[ ("Read","Read"),("Write","Write"),("Delete","Delete"), ("Admin","Admin"), ("No","No")]
+PERMISSION_CHOICES=[ 
+                    ("Read","Read"),
+                    ("Write","Write"),
+                    ("Delete","Delete"), 
+                    ("Admin","Admin"), 
+                    ("No","No")
+                    ]
 
 class AppUser_Form(forms.ModelForm):
 
-    permission=forms.ChoiceField(choices=Permission_Choices)
+    permission=forms.ChoiceField(choices=PERMISSION_CHOICES)
 
     class Meta:
         model=ApplicationUser
@@ -68,7 +74,7 @@ class AppUser_Filter(Base_Filter):
     initials = CharFilter(lookup_expr='icontains')
     is_active = BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is Active')
     is_appuser = BooleanFilter(widget=forms.RadioSelect(choices=((True,'Yes'),(False,'No'))), label='Is AppUser')
-    permission= ChoiceFilter(choices=Permission_Choices)
+    permission= ChoiceFilter(choices=PERMISSION_CHOICES)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -165,7 +165,7 @@ def Project_ReportView(req, pk):
         cReport.qry_by_ProjectID(_object)
         if cReport.n_compounds>0:
             cReport.get_dataframe()
-            cReport.get_sample_info(Storage_Info=False, Structure_Info=False, Run_Info=False)
+            cReport.get_sample_info(Storage_Info=False, Structure_Info=True, Run_Info=False)
             cReport.get_assay_info()
             cReport.get_testplate_info(WithStats=False,WithRunID=True)
             cReport.gen_pivot_tables(PivRows=['sample_class','sample_code','sample_id'])

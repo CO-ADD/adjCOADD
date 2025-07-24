@@ -129,7 +129,7 @@ class CollabUser_Filter(BaseStatus_Filter):
     
     class Meta:
         model=Collab_User
-        fields=['first_name','last_name','email1','Organisation','Country',]
+        fields=['first_name','last_name','email','Organisation','Country',]
 
     # user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "User ID")
     # title = models.CharField(max_length=15, blank=True, verbose_name = "Title")

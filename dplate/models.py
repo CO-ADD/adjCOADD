@@ -137,7 +137,7 @@ class Plate(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def get(cls,PlateID,WellData=True,verbose=0):
+    def get(cls,PlateID, WellData=True, FillMissing=True, verbose=0):
         try:
             retInstance = cls.objects.get(plate_id=PlateID)
         except:
@@ -146,7 +146,7 @@ class Plate(AuditModel):
             retInstance = None
 
         if retInstance and WellData:
-            retInstance.get_wells()
+            retInstance.get_wells(FillMissing=FillMissing)
 
         return(retInstance)
 
@@ -188,7 +188,10 @@ class Plate(AuditModel):
         _plate.plate_id = PlateID.upper()
         _plate.set_platesize(PlateSize)
         _plate.plate_type = Dictionary.get(cls.DICTIONARY_FIELDS["plate_type"],PlateType)
-        _plate.init_wells()
+        if WellData:
+            _plate.init_wells(WellModel=None, PlateInstance=_plate)
+        else:
+            _plate.init_wells()
         return(_plate)
     
     #------------------------------------------------
@@ -249,11 +252,12 @@ class Plate(AuditModel):
     def get_wells(self) -> int:
         # Create empty Wells
         self.init_wells()
+
         # Fill with Database Wells
         # to be implmented in specific models
 
     #--------------------------------------------------------------
-    def load_wells(self, WellModel, fill_missing=True) -> int:
+    def load_wells(self, WellModel, FillMissing=True) -> int:
         # Create None Wells
         self.init_wells(WellModel=None, PlateInstance=None)
 
@@ -265,7 +269,7 @@ class Plate(AuditModel):
             self.wells[m[0]] = w
 
         # Fill None Wells with empty {WellModel}
-        if lWells < len(self.wells) and fill_missing:
+        if lWells < len(self.wells) and FillMissing:
             for w in self.wells:
                 if self.wells[w] is None:
                     self.wells[w] = WellModel()
@@ -282,6 +286,15 @@ class Plate(AuditModel):
                 if self.wells[w] is not None:
                     self.wells[w].save()
         
+    #------------------------------------------------
+    def delete_wells(self) :
+        if self.wells:
+            for w in self.wells:
+                if self.wells[w]:
+                    #print(f" {w} [{self.wells[w]}]")
+                    self.wells[w].delete()
+                    self.wells[w] = None
+
     #------------------------------------------------
     def is_edgewell(self,well_id):
         (r,c) = self.well_rowcol(well_id)
@@ -570,7 +583,7 @@ class TestPlate(Plate):
             setattr(self.wells[_w],field,value)
 
     #--------------------------------------------------------------
-    def get_wells(self, fill_missing=True) -> int:
+    def get_wells(self, FillMissing=True) -> int:
         
         # Create None Wells
         self.init_wells(WellModel=None, PlateInstance=None)
@@ -583,7 +596,7 @@ class TestPlate(Plate):
             self.wells[m[0]] = w
 
         # Fill None Wells with empty TestWell
-        if lWells < len(self.wells) and fill_missing:
+        if lWells < len(self.wells) and FillMissing:
             for w in self.wells:
                 if self.wells[w] is None:
                     self.wells[w] = TestWell()
@@ -1136,7 +1149,7 @@ class MasterPlate(Plate):
             return(_plate)
 
     #--------------------------------------------------------------
-    def get_wells(self, fill_missing=True) -> int:
+    def get_wells(self, FillMissing=True) -> int:
         # Create None Wells
         self.init_wells(WellModel=None, PlateInstance=None)
 
@@ -1148,7 +1161,7 @@ class MasterPlate(Plate):
             self.wells[m[0]] = w
 
         # Fill None Wells with empty TestWell
-        if lWells < len(self.wells) and fill_missing:
+        if lWells < len(self.wells) and FillMissing:
             for w in self.wells:
                 if self.wells[w] is None:
                     self.wells[w] = MasterWell()
