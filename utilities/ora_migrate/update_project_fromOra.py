@@ -235,8 +235,6 @@ if __name__ == "__main__":
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
 
-    prgArgs = prgParser.parse_args()
-
     try:
         prgArgs = prgParser.parse_args()
     except:
