@@ -237,27 +237,28 @@ def main(prgArgs,djDir):
                         _rack = Racks[row[qq]]
 
                         for w in _rack.wells:
-                            if _rack.wells[w].barcode:
 
-                                # Map 96 to 384 by Quadrants
-                                _r,_c = _rack.map_pos2D(w) 
-                                _qr = ((_r - 1) * 2) + 1 + Q[qq][0]
-                                _qc = ((_c - 1) * 2) + 1 + Q[qq][1]
+                            _rrow,_rcol = _rack.map_pos2D(w) 
+                            _mrow = ((_rrow - 1) * 2) + 1 + Q[qq][0]
+                            _mcol = ((_rcol - 1) * 2) + 1 + Q[qq][1]
 
-                                _tube = _rack.get_well(w)
-                                _mp_well = MPs[row['MOTHERPLATEID']].get_well((_qr,_qc))
+                            _tube = _rack.get_well(w)
+                            _mp_well = MPs[row['MOTHERPLATEID']].get_well((_mrow,_mcol))
 
-                                _mp_well.barcode = _tube.barcode
-                                _mp_well.cmpbatch_id = _tube.cmpbatch_id
+                            _mp_well.barcode = _tube.barcode
+                            _mp_well.cmpbatch_id = _tube.cmpbatch_id
 
-                                # _mpos = _mp.map_WellID((_qr,_qc))
+                            if verbose>0:
+                                print(f" {row['RACKID']} {_tube.well_id} -> {row['MOTHERPLATEID']} {_mp_well.well_id} [{_mp_well.barcode} {_mp_well.cmpbatch_id}] ")
 
-                                # # Set the MotherWell Properties
-                                # for col in Properties:
-                                #     _mp.set_WellProperty(_mpos,col,well[col])
-                                # _mp.set_WellProperty(_mpos,'SET_ID',str(_setid))
-                                # _mp.set_WellProperty(_mpos,MP_Dict['RACKID'],'RackID')    
-                                # _mp.set_WellProperty(_mpos,Racks[MP_Dict['RACKID']].map_WellID((_rrow,_rcol)),'WellID')    
+                            # _mpos = _mp.map_WellID((_qr,_qc))
+
+                            # # Set the MotherWell Properties
+                            # for col in Properties:
+                            #     _mp.set_WellProperty(_mpos,col,well[col])
+                            # _mp.set_WellProperty(_mpos,'SET_ID',str(_setid))
+                            # _mp.set_WellProperty(_mpos,MP_Dict['RACKID'],'RackID')    
+                            # _mp.set_WellProperty(_mpos,Racks[MP_Dict['RACKID']].map_WellID((_rrow,_rcol)),'WellID')    
                 _setid += 1
 
         # == Create MotherPlate output - to be copied into [MotherPlate] ===============================
