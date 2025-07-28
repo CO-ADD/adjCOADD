@@ -27,7 +27,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 # from adjcoadd.constants import *
 
-from dsample.models import Project
+from dsample.models import Project, COADD_Compound, ABase_Compound_Batch
 from dsample.forms import Project_Filter, Project_CreateForm, Project_UpdateForm
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
@@ -98,6 +98,14 @@ def Project_DetailView(req, pk):
     #                                 instance=_object)
     context["object"]=_object
     context["form"]=form
+
+
+    # Paginated and filtered list
+    paginate_by = 50
+    _coadd_compounds = COADD_Compound.objects.filter(project_id=_object, )
+    context["coadd_objs"] = _coadd_compounds
+    context["coadd_count"] = _coadd_compounds.count()
+    context["coadd_fields"] = COADD_Compound.get_fields()
 
     # plate_data_df = get_screenrun_plates(_object.run_id)
     # context["org_id_obj_count"] = len(id_data_df)

@@ -379,6 +379,14 @@ class COADD_Compound(AuditModel):
     List of CO-ADD Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
+    LIST_VIEW_FIELDS ={
+        'compound_id':'ID',
+        'compound_code':'Code',
+        'compound_name':'Name',
+        'reg_mw':'MW', 
+        'reg_smiles':'Smiles',
+    }
+
     DICTIONARY_FIELDS = {
         'compound_type':'Compound_Type',
         'compound_source':'Compound_Source',

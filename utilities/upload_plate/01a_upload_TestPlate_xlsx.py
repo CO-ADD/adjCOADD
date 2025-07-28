@@ -36,7 +36,7 @@ def main(prgArgs,djDir):
     from dplate.models import Labware, TestPlate, TestWell
     from applib.plate.multimode_reader import multimodereader_xls
     from dscreen.models import Screen_Run
-    from dsummary.models import Summary_ScreenRun 
+    from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
 
     from adjcoadd.constants import COMPOUND_SEP
 
@@ -91,7 +91,7 @@ def main(prgArgs,djDir):
                             tpDict['plate'].save(verbose=0)
                             n_uploads += 1
             if n_uploads> 0:
-                Summary_ScreenRun.update(djRun, to_save=True)
+                update_screenrun_summary(djRun)
 
 #==============================================================================
 if __name__ == "__main__":
