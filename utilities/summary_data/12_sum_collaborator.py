@@ -52,7 +52,6 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
-
     cReport = Report_Screening()
     # Process TestPlate -----------------------------------------------------------
     if prgArgs.collaborator:
@@ -63,11 +62,11 @@ def main(prgArgs,djDir):
             cReport.get_sample_info(Storage_Info=True, Structure_Info=True, Run_Info=True)
             cReport.get_assay_info()
             cReport.get_testplate_info()
-            cReport.gen_pivot_tables(PivTables = ['Values','Act'], PivColumns=['assay_org','assay_type','result_type'], PivRows=None)
+            #cReport.gen_pivot_tables(PivTables = ['Values','Act'], PivColumns=['assay_org','assay_type','result_type'], PivRows=['sample_class','sample_code','sample_id'])
+            cReport.gen_pivot_tables(PivTables = ['Values','Act','DataWarrior'], PivRows=['project_id','sample_code','sample_id'])
             # # cReport.add_Vitek_AST()
 
             cReport.to_excel(prgArgs.excelfile)
-
 
 #==============================================================================
 if __name__ == "__main__":

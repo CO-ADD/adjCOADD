@@ -398,7 +398,7 @@ class Report_Screening():
                     djCmp = COADD_Compound.get(k)
                     _dict['sample_code'] = djCmp.compound_code
                     _dict['sample_class'] = 'CO-ADD'
-                    _dict['project_id'] = djCmp.project_id
+                    _dict['project_id'] = str(djCmp.project_id)
 
                     # Add Storage Info
                     if Storage_Info:
@@ -452,7 +452,7 @@ class Report_Screening():
                             _dict['structure_id'] = djCmp.cmpbatch_id.structure_id
                             _dict['smiles'] = djCmp.std_smiles
                         elif djCmp.reg_smiles != '':
-                            _dict['structure_id'] = 'REG'
+                            _dict['structure_id'] = 'NOT REG'
                             _dict['smiles'] = djCmp.reg_smiles
                         else: 
                             _dict['structure_id'] = 'EMPTY'
@@ -483,7 +483,7 @@ class Report_Screening():
         self.n_samples = len(_sample_lst)
         if  self.n_samples>0:
             self.df_samples = pd.DataFrame(_sample_lst)
-            logger.info(f" [Report] Samples: {self.n_samples}  {_n_samples} ")
+            logger.info(f" [Report] Samples: {self.df_samples.shape} {_n_samples} ")
         else:
             logger.warning(f" [Report] No Samples found")
             
@@ -726,6 +726,8 @@ class Report_Screening():
             self.df_comb_sc = pd.merge(left=self.df_sc, right=self.df_samples, how= 'left', on='sample_id')
             self.df_comb_sc = pd.merge(left=self.df_comb_sc, right=self.df_assays, how= 'left', on='assay_id')
 
+            self.df_comb_sc = self.df_comb_sc.fillna('-')
+
             
         if self.n_dr > 0:
             if not hasattr(self,'df_comb_dr'):
@@ -737,6 +739,8 @@ class Report_Screening():
                 self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_vitek])
             if self.n_antibio > 0:
                 self.df_comb_dr = pd.concat([self.df_comb_dr,self.df_antibio])
+
+            self.df_comb_dr = self.df_comb_dr.fillna('-')
 
         # Setting pivot Rows and Columns
         if PivColumns:
@@ -771,7 +775,7 @@ class Report_Screening():
                                                             )
             
             if self.n_dr> 0 and self.n_sc > 0:                                           
-                self.piv_values = pd.merge(self.piv_sc_ave_inhib, self.piv_dr_drmax, 'left', on = pivRow )
+                self.piv_values = pd.merge(self.piv_sc_ave_inhib, self.piv_dr_drmax, 'outer', on = pivRow )
                 self.dict_pivtables['piv-Values'] = resort_pivtable(self.piv_values,0)
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Values'] = self.piv_sc_ave_inhib
@@ -795,19 +799,58 @@ class Report_Screening():
                                                             )
 
             if self.n_dr> 0 and self.n_sc > 0:                                           
-                self.piv_act = pd.merge(self.piv_sc_act, self.piv_dr_act, 'left', on = pivRow )
+                self.piv_act = pd.merge(self.piv_sc_act, self.piv_dr_act, 'outer', on = pivRow )
                 self.dict_pivtables['piv-Actives'] = resort_pivtable(self.piv_act,0) 
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Actives'] = self.piv_sc_act
             elif self.n_dr > 0 :
                 self.dict_pivtables['piv-Actives'] = self.piv_dr_act
-    
+
+ 
+    # --------------------------------------------------------------------------------------
+    def to_datawarrior(self,CsvFile=None, PivColumns=None, PivRows=None):
+    # --------------------------------------------------------------------------------------
+        # Setting pivot Rows and Columns
+        if PivColumns:
+            pivCol = PivColumns
+        else:
+            pivCol = ['assay_org','assay_type','result_type',]
+        pivRow = ['project_id','sample_code','sample_id','smiles']
+
+
+        if self.n_sc > 0:
+            self.datawarrior_sc = self.df_comb_sc.pivot_table(index=pivRow, 
+                                                        columns=pivCol, 
+                                                        values='inhibition',
+                                                        aggfunc='mean',
+                                                        )
+
+        if self.n_dr> 0:
+            self.datawarrior_dr = self.df_comb_dr.pivot_table(index=pivRow, 
+                                                        columns=pivCol, 
+                                                        values='pscore',
+                                                        aggfunc='mean',
+                                                        )
+        
+        if self.n_dr> 0 and self.n_sc > 0:                                           
+            self.datawarrior = pd.merge(self.datawarrior_sc, self.datawarrior_dr, 'outer', on = pivRow )
+            self.datawarrior['piv-Data'] = resort_pivtable(self.piv_data,0)
+        elif self.n_sc > 0 :
+            self.datawarrior = self.datawarrior_sc
+        elif self.n_dr > 0 :
+            self.datawarrior = self.datawarrior_dr
+
+
+
+        self.datawarrior.to_csv(CsvFile)
+
     # --------------------------------------------------------------------------------------
     def to_excel(self,XlFile=None, Transpose_PivTables=False, verbose=0):
     # --------------------------------------------------------------------------------------
         SHEET_NAME = {
             'piv-Values':'Sum-Values',
-            'piv-Actives': 'Sum-ActScore'
+            'piv-Actives': 'Sum-ActScore',
+            'piv-Data': 'DataWarrior'
         }
 
         if XlFile is None:
