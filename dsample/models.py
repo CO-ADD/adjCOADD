@@ -210,6 +210,46 @@ class Project(AuditModel):
         else:
             super(Project, self).save(*args, **kwargs) 
 
+#=================================================================================================
+class Project_Membership(models.Model):
+    """
+    List of Project Membership
+    """
+    MEMBERSHIP_CHOICES = [ 
+            ("LI","Lead Investigator"),
+            ("PC","Primary Contact"),
+            ("AC","Alternative Contact")
+        ]
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE)
+    #date_joined = models.DateField()
+    role = models.CharField(max_length=2,
+            choices=MEMBERSHIP_CHOICES,
+            default='AC')
+
+    class Meta:
+        app_label = 'dsample'
+        db_table = 'project_membership'
+        indexes = [
+            models.Index(name="pmem_role_idx",fields=['role']),
+        ]
+
+    #------------------------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.project_id} <-- {self.role} -- {self.user_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, UserID, ProjectID, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.get(user_id=UserID, project_id=ProjectID)
+        except:
+            if verbose:
+                print(f"[Project Membership Not Found] {ProjectID} <----> {UserID} ")
+            retInstance = None
+        return(retInstance)
 
 #=================================================================================================
 class Library(AuditModel):

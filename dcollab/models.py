@@ -284,7 +284,6 @@ class Collab_Membership(models.Model):
     """
     MEMBERSHIP_CHOICES = [ 
             ("LI","Lead Investigator"),
-            ("PC","Primary Contact"),
             ("M","Member")
         ]
 
@@ -301,6 +300,25 @@ class Collab_Membership(models.Model):
         indexes = [
             models.Index(name="cmem_role_idx",fields=['role']),
         ]
+
+    #------------------------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.group_id} <-- {self.role} -- {self.user_id}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, UserID, GroupID, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.get(user_id=UserID, group_id=GroupID)
+        except:
+            if verbose:
+                print(f"[Group Membership Not Found] {GroupID} <----> {UserID} ")
+            retInstance = None
+        return(retInstance)
+
+
+
 
 #=================================================================================================
 class Data_Source(AuditModel):

@@ -49,7 +49,7 @@ def get_oraCollaborator(test=0):
     collabDict['Group'] = pd.DataFrame(CastDB.get_dict_list(grpSQL))
 
     uploadDir = 'C:/Code/zdjCode/adjCOADD/utilities/upload_data/Data'
-    XlsFile = os.path.join(uploadDir,'CollaboratorData_v01.xlsx')
+    XlsFile = os.path.join(uploadDir,'CollaboratorData_v02.xlsx')
     if os.path.exists(XlsFile):
 
         # Organisation 
@@ -102,7 +102,7 @@ def main(prgArgs,djDir):
 
     if prgArgs.table == "Collaborator" :
 
-        Run = ['Group']
+        Run = ['User']
 
         print("--> oraCollaborator -----------------------------------------------------")
         CollabData = get_oraCollaborator(int(prgArgs.test))
@@ -149,36 +149,38 @@ def main(prgArgs,djDir):
             for user in tqdm(UserLst):
                 nProcessed = nProcessed + 1
                 #print(stock)
+                if user['user_id'] == 'New':
+                    newEntry = False
+                    if 'email' in user:
+                        djUser = Collab_User.get(None,user['email'],None,None)
+                    else:
+                        djUser = Collab_User.get(None,None,user['first_name'],user['last_name'])
+                    if djUser is None:
+                        newEntry = True
+                        djUser = Collab_User()
 
-                newEntry = False
-                if 'email' in user:
-                    djUser = Collab_User.get(None,user['email'],None,None)
-                else:
-                    djUser = Collab_User.get(None,None,user['first_name'],user['last_name'])
-                if djUser is None:
-                    newEntry = True
-                    djUser = Collab_User()
+                    for f in cpyFields:
+                        if f in user:
+                            setattr(djUser, f, user[f])
 
-                for f in cpyFields:
-                    if f in user:
-                        setattr(djUser, f, user[f])
+                    djOrg = Organisation.get(None,user['organisation'])
+                    if djOrg is None:
+                        print(f"No Organisation for {user['organisation']}")
+                    else:
+                        djUser.organisation_id = djOrg
 
-                djOrg = Organisation.get(None,user['organisation'])
-                if djOrg is None:
-                    print(f"No Organisation for {user['organisation']}")
-                else:
-                    djUser.organisation_id = djOrg
+                    for code, name in list(countries):
+                        if name == user['country'].strip():
+                            djUser.country = code
+                        elif code == user['country'].strip():
+                            djUser.country = code
+                    if djUser.country is None:
+                        print(f"No Country Code for {user['country']}")
 
-                for code, name in list(countries):
-                    if name == user['country'].strip():
-                        djUser.country = code
-                if djUser.country is None:
-                    print(f"No Country Code for {user['country']}")
-
-                if prgArgs.upload:
-                    if prgArgs.overwrite or newEntry:
-                        print(f"{repr(djUser)} {newEntry} ({djUser.country})")
-                        djUser.save()
+                    if prgArgs.upload:
+                        if prgArgs.overwrite or newEntry:
+                            print(f"{repr(djUser)} {newEntry} ({djUser.country})")
+                            djUser.save()
 
 
 
@@ -253,8 +255,6 @@ if __name__ == "__main__":
 
     prgParser.add_argument("--django",default='Local',required=False, dest="django", action='store', help="Django configuration [Meran/Laptop/Work]")
     prgParser.add_argument("-c","--config",type=Path,is_config_file=True,help="Path to a configuration file ",)
-
-    prgArgs = prgParser.parse_args()
 
     try:
         prgArgs = prgParser.parse_args()
