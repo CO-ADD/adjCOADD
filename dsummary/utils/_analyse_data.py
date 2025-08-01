@@ -14,7 +14,7 @@ from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST, MIC_COADD
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, agg_Inhib, agg_DR, agg_Lst, dr_max_quality, conv_Conc, split_DR, format_DR, DR_GeoMean
-from applib.data.df import resort_pivtable
+from applib.data.df import sort_pivtable_bylevel
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging
@@ -715,7 +715,7 @@ class Analysis_Screening():
             
             if self.n_dr> 0 and self.n_sc > 0:                                           
                 self.piv_values = pd.merge(self.piv_sc_ave_inhib, self.piv_dr_drmax, 'left', on = pivRow )
-                self.dict_pivtables['piv-Values'] = resort_pivtable(self.piv_values,0)
+                self.dict_pivtables['piv-Values'] = sort_pivtable_bylevel(self.piv_values,0)
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Values'] = self.piv_sc_ave_inhib
             elif self.n_dr > 0 :
@@ -739,7 +739,7 @@ class Analysis_Screening():
 
             if self.n_dr> 0 and self.n_sc > 0:                                           
                 self.piv_act = pd.merge(self.piv_sc_act, self.piv_dr_act, 'left', on = pivRow )
-                self.dict_pivtables['piv-Actives'] = resort_pivtable(self.piv_act,0) 
+                self.dict_pivtables['piv-Actives'] = sort_pivtable_bylevel(self.piv_act,0) 
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Actives'] = self.piv_sc_act
             elif self.n_dr > 0 :

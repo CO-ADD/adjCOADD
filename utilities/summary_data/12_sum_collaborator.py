@@ -66,7 +66,10 @@ def main(prgArgs,djDir):
             cReport.gen_pivot_tables(PivTables = ['Values','Act','DataWarrior'], PivRows=['project_id','sample_code','sample_id'])
             # # cReport.add_Vitek_AST()
 
-            cReport.to_excel(prgArgs.excelfile)
+            if prgArgs.excelfile:
+                cReport.to_excel(prgArgs.excelfile)
+            if prgArgs.csvfile:
+                cReport.to_datawarrior(prgArgs.csvfile)
 
 #==============================================================================
 if __name__ == "__main__":
@@ -91,6 +94,7 @@ if __name__ == "__main__":
     prgParser.add_argument("-f","--format",default=None,required=False, dest="format", action='store', help="Report Format [COADD/Total]")
 #    prgParser.add_argument("-r","--runid",default=None,required=True, dest="runid", action='store', help="RunID")
     prgParser.add_argument("-e","--excel",default=None,required=False, dest="excelfile", action='store', help="Excel File")
+    prgParser.add_argument("--csv",default=None,required=False, dest="csvfile", action='store', help="Csv (Datawarrior) File")
     prgParser.add_argument("--plotdir",default=None,required=False, dest="plotdir", action='store', help="Folder for Plots")
     #prgParser.add_argument("-o","--outdir",default=None,required=False, dest="outdir", action='store', help="Prefix to add to PlateID")
 

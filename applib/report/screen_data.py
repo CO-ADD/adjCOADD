@@ -15,7 +15,7 @@ from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST, MIC_COADD
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, agg_Inhib, agg_DR, agg_Lst, dr_max_quality, conv_Conc, split_DR, format_DR, DR_GeoMean
-from applib.data.df import resort_pivtable
+from applib.data.df import sort_pivtable_bylevel
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging
@@ -502,11 +502,11 @@ class Report_Screening():
     def get_assay_info(self):
     # --------------------------------------------------------------------------------------
         # - Assay Data ------------
-        self.COL_ASS = ['assay_id','sum_assay_id', 'assay_type',
+        self.COL_ASS = ['assay_id','sum_assay_id', 'assay_type','assay_code',
                         'organism_id','organism_id__organism_name','organism_id__strain_ids','organism_id__strain_code',
                         'cell_id','cell_id__organism_name','cell_id__cell_line',
                         ]
-        self.DF_COL_ASS = ['assay_id','sum_assay_id', 'assay_type',
+        self.DF_COL_ASS = ['assay_id','sum_assay_id', 'assay_type','assay_code',
                         'organism_id','organism_name','strain_ids','strain_code',
                         'cell_id','cell_organism','cell_line',
                         ]
@@ -776,7 +776,7 @@ class Report_Screening():
             
             if self.n_dr> 0 and self.n_sc > 0:                                           
                 self.piv_values = pd.merge(self.piv_sc_ave_inhib, self.piv_dr_drmax, 'outer', on = pivRow )
-                self.dict_pivtables['piv-Values'] = resort_pivtable(self.piv_values,0)
+                self.dict_pivtables['piv-Values'] = sort_pivtable_bylevel(self.piv_values,0)
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Values'] = self.piv_sc_ave_inhib
             elif self.n_dr > 0 :
@@ -800,7 +800,7 @@ class Report_Screening():
 
             if self.n_dr> 0 and self.n_sc > 0:                                           
                 self.piv_act = pd.merge(self.piv_sc_act, self.piv_dr_act, 'outer', on = pivRow )
-                self.dict_pivtables['piv-Actives'] = resort_pivtable(self.piv_act,0) 
+                self.dict_pivtables['piv-Actives'] = sort_pivtable_bylevel(self.piv_act,0) 
             elif self.n_sc > 0 :
                 self.dict_pivtables['piv-Actives'] = self.piv_sc_act
             elif self.n_dr > 0 :
@@ -814,34 +814,35 @@ class Report_Screening():
         if PivColumns:
             pivCol = PivColumns
         else:
-            pivCol = ['assay_org','assay_type','result_type',]
+            pivCol = ['assay_code','result_type',]
         pivRow = ['project_id','sample_code','sample_id','smiles']
 
 
         if self.n_sc > 0:
             self.datawarrior_sc = self.df_comb_sc.pivot_table(index=pivRow, 
                                                         columns=pivCol, 
-                                                        values='inhibition',
-                                                        aggfunc='mean',
+                                                        values=['inhibition','mscore'],
+                                                        aggfunc={'inhibition':np.mean,
+                                                                 'mscore':np.mean}
                                                         )
 
         if self.n_dr> 0:
             self.datawarrior_dr = self.df_comb_dr.pivot_table(index=pivRow, 
                                                         columns=pivCol, 
-                                                        values='pscore',
-                                                        aggfunc='mean',
+                                                        values=['dr_max','pscore'],
+                                                        aggfunc={'dr_max':lambda x: " ".join(x), 
+                                                                 'pscore':np.mean}
                                                         )
         
         if self.n_dr> 0 and self.n_sc > 0:                                           
             self.datawarrior = pd.merge(self.datawarrior_sc, self.datawarrior_dr, 'outer', on = pivRow )
-            self.datawarrior['piv-Data'] = resort_pivtable(self.piv_data,0)
+            self.datawarrior = sort_pivtable_bylevel(self.datawarrior,0)
         elif self.n_sc > 0 :
             self.datawarrior = self.datawarrior_sc
         elif self.n_dr > 0 :
             self.datawarrior = self.datawarrior_dr
-
-
-
+            
+        self.datawarrior.columns = self.datawarrior.columns.map(' '.join).str.strip()
         self.datawarrior.to_csv(CsvFile)
 
     # --------------------------------------------------------------------------------------
