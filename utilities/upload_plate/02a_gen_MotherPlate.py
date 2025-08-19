@@ -100,6 +100,15 @@ def gen_MotherPlate_PSR(MP_Dict,Racks,plate_size=384):
 
 
 # --------------------------------------------------------------------------------
+def fix_rackid_str(RackID):
+# --------------------------------------------------------------------------------
+    if isinstance(RackID,float):
+        return(str(int(RackID)))
+    elif isinstance(RackID,int):
+        return(str(RackID))
+    else:
+        return(RackID)
+# --------------------------------------------------------------------------------
 def read_hcprep_prepsheet_xls(xlFile, SheetName='HCPrep', prefix=None, as_is=False, **kwargs):
 # --------------------------------------------------------------------------------
     xlWB = pd.ExcelFile(xlFile)
@@ -155,7 +164,7 @@ def main(prgArgs,djDir):
             #_rack_df=_rack_df.apply(apply_get_barcode, axis=1)
             #print(f" [Rack] {_rack_id} from {rack_file}")
 
-            _rack = MasterPlate.new(_rack_id,96,'Storage',WellData=True)
+            _rack = MasterPlate.new(_rack_id,96,'Storage',WellData=True,NoCheck=True)
             for idx,row in _rack_df.iterrows():
                 if row['BARCODE'] != 'NO READ':
                     _n_tubes += 1
@@ -228,17 +237,19 @@ def main(prgArgs,djDir):
             # For each MotherPlate <- Racks A1, B1, A2, B2 
             MPs = {}
             for idx,row in PSPrep.iterrows():
+                print(row)
                 if row['MOTHERPLATEID'] not in MPs:
                     MPs[row['MOTHERPLATEID']]= MasterPlate.new(row['MOTHERPLATEID'],384,'Mother',WellData=True)
 
                 _setid = 1
                 for qq in Q.keys():
-                    if row[qq]:
-                        _rack = Racks[row[qq]]
+                    if not pd.isna(row[qq]) :
+                        _rackid = fix_rackid_str(row[qq])
+                        _rack = Racks[_rackid]
 
                         for w in _rack.wells:
 
-                            _rrow,_rcol = _rack.map_pos2D(w) 
+                            _rrow,_rcol = _rack.well_rowcol(w) 
                             _mrow = ((_rrow - 1) * 2) + 1 + Q[qq][0]
                             _mcol = ((_rcol - 1) * 2) + 1 + Q[qq][1]
 

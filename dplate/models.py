@@ -694,7 +694,8 @@ class TestPlate(Plate):
             nLay = 0
             for _lo in CONTROL_ORDER:
                 _l = _layLst[nLay]
-                if _l != 'X':
+#                if _l != 'X' or _l != 'MIC':
+                if _l not in ['X','MIC']:
                     _layDict[_lo] = {'R1':self.ROW_LABELS.index(_l[:1])+1,
                                      'C1':int(_l[1:3]),
                                      'R2':self.ROW_LABELS.index(_l[3:4])+1,
@@ -1130,12 +1131,9 @@ class MasterPlate(Plate):
 
     #------------------------------------------------
     @classmethod
-    def new(cls,PlateID,PlateSize,PlateType,WellData=True):
+    def new(cls,PlateID,PlateSize,PlateType,WellData=True,NoCheck=False):
         #print(f"[MasterPlate.new] {PlateID} {PlateSize} ")
-        if cls.exists(PlateID.upper()):
-            logger.warning(f"[Masterplate] New {PlateID.upper()} alreday exists ")
-            return(None)
-        else:
+        if not cls.exists(PlateID.upper()) or NoCheck:
             _plate = cls()
             _plate.plate_id = PlateID.upper()
             _plate.set_platesize(PlateSize)
@@ -1147,6 +1145,9 @@ class MasterPlate(Plate):
             else:
                 _plate.init_wells(WellModel=None, PlateInstance=None)
             return(_plate)
+        else:
+            logger.warning(f"[Masterplate] New {PlateID.upper()} alreday exists ")
+            return(None)
 
     #--------------------------------------------------------------
     def get_wells(self, FillMissing=True) -> int:

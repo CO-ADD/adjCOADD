@@ -83,6 +83,8 @@ def main(prgArgs,djDir):
 
                         if prgArgs.upload:
                             djTP.save()
+                        else:
+                            print(f" {djTP.plate_id} - {djTP.assay_id} : {djTP.plate_quality}")
 
                 else:
                     OutNumbers['Failed Plates'] += 1

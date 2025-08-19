@@ -82,7 +82,7 @@ class Barcode_Storage():
             Might need cleaning if many Barcodes are physically removed, or size increased
 
     """
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
 
         self.rack_size = 96
         self.rack_type = 'Storage'
@@ -224,7 +224,7 @@ class Barcode_Storage():
         return(s)
 
     # -------------------------------------------------------------------------
-    def update_barcode_location(self,csvFile, upload=False):
+    def update_barcode_location(self, csvFile, upload=False):
     # -------------------------------------------------------------------------
 
         self._read_barcode_scan(csvFile)

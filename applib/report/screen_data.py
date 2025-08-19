@@ -410,8 +410,11 @@ class Report_Screening():
                                 _storage['plate_id'].append(str(q.plate_id))
                                 _storage['well_id'].append(q.well_id)
 
-                                _concs        = COMPOUND_SEP.join([str(x) for x in q.conc_lst if x > 0])
-                                _storage['concs'].append(_concs)
+                                if q.conc_lst:
+                                    _concs        = COMPOUND_SEP.join([str(x) for x in q.conc_lst if x > 0])
+                                    _storage['concs'].append(_concs)
+                                else:
+                                    _storage['concs'].append('-')
 
                                 if q.conc_unit_lst:
                                     _conc_units   = COMPOUND_SEP.join([str(x) for x in q.conc_unit_lst if x != ""])
@@ -754,7 +757,7 @@ class Report_Screening():
         if PivRows:
             pivRow = PivRows
         else:
-            pivRow = ['sample_class','sample_code']
+            pivRow = ['project_id','sample_class','sample_code']
 
 
         # -------------------------------------------------------------------------------------------------
