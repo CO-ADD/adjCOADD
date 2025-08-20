@@ -109,7 +109,8 @@ def main(prgArgs,djDir):
         SEQ = pd.read_csv(prgArgs.csvfile)
         SEQ.columns = [x.upper() for x in SEQ.columns]
         for idx,row in SEQ.iterrows():
-            row['ORGBATCH_ID']
+            _orgid = "_".join(row['ORGBATCH_ID'].split('_')[0:2])
+            print(_orgid)
 
     elif prgArgs.orgid:
 
@@ -118,7 +119,6 @@ def main(prgArgs,djDir):
             _pub_id = djAssay.organism_id.pub_id
         else:
             _pub_id = '-'
-
 
         # Get MIC Data
         MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id','cmpbatch_id','mic','mic_unit', 'inhibit_max','data_quality','ic50','ic50_quality','testplate_id__plate_quality']

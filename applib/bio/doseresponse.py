@@ -13,7 +13,9 @@ from dscreen.models import AssayData_MIC,AssayData_CC50,AssayData_HC50
 import logging
 logger = logging.getLogger(__name__)
 
+#====================================================================
 class DoseResponse():
+#====================================================================
     
     #--------------------------------------------------------------
     def __init__(self, inhibition_cutoff=80, 
@@ -508,8 +510,16 @@ class DoseResponse():
             self.pic50 = -1
             
         self.ic50_dmax = dr_max_quality(self.ic50,self.dmax,self.ic50_quality)
-        
 
+#====================================================================
+class DoseResponse_Plot():
+#====================================================================
+    
+    #--------------------------------------------------------------
+    def __init__(self):
+        self.data_per_plot = 6
+
+        
 # Process TestPlate -------------------------------------------------------------
 def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
     djTP = TestPlate.get(PlateID,WellData=True)
