@@ -196,7 +196,7 @@ def ScreenRun_ReportView(req, pk):
         cReport = Report_Screening()
         cReport.qry_by_RunID([pk])
         cReport.get_dataframe()
-        cReport.get_sample_info(Storage_Info=True)
+        cReport.get_sample_info(Storage_Info=True,Structure_Info=True)
         cReport.get_assay_info()
         cReport.get_testplate_info()
         cReport.add_hcr_selection()

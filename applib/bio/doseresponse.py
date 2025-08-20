@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 class DoseResponse():
     
-    
     #--------------------------------------------------------------
     def __init__(self, inhibition_cutoff=80, 
                  min_dilutions=6,  inhib_limit = 500, 
@@ -34,7 +33,6 @@ class DoseResponse():
         self.inhib_correct = inhib_correction 
         self.inhib_correct_limit = inhib_correct_limit
         self.ic50_dmax_cutoff = ic50_dmax_cutoff
-
 
     #--------------------------------------------------------------
     # Initialise DoseRepsonse with
@@ -526,7 +524,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                 djTP.conv_list_to_string()
                 djTP.make_wells_df(ListToString=True)
 
-                grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                grpData = djTP.wells_df.groupby('                                                                                                                                                                                                      ')
                 for CmpBatchSet,DRData in grpData:
                     if CmpBatchSet:
                         # Use CmpBatch w/o SetID
