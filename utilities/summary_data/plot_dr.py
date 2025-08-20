@@ -112,6 +112,35 @@ def main(prgArgs,djDir):
             _orgid = "_".join(row['ORGBATCH_ID'].split('_')[0:2])
             print(_orgid)
 
+            djAssay = Assay.objects.get(organism_id=_orgid)
+            if djAssay:
+                _pub_id = djAssay.organism_id.pub_id
+            else:
+                _pub_id = '-'
+
+            # Get MIC Data
+            MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id','cmpbatch_id','mic','mic_unit', 'inhibit_max','data_quality','ic50','ic50_quality','testplate_id__plate_quality']
+            lstMIC = []
+            for _cmpid in compound_lst:
+
+                djDrug = Drug.objects.get(uq_imb=_cmpid)
+                if djDrug:
+                    _drug_name = djDrug.drug_name
+                else:
+                    _drug_name = '-'
+
+                qryMIC = AssayData_MIC.objects.filter(cmpbatch_id__cmpbatch_id__contains = _cmpid,
+                                                assay_id__assay_id__contains= _orgid).values(*MIC_VALUES)
+                if qryMIC.count() > 0:
+                    _lst = list(qryMIC)
+                    for _l in _lst:
+                        _l['drug_name'] = _drug_name
+                    lstMIC += _lst
+
+            if len(lstMIC) > 0:
+                plotDR(lstMIC,f"{prgArgs.orgid} ({_pub_id}) - COL (094) PmxB (636) ",f"{_pub_id}_PmxB_Col")
+
+
     elif prgArgs.orgid:
 
         djAssay = Assay.objects.get(organism_id=prgArgs.orgid)
