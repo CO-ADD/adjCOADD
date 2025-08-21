@@ -113,11 +113,10 @@ def main(prgArgs,djDir):
             
 
             djAssay = Assay.objects.get(organism_id=_orgid)
-            if djAssay:
-                if djAssay:
-                    _pub_id = djAssay.organism_id.pub_id
-                else:
-                    _pub_id = '-'
+
+
+            if Assay.objects.get(organism_id=_orgid).exists():
+                djAssay =Assay.objects.get(organism_id=_orgid)
 
                 # Get MIC Data
                 MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id','cmpbatch_id','mic','mic_unit', 'inhibit_max','data_quality','ic50','ic50_quality','testplate_id__plate_quality']
