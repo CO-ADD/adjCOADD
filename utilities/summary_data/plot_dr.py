@@ -111,12 +111,8 @@ def main(prgArgs,djDir):
         for idx,row in SEQ.iterrows():
             _orgid = "_".join(row['ORGBATCH_ID'].split('_')[0:2])
             
-
-            djAssay = Assay.objects.get(organism_id=_orgid)
-
-
             if Assay.objects.filter(organism_id=_orgid).exists():
-                djAssay =Assay.objects.get(organism_id=_orgid)
+                djAssay = Assay.objects.get(organism_id=_orgid)
                 if djAssay:
                     _pub_id = djAssay.organism_id.pub_id
                 else:
