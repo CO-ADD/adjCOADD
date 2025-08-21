@@ -115,7 +115,7 @@ def main(prgArgs,djDir):
             djAssay = Assay.objects.get(organism_id=_orgid)
 
 
-            if Assay.objects.get(organism_id=_orgid).exists():
+            if Assay.objects.filter(organism_id=_orgid).exists():
                 djAssay =Assay.objects.get(organism_id=_orgid)
 
                 # Get MIC Data
