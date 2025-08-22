@@ -30,17 +30,17 @@ class Peptide(AuditModel):
     LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
         'peptide_id':{'Peptide ID': {'peptide_id':LinkList['peptide_id']}}, 
-        'peptide_seq':'Peptide Sequence',
-        'peptide_name':'Peptide Name',
-        'peptide_type':'Peptide Type',
-        'peptide_panel':'Panel',
-        'peptide_notes':'Notes',
-        'peptide_code':'Peptide Code',
-        'peptide_identification':'Identification',
-        'peptide_origin':'Origin',
-        'source':"Source",
-        'source_code':"Source Code",
-        'reference': "Reference",
+        'seq':'Peptide Sequence',
+        # 'peptide_name':'Peptide Name',
+        # 'peptide_type':'Peptide Type',
+        # 'peptide_panel':'Panel',
+        # 'peptide_notes':'Notes',
+        # 'peptide_code':'Peptide Code',
+        # 'peptide_identification':'Identification',
+        # 'peptide_origin':'Origin',
+        # 'source':"Source",
+        # 'source_code':"Source Code",
+        # 'reference': "Reference",
         #'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}}, 
     }
 
@@ -51,12 +51,12 @@ class Peptide(AuditModel):
     #     "gen_property": "Genotype",
     }
 
-    FORM_GROUPS={
-       'Group1': ["peptide_line", "peptide_names", "peptide_type", "peptide_panel", "peptide_origin", "peptide_notes"],
-       'Group2': ['source', 'source_code','reference'],
-       'Group3': ['mta_status','mta_notes','mta_document','biologist'],
-       'Group4': ['collect_tissue', 'patient_diagnosis', 'patient']
-    }
+    VIEW_GROUPS = [
+        ['peptide_name', 'peptide_code', 'peptide_type', 'peptide_panel', 'peptide_notes'],
+        ['seq','bilm','helm'],
+        ['peptide_identification', 'peptide_origin','source', 'source_code','reference'],
+        ['mta_status','mta_notes','mta_document','biologist'],
+    ]
 
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
@@ -101,7 +101,6 @@ class Peptide(AuditModel):
 
 
 #------------------------------------------------
-
 
     class Meta:
         app_label = 'dpeptide'

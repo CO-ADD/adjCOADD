@@ -21,6 +21,7 @@ class DatabaseRouter(object):
         'default': {'auth', 'contenttypes','apputil'},
         'dorganism': {'dorganism'},
         'dcell': {'dcell'},
+        'dpeptide': {'dpeptide'},
         'ddrug': {'ddrug'},
         'dgene': {'dgene'},
         'dcollab': {'dcollab'},

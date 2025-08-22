@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title%}COADD{% endblock %}
+<!--  -->
+{% block content %}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  {% url 'pivoted-table' app_model='dpeptide-Peptide' as pivot_url%}
+  {% include 'grid/base/left_navbar.html' with list_url='peptide_list' card_url='' create_object='createPeptide' create_objectModal='createPeptideModal' pivot_url='' %}
+  <!-- Sidebar View -->
+  {% include "utils/sidebar.html" %}
+  
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100"> 
+
+    <!-- prettier-ignore -->
+    {% include 'datatable/base/datatable_top.html' with title='Peptide'  model_name='Peptide' application='dpeptide' %}
+    <!-- prettier-ignore -->
+    <!--  -->
+
+
+    <!-- list View Content -->
+   <div class="contain-fluid data-contain">
+      <!-- prettier-ignore --> <!-- Here include datatable_general --> 
+      {% include 'datatable/base/datatable_base.html' with modelname='Peptide' %}
+    </div>
+    </div>
+
+</div>
+{% endblock %}

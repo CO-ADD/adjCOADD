@@ -1,0 +1,68 @@
+{% extends 'base.html'%}
+{% block title%}COADD{% endblock %}
+
+{% block content%}
+<div class="d-flex vh-100">
+
+    <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
+        <div class="d-flex flex-column p-0">          
+            {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name %}
+        </div>
+    </div>
+
+    <div class="w-100">
+
+        <!-- Peptide -->
+        <div class="accordion bg-transparent" id="run-detail">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_00">
+                <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
+                    <h5 class="fs-4 my-0"><b>{{object.pk}}</b>
+                    </h5>
+                </button>
+                </h2>
+
+                <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
+                        data-bs-parent="#run-detail">
+                <div class="accordion-body bg-transparent">
+                    <b> {% include 'utils/message.html' %} </b>
+                    {% include 'dpeptide/peptide/peptide_update.html' %}
+                    <hr>
+                    {% include 'detailview/audit_status.html' %}
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="accordion bg-transparent w-100" id="peptide-process">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_01">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapseRunProcess" aria-expanded="true" aria-controls="collapse_01">
+                <h5 class="fs-6 my-0">
+                    Processing
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_obj_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapseRunProcess" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
+                data-bs-parent="#peptide-process">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    {% include 'dpeptide/peptide/peptide_process.html' with process_status="" %}
+                    
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}
