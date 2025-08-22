@@ -591,7 +591,7 @@ class AssayData_HC50(CmpBatchList_Base):
         db_column="data_quality", related_name="%(class)s_dataquality")
 
 #    data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
-    data_comment = models.CharField(max_length=15, blank=True, verbose_name = "Data Comment")
+    data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_hc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")

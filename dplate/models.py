@@ -474,6 +474,7 @@ class TestPlate(Plate):
     plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1)
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
+    plate_comment = models.CharField(max_length=50, blank=True, verbose_name = "Plate Comment")
     
     # Test_Dye_Conc = models.DecimalField(max_digits=10, decimal_places=2)
     # Test_Dye_Conc_Unit = models.CharField(max_length=10)
