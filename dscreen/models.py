@@ -340,7 +340,7 @@ class AssayData_MIC(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
-    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
+    data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
@@ -468,7 +468,7 @@ class AssayData_CC50(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
-    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
+    data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_cc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
@@ -586,7 +586,7 @@ class AssayData_HC50(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
-    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
+    data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_hc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
