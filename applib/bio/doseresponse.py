@@ -136,7 +136,7 @@ class DoseResponse():
                         ['act_type','mic_act'], ['act_score','mic_act_score'], ['pscore','pmic'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','mic_quality'], ['valid','mic_valid'],
+                        ['data_quality','mic_quality'], ['data_comment','mic_comment'], ['valid','mic_valid'],
                         'ic50','ic50_unit',['ic50_pscore','pic50'], 
                         'ic50_quality', ['ic50_r2','ic50_fit_r2'], ['ic50_slope','ic50_fit_slope']
                         # ref_mic, ref_mic_chk
@@ -148,7 +148,7 @@ class DoseResponse():
                         ['act_type','ic50_act'], ['act_score','ic50_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','ic50_quality'], ['valid','ic50_valid'],
+                        ['data_quality','ic50_quality'], ['data_comment','ic50_comment'], ['valid','ic50_valid'],
                         # ref_mic, ref_mic_chk
                         ],                      
                     'HC50': [
@@ -159,7 +159,7 @@ class DoseResponse():
                         ['hc10','mic'],['tox_type','mic_act'], ['tox_score','mic_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','ic50_quality'], ['valid','ic50_valid'],
+                        ['data_quality','ic50_quality'], ['data_comment','ic50_comment'], ['valid','ic50_valid'],
                         # ref_mic, ref_mic_chk
                         ],                      
                     }
@@ -318,37 +318,36 @@ class DoseResponse():
         if (self.skips_active > 0) and (self.skips_active <= 2):
             self.mic_valid = 1
             self.mic_quality = f'Retest'
-            _mic_Comment.append(f"{self.skips_active}/{self.skips_total} Skips")
+            _mic_Comment.append(f"Act: {self.skips_active}/ Tot: {self.skips_total} Skips")
 
         elif (self.skips_active > 2):
             self.mic_valid = -1
             self.mic_quality = f"Invalid"
-            _mic_Comment.append(f"{self.skips_active} Skips")
+            _mic_Comment.append(f"Act: {self.skips_active} Skips")
         
         # In case CutOff is >80 or <80%  
         if self.inhibition_cutoff < 80:
             self.mic_quality = f'Retest'
-            _mic_Comment.append(f"{self.inhibition_cutoff}% Cutoff")
+            _mic_Comment.append(f"Cutoff: {self.inhibition_cutoff}% ")
         elif self.inhibition_cutoff > 80:
-            _mic_Comment.append(f"{self.inhibition_cutoff}% Cutoff")
+            _mic_Comment.append(f"Cutoff:{self.inhibition_cutoff}% ")
 
         # In case DAve is well outside 0-100 
         if (self.dave > self.inhib_limit) or (self.dave < -self.inhib_limit):
             self.mic_valid = -1
             self.mic_quality = 'Invalid'
-            _mic_Comment.append(f"Inhibition")
+            _mic_Comment.append(f"Failed Inhibition Range")
 
         # In case not enough dilutions
         if self.n_conc < self.min_dilutions:
             self.mic_valid = 1
             self.mic_quality = 'Retest'
-            _mic_Comment.append(f"{self.n_conc} Conc")
+            _mic_Comment.append(f"Only {self.n_conc} Conc")
 
         if len(_mic_Comment)>0:
             self.mic_comment = '; '.join(_mic_Comment)
-            self.mic_quality += f" ({self.mic_comment})" 
         else:
-            self.mic_comment = '-'     
+            self.mic_comment = ''     
     
         self.analysis = 'pyBioDR'
         
@@ -409,6 +408,7 @@ class DoseResponse():
             self.ic50_value = self.cmax
             self.fit_r2 = 0
             self.ic50_quality = 'Valid'
+            self.ic50_comment = 'No Activity'
             self.ic50_valid = 1
         # All Active : DMin > 60%
         elif self.dmin > (100-self.ic50_dmax_cutoff):
@@ -416,6 +416,7 @@ class DoseResponse():
             self.ic50_value = self.cmin
             self.fit_r2 = 0
             self.ic50_quality = 'Valid'
+            self.ic50_comment = 'All Active'
             self.ic50_valid = 1
         else:
             try:
@@ -455,6 +456,7 @@ class DoseResponse():
                     self.ic50_value = self.fit_ic50
 
                 self.ic50_quality = 'Valid'
+                self.ic50_comment= ''
                 self.ic50_valid = 1
                 
             # --- No Fit 
@@ -463,33 +465,39 @@ class DoseResponse():
                 if self.dave <= self.ic50_dmax_cutoff:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
-                    self.ic50_quality = 'Retest (NoFit)'
+                    self.ic50_quality = 'Retest'
+                    self.ic50_comment = 'NoFit; No Activity'
                     self.ic50_valid = 1  
                 elif self.dmax > self.ic50_dmax_cutoff:
                     self.ic50_prefix = '='
                     self.ic50_value = self.cmax
-                    self.ic50_quality = 'Retest (NoFit)'  
+                    self.ic50_quality = 'Retest'
+                    self.ic50_comment = 'NoFit'
                     self.ic50_valid = 1
                 elif self.dave > (100-self.ic50_dmax_cutoff):
                     self.ic50_prefix = '<='
                     self.ic50_value = self.cmin
-                    self.ic50_quality = 'Retest (NoFit)'
+                    self.ic50_quality = 'Retest'
+                    self.ic50_comment = 'NoFit; All Active'
                     self.ic50_valid = 1
                 else:
                     self.ic50_prefix = 'X'
                     self.ic50_value = 0
-                    self.ic50_quality = 'Invalid (NoFit)'
+                    self.ic50_quality = 'Invalid'
+                    self.ic50_comment = 'NoFit'
                     self.ic50_valid = 0
         
         # If Valid IC50 
         if self.ic50_valid == 1:
             if (self.dave > self.inhib_limit) or (self.dave < -self.inhib_limit):
-                self.ic50_quality = 'Invalid (Inhibition)'
+                self.ic50_quality = 'Invalid'
+                self.ic50_comment = 'Failed Inhibition Range'
 
             # In case not enough dilutions
             if self.n_conc < self.min_dilutions:
                 self.ic50_ = 0
-                self.ic50_quality = f"Invalid ({self.n_conc} Conc)"
+                self.ic50_quality = 'Invalid'
+                self.ic50_comment = f'Only {self.n_conc} Conc'
 
         # ------------------------------------------------------------------
         # self.ic10 = format_XCFF(retFit['FIT_XC10'],10,self.cmax,self.cmin,self.dmax)
