@@ -340,6 +340,7 @@ class AssayData_MIC(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
@@ -374,6 +375,7 @@ class AssayData_MIC(CmpBatchList_Base):
             models.Index(name="assmic_psc_idx",fields=['pscore']),
             models.Index(name="assmic_val_idx",fields=['valid']),
             models.Index(name="assmic_dqy_idx",fields=['data_quality']),
+            models.Index(name="assmic_dcm_idx",fields=['data_comment']),
             models.Index(name="assmic_chkm_idx",fields=['chk_migration']),
         ]
 
@@ -466,6 +468,7 @@ class AssayData_CC50(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_cc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
@@ -494,6 +497,7 @@ class AssayData_CC50(CmpBatchList_Base):
             models.Index(name="asscc50_psc_idx",fields=['pscore']),
             models.Index(name="asscc50_val_idx",fields=['valid']),
             models.Index(name="asscc50_dqy_idx",fields=['data_quality']),
+            models.Index(name="asscc50_dcm_idx",fields=['data_comment']),
             models.Index(name="asscc50_chkm_idx",fields=['chk_migration']),
         ]
 
@@ -582,6 +586,7 @@ class AssayData_HC50(CmpBatchList_Base):
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
     data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+    data_comment = models.CharField(max_length=50, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     ref_hc50 = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
@@ -612,6 +617,7 @@ class AssayData_HC50(CmpBatchList_Base):
             models.Index(name="asshc50_psc_idx",fields=['pscore']),
             models.Index(name="asshc50_val_idx",fields=['valid']),
             models.Index(name="asshc50_dqy_idx",fields=['data_quality']),
+            models.Index(name="asshc50_dcm_idx",fields=['data_comment']),
             models.Index(name="asshc50_chkm_idx",fields=['chk_migration']),
         ]
 

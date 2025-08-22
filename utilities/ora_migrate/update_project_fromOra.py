@@ -32,7 +32,6 @@ logging.basicConfig(
     level=logLevel)
 #-----------------------------------------------------------------------------
 
-
 def set_logger(logName='Log',logDir='log',logFile=False):
     logFile=False
     logLevel = logging.INFO
@@ -159,6 +158,7 @@ def main(prgArgs,djDir):
         outNumbers = {'Proc':0,'New':0,'Upload':0}
         outDict = []    
 #        for idx,row in tqdm(prjDF.iterrows(), total=prjDF.shape[0]):
+
         for idx,row in prjDF.iterrows():
             new_entry = False
             outNumbers['Proc'] += 1
