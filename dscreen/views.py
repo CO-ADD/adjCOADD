@@ -182,6 +182,7 @@ class ScreenRun_RemoveView(Base_RemoveView):
     model = Screen_Run
     transaction_use = 'dscreen'
 
+
 # -----------------------------------------------------------------
 @login_required
 def ScreenRun_ReportView(req, pk):
