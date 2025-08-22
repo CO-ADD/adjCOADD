@@ -297,6 +297,7 @@ class AssayData_MIC(CmpBatchList_Base):
 
     DICTIONARY_FIELDS = {
         'pub_status':'Pub_Status',
+        'data_quality':'Data_Quality',
     }
     
     # Primary Contraint
@@ -339,7 +340,9 @@ class AssayData_MIC(CmpBatchList_Base):
     conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
-    data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+
+    data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
+        db_column="data_quality", related_name="%(class)s_dataquality")
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
@@ -435,6 +438,7 @@ class AssayData_CC50(CmpBatchList_Base):
 
     DICTIONARY_FIELDS = {
         'pub_status':'Pub_Status',
+        'data_quality':'Data_Quality',
     }
         
     # Primary Contraint
@@ -467,7 +471,9 @@ class AssayData_CC50(CmpBatchList_Base):
     conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
     conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
-    data_quality = models.CharField(max_length=50, verbose_name = "Data Quality")
+
+    data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
+        db_column="data_quality", related_name="%(class)s_dataquality")
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 

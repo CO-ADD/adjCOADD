@@ -1090,6 +1090,7 @@ class MasterPlate(Plate):
 
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
+    plate_comment = models.CharField(max_length=50, blank=True, verbose_name = "Plate Comment")
 
 #    control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Control Layout")
     dilution_layout = models.CharField(max_length=35, blank=True, verbose_name = "Dilution Layout")
