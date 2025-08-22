@@ -5,6 +5,7 @@ import pandas as pd
 import scipy.optimize as opt
 
 from adjcoadd.constants import COMPOUND_SEP
+from apputil.models import Dictionary
 from applib.bio.bio_data import ActType_DR, pScore, format_DR, dr_max_quality, ActScoreDR_Cutoff
 from dsample.models import Compound_Batch
 from dplate.models import TestPlate
@@ -136,7 +137,7 @@ class DoseResponse():
                         ['act_type','mic_act'], ['act_score','mic_act_score'], ['pscore','pmic'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','mic_quality'], ['data_comment','mic_comment'], ['valid','mic_valid'],
+                        ['data_comment','mic_comment'], ['valid','mic_valid'],
                         'ic50','ic50_unit',['ic50_pscore','pic50'], 
                         'ic50_quality', ['ic50_r2','ic50_fit_r2'], ['ic50_slope','ic50_fit_slope']
                         # ref_mic, ref_mic_chk
@@ -148,7 +149,7 @@ class DoseResponse():
                         ['act_type','ic50_act'], ['act_score','ic50_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','ic50_quality'], ['data_comment','ic50_comment'], ['valid','ic50_valid'],
+                        ['data_comment','ic50_comment'], ['valid','ic50_valid'],
                         # ref_mic, ref_mic_chk
                         ],                      
                     'HC50': [
@@ -159,9 +160,14 @@ class DoseResponse():
                         ['hc10','mic'],['tox_type','mic_act'], ['tox_score','mic_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
-                        ['data_quality','ic50_quality'], ['data_comment','ic50_comment'], ['valid','ic50_valid'],
+                        ['data_comment','ic50_comment'], ['valid','ic50_valid'],
                         # ref_mic, ref_mic_chk
                         ],                      
+                    }
+        DATA_QUALITY = { 
+                    'MIC': 'mic_quality',
+                    'CC50': 'ic50_quality',
+                    'HC50': 'ic50_quality',
                     }
         
         ass_key = str(self.testplate.result_type)
@@ -199,6 +205,7 @@ class DoseResponse():
         self.assaydata.testwell_id = self.testwell_id
         self.assaydata.run_id = self.testplate.run_id
         self.assaydata.assay_id = self.testplate.assay_id
+        self.assaydata.data_quality = Dictionary.get('Data_Quality',getattr(self,DATA_QUALITY[ass_key]))
         
         for f in ASS_FIELDS[ass_key]:
             if isinstance(f,list):
@@ -318,12 +325,12 @@ class DoseResponse():
         if (self.skips_active > 0) and (self.skips_active <= 2):
             self.mic_valid = 1
             self.mic_quality = f'Retest'
-            _mic_Comment.append(f"Act: {self.skips_active}/ Tot: {self.skips_total} Skips")
+            _mic_Comment.append(f"Act: {self.skips_active}/{self.skips_total} Skips")
 
         elif (self.skips_active > 2):
             self.mic_valid = -1
             self.mic_quality = f"Invalid"
-            _mic_Comment.append(f"Act: {self.skips_active} Skips")
+            _mic_Comment.append(f"Act: {self.skips_active}/{self.skips_total} Skips")
         
         # In case CutOff is >80 or <80%  
         if self.inhibition_cutoff < 80:
@@ -542,7 +549,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                 djTP.conv_list_to_string()
                 djTP.make_wells_df(ListToString=True)
 
-                grpData = djTP.wells_df.groupby('                                                                                                                                                                                                      ')
+                grpData = djTP.wells_df.groupby('cmpbatch_sets') 
                 for CmpBatchSet,DRData in grpData:
                     if CmpBatchSet:
                         # Use CmpBatch w/o SetID
@@ -555,6 +562,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                             djTP.n_doseresponses += 1
                             #print(f" [{djDR.testwell_id}] {str(djDR)}")
                             djDR.doseresponse_to_assaydata()
+                            #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
                             #print(repr(djDR))

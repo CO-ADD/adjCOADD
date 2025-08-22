@@ -86,7 +86,13 @@ def main(prgArgs,djDir):
                                      )
             _df = pd.DataFrame(_data)
 
-            labText = f"{_DR['cmpbatch_id']} {_DR['assay_id']}\n {_DR['run_id']} : {_DR['testplate_id']}\n MIC: {_DR['mic']} {_DR['mic_unit']} ({_DR['inhibit_max']:.1f}%) \n IC50: {_DR['ic50']}\n QC: {_DR['data_quality']} {_DR['testplate_id__plate_quality']}\n"
+
+            labText  = f"{_DR['cmpbatch_id']} {_DR['assay_id']}"
+            labText += f"\n {_DR['run_id']} : {_DR['testplate_id']}"
+            labText += f"\n MIC: {_DR['mic']} {_DR['mic_unit']} ({_DR['inhibit_max']:.1f}%)"
+            labText += f"\n IC50: {_DR['ic50']}
+            labText += f"\n D:{_DR['data_quality']} ({_DR['data_comment']}) P:{_DR['testplate_id__plate_quality']}"
+            labText += f"\n"
             sns.lineplot(data=_df, ax=ax, x='conc',y='inhibition',label=labText,marker='o',linestyle='dotted',color=_color,markersize=10)
             nplot += 1
         
@@ -119,7 +125,9 @@ def main(prgArgs,djDir):
                     _pub_id = '-'
 
                 # Get MIC Data
-                MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id','cmpbatch_id','mic','mic_unit', 'inhibit_max','data_quality','ic50','ic50_quality','testplate_id__plate_quality']
+                MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id',
+                            'cmpbatch_id','mic','mic_unit', 'ic50','inhibit_max',
+                            'data_quality','data_comment','ic50_quality','testplate_id__plate_quality']
                 lstMIC = []
                 for _cmpid in compound_lst:
 
@@ -153,7 +161,9 @@ def main(prgArgs,djDir):
             _pub_id = '-'
 
         # Get MIC Data
-        MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id','cmpbatch_id','mic','mic_unit', 'inhibit_max','data_quality','ic50','ic50_quality','testplate_id__plate_quality']
+        MIC_VALUES = ['testplate_id','testwell_id','assay_id','run_id',
+                    'cmpbatch_id','mic','mic_unit', 'ic50','inhibit_max',
+                    'data_quality','data_comment','ic50_quality','testplate_id__plate_quality']
         lstMIC = []
         for _cmpid in compound_lst:
 
