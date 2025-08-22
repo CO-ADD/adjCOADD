@@ -15,7 +15,7 @@ class Validation_Log():
     LOG_WARNING = 'Warning'
     LOG_INFO    = 'Info'
 
-    LOG_FIELDS = ['Process','Text','Item','Note','Help']
+    LOG_FIELDS = ['Process','Action','Item','Note','Help']
     LOG_TYPES = [LOG_ERROR,LOG_WARNING,LOG_INFO]
 # ---------------------------------------------------------------------------
 
@@ -38,10 +38,10 @@ class Validation_Log():
     #-----------------------------------------------------
     # Adds a standard entry in the Log
     #-----------------------------------------------------
-    def add_log(self, logType, logText, logItem, logNote, logHelp):
+    def add_log(self, logType, logAction, logItem, logNote, logHelp):
         lDict = {
             'Process': self.log_process, 
-            'Text': logText, 
+            'Action': logAction, 
             'Item': str(logItem), 
             'Note': logNote, 
             'Help': logHelp,
@@ -53,15 +53,14 @@ class Validation_Log():
             self.n_logs[logType] = self.n_logs[logType] + 1
 
     #-----------------------------------------------------
-    def add_error(self,logText, logItem, logNote=None, logHelp=None):
-        self.add_log('Error',logText,logItem,logNote,logHelp)
+    def add_error(self,logAction, logItem, logNote=None, logHelp=None):
+        self.add_log('Error',logAction,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def add_warning(self,logText,logItem, logNote=None, logHelp=None):
-        self.add_log('Warning',logText,logItem,logNote,logHelp)
+    def add_warning(self,logAction,logItem, logNote=None, logHelp=None):
+        self.add_log('Warning',logAction,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def add_info(self,logText,logItem, logNote=None, logHelp=None):
-        self.add_log('Info',logText,logItem,logNote,logHelp)
-
+    def add_info(self,logAction,logItem, logNote=None, logHelp=None):
+        self.add_log('Info',logAction,logItem,logNote,logHelp)
 
     #-----------------------------------------------------
     # Remove duplicate log enties
@@ -146,19 +145,18 @@ class Validation_Log():
     #     df = self.get_asdf(logTypes=logTypes)
     #     html = df.to_html(columns=columns,classes=classes,index=index).replace("\\n","<br>")
     #     return(html)
+    
         log_data=self.get_asdf(logTypes=logTypes)
         if columns:
-            try:
-                log_data=log_data[columns]
-            except Exception as err:
-                raise err
+            log_data=log_data[['Type']+columns]
+            
         # Convert the DataFrame's rows to a list of tuples
         table_data = [row for row in log_data.itertuples(index=index)]
+        
         # Convert the DataFrame's columns to a list of strings
         table_header = list(log_data.columns)
-        table_dict= {
-                    'rows': table_data,
-                    'columns': table_header
+        table_dict= {'rows': table_data,
+                     'columns': table_header
                     }
         return(table_dict)
 

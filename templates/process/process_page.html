@@ -86,17 +86,23 @@
     <div class="col-md-7 border border-2 rounded" style="position: relative">
       <span class="labeltext px-4 py-1"> Message </span>
 
-      <!-- Process Line -->
       <div class="row bg-transparent">
-        {% if validation_message != None %}
-          <h3> {{validation_message}}</h3>
-        {% endif %}
+        
       </div>
+      <!-- Process Line -->
       <div class="row bg-transparent">
         {% if validation_result != None %}
           <div class="col">
             {% include 'process/process_vlogtable.html' %}
           </div>
+        {% endif %}
+      </div>
+      <div class="row bg-transparent">
+        
+      </div>
+      <div class="row bg-transparent">
+        {% if validation_message != None %}
+          <h3> {{validation_message}}</h3>
         {% endif %}
       </div>
 

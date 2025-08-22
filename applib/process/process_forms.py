@@ -10,7 +10,9 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 
 from applib.django.base.views import SuperUserRequiredMixin, WriteUserRequiredMixin
 from apputil.utils.files_upload import validate_file, file_location, OverwriteStorage
-from apputil.utils.validation_log import Validation_Log
+#from apputil.utils.validation_log import Validation_Log
+from applib.logging.validation_log import Validation_Log
+
 
 # =================================================================
 # Utilities Forms
@@ -219,20 +221,20 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                                                       upload=self.upload, appuser=request.user) 
                 
                 #convert result in a table
-                if self.valLog.nLogs['Error'] >0 :
-                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)
+                #if self.valLog.nLogs['Error'] >0 :
+                if self.valLog.n_logs['Error'] >0 :
+                    #dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)
+                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
                     self.storage.extra_data['confirm_to_upload'] = False
                     
-                elif self.valLog.nLogs['Error'] <=0:
-                    print(f" [{self.process_name}] Validation : {self.valLog.nLogs}")
-                    try:
-                        dfLog = self.valLog.get_ashtml(columns=self.html_columns)
-                    
-                        self.storage.extra_data['confirm_to_upload'] = True
-                    except Exception as err:
-                        dfLog=f"{err}"
-                        print(dfLog)
-                        self.storage.extra_data['confirm_to_upload'] = False
+                elif self.valLog.n_logs['Error'] <=0:
+                    #print(f" [{self.process_name}] valLog: {self.valLog.n_logs}")
+                    # try:
+                    dfLog = self.valLog.get_ashtml(columns=self.html_columns)
+                    self.storage.extra_data['confirm_to_upload'] = True
+                    # except Exception as err:
+                    #     dfLog=f"{err}"
+                    #     self.storage.extra_data['confirm_to_upload'] = False
                 else:
                     dfLog = self.valLog.nLogs.get('Error') or 'No object exists, Is this a correct data file?'
 
@@ -262,7 +264,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                                                     upload=self.upload, appuser=request.user)
                 
                 if self.valLog.nLogs['Error'] >0 :
-                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)#convert result in a table
+                    dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)
                 else:
                     dfLog = self.valLog.get_ashtml(columns=self.html_columns)
 

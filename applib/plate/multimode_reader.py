@@ -50,33 +50,41 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
                     _status = "Duplicate"
                 else:
                     dictPlates[djTP.plate_id] = sng_plate
+                    
+                if 'SHEET' in djTP.plate_id.upper():
+                    _status = "No Barcode"
 
                 # Output Verbose/valLog
                 if verbose>0:
                     logger.info(f"[{djTP.plate_id:25s}] - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type} [{_status}]")
                 if valLog:
                     if _status == 'New':
-                        valLog.add("Info",
-                                   "New Testplate",
-                                   f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
-                                   "Select Upload to upload data")
+                        valLog.add_info("New Testplate",
+                                        djTP.plate_id, 
+                                        f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                        "Select Upload")
                     elif _status == 'Exists':
-                        valLog.add("Warning",
-                                   "Existing Testplate",f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
-                                   "Select Overwrite to overwrite existing data")
+                        valLog.add_warning("Existing Testplate",
+                                           djTP.plate_id,
+                                           f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                           "Select Overwrite")
                     elif _status == 'Duplicate':
-                        valLog.add("Warning",
-                                   "Duplicate Testplate",f"{djTP.plate_id} - {djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
-                                   "Correct PlateID in  Xlsx file")
-
+                        valLog.add_error("Duplicate Testplate",
+                                         djTP.plate_id,
+                                         f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                         "Correct PlateID in  Xlsx file")
+                    elif _status == 'No Barcode':
+                        valLog.add_error("No Barcode",
+                                         djTP.plate_id,
+                                         f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
+                                         "Correct PlateID in Xlsx file")
             else:
                 if verbose>0:
                     logger.info(f"[{xSheet}] - Unknown PlateReader Format")
                 if valLog:
-                    valLog.add("Warning",
-                               "Unknown PlateReader Format",
-                               f" Xls.Sheet: {xSheet}",
-                               "Check Xls.Sheet if correct")
+                    valLog.add_warning("Unknown PlateReader Format",
+                               f" Xls.Sheet: {xSheet}","",
+                               "Check Xls.Sheet")
                     
     
     return(list(dictPlates.values()))
