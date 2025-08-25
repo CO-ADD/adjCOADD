@@ -133,7 +133,7 @@ class DoseResponse():
         ASS_FIELDS = { 
                     'MIC': [
                         'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
-                        'mic','mic_unit',['mic_skips','skips_active'],
+                        'mic','mic_unit','mic_skips',
                         ['act_type','mic_act'], ['act_score','mic_act_score'], ['pscore','pmic'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
@@ -269,16 +269,16 @@ class DoseResponse():
 
         #----------------------------------------------------------------
         # Evaluate the Well for MIC 
-        # - Base on EUCAST - 1 skip -> MIC of lower Conc
-        #                  - 2 skips -> reset MIC to higher Conc
-        #                  - >2 skips -> Retest
-
-        self.skips_total = 0 # Total #Skips
-        self.skips_active = 0 # #Skips within Active Set
+        # - Base on EUCAST - Single skip -> Ignore for MIC, but -> Retest
+        #                  - Multiple skips -> Reset MIC to higher Conc, but -> Invalid 
+        
+        self.skips = [0,0,0] # nTotal, nSingle, nMultiple
+        _skips = 0
 
         act_Flag = 0
         act_Well= 0
         n_Wells = len(self.df)
+
         xa1 = 'I'
         xa2 = 'I'
         idx = 1
@@ -287,13 +287,32 @@ class DoseResponse():
             if  (xa0 == 'A') and (xa1 == 'I') and (xa2 == 'I') :
                 act_Well = idx
                 act_Flag = 1
-                self.skips_active = 0
+                
+                # Record Total Single or Multiple Skips 
+                self.skips[0] += _skips
+                if _skips == 1:
+                    self.skips[1] += 1
+                elif _skips > 1:   
+                    self.skips[2] += 1
+                # Reset Skips
+                _skips = 0
+                
             if  (xa0 == 'I') and (act_Flag == 1):
-                self.skips_total += 1
-                self.skips_active += 1
+                _skips += 1
+                
             xa2 = xa1
             xa1 = xa0
             idx += 1
+            
+        # Record Total Single or Multiple Skips             
+        self.skips[0] += _skips
+        if _skips == 1:
+            self.skips[1] += 1
+        elif _skips > 1:   
+            self.skips[2] += 1
+            
+        self.mic_skips = self.skips[0]
+        # print(f" {v['active']} - {act_Well} {act_Flag} - {self.skips_active} {self.skips_total} - {self.skips} ")
 
         # -- Assign correct MIC Value from actWell
         if (act_Well == 0):
@@ -321,15 +340,16 @@ class DoseResponse():
         _mic_Comment = []
 
         # In case n/aSkips  
-        if (self.skips_active > 0) and (self.skips_active <= 2):
+#        if (self.skips_active > 0) and (self.skips_active < 2):
+        if (self.skips[1] > 0) and (self.skips[2] < 1):
             self.mic_valid = 1
             self.mic_quality = f'Retest'
-            _mic_Comment.append(f"Act: {self.skips_active}/{self.skips_total} Skips")
+            _mic_Comment.append(f"Single {self.skips[1]}/{self.skips[0]} Skips")
 
-        elif (self.skips_active > 2):
+        elif (self.skips[2] > 0):
             self.mic_valid = -1
             self.mic_quality = f"Invalid"
-            _mic_Comment.append(f"Act: {self.skips_active}/{self.skips_total} Skips")
+            _mic_Comment.append(f"Multiple {self.skips[2]}/{self.skips[0]} Skips")
         
         # In case CutOff is >80 or <80%  
         if self.inhibition_cutoff < 80:
