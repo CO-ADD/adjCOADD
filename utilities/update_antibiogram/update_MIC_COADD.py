@@ -55,10 +55,14 @@ def main(prgArgs,djDir):
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'MIC_COADD':
         if prgArgs.runid:
-            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
-                                                   run_id=prgArgs.runid)
+            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
+                                                  testplate_id__plate_quality = 'Valid',
+                                                  run_id=prgArgs.runid,
+                                                  )
         else:
-            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'))
+            qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
+                                                  testplate_id__plate_quality = 'Valid'
+                                                  )
         nMIC = qryMIC.count()
         logger.info(f" [{prgArgs.table}] {nMIC} for {prgArgs.runid}")
         if qryMIC:
