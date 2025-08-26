@@ -52,6 +52,7 @@ def main(prgArgs,djDir):
     logger.info(f"Django Folder  : {djDir['djPrj']}")
     logger.info(f"Django Project : {os.environ['DJANGO_SETTINGS_MODULE']}")
 
+
    # AssayData MIC -------------------------------------------------------------
     if prgArgs.table == 'MIC_COADD':
         if prgArgs.runid:
