@@ -52,9 +52,9 @@ class Peptide(AuditModel):
     }
 
     VIEW_GROUPS = [
-        ['peptide_name', 'peptide_code', 'peptide_type', 'peptide_panel', 'peptide_notes'],
+        ['peptide_name', 'peptide_type', 'peptide_panel', 'peptide_notes'],
         ['seq','bilm','helm'],
-        ['peptide_identification', 'peptide_origin','source', 'source_code','reference'],
+        ['peptide_origin','source', 'source_code','reference'],
         ['mta_status','mta_notes','mta_document','biologist'],
     ]
 
@@ -67,20 +67,20 @@ class Peptide(AuditModel):
     peptide_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Peptide ID") 
     peptide_name= models.CharField(max_length=200, blank=True, verbose_name = "Peptide Name") 
     peptide_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Peptide Notes")
-    peptide_code= models.CharField(max_length=30, blank=True, verbose_name = "Peptide Code")
+    #peptide_code= models.CharField(max_length=30, blank=True, verbose_name = "Peptide Code")
     peptide_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
-    peptide_type=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Type", null=True, blank=True)
-    peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
+    peptide_type=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Peptide Type", on_delete=models.DO_NOTHING,
+        db_column="peptide_type", related_name="%(class)s_peptide_type")
+    #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
     peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
     bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
     helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
     seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
-    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
-    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
-    organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
-        db_column="organism_name", related_name="%(class)s_organism_name")
+    # organism_name= models.ForeignKey(Taxonomy, null=False, blank=False, verbose_name = "Organism Name", on_delete=models.DO_NOTHING, 
+    #     db_column="organism_name", related_name="%(class)s_organism_name")
 
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta")
@@ -188,10 +188,10 @@ class Peptide_Batch(AuditModel):
     LIST_VIEW_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
-        "previous_batch_id":"Prev ID",
-        "passage_number":"Passage",
+        "source":"Source",
+        "source_code":"Code",
+        "source_type":"Method",
         "qc_status":"QC",
-        "batch_quality":"Batch Quality",
         "quality_source": "Quality by",
         "stock_date":"Stock Date",
         "stock_level":"Stock Levels",
@@ -200,7 +200,7 @@ class Peptide_Batch(AuditModel):
 
     DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
-        'batch_quality':'OrgBatch_Quality',
+        'source_type' : 'Peptide_Source'
     }
     
     FORM_GROUPS = {
@@ -214,12 +214,26 @@ class Peptide_Batch(AuditModel):
     #passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
-    batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
-        db_column="batch_quality", related_name="%(class)s_batchquality")
+
+    source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
+    source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
+    source_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source Type", on_delete=models.DO_NOTHING,
+        db_column="source_type", related_name="%(class)s_source_type")
+
+    peptide_tags = 	models.CharField(max_length=80, blank=True, verbose_name = "Tags")
+    Expression system	
+    Expression cell ID	
+    Vector ID	Free form ID 1	Free form ID 2	
+  
+
+    # batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
+    #     db_column="batch_quality", related_name="%(class)s_batchquality")
+
     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
         db_column="qc_status", related_name="%(class)s_qc")
     qc_record = models.CharField(max_length=150, blank=True, verbose_name = "QC Records")
+
     stock_date = models.DateField(null=True, blank=True, verbose_name = "Stock Date") 
     stock_level = models.CharField(max_length=20, blank=True, verbose_name = "Stock Levels") 
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
