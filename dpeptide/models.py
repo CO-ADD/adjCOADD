@@ -108,10 +108,10 @@ class Peptide(AuditModel):
         #ordering=['peptide_id']
         indexes = [
             models.Index(name="pep_bilm_idx", fields=['bilm']),
-            models.Index(name="pep_code_idx", fields=['peptide_code']),
+            #models.Index(name="pep_code_idx", fields=['peptide_code']),
             models.Index(name="pep_type_idx", fields=['peptide_type']),
             models.Index(name="pep_panel_idx", fields=['peptide_panel']),
-            models.Index(name="pep_source_idx", fields=['source']),
+            #models.Index(name="pep_source_idx", fields=['source']),
             # models.Index(name="org_taxid_idx", fields=['tax_id']),
         ]
 
@@ -221,11 +221,10 @@ class Peptide_Batch(AuditModel):
         db_column="source_type", related_name="%(class)s_source_type")
 
     peptide_tags = 	models.CharField(max_length=80, blank=True, verbose_name = "Tags")
-    Expression system	
-    Expression cell ID	
-    Vector ID	Free form ID 1	Free form ID 2	
+    # Expression system	
+    # Expression cell ID	
+    # Vector ID	Free form ID 1	Free form ID 2	
   
-
     # batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
     #     db_column="batch_quality", related_name="%(class)s_batchquality")
 
