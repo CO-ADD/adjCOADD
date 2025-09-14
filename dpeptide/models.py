@@ -121,14 +121,6 @@ class Peptide(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def str_PeptideID(cls,PeptideNo) -> str:
-    #
-    # Output:   Peptide_ID as string like GN_0001 
-    #
-        return(f"PEP{PEPTIDE_SEP}{PeptideNo:04d}")
-
-    #------------------------------------------------
-    @classmethod
     def exists(cls,PeptideID=None,PeptideName=None,verbose=0):
         if PeptideID:
             # Returns if an instance exists by peptide_id
@@ -160,16 +152,28 @@ class Peptide(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def find_Next_PeptideID(cls) -> str:
-        Peptide_IDSq = Sequence("Peptide")
-        Peptide_nextID = next(Peptide_IDSq)
-        Peptide_strID = cls.str_PeptideID(Peptide_nextID)
-        while cls.exists(Peptide_strID):
-            Peptide_nextID = next(Peptide_IDSq)
-            Peptide_strID = cls.str_PeptideID(Peptide_nextID)
-        return(Peptide_strID)
+    def str_PeptideID(cls,PeptidClass,PeptideNo) -> str:
+    #
+    # Output:   Peptide_ID as string like MAB_0001, PEP_0001, NB_0001 
+    #
+        return(f"{PeptidClass}{PEPTIDE_SEP}{PeptideNo:04d}")
+
 
     #------------------------------------------------
+    @classmethod
+    def find_Next_PeptideID(cls,PeptidClass, PeptideClassType = PEPTIDE_CLASSES) -> str:
+        if PeptidClass in PeptideClassType:
+            Peptide_IDSq=Sequence(PeptidClass)
+            Peptide_nextID = next(Peptide_IDSq)
+            Peptide_strID = cls.str_PeptideID(PeptidClass,Peptide_nextID)
+            while cls.exists(Peptide_strID):
+                Peptide_nextID = next(Peptide_IDSq)
+                Peptide_strID = cls.str_PeptideID(PeptidClass,Peptide_nextID)
+            return(Peptide_strID)    
+        else:
+            return(None)
+
+     #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.peptide_id: 
             self.peptide_id = self.find_Next_PeptideID()
@@ -206,6 +210,8 @@ class Peptide_Batch(AuditModel):
     FORM_GROUPS = {
        'Group1': ["batch_id", "batch_notes", "previous_batch_id", "passage_number", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
+
+
 
     pepbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "PepBatch ID")
     peptide_id = models.ForeignKey(Peptide, null=False, blank=False, verbose_name = "Peptide ID", on_delete=models.DO_NOTHING,
