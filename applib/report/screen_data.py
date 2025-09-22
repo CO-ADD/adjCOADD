@@ -125,15 +125,15 @@ class Report_Screening():
             _now = datetime.datetime.now()
             self.file_name = f"Project_{ProjectID}_Summary_{_now:%Y%m%d}"
             
-            self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+            self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                     cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                     testplate_id__plate_quality = 'Valid'                                            
                                     ).values_list(*self.COL_MIC)
-            self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+            self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                     cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                     testplate_id__plate_quality = 'Valid'                                            
                                     ).values_list(*self.COL_CC50)
-            self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+            self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                     cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                     testplate_id__plate_quality = 'Valid'                                            
                                     ).values_list(*self.COL_HC50)
