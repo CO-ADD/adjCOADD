@@ -62,7 +62,21 @@ class Add_Readout_ProcessView(Process_View):
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
+
     template_name = 'dscreen/screenrun_process/load_readouts.html'
+
+    select_html  = 'Please select a Excel [xlsx] file from Tecan/BioTek readers'
+    select_html += '\n Make sure file contains correct  <b>TestPlate IDs</b>'
+
+    upload_html  = 'Please check the TestPlate IDs [<i>Item</i>] for any "New Testplate" [<i>Action</i>]'
+    upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
+    upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
+
+    message_html =[
+       ('select_file',select_html),
+       ('upload',upload_html),
+       ('finalize','') 
+    ]
 
     # customize util functions to validate files:
     # vitek -- upload_VitekPDF_Process
@@ -74,11 +88,18 @@ class Add_Readout_ProcessView(Process_View):
         _upload = False
         _overwrite=False
         
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user) 
-        if self.upload:
-            obj = Screen_Run.objects.select_for_update().get(run_id=self.pk)
-            update_screenrun_summary(obj)
-            obj.save(**kwargs)
+        print('[Add_Readout_ProcessView] - 01')
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, upload=self.upload, appuser=request.user)
+        print('[Add_Readout_ProcessView] - 02')
+
+        # if self.upload:
+        #     print('[Add_Readout_ProcessView] - 03')
+        #     obj = Screen_Run.objects.select_for_update().get(run_id=self.pk)
+        #     print('[Add_Readout_ProcessView] - 04')
+        #     update_screenrun_summary(obj)
+        #     print('[Add_Readout_ProcessView] - 05')
+        #     obj.save(**kwargs)
+        #     print('[Add_Readout_ProcessView] - 05')
 
         return(valLog)
 

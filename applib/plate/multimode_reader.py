@@ -20,7 +20,10 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
 
-    xlWB = pd.ExcelFile(xlFile)
+    fXlsx = open(xlFile, "rb")
+    xlWB = pd.ExcelFile(fXlsx)
+    #xlWB = pd.ExcelFile(xlFile)
+    
     dictPlates = {}
     for xSheet in xlWB.sheet_names:
         
@@ -84,9 +87,8 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
                 if valLog:
                     valLog.add_warning("Unknown PlateReader Format",
                                f" Xls.Sheet: {xSheet}","",
-                               "Check Xls.Sheet")
-                    
-    
+                               "Check Xls.Sheet")                 
+    fXlsx.close()
     return(list(dictPlates.values()))
 
 

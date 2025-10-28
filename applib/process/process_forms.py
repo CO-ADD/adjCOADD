@@ -55,7 +55,6 @@ class SingleFileField(forms.FileField):
             result = single_file_clean(data, initial)
         return result
     
-
 # =================================================================
 # Process Step Forms
 # -----------------------------------------------------------------
@@ -263,7 +262,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                                                     form_data=form.cleaned_data, 
                                                     upload=self.upload, appuser=request.user)
                 
-                if self.valLog.nLogs['Error'] >0 :
+                if self.valLog.n_logs['Error'] >0 :
                     dfLog = self.valLog.get_ashtml(logTypes= ['Error'], columns=self.html_columns)
                 else:
                     dfLog = self.valLog.get_ashtml(columns=self.html_columns)

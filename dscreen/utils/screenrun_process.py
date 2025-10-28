@@ -9,8 +9,6 @@ from applib.plate.multimode_reader import multimodereader_xls
 import logging
 logger = logging.getLogger(__name__)
 
-
-
 def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
@@ -23,7 +21,6 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
         appuser : User Instance of user uploading
 
     """
-
     if FileList:
         nFiles = len(FileList)
     else:
@@ -40,6 +37,8 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
             print(f" [Upload_ReadOuts] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
             lstTP = multimodereader_xls(os.path.join(DirName,FileList[i]),valLog=valLog)
             
+            for _tp in lstTP:
+                print(f" {_tp} [Upload: {upload}")
             # ,OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
 
     else:
