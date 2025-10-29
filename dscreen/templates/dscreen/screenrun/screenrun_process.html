@@ -1,7 +1,6 @@
 
 <div>
 
-
   <button type="button" class="btn btn-outline-success "> 
     <a href="{% url 'load_readouts' pk=object.pk %}" style="color:inherit"> Upload Readouts </a>
   </button>
@@ -11,7 +10,7 @@
   </button>
 
   <button type="button" class="btn btn-outline-success disabled">  
-    <a href="{% url 'load_testplates' pk=object.pk %}" style="color:inherit"> Upload Testplate Info </a>
+    <a href="{% url 'load_testplatelist' pk=object.pk %}" style="color:inherit"> Upload Testplate Info </a>
   </button>
 
 {% comment %} 

@@ -23,12 +23,13 @@ def Summary_ScreenRun_Process(Request, RunID, upload=False, overwrite=False, app
 def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
-    Uploads (upload=True) the data from a single Vitek PDF, given by:
+    Uploads (upload=True) the data from a single File:
         Request : Objects to pass state through the system, including user model instance: e.g., request.user
         DirName : FolderName
         FileList : XlsName without FolderName
         RunID: RunID for Screen_Run
         upload : Validation only (False) or Validation and Upload (True)
+        overwrite : On Upload overwrite existing data
         appuser : User Instance of user uploading
 
     """
@@ -90,12 +91,13 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
 def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
-    Uploads (upload=True) the data from a single Vitek PDF, given by:
+    Uploads (upload=True) the data from a single File:
         Request : Objects to pass state through the system, including user model instance: e.g., request.user
         DirName : FolderName
         FileList : XlsName without FolderName
         RunID: RunID for Screen_Run
         upload : Validation only (False) or Validation and Upload (True)
+        overwrite : On Upload overwrite existing data
         appuser : User Instance of user uploading
 
     """
@@ -148,6 +150,72 @@ def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=F
                                 "")
     else:
         print(f"[Upload_Motherplates] No Xlsx to process in {DirName}  ")
+
+    valLog.select_unique()
+    return(valLog)
+
+def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
+#-----------------------------------------------------------------------------------
+    """
+    Uploads (upload=True) the data from a single File:
+        Request : Objects to pass state through the system, including user model instance: e.g., request.user
+        DirName : FolderName
+        FileList : XlsName without FolderName
+        RunID: RunID for Screen_Run
+        upload : Validation only (False) or Validation and Upload (True)
+        overwrite : On Upload overwrite existing data
+        appuser : User Instance of user uploading
+
+    """
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+    nUploads = 0
+    
+    djRun = Screen_Run.get(RunID)
+    valLog = Validation_Log("Upload_TestplateList")
+
+    if nFiles > 0:
+        for i in range(nFiles):
+            valLog.add_info('Read PlatePrep File', FileList[i],"[TestPlateList]") 
+            
+            print(f" [Upload_TestplateList] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
+            lstMP = read_motherplate_prepsheet_xls(os.path.join(DirName,FileList[i]),valLog=valLog)
+
+        #     for _mp in lstMP:
+        #         print(f" [Upload_MothUpload_Testplateserplates] Validating: {_mp['plate']} ")
+        #         validStatus = True
+        #         validDict = {}
+                
+        #         _mp['plate'].run_id = djRun
+        #         _mp['plate'].set_defaults_model()
+
+        #         validDict = _mp['plate'].validate_model(WellData=True, verbose = 0)
+        #         if validDict:
+        #             validStatus = False
+        #             for c in validDict:
+        #                 print(f" [Upload_Testplates] validDict: {c} ")
+
+        #         if upload and validStatus:
+        #             if _mp['new'] or overwrite:
+        #                 _mp['plate'].save(verbose=0)
+        #                 print(f" [Upload_Testplates] Saving: {_mp['plate']} [Overwrite: {overwrite}]")
+        #                 nUploads += 1
+        # if upload:
+        #     if len(lstMP)-nUploads > 0:                
+        #         valLog.add_warning("Partial Upload",
+        #                         f"RunID: {djRun.run_id}", 
+        #                         f"Testplates {nUploads} of {len(lstMP)}",
+        #                         "")
+        #     else:
+        #        valLog.add_info("Successful Upload",
+        #                         f"RunID: {djRun.run_id}", 
+        #                         f"Testplates {nUploads} of {len(lstMP)}",
+                                # "")
+    else:
+        print(f"[Upload_TestplateList] No Xlsx to process in {DirName}  ")
 
     valLog.select_unique()
     return(valLog)

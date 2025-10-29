@@ -6,7 +6,7 @@ from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_De
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
-from dscreen.process import (Add_Readouts_ProcessView, Add_Testplates_ProcessView, Add_Motherplates_ProcessView)
+from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView)
 
 urlpatterns = [
     # ScreenRun 
@@ -17,10 +17,9 @@ urlpatterns = [
     path('updateScreenrun/<str:pk>', ScreenRun_UpdateView, name="screenrun_update"),
     path('deleteScreenrun/<str:pk>', ScreenRun_RemoveView.as_view(), name="screenrun_delete"),
 
-    path('screenrun/load_readouts/<str:pk>', Add_Readouts_ProcessView.as_view(), name='load_readouts'),
-    path('screenrun/load_motherplates/<str:pk>', Add_Motherplates_ProcessView.as_view(), name='load_motherplates'),
-    path('screenrun/load_testplates/<str:pk>', Add_Testplates_ProcessView.as_view(), name='load_testplates'),
-    #path('screenrun/load_readouts/<str:pk>', Add_Readouts.as_view(), name='load_readouts'),
+    path('screenrun/load_readouts/<str:pk>', Load_Readouts_ProcessView.as_view(), name='load_readouts'),
+    path('screenrun/load_motherplates/<str:pk>', Load_Motherplates_ProcessView.as_view(), name='load_motherplates'),
+    path('screenrun/load_testplatelist/<str:pk>', Load_TestplateList_ProcessView.as_view(), name='load_testplatelist'),
     path('screenrun/report/<str:pk>', ScreenRun_ReportView, name="screenrun_report"),
 
 ]
