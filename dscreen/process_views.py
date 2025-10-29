@@ -166,8 +166,10 @@ class Load_TestplateList_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_Motherplates_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+        valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
                                            upload=self.upload, overwrite=self.overwrite, appuser=request.user) 
  
         return(valLog)
 
+    def file_process_finalizer(self, request, pk):
+        Summary_ScreenRun_Process(request, pk)
