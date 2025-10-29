@@ -1,12 +1,15 @@
 <div class="m-2" style="height: fit-content;">
+{% comment %}   
   <h2 class="m-5 text-center">{{data_model}} Data Import for <b>{{pk}}</b> </h2>
-  <form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center">
+{% endcomment %}
+
+<form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center">
     {% csrf_token %}
 
     {{ wizard.management_form }}
 
     <div class="col-md-5 border border-2 rounded" style="position: relative;">
-      <span class="labeltext px-4 py-1"> Process </span>
+      <span class="labeltext px-4 py-1"> {{data_model}} - <b>{{pk}}</b> </span>
 
       <!-- Process Line -->
       <div class="step-line">
@@ -25,24 +28,67 @@
       <div class="row bg-transparent" style="height: 20em">
 
         <!-- Step 0 Select_File -->
-        {% comment %} {% if wizard.steps.current == 'select_file' %} {% endcomment %}
-        <div class="p-3 m-auto">
-          {% for field in wizard.form %}
-              <div class="row p-1 text-start"><strong>{{ field.label_tag }}</strong></div>
-              <div class="row p-1 text-start">{{ field }}</div>
-              <div class="row p-1 text-start">{{ field.help_text }} </div>
+        {% if wizard.steps.current == 'select_file' %}  
+          <div class="p-4 m-auto">            
+            {% for field in wizard.form %}
+              <div class="row text-start"><strong>{{ field.label_tag }}</strong></div>
+              <div class="row text-start">{{ field }}</div>
+              <div class="row ps-4 pt-2 text-start">{{ field.help_text }} </div>
               {% if field.errors %}
                 <div class="row p-1 text-start">{{ field.errors }} </div>
               {% endif %}
-          {% endfor %}
-        </div>
+            {% endfor %}
+{% comment %} 
+
+            <table>
+              <tbody>
+                <tr>
+                  <td style="text-align: left; vertical-align: middle;">
+                    {% for field in wizard.form %}
+                      <div> <strong>{{ field.label_tag }}</strong> </div>
+                      <div> {{ field }} </div>
+                      <div>{{ field.help_text }} </div>
+                      {% if field.errors %}
+                        {{ field.errors }}
+                      {% endif %}
+
+                    {% endfor %}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+{% endcomment %}
+
+</div>
         {% comment %} {% endif %} {% endcomment %}
 
+        <!-- Step 1 Upload -->
+        {% elif wizard.steps.current == 'upload' %}
+          <div class="p-3 m-auto">
+            <table>
+              <tbody>
+                {% for field in wizard.form %}
+                  <tr>
+                    <td style="text-align: right; vertical-align: middle;"> <strong>{{ field.label_tag }}</strong></td>
+                    <td style="text-align: center; vertical-align: middle;">{{ field }}</td>
+                    <td style="text-align: left; vertical-align: middle;">{{ field.help_text }} </td>
+                {% comment %} {% if field.errors %}
+                  <div class="row p-1 text-start">{{ field.errors }} </div>
+                {% endif %} {% endcomment %}
+                  </tr>
+            {% endfor %}
+              </tbody>
+            </table>
+          </div>        
+        {% elif wizard.steps.current == 'finalize' %}
+          <div class="p-3 m-auto">
+            Finalize Upload
+          </div>
+        {% endif %}
 
       </div>
 
       <!-- Button Actions --> 
-
         {% if wizard.steps.prev %}
           <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> 
           <button class="btn-active" name="wizard_goto_step" type="submit"
@@ -52,9 +98,12 @@
           <button class="btn-disabled" disabled> Previous</button>
         {% endif %}
 
-        <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-          <button class="btn-active" type="submit" value="Next">Next</button>
+          {% if confirm_to_upload %}
+            <button class="btn-active" type="submit" value="Next">Next</button>
+          {% else %}
+            <button class="btn-disabled" disabled> Next</button>
+          {% endif %}
         {% elif wizard.steps.next %}
           <button class="btn-active" type="submit" value="Click to start">Next</button>
         {% else %}
@@ -86,8 +135,10 @@
     <div class="col-md-7 border border-2 rounded" style="position: relative">
       <span class="labeltext px-4 py-1"> Message </span>
 
-      <div class="row bg-transparent">
-        
+      <div class="my-2 mx-auto">
+        {% if validation_message != None %}
+          {{validation_message}}
+        {% endif %}
       </div>
       <!-- Process Line -->
       <div class="row bg-transparent">
@@ -97,15 +148,14 @@
           </div>
         {% endif %}
       </div>
-      <div class="row bg-transparent">
-        
-      </div>
-      <div class="row bg-transparent">
-        {% if validation_message != None %}
-          <h3> {{validation_message}}</h3>
+
+{% comment %}  
+      <div class="my-2 mx-auto">
+        {% if process_message != None %}
+          {{process_message}}
         {% endif %}
       </div>
-
+{% endcomment %}
 
     </div>
   </form>

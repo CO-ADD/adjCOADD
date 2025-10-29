@@ -1231,6 +1231,8 @@ class MasterPlate(Plate):
         }
 
         verbose = kwargs.get('verbose',0)
+        valLog = kwargs.get('valLog',None)
+       
         if self.wells:
             for w in self.wells:
                 if self.wells[w].dilution_lst:
@@ -1284,6 +1286,8 @@ class MasterPlate(Plate):
                                 #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
                         else:
                             logger.warning(f"[MasterPlate] Unknown dilution {d} [{self.plate_id} {w}]")
+                            if valLog:
+                                valLog.add_error("Unknown dilution",f"Diluation [{d}]",f"{self.plate_id}:{w}",f"Correct Dilution {list(DILUTION_DICT.keys())}")
 
                     
 
@@ -1304,18 +1308,27 @@ class MasterWell(Sample_Base):
         'solvent_conc_unit':'Unit_Concentration',
         'amount_unit':'Unit_Amount',
         'volume_unit':'Unit_Volume',
+        'test_conc_unit_lst': 'Unit_Concentration',
+        'test_conc_type_lst': 'Concentration_Type',
     }
 
     ARRAY_FIELDS = {'cmpbatch_lst':['compound_id','compound2_id','compound3_id','compound4_id'],
                     'conc_lst':['conc','conc2','conc3','conc4',],
-                    'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
-                    'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
+                    #'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
+                    #'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
                     'set_lst':['set_id','set2_id','set3_id','set4_id'], 
                     'test_conc_lst':['test_conc','test_conc2','test_conc3','test_conc4',],
-                    'test_conc_unit_lst':['test_conc_unit','test_conc2_unit','test_conc3_unit','test_conc4_unit'], 
-                    'test_conc_type_lst':['test_conc_type','test_conc2_type','test_conc3_type','test_conc4_type'], 
+                    #'test_conc_unit_lst':['test_conc_unit','test_conc2_unit','test_conc3_unit','test_conc4_unit'], 
+                    #'test_conc_type_lst':['test_conc_type','test_conc2_type','test_conc3_type','test_conc4_type'], 
                     'dilution_lst':['dilution','dilution2','dilution3','dilution4'], 
                     }
+    
+    ARRAYDICTIONARY_FIELDS = {
+                    'conc_unit_lst':['conc_unit','conc2_unit','conc3_unit','conc4_unit'], 
+                    'conc_type_lst':['conc_type','conc2_type','conc3_type','conc4_type'], 
+                    'test_conc_unit_lst':['test_conc_unit','test_conc2_unit','test_conc3_unit','test_conc4_unit'],     
+                    'test_conc_type_lst':['test_conc_type','test_conc2_type','test_conc3_type','test_conc4_type'],      
+    }
     
     COPY_FIELDS = ['solvent', 'solvent_conc', 'amount','volume',]
 

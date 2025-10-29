@@ -16,59 +16,91 @@ from decimal import Decimal
 # --------------------------------------------------------------------------------
 def read_motherplate_prepsheet_xls(xlFile, SheetName='MotherPlates', prefix=None, as_is=False, **kwargs):
 # --------------------------------------------------------------------------------
-    xlWB = pd.ExcelFile(xlFile)
-    xDF = xlWB.parse(SheetName)
-    xDF.columns = [c.lower() for c in xDF.columns]
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
 
-    lstPl = []
-    lstMP = xDF['motherplate_id'].unique()
+    fXlsx = open(xlFile, "rb")
+    xlWB = pd.ExcelFile(fXlsx)
 
-    grpMP = xDF.groupby(by='motherplate_id')
-    for mpid,mpwells in grpMP:
-        
-        dictPl = {}
-        dictPl['plate_id'] = xDF['motherplate_id']
-        dictPl['valid_status'] = True
-        
-        _status = "Exists"
-        djMP = MasterPlate.get(mpid, WellData=True, verbose=0)
-        if djMP is None:
-            #logger.info(f" New Plate {mpid}")
-            nWells=384
-            djMP = MasterPlate.new(mpid, nWells, PlateType='Mother', WellData=True)
-            _status = "New"
-        else:
-            djMP.load_wells(WellModel=MasterWell)
+    if SheetName in xlWB.sheet_names:
+        xDF = xlWB.parse(SheetName)
+        xDF.columns = [c.lower() for c in xDF.columns]
 
-        djMP.plating = mpwells['plating'].unique()[0]
-        djMP.dilution_layout = 'Dilution'
+        lstPl = []
+        lstMP = xDF['motherplate_id'].unique()
 
-        for idx,row in mpwells.iterrows():
-            #print(row['compound_id'])
-            if not pd.isna(row['compound_id']) and not pd.isna(row['motherwell_id']):
-                # Check if at least compound_id and motherwell_id
-                djWell = djMP.get_well(row['motherwell_id'])
-                set_model_fields(djWell,row,djWell.COPY_FIELDS)
-                set_model_arrayfields(djWell,row,djWell.ARRAY_FIELDS)
-                set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()))
-                djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
-                validDict = djWell.check_cmpbatch_id()
+        grpMP = xDF.groupby(by='motherplate_id')
+        for mpid,mpwells in grpMP:
+            
+            dictPl = {}
+            dictPl['plate_id'] = xDF['motherplate_id']
+            dictPl['valid_status'] = True
+            
+            _status = "Exists"
+            djMP = MasterPlate.get(mpid, WellData=True, verbose=0)
+            if djMP is None:
+                #logger.info(f" New Plate {mpid}")
+                nWells=384
+                djMP = MasterPlate.new(mpid, nWells, PlateType='Mother', WellData=True)
+                _status = "New"
+            else:
+                djMP.load_wells(WellModel=MasterWell)
 
-                if validDict:
-                    validStatus = False
-                    dictPl['valid_status'] = False    
-                    logger.warning(validDict)
-                    row.update(validDict)
-  
-        djMP.add_dilutions()
-        djMP.set_defaults_model()
+            djMP.plating = mpwells['plating'].unique()[0]
+            djMP.dilution_layout = 'Dilution'
 
-        dictPl['new'] = _status == 'New'
-        dictPl['plate'] = djMP
-        
-        lstPl.append(dictPl)
-        logger.info(f"[{djMP.plate_id:25s}] - {djMP.plate_type}  {djMP.n_wells}w  [{_status}]")
+            if valLog:
+                if _status == 'New':
+                    valLog.add_info("New MotherPlate",
+                                    djMP.plate_id, 
+                                    f"{djMP.plating}  {djMP.n_wells}w ",
+                                    "Select Upload")
+                elif _status == 'Exists':
+                    valLog.add_warning("MotherPlate Exists ",
+                                        djMP.plate_id,
+                                        f"{djMP.plating}  {djMP.n_wells}w ",
+                                        "Select Overwrite")
 
+
+            for idx,row in mpwells.iterrows():
+                #print(row['compound_id'])
+                if not pd.isna(row['compound_id']) and not pd.isna(row['motherwell_id']):
+                    # Check if at least compound_id and motherwell_id
+                    djWell = djMP.get_well(row['motherwell_id'])
+                    set_model_fields(djWell,row,djWell.COPY_FIELDS)
+                    set_model_arrayfields(djWell,row,djWell.ARRAY_FIELDS)
+                    set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()),valLog=valLog)
+                    set_model_dictarrayfields(djWell,row,djWell.ARRAYDICTIONARY_FIELDS,valLog=valLog)
+                    djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
+                    
+                    validDict = djWell.check_cmpbatch_id()
+                    if validDict:
+                        validStatus = False
+                        dictPl['valid_status'] = False    
+                        logger.warning(validDict)
+                        row.update(validDict)
+                        if valLog:
+                            for k in validDict:
+                                valLog.add_log(k,'Missing CompoundID',row['compound_id'],f"{djMP.plate_id}:{row['motherwell_id']}",
+                                               "Correct PlatePrep or Register Compound")
+    
+            djMP.add_dilutions(valLog=valLog)
+            djMP.set_defaults_model()
+
+            dictPl['new'] = _status == 'New'
+            dictPl['plate'] = djMP
+            
+            lstPl.append(dictPl)
+            logger.info(f"[{djMP.plate_id:25s}] - {djMP.plate_type}  {djMP.n_wells}w  [{_status}]")
+    else:
+        if verbose>0:
+            logger.error(f"{SheetName} not found in {xlFile}")
+        if valLog:
+            valLog.add_error("Wrong PlatePrep file",
+                            f"Sheet: {SheetName}", 
+                            "SheetName not in PlatePrep.XLS",
+                            "Correct SheetName")        
+    fXlsx.close()
     return(lstPl)
 
 # --------------------------------------------------------------------------------

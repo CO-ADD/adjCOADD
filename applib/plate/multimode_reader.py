@@ -67,7 +67,7 @@ def multimodereader_xls(xlFile, prefix=None, as_is=False, **kwargs):
                                         f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
                                         "Select Upload")
                     elif _status == 'Exists':
-                        valLog.add_warning("Existing Testplate",
+                        valLog.add_warning("TestPlate Exists",
                                            djTP.plate_id,
                                            f"{djTP.reader}  {djTP.n_wells}w {djTP.readout_type}",
                                            "Select Overwrite")

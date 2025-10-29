@@ -611,12 +611,14 @@ class Dictionary(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def get(cls,DictClass,DictValue=None,DictDesc=None,verbose=1):
+    def get(cls,DictClass,DictValue=None,DictDesc=None, **kwargs):
     #
     # Returns a Dictionary instance if found 
     #    by dict_value
     #    by dict_desc (set dict_value = None)
     #
+        verbose = kwargs.get('verbose',0)
+        
         if DictValue:
             try:
                 retDict = cls.objects.get(dict_value=DictValue, dict_class=DictClass)

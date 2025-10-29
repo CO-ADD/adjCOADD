@@ -172,7 +172,6 @@ def process_VitekPDF(DirName,PdfName,OrgBatchID=None):
     """
     Reads a single Vitek PDF extraxts the information into
     Lists of Cards, AST and ID dictionaries
-
     """
 #-----------------------------------------------------------------------------
     pVitek = parse_VitekPDF(DirName,PdfName,OrgBatchID=OrgBatchID)

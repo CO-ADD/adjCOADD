@@ -18,10 +18,13 @@ from apputil.models import Dictionary
 
 
 #------------------------------------------------------------------------------------
-def set_model_fkeys(djModel, rowDict, dict_FKeys):
+def set_model_fkeys(djModel, rowDict, dict_FKeys, **kwargs):
     #
     # dict_FKeys = {'field_name': FKey Model}
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
     valid = True
     for f in dict_FKeys:
         if f in rowDict:
@@ -32,36 +35,54 @@ def set_model_fkeys(djModel, rowDict, dict_FKeys):
                     setattr(djModel,f,_obj)
                 else:
                     logger.warning(f" [set_fkeys] {f} = '{rowDict[f]}' not found in [{dict_FKeys[f].__name__}]" )
+                    if valLog:
+                        valLog.add_error(f"FKey {f} not found",rowDict[f],"Not found in [{dict_FKeys[f].__name__}]")
+                        
                     setattr(djModel,f,None)
                     valid = False
     return valid           
         
 #------------------------------------------------------------------------------------
-def set_model_fields(djModel,rowDict,list_Fields):
+def set_model_fields(djModel,rowDict,list_Fields,**kwargs):
     #
     # list_Fields = ['fieldname1','fielname2',...,'filenameN'] 
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
     for e in list_Fields:
         if e in rowDict:
             if pd.notnull(rowDict[e]):
                 setattr(djModel,e,rowDict[e])
 
 #------------------------------------------------------------------------------------
-def set_model_dicts(djModel,rowDict,list_Dicts):
+def set_model_dicts(djModel,rowDict,list_Dicts,**kwargs):
     #
     # list_Dicts = ['fieldname1','fielname2',...,'filenameN'] 
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+        
     for d in list_Dicts:
+        #print(f" [set_model_dicts] - {d}")
         if d in rowDict:
+            #print(f" [set_model_dicts] - {d} {rowDict[d]} -> {djModel.DICTIONARY_FIELDS}")
             if pd.notnull(rowDict[d]):
                 if d in djModel.DICTIONARY_FIELDS:
                     setattr(djModel,d,Dictionary.get(djModel.DICTIONARY_FIELDS[d],rowDict[d]))
-
+    
+# --------------------------------------------------------------------------------
+    
+    
+    
 #------------------------------------------------------------------------------------
-def set_model_arrayfields(djModel,rowDict, dict_Arrays):
+def set_model_arrayfields(djModel,rowDict, dict_Arrays,**kwargs):
     #
     # dict_Arrays = {'fieldname_lst' : ['input1','input2',...,'inputn'] }
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
     for f in dict_Arrays:
         _array = []
         if isinstance(dict_Arrays[f],str):
@@ -78,11 +99,14 @@ def set_model_arrayfields(djModel,rowDict, dict_Arrays):
             setattr(djModel,f,_array)
 
 #------------------------------------------------------------------------------------
-def set_model_dictarrayfields(djModel,rowDict,dict_ArrayDicts):
+def set_model_dictarrayfields(djModel,rowDict,dict_ArrayDicts,**kwargs):
     #
     # arrDict = {'fieldname_lst' : ['input1','input2',...,'inputN'] }
     #   inputN - checked if in Dictionary
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
     for f in dict_ArrayDicts:
         _dict_list = []
         _ret_list  = []
@@ -93,13 +117,25 @@ def set_model_dictarrayfields(djModel,rowDict,dict_ArrayDicts):
                 
         elif isinstance(dict_ArrayDicts[f],list):
             for l in dict_ArrayDicts[f]:
-                if pd.notnull(rowDict[l]):
-                    _dict_list.append(rowDict[l])
+                if l in rowDict:
+                    if pd.notnull(rowDict[l]):
+                        _dict_list.append(rowDict[l])
         
         for l in _dict_list:
             _d = Dictionary.get(djModel.DICTIONARY_FIELDS[f],l)
             if _d:
                 _ret_list.append(str(_d))
+            else:
+                if valLog:
+                    if 'conc' in f:
+                        _help = " [µM -> uM]"
+                    elif 'amount' in f:
+                        _help = " [µg -> ug]"
+                    elif 'volume' in f:
+                        _help = " [µl -> uL]"
+                    else:
+                        _help = ""
+                    valLog.add_error(f'Wrong {djModel.DICTIONARY_FIELDS[f]}',f"{l}",f"[{f}]",f"Correct the value {_help}")
             
         if len(_ret_list)>0:
             setattr(djModel,f,_ret_list)

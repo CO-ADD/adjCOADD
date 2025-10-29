@@ -38,7 +38,7 @@ class Validation_Log():
     #-----------------------------------------------------
     # Adds a standard entry in the Log
     #-----------------------------------------------------
-    def add_log(self, logType, logAction, logItem, logNote, logHelp):
+    def add_log(self, logType, logAction, logItem, logNote="", logHelp=""):
         lDict = {
             'Process': self.log_process, 
             'Action': logAction, 
@@ -53,13 +53,13 @@ class Validation_Log():
             self.n_logs[logType] = self.n_logs[logType] + 1
 
     #-----------------------------------------------------
-    def add_error(self,logAction, logItem, logNote=None, logHelp=None):
+    def add_error(self,logAction, logItem, logNote="", logHelp=""):
         self.add_log('Error',logAction,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def add_warning(self,logAction,logItem, logNote=None, logHelp=None):
+    def add_warning(self,logAction,logItem, logNote="", logHelp=""):
         self.add_log('Warning',logAction,logItem,logNote,logHelp)
     #-----------------------------------------------------
-    def add_info(self,logAction,logItem, logNote=None, logHelp=None):
+    def add_info(self,logAction,logItem, logNote="", logHelp=""):
         self.add_log('Info',logAction,logItem,logNote,logHelp)
 
     #-----------------------------------------------------

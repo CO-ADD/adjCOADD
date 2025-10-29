@@ -17,7 +17,6 @@ def process_CompoundSubmission(ProjectID=None,upload=False,appuser=None,valLog=N
 def parse_CompoundSubmission(ExcelFile, upload=False,appuser=None,valLog=None):
     pass
 
-
 def Project_fromDict(iDict,valLog,upload=False):
     pass
 
