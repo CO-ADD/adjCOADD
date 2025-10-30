@@ -48,6 +48,27 @@ def update_screenrun_summary(djRun):
     djRun.n_synmic = TestWell.objects.filter(plate_id__result_type='synMIC', 
                                             plate_id__run_id = djRun.run_id, n_cmpbatches__gt = 0
                                             ).values('cmpbatch_lst').distinct().count()
+    # Process Status of Testplates (Run)
+    if str(djRun.run_type) in ['HCR','PSR']:
+        # 0 No data
+        # 1 Reads (Motherplates) -> Testplatelist
+        # 2 Assays, Layout, MotherPlates -> Assign Cmpounds
+        # 3 Compounds -> Calculate Inhibition
+        # 4 Inhibition (Doseresponse)
+        #  
+        if djRun.n_testplates > 0:
+            djRun.process_status = 1
+        if djRun.n_assays > 0: 
+            djRun.process_status = 2
+        if djRun.n_compounds > 0: 
+            djRun.process_status = 3
+        if djRun.n_inhibitions > 0: 
+            djRun.process_status = 4
+            
+    elif str(djRun.run_type) in ['SEQ']:
+        if djRun.n_seq > 0:
+            djRun.process_status = 1
+    
     if djRun.n_testplates > 0:
         djRun.screen_date = TestPlate.objects.filter(run_id = djRun.run_id).values('test_date').latest('test_date')['test_date']
 

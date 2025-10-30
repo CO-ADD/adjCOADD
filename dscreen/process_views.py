@@ -5,52 +5,82 @@ import datetime
 #from rdkit import Chem
 #from django_filters.views import FilterView
 
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import transaction, IntegrityError
-from django.db.models import Count
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-from django.urls import reverse_lazy
-from django.utils.functional import SimpleLazyObject
+# from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.contrib import messages
+# from django.core.exceptions import ValidationError
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+# from django.db import transaction, IntegrityError
+# from django.db.models import Count
+# from django.http import JsonResponse
+# from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+# from django.urls import reverse_lazy
+# from django.utils.functional import SimpleLazyObject
 from django.utils.safestring import mark_safe
+from django import forms
 
-from apputil.models import ApplicationLog
-from apputil.forms import Document_Form
-from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
+# from apputil.models import ApplicationLog
+# from apputil.forms import Document_Form
+# from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 
-# from adjcoadd.constants import *
-
+from adjcoadd.constants import *
 from dscreen.models import Screen_Run
-
 from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process, 
                                             Upload_ReadOuts_Process, Upload_Motherplates_Process,Upload_TestplateList_Process)
-from dsample.models import Project
-from dplate.models import MasterPlate, TestPlate
+# from dsample.models import Project
+# from dplate.models import MasterPlate, TestPlate
 
 from applib.process.process_forms import Process_View
 from apputil.utils.form_wizard_tools import ImportHandler_View
 
-from applib.process.process_forms import SelectSingleFile_StepForm,Finalize_StepForm,Upload_StepForm
+from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
-class Readout_StepForm(SelectSingleFile_StepForm):
+class Readout_SelectForm(SelectSingleFile_StepForm):
 # --------------------------------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['multi_files'].label = 'Xlsx file from Tecan/BioTek readers'
 
-class PlatePrep_StepForm(SelectSingleFile_StepForm):
+class PlatePrep_SelectForm(SelectSingleFile_StepForm):
 # --------------------------------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'PlatePrep Xlsx Workbook'
-        self.fields['multi_files'].help_text = mark_safe("Xlsx Workbook containing: <li> [TestPlateList] <li> [MotherPlates]")
+        self.fields['multi_files'].label = 'PlatePrep Workbook'
+
+        _help_text = 'XLSX Workbook containing the following Sheets: '
+        _help_text += '<li> [MotherPlates]'
+        _help_text += '<li> [TestPlateList, Assays, (HCPrep, PSPrep)]'
+        # _help_text += '<p> Use <a href "{% static '
+        # _help_text += f"'{TemplateList['hc_plateprep']}'"
+        # _help_text += ' %}"> PlatePrep Template</a> '
+        #_help_text += f'<p> Use <a href="static/{TemplateList["hc_plateprep"]}">PlatePrep Template</a>'
+        #_help_text += ' {% static '
+        #_help_text += f"'{TemplateList['hc_plateprep']}'"
         
+        print(_help_text)
+        self.fields['multi_files'].help_text = mark_safe(_help_text)
+
+        #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
+
+class TestPlate_UploadForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
+    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
+    apply_mp = forms.BooleanField(initial=False, required=False, help_text="Fill Testplates with Compounds and Layout")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['upload'].label = "Upload Data to Database"
+        #self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        self.fields['apply_mp'].label = "Apply Motherplates/Layout"
+        #self.fields['apply_mp'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+
+
 # --------------------------------------------------------------------------------------------------
 class Load_Readouts_ProcessView(Process_View):
     process_name = 'Upload_Readouts'
@@ -58,7 +88,7 @@ class Load_Readouts_ProcessView(Process_View):
 
     #name_step1="Upload"
     form_list = [
-        ('select_file', Readout_StepForm),
+        ('select_file', Readout_SelectForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
@@ -103,7 +133,7 @@ class Load_Motherplates_ProcessView(Process_View):
     model = Screen_Run
 
     form_list = [
-        ('select_file', PlatePrep_StepForm),
+        ('select_file', PlatePrep_SelectForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
@@ -136,8 +166,8 @@ class Load_TestplateList_ProcessView(Process_View):
     model = Screen_Run
 
     form_list = [
-        ('select_file', Readout_StepForm),
-        ('upload', Upload_StepForm),
+        ('select_file', PlatePrep_SelectForm),
+        ('upload', TestPlate_UploadForm),
         ('finalize', Finalize_StepForm),
     ]
 

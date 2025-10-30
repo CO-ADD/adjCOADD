@@ -103,6 +103,9 @@ class Validation_Log():
         return(f"{self.log_process} {self.n_logs}")
 
     #-----------------------------------------------------
+    def if_noerrors(self):
+        return(self.n_logs[self.LOG_ERROR] == 0)
+    #-----------------------------------------------------
     # Show log entries in logger.info
     #-----------------------------------------------------
     def show(self,logTypes=LOG_TYPES):

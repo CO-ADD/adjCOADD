@@ -110,6 +110,7 @@ def ScreenRun_DetailView(req, pk):
 
     if str(_object.run_type) in ['HCR','PSR']:
         context["process"] = {"type":"Screening"}
+        context["process_status"] = _object.process_status
         
         # Paginated and filtered list
         paginate_by = 50
@@ -128,8 +129,10 @@ def ScreenRun_DetailView(req, pk):
         
     elif str(_object.run_type) in ['SEQ']:
         context["process"] = {"type":"Sequencing"}
+        context["process_status"] = _object.process_status
     else:
         context["process"] = {"type":"Undefined"}
+        context["process_status"] = _object.process_status
         
     # context["org_id_obj_count"] = len(id_data_df)
     # context["org_id_obj"] = id_data_df.values.tolist()

@@ -54,6 +54,11 @@ AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 # column name can be edited here 
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
 
+# Documents:
+TemplateList={
+    'hc_plateprep': 'HC_PlatePrep_Template.docx',
+} 
+
 # Links:
 LinkList={
     'taxonomny':        '/dorganism/taxonomy/{VALUE1}',

@@ -131,13 +131,15 @@ class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
 class Upload_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
-    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
-    overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite existing Data")
+    upload = forms.BooleanField(initial=False, required=False, help_text="Upload New Data to Database")
+    overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite Existing Data as well")
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
-        self.fields['overwrite'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        self.fields['upload'].label = "Upload New Data"
+        self.fields['overwrite'].label = "Overwrite Existing Data"
+        # self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        # self.fields['overwrite'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
 
 # --------------------------------------------------------------------------------------------------
 class Finalize_StepForm(forms.Form):
@@ -320,6 +322,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         #context['step1']=self.name_step1
         current_step = self.steps.current
         context['validation_message'] = self.storage.extra_data.get('validation_message', None)
+        context['help_message'] = self.storage.extra_data.get('help_message', None)
 
         #print(f" [Process_View.get_context_data] Step: [{current_step}] for PK:{self.pk} ")
         
@@ -328,11 +331,12 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
             context['validation_result']=""
             #context['pk'] = self.pk
         elif current_step == 'upload_file':
-            context['validation_result']="Select VITEK PDF files"
+            context['validation_result']=""
             #context['pk'] = self.storage.extra_data.get('object_pk', None)
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
             context['confirm_to_upload'] = self.storage.extra_data.get('confirm_to_upload', None)
+            context['help_text']=""
             #context['pk'] = self.storage.extra_data.get('object_pk', None)
             
         #print(f" [Process_View.get_context_data] Step: [{current_step}] Validation_result: {context['validation_result']}")

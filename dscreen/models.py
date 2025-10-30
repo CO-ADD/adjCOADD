@@ -47,6 +47,7 @@ class Screen_Run(AuditModel):
         #"run_date":"Run Date",
         "run_conditions":"Conditions",
         "run_issues":"Issues",
+        #"process_status":"Process Status",
         # Calculated Fields
         "screen_date": "Screen Date",
         "n_compounds":"#Cmpds",     
@@ -68,7 +69,7 @@ class Screen_Run(AuditModel):
 
     VIEW_GROUPS = [
         ['run_type','run_status','run_name','run_project','run_date'],
-        ['run_conditions','assay_note','run_issues'],
+        ['run_conditions','assay_note','run_issues','process_status'],
         ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_qc','n_seq'],
         ['screen_date','n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',]
     ]
@@ -93,7 +94,8 @@ class Screen_Run(AuditModel):
                          'n_motherplates','n_testplates','n_assays',
                          'n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',
                          'n_seq',
-                         'screen_date']
+                         'screen_date',
+                         'process_status']
 
     n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
     #n_projects = models.SmallIntegerField(default=0, verbose_name = "#Projects")
@@ -109,6 +111,7 @@ class Screen_Run(AuditModel):
     n_hc50 = models.IntegerField(default=0, verbose_name = "#HC50")
     n_synmic = models.IntegerField(default=0, verbose_name = "#micSyn")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
+    process_status = models.IntegerField(default=0, verbose_name = "Process Status")
 
 
     #------------------------------------------------
@@ -123,6 +126,7 @@ class Screen_Run(AuditModel):
             models.Index(name="run_nas_idx", fields=['n_assays']),
             models.Index(name="run_nmp_idx", fields=['n_motherplates']),
             models.Index(name="run_ntp_idx", fields=['n_testplates']),
+            models.Index(name="run_pst_idx", fields=['process_status']),
         ]
 
     # #------------------------------------------------

@@ -34,9 +34,10 @@ def set_model_fkeys(djModel, rowDict, dict_FKeys, **kwargs):
                 if _obj is not None:
                     setattr(djModel,f,_obj)
                 else:
-                    logger.warning(f" [set_fkeys] {f} = '{rowDict[f]}' not found in [{dict_FKeys[f].__name__}]" )
+                    if verbose >0:
+                        logger.warning(f" [set_fkeys] {f} = '{rowDict[f]}' not found in [{dict_FKeys[f].__name__}]" )
                     if valLog:
-                        valLog.add_error(f"FKey {f} not found",rowDict[f],"Not found in [{dict_FKeys[f].__name__}]")
+                        valLog.add_error(f"FKey {f} not found",rowDict[f],f"Not found in [{dict_FKeys[f].__name__}]")
                         
                     setattr(djModel,f,None)
                     valid = False
@@ -141,11 +142,13 @@ def set_model_dictarrayfields(djModel,rowDict,dict_ArrayDicts,**kwargs):
             setattr(djModel,f,_ret_list)
 
 #------------------------------------------------------------------------------------
-def set_model_fkeyarrayfields(djModel,rowDict,dict_ArrayFKeys):
+def set_model_fkeyarrayfields(djModel,rowDict,dict_ArrayFKeys,**kwargs):
     #
     #  dict_ArrayFKeys = {'fieldname_lst' : {'model': Model, 'fields': ['input1','input2',...,'inputN'] } }
     #   inputN - checked if in Dictionary
     #
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
 
     for f in dict_ArrayFKeys:
         #print("arrFields",f)
@@ -169,7 +172,10 @@ def set_model_fkeyarrayfields(djModel,rowDict,dict_ArrayFKeys):
                 if _a != '-':
                     _obj = _model.get(_a)
                     if _obj is None:
-                        logger.warning(f" [set_fkeyarrays] {f} = '{_a}' not found in [{_model.__name__}]" )
+                        if verbose >0:
+                            logger.warning(f" [set_fkeyarrays] {f} = '{_a}' not found in [{_model.__name__}]" )
+                        if valLog:
+                            valLog.add_error(f"Missing {f}",_a,f"Not found in [{_model.__name__}]","Correct MotherPlate_ID or Upload MotherPlate")
                         _valid = False
             if _valid:
                 setattr(djModel,f,_array)
@@ -182,7 +188,10 @@ def set_model_from_dict(djModel,row,
                         list_Dicts=[],
                         dict_FKeys={},
                         dict_FKeyArrays = {}, 
-                        valLog=None):
+                        **kwargs):
+    
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
     validStatus = True
 
     if len(list_Fields)>0:
@@ -190,11 +199,11 @@ def set_model_from_dict(djModel,row,
     if len(dict_Arrays)>0:
         set_model_arrayfields(djModel,row,dict_Arrays)     
     if len(list_Dicts)>0:
-        set_model_dicts(djModel,row,list_Dicts)
+        set_model_dicts(djModel,row,list_Dicts,valLog=valLog)
     if len(dict_FKeys)>0:
-        set_model_fkeys(djModel,row,dict_FKeys)
+        set_model_fkeys(djModel,row,dict_FKeys,valLog=valLog)
     if len(dict_FKeyArrays)>0:
-        set_model_fkeyarrayfields(djModel,row,dict_FKeyArrays)
+        set_model_fkeyarrayfields(djModel,row,dict_FKeyArrays,valLog=valLog)
         
     djModel.set_defaults_model()
     validDict = djModel.validate_fields()
@@ -203,6 +212,6 @@ def set_model_from_dict(djModel,row,
         for k in validDict:
             if valLog:    
                 valLog.add_log('Warning','',k,validDict[k],'-')
-            else: 
+            if verbose >0: 
                 logger.warning(f"{k} - {validDict[k]}")
     return(validStatus)

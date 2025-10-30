@@ -4,8 +4,10 @@ from django.core.cache import cache
 #from apputil.utils.validation_log import Validation_Log
 from applib.logging.validation_log import Validation_Log
 from dscreen.models import Screen_Run
+
 from applib.plate.multimode_reader import multimodereader_xls
-from applib.plate.masterplates import read_motherplate_prepsheet_xls
+#from applib.plate.masterplates import read_motherplate_prepsheet_xls
+from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS
 from dscreen.utils.summary import update_screenrun_summary
 
 import logging
@@ -116,7 +118,7 @@ def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=F
             valLog.add_info('Read PlatePrep File', FileList[i],"[MotherPlates]") 
             
             print(f" [Upload_Motherplates] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
-            lstMP = read_motherplate_prepsheet_xls(os.path.join(DirName,FileList[i]),valLog=valLog)
+            lstMP = read_Motherplates_Prepsheet_XLS(os.path.join(DirName,FileList[i]),valLog=valLog)
 
             for _mp in lstMP:
                 print(f" [Upload_Motherplates] Validating: {_mp['plate']} ")
@@ -177,15 +179,35 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None, upload=
     djRun = Screen_Run.get(RunID)
     valLog = Validation_Log("Upload_TestplateList")
 
+
+    logNumbers = {'Processed Assays':0,'New Assays':0, 'Uploaded Assays':0,
+                  'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+                  'Empty':0}
+
+
     if nFiles > 0:
         for i in range(nFiles):
-            valLog.add_info('Read PlatePrep File', FileList[i],"[TestPlateList]") 
+            valLog.add_info('Read PlatePrep File', FileList[i],"[TestPlateList, Assay]") 
             
             print(f" [Upload_TestplateList] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
-            lstMP = read_motherplate_prepsheet_xls(os.path.join(DirName,FileList[i]),valLog=valLog)
+            lstTP,lstAss = read_TestPlateList_Prepsheet_XLS(os.path.join(DirName,FileList[i]),valLog=valLog)
 
-        #     for _mp in lstMP:
-        #         print(f" [Upload_MothUpload_Testplateserplates] Validating: {_mp['plate']} ")
+            if valLog.if_noerrors():
+                for _tpid in lstTP:
+                    _tp = lstTP[_tpid]['plate']
+                    _new = lstTP[_tpid]['plate']
+                    validStatus = True
+
+                    validDict = _tp.validate_model(WellData=False, verbose = 0)
+                    if validDict:
+                        validStatus = False
+                        for c in validDict:
+                            print(f" [Upload_TestPlateList] validDict: {c} ")
+
+                    if upload and validStatus:
+                        print(f" [Upload_TestPlateList] Updating: {_tpid} ")
+                        _tp.save()
+
         #         validStatus = True
         #         validDict = {}
                 

@@ -536,7 +536,7 @@ class TestPlate(Plate):
         for wd in PlateDict:
             retDict.append(wd)
 
-        if self.wells and WellData:
+        if hasattr(self,'wells') and WellData:
             for w in self.wells:
                 if self.wells[w] is not None:
                     WellDict = super(TestWell,self.wells[w]).validate_model(**kwargs)

@@ -5,12 +5,18 @@
     <a href="{% url 'load_readouts' pk=object.pk %}" style="color:inherit"> Upload Readouts </a>
   </button>
 
+{% comment %} 
+  <button type="button" class="btn btn-outline-success"> 
+    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Generate Motherplate</a>
+  </button>
+{% endcomment %}
+
   <button type="button" class="btn btn-outline-success"> 
     <a href="{% url 'load_motherplates' pk=object.pk %}" style="color:inherit"> Upload Motherplates </a>
   </button>
 
-  <button type="button" class="btn btn-outline-success disabled">  
-    <a href="{% url 'load_testplatelist' pk=object.pk %}" style="color:inherit"> Upload Testplate Info </a>
+  <button type="button" class="btn btn-outline-success {% if process_status < 2 %}disabled {% endif %} ">  
+    <a href="{% url 'load_testplatelist' pk=object.pk %}" style="color:inherit"> Upload Testplates</a>
   </button>
 
 {% comment %} 
@@ -18,12 +24,12 @@
     <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Apply Motherplate Info</a>
   </button>
 
-  <button type="button" class="btn btn-outline-success disabled"> 
-    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Analyse Testplates</a>
+  <button type="button" class="btn btn-outline-success {% if process_status < 3 %}disabled {% endif %}"> 
+    <a href="{% url 'analyze_testplates' pk=object.pk %}" style="color:inherit"> Analyze Testplates</a>
   </button>
 {% endcomment %}
 
-  <button type="button" class="btn btn-outline-success "> 
-    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Run Report</a>
+  <button type="button" class="btn btn-outline-success {% if process_status < 4 %}disabled {% endif %}"> 
+    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Generate Report</a>
   </button>
 </div>
