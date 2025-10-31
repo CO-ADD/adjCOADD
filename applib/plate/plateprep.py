@@ -18,7 +18,7 @@ from dcell.models import Cell, Cell_Batch
 from applib.data.set_fielddata import (set_model_arrayfields, set_model_fields, 
                                        set_model_dicts, set_model_dictarrayfields, 
                                        set_model_fkeys, set_model_from_dict)
-
+from django.conf import settings
 #-----------------------------------------------------------------------------
 def get_PlatePrep_xlsx(xlsFile, Sheets=[], FillNA='-', **kwargs):
 # --------------------------------------------------------------------------------
@@ -212,6 +212,8 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
             valLog.add_info('Assays',f'Listed: {logNumbers["Processed Assays"]}','')
             if logNumbers['New Assays'] > 0:
                 valLog.add_warning('Missing Assays',f'New: {logNumbers["New Assays"]}','Assays not registered', 'Update online Assays')
+            if settings.DEBUG:
+                print(f" [read_TestPlateList_Prepsheet_XLS] Assays: {logNumbers["Processed Assays"]} {logNumbers["New Assays"]} {logNumbers["Uploaded Assays"]}")
 
             # logger.info(f"[Assays]: {logNumbers['New Assays']} new assays (of {logNumbers['Processed Assays']}) ")
             # logger.info(f"[Assays]: New assays uploaded {logNumbers['Uploaded Assays']} [Upload: {prgArgs.upload}]")
@@ -265,5 +267,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                     TestPlateDict[row['testplate_id']] = {'plate':djTP}
 
             valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
+            if settings.DEBUG:
+                print(f" [read_TestPlateList_Prepsheet_XLS] TestPlates: {logNumbers["Processed Plates"]} {logNumbers["New Plates"]} {logNumbers["Uploaded Plates"]}")
 
     return TestPlateDict,AssayDict

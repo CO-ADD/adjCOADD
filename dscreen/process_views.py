@@ -198,6 +198,8 @@ class Load_TestplateList_ProcessView(Process_View):
         form_data=kwargs.get('form_data', None)
         if 'upload' in form_data:
             self.upload = form_data['upload']
+        if 'apply_mp' in form_data:
+            self.apply_mp = form_data['apply_mp']
         # if 'only_dr' in form_data:
         #     self.only_dr = form_data['only_dr']
 
