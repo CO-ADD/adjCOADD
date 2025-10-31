@@ -19,7 +19,7 @@ class Organisation(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
-        #"organisation_id":{'Organisation ID': {'organisation_id':LinkList['organisation_id']}},
+        #"organisation_id":{'Organisation ID': {'organisation_id':URL_LINKS['organisation_id']}},
         "organisation_id":"ID",
         "organisation_code":"Code",
         "organisation_name":"Name",

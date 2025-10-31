@@ -29,7 +29,7 @@ class Peptide(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
-        'peptide_id':{'Peptide ID': {'peptide_id':LinkList['peptide_id']}}, 
+        'peptide_id':{'Peptide ID': {'peptide_id':URL_LINKS['peptide_id']}}, 
         'seq':'Peptide Sequence',
         # 'peptide_name':'Peptide Name',
         # 'peptide_type':'Peptide Type',
@@ -41,7 +41,7 @@ class Peptide(AuditModel):
         # 'source':"Source",
         # 'source_code':"Source Code",
         # 'reference': "Reference",
-        #'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}}, 
+        #'tax_id':{'Tax-ID': {'tax_id':URL_LINKS['tax_id']}}, 
     }
 
     CARDS_FIELDS= {

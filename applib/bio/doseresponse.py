@@ -10,7 +10,7 @@ from applib.bio.bio_data import ActType_DR, pScore, format_DR, dr_max_quality, A
 from dsample.models import Compound_Batch
 from dplate.models import TestPlate
 from dscreen.models import AssayData_MIC,AssayData_CC50,AssayData_HC50
-
+from adjcoadd.constants import DR_CLASSES
 import logging
 logger = logging.getLogger(__name__)
 
@@ -559,7 +559,7 @@ def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
     DR_Lst = []
     #djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
-        if str(djTP.result_type) in ['MIC','CC50','HC50']:
+        if str(djTP.result_type) in DR_CLASSES:
             if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
                 djTP.n_doseresponses = 0
                 if verbose > 0:

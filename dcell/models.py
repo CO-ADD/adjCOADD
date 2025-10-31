@@ -29,7 +29,7 @@ class Cell(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Cell Name','Updatable':False}
-        'cell_id':{'Cell ID': {'cell_id':LinkList['cell_id']}}, 
+        'cell_id':{'Cell ID': {'cell_id':URL_LINKS['cell_id']}}, 
         'cell_line':'Cell Line',
         'cell_names':'Cell Names',
         'cell_type':'Cell Type',
@@ -41,7 +41,7 @@ class Cell(AuditModel):
         'source':"Source",
         'source_code':"Source Code",
         'reference': "Reference",
-        #'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}}, 
+        #'tax_id':{'Tax-ID': {'tax_id':URL_LINKS['tax_id']}}, 
     }
 
     CARDS_FIELDS= {
@@ -324,9 +324,9 @@ class CellBatch_Stock(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS={
-        "cellbatch_id.cellbatch_id":{'CellBatch ID': {'cellbatch_id.cell_id.cell_id':LinkList["cell_id"]}},
+        "cellbatch_id.cellbatch_id":{'CellBatch ID': {'cellbatch_id.cell_id.cell_id':URL_LINKS["cell_id"]}},
         "cellbatch_id.cell_id.cell_names":"Cell",
-        #"cellbatch_id.cell_id.cell_name":{'Cell ID': {'cell_id.cell_id.cell_id':LinkList['cell_id']}},
+        #"cellbatch_id.cell_id.cell_name":{'Cell ID': {'cell_id.cell_id.cell_id':URL_LINKS['cell_id']}},
         "stock_type":"Stock Type",
         "n_created":"#Created",
         "n_left":"#Left",

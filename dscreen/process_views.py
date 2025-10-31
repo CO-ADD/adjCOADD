@@ -47,11 +47,11 @@ class PlatePrep_SelectForm(SelectSingleFile_StepForm):
         _help_text += '<li> [MotherPlates]'
         _help_text += '<li> [TestPlateList, Assays, (HCPrep, PSPrep)]'
         # _help_text += '<p> Use <a href "{% static '
-        # _help_text += f"'{TemplateList['hc_plateprep']}'"
+        # _help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"
         # _help_text += ' %}"> PlatePrep Template</a> '
-        #_help_text += f'<p> Use <a href="static/{TemplateList["hc_plateprep"]}">PlatePrep Template</a>'
+        #_help_text += f'<p> Use <a href="static/{DOC_TEMPLATES["hc_plateprep"]}">PlatePrep Template</a>'
         #_help_text += ' {% static '
-        #_help_text += f"'{TemplateList['hc_plateprep']}'"
+        #_help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"
         
         print(_help_text)
         self.fields['multi_files'].help_text = mark_safe(_help_text)

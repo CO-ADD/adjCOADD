@@ -13,6 +13,7 @@ from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPla
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
 from dscreen.utils.summary import update_screenrun_summary
+from adjcoadd.constants import DR_CLASSES
 
 import logging
 logger = logging.getLogger(__name__)
@@ -242,7 +243,7 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                                 if str(_tp.plate_quality) == 'Valid':
                                     logNumbers['Valid Plates'] += 1
 
-                                    if _tp.result_type in ['MIC','CC50','HC50']
+                                    if _tp.result_type in DR_CLASSES:
                                         _dr_list = process_testplate_doseresponse(_tp)                                
                                         logNumbers['Processed AssayData'] += len(_dr_list)
                                         for _dr in _dr_list:

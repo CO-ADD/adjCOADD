@@ -41,6 +41,8 @@ COMPOUND_SEP = '|'
 # -dScreen Settings ---------------------------------------------------
 RUN_CLASSES = ['PSR','HCR','QCR']
 RUN_SEP = ""
+DR_CLASSES = ['MIC','CC50','HC50']
+SYN_CLASSES = ['SYNMIC']
 
 # -dSample Settings ---------------------------------------------------
 PROJECT_COMPOUND_STATUS = ['MissingStructureData','NoStructureData','ToImportStructureData',
@@ -55,12 +57,12 @@ AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 # make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
 
 # Documents:
-TemplateList={
+DOC_TEMPLATES={
     'hc_plateprep': 'HC_PlatePrep_Template.docx',
 } 
 
 # Links:
-LinkList={
+URL_LINKS={
     'taxonomny':        '/dorganism/taxonomy/{VALUE1}',
     "urlname":          '/dorganism/taxonomy/{VALUE1}',
     'organism_id':      '/dorganism/organism/{VALUE1}',
